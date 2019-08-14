@@ -1,0 +1,68 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ip-address-memory-usage\n"
+"POT-Creation-Date: 2016-12-27 11:04+0100\n"
+"PO-Revision-Date: 2016-12-27 11:04+0100\n"
+"Last-Translator: Ramon <marketing@apasionados.es>\n"
+"Language-Team: Apasionados <info@apasionados.es>\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-KeywordsList: __;_;gettext;gettext_noop;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../server-ip-memory-usage.php:26
+msgid "Server IP & Memory Usage Display"
+msgstr "Mostrar IP del servidor y uso de memoria"
+
+#: ../server-ip-memory-usage.php:26
+msgid ""
+"Show the memory limit, current memory usage and IP address in the admin "
+"footer."
+msgstr ""
+"Muestra la memoria disponible, el uso actual de la misma y la dirección IP "
+"en el pie de la adminstración de WordPress para los usuarios que son "
+"adminstradores."
+
+#: ../server-ip-memory-usage.php:82
+msgid "N/A"
+msgstr "N/D"
+
+#: ../server-ip-memory-usage.php:92
+msgid "Memory"
+msgstr "Memoria"
+
+#: ../server-ip-memory-usage.php:92
+msgid "of"
+msgstr "de"
+
+#: ../server-ip-memory-usage.php:92
+msgid "WP LIMIT"
+msgstr "LÍMITE WP"
+
+#: ../server-ip-memory-usage.php:112
+msgid "Could not activate plugin: PHP version error"
+msgstr "No se ha podido activar el plugin: Error de versión PHP"
+
+#: ../server-ip-memory-usage.php:112
+msgid "You are using PHP version"
+msgstr "Estás usando la versión de PHP"
+
+#: ../server-ip-memory-usage.php:112
+msgid "This plugin has been tested with PHP versions 5.3 and greater."
+msgstr "Este plugin ha sido probado versiones de PHP 5.3 y superiores."
+
+#: ../server-ip-memory-usage.php:112
+msgid ""
+"WordPress itself <a href=\"https://wordpress.org/about/requirements/\" "
+"target=\"_blank\">recommends using PHP version 7 or greater</a>. Please "
+"upgrade your PHP version or contact your Server administrator."
+msgstr ""
+"WordPress <a href=\"https://wordpress.org/about/requirements/\" target="
+"\"_blank\">recomienda el uso de PHP versión 7 o superior</a> . Por favor, "
+"actualiza tu versión de PHP o ponte en contacto con el administrador del "
+"servidor."
