@@ -24,7 +24,8 @@
         "vlucas/phpdotenv": "^3.4.0",
         "oscarotero/env": "^1.2.0",
         "composer/installers": "~1.0",
-        "google/cloud-storage": "^1.14"
+        "google/cloud-storage": "^1.14",
+        "google/auth": "^1.5.2"
     },
     "config": {
         "optimize-autoloader": true

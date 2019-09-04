@@ -91,6 +91,15 @@ class StreamWrapper
     private $protocol;
 
     /**
+     * Protocol prefix for stream wrapper, eg. media://
+     *
+     * @since   1.0.0
+     * @access  private
+     * @var string  The protocol prefix
+     */
+    private $protocol_prefix;
+
+    /**
      * StreamWrapper constructor
      *
      * @param BlobStore $client
@@ -99,6 +108,7 @@ class StreamWrapper
     public function __construct(string $protocol = null)
     {
         $this->protocol = $protocol ?: self::DEFAULT_PROTOCOL;
+        $this->protocol_prefix = $this->protocol . '://';
         $this->client = self::$clients[$this->protocol];
     }
 
@@ -683,7 +693,11 @@ class StreamWrapper
      */
     protected function trim_path($path)
     {
-        return ltrim($path, $this->protocol . ':/\\');
+        $len = strlen($this->protocol_prefix);
+        while (substr($path, 0, $len) === $this->protocol_prefix) {
+            $path = substr($path, $len);
+        }
+        return $path;
     }
 
     /**

@@ -14,7 +14,7 @@ class MediaStorage
 
     public function __construct()
     {
-        $this->relUploadsDir = trim(defined(STACK_MEDIA_PATH) ? STACK_MEDIA_PATH : 'wp-content/uploads', '/');
+        $this->relUploadsDir = trim(defined('STACK_MEDIA_PATH') ? STACK_MEDIA_PATH : 'wp-content/uploads', '/');
 
         $parts = parse_url(STACK_MEDIA_BUCKET);
 
@@ -43,8 +43,6 @@ class MediaStorage
      */
     private function getLocalFilesystemBlobStore(string $path = '')
     {
-        if (empty($path)) {
-        }
         if ($this->endsWith($path, '/' . $this->relUploadsDir)) {
             $path = substr($path, 0, -strlen('/' . $this->relUploadsDir));
         }
@@ -74,12 +72,15 @@ class MediaStorage
         if ($this->startsWith($request, $upload['baseurl'])) {
             $path = substr($request, strlen($upload['baseurl']));
             $filetype = wp_check_filetype($path);
+            $fullPath = 'media://' . $this->relUploadsDir . $path;
 
             if (empty($filetype['ext'])) {
                 wp_die("Directory listing disabled.", "UNAUTHORIZED", 403);
+            } elseif (!file_exists($fullPath)) {
+                wp_die("Not found.", "NOT FOUND", 404);
             } else {
                 header('Content-Type: ' . $filetype['type']);
-                readfile('media://' . $this->relUploadsDir . $path);
+                readfile($fullPath);
                 die();
             }
         }
