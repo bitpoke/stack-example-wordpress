@@ -16,15 +16,15 @@ class Config
         \Env::init();
 
         $uploads = wp_upload_dir(null, false, false);
-        $siteurl = get_option('siteurl');
+        $homeURL = home_url();
 
         /*
          * uploads dir relative to webroot
          * this takes into account CONTENT_DIR (defined by bedrock setups)
          * and defaults to `wp-content/uploads`
          */
-        if ($siteurl === substr($uploads['baseurl'], 0, strlen($siteurl))) {
-            $relUploadsDir = substr($uploads['baseurl'], strlen($siteurl));
+        if ($homeURL === substr($uploads['baseurl'], 0, strlen($homeURL))) {
+            $relUploadsDir = substr($uploads['baseurl'], strlen($homeURL));
         } else {
             $relUploadsDir = (defined('CONTENT_DIR') ? CONTENT_DIR : '/wp-content') . '/uploads';
         }
