@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 3.3.1 - 2019-07-02
+
+### Fixed
+- crash from broken plugin loaded hook input from global
+
+## 3.3 - 2019-03-27
+
+### Added
+- plotting of early SQL queries (WP 5.1+)
+- tracking load of individual plugin load (WP 5.1+)
+
+### Changed
+- unit tests for PHPUnit 8
+
+### Fixed
+- error when formatting empty hook.
+
 ## 3.2 - 2019-01-30
 
 ### Added
@@ -17,7 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - tracking of load events when network–activated
 
 ### Deprecated
-- dedicated classes for extension events.
+- dedicated classes for extension events
 
 ## 3.1 - 2019-01-22
 

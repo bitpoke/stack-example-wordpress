@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-        totallyTyped="true"
+        totallyTyped="false"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -16,28 +16,7 @@
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info"/>
         <UndefinedFunction errorLevel="suppress"/>
-        <UndefinedClass>
-            <errorLevel type="suppress">
-                <referencedClass name="WP_Admin_Bar"/>
-                <referencedClass name="WP_Error"/>
-                <referencedClass name="WP_Hook"/>
-            </errorLevel>
-        </UndefinedClass>
-        <MixedArgument>
-            <errorLevel type="suppress">
-                <file name="src/Provider/Record_Provider.php" />
-                <file name="src/Record/Collector/Hook_Collector.php" />
-            </errorLevel>
-        </MixedArgument>
-        <MissingClosureParamType>
-            <errorLevel type="suppress">
-                <file name="src/Record/Collector/Hook_Collector.php" />
-            </errorLevel>
-        </MissingClosureParamType>
-        <MissingClosureReturnType>
-            <errorLevel type="suppress">
-                <file name="src/Record/Collector/Hook_Collector.php" />
-            </errorLevel>
-        </MissingClosureReturnType>
+        <UndefinedClass errorLevel="suppress"/>
+        <UndefinedDocblockClass errorLevel="suppress"/>
     </issueHandlers>
 </psalm>

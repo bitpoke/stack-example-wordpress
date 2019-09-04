@@ -8,6 +8,8 @@ use Rarst\Laps\Record\Record;
 
 /**
  * Processes SQL events from data logged by wpdb.
+ *
+ * @template QueryData as array{0: string, 1: float, 2: string, 3: float}
  */
 class Sql_Collector implements Record_Collector_Interface {
 
@@ -25,7 +27,7 @@ class Sql_Collector implements Record_Collector_Interface {
 		$this->formatter = new Backtrace_Formatter();
 
 		if ( $this->is_savequeries() ) {
-			add_filter( 'query', [ $this, 'query' ], 20 ); // TODO refactor when core provides time start data in 5.0.
+			add_filter( 'query', [ $this, 'query' ], 20 ); // TODO Drop recording time if dropping support for WP <5.1.
 		}
 	}
 
@@ -35,8 +37,6 @@ class Sql_Collector implements Record_Collector_Interface {
 	 * @param string $query SQL query.
 	 *
 	 * @return string
-	 *
-	 * @psalm-suppress MixedPropertyFetch
 	 */
 	public function query( $query ): string {
 
@@ -64,7 +64,10 @@ class Sql_Collector implements Record_Collector_Interface {
 		}
 
 		/** @var array $wpdb->queries */
-		return array_map( [ $this, 'transform' ], array_keys( $wpdb->queries ), $wpdb->queries );
+		/** @psalm-var array<int, QueryData> $wpdb->queries */
+		$records = array_filter( array_map( [ $this, 'transform' ], array_keys( $wpdb->queries ), $wpdb->queries ) );
+
+		return $records;
 	}
 
 	/**
@@ -80,25 +83,24 @@ class Sql_Collector implements Record_Collector_Interface {
 	 *
 	 * @param int   $key        Query key in captured data.
 	 * @param array $query_data Array of captured query data.
-	 * @psalm-param array{0: string, 1: float, 2: string} $query_data
+	 * @psalm-param array{0: string, 1: float, 2: string, 3: float} $query_data
 	 *
 	 * @return Record
 	 */
-	protected function transform( int $key, array $query_data ): Record {
-
-		static $last_query_end = 0;
+	protected function transform( int $key, array $query_data ): ?Record {
 
 		[ $sql, $duration, $caller ] = $query_data;
 
 		/** @var float $query_start */
-		$query_start = $this->query_starts[ $key ] ?? $last_query_end;
+		$query_start = $query_data[3] ?? $this->query_starts[ $key ] ?? 0;
+		if ( empty( $query_start ) ) {
+			return null;
+		}
 		$sql         = trim( $sql );
 		$category    = 'sql-read';
 		if ( 0 === stripos( $sql, 'INSERT' ) || 0 === stripos( $sql, 'UPDATE' ) ) {
 			$category = 'sql-write';
 		}
-		$last_query_end = $query_start + $duration;
-
 		$desc_duration = round( $duration * 1000 );
 		$backtrace     = $this->formatter->format( $caller );
 		$description   = $sql . ' – ' . $desc_duration . 'ms<hr />' . implode( '<br />', $backtrace );
