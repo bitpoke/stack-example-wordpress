@@ -5,7 +5,7 @@ services:
      depends_on:
        - db
        - memcached
-     image: quay.io/presslabs/wordpress-runtime:5.2.2
+     image: quay.io/presslabs/wordpress-runtime:5.2.3
      volumes:
        - ./config:/app/config
        - ./wp-content:/app/web/wp-content
