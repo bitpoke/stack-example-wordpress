@@ -65,7 +65,7 @@ define( 'NONCE_SALT',       getenv( 'NONCE_SALT' ) ?: 'put your unique phrase he
  */
 $table_prefix = getenv('DB_PREFIX') ?: 'wp_';
 
-define( 'WP_HOME', getenv( 'WP_HOME' ) ?: 'http://' . $_SERVER['HTTP_HOST'] );
+define( 'WP_HOME', rtrim( getenv( 'WP_HOME' ) ?: 'http://' . $_SERVER['HTTP_HOST'], '/' ) );
 define( 'WP_SITEURL', getenv( 'WP_SITEURL' ) ?: 'http://' . $_SERVER['HTTP_HOST'] . '/wp' );
 define( 'WP_CONTENT_DIR', __DIR__ . '/wp-content' );
 define( 'WP_CONTENT_URL', WP_HOME . '/wp-content' );
