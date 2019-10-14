@@ -103,10 +103,17 @@ class MediaStorage
      */
     public function filterUploadDir(array $uploads) : array
     {
-        $basedir = $this->getUploadsDir();
+        $basedir = untrailingslashit($this->getUploadsDir());
+
+        // taken from https://developer.wordpress.org/reference/functions/_wp_upload_dir/
+        // If multisite (and if not the main site in a post-MU network)
+        // NOTICE: we support only post-MU network setups
+        if (is_multisite() && !(is_main_network() && is_main_site() && defined('MULTISITE'))) {
+            $basedir .= '/sites/' . get_current_blog_id();
+        }
 
         $uploads['basedir'] = $basedir;
-        $uploads['path'] = untrailingslashit($basedir . $uploads['subdir']);
+        $uploads['path'] = untrailingslashit($basedir . '/' . ltrim($uploads['subdir'], '/'));
 
         return $uploads;
     }

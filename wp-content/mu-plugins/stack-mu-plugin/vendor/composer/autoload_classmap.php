@@ -512,5 +512,6 @@ return array(
     'Stack\\MediaStorage' => $baseDir . '/src/Stack/MediaStorage.php',
     'Stack\\ObjectCache' => $baseDir . '/src/Stack/ObjectCache.php',
     'Stack\\ObjectCache\\Memcached' => $baseDir . '/src/Stack/ObjectCache/Memcached.php',
+    'Stack\\URLFixer' => $baseDir . '/src/Stack/URLFixer.php',
     'Symfony\\Polyfill\\Ctype\\Ctype' => $vendorDir . '/symfony/polyfill-ctype/Ctype.php',
 );
