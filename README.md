@@ -19,7 +19,7 @@ Presslabs Stack provides a base image for building and developing classic
 WordPress sites. The `Dockerfile` is as simple as:
 
 ```Dockerfile
-FROM quay.io/presslabs/wordpress-runtime:5.2.2
+FROM quay.io/presslabs/wordpress-runtime:5.2.4
 ```
 
 ## Development
