@@ -38,6 +38,11 @@ class URLFixer
         add_filter('option_home', [$this, 'fixHomeURL']);
         add_filter('option_siteurl', [$this, 'fixSiteURL']);
         add_filter('network_site_url', [$this, 'fixNetworkSiteURL'], 10, 3);
+        if (is_subdomain_install()) {
+                add_filter('content_url', [$this, 'fixContentURL']);
+                add_filter('plugins_url', [$this, 'fixContentURL']);
+                add_filter('upload_dir', [$this, 'fixUploadsURL']);
+        }
     }
 
     private function hasSuffix(string $s, string $suffix)
@@ -51,6 +56,50 @@ class URLFixer
             $s = substr($s, 0, -1 * strlen($suffix));
         }
         return $s;
+    }
+
+    private function hasPrefix(string $s, string $prefix)
+    {
+        return (substr($s, 0, strlen($prefix)) === $prefix);
+    }
+
+    private function removePrefix(string $s, string $prefix)
+    {
+        if ($this->hasPrefix($s, $prefix)) {
+            $s = substr($s, strlen($prefix));
+        }
+        return $s;
+    }
+
+    /**
+     * Ensure that content URLs point to the site's domain
+     *
+     * We need to do this because we define WP_CONTENT_URL to be the main site's one,
+     * in order we have a separate wordpress and wp-content directories. For multisites
+     * on subdomains, having the content server on the main domain may cause cross-origin
+     * issues for various requests (eg. fonts).
+     *
+     * @param string $url the original content URL
+     * @return string the rewritten URL
+     */
+    public function fixContentURL($url)
+    {
+        $contentDir = rtrim(defined('CONTENT_DIR') ? CONTENT_DIR : '/wp-content', '/');
+        $contentURL = rtrim(set_url_scheme(WP_CONTENT_URL), '/');
+        return str_replace($contentURL, home_url($contentDir), $url);
+    }
+
+    /**
+     * Ensure that uploads URLs point to the site's domain
+     *
+     * @param array $dir the wp_uploads_dir array
+     * @return array the array with filtered URLs
+     */
+    public function fixUploadsURL($dir)
+    {
+        $dir["url"] = $this->fixContentURL($dir["url"]);
+        $dir["baseurl"] = $this->fixContentURL($dir["baseurl"]);
+        return $dir;
     }
 
     /**
