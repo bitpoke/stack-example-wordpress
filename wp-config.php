@@ -67,8 +67,6 @@ $table_prefix = getenv('DB_PREFIX') ?: 'wp_';
 
 define( 'WP_HOME', rtrim( getenv( 'WP_HOME' ) ?: 'http://' . $_SERVER['HTTP_HOST'], '/' ) );
 define( 'WP_SITEURL', getenv( 'WP_SITEURL' ) ?: 'http://' . $_SERVER['HTTP_HOST'] . '/wp' );
-define( 'WP_CONTENT_DIR', __DIR__ . '/wp-content' );
-define( 'WP_CONTENT_URL', WP_HOME . '/wp-content' );
 
 /**
  * Allow WordPress to detect HTTPS when used behind a reverse proxy or a load balancer
@@ -82,6 +80,18 @@ $user_config = __DIR__ . '/config/wp-config.php';
 
 if ( file_exists( $user_config ) ) {
     require_once $user_config;
+}
+
+if ( ! defined( 'CONTENT_DIR' ) ) {
+	define( 'CONTENT_DIR', '/wp-content' );
+}
+
+if ( ! defined( 'WP_CONTENT_DIR' ) ) {
+	define( 'WP_CONTENT_DIR', __DIR__ . CONTENT_DIR );
+}
+
+if ( ! defined( 'WP_CONTENT_URL' ) ) {
+	define( 'WP_CONTENT_URL', WP_HOME . CONTENT_DIR );
 }
 
 /**
