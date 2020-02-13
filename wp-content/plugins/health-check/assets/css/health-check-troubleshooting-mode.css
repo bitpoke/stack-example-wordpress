@@ -1,0 +1,197 @@
+#health-check-dashboard-widget {
+	display: grid;
+	grid-gap: 2%;
+	grid-template-columns: 100%;
+	padding: 13px;
+	background: #fff;
+	/* Accordion styles */
+}
+
+@media all and (min-width: 783px) {
+	#health-check-dashboard-widget {
+		margin-top: 3rem;
+		grid-template-columns: 49% 49%;
+	}
+}
+
+#health-check-dashboard-widget h2 .green {
+	color: #40860a;
+}
+
+#health-check-dashboard-widget .welcome-panel-content {
+	max-width: initial;
+}
+
+#health-check-dashboard-widget #health-check-accordion-block-notices .no-notices p {
+	color: #72777c;
+	font-size: 1.2rem;
+}
+
+#health-check-dashboard-widget #health-check-accordion-block-notices .notice {
+	color: #72777c;
+	margin-left: 0;
+}
+
+#health-check-dashboard-widget #health-check-accordion-block-notices .notice p {
+	font-size: 13px;
+}
+
+#health-check-dashboard-widget #health-check-accordion-block-notices .dismiss-notices {
+	display: block;
+	width: 100%;
+	text-align: right;
+	margin-right: 1rem;
+}
+
+#health-check-dashboard-widget .disable-troubleshooting-mode {
+	margin-bottom: 1rem;
+}
+
+@media all and (min-width: 960px) {
+	#health-check-dashboard-widget .disable-troubleshooting-mode {
+		position: absolute;
+		bottom: 1rem;
+		right: 1rem;
+	}
+}
+
+#health-check-dashboard-widget ul li {
+	font-size: 13px;
+}
+
+@media all and (max-width: 870px) {
+	#health-check-dashboard-widget ul li {
+		display: inline-block;
+		width: 100%;
+	}
+}
+
+#health-check-dashboard-widget .about-description {
+	margin: 1em 0;
+	max-width: 700px;
+	display: inline-block;
+}
+
+#health-check-dashboard-widget .about-description p {
+	color: inherit;
+	font-size: 16px;
+}
+
+#health-check-dashboard-widget .health-check-accordion {
+	border: 1px solid #e2e4e7;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-heading {
+	margin: 0;
+	border-top: 1px solid #e2e4e7;
+	font-size: inherit;
+	line-height: inherit;
+	font-weight: 600;
+	color: inherit;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-heading:first-child {
+	border-top: none;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger {
+	background: #fff;
+	border: 0;
+	color: #32373c;
+	cursor: pointer;
+	display: block;
+	font-weight: 400;
+	margin: 0;
+	padding: 1em 3.5em 1em 1.5em;
+	position: relative;
+	text-align: left;
+	width: 100%;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger:hover, #health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger:active {
+	background: #f8f9f9;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger:focus {
+	color: #191e23;
+	border: none;
+	box-shadow: none;
+	outline-offset: -2px;
+	outline: 1px dotted #555d66;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .title {
+	display: inline-block;
+	pointer-events: none;
+	font-weight: 600;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .icon {
+	border: solid #555d66;
+	border-width: 0 2px 2px 0;
+	height: 0.5rem;
+	pointer-events: none;
+	position: absolute;
+	right: 1.5em;
+	top: 50%;
+	transform: translateY(-70%) rotate(45deg);
+	width: 0.5rem;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .badge {
+	float: right;
+	padding: 0.1rem 0.5rem 0.15rem;
+	color: #32373c;
+	font-weight: 600;
+	margin-left: 0.5rem;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .badge.blue {
+	border: 1px solid #bfe7f3;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .badge.orange {
+	border: 1px solid #ffb900;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .badge.red {
+	border: 1px solid #dc3232;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .badge.green {
+	border: 1px solid #46b450;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .badge.purple {
+	border: 1px solid #826eb4;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger .badge.gray {
+	border: 1px solid #ccd0d4;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-trigger[aria-expanded="true"] .icon {
+	transform: translateY(-30%) rotate(-135deg);
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-panel {
+	margin: 0;
+	padding: 1em 1.5em;
+	background: #fff;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-panel > div {
+	display: block;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-panel[hidden] {
+	display: none;
+}
+
+#health-check-dashboard-widget .health-check-accordion .health-check-accordion-panel a .dashicons {
+	text-decoration: none;
+}
+
+#health-check-dashboard-widget .health-check-accordion dl dd {
+	margin: 0 0 0.5em 2em;
+}
