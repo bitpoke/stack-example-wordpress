@@ -30,19 +30,27 @@ class GoogleCloudStorage implements BlobStore
      */
     private $client;
 
+    private function getClient()
+    {
+        if (null === $this->client) {
+            $clientConfig = [
+                'suppressKeyFileNotice' => getenv('SUPPRESS_GCLOUD_CREDS_WARNING') == 'true',
+            ];
+
+            $envCreds = getenv('GOOGLE_CREDENTIALS');
+            if (!empty($envCreds)) {
+                $envCreds = json_decode($envCreds, true);
+                $clientConfig['keyFile'] = $envCreds;
+            }
+
+            $this->client = new StorageClient($clientConfig);
+        }
+        return $this->client;
+    }
+
     public function __construct(string $bucket, string $prefix = '')
     {
-        $clientConfig = [
-            'suppressKeyFileNotice' => getenv('SUPPRESS_GCLOUD_CREDS_WARNING') == 'true',
-        ];
-
-        $envCreds = getenv('GOOGLE_CREDENTIALS');
-        if (!empty($envCreds)) {
-            $envCreds = json_decode($envCreds, true);
-            $clientConfig['keyFile'] = $envCreds;
-        }
-
-        $this->client = new StorageClient($clientConfig);
+        $this->client = null;
         $this->bucket = $bucket;
         $this->prefix = $prefix;
     }
@@ -55,7 +63,7 @@ class GoogleCloudStorage implements BlobStore
     public function get(string $key) : string
     {
         try {
-            $bucket = $this->client->bucket($this->bucket);
+            $bucket = $this->getClient()->bucket($this->bucket);
             $object = $bucket->object($this->normalizePath($key));
             $result = $object->downloadAsString();
             return $result;
@@ -67,7 +75,7 @@ class GoogleCloudStorage implements BlobStore
     public function getMeta(string $key)
     {
         try {
-            $bucket = $this->client->bucket($this->bucket);
+            $bucket = $this->getClient()->bucket($this->bucket);
             $object = $bucket->object($this->normalizePath($key));
             $info = $object->info();
         } catch (NotFoundException $e) {
@@ -85,7 +93,7 @@ class GoogleCloudStorage implements BlobStore
     public function set(string $key, string $content)
     {
         try {
-            $bucket = $this->client->bucket($this->bucket);
+            $bucket = $this->getClient()->bucket($this->bucket);
             $uploader = $bucket->upload($content, [
                 'name' => $this->normalizePath($key),
                 'resumable' => false,
@@ -98,7 +106,7 @@ class GoogleCloudStorage implements BlobStore
     public function remove(string $key)
     {
         try {
-            $bucket = $this->client->bucket($this->bucket);
+            $bucket = $this->getClient()->bucket($this->bucket);
             $object = $bucket->object($this->normalizePath($key));
             $object->delete();
         } catch (NotFoundException $e) {
