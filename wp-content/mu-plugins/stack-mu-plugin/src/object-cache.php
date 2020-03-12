@@ -3,7 +3,7 @@
  * Plugin Name: Presslabs Stack Object Cache
  * Plugin URI: http://presslabs.com/stack/
  * Description: WordPress object cache backend for Presslabs Stack. This backend is based on memcached.
- * Version: 0.1.9
+ * Version: 0.1.9-5-g15a426c
  * Author: Presslabs
  * Author URI: http://presslabs.com/
  */
