@@ -43,9 +43,9 @@ class Rest implements ConnectionInterface
     use RestTrait;
     use UriTrait;
 
-    const BASE_URI = 'https://www.googleapis.com/storage/v1/';
-    const UPLOAD_URI = 'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o{?query*}';
-    const DOWNLOAD_URI = 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}{?query*}';
+    const BASE_URI = 'https://storage.googleapis.com/storage/v1/';
+    const UPLOAD_URI = 'https://storage.googleapis.com/upload/storage/v1/b/{bucket}/o{?query*}';
+    const DOWNLOAD_URI = 'https://storage.googleapis.com/storage/v1/b/{bucket}/o/{object}{?query*}';
 
     /**
      * @var string
@@ -495,7 +495,7 @@ class Rest implements ConnectionInterface
     private function chooseValidationMethod(array $args)
     {
         // If the user provided a hash, skip hashing.
-        if (isset($args['metadata']['md5']) || isset($args['metadata']['crc32c'])) {
+        if (isset($args['metadata']['md5Hash']) || isset($args['metadata']['crc32c'])) {
             return false;
         }
 

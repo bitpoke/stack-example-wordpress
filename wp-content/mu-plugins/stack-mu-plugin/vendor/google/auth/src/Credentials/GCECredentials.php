@@ -18,14 +18,17 @@
 namespace Google\Auth\Credentials;
 
 use Google\Auth\CredentialsLoader;
+use Google\Auth\GetQuotaProjectInterface;
 use Google\Auth\HttpHandler\HttpClientCache;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
 use Google\Auth\Iam;
+use Google\Auth\ProjectIdProviderInterface;
 use Google\Auth\SignBlobInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
+use InvalidArgumentException;
 
 /**
  * GCECredentials supports authorization on Google Compute Engine.
@@ -51,9 +54,14 @@ use GuzzleHttp\Psr7\Request;
  *
  *   $res = $client->get('myproject/taskqueues/myqueue');
  */
-class GCECredentials extends CredentialsLoader implements SignBlobInterface
+class GCECredentials extends CredentialsLoader implements
+    SignBlobInterface,
+    ProjectIdProviderInterface,
+    GetQuotaProjectInterface
 {
+    // phpcs:disable
     const cacheKey = 'GOOGLE_AUTH_PHP_GCE';
+    // phpcs:enable
 
     /**
      * The metadata IP address on appengine instances.
@@ -69,9 +77,19 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
     const TOKEN_URI_PATH = 'v1/instance/service-accounts/default/token';
 
     /**
+     * The metadata path of the default id token.
+     */
+    const ID_TOKEN_URI_PATH = 'v1/instance/service-accounts/default/identity';
+
+    /**
      * The metadata path of the client ID.
      */
     const CLIENT_ID_URI_PATH = 'v1/instance/service-accounts/default/email';
+
+    /**
+     * The metadata path of the project ID.
+     */
+    const PROJECT_ID_URI_PATH = 'v1/project/project-id';
 
     /**
      * The header whose presence indicates GCE presence.
@@ -111,9 +129,14 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
     protected $lastReceivedToken;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $clientName;
+
+    /**
+     * @var string|null
+     */
+    private $projectId;
 
     /**
      * @var Iam|null
@@ -121,11 +144,59 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
     private $iam;
 
     /**
-     * @param Iam $iam [optional] An IAM instance.
+     * @var string
      */
-    public function __construct(Iam $iam = null)
+    private $tokenUri;
+
+    /**
+     * @var string
+     */
+    private $targetAudience;
+
+    /**
+     * @var string|null
+     */
+    private $quotaProject;
+
+    /**
+     * @param Iam $iam [optional] An IAM instance.
+     * @param string|array $scope [optional] the scope of the access request,
+     *        expressed either as an array or as a space-delimited string.
+     * @param string $targetAudience [optional] The audience for the ID token.
+     * @param string $quotaProject [optional] Specifies a project to bill for access
+     *   charges associated with the request.
+     */
+    public function __construct(Iam $iam = null, $scope = null, $targetAudience = null, $quotaProject = null)
     {
         $this->iam = $iam;
+
+        if ($scope && $targetAudience) {
+            throw new InvalidArgumentException(
+                'Scope and targetAudience cannot both be supplied'
+            );
+        }
+
+        $tokenUri = self::getTokenUri();
+        if ($scope) {
+            if (is_string($scope)) {
+                $scope = explode(' ', $scope);
+            }
+
+            $scope = implode(',', $scope);
+
+            $tokenUri = $tokenUri . '?scopes='. $scope;
+        } elseif ($targetAudience) {
+            $tokenUri = sprintf(
+                'http://%s/computeMetadata/%s?audience=%s',
+                self::METADATA_IP,
+                self::ID_TOKEN_URI_PATH,
+                $targetAudience
+            );
+            $this->targetAudience = $targetAudience;
+        }
+
+        $this->tokenUri = $tokenUri;
+        $this->quotaProject = $quotaProject;
     }
 
     /**
@@ -153,10 +224,22 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
     }
 
     /**
+     * The full uri for accessing the default project ID.
+     *
+     * @return string
+     */
+    private static function getProjectIdUri()
+    {
+        $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
+
+        return $base . self::PROJECT_ID_URI_PATH;
+    }
+
+    /**
      * Determines if this an App Engine Flexible instance, by accessing the
      * GAE_INSTANCE environment variable.
      *
-     * @return true if this an App Engine Flexible Instance, false otherwise
+     * @return bool true if this an App Engine Flexible Instance, false otherwise
      */
     public static function onAppEngineFlexible()
     {
@@ -169,8 +252,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
      * If $httpHandler is not specified a the default HttpHandler is used.
      *
      * @param callable $httpHandler callback which delivers psr7 request
-     *
-     * @return true if this a GCEInstance false otherwise
+     * @return bool True if this a GCEInstance, false otherwise
      */
     public static function onGce(callable $httpHandler = null)
     {
@@ -214,11 +296,14 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
      *
      * @param callable $httpHandler callback which delivers psr7 request
      *
-     * @return array A set of auth related metadata, containing the following
-     * keys:
+     * @return array A set of auth related metadata, based on the token type.
+     *
+     * Access tokens have the following keys:
      *   - access_token (string)
      *   - expires_in (int)
      *   - token_type (string)
+     * ID tokens have the following keys:
+     *   - id_token (string)
      *
      * @throws \Exception
      */
@@ -235,8 +320,13 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
             return array();  // return an empty array with no access token
         }
 
-        $json = $this->getFromMetadata($httpHandler, self::getTokenUri());
-        if (null === $json = json_decode($json, true)) {
+        $response = $this->getFromMetadata($httpHandler, $this->tokenUri);
+
+        if ($this->targetAudience) {
+            return ['id_token' => $response];
+        }
+
+        if (null === $json = json_decode($response, true)) {
             throw new \Exception('Invalid JSON response');
         }
 
@@ -332,6 +422,36 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
     }
 
     /**
+     * Fetch the default Project ID from compute engine.
+     *
+     * Returns null if called outside GCE.
+     *
+     * @param callable $httpHandler Callback which delivers psr7 request
+     * @return string|null
+     */
+    public function getProjectId(callable $httpHandler = null)
+    {
+        if ($this->projectId) {
+            return $this->projectId;
+        }
+
+        $httpHandler = $httpHandler
+            ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
+
+        if (!$this->hasCheckedOnGce) {
+            $this->isOnGce = self::onGce($httpHandler);
+            $this->hasCheckedOnGce = true;
+        }
+
+        if (!$this->isOnGce) {
+            return null;
+        }
+
+        $this->projectId = $this->getFromMetadata($httpHandler, self::getProjectIdUri());
+        return $this->projectId;
+    }
+
+    /**
      * Fetch the value of a GCE metadata server URI.
      *
      * @param callable $httpHandler An HTTP Handler to deliver PSR7 requests.
@@ -349,5 +469,15 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface
         );
 
         return (string) $resp->getBody();
+    }
+
+    /**
+     * Get the quota project used for this API request
+     *
+     * @return string|null
+     */
+    public function getQuotaProject()
+    {
+        return $this->quotaProject;
     }
 }

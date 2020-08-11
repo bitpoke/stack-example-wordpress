@@ -21,7 +21,6 @@ namespace Google\Cloud\Core\Testing;
 use Google\Cloud\Core\Testing\RegexFileFilter;
 use Google\Cloud\Core\Testing\Snippet\Container;
 use Google\Cloud\Core\Testing\Snippet\Coverage\Coverage;
-use Google\Cloud\Core\Testing\Snippet\Coverage\ExcludeFilter;
 use Google\Cloud\Core\Testing\Snippet\Coverage\Scanner;
 use Google\Cloud\Core\Testing\Snippet\Parser\Parser;
 use Google\Cloud\Core\Testing\System\SystemTestCase;
@@ -238,6 +237,23 @@ class TestHelpers
 
             $shutdown();
         });
+    }
+
+    /**
+     * Get the value of a private property.
+     *
+     * @param mixed $class The class
+     * @param string $property The property name.
+     * @return mixed
+     */
+    public static function getPrivateProperty($class, $property)
+    {
+        $className = get_class($class);
+        $c = \Closure::bind(function ($class) use ($property) {
+            return $class->$property;
+        }, null, $className);
+
+        return $c($class);
     }
 
     /**

@@ -3,7 +3,7 @@
  * Plugin Name: Presslabs Stack
  * Plugin URI: http://presslabs.com/stack/
  * Description: Must-Use plugin for Stack
- * Version: 0.1.9-5-g15a426c
+ * Version: 0.1.9-16-g6db79a3
  * Author: Presslabs
  * Author URI: http://presslabs.com/
  */
