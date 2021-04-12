@@ -1,13 +1,9 @@
-stack-example-wordpress
+MOOVD WEBSITE
 ===
-
-Example project for running a classic WordPress setup on
-[Presslabs Stack](https://www.presslabs.com/stack).
 
 ## Quickstart
 
-Just fork this repo and you are good to go. After cloning your repo you need to
-install WordPress into wp folder. To do so, you can run:
+You need to install WordPress into wp folder. To do so, you can run:
 
 ```console
 $ wp core download --path=wp
@@ -15,7 +11,7 @@ $ wp core download --path=wp
 
 ## Building docker images
 
-Presslabs Stack provides a base image for building and developing classic
+Presslabs Stack provides a base image for building and developing the Moovd
 WordPress sites. The `Dockerfile` is as simple as:
 
 ```Dockerfile
@@ -50,3 +46,5 @@ _NOTE_: If you are using docker compose, remember that the image built from the
 above `Dockerfile` already includes nginx and it's accessible on port 8080. For
 customizing the environment also check
 [https://github.com/presslabs/stack-runtimes/blob/master/php/README.md](https://github.com/presslabs/stack-runtimes/blob/master/php/README.md).
+
+update
