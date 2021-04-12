@@ -3,3 +3,4 @@ wp-content/uploads
 
 # WP-CLI
 wp-cli.local.yml
+/.vs
