@@ -47,7 +47,7 @@ class StorageClient
     use ArrayTrait;
     use ClientTrait;
 
-    const VERSION = '1.14.0';
+    const VERSION = '1.23.1';
 
     const FULL_CONTROL_SCOPE = 'https://www.googleapis.com/auth/devstorage.full_control';
     const READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/devstorage.read_only';
@@ -64,6 +64,9 @@ class StorageClient
      * @param array $config [optional] {
      *     Configuration options.
      *
+     *     @type string $apiEndpoint The hostname with optional port to use in
+     *           place of the default service endpoint. Example:
+     *           `foobar.com` or `foobar.com:1234`.
      *     @type string $projectId The project ID from the Google Developer's
      *           Console.
      *     @type CacheItemPoolInterface $authCache A cache used storing access
@@ -86,12 +89,17 @@ class StorageClient
      *     @type int $retries Number of retries for a failed request.
      *           **Defaults to** `3`.
      *     @type array $scopes Scopes to be used for the request.
+     *     @type string $quotaProject Specifies a user project to bill for
+     *           access charges associated with the request.
      * }
      */
     public function __construct(array $config = [])
     {
         if (!isset($config['scopes'])) {
-            $config['scopes'] = [self::FULL_CONTROL_SCOPE];
+            $config['scopes'] = [
+                'https://www.googleapis.com/auth/iam',
+                self::FULL_CONTROL_SCOPE,
+            ];
         }
 
         $this->connection = new Rest($this->configureAuthentication($config) + [
@@ -262,10 +270,14 @@ class StorageClient
      *           current bucket's logs.
      *     @type string $storageClass The bucket's storage class. This defines
      *           how objects in the bucket are stored and determines the SLA and
-     *           the cost of storage. Acceptable values include
-     *           `"MULTI_REGIONAL"`, `"REGIONAL"`, `"NEARLINE"`, `"COLDLINE"`,
-     *           `"STANDARD"` and `"DURABLE_REDUCED_AVAILABILITY"`.
-     *           **Defaults to** `STANDARD`.
+     *           the cost of storage. Acceptable values include the following
+     *           strings: `"STANDARD"`, `"NEARLINE"`, `"COLDLINE"` and
+     *           `"ARCHIVE"`. Legacy values including `"MULTI_REGIONAL"`,
+     *           `"REGIONAL"` and `"DURABLE_REDUCED_AVAILABILITY"` are also
+     *           available, but should be avoided for new implementations. For
+     *           more information, refer to the
+     *           [Storage Classes](https://cloud.google.com/storage/docs/storage-classes)
+     *           documentation. **Defaults to** `"STANDARD"`.
      *     @type array $versioning The bucket's versioning configuration.
      *     @type array $website The bucket's website configuration.
      *     @type array $billing The bucket's billing configuration.
@@ -301,14 +313,16 @@ class StorageClient
      *           object cannot be overwritten or deleted. Retention period must
      *           be greater than zero and less than 100 years.
      *     @type array $iamConfiguration The bucket's IAM configuration.
-     *     @type bool $iamConfiguration.bucketPolicyOnly.enabled If set and
+     *     @type bool $iamConfiguration.bucketPolicyOnly.enabled this is an alias
+     *           for $iamConfiguration.uniformBucketLevelAccess.
+     *     @type bool $iamConfiguration.uniformBucketLevelAccess.enabled If set and
      *           true, access checks only use bucket-level IAM policies or
      *           above. When enabled, requests attempting to view or manipulate
      *           ACLs will fail with error code 400. **NOTE**: Before using
-     *           Bucket Policy Only, please review the
-     *           [feature documentation](https://cloud.google.com/storage/docs/bucket-policy-only),
+     *           Uniform bucket-level access, please review the
+     *           [feature documentation](https://cloud.google.com/storage/docs/uniform-bucket-level-access),
      *           as well as
-     *           [Should You Use Bucket Policy Only](https://cloud.google.com/storage/docs/bucket-policy-only#should-you-use)
+     *           [Should You Use uniform bucket-level access](https://cloud.google.com/storage/docs/uniform-bucket-level-access#should-you-use)
      * }
      * @codingStandardsIgnoreEnd
      * @return Bucket

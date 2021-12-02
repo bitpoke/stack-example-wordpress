@@ -1,5 +1,7 @@
 <?php
 
+namespace Env;
+
 class Env
 {
     const CONVERT_BOOL = 1;
@@ -8,36 +10,20 @@ class Env
     const STRIP_QUOTES = 8;
     const USE_ENV_ARRAY = 16;
     const LOCAL_FIRST = 32;
+    const USE_SERVER_ARRAY = 64;
 
-    public static $options = 15;   //All flags enabled
-    public static $default = null; //Default value if not exists
-
-    /**
-     * Include the global env() function.
-     * Returns whether the function has been registered or not.
-     * 
-     * @return bool
-     */
-    public static function init()
-    {
-        if (function_exists('env')) {
-            return false;
-        }
-
-        include_once dirname(__FILE__).'/env_function.php';
-
-        return true;
-    }
+    public static $options = 15;   // CONVERT_* + STRIP_QUOTES enabled
+    public static $default = null; // Default value if not exists
 
     /**
      * Returns an environment variable.
-     * 
-     * @param string $name
      */
-    public static function get($name)
+    public static function get(string $name)
     {
         if (self::$options & self::USE_ENV_ARRAY) {
             $value = isset($_ENV[$name]) ? $_ENV[$name] : false;
+        } elseif (self::$options & self::USE_SERVER_ARRAY) {
+            $value = isset($_SERVER[$name]) ? $_SERVER[$name] : false;
         } elseif (self::$options & self::LOCAL_FIRST) {
             $value = getenv($name, true);
 
@@ -57,13 +43,10 @@ class Env
 
     /**
      * Converts the type of values like "true", "false", "null" or "123".
-     *
-     * @param string   $value
-     * @param int|null $options
-     *
+     * 
      * @return mixed
      */
-    public static function convert($value, $options = null)
+    public static function convert(string $value, int $options = null)
     {
         if ($options === null) {
             $options = self::$options;
@@ -93,12 +76,8 @@ class Env
 
     /**
      * Strip quotes.
-     *
-     * @param string $value
-     *
-     * @return string
      */
-    private static function stripQuotes($value)
+    private static function stripQuotes(string $value): string
     {
         if (
             ($value[0] === '"' && substr($value, -1) === '"')

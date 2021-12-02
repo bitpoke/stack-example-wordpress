@@ -549,11 +549,17 @@ class StorageObject
     /**
      * Download an object as a string.
      *
+     * For an example of setting the range header to download a subrange of the
+     * object please see {@see Google\Cloud\Storage\StorageObject::downloadAsStream()}.
+     *
      * Example:
      * ```
      * $string = $object->downloadAsString();
      * echo $string;
      * ```
+     *
+     * @see https://cloud.google.com/storage/docs/json_api/v1/objects/get Objects get API documentation.
+     * @see https://cloud.google.com/storage/docs/json_api/v1/parameters#range Learn more about the Range header.
      *
      * @param array $options [optional] {
      *     Configuration Options.
@@ -577,10 +583,16 @@ class StorageObject
     /**
      * Download an object to a specified location.
      *
+     * For an example of setting the range header to download a subrange of the
+     * object please see {@see Google\Cloud\Storage\StorageObject::downloadAsStream()}.
+     *
      * Example:
      * ```
      * $stream = $object->downloadToFile(__DIR__ . '/my-file.txt');
      * ```
+     *
+     * @see https://cloud.google.com/storage/docs/json_api/v1/objects/get Objects get API documentation.
+     * @see https://cloud.google.com/storage/docs/json_api/v1/parameters#range Learn more about the Range header.
      *
      * @param string $path Path to download the file to.
      * @param array $options [optional] {
@@ -614,11 +626,34 @@ class StorageObject
     /**
      * Download an object as a stream.
      *
+     * Please note Google Cloud Storage respects the Range header as specified
+     * by [RFC7233](https://tools.ietf.org/html/rfc7233#section-3.1). See below
+     * for an example of this in action.
+     *
      * Example:
      * ```
      * $stream = $object->downloadAsStream();
      * echo $stream->getContents();
      * ```
+     *
+     * ```
+     * // Set the Range header in order to download a subrange of the object. For more examples of
+     * // setting the Range header, please see [RFC7233](https://tools.ietf.org/html/rfc7233#section-3.1).
+     * $firstFiveBytes = '0-4'; // Get the first 5 bytes.
+     * $fromFifthByteToLastByte = '4-'; // Get the bytes starting with the 5th to the last.
+     * $lastFiveBytes = '-5'; // Get the last 5 bytes.
+     *
+     * $stream = $object->downloadAsStream([
+     *     'restOptions' => [
+     *         'headers' => [
+     *             'Range' => "bytes=$firstFiveBytes"
+     *         ]
+     *     ]
+     * ]);
+     * ```
+     *
+     * @see https://cloud.google.com/storage/docs/json_api/v1/objects/get Objects get API documentation.
+     * @see https://cloud.google.com/storage/docs/json_api/v1/parameters#range Learn more about the Range header.
      *
      * @param array $options [optional] {
      *     Configuration Options.
@@ -647,6 +682,9 @@ class StorageObject
 
     /**
      * Asynchronously download an object as a stream.
+     *
+     * For an example of setting the range header to download a subrange of the
+     * object please see {@see Google\Cloud\Storage\StorageObject::downloadAsStream()}.
      *
      * Example:
      * ```
@@ -677,6 +715,8 @@ class StorageObject
      * Promise\unwrap($promises);
      * ```
      *
+     * @see https://cloud.google.com/storage/docs/json_api/v1/objects/get Objects get API documentation.
+     * @see https://cloud.google.com/storage/docs/json_api/v1/parameters#range Learn more about the Range header.
      * @see https://github.com/guzzle/promises Learn more about Guzzle Promises
      *
      * @param array $options [optional] {
@@ -749,6 +789,25 @@ class StorageObject
      * ]);
      * ```
      *
+     * ```
+     * // Using Bucket-Bound hostnames
+     * // By default, a custom bucket-bound hostname will use `http` as the schema rather than `https`.
+     * // In order to get an https URI, we need to specify the proper scheme.
+     * $url = $object->signedUrl(new \DateTime('tomorrow'), [
+     *     'version' => 'v4',
+     *     'bucketBoundHostname' => 'cdn.example.com',
+     *     'scheme' => 'https'
+     * ]);
+     * ```
+     *
+     * ```
+     * // Using virtual hosted style URIs
+     * // When true, returns a URL with the hostname `<bucket>.storage.googleapis.com`.
+     * $url = $object->signedUrl(new \DateTime('tomorrow'), [
+     *     'virtualHostedStyle' => true
+     * ]);
+     * ````
+     *
      * @see https://cloud.google.com/storage/docs/access-control/signed-urls Signed URLs
      *
      * @param Timestamp|\DateTimeInterface|int $expires Specifies when the URL
@@ -758,9 +817,10 @@ class StorageObject
      * @param array $options {
      *     Configuration Options.
      *
-     *     @type string $cname The CNAME for the bucket, for instance
-     *           `https://cdn.example.com`. **Defaults to**
-     *           `https://storage.googleapis.com`.
+     *     @type string $bucketBoundHostname The hostname for the bucket, for
+     *           instance `cdn.example.com`. May be used for Google Cloud Load
+     *           Balancers or for custom bucket CNAMEs. **Defaults to**
+     *           `storage.googleapis.com`.
      *     @type string $contentMd5 The MD5 digest value in base64. If you
      *           provide this, the client must provide this HTTP header with
      *           this same value in its request. If provided, take care to
@@ -797,6 +857,10 @@ class StorageObject
      *     @type string $saveAsName The filename to prompt the user to save the
      *           file as when the signed url is accessed. This is ignored if
      *           `$options.responseDisposition` is set.
+     *     @type string $scheme Either `http` or `https`. Only used if a custom
+     *           hostname is provided via `$options.bucketBoundHostname`. If a
+     *           custom bucketBoundHostname is provided, **defaults to** `http`.
+     *           In all other cases, **defaults to** `https`.
      *     @type string|array $scopes One or more authentication scopes to be
      *           used with a key file. This option is ignored unless
      *           `$options.keyFile` or `$options.keyFilePath` is set.
@@ -804,6 +868,9 @@ class StorageObject
      *           as part of the signed URL query string. For allowed values,
      *           see [Reference Headers](https://cloud.google.com/storage/docs/xml-api/reference-headers#query).
      *     @type string $version One of "v2" or "v4". **Defaults to** `"v2"`.
+     *     @type bool $virtualHostedStyle If `true`, URL will be of form
+     *           `mybucket.storage.googleapis.com`. If `false`,
+     *           `storage.googleapis.com/mybucket`. **Defaults to** `false`.
      * }
      * @return string
      * @throws \InvalidArgumentException If the given expiration is invalid or in the past.
@@ -872,9 +939,6 @@ class StorageObject
      * @param array $options {
      *     Configuration Options.
      *
-     *     @type string $cname The CNAME for the bucket, for instance
-     *           `https://cdn.example.com`. **Defaults to**
-     *           `https://storage.googleapis.com`.
      *     @type string $contentMd5 The MD5 digest value in base64. If you
      *           provide this, the client must provide this HTTP header with
      *           this same value in its request. If provided, take care to
@@ -909,6 +973,10 @@ class StorageObject
      *     @type string $saveAsName The filename to prompt the user to save the
      *           file as when the signed url is accessed. This is ignored if
      *           `$options.responseDisposition` is set.
+     *     @type string $scheme Either `http` or `https`. Only used if a custom
+     *           hostname is provided via `$options.bucketBoundHostname`. In all
+     *           other cases, `https` is used. When a custom bucketBoundHostname
+     *           is provided, **defaults to** `http`.
      *     @type string|array $scopes One or more authentication scopes to be
      *           used with a key file. This option is ignored unless
      *           `$options.keyFile` or `$options.keyFilePath` is set.
@@ -929,9 +997,11 @@ class StorageObject
 
         unset(
             $options['cname'],
+            $options['bucketBoundHostname'],
             $options['saveAsName'],
             $options['responseDisposition'],
-            $options['responseType']
+            $options['responseType'],
+            $options['virtualHostedStyle']
         );
 
         return $this->signedUrl($expires, [

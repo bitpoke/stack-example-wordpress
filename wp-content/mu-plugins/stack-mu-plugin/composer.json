@@ -21,11 +21,12 @@
       }
     ],
     "require": {
-        "vlucas/phpdotenv": "^3.4.0",
-        "oscarotero/env": "^1.2.0",
-        "composer/installers": "~1.0",
-        "google/cloud-storage": "^1.14",
-        "google/auth": "^1.5.2"
+        "vlucas/phpdotenv": ">=4.1.8 <6",
+        "oscarotero/env": "^2.1",
+        "composer/installers": "~1.9",
+        "google/cloud-storage": "^1.21",
+        "google/auth": "^1.9.0",
+        "promphp/prometheus_client_php": "^2.1"
     },
     "config": {
         "optimize-autoloader": true
@@ -36,11 +37,11 @@
         }
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.0.2",
-        "dealerdirect/phpcodesniffer-composer-installer": "~0.4.4",
-        "wp-coding-standards/wpcs": "~1.0.0",
+        "squizlabs/php_codesniffer": "^3.5.5",
+        "dealerdirect/phpcodesniffer-composer-installer": "~0.6.2",
+        "wp-coding-standards/wpcs": "~2.3.0",
         "roave/security-advisories": "dev-master",
-        "roots/wordpress": "^5.2",
+        "roots/wordpress": "^5.6",
         "phpunit/phpunit": "^6.5",
         "roots/wp-config": "1.0.0",
         "wpackagist-plugin/debug-bar": "^1.0",

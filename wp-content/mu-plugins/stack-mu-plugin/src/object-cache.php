@@ -3,17 +3,17 @@
  * Plugin Name: Presslabs Stack Object Cache
  * Plugin URI: http://presslabs.com/stack/
  * Description: WordPress object cache backend for Presslabs Stack. This backend is based on memcached.
- * Version: 0.1.9-5-g15a426c
+ * Version: 0.1.9-72-g7f5d891
  * Author: Presslabs
  * Author URI: http://presslabs.com/
  */
 
 if (!defined('MEMCACHED_HOST')) {
-    define('MEMCACHED_HOST', getenv('MEMCACHED_HOST'));
+    define('MEMCACHED_HOST', isset($_ENV['MEMCACHED_HOST']) ? $_ENV['MEMCACHED_HOST'] : '');
 }
 
 if (!defined('MEMCACHED_DISCOVERY_HOST')) {
-    define('MEMCACHED_DISCOVERY_HOST', getenv('MEMCACHED_DISCOVERY_HOST'));
+    define('MEMCACHED_DISCOVERY_HOST', isset($_ENV['MEMCACHED_DISCOVERY_HOST']) ? $_ENV['MEMCACHED_DISCOVERY_HOST'] : '');
 }
 
 if (MEMCACHED_DISCOVERY_HOST != "" || MEMCACHED_HOST != ""):

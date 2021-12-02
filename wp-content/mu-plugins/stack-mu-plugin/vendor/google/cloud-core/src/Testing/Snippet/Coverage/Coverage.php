@@ -28,8 +28,12 @@ use Google\Cloud\Core\Testing\Snippet\Parser\Snippet;
 class Coverage
 {
     private static $snippetExcludeList = [
+        '/\\\GcTestListener/',
+        '/\\\Google\\\Cloud\\\Core\\\Logger/',
         '/\\\Google\\\Cloud\\\Core\\\PhpArray/',
-        '/\\\GcTestListener/'
+        '/\\\Google\\\Cloud\\\Translate\\\TranslateClient/',
+        '/\\\Google\\\Cloud\\\Translate\\\Connection\\\Rest/',
+        '/\\\Google\\\Cloud\\\Translate\\\Connection\\\ConnectionInterface/',
     ];
 
     /**

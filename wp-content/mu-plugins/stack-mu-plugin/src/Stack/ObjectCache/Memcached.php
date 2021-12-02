@@ -634,12 +634,17 @@ class Memcached implements \Stack\ObjectCache
         $found = false;
         ++$this->stats['get'];
 
-        // If either $cache_db, or $cas_token is set, must hit Memcached and bypass runtime cache
+        // If either $cache_cb, or $cas_token is set, must hit Memcached and bypass runtime cache
         if (func_num_args() > 6 && ! in_array($group, $this->no_mc_groups)) {
             ++$this->stats['mc_get'];
             if ($byKey) {
                 if (defined('\Memcached::GET_EXTENDED')) {
                     $v = $this->m->getByKey($server_key, $derived_key, $cache_cb, \Memcached::GET_EXTENDED);
+                    if (\Memcached::RES_SUCCESS !== $this->getResultCode()) {
+                        ++$this->stats['get_misses'];
+                        return false;
+                    }
+
                     $cas_token = $v['cas'];
                     $value = $v['value'];
                 } else {
@@ -649,6 +654,11 @@ class Memcached implements \Stack\ObjectCache
             } else {
                 if (defined('\Memcached::GET_EXTENDED')) {
                     $v = $this->m->get($derived_key, $cache_cb, \Memcached::GET_EXTENDED);
+                    if (\Memcached::RES_SUCCESS !== $this->getResultCode()) {
+                        ++$this->stats['get_misses'];
+                        return false;
+                    }
+
                     $cas_token = $v['cas'];
                     $value = $v['value'];
                 } else {

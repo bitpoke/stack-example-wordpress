@@ -1,12 +1,12 @@
 <?php
 
-if (!class_exists('PHPUnit_Framework_TestCase')) {
-    class_alias('PHPUnit\\Framework\\TestCase', 'PHPUnit_Framework_TestCase');
-}
+use Env\Env;
+use function Env\env;
+use PHPUnit\Framework\TestCase;
 
-class ConversionTest extends PHPUnit_Framework_TestCase
+class ConversionTest extends TestCase
 {
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return array(
             array('', null, ''),
@@ -29,22 +29,18 @@ class ConversionTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testConversions($value, $options, $expected)
+    public function testConversions(string $value, ?int $options, $expected)
     {
         $result = Env::convert($value, $options);
 
         $this->assertSame($expected, $result);
     }
 
-    public function testEnv()
+    public function testFunction()
     {
-        $this->assertTrue(Env::init());
-
         putenv('FOO=123');
 
         $this->assertSame(123, env('FOO'));
-
-        $this->assertFalse(Env::init());
 
         //Switch to $_ENV
         Env::$options |= Env::USE_ENV_ARRAY;
@@ -54,10 +50,51 @@ class ConversionTest extends PHPUnit_Framework_TestCase
         $_ENV['FOO'] = 456;
 
         $this->assertSame(456, env('FOO'));
-        
-        //Switch to getenv again
+
+        //Switch to $_SERVER
         Env::$options ^= Env::USE_ENV_ARRAY;
+        Env::$options |= Env::USE_SERVER_ARRAY;
+
+        $this->assertNull(env('FOO'));
+
+        $_SERVER['FOO'] = 789;
+
+        $this->assertSame(789, env('FOO'));
+
+        //Switch to getenv again
+        Env::$options ^= Env::USE_SERVER_ARRAY;
 
         $this->assertSame(123, env('FOO'));
+    }
+
+    public function testClass()
+    {
+        putenv('BAR=123');
+
+        $this->assertSame(123, Env::get('BAR'));
+
+        //Switch to $_ENV
+        Env::$options |= Env::USE_ENV_ARRAY;
+
+        $this->assertNull(Env::get('BAR'));
+
+        $_ENV['BAR'] = 456;
+
+        $this->assertSame(456, Env::get('BAR'));
+
+        //Switch to $_SERVER
+        Env::$options ^= Env::USE_ENV_ARRAY;
+        Env::$options |= Env::USE_SERVER_ARRAY;
+
+        $this->assertNull(Env::get('BAR'));
+
+        $_SERVER['BAR'] = 789;
+
+        $this->assertSame(789, Env::get('BAR'));
+        
+        //Switch to getenv again
+        Env::$options ^= Env::USE_SERVER_ARRAY;
+
+        $this->assertSame(123, Env::get('BAR'));
     }
 }

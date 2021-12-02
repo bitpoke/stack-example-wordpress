@@ -33,11 +33,12 @@ class GoogleCloudStorage implements BlobStore
     private function getClient()
     {
         if (null === $this->client) {
+            $sup = isset($_ENV['SUPPRESS_GCLOUD_CREDS_WARNING']) && $_ENV['SUPPRESS_GCLOUD_CREDS_WARNING'] == 'true';
             $clientConfig = [
-                'suppressKeyFileNotice' => getenv('SUPPRESS_GCLOUD_CREDS_WARNING') == 'true',
+                'suppressKeyFileNotice' => $sup,
             ];
 
-            $envCreds = getenv('GOOGLE_CREDENTIALS');
+            $envCreds = isset($_ENV['GOOGLE_CREDENTIALS']) ? $_ENV['GOOGLE_CREDENTIALS'] : '';
             if (!empty($envCreds)) {
                 $envCreds = json_decode($envCreds, true);
                 $clientConfig['keyFile'] = $envCreds;

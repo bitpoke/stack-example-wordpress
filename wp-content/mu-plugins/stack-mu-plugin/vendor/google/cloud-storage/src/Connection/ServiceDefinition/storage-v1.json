@@ -1,11 +1,11 @@
 {
   "kind": "discovery#restDescription",
-  "etag": "\"VPK3KBfpaEgZ16pozGOoMYfKc0U/p_spPkWHsRi33PRBHlYtU2G_uKg\"",
+  "etag": "\"-2NioU2H8y8siEzrBOV_qzRI6kQ/Tgfg1BSNERddz5onGegnUnDYSuQ\"",
   "discoveryVersion": "v1",
   "id": "storage:v1",
   "name": "storage",
   "version": "v1",
-  "revision": "20190426",
+  "revision": "20200806",
   "title": "Cloud Storage JSON API",
   "description": "Stores and retrieves potentially large, immutable data objects.",
   "ownerDomain": "google.com",
@@ -19,9 +19,9 @@
     "labs"
   ],
   "protocol": "rest",
-  "baseUrl": "https://www.googleapis.com/storage/v1/",
+  "baseUrl": "https://storage.googleapis.com/storage/v1/",
   "basePath": "/storage/v1/",
-  "rootUrl": "https://www.googleapis.com/",
+  "rootUrl": "https://storage.googleapis.com/",
   "servicePath": "storage/v1/",
   "batchPath": "batch/storage/v1",
   "parameters": {
@@ -184,15 +184,30 @@
           "properties": {
             "bucketPolicyOnly": {
               "type": "object",
-              "description": "The bucket's Bucket Policy Only configuration.",
+              "description": "The bucket's uniform bucket-level access configuration. The feature was formerly known as Bucket Policy Only. For backward compatibility, this field will be populated with identical information as the uniformBucketLevelAccess field. We recommend using the uniformBucketLevelAccess field to enable and disable the feature.",
               "properties": {
                 "enabled": {
                   "type": "boolean",
-                  "description": "If set, access checks only use bucket-level IAM policies or above."
+                  "description": "If set, access is controlled only by bucket-level or above IAM policies."
                 },
                 "lockedTime": {
                   "type": "string",
-                  "description": "The deadline time for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.",
+                  "description": "The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.",
+                  "format": "date-time"
+                }
+              }
+            },
+            "uniformBucketLevelAccess": {
+              "type": "object",
+              "description": "The bucket's uniform bucket-level access configuration.",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "If set, access is controlled only by bucket-level or above IAM policies."
+                },
+                "lockedTime": {
+                  "type": "string",
+                  "description": "The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.",
                   "format": "date-time"
                 }
               }
@@ -254,6 +269,21 @@
                         "description": "A date in RFC 3339 format with only the date part (for instance, \"2013-01-15\"). This condition is satisfied when an object is created before midnight of the specified date in UTC.",
                         "format": "date"
                       },
+                      "customTimeBefore": {
+                        "type": "string",
+                        "description": "A date in RFC 3339 format with only the date part (for instance, \"2013-01-15\"). This condition is satisfied when the custom time on an object is before this date in UTC.",
+                        "format": "date"
+                      },
+                      "daysSinceCustomTime": {
+                        "type": "integer",
+                        "description": "Number of days elapsed since the user-specified timestamp set on an object. The condition is satisfied if the days elapsed is at least this number. If no custom timestamp is specified on an object, the condition does not apply.",
+                        "format": "int32"
+                      },
+                      "daysSinceNoncurrentTime": {
+                        "type": "integer",
+                        "description": "Number of days elapsed since the noncurrent timestamp of an object. The condition is satisfied if the days elapsed is at least this number. This condition is relevant only for versioned objects. The value of the field must be a nonnegative integer. If it's zero, the object version will become eligible for Lifecycle action as soon as it becomes noncurrent.",
+                        "format": "int32"
+                      },
                       "isLive": {
                         "type": "boolean",
                         "description": "Relevant only for versioned objects. If the value is true, this condition matches live objects; if the value is false, it matches archived objects."
@@ -264,10 +294,15 @@
                       },
                       "matchesStorageClass": {
                         "type": "array",
-                        "description": "Objects having any of the storage classes specified by this condition will be matched. Values include MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, STANDARD, and DURABLE_REDUCED_AVAILABILITY.",
+                        "description": "Objects having any of the storage classes specified by this condition will be matched. Values include MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE, STANDARD, and DURABLE_REDUCED_AVAILABILITY.",
                         "items": {
                           "type": "string"
                         }
+                      },
+                      "noncurrentTimeBefore": {
+                        "type": "string",
+                        "description": "A date in RFC 3339 format with only the date part (for instance, \"2013-01-15\"). This condition is satisfied when the noncurrent time on an object is before this date in UTC. This condition is relevant only for versioned objects.",
+                        "format": "date"
                       },
                       "numNewerVersions": {
                         "type": "integer",
@@ -362,7 +397,7 @@
         },
         "storageClass": {
           "type": "string",
-          "description": "The bucket's default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes."
+          "description": "The bucket's default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes."
         },
         "timeCreated": {
           "type": "string",
@@ -397,6 +432,17 @@
               "description": "If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result."
             }
           }
+        },
+        "zoneAffinity": {
+          "type": "array",
+          "description": "The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won't be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "zoneSeparation": {
+          "type": "boolean",
+          "description": "If set, objects placed in this bucket are required to be separated by disaster domain."
         }
       }
     },
@@ -534,7 +580,7 @@
         },
         "kind": {
           "type": "string",
-          "description": "Identifies this as a notification channel used to watch for changes to a resource. Value: the fixed string \"api#channel\".",
+          "description": "Identifies this as a notification channel used to watch for changes to a resource, which is \"api#channel\".",
           "default": "api#channel"
         },
         "params": {
@@ -634,11 +680,6 @@
         "expression": {
           "type": "string",
           "description": "Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported."
-        },
-        "kind": {
-          "type": "string",
-          "description": "The kind of item this is. For storage, this is always storage#expr. This field is ignored on input.",
-          "default": "storage#expr"
         },
         "location": {
           "type": "string",
@@ -872,6 +913,11 @@
         "crc32c": {
           "type": "string",
           "description": "CRC32c checksum, as described in RFC 4960, Appendix B; encoded using base64 in big-endian byte order. For more information about using the CRC32c checksum, see Hashes and ETags: Best Practices."
+        },
+        "customTime": {
+          "type": "string",
+          "description": "A timestamp in RFC 3339 format specified by the user for an object.",
+          "format": "date-time"
         },
         "customerEncryption": {
           "type": "object",
@@ -1188,6 +1234,11 @@
         "resourceId": {
           "type": "string",
           "description": "The ID of the resource to which this policy belongs. Will be of the form projects/_/buckets/bucket for buckets, and projects/_/buckets/bucket/objects/object for objects. A specific generation may be specified by appending #generationNumber to the end of the object name, e.g. projects/_/buckets/my-bucket/objects/data.txt#17. The current generation can be denoted with #0. This field is ignored on input."
+        },
+        "version": {
+          "type": "integer",
+          "description": "The IAM policy format version.",
+          "format": "int32"
         }
       }
     },
@@ -1623,6 +1674,13 @@
               "description": "Name of a bucket.",
               "required": true,
               "location": "path"
+            },
+            "optionsRequestedPolicyVersion": {
+              "type": "integer",
+              "description": "The IAM policy format version to be returned. If the optionsRequestedPolicyVersion is for an older version that doesn't support part of the requested IAM policy, the request fails.",
+              "format": "int32",
+              "minimum": "1",
+              "location": "query"
             },
             "provisionalUserProject": {
               "type": "string",
@@ -2948,7 +3006,7 @@
             },
             "kmsKeyName": {
               "type": "string",
-              "description": "Resource name of the Cloud KMS key, of the form projects/my-project/locations/global/keyRings/my-kr/cryptoKeys/my-key, that will be used to encrypt the object. Overrides the object metadata's kms_key_name value, if any.",
+              "description": "Not currently supported. Specifying the parameter causes the request to fail with status code 400 - Bad Request.",
               "location": "query"
             },
             "provisionalUserProject": {
@@ -2989,6 +3047,11 @@
               "description": "Name of the bucket in which to store the new object. Overrides the provided object metadata's bucket value, if any.For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.",
               "required": true,
               "location": "path"
+            },
+            "destinationKmsKeyName": {
+              "type": "string",
+              "description": "Resource name of the Cloud KMS key, of the form projects/my-project/locations/global/keyRings/my-kr/cryptoKeys/my-key, that will be used to encrypt the object. Overrides the object metadata's kms_key_name value, if any.",
+              "location": "query"
             },
             "destinationObject": {
               "type": "string",
@@ -3477,6 +3540,11 @@
               "description": "Returns results in a directory-like mode. items will contain only objects whose names, aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix, contain delimiter will have their name, truncated after the delimiter, returned in prefixes. Duplicate prefixes are omitted.",
               "location": "query"
             },
+            "endOffset": {
+              "type": "string",
+              "description": "Filter results to objects whose names are lexicographically before endOffset. If startOffset is also set, the objects listed will have names between startOffset (inclusive) and endOffset (exclusive).",
+              "location": "query"
+            },
             "includeTrailingDelimiter": {
               "type": "boolean",
               "description": "If true, objects that end in exactly one instance of delimiter will have their metadata included in items in addition to prefixes.",
@@ -3516,6 +3584,11 @@
             "provisionalUserProject": {
               "type": "string",
               "description": "The project to be billed for this request if the target bucket is requester-pays bucket.",
+              "location": "query"
+            },
+            "startOffset": {
+              "type": "string",
+              "description": "Filter results to objects whose names are lexicographically equal to or after startOffset. If endOffset is also set, the objects listed will have names between startOffset (inclusive) and endOffset (exclusive).",
               "location": "query"
             },
             "userProject": {
@@ -4049,6 +4122,11 @@
               "description": "Returns results in a directory-like mode. items will contain only objects whose names, aside from the prefix, do not contain delimiter. Objects whose names, aside from the prefix, contain delimiter will have their name, truncated after the delimiter, returned in prefixes. Duplicate prefixes are omitted.",
               "location": "query"
             },
+            "endOffset": {
+              "type": "string",
+              "description": "Filter results to objects whose names are lexicographically before endOffset. If startOffset is also set, the objects listed will have names between startOffset (inclusive) and endOffset (exclusive).",
+              "location": "query"
+            },
             "includeTrailingDelimiter": {
               "type": "boolean",
               "description": "If true, objects that end in exactly one instance of delimiter will have their metadata included in items in addition to prefixes.",
@@ -4088,6 +4166,11 @@
             "provisionalUserProject": {
               "type": "string",
               "description": "The project to be billed for this request if the target bucket is requester-pays bucket.",
+              "location": "query"
+            },
+            "startOffset": {
+              "type": "string",
+              "description": "Filter results to objects whose names are lexicographically equal to or after startOffset. If endOffset is also set, the objects listed will have names between startOffset (inclusive) and endOffset (exclusive).",
               "location": "query"
             },
             "userProject": {
@@ -4230,6 +4313,7 @@
               "scopes": [
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/devstorage.full_control",
                 "https://www.googleapis.com/auth/devstorage.read_only"
               ]
             },

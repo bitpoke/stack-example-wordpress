@@ -19,6 +19,8 @@ $ composer require oscarotero/env
 ## Example
 
 ```php
+use Env\Env;
+
 // Using getenv function:
 var_dump(getenv('FOO')); //string(5) "false"
 
@@ -46,9 +48,12 @@ To configure the conversion, you can use the following constants (all enabled by
 There's also additional settings that you can enable (they're disabled by default)
 
 * `Env::USE_ENV_ARRAY` To get the values from `$_ENV`, instead `getenv()`.
+* `Env::USE_SERVER_ARRAY` To get the values from `$_SERVER`, instead `getenv()`.
 * `Env::LOCAL_FIRST` To get first the values of locally-set environment variables.
 
 ```php
+use Env\Env;
+
 //Convert booleans and null, but not integers or strip quotes
 Env::$options = Env::CONVERT_BOOL | Env::CONVERT_NULL;
 
@@ -64,17 +69,17 @@ Env::$options ^= Env::CONVERT_NULL;
 By default, if the value does not exist, returns `null`, but you can change for any other value:
 
 ```php
+use Env\Env;
+
 Env::$default = false;
 ```
 
 ## The env() function
 
-If you don't want to complicate with classes and namespaces, you can use the `env()` function, like in Laravel or other libraries:
+You can use the `env()` function, like in Laravel or other frameworks:
 
 ```php
-Env::init(); //expose the function to globals
-
-//now you can use it
+use function Env\env;
 
 var_dump(env('FOO'));
 ```
