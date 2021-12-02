@@ -33,7 +33,7 @@ function sharing_email_send_post( $data ) {
 			']/';
 
 		$needs_encoding =
-			// If it contains any blacklisted chars,
+			// If it contains any blocked chars.
 			preg_match( $name_needs_encoding_regex, $s_name ) ||
 			// Or if we can't use `mb_convert_encoding`
 			! function_exists( 'mb_convert_encoding' ) ||
@@ -241,14 +241,20 @@ function sharing_disable_js() {
 
 function sharing_global_resources() {
 	$disable = get_option( 'sharedaddy_disable_resources' );
-?>
+	?>
 <tr valign="top">
-	<th scope="row"><label for="disable_css"><?php _e( 'Disable CSS and JS', 'jetpack' ); ?></label></th>
+	<th scope="row"><label for="disable_css"><?php esc_html_e( 'Disable CSS and JS', 'jetpack' ); ?></label></th>
 	<td>
-		<input id="disable_css" type="checkbox" name="disable_resources" <?php if ( $disable == 1 ) echo ' checked="checked"'; ?>/>  <small><em><?php _e( 'Advanced.  If this option is checked, you must include these files in your theme manually for the sharing links to work.', 'jetpack' ); ?></em></small>
+		<?php
+		printf(
+			'<input id="disable_css" type="checkbox" name="disable_resources"%1$s />  <small><em>%2$s</em></small>',
+			( 1 == $disable ) ? ' checked="checked"' : '', // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			esc_html__( 'Advanced. If this option is checked, you must include these files in your theme manually for the sharing links to work.', 'jetpack' )
+		);
+		?>
 	</td>
 </tr>
-<?php
+	<?php
 }
 
 function sharing_global_resources_save() {
@@ -258,14 +264,14 @@ function sharing_global_resources_save() {
 function sharing_email_dialog() {
 	require_once plugin_dir_path( __FILE__ ) . 'recaptcha.php';
 
-	$recaptcha = new Jetpack_ReCaptcha( RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY );
+	$recaptcha = new Jetpack_ReCaptcha( RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY, array( 'script_lazy' => true ) );
 	echo $recaptcha->get_recaptcha_html(); // xss ok
 }
 
 function sharing_email_check( $true, $post, $data ) {
 	require_once plugin_dir_path( __FILE__ ) . 'recaptcha.php';
 
-	$recaptcha = new Jetpack_ReCaptcha( RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY );
+	$recaptcha = new Jetpack_ReCaptcha( RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY, array( 'script_lazy' => true ) );
 	$response  = ! empty( $_POST['g-recaptcha-response'] ) ? $_POST['g-recaptcha-response'] : '';
 	$result    = $recaptcha->verify( $response, $_SERVER['REMOTE_ADDR'] );
 

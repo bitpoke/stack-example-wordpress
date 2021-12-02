@@ -3,9 +3,9 @@ Contributors: boopathi0001
 Donate link: https://paypal.me/boopathirajan
 Tags: Test email, Check Mail, Mail Tester, WP Mail, wp_email, Test WordPress Mail, Check WordPress Mail, PHP Mail
 Requires at least: 4.3
-Tested up to: 5.2.2
+Tested up to: 5.8.1
 Requires PHP: 5.2.4
-Stable tag: 1.1.3
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,8 @@ WP Test Email is allows you to test if your WordPress installation is sending ma
 
 Do you want to test whether the WordPress installation is sending mail or not?. WP Test Email is helps you to do that.
 It allows you to send simple test email to an email address of your choice.
+
+https://www.youtube.com/watch?v=99LFut4PPVU
 
 Kindly let us know your feedback or comments to add more features in this plugin.
 

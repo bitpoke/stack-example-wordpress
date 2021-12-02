@@ -81,6 +81,11 @@ class BP_Blogs_Component extends BP_Component {
 			'autocomplete_all'      => defined( 'BP_MESSAGES_AUTOCOMPLETE_ALL' ),
 			'global_tables'         => $global_tables,
 			'meta_tables'           => $meta_tables,
+			'block_globals'         => array(
+				'bp/recent-posts' => array(
+					'widget_classnames' => array( 'widget_bp_blogs_widget', 'buddypress' ),
+				),
+			),
 		);
 
 		// Setup the globals.
@@ -132,10 +137,11 @@ class BP_Blogs_Component extends BP_Component {
 
 		if ( bp_is_active( 'activity' ) ) {
 			$includes[] = 'activity';
-		}
 
-		if ( is_multisite() ) {
-			$includes[] = 'widgets';
+			if ( is_multisite() ) {
+				$includes[] = 'widgets';
+				$includes[] = 'blocks';
+			}
 		}
 
 		// Include the files.
@@ -224,7 +230,7 @@ class BP_Blogs_Component extends BP_Component {
 			sprintf(
 				'<span class="%s">%s</span>',
 				esc_attr( $class ),
-				bp_core_number_format( $count )
+				esc_html( $count )
 			)
 		);
 		$main_nav = array(
@@ -329,7 +335,11 @@ class BP_Blogs_Component extends BP_Component {
 				$bp->bp_options_avatar = bp_core_fetch_avatar( array(
 					'item_id' => bp_displayed_user_id(),
 					'type'    => 'thumb',
-					'alt'     => sprintf( __( 'Profile picture of %s', 'buddypress' ), bp_get_displayed_user_fullname() )
+					'alt'     => sprintf(
+						/* translators: %s: member name */
+						__( 'Profile picture of %s', 'buddypress' ),
+						bp_get_displayed_user_fullname()
+					),
 				) );
 				$bp->bp_options_title = bp_get_displayed_user_fullname();
 			}
@@ -351,5 +361,75 @@ class BP_Blogs_Component extends BP_Component {
 		) );
 
 		parent::setup_cache_groups();
+	}
+
+	/**
+	 * Init the BP REST API.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $controllers Optional. See BP_Component::rest_api_init() for
+	 *                           description.
+	 */
+	public function rest_api_init( $controllers = array() ) {
+		if ( is_multisite() ) {
+			$controllers = array(
+				'BP_REST_Blogs_Endpoint',
+			);
+
+			// Support to Blog Avatar.
+			if ( bp_is_active( 'blogs', 'site-icon' ) ) {
+				$controllers[] = 'BP_REST_Attachments_Blog_Avatar_Endpoint';
+			}
+		}
+
+		parent::rest_api_init( $controllers );
+	}
+
+	/**
+	 * Register the BP Blogs Blocks.
+	 *
+	 * @since 9.0.0
+	 *
+	 * @param array $blocks Optional. See BP_Component::blocks_init() for
+	 *                      description.
+	 */
+	public function blocks_init( $blocks = array() ) {
+		$blocks = array();
+
+		if ( is_multisite() && bp_is_active( 'activity' ) ) {
+			$blocks['bp/recent-posts'] = array(
+				'name'               => 'bp/recent-posts',
+				'editor_script'      => 'bp-recent-posts-block',
+				'editor_script_url'  => plugins_url( 'js/blocks/recent-posts.js', dirname( __FILE__ ) ),
+				'editor_script_deps' => array(
+					'wp-blocks',
+					'wp-element',
+					'wp-components',
+					'wp-i18n',
+					'wp-block-editor',
+					'bp-block-components',
+				),
+				'style'              => 'bp-recent-posts-block',
+				'style_url'          => plugins_url( 'css/blocks/recent-posts.css', dirname( __FILE__ ) ),
+				'attributes'         => array(
+					'title'     => array(
+						'type'    => 'string',
+						'default' => __( 'Recent Networkwide Posts', 'buddypress' ),
+					),
+					'maxPosts'  => array(
+						'type'    => 'number',
+						'default' => 10,
+					),
+					'linkTitle' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+				),
+				'render_callback'    => 'bp_blogs_render_recent_posts_block',
+			);
+		}
+
+		parent::blocks_init( $blocks );
 	}
 }

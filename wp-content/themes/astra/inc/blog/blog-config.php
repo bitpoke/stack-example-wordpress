@@ -145,7 +145,7 @@ if ( ! function_exists( 'astra_post_author' ) ) {
 			);
 		echo '>';
 			// Translators: Author Name. ?>
-			<a title="<?php printf( esc_attr__( 'View all posts by %1$s', 'astra' ), get_the_author() ); ?>" 
+			<a title="<?php printf( esc_attr__( 'View all posts by %1$s', 'astra' ), get_the_author() ); ?>"
 				href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" rel="author"
 				<?php
 					echo astra_attr(

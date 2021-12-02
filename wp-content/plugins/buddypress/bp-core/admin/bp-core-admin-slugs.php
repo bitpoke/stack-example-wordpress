@@ -21,9 +21,10 @@ function bp_core_admin_slugs_settings() {
 
 	<div class="wrap">
 
-		<h1><?php _e( 'BuddyPress Settings', 'buddypress' ); ?> </h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'BuddyPress Settings', 'buddypress' ); ?> </h1>
+		<hr class="wp-header-end">
 
-		<h2 class="nav-tab-wrapper"><?php bp_core_admin_tabs( __( 'Pages', 'buddypress' ) ); ?></h2>
+		<h2 class="nav-tab-wrapper"><?php bp_core_admin_tabs( esc_html__( 'Pages', 'buddypress' ) ); ?></h2>
 		<form action="" method="post" id="bp-admin-page-form">
 
 			<?php bp_core_admin_slugs_options(); ?>
@@ -110,17 +111,17 @@ function bp_core_admin_get_static_pages() {
  */
 function bp_core_admin_slugs_options() {
 
-	// Get the existing WP pages
+	// Get the existing WP pages.
 	$existing_pages = bp_core_get_directory_page_ids();
 
 	// Set up an array of components (along with component names) that have directory pages.
 	$directory_pages = bp_core_admin_get_directory_pages();
 
-	if ( !empty( $directory_pages ) ) : ?>
+	if ( ! empty( $directory_pages ) ) : ?>
 
-		<h3><?php _e( 'Directories', 'buddypress' ); ?></h3>
+		<h3><?php esc_html_e( 'Directories', 'buddypress' ); ?></h3>
 
-		<p><?php _e( 'Associate a WordPress Page with each BuddyPress component directory.', 'buddypress' ); ?></p>
+		<p><?php esc_html_e( 'Associate a WordPress Page with each BuddyPress component directory.', 'buddypress' ); ?></p>
 
 		<table class="form-table">
 			<tbody>
@@ -140,12 +141,15 @@ function bp_core_admin_slugs_options() {
 								'name'             => 'bp_pages[' . esc_attr( $name ) . ']',
 								'echo'             => false,
 								'show_option_none' => __( '- None -', 'buddypress' ),
-								'selected'         => !empty( $existing_pages[$name] ) ? $existing_pages[$name] : false
+								'selected'         => ! empty( $existing_pages[$name] ) ? $existing_pages[$name] : false
 							) ); ?>
 
-							<?php if ( !empty( $existing_pages[$name] ) ) : ?>
+							<?php if ( ! empty( $existing_pages[ $name ] ) && get_post( $existing_pages[ $name ] ) ) : ?>
 
-								<a href="<?php echo get_permalink( $existing_pages[$name] ); ?>" class="button-secondary" target="_bp"><?php _e( 'View', 'buddypress' ); ?></a>
+								<a href="<?php echo esc_url( get_permalink( $existing_pages[$name] ) ); ?>" class="button-secondary" target="_bp">
+									<?php esc_html_e( 'View', 'buddypress' ); ?> <span class="dashicons dashicons-external" aria-hidden="true"></span>
+									<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'buddypress' ); ?></span>
+								</a>
 
 							<?php endif; ?>
 
@@ -181,22 +185,49 @@ function bp_core_admin_slugs_options() {
 
 	if ( !empty( $static_pages ) ) : ?>
 
-		<h3><?php _e( 'Registration', 'buddypress' ); ?></h3>
+		<h3><?php esc_html_e( 'Registration', 'buddypress' ); ?></h3>
 
-		<?php if ( bp_get_signup_allowed() ) : ?>
-			<p><?php _e( 'Associate WordPress Pages with the following BuddyPress Registration pages.', 'buddypress' ); ?></p>
+		<?php if ( bp_get_signup_allowed() || bp_get_members_invitations_allowed() ) : ?>
+			<p>
+				<?php esc_html_e( 'Associate WordPress Pages with the following BuddyPress Registration pages.', 'buddypress' ); ?>
+				<?php esc_html_e( 'These pages will only be reachable by users who are not logged in.', 'buddypress' ); ?>
+			</p>
 		<?php else : ?>
 			<?php if ( is_multisite() ) : ?>
-				<p><?php printf( __( 'Registration is currently disabled.  Before associating a page is allowed, please enable registration by selecting either the "User accounts may be registered" or "Both sites and user accounts can be registered" option on <a href="%s">this page</a>.', 'buddypress' ), network_admin_url( 'settings.php' ) ); ?></p>
+				<p>
+					<?php
+					printf(
+						/* translators: %s: the link to the Network settings page */
+						esc_html_x( 'Registration is currently disabled. Before associating a page is allowed, please enable registration by selecting either the "User accounts may be registered" or "Both sites and user accounts can be registered" option on %s.', 'Disabled registration message for multisite config', 'buddypress' ),
+						sprintf(
+							'<a href="%1$s">%2$s</a>',
+							esc_url( network_admin_url( 'settings.php' ) ),
+							esc_html_x( 'this page', 'Link text for the Multisite’s network settings page', 'buddypress' )
+						)
+					);
+					?>
+				</p>
 			<?php else : ?>
-				<p><?php printf( __( 'Registration is currently disabled.  Before associating a page is allowed, please enable registration by clicking on the "Anyone can register" checkbox on <a href="%s">this page</a>.', 'buddypress' ), admin_url( 'options-general.php' ) ); ?></p>
+				<p>
+					<?php
+					printf(
+						/* translators: %s: the link to the Site general options page */
+						esc_html_x( 'Registration is currently disabled. Before associating a page is allowed, please enable registration by clicking on the "Anyone can register" checkbox on %s.', 'Disabled registration message for regular site config', 'buddypress' ),
+						sprintf(
+							'<a href="%1$s">%2$s</a>',
+							esc_url( admin_url( 'options-general.php' ) ),
+							esc_html_x( 'this page', 'Link text for the Site’s general options page', 'buddypress' )
+						)
+					);
+					?>
+				</p>
 			<?php endif; ?>
 		<?php endif; ?>
 
 		<table class="form-table">
 			<tbody>
 
-				<?php if ( bp_get_signup_allowed() ) : foreach ( $static_pages as $name => $label ) : ?>
+				<?php if ( bp_get_signup_allowed() || bp_get_members_invitations_allowed() ) : foreach ( $static_pages as $name => $label ) : ?>
 
 					<tr valign="top">
 						<th scope="row">
@@ -213,12 +244,6 @@ function bp_core_admin_slugs_options() {
 								'show_option_none' => __( '- None -', 'buddypress' ),
 								'selected'         => !empty( $existing_pages[$name] ) ? $existing_pages[$name] : false
 							) ) ?>
-
-							<?php if ( !empty( $existing_pages[$name] ) ) : ?>
-
-								<a href="<?php echo get_permalink( $existing_pages[$name] ); ?>" class="button-secondary" target="_bp"><?php _e( 'View', 'buddypress' ); ?></a>
-
-							<?php endif; ?>
 
 							<?php if ( ! bp_is_root_blog() ) restore_current_blog(); ?>
 
@@ -252,8 +277,9 @@ function bp_core_admin_slugs_options() {
 function bp_core_admin_slugs_setup_handler() {
 
 	if ( isset( $_POST['bp-admin-pages-submit'] ) ) {
-		if ( !check_admin_referer( 'bp-admin-pages-setup' ) )
+		if ( ! check_admin_referer( 'bp-admin-pages-setup' ) ) {
 			return false;
+		}
 
 		// Then, update the directory pages.
 		if ( isset( $_POST['bp_pages'] ) ) {

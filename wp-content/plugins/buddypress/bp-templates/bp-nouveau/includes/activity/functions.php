@@ -3,7 +3,7 @@
  * Activity functions
  *
  * @since 3.0.0
- * @version 5.0.0
+ * @version 8.0.0
  */
 
 // Exit if accessed directly.
@@ -89,7 +89,7 @@ function bp_nouveau_activity_localize_scripts( $params = array() ) {
 			'avatar_height' => $height,
 			'user_domain'   => bp_loggedin_user_domain(),
 			'avatar_alt'    => sprintf(
-				/* translators: %s = member name */
+				/* translators: %s: member name */
 				__( 'Profile photo of %s', 'buddypress' ),
 				$user_displayname
 			),
@@ -226,7 +226,7 @@ function bp_nouveau_get_activity_directory_nav_items() {
 				'component' => 'activity',
 				'slug'      => 'favorites', // slug is used because BP_Core_Nav requires it, but it's the scope
 				'li_class'  => array(),
-				'link'      => bp_loggedin_user_domain() . bp_get_activity_slug() . '/favorites/',
+				'link'      => bp_loggedin_user_domain() . bp_nouveau_get_component_slug( 'activity' ) . '/favorites/',
 				'text'      => __( 'My Favorites', 'buddypress' ),
 				'count'     => false,
 				'position'  => 35,
@@ -239,7 +239,7 @@ function bp_nouveau_get_activity_directory_nav_items() {
 				'component' => 'activity',
 				'slug'      => 'friends', // slug is used because BP_Core_Nav requires it, but it's the scope
 				'li_class'  => array( 'dynamic' ),
-				'link'      => bp_loggedin_user_domain() . bp_get_activity_slug() . '/' . bp_get_friends_slug() . '/',
+				'link'      => bp_loggedin_user_domain() . bp_nouveau_get_component_slug( 'activity' ) . '/' . bp_nouveau_get_component_slug( 'friends' ) . '/',
 				'text'      => __( 'My Friends', 'buddypress' ),
 				'count'     => '',
 				'position'  => 15,
@@ -252,7 +252,7 @@ function bp_nouveau_get_activity_directory_nav_items() {
 				'component' => 'activity',
 				'slug'      => 'groups', // slug is used because BP_Core_Nav requires it, but it's the scope
 				'li_class'  => array( 'dynamic' ),
-				'link'      => bp_loggedin_user_domain() . bp_get_activity_slug() . '/' . bp_get_groups_slug() . '/',
+				'link'      => bp_loggedin_user_domain() . bp_nouveau_get_component_slug( 'activity' ) . '/' . bp_nouveau_get_component_slug( 'groups' ) . '/',
 				'text'      => __( 'My Groups', 'buddypress' ),
 				'count'     => '',
 				'position'  => 25,
@@ -272,7 +272,7 @@ function bp_nouveau_get_activity_directory_nav_items() {
 				'component' => 'activity',
 				'slug'      => 'mentions', // slug is used because BP_Core_Nav requires it, but it's the scope
 				'li_class'  => array( 'dynamic' ),
-				'link'      => bp_loggedin_user_domain() . bp_get_activity_slug() . '/mentions/',
+				'link'      => bp_loggedin_user_domain() . bp_nouveau_get_component_slug( 'activity' ) . '/mentions/',
 				'text'      => __( 'Mentions', 'buddypress' ),
 				'count'     => $count,
 				'position'  => 45,
@@ -538,3 +538,20 @@ function bp_nouveau_activity_customizer_controls( $controls = array() ) {
 		),
 	) );
 }
+
+/**
+ * Remove brackets around the "Read more" text.
+ *
+ * @since 7.0.0
+ *
+ * @param string $read_more The read more text.
+ * @return string The read more text without brackets.
+ */
+function bp_nouveau_activity_excerpt_append_text( $read_more = '' ) {
+	/**
+	 * As this was added during a string freeze period, we
+	 * are using the `str_replace()` function.
+	 */
+	return str_replace( array( '[', ']' ), '', $read_more );
+}
+add_filter( 'bp_activity_excerpt_append_text', 'bp_nouveau_activity_excerpt_append_text', 10, 1 );

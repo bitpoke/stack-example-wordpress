@@ -97,7 +97,7 @@ function bp_core_set_uri_globals() {
 			foreach( $chunks as $key => $chunk ) {
 				$bkey = array_search( $chunk, $bp_uri );
 
-				// ...and unset offending keys
+				// ...and unset offending keys.
 				if ( false !== $bkey ) {
 					unset( $bp_uri[$bkey] );
 				}
@@ -463,7 +463,7 @@ function bp_core_load_template( $templates ) {
 	 * Wiping out the bp-default template allows WordPress to use their special
 	 * embed template, which is what we want.
 	 */
-	if ( function_exists( 'is_embed' ) && is_embed() ) {
+	if ( is_embed() ) {
 		$located_template = '';
 	}
 

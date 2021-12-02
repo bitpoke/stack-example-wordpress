@@ -130,6 +130,7 @@ class BP_Groups_Component extends BP_Component {
 			'functions',
 			'notifications',
 			'cssjs',
+			'blocks',
 		);
 
 		// Conditional includes.
@@ -260,6 +261,11 @@ class BP_Groups_Component extends BP_Component {
 			'search_string'         => _x( 'Search Groups...', 'Component directory search', 'buddypress' ),
 			'global_tables'         => $global_tables,
 			'meta_tables'           => $meta_tables,
+			'block_globals'         => array(
+				'bp/dynamic-groups' => array(
+					'widget_classnames' => array( 'widget_bp_groups_widget', 'buddypress' ),
+				),
+			),
 		);
 
 		parent::setup_globals( $args );
@@ -593,7 +599,7 @@ class BP_Groups_Component extends BP_Component {
 			bp_core_new_nav_item( array(
 				'name'                => __( 'Memberships', 'buddypress' ),
 				'slug'                => $this->current_group->slug,
-				'position'            => -1, // Do not show in BuddyBar.
+				'position'            => -1, // Do not show into the navigation.
 				'screen_function'     => 'groups_screen_group_home',
 				'default_subnav_slug' => $this->default_extension,
 				'item_css_id'         => $this->id
@@ -649,7 +655,11 @@ class BP_Groups_Component extends BP_Component {
 				 * Only add the members subnav if it's not the home's nav.
 				 */
 				$sub_nav[] = array(
-					'name'            => sprintf( _x( 'Members %s', 'My Group screen nav', 'buddypress' ), '<span>' . number_format( $this->current_group->total_member_count ) . '</span>' ),
+					'name'            => sprintf(
+						/* translators: %s: total member count */
+						_x( 'Members %s', 'My Group screen nav', 'buddypress' ),
+						'<span>' . number_format( $this->current_group->total_member_count ) . '</span>'
+					),
 					'slug'            => 'members',
 					'parent_url'      => $group_link,
 					'parent_slug'     => $this->current_group->slug,
@@ -866,7 +876,11 @@ class BP_Groups_Component extends BP_Component {
 				$bp->bp_options_avatar = bp_core_fetch_avatar( array(
 					'item_id' => bp_displayed_user_id(),
 					'type'    => 'thumb',
-					'alt'     => sprintf( __( 'Profile picture of %s', 'buddypress' ), bp_get_displayed_user_fullname() )
+					'alt'     => sprintf(
+						/* translators: %s: member name */
+						__( 'Profile picture of %s', 'buddypress' ),
+						bp_get_displayed_user_fullname()
+					),
 				) );
 				$bp->bp_options_title = bp_get_displayed_user_fullname();
 
@@ -883,7 +897,7 @@ class BP_Groups_Component extends BP_Component {
 				) );
 
 				if ( empty( $bp->bp_options_avatar ) ) {
-					$bp->bp_options_avatar = '<img src="' . esc_url( bp_core_avatar_default_thumb() ) . '" alt="' . esc_attr__( 'No Group Profile Photo', 'buddypress' ) . '" class="avatar" />';
+					$bp->bp_options_avatar = '<img loading="lazy" src="' . esc_url( bp_core_avatar_default_thumb() ) . '" alt="' . esc_attr__( 'No Group Profile Photo', 'buddypress' ) . '" class="avatar" />';
 				}
 			}
 		}
@@ -915,29 +929,175 @@ class BP_Groups_Component extends BP_Component {
 	 * Set up taxonomies.
 	 *
 	 * @since 2.6.0
+	 * @since 7.0.0 The Group Type taxonomy is registered using the `bp_groups_register_group_type_taxonomy()` function.
 	 */
 	public function register_taxonomies() {
-		// Group Type.
-		register_taxonomy( 'bp_group_type', 'bp_group', array(
-			'public' => false,
-		) );
+
+		// Just let BP Component fire 'bp_groups_register_taxonomies'.
+		return parent::register_taxonomies();
 	}
 
 	/**
 	 * Init the BP REST API.
 	 *
 	 * @since 5.0.0
+	 * @since 6.0.0 Adds the Group Cover REST endpoint.
 	 *
 	 * @param array $controllers Optional. See BP_Component::rest_api_init() for
 	 *                           description.
 	 */
 	public function rest_api_init( $controllers = array() ) {
-		parent::rest_api_init( array(
+		$controllers = array(
 			'BP_REST_Groups_Endpoint',
 			'BP_REST_Group_Membership_Endpoint',
 			'BP_REST_Group_Invites_Endpoint',
 			'BP_REST_Group_Membership_Request_Endpoint',
 			'BP_REST_Attachments_Group_Avatar_Endpoint',
-		) );
+		);
+
+		// Support to Group Cover.
+		if ( bp_is_active( 'groups', 'cover_image' ) ) {
+			$controllers[] = 'BP_REST_Attachments_Group_Cover_Endpoint';
+		}
+
+		parent::rest_api_init( $controllers );
+	}
+
+	/**
+	 * Register the BP Groups Blocks.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $blocks Optional. See BP_Component::blocks_init() for
+	 *                      description.
+	 */
+	public function blocks_init( $blocks = array() ) {
+		parent::blocks_init(
+			array(
+				'bp/group' => array(
+					'name'               => 'bp/group',
+					'editor_script'      => 'bp-group-block',
+					'editor_script_url'  => plugins_url( 'js/blocks/group.js', dirname(  __FILE__ ) ),
+					'editor_script_deps' => array(
+						'wp-blocks',
+						'wp-element',
+						'wp-components',
+						'wp-i18n',
+						'wp-block-editor',
+						'bp-block-components',
+						'bp-block-data',
+					),
+					'style'              => 'bp-group-block',
+					'style_url'          => plugins_url( 'css/blocks/group.css', dirname( __FILE__ ) ),
+					'render_callback'    => 'bp_groups_render_group_block',
+					'attributes'         => array(
+						'itemID'              => array(
+							'type'    => 'integer',
+							'default' => 0,
+						),
+						'avatarSize'          => array(
+							'type'    => 'string',
+							'default' => 'full',
+						),
+						'displayDescription'  => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'displayActionButton' => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'displayCoverImage'   => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+					),
+				),
+				'bp/groups' => array(
+					'name'               => 'bp/groups',
+					'editor_script'      => 'bp-groups-block',
+					'editor_script_url'  => plugins_url( 'js/blocks/groups.js', dirname( __FILE__ ) ),
+					'editor_script_deps' => array(
+						'wp-blocks',
+						'wp-element',
+						'wp-components',
+						'wp-i18n',
+						'wp-api-fetch',
+						'wp-url',
+						'wp-block-editor',
+						'bp-block-components',
+						'bp-block-data',
+						'lodash',
+					),
+					'style'              => 'bp-groups-block',
+					'style_url'          => plugins_url( 'css/blocks/groups.css', dirname( __FILE__ ) ),
+					'attributes'         => array(
+						'itemIDs'          => array(
+							'type'  => 'array',
+							'items' => array(
+								'type' => 'integer',
+							),
+						),
+						'avatarSize'       => array(
+							'type'    => 'string',
+							'default' => 'full',
+						),
+						'displayGroupName' => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'extraInfo'        => array(
+							'type'    => 'string',
+							'default' => 'none',
+							'enum'    => array( 'description', 'popular', 'active', 'none' ),
+						),
+						'layoutPreference' => array(
+							'type'    => 'string',
+							'default' => 'list',
+							'enum'    => array( 'list', 'grid' ),
+						),
+						'columns'          => array(
+							'type'    => 'number',
+							'default' => 2,
+						),
+					),
+					'render_callback'    => 'bp_groups_render_groups_block',
+				),
+				'bp/dynamic-groups' => array(
+					'name'               => 'bp/dynamic-groups',
+					'editor_script'      => 'bp-dynamic-groups-block',
+					'editor_script_url'  => plugins_url( 'js/blocks/dynamic-groups.js', dirname( __FILE__ ) ),
+					'editor_script_deps' => array(
+						'wp-blocks',
+						'wp-element',
+						'wp-components',
+						'wp-i18n',
+						'wp-block-editor',
+						'bp-block-components',
+					),
+					'style'              => 'bp-dynamic-groups-block',
+					'style_url'          => plugins_url( 'css/blocks/dynamic-groups.css', dirname( __FILE__ ) ),
+					'attributes'         => array(
+						'title'        => array(
+							'type'    => 'string',
+							'default' => __( 'Groups', 'buddypress' ),
+						),
+						'maxGroups'    => array(
+							'type'    => 'number',
+							'default' => 5,
+						),
+						'groupDefault' => array(
+							'type'    => 'string',
+							'default' => 'active',
+						),
+						'linkTitle'    => array(
+							'type'    => 'boolean',
+							'default' => false,
+						),
+					),
+					'render_callback'    => 'bp_groups_render_dynamic_groups_block',
+				),
+			)
+		);
 	}
 }

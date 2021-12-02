@@ -3,8 +3,6 @@
  * REST API Onboarding Profile Controller
  *
  * Handles requests to /onboarding/profile
- *
- * @package WooCommerce Admin/API
  */
 
 namespace Automattic\WooCommerce\Admin\API;
@@ -12,11 +10,11 @@ namespace Automattic\WooCommerce\Admin\API;
 defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Admin\Features\Onboarding;
+use \Automattic\Jetpack\Connection\Manager as Jetpack_Connection_Manager;
 
 /**
  * Onboarding Profile controller.
  *
- * @package WooCommerce Admin/API
  * @extends WC_REST_Data_Controller
  */
 class OnboardingProfile extends \WC_REST_Data_Controller {
@@ -63,6 +61,20 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 				'schema' => array( $this, 'get_public_item_schema' ),
 			)
 		);
+
+		// This endpoint is experimental. For internal use only.
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/experimental_get_email_prefill',
+			array(
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_email_prefill' ),
+					'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				),
+				'schema' => array( $this, 'get_public_item_schema' ),
+			)
+		);
 	}
 
 	/**
@@ -102,10 +114,10 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 	public function get_items( $request ) {
 		include_once WC_ABSPATH . 'includes/admin/helper/class-wc-helper-options.php';
 
-		$onboarding_data = get_option( Onboarding::PROFILE_DATA_OPTION, array() );
-		$item_schema     = $this->get_item_schema();
-
-		$items = array();
+		$onboarding_data             = get_option( Onboarding::PROFILE_DATA_OPTION, array() );
+		$onboarding_data['industry'] = isset( $onboarding_data['industry'] ) ? $this->filter_industries( $onboarding_data['industry'] ) : null;
+		$item_schema                 = $this->get_item_schema();
+		$items                       = array();
 		foreach ( $item_schema['properties'] as $key => $property_schema ) {
 			$items[ $key ] = isset( $onboarding_data[ $key ] ) ? $onboarding_data[ $key ] : null;
 		}
@@ -120,6 +132,19 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 	}
 
 	/**
+	 * Filter the industries.
+	 *
+	 * @param  array $industries list of industries.
+	 * @return array
+	 */
+	public function filter_industries( $industries ) {
+		return apply_filters(
+			'woocommerce_admin_onboarding_industries',
+			$industries
+		);
+	}
+
+	/**
 	 * Update onboarding profile data.
 	 *
 	 * @param  WP_REST_Request $request Request data.
@@ -128,8 +153,10 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 	public function update_items( $request ) {
 		$params          = $request->get_json_params();
 		$query_args      = $this->prepare_objects_query( $params );
-		$onboarding_data = get_option( Onboarding::PROFILE_DATA_OPTION, array() );
-		update_option( Onboarding::PROFILE_DATA_OPTION, array_merge( $onboarding_data, $query_args ) );
+		$onboarding_data = (array) get_option( Onboarding::PROFILE_DATA_OPTION, array() );
+		$profile_data    = array_merge( $onboarding_data, $query_args );
+		update_option( Onboarding::PROFILE_DATA_OPTION, $profile_data );
+		do_action( 'woocommerce_onboarding_profile_data_updated', $onboarding_data, $query_args );
 
 		$result = array(
 			'status'  => 'success',
@@ -140,6 +167,36 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 		$data     = $this->prepare_response_for_collection( $response );
 
 		return rest_ensure_response( $data );
+	}
+
+	/**
+	 * Returns a default email to be pre-filled in OBW. Prioritizes Jetpack if connected,
+	 * otherwise will default to WordPress general settings.
+	 *
+	 * @param  WP_REST_Request $request Request data.
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function get_email_prefill( $request ) {
+		$result = array(
+			'email' => '',
+		);
+
+		// Attempt to get email from Jetpack.
+		if ( class_exists( Jetpack_Connection_Manager::class ) ) {
+			$jetpack_connection_manager = new Jetpack_Connection_Manager();
+			if ( $jetpack_connection_manager->is_active() ) {
+				$jetpack_user = $jetpack_connection_manager->get_connected_user_data();
+
+				$result['email'] = $jetpack_user['email'];
+			}
+		}
+
+		// Attempt to get email from WordPress general settings.
+		if ( empty( $result['email'] ) ) {
+			$result['email'] = get_option( 'admin_email' );
+		}
+
+		return rest_ensure_response( $result );
 	}
 
 	/**
@@ -209,42 +266,21 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 				'readonly'          => true,
 				'validate_callback' => 'rest_validate_request_arg',
 			),
-			'plugins'             => array(
-				'type'              => 'string',
-				'description'       => __( 'How the Jetpack/WooCommerce Services step was handled.', 'woocommerce-admin' ),
+			'skipped'             => array(
+				'type'              => 'boolean',
+				'description'       => __( 'Whether or not the profile was skipped.', 'woocommerce-admin' ),
 				'context'           => array( 'view' ),
 				'readonly'          => true,
 				'validate_callback' => 'rest_validate_request_arg',
-				'enum'              => array(
-					'skipped',
-					'skipped-wcs',
-					'already-installed',
-					'installed-wcs',
-					'installed',
-				),
-			),
-			'account_type'        => array(
-				'type'              => 'string',
-				'description'       => __( 'Account type used for Jetpack.', 'woocommerce-admin' ),
-				'context'           => array( 'view' ),
-				'readonly'          => true,
-				'validate_callback' => 'rest_validate_request_arg',
-				'enum'              => array(
-					'new',
-					'existing',
-					'google',
-				),
 			),
 			'industry'            => array(
 				'type'              => 'array',
 				'description'       => __( 'Industry.', 'woocommerce-admin' ),
 				'context'           => array( 'view' ),
 				'readonly'          => true,
-				'sanitize_callback' => 'wp_parse_slug_list',
 				'validate_callback' => 'rest_validate_request_arg',
 				'items'             => array(
-					'enum' => array_keys( Onboarding::get_allowed_industries() ),
-					'type' => 'string',
+					'type' => 'object',
 				),
 			),
 			'product_types'       => array(
@@ -300,6 +336,7 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 					'10000-50000',
 					'50000-250000',
 					'more-than-250000',
+					'rather-not-say',
 				),
 			),
 			'other_platform'      => array(
@@ -313,8 +350,19 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 					'bigcommerce',
 					'magento',
 					'wix',
+					'amazon',
+					'ebay',
+					'etsy',
+					'squarespace',
 					'other',
 				),
+			),
+			'other_platform_name' => array(
+				'type'              => 'string',
+				'description'       => __( 'Name of other platform used to sell (not listed).', 'woocommerce-admin' ),
+				'context'           => array( 'view' ),
+				'readonly'          => true,
+				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'business_extensions' => array(
 				'type'              => 'array',
@@ -324,7 +372,16 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 				'sanitize_callback' => 'wp_parse_slug_list',
 				'validate_callback' => 'rest_validate_request_arg',
 				'items'             => array(
-					'enum' => array( 'mailchimp-for-woocommerce', 'facebook-for-woocommerce' ),
+					'enum' => array(
+						'jetpack',
+						'woocommerce-services',
+						'woocommerce-payments',
+						'mailchimp-for-woocommerce',
+						'creative-mail-by-constant-contact',
+						'facebook-for-woocommerce',
+						'google-listings-and-ads',
+						'mailpoet',
+					),
 					'type' => 'string',
 				),
 			),
@@ -334,13 +391,6 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 				'context'           => array( 'view' ),
 				'readonly'          => true,
 				'sanitize_callback' => 'sanitize_title_with_dashes',
-				'validate_callback' => 'rest_validate_request_arg',
-			),
-			'items_purchased'     => array(
-				'type'              => 'boolean',
-				'description'       => __( 'Whether or not the user opted to purchase items now or later.', 'woocommerce-admin' ),
-				'context'           => array( 'view' ),
-				'readonly'          => true,
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'setup_client'        => array(
@@ -357,9 +407,41 @@ class OnboardingProfile extends \WC_REST_Data_Controller {
 				'readonly'          => true,
 				'validate_callback' => 'rest_validate_request_arg',
 			),
+			'is_agree_marketing'  => array(
+				'type'              => 'boolean',
+				'description'       => __( 'Whether or not this store agreed to receiving marketing contents from WooCommerce.com.', 'woocommerce-admin' ),
+				'context'           => array( 'view' ),
+				'readonly'          => true,
+				'validate_callback' => 'rest_validate_request_arg',
+			),
+			'store_email'         => array(
+				'type'              => 'string',
+				'description'       => __( 'Store email address.', 'woocommerce-admin' ),
+				'context'           => array( 'view' ),
+				'readonly'          => true,
+				'validate_callback' => array( __CLASS__, 'rest_validate_marketing_email' ),
+			),
 		);
 
 		return apply_filters( 'woocommerce_rest_onboarding_profile_properties', $properties );
+	}
+
+	/**
+	 * Optionally validates email if user agreed to marketing or if email is not empty.
+	 *
+	 * @param mixed           $value Email value.
+	 * @param WP_REST_Request $request Request object.
+	 * @param string          $param Parameter name.
+	 * @return true|WP_Error
+	 */
+	public static function rest_validate_marketing_email( $value, $request, $param ) {
+		$is_agree_marketing = $request->get_param( 'is_agree_marketing' );
+		if (
+			( $is_agree_marketing || ! empty( $value ) ) &&
+			! is_email( $value ) ) {
+			return new \WP_Error( 'rest_invalid_email', __( 'Invalid email address', 'woocommerce-admin' ) );
+		};
+		return true;
 	}
 
 	/**

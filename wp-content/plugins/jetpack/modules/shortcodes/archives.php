@@ -5,7 +5,7 @@
  * @author bubel & nickmomrik
  * [archives limit=10]
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
 add_shortcode( 'archives', 'archives_shortcode' );
@@ -42,7 +42,7 @@ function archives_shortcode( $atts ) {
 		$attr['format'] = 'html';
 	}
 
-	$limit = intval( $attr['limit'] );
+	$limit = (int) $attr['limit'];
 	// A Limit of 0 makes no sense so revert back to the default.
 	if ( empty( $limit ) ) {
 		$limit = '';
@@ -73,7 +73,9 @@ function archives_shortcode( $atts ) {
 	if ( empty( $archives ) ) {
 		$archives = '<p>' . __( 'Your blog does not currently have any published posts.', 'jetpack' ) . '</p>';
 	} elseif ( 'option' === $attr['format'] ) {
-		$archives = '<select name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;"><option value="' . get_permalink() . '">--</option>' . $archives . '</select>';
+		$is_amp           = class_exists( 'Jetpack_AMP_Support' ) && Jetpack_AMP_Support::is_amp_request();
+		$change_attribute = $is_amp ? 'on="change:AMP.navigateTo(url=event.value)"' : 'onchange="document.location.href=this.options[this.selectedIndex].value;"';
+		$archives         = '<select name="archive-dropdown" ' . $change_attribute . '><option value="' . get_permalink() . '">--</option>' . $archives . '</select>';
 	} elseif ( 'html' === $attr['format'] ) {
 		$archives = '<ul>' . $archives . '</ul>';
 	}

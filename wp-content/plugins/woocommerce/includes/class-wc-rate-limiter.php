@@ -19,7 +19,7 @@
  *     add_notice( 'Sorry, too soon!' );
  * }
  *
- * @package WooCommerce/Classes
+ * @package WooCommerce\Classes
  * @version 3.9.0
  * @since   3.9.0
  */
@@ -72,7 +72,7 @@ class WC_Rate_Limiter {
 	 * @return bool True if the option setting was successful, false otherwise.
 	 */
 	public static function set_rate_limit( $action_id, $delay ) {
-		$option_name = self::storage_id( $action_id );
+		$option_name         = self::storage_id( $action_id );
 		$next_try_allowed_at = time() + $delay;
 		return update_option( $option_name, $next_try_allowed_at );
 	}

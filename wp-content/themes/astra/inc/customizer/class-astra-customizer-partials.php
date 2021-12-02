@@ -42,11 +42,12 @@ if ( ! class_exists( 'Astra_Customizer_Partials' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function render_partial_site_tagline() {
+		public static function render_partial_site_tagline() {
 
-			$site_tagline = astra_get_option( 'display-site-tagline' );
+			$site_tagline_setting = astra_get_option( 'display-site-tagline-responsive' );
+			$site_tagline         = ( $site_tagline_setting['desktop'] || $site_tagline_setting['tablet'] || $site_tagline_setting['mobile'] ) ? true : false;
 
-			if ( true == $site_tagline ) {
+			if ( true === $site_tagline ) {
 				return get_bloginfo( 'description', 'display' );
 			}
 		}
@@ -58,11 +59,12 @@ if ( ! class_exists( 'Astra_Customizer_Partials' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function render_partial_site_title() {
+		public static function render_partial_site_title() {
 
-			$site_title = astra_get_option( 'display-site-title' );
+			$site_title_setting = astra_get_option( 'display-site-title-responsive' );
+			$site_title         = ( $site_title_setting['desktop'] || $site_title_setting['tablet'] || $site_title_setting['mobile'] ) ? true : false;
 
-			if ( true == $site_title ) {
+			if ( true === $site_title ) {
 				return get_bloginfo( 'name', 'display' );
 			}
 		}
@@ -74,7 +76,7 @@ if ( ! class_exists( 'Astra_Customizer_Partials' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function render_header_main_rt_section_html() {
+		public static function render_header_main_rt_section_html() {
 
 			$right_section_html = astra_get_option( 'header-main-rt-section-html' );
 
@@ -88,10 +90,11 @@ if ( ! class_exists( 'Astra_Customizer_Partials' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function render_header_main_rt_section_button_text() {
+		public static function render_header_main_rt_section_button_text() {
 			$custom_button_text = astra_get_option( 'header-main-rt-section-button-text' );
 
-			return do_shortcode( $custom_button_text );
+			$html = '<div class="ast-button"> ' . $custom_button_text . ' </div>';
+			return do_shortcode( $html );
 		}
 
 		/**
@@ -101,9 +104,12 @@ if ( ! class_exists( 'Astra_Customizer_Partials' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function render_header_site_title_tagline() {
-			$display_site_title   = astra_get_option( 'display-site-title' );
-			$display_site_tagline = astra_get_option( 'display-site-tagline' );
+		public static function render_header_site_title_tagline() {
+			$site_title           = astra_get_option( 'display-site-title-responsive' );
+			$display_site_title   = ( $site_title['desktop'] || $site_title['tablet'] || $site_title['mobile'] ) ? true : false;
+			$site_tagline         = astra_get_option( 'display-site-tagline-responsive' );
+			$display_site_tagline = ( $site_tagline['desktop'] || $site_tagline['tablet'] || $site_tagline['mobile'] ) ? true : false;
+
 
 			$html = astra_get_site_title_tagline( $display_site_title, $display_site_tagline );
 
@@ -117,7 +123,7 @@ if ( ! class_exists( 'Astra_Customizer_Partials' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function render_footer_sml_section_1_credit() {
+		public static function render_footer_sml_section_1_credit() {
 
 			$output = astra_get_small_footer_custom_text( 'footer-sml-section-1-credit' );
 			return do_shortcode( $output );
@@ -130,9 +136,22 @@ if ( ! class_exists( 'Astra_Customizer_Partials' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function render_footer_sml_section_2_credit() {
+		public static function render_footer_sml_section_2_credit() {
 
 			$output = astra_get_small_footer_custom_text( 'footer-sml-section-2-credit' );
+			return do_shortcode( $output );
+		}
+
+		/**
+		 * Render Partial text for the mobile toggle menu
+		 *
+		 * @since 2.6.0
+		 *
+		 * @return mixed
+		 */
+		public static function mobile_toggle_menu() {
+
+			$output = astra_masthead_toggle_buttons_primary();
 			return do_shortcode( $output );
 		}
 	}

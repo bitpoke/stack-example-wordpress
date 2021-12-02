@@ -32,7 +32,6 @@ class Full_Sync extends Module {
 	 */
 	const STATUS_OPTION_PREFIX = 'jetpack_sync_full_';
 
-
 	/**
 	 * Enqueue Lock name.
 	 *
@@ -93,7 +92,8 @@ class Full_Sync extends Module {
 			/**
 			 * Fires when a full sync is cancelled.
 			 *
-			 * @since 4.2.0
+			 * @since 1.6.3
+			 * @since-jetpack 4.2.0
 			 */
 			do_action( 'jetpack_full_sync_cancelled' );
 		}
@@ -153,9 +153,10 @@ class Full_Sync extends Module {
 		 * Fires when a full sync begins. This action is serialized
 		 * and sent to the server so that it knows a full sync is coming.
 		 *
-		 * @since 4.2.0
-		 * @since 7.3.0 Added $range arg.
-		 * @since 7.4.0 Added $empty arg.
+		 * @since 1.6.3
+		 * @since-jetpack 4.2.0
+		 * @since-jetpack 7.3.0 Added $range arg.
+		 * @since-jetpack 7.4.0 Added $empty arg.
 		 *
 		 * @param array $full_sync_config Sync configuration for all sync modules.
 		 * @param array $range            Range of the sync items, containing min and max IDs for some item types.
@@ -176,13 +177,25 @@ class Full_Sync extends Module {
 	 * @param array $configs Full sync configuration for all sync modules.
 	 */
 	public function continue_enqueuing( $configs = null ) {
-		if ( ! $this->is_started() || ! ( new Lock() )->attempt( self::ENQUEUE_LOCK_NAME ) || $this->get_status_option( 'queue_finished' ) ) {
+		// Return early if not in progress.
+		if ( ! $this->get_status_option( 'started' ) || $this->get_status_option( 'queue_finished' ) ) {
 			return;
 		}
 
+		// Attempt to obtain lock.
+		$lock            = new Lock();
+		$lock_expiration = $lock->attempt( self::ENQUEUE_LOCK_NAME );
+
+		// Return if unable to obtain lock.
+		if ( false === $lock_expiration ) {
+			return;
+		}
+
+		// enqueue full sync actions.
 		$this->enqueue( $configs );
 
-		( new Lock() )->remove( self::ENQUEUE_LOCK_NAME );
+		// Remove lock.
+		$lock->remove( self::ENQUEUE_LOCK_NAME, $lock_expiration );
 	}
 
 	/**
@@ -282,8 +295,9 @@ class Full_Sync extends Module {
 		 * Fires when a full sync ends. This action is serialized
 		 * and sent to the server.
 		 *
-		 * @since 4.2.0
-		 * @since 7.3.0 Added $range arg.
+		 * @since 1.6.3
+		 * @since-jetpack 4.2.0
+		 * @since-jetpack 7.3.0 Added $range arg.
 		 *
 		 * @param string $checksum Deprecated since 7.3.0 - @see https://github.com/Automattic/jetpack/pull/11945/
 		 * @param array  $range    Range of the sync items, containing min and max IDs for some item types.
@@ -407,6 +421,49 @@ class Full_Sync extends Module {
 	}
 
 	/**
+	 * Returns the progress percentage of a full sync.
+	 *
+	 * @access public
+	 *
+	 * @return int|null
+	 */
+	public function get_sync_progress_percentage() {
+		if ( ! $this->is_started() || $this->is_finished() ) {
+			return null;
+		}
+		$status = $this->get_status();
+		if ( ! $status['queue'] || ! $status['sent'] || ! $status['total'] ) {
+			return null;
+		}
+		$queued_multiplier = 0.1;
+		$sent_multiplier   = 0.9;
+		$count_queued      = array_reduce(
+			$status['queue'],
+			function ( $sum, $value ) {
+				return $sum + $value;
+			},
+			0
+		);
+		$count_sent        = array_reduce(
+			$status['sent'],
+			function ( $sum, $value ) {
+				return $sum + $value;
+			},
+			0
+		);
+		$count_total       = array_reduce(
+			$status['total'],
+			function ( $sum, $value ) {
+				return $sum + $value;
+			},
+			0
+		);
+		$percent_queued    = ( $count_queued / $count_total ) * $queued_multiplier * 100;
+		$percent_sent      = ( $count_sent / $count_total ) * $sent_multiplier * 100;
+		return ceil( $percent_queued + $percent_sent );
+	}
+
+	/**
 	 * Get the name of the action for an item in the sync queue.
 	 *
 	 * @access public
@@ -474,7 +531,7 @@ class Full_Sync extends Module {
 	 * @return boolean
 	 */
 	public function is_started() {
-		return ! ! $this->get_status_option( 'started' );
+		return (bool) $this->get_status_option( 'started' );
 	}
 
 	/**
@@ -485,7 +542,7 @@ class Full_Sync extends Module {
 	 * @return boolean
 	 */
 	public function is_finished() {
-		return ! ! $this->get_status_option( 'finished' );
+		return (bool) $this->get_status_option( 'finished' );
 	}
 
 	/**
@@ -570,7 +627,7 @@ class Full_Sync extends Module {
 	public function reset_data() {
 		$this->clear_status();
 		$this->delete_config();
-		( new Lock() )->remove( self::ENQUEUE_LOCK_NAME );
+		( new Lock() )->remove( self::ENQUEUE_LOCK_NAME, true );
 
 		$listener = Listener::get_instance();
 		$listener->get_full_sync_queue()->reset();
@@ -588,7 +645,7 @@ class Full_Sync extends Module {
 	private function get_status_option( $name, $default = null ) {
 		$value = \Jetpack_Options::get_raw_option( self::STATUS_OPTION_PREFIX . "_$name", $default );
 
-		return is_numeric( $value ) ? intval( $value ) : $value;
+		return is_numeric( $value ) ? (int) $value : $value;
 	}
 
 	/**

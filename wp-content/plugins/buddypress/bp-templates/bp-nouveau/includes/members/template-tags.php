@@ -3,7 +3,7 @@
  * Members template tags
  *
  * @since 3.0.0
- * @version 3.1.0
+ * @version 9.0.0
  */
 
 // Exit if accessed directly.
@@ -72,13 +72,6 @@ function bp_nouveau_after_members_directory_content() {
 	 * @since 1.1.0
 	 */
 	do_action( 'bp_after_directory_members' );
-
-	/**
-	 * Fires at the bottom of the members directory template file.
-	 *
-	 * @since 1.5.0
-	 */
-	do_action( 'bp_after_directory_members_page' );
 }
 
 /**
@@ -456,12 +449,12 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 							'class' => $parent_class,
 						),
 						'button_attr'       => array(
-							'href'  => trailingslashit( bp_loggedin_user_domain() . bp_get_messages_slug() ) . 'compose?r=' . bp_core_get_username( $user_id ),
+							'href'  => trailingslashit( bp_loggedin_user_domain() . bp_nouveau_get_component_slug( 'messages' ) ) . 'compose?r=' . bp_core_get_username( $user_id ),
 							'id'    => false,
 							'class' => $button_args['link_class'],
 							'rel'   => '',
 							'title' => '',
-							),
+						),
 					);
 
 					unset( bp_nouveau()->members->button_args );
@@ -473,12 +466,14 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		 * Filter to add your buttons, use the position argument to choose where to insert it.
 		 *
 		 * @since 3.0.0
+		 * @since 9.0.0 Adds the `$args` parameter to the filter.
 		 *
 		 * @param array  $buttons The list of buttons.
 		 * @param int    $user_id The displayed user ID.
 		 * @param string $type    Whether we're displaying a members loop or a user's page
+		 * @param array  $args    Button arguments.
 		 */
-		$buttons_group = apply_filters( 'bp_nouveau_get_members_buttons', $buttons, $user_id, $type );
+		$buttons_group = apply_filters( 'bp_nouveau_get_members_buttons', $buttons, $user_id, $type, $args );
 		if ( ! $buttons_group ) {
 			return $buttons;
 		}
@@ -596,6 +591,45 @@ function bp_nouveau_member_meta() {
 	}
 
 /**
+ * Check if some extra content needs to be displayed into the members directory.
+ *
+ * @since 6.0.0
+ *
+ * @return bool True if some extra content needs to be displayed into the members directory.
+ *              False otherwise.
+ */
+function bp_nouveau_member_has_extra_content() {
+	/**
+	 * Filter here to display the extra content not only into the Members directory.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param bool $value True if on the Members directory page.
+	 *                    False otherwise.
+	 */
+	$members_directory_only = (bool) apply_filters( 'bp_nouveau_member_extra_content_in_members_directory', bp_is_members_directory() );
+
+	// Check if some extra content needs to be included into the item of the loop.
+	$has_action = (bool) has_action( 'bp_directory_members_item' );
+
+	return $members_directory_only && $has_action;
+}
+
+/**
+ * Displays extra content for each item of a members loop.
+ *
+ * @since 6.0.0
+ */
+function bp_nouveau_member_extra_content() {
+	/**
+	 * Fires inside the display of a members loop member item.
+	 *
+	 * @since 1.1.0
+	 */
+	do_action( 'bp_directory_members_item' );
+}
+
+/**
  * Load the appropriate content for the single member pages
  *
  * @since 3.0.0
@@ -628,6 +662,8 @@ function bp_nouveau_member_template_part() {
 			$template = 'profile';
 		} elseif ( bp_is_user_notifications() ) {
 			$template = 'notifications';
+		} elseif ( bp_is_user_members_invitations() ) {
+			$template = 'invitations';
 		} elseif ( bp_is_user_settings() ) {
 			$template = 'settings';
 		}
@@ -1005,3 +1041,32 @@ function bp_nouveau_wp_profile_field_data() {
 		$field = bp_nouveau()->members->wp_profile_current;
 		return $field->data;
 	}
+
+/**
+ * Outputs the Invitations bulk actions dropdown list.
+ *
+ * @since 8.0.0
+ */
+function bp_nouveau_invitations_bulk_management_dropdown() {
+	?>
+	<div class="select-wrap">
+
+		<label class="bp-screen-reader-text" for="invitation-select">
+			<?php
+			esc_html_e( 'Select Bulk Action', 'buddypress' );
+			?>
+		</label>
+
+		<select name="invitation_bulk_action" id="invitation-select">
+			<option value="" selected="selected"><?php esc_html_e( 'Bulk Actions', 'buddypress' ); ?></option>
+			<option value="resend"><?php echo esc_html_x( 'Resend', 'button', 'buddypress' ); ?></option>
+			<option value="cancel"><?php echo esc_html_x( 'Cancel', 'button', 'buddypress' ); ?></option>
+		</select>
+
+		<span class="select-arrow"></span>
+
+	</div><!-- // .select-wrap -->
+
+	<input type="submit" id="invitation-bulk-manage" class="button action" value="<?php echo esc_attr_x( 'Apply', 'button', 'buddypress' ); ?>">
+	<?php
+}

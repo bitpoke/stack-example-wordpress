@@ -57,7 +57,7 @@ if ( ! class_exists( 'Astra_PB_Compatibility' ) ) {
 		 * @return void
 		 */
 		public function maybe_run_pb_compatibility() {
-
+			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			$is_compatibility_completed = astra_get_option( '_astra_pb_compatibility_completed', false );
 
 			if ( ! $is_compatibility_completed ) {

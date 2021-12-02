@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { __, _n, sprintf } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/editor';
+import { __ } from '@wordpress/i18n';
+import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
 	PanelBody,
@@ -10,11 +10,9 @@ import {
 	ToggleControl,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { SearchListItem } from '@woocommerce/components';
-import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
-import ProductCategoryControl from '@woocommerce/block-components/product-category-control';
-import { IconReviewsByCategory } from '@woocommerce/block-components/icons';
+import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
+import { Icon, review } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -29,6 +27,11 @@ import {
 
 /**
  * Component to handle edit mode of "Reviews by Category".
+ *
+ * @param {Object} props Incoming props for the component.
+ * @param {Object} props.attributes Incoming block attributes.
+ * @param {function(any):any} props.debouncedSpeak
+ * @param {function(any):any} props.setAttributes Setter for block attributes.
  */
 const ReviewsByCategoryEditor = ( {
 	attributes,
@@ -36,39 +39,6 @@ const ReviewsByCategoryEditor = ( {
 	setAttributes,
 } ) => {
 	const { editMode, categoryIds } = attributes;
-
-	const renderCategoryControlItem = ( args ) => {
-		const { item, search, depth = 0 } = args;
-		const classes = [ 'woocommerce-product-categories__item' ];
-		if ( search.length ) {
-			classes.push( 'is-searching' );
-		}
-		if ( depth === 0 && item.parent !== 0 ) {
-			classes.push( 'is-skip-level' );
-		}
-
-		const accessibleName = ! item.breadcrumbs.length
-			? item.name
-			: `${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
-
-		return (
-			<SearchListItem
-				className={ classes.join( ' ' ) }
-				{ ...args }
-				showCount
-				aria-label={ sprintf(
-					_n(
-						'%s, has %d product',
-						'%s, has %d products',
-						item.count,
-						'woocommerce'
-					),
-					accessibleName,
-					item.count
-				) }
-			/>
-		);
-	};
 
 	const getInspectorControls = () => {
 		return (
@@ -83,7 +53,8 @@ const ReviewsByCategoryEditor = ( {
 							const ids = value.map( ( { id } ) => id );
 							setAttributes( { categoryIds: ids } );
 						} }
-						renderItem={ renderCategoryControlItem }
+						isCompact={ true }
+						showReviewCount={ true }
 					/>
 				</PanelBody>
 				<PanelBody
@@ -132,12 +103,16 @@ const ReviewsByCategoryEditor = ( {
 		return (
 			<Placeholder
 				icon={
-					<IconReviewsByCategory className="block-editor-block-icon" />
+					<Icon
+						srcElement={ review }
+						className="block-editor-block-icon"
+					/>
 				}
 				label={ __(
 					'Reviews by Category',
 					'woocommerce'
 				) }
+				className="wc-block-reviews-by-category"
 			>
 				{ __(
 					'Show product reviews from specific categories.',
@@ -152,7 +127,7 @@ const ReviewsByCategoryEditor = ( {
 						} }
 						showReviewCount={ true }
 					/>
-					<Button isDefault onClick={ onDone }>
+					<Button isPrimary onClick={ onDone }>
 						{ __( 'Done', 'woocommerce' ) }
 					</Button>
 				</div>
@@ -165,14 +140,16 @@ const ReviewsByCategoryEditor = ( {
 	}
 
 	return (
-		<Fragment>
+		<>
 			{ getBlockControls( editMode, setAttributes ) }
 			{ getInspectorControls() }
 			<EditorContainerBlock
 				attributes={ attributes }
-				className="wc-block-reviews-by-category"
 				icon={
-					<IconReviewsByCategory className="block-editor-block-icon" />
+					<Icon
+						srcElement={ review }
+						className="block-editor-block-icon"
+					/>
 				}
 				name={ __(
 					'Reviews by Category',
@@ -180,7 +157,7 @@ const ReviewsByCategoryEditor = ( {
 				) }
 				noReviewsPlaceholder={ NoReviewsPlaceholder }
 			/>
-		</Fragment>
+		</>
 	);
 };
 

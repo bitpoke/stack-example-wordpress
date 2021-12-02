@@ -3,7 +3,7 @@
  * Activity Ajax functions
  *
  * @since 3.0.0
- * @version 3.1.0
+ * @version 8.1.0
  */
 
 // Exit if accessed directly.
@@ -115,7 +115,7 @@ function bp_nouveau_ajax_mark_activity_favorite() {
 
 			if ( 1 === $fav_count ) {
 				$response['directory_tab'] = '<li id="activity-favorites" data-bp-scope="favorites" data-bp-object="activity">
-					<a href="' . bp_loggedin_user_domain() . bp_get_activity_slug() . '/favorites/">
+					<a href="' . bp_loggedin_user_domain() . bp_nouveau_get_component_slug( 'activity' ) . '/favorites/">
 						' . esc_html__( 'My Favorites', 'buddypress' ) . '
 					</a>
 				</li>';
@@ -310,7 +310,13 @@ function bp_nouveau_ajax_get_single_activity_content() {
 	remove_filter( 'bp_get_activity_content_body', 'bp_activity_truncate_entry', 5 );
 
 	/** This filter is documented in bp-activity/bp-activity-template.php */
-	$content = apply_filters( 'bp_get_activity_content_body', $activity->content );
+	$content = apply_filters_ref_array(
+		'bp_get_activity_content_body',
+		array(
+			$activity->content,
+			&$activity
+		)
+	);
 
 	wp_send_json_success( array( 'contents' => $content ) );
 }

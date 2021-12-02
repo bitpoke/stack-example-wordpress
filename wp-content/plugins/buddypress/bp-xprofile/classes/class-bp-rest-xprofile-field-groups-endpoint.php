@@ -104,7 +104,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @return array Endpoint arguments.
 	 */
 	public function get_endpoint_args_for_item_schema( $method = WP_REST_Server::CREATABLE ) {
-		$args = WP_REST_Controller::get_endpoint_args_for_item_schema( $method );
+		$args = parent::get_endpoint_args_for_item_schema( $method );
 		$key  = 'get_item';
 
 		if ( WP_REST_Server::CREATABLE === $method || WP_REST_Server::EDITABLE === $method ) {
@@ -141,28 +141,28 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 */
 	public function get_items( $request ) {
 		$args = array(
-			'profile_group_id'       => $request['profile_group_id'],
-			'user_id'                => $request['user_id'],
-			'member_type'            => $request['member_type'],
-			'hide_empty_groups'      => $request['hide_empty_groups'],
-			'hide_empty_fields'      => $request['hide_empty_fields'],
-			'fetch_fields'           => $request['fetch_fields'],
-			'fetch_field_data'       => $request['fetch_field_data'],
-			'fetch_visibility_level' => $request['fetch_visibility_level'],
-			'exclude_groups'         => $request['exclude_groups'],
-			'exclude_fields'         => $request['exclude_fields'],
-			'update_meta_cache'      => $request['update_meta_cache'],
+			'profile_group_id'       => $request->get_param( 'profile_group_id' ),
+			'user_id'                => $request->get_param( 'user_id' ),
+			'member_type'            => $request->get_param( 'member_type' ),
+			'hide_empty_groups'      => $request->get_param( 'hide_empty_groups' ),
+			'hide_empty_fields'      => $request->get_param( 'hide_empty_fields' ),
+			'fetch_fields'           => $request->get_param( 'fetch_fields' ),
+			'fetch_field_data'       => $request->get_param( 'fetch_field_data' ),
+			'fetch_visibility_level' => $request->get_param( 'fetch_visibility_level' ),
+			'exclude_groups'         => $request->get_param( 'exclude_groups' ),
+			'exclude_fields'         => $request->get_param( 'exclude_fields' ),
+			'update_meta_cache'      => $request->get_param( 'update_meta_cache' ),
 		);
 
-		if ( empty( $request['member_type'] ) ) {
+		if ( empty( $request->get_param( 'member_type' ) ) ) {
 			$args['member_type'] = null;
 		}
 
-		if ( empty( $request['exclude_fields'] ) ) {
+		if ( empty( $request->get_param( 'exclude_fields' ) ) ) {
 			$args['exclude_fields'] = false;
 		}
 
-		if ( empty( $request['exclude_groups'] ) ) {
+		if ( empty( $request->get_param( 'exclude_groups' ) ) ) {
 			$args['exclude_groups'] = false;
 		}
 
@@ -208,7 +208,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @since 5.0.0
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
-	 * @return bool
+	 * @return true|WP_Error
 	 */
 	public function get_items_permissions_check( $request ) {
 
@@ -217,7 +217,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		 *
 		 * @since 5.0.0
 		 *
-		 * @param bool            $retval  Returned value.
+		 * @param true|WP_Error   $retval  Returned value.
 		 * @param WP_REST_Request $request The request sent to the API.
 		 */
 		return apply_filters( 'bp_rest_xprofile_field_groups_get_items_permissions_check', true, $request );
@@ -272,7 +272,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @since 5.0.0
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
-	 * @return bool|WP_Error
+	 * @return true|WP_Error
 	 */
 	public function get_item_permissions_check( $request ) {
 		$retval = $this->get_items_permissions_check( $request );
@@ -282,7 +282,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		 *
 		 * @since 5.0.0
 		 *
-		 * @param bool|WP_Error   $retval  Returned value.
+		 * @param true|WP_Error   $retval  Returned value.
 		 * @param WP_REST_Request $request The request sent to the API.
 		 */
 		return apply_filters( 'bp_rest_xprofile_field_groups_get_item_permissions_check', $retval, $request );
@@ -301,9 +301,8 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		$request->set_param( 'context', 'edit' );
 
 		$args = array(
-			'name'        => $request['name'],
-			'description' => $request['description'],
-			'can_delete'  => $request['can_delete'],
+			'name'        => $request->get_param( 'name' ),
+			'description' => $request->get_param( 'description' ),
 		);
 
 		/**
@@ -321,7 +320,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 				'bp_rest_required_param_missing',
 				__( 'Required param missing.', 'buddypress' ),
 				array(
-					'status' => 500,
+					'status' => 400,
 				)
 			);
 		}
@@ -375,19 +374,19 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @since 5.0.0
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @return true|WP_Error
 	 */
 	public function create_item_permissions_check( $request ) {
-		$retval = true;
+		$retval = new WP_Error(
+			'bp_rest_authorization_required',
+			__( 'Sorry, you are not allowed to view this XProfile field group.', 'buddypress' ),
+			array(
+				'status' => rest_authorization_required_code(),
+			)
+		);
 
-		if ( ! ( is_user_logged_in() && bp_current_user_can( 'bp_moderate' ) ) ) {
-			$retval = new WP_Error(
-				'bp_rest_authorization_required',
-				__( 'Sorry, you are not allowed to view this XProfile field group.', 'buddypress' ),
-				array(
-					'status' => rest_authorization_required_code(),
-				)
-			);
+		if ( is_user_logged_in() && bp_current_user_can( 'bp_moderate' ) ) {
+			$retval = true;
 		}
 
 		/**
@@ -395,7 +394,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		 *
 		 * @since 5.0.0
 		 *
-		 * @param bool|WP_Error   $retval  Returned value.
+		 * @param true|WP_Error   $retval  Returned value.
 		 * @param WP_REST_Request $request The request sent to the API.
 		 */
 		return apply_filters( 'bp_rest_xprofile_field_groups_create_item_permissions_check', $retval, $request );
@@ -427,9 +426,8 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 
 		$args = array(
 			'field_group_id' => $field_group->id,
-			'name'           => is_null( $request['name'] ) ? $field_group->name : $request['name'],
-			'description'    => is_null( $request['description'] ) ? $field_group->description : $request['description'],
-			'can_delete'     => is_null( $request['can_delete'] ) ? (bool) $field_group->can_delete : $request['can_delete'],
+			'name'           => empty( $request->get_param( 'name' ) ) ? $field_group->name : $request->get_param( 'name' ),
+			'description'    => empty( $request->get_param( 'description' ) ) ? $field_group->description : $request->get_param( 'description' ),
 		);
 
 		$group_id = xprofile_insert_field_group( $args );
@@ -445,8 +443,8 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		}
 
 		// Update the position if the group_order exists.
-		if ( is_numeric( $request['group_order'] ) ) {
-			xprofile_update_field_group_position( $group_id, $request['group_order'] );
+		if ( is_numeric( $request->get_param( 'group_order' ) ) ) {
+			xprofile_update_field_group_position( $group_id, $request->get_param( 'group_order' ) );
 		}
 
 		$field_group = $this->get_xprofile_field_group_object( $group_id );
@@ -486,7 +484,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @since 5.0.0
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @return true|WP_Error
 	 */
 	public function update_item_permissions_check( $request ) {
 		$retval = $this->create_item_permissions_check( $request );
@@ -496,7 +494,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		 *
 		 * @since 5.0.0
 		 *
-		 * @param bool|WP_Error   $retval  Returned value.
+		 * @param true|WP_Error   $retval  Returned value.
 		 * @param WP_REST_Request $request The request sent to the API.
 		 */
 		return apply_filters( 'bp_rest_xprofile_field_groups_update_item_permissions_check', $retval, $request );
@@ -567,7 +565,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @since 5.0.0
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @return true|WP_Error
 	 */
 	public function delete_item_permissions_check( $request ) {
 		$retval = $this->create_item_permissions_check( $request );
@@ -577,7 +575,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		 *
 		 * @since 5.0.0
 		 *
-		 * @param bool|WP_Error   $retval  Returned value.
+		 * @param true|WP_Error   $retval  Returned value.
 		 * @param WP_REST_Request $request The request sent to the API.
 		 */
 		return apply_filters( 'bp_rest_xprofile_field_groups_delete_item_permissions_check', $retval, $request );
@@ -605,7 +603,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 		);
 
 		// If the fields have been requested, we populate them.
-		if ( $request['fetch_fields'] ) {
+		if ( $request->get_param( 'fetch_fields' ) ) {
 			$data['fields'] = array();
 
 			foreach ( $group->fields as $field ) {
@@ -613,7 +611,7 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 			}
 		}
 
-		$context  = ! empty( $request['context'] ) ? $request['context'] : 'view';
+		$context  = ! empty( $request->get_param( 'context' ) ) ? $request->get_param( 'context' ) : 'view';
 		$data     = $this->add_additional_fields_to_object( $data, $request );
 		$data     = $this->filter_response_by_context( $data, $context );
 		$response = rest_ensure_response( $data );
@@ -673,26 +671,30 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @return BP_XProfile_Group|string XProfile field group object.
 	 */
 	public function get_xprofile_field_group_object( $request ) {
-		$profile_group_id = is_numeric( $request ) ? $request : (int) $request['id'];
+		if ( is_numeric( $request ) ) {
+			$args = array(
+				'profile_group_id' => $request,
+			);
+		} else {
+			$args = array(
+				'profile_group_id'       => (int) $request->get_param( 'id' ),
+				'user_id'                => $request->get_param( 'user_id' ),
+				'member_type'            => $request->get_param( 'member_type' ),
+				'hide_empty_fields'      => $request->get_param( 'hide_empty_fields' ),
+				'fetch_fields'           => $request->get_param( 'fetch_fields' ),
+				'fetch_field_data'       => $request->get_param( 'fetch_field_data' ),
+				'fetch_visibility_level' => $request->get_param( 'fetch_visibility_level' ),
+				'exclude_fields'         => $request->get_param( 'exclude_fields' ),
+				'update_meta_cache'      => $request->get_param( 'update_meta_cache' ),
+			);
 
-		$args = array(
-			'profile_group_id'       => $profile_group_id,
-			'user_id'                => $request['user_id'],
-			'member_type'            => $request['member_type'],
-			'hide_empty_fields'      => $request['hide_empty_fields'],
-			'fetch_fields'           => $request['fetch_fields'],
-			'fetch_field_data'       => $request['fetch_field_data'],
-			'fetch_visibility_level' => $request['fetch_visibility_level'],
-			'exclude_fields'         => $request['exclude_fields'],
-			'update_meta_cache'      => $request['update_meta_cache'],
-		);
+			if ( empty( $request->get_param( 'member_type' ) ) ) {
+				$args['member_type'] = null;
+			}
 
-		if ( empty( $request['member_type'] ) ) {
-			$args['member_type'] = null;
-		}
-
-		if ( empty( $request['exclude_fields'] ) ) {
-			$args['exclude_fields'] = false;
+			if ( empty( $request->get_param( 'exclude_fields' ) ) ) {
+				$args['exclude_fields'] = false;
+			}
 		}
 
 		$field_group = current( bp_xprofile_get_groups( $args ) );
@@ -712,72 +714,75 @@ class BP_REST_XProfile_Field_Groups_Endpoint extends WP_REST_Controller {
 	 * @return array
 	 */
 	public function get_item_schema() {
-		$schema = array(
-			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'bp_xprofile_group',
-			'type'       => 'object',
-			'properties' => array(
-				'id'          => array(
-					'context'     => array( 'view', 'edit' ),
-					'description' => __( 'A unique numeric ID for the group of profile fields.', 'buddypress' ),
-					'readonly'    => true,
-					'type'        => 'integer',
-				),
-				'name'        => array(
-					'context'     => array( 'view', 'edit' ),
-					'description' => __( 'The name of group of profile fields.', 'buddypress' ),
-					'type'        => 'string',
-					'arg_options' => array(
-						'sanitize_callback' => 'sanitize_text_field',
+		if ( is_null( $this->schema ) ) {
+			$this->schema = array(
+				'$schema'    => 'http://json-schema.org/draft-04/schema#',
+				'title'      => 'bp_xprofile_group',
+				'type'       => 'object',
+				'properties' => array(
+					'id'          => array(
+						'context'     => array( 'view', 'edit' ),
+						'description' => __( 'A unique numeric ID for the group of profile fields.', 'buddypress' ),
+						'readonly'    => true,
+						'type'        => 'integer',
 					),
-				),
-				'description' => array(
-					'context'     => array( 'view', 'edit' ),
-					'description' => __( 'The description of the group of profile fields.', 'buddypress' ),
-					'type'        => 'object',
-					'arg_options' => array(
-						'sanitize_callback' => null, // Note: sanitization implemented in self::prepare_item_for_database().
-						'validate_callback' => null, // Note: validation implemented in self::prepare_item_for_database().
-					),
-					'properties'  => array(
-						'raw'      => array(
-							'description' => __( 'Content for the group of profile fields, as it exists in the database.', 'buddypress' ),
-							'type'        => 'string',
-							'context'     => array( 'edit' ),
-						),
-						'rendered' => array(
-							'description' => __( 'HTML content for the group of profile fields, transformed for display.', 'buddypress' ),
-							'type'        => 'string',
-							'context'     => array( 'view', 'edit' ),
-							'readonly'    => true,
+					'name'        => array(
+						'context'     => array( 'view', 'edit' ),
+						'description' => __( 'The name of group of profile fields.', 'buddypress' ),
+						'type'        => 'string',
+						'arg_options' => array(
+							'sanitize_callback' => 'sanitize_text_field',
 						),
 					),
+					'description' => array(
+						'context'     => array( 'view', 'edit' ),
+						'description' => __( 'The description of the group of profile fields.', 'buddypress' ),
+						'type'        => 'object',
+						'arg_options' => array(
+							'sanitize_callback' => null, // Note: sanitization implemented in self::prepare_item_for_database().
+							'validate_callback' => null, // Note: validation implemented in self::prepare_item_for_database().
+						),
+						'properties'  => array(
+							'raw'      => array(
+								'description' => __( 'Content for the group of profile fields, as it exists in the database.', 'buddypress' ),
+								'type'        => 'string',
+								'context'     => array( 'edit' ),
+							),
+							'rendered' => array(
+								'description' => __( 'HTML content for the group of profile fields, transformed for display.', 'buddypress' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+						),
+					),
+					'group_order' => array(
+						'context'     => array( 'view', 'edit' ),
+						'description' => __( 'The order of the group of profile fields.', 'buddypress' ),
+						'type'        => 'integer',
+					),
+					'can_delete'  => array(
+						'context'     => array( 'view', 'edit' ),
+						'description' => __( 'Whether the group of profile fields can be deleted or not.', 'buddypress' ),
+						'type'        => 'boolean',
+						'readonly'    => true,
+					),
+					'fields'      => array(
+						'context'     => array( 'view', 'edit' ),
+						'description' => __( 'The fields associated with this group of profile fields.', 'buddypress' ),
+						'type'        => 'array',
+						'readonly'    => true,
+					),
 				),
-				'group_order' => array(
-					'context'     => array( 'view', 'edit' ),
-					'description' => __( 'The order of the group of profile fields.', 'buddypress' ),
-					'type'        => 'integer',
-				),
-				'can_delete'  => array(
-					'context'     => array( 'view', 'edit' ),
-					'description' => __( 'Whether the group of profile fields can be deleted or not.', 'buddypress' ),
-					'type'        => 'boolean',
-				),
-				'fields'      => array(
-					'context'     => array( 'view', 'edit' ),
-					'description' => __( 'The fields associated with this group of profile fields.', 'buddypress' ),
-					'type'        => 'array',
-					'readonly'    => true,
-				),
-			),
-		);
+			);
+		}
 
 		/**
 		 * Filters the xprofile field group schema.
 		 *
 		 * @param array $schema The endpoint schema.
 		 */
-		return apply_filters( 'bp_rest_xprofile_field_group_schema', $this->add_additional_fields_schema( $schema ) );
+		return apply_filters( 'bp_rest_xprofile_field_group_schema', $this->add_additional_fields_schema( $this->schema ) );
 	}
 
 	/**

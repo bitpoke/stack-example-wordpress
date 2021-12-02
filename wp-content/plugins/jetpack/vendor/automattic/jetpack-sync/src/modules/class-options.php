@@ -8,6 +8,7 @@
 namespace Automattic\Jetpack\Sync\Modules;
 
 use Automattic\Jetpack\Sync\Defaults;
+use Automattic\Jetpack\Sync\Settings;
 
 /**
  * Class to handle sync for options.
@@ -59,6 +60,9 @@ class Options extends Module {
 		add_action( 'add_option_site_icon', array( $this, 'jetpack_sync_core_icon' ) );
 		add_action( 'update_option_site_icon', array( $this, 'jetpack_sync_core_icon' ) );
 		add_action( 'delete_option_site_icon', array( $this, 'jetpack_sync_core_icon' ) );
+
+		// Handle deprecated options.
+		add_filter( 'jetpack_options_whitelist', array( $this, 'add_deprecated_options' ) );
 
 		$whitelist_option_handler = array( $this, 'whitelist_options' );
 		add_filter( 'jetpack_sync_before_enqueue_deleted_option', $whitelist_option_handler );
@@ -112,6 +116,32 @@ class Options extends Module {
 	}
 
 	/**
+	 * Add old deprecated options to the list of options to keep in sync.
+	 *
+	 * @since 1.14.0
+	 *
+	 * @access public
+	 *
+	 * @param array $options The default list of site options.
+	 */
+	public function add_deprecated_options( $options ) {
+		global $wp_version;
+
+		$deprecated_options = array(
+			'blacklist_keys'    => '5.5-alpha', // Replaced by disallowed_keys.
+			'comment_whitelist' => '5.5-alpha', // Replaced by comment_previously_approved.
+		);
+
+		foreach ( $deprecated_options as $option => $version ) {
+			if ( version_compare( $wp_version, $version, '<=' ) ) {
+				$options[] = $option;
+			}
+		}
+
+		return $options;
+	}
+
+	/**
 	 * Enqueue the options actions for full sync.
 	 *
 	 * @access public
@@ -125,7 +155,8 @@ class Options extends Module {
 		/**
 		 * Tells the client to sync all options to the server
 		 *
-		 * @since 4.2.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.2.0
 		 *
 		 * @param boolean Whether to expand options (should always be true)
 		 */
@@ -189,9 +220,14 @@ class Options extends Module {
 		$options       = array();
 		$random_string = wp_generate_password();
 		foreach ( $this->options_whitelist as $option ) {
-			$option_value = get_option( $option, $random_string );
-			if ( $option_value !== $random_string ) {
+			if ( 0 === strpos( $option, Settings::SETTINGS_OPTION_PREFIX ) ) {
+				$option_value       = Settings::get_setting( str_replace( Settings::SETTINGS_OPTION_PREFIX, '', $option ) );
 				$options[ $option ] = $option_value;
+			} else {
+				$option_value = get_option( $option, $random_string );
+				if ( $option_value !== $random_string ) {
+					$options[ $option ] = $option_value;
+				}
 			}
 		}
 
@@ -335,9 +371,16 @@ class Options extends Module {
 	public function jetpack_sync_core_icon() {
 		$url = get_site_icon_url();
 
-		require_once JETPACK__PLUGIN_DIR . 'modules/site-icon/site-icon-functions.php';
+		$jetpack_url = \Jetpack_Options::get_option( 'site_icon_url' );
+		if ( defined( 'JETPACK__PLUGIN_DIR' ) ) {
+			if ( ! function_exists( 'jetpack_site_icon_url' ) ) {
+				require_once JETPACK__PLUGIN_DIR . 'modules/site-icon/site-icon-functions.php';
+			}
+			$jetpack_url = jetpack_site_icon_url();
+		}
+
 		// If there's a core icon, maybe update the option.  If not, fall back to Jetpack's.
-		if ( ! empty( $url ) && jetpack_site_icon_url() !== $url ) {
+		if ( ! empty( $url ) && $jetpack_url !== $url ) {
 			// This is the option that is synced with dotcom.
 			\Jetpack_Options::update_option( 'site_icon_url', $url );
 		} elseif ( empty( $url ) ) {
@@ -368,8 +411,71 @@ class Options extends Module {
 	 *
 	 * @return int total
 	 */
-	public function total( $config ) {
+	public function total( $config ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		return count( Defaults::get_options_whitelist() );
+	}
+
+	/**
+	 * Retrieve a set of options by their IDs.
+	 *
+	 * @access public
+	 *
+	 * @param string $object_type Object type.
+	 * @param array  $ids         Object IDs.
+	 * @return array Array of objects.
+	 */
+	public function get_objects_by_id( $object_type, $ids ) {
+		if ( empty( $ids ) || empty( $object_type ) || 'option' !== $object_type ) {
+			return array();
+		}
+
+		$objects = array();
+		foreach ( (array) $ids as $id ) {
+			$object = $this->get_object_by_id( $object_type, $id );
+
+			// Only add object if we have the object.
+			if ( 'OPTION-DOES-NOT-EXIST' !== $object ) {
+				if ( 'all' === $id ) {
+					// If all was requested it contains all options and can simply be returned.
+					return $object;
+				}
+				$objects[ $id ] = $object;
+			}
+		}
+
+		return $objects;
+	}
+
+	/**
+	 * Retrieve an option by its name.
+	 *
+	 * @access public
+	 *
+	 * @param string $object_type Type of the sync object.
+	 * @param string $id          ID of the sync object.
+	 * @return mixed              Value of Option or 'OPTION-DOES-NOT-EXIST' if not found.
+	 */
+	public function get_object_by_id( $object_type, $id ) {
+		if ( 'option' === $object_type ) {
+			// Utilize Random string as default value to distinguish between false and not exist.
+			$random_string = wp_generate_password();
+			// Only whitelisted options can be returned.
+			if ( in_array( $id, $this->options_whitelist, true ) ) {
+				if ( 0 === strpos( $id, Settings::SETTINGS_OPTION_PREFIX ) ) {
+					$option_value = Settings::get_setting( str_replace( Settings::SETTINGS_OPTION_PREFIX, '', $id ) );
+					return $option_value;
+				} else {
+					$option_value = get_option( $id, $random_string );
+					if ( $option_value !== $random_string ) {
+						return $option_value;
+					}
+				}
+			} elseif ( 'all' === $id ) {
+				return $this->get_all_options();
+			}
+		}
+
+		return 'OPTION-DOES-NOT-EXIST';
 	}
 
 }

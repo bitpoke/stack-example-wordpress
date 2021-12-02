@@ -1,19 +1,30 @@
 <?php //phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
-
 /**
- * Tiled Gallery block. Depends on the Photon module.
+ * Tiled Gallery block.
+ * Relies on Photon, but can be used even when the module is not active.
  *
  * @since 6.9.0
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
+
+namespace Automattic\Jetpack\Extensions;
+
+use Automattic\Jetpack\Blocks;
+use Automattic\Jetpack\Status;
+use Jetpack;
+use Jetpack_Gutenberg;
+use Jetpack_Plan;
 
 /**
  * Jetpack Tiled Gallery Block class
  *
  * @since 7.3
  */
-class Jetpack_Tiled_Gallery_Block {
+class Tiled_Gallery {
+	const FEATURE_NAME = 'tiled-gallery';
+	const BLOCK_NAME   = 'jetpack/' . self::FEATURE_NAME;
+
 	/* Values for building srcsets */
 	const IMG_SRCSET_WIDTH_MAX  = 2000;
 	const IMG_SRCSET_WIDTH_MIN  = 600;
@@ -23,12 +34,18 @@ class Jetpack_Tiled_Gallery_Block {
 	 * Register the block
 	 */
 	public static function register() {
-		jetpack_register_block(
-			'jetpack/tiled-gallery',
-			array(
-				'render_callback' => array( __CLASS__, 'render' ),
-			)
-		);
+		if (
+			( defined( 'IS_WPCOM' ) && IS_WPCOM )
+			|| Jetpack::is_connection_ready()
+			|| ( new Status() )->is_offline_mode()
+		) {
+			Blocks::jetpack_register_block(
+				self::BLOCK_NAME,
+				array(
+					'render_callback' => array( __CLASS__, 'render' ),
+				)
+			);
+		}
 	}
 
 	/**
@@ -40,7 +57,7 @@ class Jetpack_Tiled_Gallery_Block {
 	 * @return string
 	 */
 	public static function render( $attr, $content ) {
-		Jetpack_Gutenberg::load_assets_as_required( 'tiled-gallery' );
+		Jetpack_Gutenberg::load_assets_as_required( self::FEATURE_NAME );
 
 		$is_squareish_layout = self::is_squareish_layout( $attr );
 
@@ -63,8 +80,8 @@ class Jetpack_Tiled_Gallery_Block {
 
 			foreach ( $images[0] as $image_html ) {
 				if (
-					preg_match( '/data-width="([0-9]+)"/', $image_html, $img_height )
-					&& preg_match( '/data-height="([0-9]+)"/', $image_html, $img_width )
+					preg_match( '/data-width="([0-9]+)"/', $image_html, $img_width )
+					&& preg_match( '/data-height="([0-9]+)"/', $image_html, $img_height )
 					&& preg_match( '/src="([^"]+)"/', $image_html, $img_src )
 				) {
 					// Drop img src query string so it can be used as a base to add photon params
@@ -169,4 +186,4 @@ class Jetpack_Tiled_Gallery_Block {
 	}
 }
 
-Jetpack_Tiled_Gallery_Block::register();
+Tiled_Gallery::register();

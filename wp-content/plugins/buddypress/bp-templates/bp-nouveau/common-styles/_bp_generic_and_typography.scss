@@ -1,6 +1,6 @@
 // BP Generic elements, Typography and Images.
 // @since 3.0.0
-// @version 5.0.0
+// @version 7.0.0
 
 // ========= Generic Sitewide elements ========
 body {
@@ -59,18 +59,18 @@ body.buddypress {
 		.entry-header,
 		.site-content .entry-header,
 		.entry-content {
-			max-width: none;
+
+			&:not(.alignwide):not(.alignfull) {
+				max-width: none;
+			}
 		}
 
 		.entry-header {
 			float: none;
-			max-width: none;
 		}
 
-		.entry-content,
-		.entry .entry-content > * {
+		.entry-content {
 			float: none;
-			max-width: none;
 		}
 
 		// 2017 has a very large top padding we'll reduce that for bp screens
@@ -169,7 +169,7 @@ body.buddypress {
 			margin-bottom: 2em;
 			padding: 0;
 
-			.entry-title {
+			&:not(.alignwide):not(.alignfull) .entry-title {
 
 				@include responsive-font(34);
 				font-weight: inherit;
@@ -255,7 +255,8 @@ body.buddypress {
 		}
 	}
 
-	#notification-select {
+	#notification-select,
+	#invitation-select {
 
 		@include responsive-font(14);
 	}

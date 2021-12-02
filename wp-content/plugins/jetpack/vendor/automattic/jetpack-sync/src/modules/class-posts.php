@@ -54,6 +54,26 @@ class Posts extends Module {
 	private $import_end = false;
 
 	/**
+	 * Max bytes allowed for post_content => length.
+	 * Current Setting : 5MB.
+	 *
+	 * @access public
+	 *
+	 * @var int
+	 */
+	const MAX_POST_CONTENT_LENGTH = 5000000;
+
+	/**
+	 * Max bytes allowed for post meta_value => length.
+	 * Current Setting : 2MB.
+	 *
+	 * @access public
+	 *
+	 * @var int
+	 */
+	const MAX_POST_META_LENGTH = 2000000;
+
+	/**
 	 * Default previous post state.
 	 * Used for default previous post status.
 	 *
@@ -96,7 +116,7 @@ class Posts extends Module {
 	 */
 	public function get_object_by_id( $object_type, $id ) {
 		if ( 'post' === $object_type ) {
-			$post = get_post( intval( $id ) );
+			$post = get_post( (int) $id );
 			if ( $post ) {
 				return $this->filter_post_content_and_add_links( $post );
 			}
@@ -116,10 +136,12 @@ class Posts extends Module {
 		$this->action_handler = $callable;
 
 		add_action( 'wp_insert_post', array( $this, 'wp_insert_post' ), 11, 3 );
+		add_action( 'wp_after_insert_post', array( $this, 'wp_after_insert_post' ), 11, 2 );
 		add_action( 'jetpack_sync_save_post', $callable, 10, 4 );
 
 		add_action( 'deleted_post', $callable, 10 );
 		add_action( 'jetpack_published_post', $callable, 10, 2 );
+		add_filter( 'jetpack_sync_before_enqueue_deleted_post', array( $this, 'filter_blacklisted_post_types_deleted' ) );
 
 		add_action( 'transition_post_status', array( $this, 'save_published' ), 10, 3 );
 		add_filter( 'jetpack_sync_before_enqueue_jetpack_sync_save_post', array( $this, 'filter_blacklisted_post_types' ) );
@@ -142,17 +164,26 @@ class Posts extends Module {
 	 */
 	public function daily_akismet_meta_cleanup_before( $feedback_ids ) {
 		remove_action( 'deleted_post_meta', $this->action_handler );
-		/**
-		 * Used for syncing deletion of batch post meta
-		 *
-		 * @since 6.1.0
-		 *
-		 * @module sync
-		 *
-		 * @param array $feedback_ids feedback post IDs
-		 * @param string $meta_key to be deleted
-		 */
-		do_action( 'jetpack_post_meta_batch_delete', $feedback_ids, '_feedback_akismet_values' );
+
+		if ( ! is_array( $feedback_ids ) || count( $feedback_ids ) < 1 ) {
+			return;
+		}
+
+		$ids_chunks = array_chunk( $feedback_ids, 100, false );
+		foreach ( $ids_chunks as $chunk ) {
+			/**
+			 * Used for syncing deletion of batch post meta
+			 *
+			 * @since 1.6.3
+			 * @since-jetpack 6.1.0
+			 *
+			 * @module sync
+			 *
+			 * @param array $feedback_ids feedback post IDs
+			 * @param string $meta_key to be deleted
+			 */
+			do_action( 'jetpack_post_meta_batch_delete', $chunk, '_feedback_akismet_values' );
+		}
 	}
 
 	/**
@@ -184,6 +215,11 @@ class Posts extends Module {
 	 */
 	public function init_before_send() {
 		add_filter( 'jetpack_sync_before_send_jetpack_sync_save_post', array( $this, 'expand_jetpack_sync_save_post' ) );
+
+		// meta.
+		add_filter( 'jetpack_sync_before_send_added_post_meta', array( $this, 'trim_post_meta' ) );
+		add_filter( 'jetpack_sync_before_send_updated_post_meta', array( $this, 'trim_post_meta' ) );
+		add_filter( 'jetpack_sync_before_send_deleted_post_meta', array( $this, 'trim_post_meta' ) );
 
 		// Full sync.
 		add_filter( 'jetpack_sync_before_send_jetpack_full_sync_posts', array( $this, 'expand_post_ids' ) );
@@ -256,6 +292,24 @@ class Posts extends Module {
 	}
 
 	/**
+	 * Filter meta arguments so that we don't sync meta_values over MAX_POST_META_LENGTH.
+	 *
+	 * @param array $args action arguments.
+	 *
+	 * @return array filtered action arguments.
+	 */
+	public function trim_post_meta( $args ) {
+		list( $meta_id, $object_id, $meta_key, $meta_value ) = $args;
+		// Explicitly truncate meta_value when it exceeds limit.
+		// Large content will cause OOM issues and break Sync.
+		$serialized_value = maybe_serialize( $meta_value );
+		if ( strlen( $serialized_value ) >= self::MAX_POST_META_LENGTH ) {
+			$meta_value = '';
+		}
+		return array( $meta_id, $object_id, $meta_key, $meta_value );
+	}
+
+	/**
 	 * Process content before send.
 	 *
 	 * @param array $args Arguments of the `wp_insert_post` hook.
@@ -265,6 +319,23 @@ class Posts extends Module {
 	public function expand_jetpack_sync_save_post( $args ) {
 		list( $post_id, $post, $update, $previous_state ) = $args;
 		return array( $post_id, $this->filter_post_content_and_add_links( $post ), $update, $previous_state );
+	}
+
+	/**
+	 * Filter all blacklisted post types.
+	 *
+	 * @param array $args Hook arguments.
+	 * @return array|false Hook arguments, or false if the post type is a blacklisted one.
+	 */
+	public function filter_blacklisted_post_types_deleted( $args ) {
+
+		// deleted_post is called after the SQL delete but before cache cleanup.
+		// There is the potential we can't detect post_type at this point.
+		if ( ! $this->is_post_type_allowed( $args[0] ) ) {
+			return false;
+		}
+
+		return $args;
 	}
 
 	/**
@@ -305,7 +376,7 @@ class Posts extends Module {
 	 */
 	public function is_whitelisted_post_meta( $meta_key ) {
 		// The _wpas_skip_ meta key is used by Publicize.
-		return in_array( $meta_key, Settings::get_setting( 'post_meta_whitelist' ), true ) || wp_startswith( $meta_key, '_wpas_skip_' );
+		return in_array( $meta_key, Settings::get_setting( 'post_meta_whitelist' ), true ) || ( 0 === strpos( $meta_key, '_wpas_skip_' ) );
 	}
 
 	/**
@@ -316,7 +387,7 @@ class Posts extends Module {
 	 * @return boolean Whether the post type is allowed.
 	 */
 	public function is_post_type_allowed( $post_id ) {
-		$post = get_post( intval( $post_id ) );
+		$post = get_post( (int) $post_id );
 
 		if ( isset( $post->post_type ) ) {
 			return ! in_array( $post->post_type, Settings::get_setting( 'post_types_blacklist' ), true );
@@ -383,7 +454,8 @@ class Posts extends Module {
 		 * Jetpacks data but will prevent us from displaying the data on in the API as well as
 		 * other services.
 		 *
-		 * @since 4.2.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.2.0
 		 *
 		 * @param boolean false prevent post data from being synced to WordPress.com
 		 * @param mixed $post \WP_Post object
@@ -407,6 +479,12 @@ class Posts extends Module {
 			$post->post_password = 'auto-' . wp_generate_password( 10, false );
 		}
 
+		// Explicitly omit post_content when it exceeds limit.
+		// Large content will cause OOM issues and break Sync.
+		if ( strlen( $post->post_content ) >= self::MAX_POST_CONTENT_LENGTH ) {
+			$post->post_content = '';
+		}
+
 		/** This filter is already documented in core. wp-includes/post-template.php */
 		if ( Settings::get_setting( 'render_filtered_content' ) && $post_type->public ) {
 			global $shortcode_tags;
@@ -416,7 +494,8 @@ class Posts extends Module {
 			 * Since we can can expand some type of shortcode better on the .com side and make the
 			 * expansion more relevant to contexts. For example [galleries] and subscription emails
 			 *
-			 * @since 4.5.0
+			 * @since 1.6.3
+			 * @since-jetpack 4.5.0
 			 *
 			 * @param array of shortcode tags to remove.
 			 */
@@ -519,13 +598,9 @@ class Posts extends Module {
 			$post = get_post( $post_ID );
 		}
 
-		$previous_status = isset( $this->previous_status[ $post_ID ] ) ?
-			$this->previous_status[ $post_ID ] :
-			self::DEFAULT_PREVIOUS_STATE;
+		$previous_status = isset( $this->previous_status[ $post_ID ] ) ? $this->previous_status[ $post_ID ] : self::DEFAULT_PREVIOUS_STATE;
 
-		$just_published = isset( $this->just_published[ $post_ID ] ) ?
-			$this->just_published[ $post_ID ] :
-			false;
+		$just_published = isset( $this->just_published[ $post_ID ] ) ? $this->just_published[ $post_ID ] : false;
 
 		$state = array(
 			'is_auto_save'                 => (bool) Jetpack_Constants::get_constant( 'DOING_AUTOSAVE' ),
@@ -536,17 +611,37 @@ class Posts extends Module {
 		/**
 		 * Filter that is used to add to the post flags ( meta data ) when a post gets published
 		 *
-		 * @since 5.8.0
+		 * @since 1.6.3
+		 * @since-jetpack 5.8.0
 		 *
 		 * @param int $post_ID the post ID
 		 * @param mixed $post \WP_Post object
-		 * @param bool  $update Whether this is an existing post being updated or not.
+		 * @param bool $update Whether this is an existing post being updated or not.
 		 * @param mixed $state state
 		 *
 		 * @module sync
 		 */
 		do_action( 'jetpack_sync_save_post', $post_ID, $post, $update, $state );
 		unset( $this->previous_status[ $post_ID ] );
+	}
+
+	/**
+	 * Handler for the wp_after_insert_post hook.
+	 * Called after creation/update of a new post.
+	 *
+	 * @param int      $post_ID Post ID.
+	 * @param \WP_Post $post    Post object.
+	 **/
+	public function wp_after_insert_post( $post_ID, $post ) {
+		if ( ! is_numeric( $post_ID ) || is_null( $post ) ) {
+			return;
+		}
+
+		// Workaround for https://github.com/woocommerce/woocommerce/issues/18007.
+		if ( $post && 'shop_order' === $post->post_type ) {
+			$post = get_post( $post_ID );
+		}
+
 		$this->send_published( $post_ID, $post );
 	}
 
@@ -586,22 +681,27 @@ class Posts extends Module {
 		/**
 		 * Filter that is used to add to the post flags ( meta data ) when a post gets published
 		 *
-		 * @since 4.4.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.4.0
 		 *
 		 * @param mixed array post flags that are added to the post
 		 * @param mixed $post \WP_Post object
 		 */
 		$flags = apply_filters( 'jetpack_published_post_flags', $post_flags, $post );
 
-		/**
-		 * Action that gets synced when a post type gets published.
-		 *
-		 * @since 4.4.0
-		 *
-		 * @param int $post_ID
-		 * @param mixed array $flags post flags that are added to the post
-		 */
-		do_action( 'jetpack_published_post', $post_ID, $flags );
+		// Only Send Pulished Post event if post_type is not blacklisted.
+		if ( ! in_array( $post->post_type, Settings::get_setting( 'post_types_blacklist' ), true ) ) {
+			/**
+			 * Action that gets synced when a post type gets published.
+			 *
+			 * @since 1.6.3
+			 * @since-jetpack 4.4.0
+			 *
+			 * @param int $post_ID
+			 * @param mixed array $flags post flags that are added to the post
+			 */
+			do_action( 'jetpack_published_post', $post_ID, $flags );
+		}
 		unset( $this->just_published[ $post_ID ] );
 
 		/**

@@ -237,29 +237,33 @@ class BP_XProfile_Group {
 	 * and field data.
 	 *
 	 * @since 1.2.0
+	 * @since 2.4.0 Introduced `$member_type` argument.
+	 * @since 8.0.0 Introduced `$hide_field_types` & `$signup_fields_only` arguments.
 	 *
 	 * @global object $wpdb WordPress DB access object.
 	 *
 	 * @param array $args {
 	 *  Array of optional arguments:
-	 *      @type int          $profile_group_id  Limit results to a single profile group.
-	 *      @type int          $user_id           Required if you want to load a specific user's data.
-	 *                                            Default: displayed user's ID.
-	 *      @type array|string $member_type       Limit fields by those restricted to a given member type, or array of
-	 *                                            member types. If `$user_id` is provided, the value of `$member_type`
-	 *                                            will be overridden by the member types of the provided user. The
-	 *                                            special value of 'any' will return only those fields that are
-	 *                                            unrestricted by member type - i.e., those applicable to any type.
-	 *      @type bool         $hide_empty_groups True to hide groups that don't have any fields. Default: false.
-	 *      @type bool         $hide_empty_fields True to hide fields where the user has not provided data.
-	 *                                            Default: false.
-	 *      @type bool         $fetch_fields      Whether to fetch each group's fields. Default: false.
-	 *      @type bool         $fetch_field_data  Whether to fetch data for each field. Requires a $user_id.
-	 *                                            Default: false.
-	 *      @type array        $exclude_groups    Comma-separated list or array of group IDs to exclude.
-	 *      @type array        $exclude_fields    Comma-separated list or array of field IDs to exclude.
-	 *      @type bool         $update_meta_cache Whether to pre-fetch xprofilemeta for all retrieved groups, fields,
-	 *                                            and data. Default: true.
+	 *      @type int          $profile_group_id   Limit results to a single profile group.
+	 *      @type int          $user_id            Required if you want to load a specific user's data.
+	 *                                             Default: displayed user's ID.
+	 *      @type array|string $member_type        Limit fields by those restricted to a given member type, or array of
+	 *                                             member types. If `$user_id` is provided, the value of `$member_type`
+	 *                                             will be overridden by the member types of the provided user. The
+	 *                                             special value of 'any' will return only those fields that are
+	 *                                             unrestricted by member type - i.e., those applicable to any type.
+	 *      @type bool         $hide_empty_groups  True to hide groups that don't have any fields. Default: false.
+	 *      @type bool         $hide_empty_fields  True to hide fields where the user has not provided data.
+	 *                                             Default: false.
+	 *      @type bool         $fetch_fields       Whether to fetch each group's fields. Default: false.
+	 *      @type bool         $fetch_field_data   Whether to fetch data for each field. Requires a $user_id.
+	 *                                             Default: false.
+	 *      @type int[]|bool   $exclude_groups     Comma-separated list or array of group IDs to exclude.
+	 *      @type int[]|bool   $exclude_fields     Comma-separated list or array of field IDs to exclude.
+	 *      @type string[]     $hide_field_types   List of field types to hide form loop. Default: empty array.
+	 *      @type bool         $signup_fields_only Whether to only return signup fields. Default: false.
+	 *      @type bool         $update_meta_cache  Whether to pre-fetch xprofilemeta for all retrieved groups, fields,
+	 *                                             and data. Default: true.
 	 * }
 	 * @return array $groups
 	 */
@@ -278,7 +282,9 @@ class BP_XProfile_Group {
 			'fetch_visibility_level' => false,
 			'exclude_groups'         => false,
 			'exclude_fields'         => false,
+			'hide_field_types'       => array(),
 			'update_meta_cache'      => true,
+			'signup_fields_only'     => false,
 		) );
 
 		// Keep track of object IDs for cache-priming.
@@ -338,7 +344,17 @@ class BP_XProfile_Group {
 		// Pull field objects from the cache.
 		$fields = array();
 		foreach ( $field_ids as $field_id ) {
-			$fields[] = xprofile_get_field( $field_id, null, false );
+			if ( true === $r['signup_fields_only'] && ! in_array( $field_id, bp_xprofile_get_signup_field_ids(), true ) ) {
+				continue;
+			}
+
+			$_field = xprofile_get_field( $field_id, null, false );
+
+			if ( in_array( $_field->type, $r['hide_field_types'], true ) ) {
+				continue;
+			}
+
+			$fields[] = $_field;
 		}
 
 		// Store field IDs for meta cache priming.
@@ -346,10 +362,11 @@ class BP_XProfile_Group {
 
 		// Maybe fetch field data.
 		if ( ! empty( $r['fetch_field_data'] ) ) {
+			$field_type_objects = wp_list_pluck( $fields, 'type_obj', 'id' );
 
 			// Get field data for user ID.
 			if ( ! empty( $field_ids ) && ! empty( $r['user_id'] ) ) {
-				$field_data = BP_XProfile_ProfileData::get_data_for_user( $r['user_id'], $field_ids );
+				$field_data = BP_XProfile_ProfileData::get_data_for_user( $r['user_id'], $field_ids, $field_type_objects );
 			}
 
 			// Remove data-less fields, if necessary.
@@ -805,10 +822,10 @@ class BP_XProfile_Group {
 	public function render_admin_form() {
 		global $message;
 
-		// Users Admin URL
+		// Users Admin URL.
 		$users_url = bp_get_admin_url( 'users.php' );
 
-		// URL to cancel to
+		// URL to cancel to.
 		$cancel_url = add_query_arg( array(
 			'page' => 'bp-profile-setup'
 		), $users_url );
@@ -831,15 +848,25 @@ class BP_XProfile_Group {
 				'mode'     => 'edit_group',
 				'group_id' => (int) $this->id
 			), $users_url );
+
+			if ( $this->can_delete ) {
+				// Delete Group URL.
+				$delete_url = wp_nonce_url( add_query_arg( array(
+					'page'     => 'bp-profile-setup',
+					'mode'     => 'delete_group',
+					'group_id' => (int) $this->id
+				), $users_url ), 'bp_xprofile_delete_group' );
+			}
 		} ?>
 
 		<div class="wrap">
 
-			<h1><?php echo esc_html( $title ); ?></h1>
+			<h1 class="wp-heading-inline"><?php echo esc_html( $title ); ?></h1>
+			<hr class="wp-header-end">
 
 			<?php if ( ! empty( $message ) ) : ?>
 
-				<div id="message" class="error fade">
+				<div id="message" class="error fade notice is-dismissible">
 					<p><?php echo esc_html( $message ); ?></p>
 				</div>
 
@@ -893,14 +920,14 @@ class BP_XProfile_Group {
 							do_action( 'xprofile_group_before_submitbox', $this ); ?>
 
 							<div id="submitdiv" class="postbox">
-								<h2><?php _e( 'Submit', 'buddypress' ); ?></h2>
+								<h2><?php esc_html_e( 'Submit', 'buddypress' ); ?></h2>
 								<div class="inside">
 									<div id="submitcomment" class="submitbox">
 										<div id="major-publishing-actions">
 
 											<?php
 
-											// Nonce fields
+											// Nonce fields.
 											wp_nonce_field( 'bp_xprofile_admin_group', 'bp_xprofile_admin_group' );
 
 											/**
@@ -917,7 +944,11 @@ class BP_XProfile_Group {
 												<input type="submit" name="save_group" value="<?php echo esc_attr( $button ); ?>" class="button-primary"/>
 											</div>
 											<div id="delete-action">
-												<a href="<?php echo esc_url( $cancel_url ); ?>" class="deletion"><?php _e( 'Cancel', 'buddypress' ); ?></a>
+												<?php if ( ! empty( $this->id ) && isset( $delete_url ) ) : ?>
+													<a href="<?php echo esc_url( $delete_url ); ?>" class="submitdelete deletion"><?php esc_html_e( 'Delete Group', 'buddypress' ); ?></a>
+												<?php endif; ?>
+
+												<div><a href="<?php echo esc_url( $cancel_url ); ?>" class="deletion"><?php esc_html_e( 'Cancel', 'buddypress' ); ?></a></div>
 											</div>
 											<div class="clear"></div>
 										</div>

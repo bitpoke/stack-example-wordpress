@@ -1,6 +1,6 @@
 .ast-adv-toggle-icon {
   left: 2px;
-  top: -2px;
+  top: 0;
   position: absolute;
   width: 18px;
   height: 18px;
@@ -101,7 +101,7 @@
 
 .ast-field-settings-wrap .ast-field-settings-modal {
   border-radius: 3px;
-  margin-top: 9px;
+  margin-top: 15px;
   margin-bottom: 20px;
 }
 
@@ -168,10 +168,6 @@
   border-right-width: 0;
 }
 
-.ast-field-settings-modal .customize-control-ast-responsive-background .wp-picker-clear, .ast-field-settings-modal .customize-control-ast-responsive-color .wp-picker-clear {
-  margin-right: 6px;
-}
-
 /* Buttons */
 .wp-core-ui .ast-field-settings-modal .background-image-upload .button {
   font-size: 11px;
@@ -193,7 +189,7 @@
 }
 
 .ast-field-settings-modal .customize-control:last-child {
-  padding-bottom: 15px;
+  padding-bottom: 20px;
 }
 
 .customize-control-ast-settings-group {
@@ -207,8 +203,112 @@
 .customize-control-ast-settings-group .ast-field-settings-modal .customize-control-title {
   margin-bottom: 10px;
   font-size: 13px;
+  margin-top: 3px;
+  display: block;
 }
 
 .ast-field-settings-modal .customize-control {
-  margin-top: 10px;
+  margin-top: 20px;
+}
+
+/**
+ * Popover Tab Structure.
+ */
+.astra-popover-tabs {
+  position: relative;
+}
+
+.astra-popover-tabs .components-tab-panel__tabs {
+  display: flex;
+  padding: 15px;
+  border: none;
+}
+
+.astra-popover-tabs .components-tab-panel__tabs .components-tab-panel__tabs-item {
+  color: #555d66;
+  font-size: 13px;
+  font-weight: 400;
+  height: 35px;
+  transition: unset;
+  padding: 2px 4px;
+  text-decoration: none;
+  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.astra-popover-tabs .components-tab-panel__tabs .components-tab-panel__tabs-item:active {
+  box-shadow: unset;
+}
+
+.astra-popover-tabs .components-tab-panel__tabs .components-tab-panel__tabs-item:focus {
+  box-shadow: unset;
+}
+
+.astra-popover-tabs [ID*="-image-view"] {
+  padding: 15px;
+  border: none;
+}
+
+.astra-popover-tabs .components-button {
+  align-items: center;
+  flex: 1 1 auto;
+  justify-content: center;
+  margin: 0 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  transition: background-color 140ms linear;
+}
+
+.astra-popover-tabs .components-tab-panel__tabs-item:first-child {
+  border-radius: 0px 3px 3px 0px;
+}
+
+.astra-popover-tabs .components-tab-panel__tabs-item:last-child {
+  border-radius: 3px 0px 0px 3px;
+}
+
+.astra-popover-tabs .components-tab-panel__tabs-item:not(:first-child) {
+  border-right-width: 0;
+}
+
+.astra-popover-tabs .components-tab-panel__tabs-item.active-tab {
+  background-color: #0185BA;
+  color: #ffffff;
+}
+
+.astra-popover-color .astra-popover-tabs .components-tab-panel__tabs button.components-tab-panel__tabs-item.active-tab:not(.is-primary):not(.is-tertiary):not(.is-link):hover {
+  color: #fff;
+}
+
+.components-popover.astra-popover-color .components-popover__content {
+  min-width: 310px;
+  max-height: 60vh;
+  padding: 0;
+  -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+.ast-field-settings-modal .components-popover.astra-popover-color .components-popover__content {
+  min-width: 320px;
+  min-height: 325px;
+}
+
+.ast-field-settings-modal .background-wrapper .components-popover.astra-popover-color .components-popover__content {
+  min-height: 385px;
+}
+
+.ast-field-settings-modal .components-angle-picker-control .components-flex__block {
+  min-width: auto;
+}
+
+.customize-control-ast-settings-group .customize-control-ast-slider .wrapper .ast-resp-slider-reset-wrap,
+.customize-control-ast-settings-group .customize-control-ast-responsive-slider .wrapper .ast-resp-slider-reset-wrap {
+  margin-top: 0;
+}
+
+/*
+ * Divider compatibility CSS for setting group.
+ */
+.ast-top-divider.customize-control-ast-settings-group .ast-toggle-desc-wrap .ast-adv-toggle-icon {
+    top: 23px;
 }

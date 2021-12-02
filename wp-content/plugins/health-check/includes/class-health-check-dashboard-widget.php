@@ -12,11 +12,17 @@ class Health_Check_Dashboard_Widget {
 	}
 
 	function dashboard_setup() {
-		wp_add_dashboard_widget(
-			'health_check_status',
-			__( 'Site Health Status', 'health-check' ),
-			array( $this, 'widget_render' )
-		);
+		global $wp_meta_boxes;
+
+		if ( ! isset( $wp_meta_boxes['dashboard']['normal']['core']['dashboard_site_health'] ) ) {
+			wp_add_dashboard_widget(
+				'dashboard_site_health',
+				__( 'Site Health Status', 'health-check' ),
+				array( $this, 'widget_render' )
+			);
+		} else {
+			$wp_meta_boxes['dashboard']['normal']['core']['dashboard_site_health']['callback'] = array( $this, 'widget_render' );
+		}
 	}
 
 	function widget_render() {

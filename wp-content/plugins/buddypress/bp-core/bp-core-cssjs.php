@@ -85,6 +85,9 @@ function bp_core_register_common_scripts() {
 		// Version 2.7.
 		'bp-moment'    => array( 'file' => "{$url}vendor/moment-js/moment{$min}.js", 'dependencies' => array(), 'footer' => true ),
 		'bp-livestamp' => array( 'file' => "{$url}vendor/livestamp{$min}.js", 'dependencies' => array( 'jquery', 'bp-moment' ), 'footer' => true ),
+
+		// Version 9.0.
+		'bp-dynamic-widget-block-script' => array( 'file' => "{$url}dynamic-widget-block.js", 'dependencies' => array( 'lodash', 'wp-url' ), 'footer' => true ),
 	);
 
 	// Version 2.7 - Add Moment.js locale to our $scripts array if we found one.
@@ -300,14 +303,14 @@ function bp_core_add_cropper_inline_js() {
 	?>
 
 	<script type="text/javascript">
-		jQuery(window).load( function(){
-			jQuery('#avatar-to-crop').Jcrop({
+		jQuery( window ).on( 'load', function() {
+			jQuery( '#avatar-to-crop' ).Jcrop( {
 				onChange: showPreview,
 				onSelect: updateCoords,
 				aspectRatio: <?php echo (int) $aspect_ratio; ?>,
 				setSelect: [ <?php echo (int) $crop_left; ?>, <?php echo (int) $crop_top; ?>, <?php echo (int) $crop_right; ?>, <?php echo (int) $crop_bottom; ?> ]
-			});
-		});
+			} );
+		} );
 
 		function updateCoords(c) {
 			jQuery('#x').val(c.x);
@@ -442,7 +445,7 @@ function bp_add_cover_image_inline_css( $return = false ) {
 		}
 
 		$cover_image_object = array(
-			'component' => 'xprofile',
+			'component' => 'members',
 			'object' => $bp->displayed_user
 		);
 	} elseif ( bp_is_group() ) {
@@ -479,7 +482,7 @@ function bp_add_cover_image_inline_css( $return = false ) {
 
 		$object_dir = $cover_image_object['component'];
 
-		if ( 'xprofile' === $object_dir ) {
+		if ( 'members' === $object_dir ) {
 			$object_dir = 'members';
 		}
 

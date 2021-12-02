@@ -639,6 +639,7 @@ function bp_message_thread_total_and_unread_count( $thread_id = false ) {
 			/* translators: 1: total number, 2: accessibility text: number of unread messages */
 			'<span class="thread-count">(%1$s)</span> <span class="bp-screen-reader-text">%2$s</span>',
 			number_format_i18n( $total ),
+			/* translators: %d: number of unread messages */
 			sprintf( _n( '%d unread', '%d unread', $unread, 'buddypress' ), number_format_i18n( $unread ) )
 		);
 	}
@@ -825,6 +826,7 @@ function bp_messages_pagination_count() {
 	if ( 1 == $messages_template->total_thread_count ) {
 		$message = __( 'Viewing 1 message', 'buddypress' );
 	} else {
+		/* translators: 1: message from number. 2: message to number. 3: total messages. */
 		$message = sprintf( _n( 'Viewing %1$s - %2$s of %3$s message', 'Viewing %1$s - %2$s of %3$s messages', $messages_template->total_thread_count, 'buddypress' ), $from_num, $to_num, $total );
 	}
 
@@ -1309,6 +1311,35 @@ function bp_message_activate_deactivate_text() {
 	}
 
 /**
+ * Output the URL for dismissing the current notice for the current user.
+ *
+ * @since 9.0.0
+ * @return string URL for dismissing the current notice for the current user.
+ */
+function bp_message_notice_dismiss_link() {
+	echo esc_url( bp_get_message_notice_dismiss_link() );
+}
+	/**
+	 * Get the URL for dismissing the current notice for the current user.
+	 *
+	 * @since 9.0.0
+	 * @return string URL for dismissing the current notice for the current user.
+	 */
+	function bp_get_message_notice_dismiss_link() {
+
+		$link = wp_nonce_url( trailingslashit( bp_loggedin_user_domain() . bp_get_messages_slug() . '/notices/dismiss/' ), 'messages_dismiss_notice' );
+
+		/**
+		 * Filters the URL for dismissing the current notice for the current user.
+		 *
+		 * @since 9.0.0
+		 *
+		 * @param string $link URL for dismissing the current notice.
+		 */
+		return apply_filters( 'bp_get_message_notice_dismiss_link', $link );
+	}
+
+/**
  * Output the messages component slug.
  *
  * @since 1.5.0
@@ -1357,7 +1388,7 @@ function bp_message_get_notices() {
 			?>
 			<div id="message" class="info notice" rel="n-<?php echo esc_attr( $notice->id ); ?>">
 				<strong><?php bp_message_notice_subject( $notice ); ?></strong>
-				<button type="button" id="close-notice" class="bp-tooltip" data-bp-tooltip="<?php esc_attr_e( 'Dismiss this notice', 'buddypress' ) ?>"><span class="bp-screen-reader-text"><?php _e( 'Dismiss this notice', 'buddypress' ) ?></span> <span aria-hidden="true">&Chi;</span></button>
+				<a href="<?php bp_message_notice_dismiss_link(); ?>" id="close-notice" class="bp-tooltip button" data-bp-tooltip="<?php esc_attr_e( 'Dismiss this notice', 'buddypress' ) ?>"><span class="bp-screen-reader-text"><?php _e( 'Dismiss this notice', 'buddypress' ) ?></span> <span aria-hidden="true">&Chi;</span></a>
 				<?php bp_message_notice_text( $notice ); ?>
 				<?php wp_nonce_field( 'bp_messages_close_notice', 'close-notice-nonce' ); ?>
 			</div>
@@ -1675,6 +1706,7 @@ function bp_the_thread_subject() {
  */
 function bp_get_the_thread_recipients() {
 	if ( 5 <= bp_get_thread_recipients_count() ) {
+		/* translators: %s: number of message recipients */
 		$recipients = sprintf( __( '%s recipients', 'buddypress' ), number_format_i18n( bp_get_thread_recipients_count() ) );
 	} else {
 		$recipients = bp_get_thread_recipients_list();
@@ -2066,7 +2098,14 @@ function bp_the_thread_message_time_since() {
 		 *
 		 * @param string $value Default text of 'Sent x hours ago'.
 		 */
-		return apply_filters( 'bp_get_the_thread_message_time_since', sprintf( __( 'Sent %s', 'buddypress' ), bp_core_time_since( bp_get_the_thread_message_date_sent() ) ) );
+		return apply_filters(
+			'bp_get_the_thread_message_time_since',
+			sprintf(
+				/* translators: %s: last activity timestamp (e.g. "active 1 hour ago") */
+				__( 'Sent %s', 'buddypress' ),
+				bp_core_time_since( bp_get_the_thread_message_date_sent() )
+			)
+		);
 	}
 
 /**

@@ -68,6 +68,11 @@ class BBP_Akismet {
 		// Update post meta
 		add_action( 'wp_insert_post', array( $this, 'update_post_meta' ), 10, 2 );
 
+		// Cleanup
+		add_action( 'akismet_scheduled_delete', array( $this, 'delete_old_spam' ) );
+		add_action( 'akismet_scheduled_delete', array( $this, 'delete_old_spam_meta' ) );
+		add_action( 'akismet_scheduled_delete', array( $this, 'delete_orphaned_spam_meta' ) );
+
 		// Admin
 		if ( is_admin() ) {
 			add_action( 'add_meta_boxes', array( $this, 'add_metaboxes' ) );
@@ -79,20 +84,15 @@ class BBP_Akismet {
 	 *
 	 * @since 2.0.0 bbPress (r3277)
 	 *
-	 * @param string $post_data
+	 * @param array $post_data
 	 *
 	 * @return array Array of post data
 	 */
-	public function check_post( $post_data ) {
+	public function check_post( $post_data = array() ) {
 
 		// Define local variables
 		$user_data = array();
 		$post_permalink = '';
-
-		// Post is not published
-		if ( bbp_get_public_status_id() !== $post_data['post_status'] ) {
-			return $post_data;
-		}
 
 		// Cast the post_author to 0 if it's empty
 		if ( empty( $post_data['post_author'] ) ) {
@@ -110,7 +110,7 @@ class BBP_Akismet {
 		$anonymous_data = bbp_filter_anonymous_post_data();
 
 		// Author is anonymous
-		if ( ! empty( $anonymous_data ) ) {
+		if ( ! bbp_has_errors() ) {
 			$user_data['name']    = $anonymous_data['bbp_anonymous_name'];
 			$user_data['email']   = $anonymous_data['bbp_anonymous_email'];
 			$user_data['website'] = $anonymous_data['bbp_anonymous_website'];
@@ -165,20 +165,19 @@ class BBP_Akismet {
 			'user_role'                      => $this->get_user_roles( $post_data['post_author'] ),
 		) );
 
-		// Set the result (from maybe_spam() above)
-		$post_data['bbp_akismet_result'] = ! empty( $_post['bbp_akismet_result'] )
-			? $_post['bbp_akismet_result'] // raw
-			: esc_html__( 'No response', 'bbpress' );
+		// Set the results (from maybe_spam() above)
+		$post_data['bbp_akismet_result_headers'] = $_post['bbp_akismet_result_headers'];
+		$post_data['bbp_akismet_result']         = $_post['bbp_akismet_result'];
+		$post_data['bbp_post_as_submitted']      = $_post;
 
-		// Set the data-as-submitted value without the result (recursion avoidance)
-		unset( $_post['bbp_akismet_result'] );
-		$post_data['bbp_post_as_submitted'] = $_post;
-
-		// Cleanup to avoid touching this variable again below
-		unset( $_post );
+		// Avoid recursion by unsetting results from post-as-submitted
+		unset(
+			$post_data['bbp_post_as_submitted']['bbp_akismet_result_headers'],
+			$post_data['bbp_post_as_submitted']['bbp_akismet_result']
+		);
 
 		// Allow post_data to be manipulated
-		do_action_ref_array( 'bbp_akismet_check_post', $post_data );
+		$post_data = apply_filters( 'bbp_akismet_check_post', $post_data );
 
 		// Parse and log the last response
 		$this->last_post = $this->parse_response( $post_data );
@@ -191,7 +190,7 @@ class BBP_Akismet {
 	 * Parse the response from the Akismet service, and alter the post data as
 	 * necessary. For example, switch the status to `spam` if spammy.
 	 *
-	 * Note: this method also skiis responsible for allowing users who can moderate, to
+	 * Note: this method also is responsible for allowing users who can moderate to
 	 * never have their posts marked as spam. This is because they are "trusted"
 	 * users. However, their posts are still sent to Akismet to be checked.
 	 *
@@ -214,6 +213,26 @@ class BBP_Akismet {
 		// Bail early if current user can skip spam enforcement
 		if ( apply_filters( 'bbp_bypass_spam_enforcement', $skip_spam, $post_data ) ) {
 			return $post_data;
+		}
+
+		// Discard obvious spam
+		if ( get_option( 'akismet_strictness' ) ) {
+
+			// Akismet is 100% confident this is spam
+			if (
+				! empty( $post_data['bbp_akismet_result_headers']['x-akismet-pro-tip'] )
+				&&
+				( 'discard' === $post_data['bbp_akismet_result_headers']['x-akismet-pro-tip'] )
+			) {
+
+				// URL to redirect to (current, or forum root)
+				$redirect_to = ( ! empty( $_SERVER['HTTP_HOST'] ) && ! empty( $_SERVER['REQUEST_URI'] ) )
+					? bbp_get_url_scheme() . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+					: bbp_get_root_url();
+
+				// Do the redirect (post data not saved!)
+				bbp_redirect( $redirect_to );
+			}
 		}
 
 		// Result is spam, so set the status as such
@@ -300,7 +319,7 @@ class BBP_Akismet {
 			'comment_author_email' => $_post->post_author ? get_the_author_meta( 'email',        $_post->post_author ) : get_post_meta( $post_id, '_bbp_anonymous_email',   true ),
 			'comment_author_url'   => $_post->post_author ? bbp_get_user_profile_url(            $_post->post_author ) : get_post_meta( $post_id, '_bbp_anonymous_website', true ),
 			'comment_content'      => $_post_content,
-			'comment_date'         => $_post->post_date,
+			'comment_date_gmt'     => $_post->post_date_gmt,
 			'comment_ID'           => $post_id,
 			'comment_post_ID'      => $_post->post_parent,
 			'comment_type'         => $_post->post_type,
@@ -413,11 +432,17 @@ class BBP_Akismet {
 	 *
 	 * @return array Array of post data
 	 */
-	private function maybe_spam( $post_data, $check = 'check', $spam = 'spam' ) {
+	private function maybe_spam( $post_data = array(), $check = 'check', $spam = 'spam' ) {
 		global $akismet_api_host, $akismet_api_port;
 
 		// Define variables
-		$query_string = $path = $response = '';
+		$query_string = $path = '';
+		$response = array( '', '' );
+
+		// Make sure post data is an array
+		if ( ! is_array( $post_data ) ) {
+			$post_data = array();
+		}
 
 		// Populate post data
 		$post_data['blog']         = get_option( 'home' );
@@ -427,51 +452,66 @@ class BBP_Akismet {
 		$post_data['user_agent']   = bbp_current_author_ua();
 
 		// Loop through _POST args and rekey strings
-		foreach ( $_POST as $key => $value ) {
-			if ( is_string( $value ) ) {
-				$post_data['POST_' . $key] = $value;
+		if ( ! empty( $_POST ) && is_countable( $_POST ) ) {
+			foreach ( $_POST as $key => $value ) {
+				if ( is_string( $value ) ) {
+					$post_data[ 'POST_' . $key ] = $value;
+				}
 			}
 		}
-
-		// Keys to ignore
-		$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' );
 
 		// Loop through _SERVER args and remove allowed keys
-		foreach ( $_SERVER as $key => $value ) {
+		if ( ! empty( $_SERVER ) && is_countable( $_SERVER ) ) {
 
-			// Key should not be ignored
-			if ( ! in_array( $key, $ignore, true ) && is_string( $value ) ) {
-				$post_data[ $key ] = $value;
+			// Keys to ignore
+			$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' );
 
-			// Key should be ignored
-			} else {
-				$post_data[ $key ] = '';
+			foreach ( $_SERVER as $key => $value ) {
+
+				// Key should not be ignored
+				if ( ! in_array( $key, $ignore, true ) && is_string( $value ) ) {
+					$post_data[ $key ] = $value;
+
+				// Key should be ignored
+				} else {
+					$post_data[ $key ] = '';
+				}
 			}
 		}
 
-		// Ready...
-		foreach ( $post_data as $key => $data ) {
-			$query_string .= $key . '=' . urlencode( wp_unslash( $data ) ) . '&';
+		// Encode post data
+		if ( ! empty( $post_data ) && is_countable( $post_data ) ) {
+			foreach ( $post_data as $key => $data ) {
+				$query_string .= $key . '=' . urlencode( wp_unslash( $data ) ) . '&';
+			}
 		}
 
-		// Aim...
+		// Only accepts spam|ham
+		if ( ! in_array( $spam, array( 'spam', 'ham' ), true ) ) {
+			$spam = 'spam';
+		}
+
+		// Setup the API route
 		if ( 'check' === $check ) {
 			$path = '/1.1/comment-check';
 		} elseif ( 'submit' === $check ) {
 			$path = '/1.1/submit-' . $spam;
 		}
 
-		// Fire!
-		$response = ! apply_filters( 'bbp_bypass_check_for_spam', false, $post_data )
-			? $this->http_post( $query_string, $akismet_api_host, $path, $akismet_api_port )
-			: false;
-
-		// Check the high-speed cam
-		if ( ! empty( $response[1] ) ) {
-			$post_data['bbp_akismet_result'] = $response[1];
-		} else {
-			$post_data['bbp_akismet_result'] = esc_html__( 'No response', 'bbpress' );
+		// Send data to Akismet
+		if ( ! apply_filters( 'bbp_bypass_check_for_spam', false, $post_data ) ) {
+			$response = $this->http_post( $query_string, $akismet_api_host, $path, $akismet_api_port );
 		}
+
+		// Set the result headers
+		$post_data['bbp_akismet_result_headers'] = ! empty( $response[0] )
+			? $response[0] // raw
+			: esc_html__( 'No response', 'bbpress' );
+
+		// Set the result
+		$post_data['bbp_akismet_result'] = ! empty( $response[1] )
+			? $response[1] // raw
+			: esc_html__( 'No response', 'bbpress' );
 
 		// Return the post data, with the results of the external Akismet request
 		return $post_data;
@@ -501,7 +541,7 @@ class BBP_Akismet {
 		}
 
 		// Set up Akismet last post data
-		if ( ! empty( $this->last_post ) ) {
+		if ( ! empty( $this->last_post['bbp_post_as_submitted'] ) ) {
 			$as_submitted = $this->last_post['bbp_post_as_submitted'];
 		}
 
@@ -513,46 +553,105 @@ class BBP_Akismet {
 			$userdata       = get_userdata( $_post->post_author );
 			$anonymous_data = bbp_filter_anonymous_post_data();
 
+			// Which name?
+			$name = ! empty( $anonymous_data['bbp_anonymous_name'] )
+				? $anonymous_data['bbp_anonymous_name']
+				: $userdata->display_name;
+
+			// Which email?
+			$email = ! empty( $anonymous_data['bbp_anonymous_email'] )
+				? $anonymous_data['bbp_anonymous_email']
+				: $userdata->user_email;
+
 			// More checks
-			if (	intval( $as_submitted['comment_post_ID'] )    === intval( $_post->post_parent )
-					&&      $as_submitted['comment_author']       === ( $anonymous_data ? $anonymous_data['bbp_anonymous_name']  : $userdata->display_name )
-					&&      $as_submitted['comment_author_email'] === ( $anonymous_data ? $anonymous_data['bbp_anonymous_email'] : $userdata->user_email   )
-				) {
+			if (
+
+				// Post matches
+				( intval( $as_submitted['comment_post_ID'] ) === intval( $_post->post_parent ) )
+
+				&&
+
+				// Name matches
+				( $as_submitted['comment_author'] === $name )
+
+				&&
+
+				// Email matches
+				( $as_submitted['comment_author_email'] === $email )
+			) {
+
+				// Delete old content daily
+				if ( ! wp_next_scheduled( 'akismet_scheduled_delete' ) ) {
+					wp_schedule_event( time(), 'daily', 'akismet_scheduled_delete' );
+				}
 
 				// Normal result: true
-				if ( $this->last_post['bbp_akismet_result'] === 'true' ) {
+				if ( ! empty( $this->last_post['bbp_akismet_result'] ) && ( $this->last_post['bbp_akismet_result'] === 'true' ) ) {
 
 					// Leave a trail so other's know what we did
 					update_post_meta( $post_id, '_bbp_akismet_result', 'true' );
-					$this->update_post_history( $post_id, esc_html__( 'Akismet caught this post as spam', 'bbpress' ), 'check-spam' );
+					$this->update_post_history(
+						$post_id,
+						esc_html__( 'Akismet caught this post as spam', 'bbpress' ),
+						'check-spam'
+					);
 
 					// If post_status isn't the spam status, as expected, leave a note
 					if ( bbp_get_spam_status_id() !== $_post->post_status ) {
-						$this->update_post_history( $post_id, sprintf( esc_html__( 'Post status was changed to %s', 'bbpress' ), $_post->post_status ), 'status-changed-' . $_post->post_status );
+						$this->update_post_history(
+							$post_id,
+							sprintf(
+								esc_html__( 'Post status was changed to %s', 'bbpress' ),
+								$_post->post_status
+							),
+							'status-changed-' . $_post->post_status
+						);
 					}
 
 				// Normal result: false
-				} elseif ( $this->last_post['bbp_akismet_result'] === 'false' ) {
+				} elseif ( ! empty( $this->last_post['bbp_akismet_result'] ) && ( $this->last_post['bbp_akismet_result'] === 'false' ) ) {
 
 					// Leave a trail so other's know what we did
 					update_post_meta( $post_id, '_bbp_akismet_result', 'false' );
-					$this->update_post_history( $post_id, esc_html__( 'Akismet cleared this post as not spam', 'bbpress' ), 'check-ham' );
+					$this->update_post_history(
+						$post_id,
+						esc_html__( 'Akismet cleared this post as not spam', 'bbpress' ),
+						'check-ham'
+					);
 
 					// If post_status is the spam status, which isn't expected, leave a note
 					if ( bbp_get_spam_status_id() === $_post->post_status ) {
-						$this->update_post_history( $post_id, sprintf( esc_html__( 'Post status was changed to %s', 'bbpress' ), $_post->post_status ), 'status-changed-' . $_post->post_status );
+						$this->update_post_history(
+							$post_id,
+							sprintf(
+								esc_html__( 'Post status was changed to %s', 'bbpress' ),
+								$_post->post_status
+							),
+							'status-changed-' . $_post->post_status
+						);
 					}
 
 				// Abnormal result: error
 				} else {
 					// Leave a trail so other's know what we did
 					update_post_meta( $post_id, '_bbp_akismet_error', time() );
-					$this->update_post_history( $post_id, sprintf( esc_html__( 'Akismet was unable to check this post (response: %s), will automatically retry again later.', 'bbpress' ), $this->last_post['bbp_akismet_result'] ), 'check-error' );
+					$this->update_post_history(
+						$post_id,
+						sprintf(
+							esc_html__( 'Akismet was unable to check this post (response: %s), will automatically retry again later.', 'bbpress' ),
+							$this->last_post['bbp_akismet_result']
+						),
+						'check-error'
+					);
 				}
 
 				// Record the complete original data as submitted for checking
 				if ( isset( $this->last_post['bbp_post_as_submitted'] ) ) {
-					update_post_meta( $post_id, '_bbp_akismet_as_submitted', $this->last_post['bbp_post_as_submitted'] );
+					update_post_meta(
+						$post_id,
+						'_bbp_akismet_as_submitted',
+						$this->last_post['bbp_post_as_submitted']
+					);
 				}
 			}
 		}
@@ -664,13 +763,13 @@ class BBP_Akismet {
 
 		// Preload required variables
 		$bbp_version  = bbp_get_version();
+		$ak_version   = constant( 'AKISMET_VERSION' );
 		$http_host    = $host;
 		$blog_charset = get_option( 'blog_charset' );
-		$response     = '';
 
-		// Untque User Agent
-		$akismet_ua     = "bbPress/{$bbp_version} | ";
-		$akismet_ua    .= 'Akismet/' . constant( 'AKISMET_VERSION' );
+		// User Agent & Content Type
+		$akismet_ua   = "bbPress/{$bbp_version} | Akismet/{$ak_version}";
+		$content_type = 'application/x-www-form-urlencoded; charset=' . $blog_charset;
 
 		// Use specific IP (if provided)
 		if ( ! empty( $ip ) && long2ip( ip2long( $ip ) ) ) {
@@ -679,29 +778,83 @@ class BBP_Akismet {
 
 		// Setup the arguments
 		$http_args = array(
-			'body'             => $request,
-			'headers'          => array(
-				'Content-Type' => 'application/x-www-form-urlencoded; charset=' . $blog_charset,
+			'httpversion' => '1.0',
+			'timeout'     => 15,
+			'body'        => $request,
+			'headers'     => array(
+				'Content-Type' => $content_type,
 				'Host'         => $host,
 				'User-Agent'   => $akismet_ua
-			),
-			'httpversion'      => '1.0',
-			'timeout'          => 15
+			)
 		);
 
-		// Where we are sending our request
-		$akismet_url = 'http://' . $http_host . $path;
+		// Return the response
+		return $this->get_response( $http_host . $path, $http_args );
+	}
 
-		// Send the request
-		$response    = wp_remote_post( $akismet_url, $http_args );
+	/**
+	 * Handles the repeated calls to wp_remote_post(), including SSL support.
+	 *
+	 * @since 2.6.7 (bbPress r7194)
+	 *
+	 * @param string $host_and_path Scheme-less URL
+	 * @param array  $http_args     Array of arguments for wp_remote_post()
+	 * @return array
+	 */
+	private function get_response( $host_and_path = '', $http_args = array() ) {
 
-		// Bail if the response is an error
+		// Default variables
+		$akismet_url = $http_akismet_url = 'http://' . $host_and_path;
+		$is_ssl = $ssl_failed = false;
+		$now = time();
+
+		// Check if SSL requests were disabled fewer than 24 hours ago
+		$ssl_disabled_time = get_option( 'akismet_ssl_disabled' );
+
+		// Clean-up if 24 hours have passed
+		if ( ! empty( $ssl_disabled_time ) && ( $ssl_disabled_time < ( $now - DAY_IN_SECONDS ) ) ) {
+			delete_option( 'akismet_ssl_disabled' );
+			$ssl_disabled_time = false;
+		}
+
+		// Maybe HTTPS if not disabled
+		if ( empty( $ssl_disabled_time ) && ( $is_ssl = wp_http_supports( array( 'ssl' ) ) ) ) {
+			$akismet_url = set_url_scheme( $akismet_url, 'https' );
+		}
+
+		// Initial remote request
+		$response = wp_remote_post( $akismet_url, $http_args );
+
+		// Initial request produced an error, so retry...
+		if ( ! empty( $is_ssl ) && is_wp_error( $response ) ) {
+
+			// Intermittent connection problems may cause the first HTTPS
+			// request to fail and subsequent HTTP requests to succeed randomly.
+			// Retry the HTTPS request once before disabling SSL for a time.
+			$response = wp_remote_post( $akismet_url, $http_args );
+
+			// SSL request failed twice, so try again without it
+			if ( is_wp_error( $response ) ) {
+				$response   = wp_remote_post( $http_akismet_url, $http_args );
+				$ssl_failed = true;
+			}
+		}
+
+		// Bail if errored
 		if ( is_wp_error( $response ) ) {
-			return '';
+			return array( '', '' );
+		}
+
+		// Maybe disable SSL for future requests
+		if ( ! empty( $ssl_failed ) ) {
+			update_option( 'akismet_ssl_disabled', $now );
 		}
 
 		// No errors so return response
-		return array( $response['headers'], $response['body'] );
+		return array(
+			$response['headers'],
+			$response['body']
+		);
 	}
 
 	/**
@@ -810,6 +963,309 @@ class BBP_Akismet {
 		</div>
 
 		<?php
+	}
+
+	/**
+	 * Get the number of rows to delete in a single clean-up query.
+	 *
+	 * @since 2.6.9 bbPress (r7225)
+	 *
+	 * @param string $filter The name of the filter to run.
+	 * @return int
+	 */
+	public function get_delete_limit( $filter = '' ) {
+
+		// Default filter
+		if ( empty( $filter ) ) {
+			$filter = '_bbp_akismet_delete_spam_limit';
+		}
+
+		/**
+		 * Determines how many rows will be deleted in each batch.
+		 *
+		 * @param int The number of rows. Default 1000.
+		 */
+		$delete_limit = (int) apply_filters( $filter, 1000 );
+
+		// Validate and return the deletion limit
+		return max( 1, $delete_limit );
+	}
+
+	/**
+	 * Get the interval (in days) for spam to remain in the queue.
+	 *
+	 * @since 2.6.9 bbPress (r7225)
+	 *
+	 * @param string $filter The name of the filter to run.
+	 * @return int
+	 */
+	public function get_delete_interval( $filter = '' ) {
+
+		// Default filter
+		if ( empty( $filter ) ) {
+			$filter = '_bbp_akismet_delete_spam_interval';
+		}
+
+		/**
+		 * Determines how many days a piece of spam will be left in the Spam
+		 * queue before being deleted.
+		 *
+		 * @param int The number of days. Default 15.
+		 */
+		$delete_interval = (int) apply_filters( $filter, 15 );
+
+		// Validate and return the deletion interval
+		return max( 1, $delete_interval );
+	}
+
+	/**
+	 * Deletes old spam topics & replies from the queue after 15 days
+	 * (determined by `_bbp_akismet_delete_spam_interval` filter)
+	 * since they are not useful in the long term.
+	 *
+	 * @since 2.6.7 bbPress (r7203)
+	 *
+	 * @global wpdb $wpdb
+	 */
+	public function delete_old_spam() {
+		global $wpdb;
+
+		// Get the deletion limit & interval
+		$delete_limit    = $this->get_delete_limit( '_bbp_akismet_delete_spam_limit' );
+		$delete_interval = $this->get_delete_interval( '_bbp_akismet_delete_spam_interval' );
+
+		// Setup the query
+		$sql = "SELECT id FROM {$wpdb->posts} WHERE post_type IN ('topic', 'reply') AND post_status = 'spam' AND DATE_SUB(NOW(), INTERVAL %d DAY) > post_date_gmt LIMIT %d";
+
+		// Query loop of topic & reply IDs
+		while ( $spam_ids = $wpdb->get_col( $wpdb->prepare( $sql, $delete_interval, $delete_limit ) ) ) {
+
+			// Exit loop if no spam IDs
+			if ( empty( $spam_ids ) ) {
+				break;
+			}
+
+			// Reset queries
+			$wpdb->queries = array();
+
+			// Loop through each of the topic/reply IDs
+			foreach ( $spam_ids as $spam_id ) {
+
+				/**
+				 * Perform a single action on the single topic/reply ID for
+				 * simpler batch processing.
+				 *
+				 * Maybe we should run the bbp_delete_topic or bbp_delete_reply
+				 * actions here, too?
+				 *
+				 * @param string The current function.
+				 * @param int    The current topic/reply ID.
+				 */
+				do_action( '_bbp_akismet_batch_delete', __FUNCTION__, $spam_id );
+			}
+
+			// Prepared as strings since id is an unsigned BIGINT, and using %
+			// will constrain the value to the maximum signed BIGINT.
+			$format_string = implode( ', ', array_fill( 0, count( $spam_ids ), '%s' ) );
+
+			// Run the delete queries
+			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->posts} WHERE ID IN ( {$format_string} )", $spam_ids ) );
+			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->postmeta} WHERE post_id IN ( {$format_string} )", $spam_ids ) );
+
+			// Clean the post cache for these topics & replies
+			clean_post_cache( $spam_ids );
+
+			/**
+			 * Single action that encompasses all topic/reply IDs after the
+			 * delete queries have been run.
+			 *
+			 * @param int   Count of topic/reply IDs
+			 * @param array Array of topic/reply IDs
+			 */
+			do_action( '_bbp_akismet_delete_spam_count', count( $spam_ids ), $spam_ids );
+		}
+
+		/**
+		 * Determines whether tables should be optimized.
+		 *
+		 * @param int Random number between 1 and 5000.
+		 */
+		$optimize = (int) apply_filters( '_bbp_akismet_optimize_tables', mt_rand( 1, 5000 ), array( $wpdb->posts, $wpdb->postmeta ) );
+
+		// Lucky number 11
+		if ( 11 === $optimize ) {
+			$wpdb->query( "OPTIMIZE TABLE {$wpdb->posts}" );
+			$wpdb->query( "OPTIMIZE TABLE {$wpdb->postmeta}" );
+		}
+	}
+
+	/**
+	 * Deletes `_bbp_akismet_as_submitted` meta keys after 15 days
+	 * (determined by `_bbp_akismet_delete_spam_meta_interval` filter)
+	 * since they are large and not useful in the long term.
+	 *
+	 * @since 2.6.7 bbPress (r7203)
+	 *
+	 * @global wpdb $wpdb
+	 */
+	public function delete_old_spam_meta() {
+		global $wpdb;
+
+		// Get the deletion limit & interval
+		$delete_limit    = $this->get_delete_limit( '_bbp_akismet_delete_spam_meta_limit' );
+		$delete_interval = $this->get_delete_interval( '_bbp_akismet_delete_spam_meta_interval' );
+
+		// Setup the query
+		$sql = "SELECT m.post_id FROM {$wpdb->postmeta} as m INNER JOIN {$wpdb->posts} as p ON m.post_id = p.ID WHERE m.meta_key = '_bbp_akismet_as_submitted' AND DATE_SUB(NOW(), INTERVAL %d DAY) > p.post_date_gmt LIMIT %d";
+
+		// Query loop of topic & reply IDs
+		while ( $spam_ids = $wpdb->get_col( $wpdb->prepare( $sql, $delete_interval, $delete_limit ) ) ) {
+
+			// Exit loop if no spam IDs
+			if ( empty( $spam_ids ) ) {
+				break;
+			}
+
+			// Reset queries
+			$wpdb->queries = array();
+
+			// Loop through each of the topic/reply IDs
+			foreach ( $spam_ids as $spam_id ) {
+
+				// Delete the as_submitted meta data
+				delete_post_meta( $spam_id, '_bbp_akismet_as_submitted' );
+
+				/**
+				 * Perform a single action on the single topic/reply ID for
+				 * simpler batch processing.
+				 *
+				 * @param string The current function.
+				 * @param int    The current topic/reply ID.
+				 */
+				do_action( '_bbp_akismet_batch_delete', __FUNCTION__, $spam_id );
+			}
+
+			/**
+			 * Single action that encompasses all topic/reply IDs after the
+			 * delete queries have been run.
+			 *
+			 * @param int   Count of topic/reply IDs
+			 * @param array Array of topic/reply IDs
+			 */
+			do_action( '_bbp_akismet_delete_spam_meta_count', count( $spam_ids ), $spam_ids );
+		}
+
+		// Maybe optimize
+		$this->maybe_optimize_postmeta();
+	}
+
+	/**
+	 * Clears post meta that no longer has corresponding posts in the database
+	 * (determined by `_bbp_akismet_delete_spam_orphaned_limit` filter)
+	 * since it is not useful in the long term.
+	 *
+	 * @since 2.6.7 bbPress (r7203)
+	 *
+	 * @global wpdb $wpdb
+	 */
+	public function delete_orphaned_spam_meta() {
+		global $wpdb;
+
+		// Get the deletion limit
+		$delete_limit = $this->get_delete_limit( '_bbp_akismet_delete_spam_orphaned_limit' );
+
+		// Default last meta ID
+		$last_meta_id = 0;
+
+		// Start time (float)
+		$start_time = isset( $_SERVER['REQUEST_TIME_FLOAT'] )
+			? (float) $_SERVER['REQUEST_TIME_FLOAT']
+			: microtime( true );
+
+		// Maximum time
+		$max_exec_time = (float) max( ini_get( 'max_execution_time' ) - 5, 3 );
+
+		// Setup the query
+		$sql = "SELECT m.meta_id, m.post_id, m.meta_key FROM {$wpdb->postmeta} as m LEFT JOIN {$wpdb->posts} as p ON m.post_id = p.ID WHERE p.ID IS NULL AND m.meta_id > %d ORDER BY m.meta_id LIMIT %d";
+
+		// Query loop of topic & reply IDs
+		while ( $spam_meta_results = $wpdb->get_results( $wpdb->prepare( $sql, $last_meta_id, $delete_limit ) ) ) {
+
+			// Exit loop if no spam IDs
+			if ( empty( $spam_meta_results ) ) {
+				break;
+			}
+
+			// Reset queries
+			$wpdb->queries = array();
+
+			// Reset deleted meta count
+			$spam_meta_deleted = array();
+
+			// Loop through each of the metas
+			foreach ( $spam_meta_results as $spam_meta ) {
+
+				// Skip if not an Akismet key
+				if ( 'akismet_' !== substr( $spam_meta->meta_key, 0, 8 ) ) {
+					continue;
+				}
+
+				// Delete the meta
+				delete_post_meta( $spam_meta->post_id, $spam_meta->meta_key );
+
+				/**
+				 * Perform a single action on the single topic/reply ID for
+				 * simpler batch processing.
+				 *
+				 * @param string The current function.
+				 * @param int    The current topic/reply ID.
+				 */
+				do_action( '_bbp_akismet_batch_delete', __FUNCTION__, $spam_meta );
+
+				// Stash the meta ID being deleted
+				$spam_meta_deleted[] = $last_meta_id = $spam_meta->meta_id;
+			}
+
+			/**
+			 * Single action that encompasses all topic/reply IDs after the
+			 * delete queries have been run.
+			 *
+			 * @param int   Count of spam meta IDs
+			 * @param array Array of spam meta IDs
+			 */
+			do_action( '_bbp_akismet_delete_spam_meta_count', count( $spam_meta_deleted ), $spam_meta_deleted );
+
+			// Break if getting close to max_execution_time.
+			if ( ( microtime( true ) - $start_time ) > $max_exec_time ) {
+				break;
+			}
+		}
+
+		// Maybe optimize
+		$this->maybe_optimize_postmeta();
+	}
+
+	/**
+	 * Maybe OPTIMIZE the _postmeta database table.
+	 *
+	 * @since 2.7.0 bbPress (r7203)
+	 *
+	 * @global wpdb $wpdb
+	 */
+	private function maybe_optimize_postmeta() {
+		global $wpdb;
+
+		/**
+		 * Determines whether tables should be optimized.
+		 *
+		 * @param int Random number between 1 and 5000.
+		 */
+		$optimize = (int) apply_filters( '_bbp_akismet_optimize_table', mt_rand( 1, 5000 ), $wpdb->postmeta );
+
+		// Lucky number 11
+		if ( 11 === $optimize ) {
+			$wpdb->query( "OPTIMIZE TABLE {$wpdb->postmeta}" );
+		}
 	}
 }
 endif;

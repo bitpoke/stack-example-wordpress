@@ -59,6 +59,9 @@ add_filter( 'bp_email_set_content_html', 'stripslashes', 8 );
 add_filter( 'bp_email_set_content_plaintext', 'wp_strip_all_tags', 6 );
 add_filter( 'bp_email_set_subject', 'sanitize_text_field', 6 );
 
+// Avatars.
+add_filter( 'bp_core_fetch_avatar', 'bp_core_add_loading_lazy_attribute' );
+
 /**
  * Template Compatibility.
  *
@@ -434,7 +437,7 @@ function bp_core_filter_blog_welcome_email( $welcome_email, $blog_id, $user_id, 
 	if ( ! bp_has_custom_signup_page() )
 		return $welcome_email;
 
-	// [User Set] Replaces $password in welcome email; Represents value set by user
+	// [User Set] Replaces $password in welcome email; Represents value set by user.
 	return str_replace( $password, __( '[User Set]', 'buddypress' ), $welcome_email );
 }
 add_filter( 'update_welcome_email', 'bp_core_filter_blog_welcome_email', 10, 4 );
@@ -600,6 +603,7 @@ function bp_modify_page_title( $title = '', $sep = '&raquo;', $seplocation = 'ri
 		$bp_title_parts['site'] = $blogname;
 
 		if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() && ! bp_is_single_activity() ) {
+			/* translators: %s: the page number. */
 			$bp_title_parts['page'] = sprintf( __( 'Page %s', 'buddypress' ), max( $paged, $page ) );
 		}
 	}
@@ -690,6 +694,16 @@ add_filter( 'document_title_parts', 'bp_modify_document_title_parts', 20, 1 );
  */
 function bp_setup_nav_menu_item( $menu_item ) {
 	if ( is_admin() ) {
+		if ( 'bp_nav_menu_item' === $menu_item->object ) {
+			$menu_item->type = 'custom';
+			$menu_item->url  = $menu_item->guid;
+
+			if ( ! in_array( array( 'bp-menu', 'bp-'. $menu_item->post_excerpt .'-nav' ), $menu_item->classes ) ) {
+				$menu_item->classes[] = 'bp-menu';
+				$menu_item->classes[] = 'bp-'. $menu_item->post_excerpt .'-nav';
+			}
+		}
+
 		return $menu_item;
 	}
 
@@ -811,7 +825,7 @@ add_filter( 'customize_nav_menu_available_items', 'bp_customizer_nav_menus_get_i
  *
  * @since 2.3.3
  *
- * @param array $item_types An associative array structured for the customizer.
+ * @param  array $item_types An associative array structured for the customizer.
  * @return array $item_types An associative array structured for the customizer.
  */
 function bp_customizer_nav_menus_set_item_types( $item_types = array() ) {
@@ -886,6 +900,31 @@ function bp_core_filter_edit_post_link( $edit_link = '', $post_id = 0 ) {
 	}
 
 	return $edit_link;
+}
+
+/**
+ * Add 'loading="lazy"' attribute into images and iframes.
+ *
+ * @since 7.0.0
+ *
+ * @string $content Content to inject attribute into.
+ * @return string
+ */
+function bp_core_add_loading_lazy_attribute( $content = '' ) {
+	if ( false === strpos( $content, '<img ' ) && false === strpos( $content, '<iframe ' ) ) {
+		return $content;
+	}
+
+	$content = str_replace( '<img ',    '<img loading="lazy" ',    $content );
+	$content = str_replace( '<iframe ', '<iframe loading="lazy" ', $content );
+
+	// WordPress posts need their position absolute removed for lazyloading.
+	$find_pos_absolute = ' style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" ';
+	if ( false !== strpos( $content, 'data-secret=' ) && false !== strpos( $content, $find_pos_absolute ) ) {
+		$content = str_replace( $find_pos_absolute, '', $content );
+	}
+
+	return $content;
 }
 
 /**
@@ -1028,12 +1067,21 @@ function bp_email_set_default_headers( $headers, $property, $transform, $email )
 
 	// Add 'List-Unsubscribe' header if applicable.
 	if ( ! empty( $tokens['unsubscribe'] ) && $tokens['unsubscribe'] !== wp_login_url() ) {
-		$user = get_user_by( 'email', $tokens['recipient.email'] );
+		$user    = get_user_by( 'email', $tokens['recipient.email'] );
+		$user_id = isset( $user->ID ) ? $user->ID : 0;
 
-		$link = bp_email_get_unsubscribe_link( array(
-			'user_id'           => $user->ID,
+		$args = array(
+			'user_id'           => $user_id,
 			'notification_type' => $email->get( 'type' ),
-		) );
+		);
+
+		// If this email is not to a current member, include the nonmember's email address and the Inviter ID.
+		if ( ! $user_id ) {
+			$args['email_address'] = $tokens['recipient.email'];
+			$args['member_id']     = bp_loggedin_user_id();
+		}
+
+		$link = bp_email_get_unsubscribe_link( $args );
 
 		if ( ! empty( $link ) ) {
 			$headers['List-Unsubscribe'] = sprintf( '<%s>', esc_url_raw( $link ) );
@@ -1168,3 +1216,18 @@ function bp_core_render_email_template( $template ) {
 	return '';
 }
 add_action( 'bp_template_include', 'bp_core_render_email_template', 12 );
+
+/**
+ * Adds BuddyPress components' slugs to the WordPress Multisite subdirectory reserved names.
+ *
+ * @since 6.0.0
+ *
+ * @param array $names The WordPress Multisite subdirectory reserved names.
+ * @return array       The WordPress & BuddyPress Multisite subdirectory reserved names.
+ */
+function bp_core_components_subdirectory_reserved_names( $names = array() ) {
+	$bp_pages = (array) buddypress()->pages;
+
+	return array_merge( $names, wp_list_pluck( $bp_pages, 'slug' ) );
+}
+add_filter( 'subdirectory_reserved_names', 'bp_core_components_subdirectory_reserved_names' );

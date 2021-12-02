@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Html_Theme extends QM_Output_Html {
 
 	/**
@@ -61,6 +63,13 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p class="qm-ltr">' . self::output_filename( $display, $file, 0, true ) . '</p>'; // WPCS: XSS ok.
 		} else {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
+		}
+
+		if ( ! empty( $data['template_altered'] ) ) {
+			printf(
+				'<p><button class="qm-filter-trigger qm-filter-info" data-qm-target="response-concerned_hooks">%s</button></p>',
+				esc_html__( 'Template Hooks in Use', 'query-monitor' )
+			);
 		}
 
 		if ( ! empty( $data['template_hierarchy'] ) ) {

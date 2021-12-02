@@ -7,9 +7,6 @@
 
 namespace Automattic\Jetpack;
 
-use Automattic\Jetpack\Connection\Manager;
-use Automattic\Jetpack\Status;
-
 /**
  * Class Terms_Of_Service
  *
@@ -31,7 +28,8 @@ class Terms_Of_Service {
 		/**
 		 * Acton fired when the master user has agreed to the terms of service.
 		 *
-		 * @since 7.9.0
+		 * @since 1.0.4
+		 * @since-jetpack 7.9.0
 		 */
 		do_action( 'jetpack_agreed_to_terms_of_service' );
 	}
@@ -44,7 +42,8 @@ class Terms_Of_Service {
 		/**
 		 * Acton fired when the master user has revoked their agreement to the terms of service.
 		 *
-		 * @since 7.9.1
+		 * @since 1.0.4
+		 * @since-jetpack 7.9.1
 		 */
 		do_action( 'jetpack_reject_terms_of_service' );
 	}
@@ -55,16 +54,23 @@ class Terms_Of_Service {
 	 * The following conditions have to be met in order to agree to the terms of service.
 	 * 1. The master user has gone though the connect flow.
 	 * 2. The site is not in dev mode.
-	 * 3. The master user of the site is still connected.
+	 * 3. The master user of the site is still connected (deprecated @since 1.4.0).
 	 *
 	 * @return bool
 	 */
 	public function has_agreed() {
-		if ( $this->is_development_mode() ) {
+		if ( $this->is_offline_mode() ) {
 			return false;
 		}
-
-		return $this->get_raw_has_agreed() || $this->is_active();
+		/**
+		 * Before 1.4.0 we used to also check if the master user of the site is connected
+		 * by calling the Connection related `is_active` method.
+		 * As of 1.4.0 we have removed this check in order to resolve the
+		 * circular dependencies it was introducing to composer packages.
+		 *
+		 * @since 1.4.0
+		 */
+		return $this->get_raw_has_agreed();
 	}
 
 	/**
@@ -73,18 +79,8 @@ class Terms_Of_Service {
 	 *
 	 * @return bool
 	 */
-	protected function is_development_mode() {
-		return ( new Status() )->is_development_mode();
-	}
-
-	/**
-	 * Tells us if the site is connected.
-	 * Abstracted for testing purposes.
-	 *
-	 * @return bool
-	 */
-	protected function is_active() {
-		return ( new Manager() )->is_active();
+	protected function is_offline_mode() {
+		return ( new Status() )->is_offline_mode();
 	}
 
 	/**

@@ -3,7 +3,7 @@
  * BP Nouveau Activity widgets
  *
  * @since 3.0.0
- * @version 3.1.0
+ * @version 8.0.0
  */
 
 // Exit if accessed directly.
@@ -19,6 +19,7 @@ class BP_Latest_Activities extends WP_Widget {
 	 * Construct the widget.
 	 *
 	 * @since 3.0.0
+	 * @since 9.0.0 Adds the `show_instance_in_rest` property to Widget options.
 	 */
 	public function __construct() {
 
@@ -34,6 +35,7 @@ class BP_Latest_Activities extends WP_Widget {
 				'classname'                   => 'bp-latest-activities buddypress',
 				'description'                 => __( 'Display the latest updates of your community having the types of your choice.', 'buddypress' ),
 				'customize_selective_refresh' => true,
+				'show_instance_in_rest'       => true,
 			)
 		);
 
@@ -80,14 +82,18 @@ class BP_Latest_Activities extends WP_Widget {
 		 */
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
-		// Check instance for custom max number of activities to display
+		// Check instance for custom max number of activities to display.
 		if ( ! empty( $instance['max'] ) ) {
 			$max = (int) $instance['max'];
 		}
 
-		// Check instance for custom activity types
+		// Check instance for custom activity types.
 		if ( ! empty( $instance['type'] ) ) {
-			$type    = maybe_unserialize( $instance['type'] );
+			$type = maybe_unserialize( $instance['type'] );
+			if ( ! is_array( $type ) ) {
+				$type = (array) maybe_unserialize( $type );
+			}
+
 			$classes = array_map( 'sanitize_html_class', array_merge( $type, array( 'bp-latest-activities' ) ) );
 
 			// Add classes to the container
@@ -181,6 +187,9 @@ class BP_Latest_Activities extends WP_Widget {
 		$type = array( 'activity_update' );
 		if ( ! empty( $instance['type'] ) ) {
 			$type = maybe_unserialize( $instance['type'] );
+			if ( ! is_array( $type ) ) {
+				$type = (array) maybe_unserialize( $type );
+			}
 		}
 		?>
 		<p>

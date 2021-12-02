@@ -36,6 +36,31 @@ class BP_Core extends BP_Component {
 	}
 
 	/**
+	 * Magic getter.
+	 *
+	 * This exists specifically for supporting deprecated object vars.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function __get( $key = '' ) {
+
+		// Backwards compatibility for the original Notifications table var
+		if ( 'table_name_notifications' === $key ) {
+			return bp_is_active( 'notifications' )
+				? buddypress()->notifications->table_name
+				: buddypress()->table_prefix . 'bp_notifications';
+		}
+
+		// Return object var if set, else null
+		return isset( $this->{$key} )
+			? $this->{$key}
+			: null;
+	}
+
+	/**
 	 * Populate the global data needed before BuddyPress can continue.
 	 *
 	 * This involves figuring out the currently required, activated, deactivated,
@@ -249,10 +274,6 @@ class BP_Core extends BP_Component {
 		 */
 		$bp->grav_default->blog  = apply_filters( 'bp_blog_gravatar_default',  $bp->grav_default->user );
 
-		// Notifications table. Included here for legacy purposes. Use
-		// bp-notifications instead.
-		$bp->core->table_name_notifications = $bp->table_prefix . 'bp_notifications';
-
 		// Backward compatibility for plugins modifying the legacy bp_nav and bp_options_nav global properties.
 		$bp->bp_nav         = new BP_Core_BP_Nav_BackCompat();
 		$bp->bp_options_nav = new BP_Core_BP_Options_Nav_BackCompat();
@@ -268,14 +289,17 @@ class BP_Core extends BP_Component {
 		bp_update_is_item_admin( bp_user_has_access(), 'core' );
 
 		// Is the logged in user is a mod for the current item?
-		bp_update_is_item_mod( false,                  'core' );
+		bp_update_is_item_mod( false, 'core' );
 
-		/**
-		 * Fires at the end of the setup of bp-core globals setting.
-		 *
-		 * @since 1.1.0
-		 */
-		do_action( 'bp_core_setup_globals' );
+		parent::setup_globals(
+			array(
+				'block_globals' => array(
+					'bp/login-form' => array(
+						'widget_classnames' => array( 'widget_bp_core_login_widget', 'buddypress' ),
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -306,6 +330,15 @@ class BP_Core extends BP_Component {
 				bp_get_email_post_type(),
 				apply_filters( 'bp_register_email_post_type', array(
 					'description'       => _x( 'BuddyPress emails', 'email post type description', 'buddypress' ),
+					'capabilities'      => array(
+						'edit_posts'          => 'bp_moderate',
+						'edit_others_posts'   => 'bp_moderate',
+						'publish_posts'       => 'bp_moderate',
+						'read_private_posts'  => 'bp_moderate',
+						'delete_posts'        => 'bp_moderate',
+						'delete_others_posts' => 'bp_moderate',
+					),
+					'map_meta_cap'      => true,
 					'labels'            => bp_get_email_post_type_labels(),
 					'menu_icon'         => 'dashicons-email',
 					'public'            => false,
@@ -320,5 +353,58 @@ class BP_Core extends BP_Component {
 		}
 
 		parent::register_post_types();
+	}
+
+	/**
+	 * Init the Core controllers of the BP REST API.
+	 *
+	 * @since 9.0.0
+	 *
+	 * @param array $controllers Optional. See BP_Component::rest_api_init() for
+	 *                           description.
+	 */
+	public function rest_api_init( $controllers = array() ) {
+		$controllers = array(
+			'BP_REST_Components_Endpoint',
+		);
+
+		parent::rest_api_init( $controllers );
+	}
+
+	/**
+	 * Register the BP Core Blocks.
+	 *
+	 * @since 9.0.0
+	 *
+	 * @param array $blocks Optional. See BP_Component::blocks_init() for
+	 *                      description.
+	 */
+	public function blocks_init( $blocks = array() ) {
+		parent::blocks_init(
+			array(
+				'bp/login-form' => array(
+					'name'               => 'bp/login-form',
+					'editor_script'      => 'bp-login-form-block',
+					'editor_script_url'  => plugins_url( 'js/blocks/login-form.js', dirname( __FILE__ ) ),
+					'editor_script_deps' => array(
+						'wp-blocks',
+						'wp-element',
+						'wp-components',
+						'wp-i18n',
+						'wp-block-editor',
+						'bp-block-components',
+					),
+					'style'              => 'bp-login-form-block',
+					'style_url'          => plugins_url( 'css/blocks/login-form.css', dirname( __FILE__ ) ),
+					'attributes'         => array(
+						'title' => array(
+							'type'    => 'string',
+							'default' => '',
+						),
+					),
+					'render_callback'    => 'bp_block_render_login_form_block',
+				),
+			)
+		);
 	}
 }

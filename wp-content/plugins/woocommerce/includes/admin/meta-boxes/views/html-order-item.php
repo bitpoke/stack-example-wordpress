@@ -2,7 +2,7 @@
 /**
  * Shows an order item
  *
- * @package WooCommerce/Admin
+ * @package WooCommerce\Admin
  * @var object $item The item being displayed
  * @var int $item_id The id of the item being displayed
  */
@@ -41,7 +41,7 @@ $row_class    = apply_filters( 'woocommerce_admin_html_order_item_class', ! empt
 		<input type="hidden" name="order_item_tax_class[<?php echo absint( $item_id ); ?>]" value="<?php echo esc_attr( $item->get_tax_class() ); ?>" />
 
 		<?php do_action( 'woocommerce_before_order_itemmeta', $item_id, $item, $product ); ?>
-		<?php require 'html-order-item-meta.php'; ?>
+		<?php require __DIR__ . '/html-order-item-meta.php'; ?>
 		<?php do_action( 'woocommerce_after_order_itemmeta', $item_id, $item, $product ); ?>
 	</td>
 
@@ -50,7 +50,7 @@ $row_class    = apply_filters( 'woocommerce_admin_html_order_item_class', ! empt
 	<td class="item_cost" width="1%" data-sort-value="<?php echo esc_attr( $order->get_item_subtotal( $item, false, true ) ); ?>">
 		<div class="view">
 			<?php
-			echo wc_price( $order->get_item_total( $item, false, true ), array( 'currency' => $order->get_currency() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wc_price( $order->get_item_subtotal( $item, false, true ), array( 'currency' => $order->get_currency() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
 		</div>
 	</td>
@@ -66,11 +66,36 @@ $row_class    = apply_filters( 'woocommerce_admin_html_order_item_class', ! empt
 			}
 			?>
 		</div>
+		<?php
+			$step = apply_filters( 'woocommerce_quantity_input_step', '1', $product );
+
+			/**
+			* Filter to change the product quantity stepping in the order editor of the admin area.
+			*
+			* @since   5.8.0
+			* @param   string      $step    The current step amount to be used in the quantity editor.
+			* @param   WC_Product  $product The product that is being edited.
+			* @param   string      $context The context in which the quantity editor is shown, 'edit' or 'refund'.
+			*/
+			$step_edit   = apply_filters( 'woocommerce_quantity_input_step_admin', $step, $product, 'edit' );
+			$step_refund = apply_filters( 'woocommerce_quantity_input_step_admin', $step, $product, 'refund' );
+
+			/**
+			* Filter to change the product quantity minimum in the order editor of the admin area.
+			*
+			* @since   5.8.0
+			* @param   string      $step    The current minimum amount to be used in the quantity editor.
+			* @param   WC_Product  $product The product that is being edited.
+			* @param   string      $context The context in which the quantity editor is shown, 'edit' or 'refund'.
+			*/
+			$min_edit   = apply_filters( 'woocommerce_quantity_input_min_admin', '0', $product, 'edit' );
+			$min_refund = apply_filters( 'woocommerce_quantity_input_min_admin', '0', $product, 'refund' );
+		?>
 		<div class="edit" style="display: none;">
-			<input type="number" step="<?php echo esc_attr( apply_filters( 'woocommerce_quantity_input_step', '1', $product ) ); ?>" min="0" autocomplete="off" name="order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" value="<?php echo esc_attr( $item->get_quantity() ); ?>" data-qty="<?php echo esc_attr( $item->get_quantity() ); ?>" size="4" class="quantity" />
+			<input type="number" step="<?php echo esc_attr( $step_edit ); ?>" min="<?php echo esc_attr( $min_edit ); ?>" autocomplete="off" name="order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" value="<?php echo esc_attr( $item->get_quantity() ); ?>" data-qty="<?php echo esc_attr( $item->get_quantity() ); ?>" size="4" class="quantity" />
 		</div>
 		<div class="refund" style="display: none;">
-			<input type="number" step="<?php echo esc_attr( apply_filters( 'woocommerce_quantity_input_step', '1', $product ) ); ?>" min="0" max="<?php echo absint( $item->get_quantity() ); ?>" autocomplete="off" name="refund_order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" size="4" class="refund_order_item_qty" />
+			<input type="number" step="<?php echo esc_attr( $step_refund ); ?>" min="<?php echo esc_attr( $min_refund ); ?>" max="<?php echo absint( $item->get_quantity() ); ?>" autocomplete="off" name="refund_order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" size="4" class="refund_order_item_qty" />
 		</div>
 	</td>
 	<td class="line_cost" width="1%" data-sort-value="<?php echo esc_attr( $item->get_total() ); ?>">

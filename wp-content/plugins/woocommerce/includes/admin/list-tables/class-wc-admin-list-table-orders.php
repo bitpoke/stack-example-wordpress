@@ -2,7 +2,7 @@
 /**
  * List tables: orders.
  *
- * @package WooCommerce\admin
+ * @package WooCommerce\Admin
  * @version 3.3.0
  */
 
@@ -15,7 +15,7 @@ if ( class_exists( 'WC_Admin_List_Table_Orders', false ) ) {
 }
 
 if ( ! class_exists( 'WC_Admin_List_Table', false ) ) {
-	include_once 'abstract-class-wc-admin-list-table.php';
+	include_once __DIR__ . '/abstract-class-wc-admin-list-table.php';
 }
 
 /**
@@ -145,6 +145,7 @@ class WC_Admin_List_Table_Orders extends WC_Admin_List_Table {
 		$actions['mark_processing'] = __( 'Change status to processing', 'woocommerce' );
 		$actions['mark_on-hold']    = __( 'Change status to on-hold', 'woocommerce' );
 		$actions['mark_completed']  = __( 'Change status to completed', 'woocommerce' );
+		$actions['mark_cancelled']  = __( 'Change status to cancelled', 'woocommerce' );
 
 		if ( wc_string_to_bool( get_option( 'woocommerce_allow_bulk_remove_personal_data', 'no' ) ) ) {
 			$actions['remove_personal_data'] = __( 'Remove personal data', 'woocommerce' );
@@ -249,11 +250,11 @@ class WC_Admin_List_Table_Orders extends WC_Admin_List_Table {
 		}
 
 		// Check if the order was created within the last 24 hours, and not in the future.
-		if ( $order_timestamp > strtotime( '-1 day', current_time( 'timestamp', true ) ) && $order_timestamp <= current_time( 'timestamp', true ) ) {
+		if ( $order_timestamp > strtotime( '-1 day', time() ) && $order_timestamp <= time() ) {
 			$show_date = sprintf(
 				/* translators: %s: human-readable time difference */
 				_x( '%s ago', '%s = human-readable time difference', 'woocommerce' ),
-				human_time_diff( $this->object->get_date_created()->getTimestamp(), current_time( 'timestamp', true ) )
+				human_time_diff( $this->object->get_date_created()->getTimestamp(), time() )
 			);
 		} else {
 			$show_date = $this->object->get_date_created()->date_i18n( apply_filters( 'woocommerce_admin_order_date_format', __( 'M j, Y', 'woocommerce' ) ) );
@@ -454,6 +455,7 @@ class WC_Admin_List_Table_Orders extends WC_Admin_List_Table {
 				'method_id',
 				'cost',
 				'_reduced_stock',
+				'_restock_refunded_items',
 			)
 		);
 
@@ -751,7 +753,7 @@ class WC_Admin_List_Table_Orders extends WC_Admin_List_Table {
 		$user_string = '';
 		$user_id     = '';
 
-		if ( ! empty( $_GET['_customer_user'] ) ) { // phpcs:disable  WordPress.Security.NonceVerification.NoNonceVerification
+		if ( ! empty( $_GET['_customer_user'] ) ) { // phpcs:disable WordPress.Security.NonceVerification.Recommended
 			$user_id = absint( $_GET['_customer_user'] ); // WPCS: input var ok, sanitization ok.
 			$user    = get_user_by( 'id', $user_id );
 
@@ -765,7 +767,7 @@ class WC_Admin_List_Table_Orders extends WC_Admin_List_Table {
 		}
 		?>
 		<select class="wc-customer-search" name="_customer_user" data-placeholder="<?php esc_attr_e( 'Filter by registered customer', 'woocommerce' ); ?>" data-allow_clear="true">
-			<option value="<?php echo esc_attr( $user_id ); ?>" selected="selected"><?php echo htmlspecialchars( wp_kses_post( $user_string ) ); // htmlspecialchars to prevent XSS when rendered by selectWoo. ?><option>
+			<option value="<?php echo esc_attr( $user_id ); ?>" selected="selected"><?php echo htmlspecialchars( wp_kses_post( $user_string ) ); // htmlspecialchars to prevent XSS when rendered by selectWoo. ?></option>
 		</select>
 		<?php
 	}
@@ -844,7 +846,7 @@ class WC_Admin_List_Table_Orders extends WC_Admin_List_Table {
 	public function search_label( $query ) {
 		global $pagenow, $typenow;
 
-		if ( 'edit.php' !== $pagenow || 'shop_order' !== $typenow || ! get_query_var( 'shop_order_search' ) || ! isset( $_GET['s'] ) ) { // phpcs:disable  WordPress.Security.NonceVerification.NoNonceVerification
+		if ( 'edit.php' !== $pagenow || 'shop_order' !== $typenow || ! get_query_var( 'shop_order_search' ) || ! isset( $_GET['s'] ) ) { // phpcs:ignore  WordPress.Security.NonceVerification.Recommended
 			return $query;
 		}
 
@@ -870,7 +872,7 @@ class WC_Admin_List_Table_Orders extends WC_Admin_List_Table {
 	public function search_custom_fields( $wp ) {
 		global $pagenow;
 
-		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] ) || 'shop_order' !== $wp->query_vars['post_type'] || ! isset( $_GET['s'] ) ) { // phpcs:disable  WordPress.Security.NonceVerification.NoNonceVerification
+		if ( 'edit.php' !== $pagenow || empty( $wp->query_vars['s'] ) || 'shop_order' !== $wp->query_vars['post_type'] || ! isset( $_GET['s'] ) ) { // phpcs:ignore  WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 

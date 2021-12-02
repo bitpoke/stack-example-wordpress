@@ -1,8 +1,7 @@
 <?php
-
 /**
  * Module Name: Search
- * Module Description: Enhanced search, powered by Elasticsearch, a powerful replacement for WordPress search.
+ * Module Description: Help visitors quickly find answers with highly relevant instant search results and powerful filtering.
  * First Introduced: 5.0
  * Sort Order: 34
  * Free: false
@@ -10,9 +9,14 @@
  * Auto Activate: No
  * Feature: Search
  * Additional Search Queries: search, elastic, elastic search, elasticsearch, fast search, search results, search performance, google search
- * Plans: business
+ * Plans: business, complete
+ *
+ * @package automattic/jetpack
  */
 
-require_once( dirname( __FILE__ ) . '/search/class.jetpack-search.php' );
+// Include everything.
+require_once __DIR__ . '/search/class.jetpack-search.php';
+require_once __DIR__ . '/search/class-jetpack-search-customberg.php';
 
 Jetpack_Search::instance();
+Automattic\Jetpack\Search\Jetpack_Search_Customberg::instance();

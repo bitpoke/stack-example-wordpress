@@ -96,6 +96,39 @@ function bp_core_set_avatar_globals() {
 add_action( 'bp_setup_globals', 'bp_core_set_avatar_globals' );
 
 /**
+ * Checks whether a given gravatar is one of the default ones.
+ *
+ * @since 8.0.0
+ *
+ * @param string $d The name of the default gravatar.
+ * @return bool True if it's a default gravatar. False otherwise.
+ */
+function bp_core_is_default_gravatar( $d = '' ) {
+	if ( ! $d ) {
+		return false;
+	}
+
+	/** this filter is documented in wp-admin/options-discussion.php */
+	$gravatar_defaults = apply_filters(
+		'avatar_defaults',
+		array_fill_keys(
+			array(
+				'mystery',
+				'blank',
+				'gravatar_default',
+				'identicon',
+				'wavatar',
+				'monsterid',
+				'retro',
+			),
+			''
+		)
+	);
+
+	return isset( $gravatar_defaults[ $d ] );
+}
+
+/**
  * Get an avatar for a BuddyPress object.
  *
  * Supports avatars for users, groups, and blogs by default, but can be
@@ -193,11 +226,9 @@ function bp_core_fetch_avatar( $args = '' ) {
 	$bp = buddypress();
 
 	// If avatars are disabled for the root site, obey that request and bail.
-	if ( ! $bp->avatar->show_avatars ) {
+	if ( ! $bp->avatar || ! $bp->avatar->show_avatars ) {
 		return;
 	}
-
-	global $current_blog;
 
 	// Set the default variables array and parse it against incoming $args array.
 	$params = wp_parse_args( $args, array(
@@ -227,7 +258,7 @@ function bp_core_fetch_avatar( $args = '' ) {
 		switch ( $params['object'] ) {
 
 			case 'blog'  :
-				$params['item_id'] = $current_blog->id;
+				$params['item_id'] = get_current_blog_id();
 				break;
 
 			case 'group' :
@@ -364,7 +395,10 @@ function bp_core_fetch_avatar( $args = '' ) {
 	}
 
 	// Extra attributes.
-	$extra_attr = ! empty( $args['extra_attr'] ) ? ' ' . $args['extra_attr'] : '';
+	$extra_attr = '';
+	if ( ! empty( $params['extra_attr'] ) ) {
+		$extra_attr = ' ' . $params['extra_attr'];
+	}
 
 	// Set CSS ID and create html string.
 	$html_css_id = '';
@@ -643,15 +677,29 @@ function bp_core_fetch_avatar( $args = '' ) {
 			$url_args['r'] = strtolower( $params['rating'] );
 		}
 
+		/** This filter is documented in wp-includes/deprecated.php */
+		$d = apply_filters_deprecated(
+			'bp_core_avatar_default',
+			array( $default_grav, $params ),
+			'8.0.0',
+			'bp_core_avatar_gravatar_default||bp_core_default_avatar',
+			__( 'This filter was used for 2 different purposes. If your goal was to filter the default *Gravatar*, please use `bp_core_avatar_gravatar_default` instead. Otherwise, please use `bp_core_default_avatar` instead.', 'buddypress' )
+		);
+
+		if ( bp_core_is_default_gravatar( $d ) ) {
+			$default_grav = $d;
+		}
+
 		/**
 		 * Filters the Gravatar "d" parameter.
 		 *
 		 * @since 2.6.0
+		 * @since 8.0.0 The name of the filter was changed to `bp_core_avatar_gravatar_default`.
 		 *
 		 * @param string $default_grav The avatar default.
 		 * @param array  $params       The avatar's data.
 		 */
-		$default_grav = apply_filters( 'bp_core_avatar_default', $default_grav, $params );
+		$default_grav = apply_filters( 'bp_core_avatar_gravatar_default', $default_grav, $params );
 
 		// Only set default image if 'Gravatar Logo' is not requested.
 		if ( ! $params['force_default'] && 'gravatar_default' !== $default_grav ) {
@@ -750,7 +798,7 @@ function bp_core_delete_existing_avatar( $args = '' ) {
 		} elseif ( 'group' === $args['object'] ) {
 			$args['item_id'] = buddypress()->groups->current_group->id;
 		} elseif ( 'blog' === $args['object'] ) {
-			$args['item_id'] = $current_blog->id;
+			$args['item_id'] = get_current_blog_id();
 		}
 
 		/** This filter is documented in bp-core/bp-core-avatars.php */
@@ -913,6 +961,7 @@ function bp_core_avatar_handle_upload( $file, $upload_dir_filter ) {
 
 	// In case of an error, stop the process and display a feedback to the user.
 	if ( ! empty( $bp->avatar_admin->original['error'] ) ) {
+		/* translators: %s: the upload error message */
 		bp_core_add_message( sprintf( __( 'Upload Failed! Error was: %s', 'buddypress' ), $bp->avatar_admin->original['error'] ), 'error' );
 		return false;
 	}
@@ -930,7 +979,7 @@ function bp_core_avatar_handle_upload( $file, $upload_dir_filter ) {
 	$bp->avatar_admin->image   = new stdClass();
 
 	// We only want to handle one image after resize.
-	if ( empty( $bp->avatar_admin->resized ) ) {
+	if ( empty( $bp->avatar_admin->resized ) || is_wp_error( $bp->avatar_admin->resized ) ) {
 		$bp->avatar_admin->image->file = $bp->avatar_admin->original['file'];
 		$bp->avatar_admin->image->dir  = str_replace( $upload_path, '', $bp->avatar_admin->original['file'] );
 	} else {
@@ -941,13 +990,15 @@ function bp_core_avatar_handle_upload( $file, $upload_dir_filter ) {
 
 	// Check for WP_Error on what should be an image.
 	if ( is_wp_error( $bp->avatar_admin->image->dir ) ) {
+		/* translators: %s: the upload error message */
 		bp_core_add_message( sprintf( __( 'Upload failed! Error was: %s', 'buddypress' ), $bp->avatar_admin->image->dir->get_error_message() ), 'error' );
 		return false;
 	}
 
 	// If the uploaded image is smaller than the "full" dimensions, throw a warning.
 	if ( $avatar_attachment->is_too_small( $bp->avatar_admin->image->file ) ) {
-		bp_core_add_message( sprintf( __( 'You have selected an image that is smaller than recommended. For best results, upload a picture larger than %d x %d pixels.', 'buddypress' ), bp_core_avatar_full_width(), bp_core_avatar_full_height() ), 'error' );
+		/* translators: 1: the advised width size in pixels. 2: the advised height size in pixels. */
+		bp_core_add_message( sprintf( __( 'You have selected an image that is smaller than recommended. For best results, upload a picture larger than %1$d x %2$d pixels.', 'buddypress' ), bp_core_avatar_full_width(), bp_core_avatar_full_height() ), 'error' );
 	}
 
 	// Set the url value for the image.
@@ -1005,8 +1056,8 @@ function bp_avatar_ajax_upload() {
 	$bp_params['upload_dir_filter'] = '';
 	$needs_reset = array();
 
-	if ( 'user' === $bp_params['object'] && bp_is_active( 'xprofile' ) ) {
-		$bp_params['upload_dir_filter'] = 'xprofile_avatar_upload_dir';
+	if ( 'user' === $bp_params['object'] && bp_is_active( 'members' ) ) {
+		$bp_params['upload_dir_filter'] = 'bp_members_avatar_upload_dir';
 
 		if ( ! bp_displayed_user_id() && ! empty( $bp_params['item_id'] ) ) {
 			$needs_reset = array( 'key' => 'displayed_user', 'value' => $bp->displayed_user );
@@ -1297,20 +1348,19 @@ function bp_avatar_ajax_set() {
 				'item_id'       => $avatar_data['item_id'],
 			);
 
+			/** This action is documented in wp-includes/deprecated.php */
+			do_action_deprecated( 'xprofile_avatar_uploaded', array( (int) $avatar_data['item_id'], $avatar_data['type'], $avatar_data ), '6.0.0', 'bp_members_avatar_uploaded' );
+
 			/**
 			 * Fires if the new avatar was successfully captured.
 			 *
-			 * @since 1.1.0 Used to inform the avatar was successfully cropped
-			 * @since 2.3.4 Add two new parameters to inform about the user id and
-			 *              about the way the avatar was set (eg: 'crop' or 'camera')
-			 *              Move the action at the right place, once the avatar is set
-			 * @since 2.8.0 Added the `$avatar_data` parameter.
+			 * @since 6.0.0
 			 *
 			 * @param string $item_id     Inform about the user id the avatar was set for.
 			 * @param string $type        Inform about the way the avatar was set ('camera').
 			 * @param array  $avatar_data Array of parameters passed to the avatar handler.
 			 */
-			do_action( 'xprofile_avatar_uploaded', (int) $avatar_data['item_id'], $avatar_data['type'], $avatar_data );
+			do_action( 'bp_members_avatar_uploaded', (int) $avatar_data['item_id'], $avatar_data['type'], $avatar_data );
 
 			wp_send_json_success( $return );
 		}
@@ -1355,8 +1405,11 @@ function bp_avatar_ajax_set() {
 		);
 
 		if ( 'user' === $avatar_data['object'] ) {
+			/** This action is documented in wp-includes/deprecated.php */
+			do_action_deprecated( 'xprofile_avatar_uploaded', array( (int) $avatar_data['item_id'], $avatar_data['type'], $r ), '6.0.0', 'bp_members_avatar_uploaded' );
+
 			/** This action is documented in bp-core/bp-core-avatars.php */
-			do_action( 'xprofile_avatar_uploaded', (int) $avatar_data['item_id'], $avatar_data['type'], $r );
+			do_action( 'bp_members_avatar_uploaded', (int) $avatar_data['item_id'], $avatar_data['type'], $r );
 		} elseif ( 'group' === $avatar_data['object'] ) {
 			/** This action is documented in bp-groups/bp-groups-screens.php */
 			do_action( 'groups_avatar_uploaded', (int) $avatar_data['item_id'], $avatar_data['type'], $r );
@@ -1835,16 +1888,30 @@ function bp_core_avatar_default( $type = 'gravatar', $params = array() ) {
 		$avatar = '//www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=' . $size;
 	}
 
+	/** This filter is documented in wp-includes/deprecated.php */
+	$a = apply_filters_deprecated(
+		'bp_core_avatar_default',
+		array( $avatar, $params ),
+		'8.0.0',
+		'bp_core_avatar_gravatar_default||bp_core_default_avatar',
+		__( 'This filter was used for 2 different purposes. If your goal was to filter the default *Gravatar*, please use `bp_core_avatar_gravatar_default` instead. Otherwise, please use `bp_core_default_avatar` instead.', 'buddypress' )
+	);
+
+	if ( ! bp_core_is_default_gravatar( $a ) && false !== strpos( $avatar, '//' ) ) {
+		$avatar = $a;
+	}
+
 	/**
 	 * Filters the URL of the 'full' default avatar.
 	 *
 	 * @since 1.5.0
 	 * @since 2.6.0 Added `$params`.
+	 * @since 8.0.0 The name of the filter was changed to `bp_core_default_avatar`.
 	 *
 	 * @param string $avatar URL of the default avatar.
 	 * @param array  $params Params provided to bp_core_fetch_avatar().
 	 */
-	return apply_filters( 'bp_core_avatar_default', $avatar, $params );
+	return apply_filters( 'bp_core_default_avatar', $avatar, $params );
 }
 
 /**
@@ -1935,11 +2002,6 @@ add_action( 'bp_parse_query', 'bp_core_avatar_reset_query', 10, 1 );
  */
 function bp_avatar_is_front_edit() {
 	$retval = false;
-
-	// No need to carry on if the current WordPress version is not supported.
-	if ( ! bp_attachments_is_wp_version_supported() ) {
-		return $retval;
-	}
 
 	if ( bp_is_user_change_avatar() && 'crop-image' !== bp_get_avatar_admin_step() ) {
 		$retval = ! bp_core_get_root_option( 'bp-disable-avatar-uploads' );

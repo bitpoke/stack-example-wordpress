@@ -1,6 +1,8 @@
 <?php
 
 use Automattic\Jetpack\Assets;
+use Automattic\Jetpack\Redirect;
+use Automattic\Jetpack\Device_Detection\User_Agent_Info;
 
 class Jetpack_Custom_CSS {
 	static function init() {
@@ -23,7 +25,7 @@ class Jetpack_Custom_CSS {
 		define(
 			'SAFECSS_USE_ACE',
 			! jetpack_is_mobile() &&
-			! Jetpack_User_Agent_Info::is_ipad() &&
+			! User_Agent_Info::is_ipad() &&
 			/**
 			 * Should the Custom CSS module use ACE to process CSS.
 			 * @see https://ace.c9.io/
@@ -128,7 +130,7 @@ class Jetpack_Custom_CSS {
 
 		// Prevent content filters running on CSS when restoring revisions
 		if ( isset( $_REQUEST[ 'action' ] ) && 'restore' === $_REQUEST[ 'action' ] && false !== strstr( $_SERVER[ 'REQUEST_URI' ], 'revision.php' ) ) {
-			$parent_post = get_post( wp_get_post_parent_id( intval( $_REQUEST[ 'revision' ] ) ) );
+			$parent_post = get_post( wp_get_post_parent_id( (int) $_REQUEST['revision'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			if ( $parent_post && ! is_wp_error( $parent_post ) && 'safecss' === $parent_post->post_type ) {
 				// Remove wp_filter_post_kses, this causes CSS escaping issues
 				remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
@@ -165,10 +167,18 @@ class Jetpack_Custom_CSS {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		if ( $args['content_width'] && intval( $args['content_width']) > 0 && ( ! isset( $GLOBALS['content_width'] ) || $args['content_width'] != $GLOBALS['content_width'] ) )
-			$args['content_width'] = intval( $args['content_width'] );
-		else
+		if (
+			$args['content_width']
+			&& (int) $args['content_width'] > 0
+			&& (
+				! isset( $GLOBALS['content_width'] )
+				|| $args['content_width'] !== $GLOBALS['content_width']
+			)
+		) {
+			$args['content_width'] = (int) $args['content_width'];
+		} else {
 			$args['content_width'] = false;
+		}
 
 		// Remove wp_filter_post_kses, this causes CSS escaping issues
 		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
@@ -279,7 +289,7 @@ class Jetpack_Custom_CSS {
 			$safecss_revision_id = Jetpack_Custom_CSS::save_revision( $css, true, $args['preprocessor'] );
 
 			// Cache Buster
-			update_option( 'safecss_preview_rev', intval( get_option( 'safecss_preview_rev' ) ) + 1);
+			update_option( 'safecss_preview_rev', (int) get_option( 'safecss_preview_rev' ) + 1 );
 
 			update_metadata( 'post', $safecss_revision_id, 'custom_css_add', $add_to_existing );
 			update_metadata( 'post', $safecss_revision_id, 'content_width', $args['content_width'] );
@@ -307,7 +317,7 @@ class Jetpack_Custom_CSS {
 
 		$safecss_post_revision = Jetpack_Custom_CSS::get_current_revision();
 
-		update_option( 'safecss_rev', intval( get_option( 'safecss_rev' ) ) + 1 );
+		update_option( 'safecss_rev', (int) get_option( 'safecss_rev' ) + 1 );
 
 		update_post_meta( $safecss_post_id, 'custom_css_add', $add_to_existing );
 		update_post_meta( $safecss_post_id, 'content_width', $args['content_width'] );
@@ -619,29 +629,6 @@ class Jetpack_Custom_CSS {
 
 		$css = str_replace( array( '\\\00BB \\\0020', '\0BB \020', '0BB 020' ), '\00BB \0020', $css );
 
-		if ( empty( $css ) ) {
-			$css = "/*\n"
-				. wordwrap(
-					/**
-					 * Filter the default message displayed in the Custom CSS editor.
-					 *
-					 * @module custom-css
-					 *
-					 * @since 1.7.0
-					 *
-					 * @param string $str Default Custom CSS editor content.
-					 */
-					apply_filters(
-						'safecss_default_css',
-						__(
-							"Welcome to Custom CSS!\n\nTo learn how this works, see https://wp.me/PEmnE-Bt",
-							'jetpack'
-						)
-					)
-				)
-				. "\n*/";
-		}
-
 		/**
 		 * Filter the Custom CSS returned from the editor.
 		 *
@@ -891,8 +878,8 @@ class Jetpack_Custom_CSS {
 
 	static function menu() {
 		$parent = 'themes.php';
-		$title = __( 'Edit CSS', 'jetpack' );
-		$hook = add_theme_page( $title, $title, 'edit_theme_options', 'editcss', array( 'Jetpack_Custom_CSS', 'admin' ) );
+		$title  = __( 'Additional CSS', 'jetpack' );
+		$hook   = add_theme_page( $title, $title, 'edit_theme_options', 'editcss', array( 'Jetpack_Custom_CSS', 'admin' ) );
 
 		add_action( "load-revision.php", array( 'Jetpack_Custom_CSS', 'prettify_post_revisions' ) );
 		add_action( "load-$hook", array( 'Jetpack_Custom_CSS', 'update_title' ) );
@@ -1066,7 +1053,9 @@ class Jetpack_Custom_CSS {
 						 *
 						 * @param string $url Custom CSS limited width's support doc URL.
 						 */
-						apply_filters( 'safecss_limit_width_link', 'https://jetpack.com/support/custom-css/#limited-width' )
+						esc_url(
+							apply_filters( 'safecss_limit_width_link', Redirect::get_url( 'jetpack-support-custom-css', array( 'anchor' => 'limited-width' ) ) )
+						)
 					);
 
 					?>
@@ -1080,7 +1069,23 @@ class Jetpack_Custom_CSS {
 					$current_theme = wp_get_theme()->Name;
 
 					?>
-					<p><?php printf( _n( 'The default content width for the %s theme is %d pixel.', 'The default content width for the %s theme is %d pixels.', intval( $GLOBALS['content_width'] ), 'jetpack' ), $current_theme, intval( $GLOBALS['content_width'] ) ); ?></p>
+					<p>
+					<?php
+					echo esc_html(
+						sprintf(
+							/* translators: %1$s is the theme name, %2$d is an amount of pixels. */
+							_n(
+								'The default content width for the %1$s theme is %2$d pixel.',
+								'The default content width for the %1$s theme is %2$d pixels.',
+								(int) $GLOBALS['content_width'],
+								'jetpack'
+							),
+							$current_theme,
+							(int) $GLOBALS['content_width']
+						)
+					);
+					?>
+					</p>
 					<?php
 				}
 
@@ -1090,7 +1095,7 @@ class Jetpack_Custom_CSS {
 			</div>
 			<script type="text/javascript">
 				jQuery( function ( $ ) {
-					var defaultContentWidth = <?php echo isset( $GLOBALS['content_width'] ) ? json_encode( intval( $GLOBALS['content_width'] ) ) : 0; ?>;
+					var defaultContentWidth = <?php echo isset( $GLOBALS['content_width'] ) ? json_encode( (int) $GLOBALS['content_width'] ) : 0; ?>;
 
 					$( '.edit-content-width' ).bind( 'click', function ( e ) {
 						e.preventDefault();
@@ -1328,7 +1333,7 @@ class Jetpack_Custom_CSS {
 		$safecss_post_id = Jetpack_Custom_CSS::save_revision( '' );
 		$safecss_revision = Jetpack_Custom_CSS::get_current_revision();
 
-		update_option( 'safecss_rev', intval( get_option( 'safecss_rev' ) ) + 1 );
+		update_option( 'safecss_rev', (int) get_option( 'safecss_rev' ) + 1 );
 
 		update_post_meta( $safecss_post_id, 'custom_css_add', 'yes' );
 		update_post_meta( $safecss_post_id, 'content_width', false );
@@ -1565,11 +1570,11 @@ class Jetpack_Custom_CSS {
 
 		if ( Jetpack_Custom_CSS::is_preview() ) {
 			$safecss_post = Jetpack_Custom_CSS::get_current_revision();
-			$custom_content_width = intval( get_post_meta( $safecss_post['ID'], 'content_width', true ) );
+			$custom_content_width = (int) get_post_meta( $safecss_post['ID'], 'content_width', true );
 		} else if ( ! Jetpack_Custom_CSS::is_freetrial() ) {
 			$custom_css_post_id = Jetpack_Custom_CSS::post_id();
 			if ( $custom_css_post_id )
-				$custom_content_width = intval( get_post_meta( $custom_css_post_id, 'content_width', true ) );
+				$custom_content_width = (int) get_post_meta( $custom_css_post_id, 'content_width', true );
 		}
 
 		if ( $custom_content_width > 0 )
@@ -1595,6 +1600,12 @@ class Jetpack_Safe_CSS {
 		$csstidy->set_cfg( 'remove_last_;', false );
 		$csstidy->set_cfg( 'css_level', 'CSS3.0' );
 
+		// Turn off css shorthands and leading zero removal when in block editor context as it breaks block validation.
+		if ( true === isset( $_REQUEST['_gutenberg_nonce'] ) && wp_verify_nonce( $_REQUEST['_gutenberg_nonce'], 'gutenberg_request' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			$csstidy->set_cfg( 'optimise_shorthands', 0 );
+			$csstidy->set_cfg( 'preserve_leading_zeros', true );
+		}
+
 		$css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $css );
 		$css = wp_kses_split( $css, array(), array() );
 		$csstidy->parse( $css );
@@ -1610,208 +1621,6 @@ class Jetpack_Safe_CSS {
 
 		return $matches[1];
 	}
-}
-
-function migrate() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::upgrade()' );
-
-	return Jetpack_Custom_CSS::upgrade();
-}
-
-function safecss_revision_redirect( $redirect ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::revision_redirect()' );
-
-	return Jetpack_Custom_CSS::revision_redirect( $redirect );
-}
-
-function safecss_revision_post_link( $post_link, $post_id, $context ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::revision_post_link()' );
-
-	return Jetpack_Custom_CSS::revision_post_link( $post_link, $post_id, $context );
-}
-
-function get_safecss_post() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::get_post()' );
-
-	return Jetpack_Custom_CSS::get_post();
-}
-
-function custom_css_post_id() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::post_id()' );
-
-	return Jetpack_Custom_CSS::post_id();
-}
-
-function get_current_revision() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::get_current_revision()' );
-
-	return Jetpack_Custom_CSS::get_current_revision();
-}
-
-function save_revision( $css, $is_preview = false, $preprocessor = '' ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::save_revision()' );
-
-	return Jetpack_Custom_CSS::save_revision( $css, $is_preview, $preprocessor );
-}
-
-function safecss_skip_stylesheet() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::skip_stylesheet()' );
-
-	return Jetpack_Custom_CSS::skip_stylesheet();
-}
-
-function safecss_init() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::init()' );
-
-	return Jetpack_Custom_CSS::init();
-}
-
-function safecss_is_preview() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::is_preview()' );
-
-	return Jetpack_Custom_CSS::is_preview();
-}
-
-function safecss_is_freetrial() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::is_freetrial()' );
-
-	return Jetpack_Custom_CSS::is_freetrial();
-}
-
-function safecss( $compressed = false ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::get_css()' );
-
-	return Jetpack_Custom_CSS::get_css( $compressed );
-}
-
-function safecss_print() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::print_css()' );
-
-	return Jetpack_Custom_CSS::print_css();
-}
-
-function safecss_style() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::link_tag()' );
-
-	return Jetpack_Custom_CSS::link_tag();
-}
-
-function safecss_style_filter( $current ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::style_filter()' );
-
-	return Jetpack_Custom_CSS::style_filter( $current );
-}
-
-function safecss_buffer( $html ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::buffer()' );
-
-	return Jetpack_Custom_CSS::buffer( $html );
-}
-
-function safecss_preview_links( $matches ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::preview_links()' );
-
-	return Jetpack_Custom_CSS::preview_links( $matches );
-}
-
-function safecss_preview_flag() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::preview_flag()' );
-
-	return Jetpack_Custom_CSS::preview_flag();
-}
-
-function safecss_menu() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::menu()' );
-
-	return Jetpack_Custom_CSS::menu();
-}
-
-function update_title() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::update_title()' );
-
-	return Jetpack_Custom_CSS::update_title();
-}
-
-function safecss_prettify_post_revisions() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::prettify_post_revisions()' );
-
-	return Jetpack_Custom_CSS::prettify_post_revisions();
-}
-
-function safecss_remove_title_excerpt_from_revisions() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::remove_title_excerpt_from_revisions()' );
-
-	return Jetpack_Custom_CSS::remove_title_excerpt_from_revisions();
-}
-
-function safecss_post_title( $title, $post_id ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::post_title()' );
-
-	return Jetpack_Custom_CSS::post_title( $title, $post_id );
-}
-
-function safe_css_enqueue_scripts() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::enqueue_scripts()' );
-
-	return Jetpack_Custom_CSS::enqueue_scripts( null );
-}
-
-function safecss_admin_head() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::admin_head()' );
-
-	return Jetpack_Custom_CSS::admin_head();
-}
-
-function safecss_saved() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::saved_message()' );
-
-	return Jetpack_Custom_CSS::saved_message();
-}
-
-function safecss_admin() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::admin()' );
-
-	return Jetpack_Custom_CSS::admin();
-}
-
-function custom_css_meta_box() {
-	_deprecated_function( __FUNCTION__, '2.1', 'add_meta_box( $id, $title, $callback, \'editcss\', \'side\' )' );
-}
-
-function custom_css_post_revisions_meta_box( $safecss_post ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::revisions_meta_box()' );
-
-	return Jetpack_Custom_CSS::revisions_meta_box( $safecss_post );
-}
-
-function disable_safecss_style() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::disable()' );
-
-	return Jetpack_Custom_CSS::disable();
-}
-
-function custom_css_reset() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::reset()' );
-
-	return Jetpack_Custom_CSS::reset();
-}
-
-function custom_css_is_customizer_preview() {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::is_customizer_preview()' );
-
-	return Jetpack_Custom_CSS::is_customizer_preview();
-}
-
-function custom_css_minify( $css, $preprocessor = '' ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::minify()' );
-
-	return Jetpack_Custom_CSS::minify( $css, $preprocessor );
-}
-
-function custom_css_restore_revision( $_post_id, $_revision_id ) {
-	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::restore_revision()' );
-
-	return Jetpack_Custom_CSS::restore_revision( $_post_id, $_revision_id );
 }
 
 if ( ! function_exists( 'safecss_class' ) ) :

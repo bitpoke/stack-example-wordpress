@@ -18,11 +18,50 @@ class Client {
 	/**
 	 * Makes an authorized remote request using Jetpack_Signature
 	 *
-	 * @param Array        $args the arguments for the remote request.
-	 * @param Array|String $body the request body.
+	 * @param array        $args the arguments for the remote request.
+	 * @param array|String $body the request body.
 	 * @return array|WP_Error WP HTTP response on success
 	 */
 	public static function remote_request( $args, $body = null ) {
+		$result = self::build_signed_request( $args, $body );
+		if ( ! $result || is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$response = self::_wp_remote_request( $result['url'], $result['request'] );
+
+		/**
+		 * Fired when the remote request response has been received.
+		 *
+		 * @since 1.30.8
+		 *
+		 * @param array|WP_Error The HTTP response.
+		 */
+		do_action( 'jetpack_received_remote_request_response', $response );
+
+		return $response;
+	}
+
+	/**
+	 * Adds authorization signature to a remote request using Jetpack_Signature
+	 *
+	 * @param array        $args the arguments for the remote request.
+	 * @param array|String $body the request body.
+	 * @return WP_Error|array {
+	 *     An array containing URL and request items.
+	 *
+	 *     @type String $url     The request URL.
+	 *     @type array  $request Request arguments.
+	 * }
+	 */
+	public static function build_signed_request( $args, $body = null ) {
+		add_filter(
+			'jetpack_constant_default_value',
+			__NAMESPACE__ . '\Utils::jetpack_api_constant_filter',
+			10,
+			2
+		);
+
 		$defaults = array(
 			'url'           => '',
 			'user_id'       => 0,
@@ -45,15 +84,14 @@ class Client {
 			$args['auth_location'] = 'query_string';
 		}
 
-		$connection = new Manager();
-		$token      = $connection->get_access_token( $args['user_id'] );
+		$token = ( new Tokens() )->get_access_token( $args['user_id'] );
 		if ( ! $token ) {
 			return new \WP_Error( 'missing_token' );
 		}
 
 		$method = strtoupper( $args['method'] );
 
-		$timeout = intval( $args['timeout'] );
+		$timeout = (int) $args['timeout'];
 
 		$redirection = $args['redirection'];
 		$stream      = $args['stream'];
@@ -70,7 +108,7 @@ class Client {
 		$token_key = sprintf(
 			'%s:%d:%d',
 			$token_key,
-			Utils::get_jetpack_api_version(),
+			Constants::get_constant( 'JETPACK__API_VERSION' ),
 			$token->external_user_id
 		);
 
@@ -131,7 +169,6 @@ class Client {
 		}
 
 		$url = add_query_arg( urlencode_deep( $url_args ), $args['url'] );
-		$url = Utils::fix_url_for_bad_hosts( $url );
 
 		$signature = $jetpack_signature->sign_request( $token_key, $timestamp, $nonce, $body_hash, $method, $url, $body, false );
 
@@ -157,7 +194,7 @@ class Client {
 			$url = add_query_arg( 'signature', rawurlencode( $signature ), $url );
 		}
 
-		return self::_wp_remote_request( $url, $request );
+		return compact( 'url', 'request' );
 	}
 
 	/**
@@ -171,14 +208,18 @@ class Client {
 	 * The option is checked on each request.
 	 *
 	 * @internal
-	 * @see Utils::fix_url_for_bad_hosts()
 	 *
 	 * @param String  $url the request URL.
-	 * @param Array   $args request arguments.
+	 * @param array   $args request arguments.
 	 * @param Boolean $set_fallback whether to allow flagging this request to use a fallback certficate override.
 	 * @return array|WP_Error WP HTTP response on success
 	 */
 	public static function _wp_remote_request( $url, $args, $set_fallback = false ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+		$fallback = \Jetpack_Options::get_option( 'fallback_no_verify_ssl_certs' );
+		if ( false === $fallback ) {
+			\Jetpack_Options::update_option( 'fallback_no_verify_ssl_certs', 0 );
+		}
+
 		/**
 		 * SSL verification (`sslverify`) for the JetpackClient remote request
 		 * defaults to off, use this filter to force it on.
@@ -186,17 +227,13 @@ class Client {
 		 * Return `true` to ENABLE SSL verification, return `false`
 		 * to DISABLE SSL verification.
 		 *
-		 * @since 3.6.0
+		 * @since 1.7.0
+		 * @since-jetpack 3.6.0
 		 *
 		 * @param bool Whether to force `sslverify` or not.
 		 */
 		if ( apply_filters( 'jetpack_client_verify_ssl_certs', false ) ) {
 			return wp_remote_request( $url, $args );
-		}
-
-		$fallback = \Jetpack_Options::get_option( 'fallback_no_verify_ssl_certs' );
-		if ( false === $fallback ) {
-			\Jetpack_Options::update_option( 'fallback_no_verify_ssl_certs', 0 );
 		}
 
 		if ( (int) $fallback ) {
@@ -289,6 +326,61 @@ class Client {
 	}
 
 	/**
+	 * Validate and build arguments for a WordPress.com REST API request.
+	 *
+	 * @param  string $path             REST API path.
+	 * @param  string $version          REST API version. Default is `2`.
+	 * @param  array  $args             Arguments to {@see WP_Http}. Default is `array()`.
+	 * @param  string $base_api_path    REST API root. Default is `wpcom`.
+	 *
+	 * @return array|WP_Error $response Response data, else {@see WP_Error} on failure.
+	 */
+	public static function validate_args_for_wpcom_json_api_request(
+		$path,
+		$version = '2',
+		$args = array(),
+		$base_api_path = 'wpcom'
+	) {
+		$base_api_path = trim( $base_api_path, '/' );
+		$version       = ltrim( $version, 'v' );
+		$path          = ltrim( $path, '/' );
+
+		$filtered_args = array_intersect_key(
+			$args,
+			array(
+				'headers'     => 'array',
+				'method'      => 'string',
+				'timeout'     => 'int',
+				'redirection' => 'int',
+				'stream'      => 'boolean',
+				'filename'    => 'string',
+				'sslverify'   => 'boolean',
+			)
+		);
+
+		// Use GET by default whereas `remote_request` uses POST.
+		$request_method = isset( $filtered_args['method'] ) ? strtoupper( $filtered_args['method'] ) : 'GET';
+
+		$url = sprintf(
+			'%s/%s/v%s/%s',
+			Constants::get_constant( 'JETPACK__WPCOM_JSON_API_BASE' ),
+			$base_api_path,
+			$version,
+			$path
+		);
+
+		$validated_args = array_merge(
+			$filtered_args,
+			array(
+				'url'    => $url,
+				'method' => $request_method,
+			)
+		);
+
+		return $validated_args;
+	}
+
+	/**
 	 * Queries the WordPress.com REST API with a user token.
 	 *
 	 * @param  string $path             REST API path.
@@ -306,33 +398,8 @@ class Client {
 		$body = null,
 		$base_api_path = 'wpcom'
 	) {
-		$base_api_path = trim( $base_api_path, '/' );
-		$version       = ltrim( $version, 'v' );
-		$path          = ltrim( $path, '/' );
-
-		$args = array_intersect_key(
-			$args,
-			array(
-				'headers'     => 'array',
-				'method'      => 'string',
-				'timeout'     => 'int',
-				'redirection' => 'int',
-				'stream'      => 'boolean',
-				'filename'    => 'string',
-				'sslverify'   => 'boolean',
-			)
-		);
-
+		$args            = self::validate_args_for_wpcom_json_api_request( $path, $version, $args, $base_api_path );
 		$args['user_id'] = get_current_user_id();
-		$args['method']  = isset( $args['method'] ) ? strtoupper( $args['method'] ) : 'GET';
-		$args['url']     = sprintf(
-			'%s://%s/%s/v%s/%s',
-			self::protocol(),
-			Constants::get_constant( 'JETPACK__WPCOM_JSON_API_HOST' ),
-			$base_api_path,
-			$version,
-			$path
-		);
 
 		if ( isset( $body ) && ! isset( $args['headers'] ) && in_array( $args['method'], array( 'POST', 'PUT', 'PATCH' ), true ) ) {
 			$args['headers'] = array( 'Content-Type' => 'application/json' );
@@ -350,10 +417,10 @@ class Client {
 	 *
 	 * @param String $path The API endpoint relative path.
 	 * @param String $version The API version.
-	 * @param Array  $args Request arguments.
+	 * @param array  $args Request arguments.
 	 * @param String $body Request body.
 	 * @param String $base_api_path (optional) the API base path override, defaults to 'rest'.
-	 * @return Array|WP_Error $response Data.
+	 * @return array|WP_Error $response Data.
 	 */
 	public static function wpcom_json_api_request_as_blog(
 		$path,
@@ -362,42 +429,15 @@ class Client {
 		$body = null,
 		$base_api_path = 'rest'
 	) {
-		$filtered_args = array_intersect_key(
-			$args,
-			array(
-				'headers'     => 'array',
-				'method'      => 'string',
-				'timeout'     => 'int',
-				'redirection' => 'int',
-				'stream'      => 'boolean',
-				'filename'    => 'string',
-				'sslverify'   => 'boolean',
-			)
-		);
+		$validated_args            = self::validate_args_for_wpcom_json_api_request( $path, $version, $args, $base_api_path );
+		$validated_args['blog_id'] = (int) \Jetpack_Options::get_option( 'id' );
 
-		// unprecedingslashit.
-		$_path = preg_replace( '/^\//', '', $path );
-
-		// Use GET by default whereas `remote_request` uses POST.
-		$request_method = ( isset( $filtered_args['method'] ) ) ? $filtered_args['method'] : 'GET';
-
-		$url = sprintf(
-			'%s://%s/%s/v%s/%s',
-			self::protocol(),
-			Constants::get_constant( 'JETPACK__WPCOM_JSON_API_HOST' ),
-			$base_api_path,
-			$version,
-			$_path
-		);
-
-		$validated_args = array_merge(
-			$filtered_args,
-			array(
-				'url'     => $url,
-				'blog_id' => (int) \Jetpack_Options::get_option( 'id' ),
-				'method'  => $request_method,
-			)
-		);
+		// For Simple sites get the response directly without any HTTP requests.
+		if ( defined( 'IS_WPCOM' ) && IS_WPCOM ) {
+			add_filter( 'is_jetpack_authorized_for_site', '__return_true' );
+			require_lib( 'wpcom-api-direct' );
+			return \WPCOM_API_Direct::do_request( $validated_args, $body );
+		}
 
 		return self::remote_request( $validated_args, $body );
 	}
@@ -407,7 +447,7 @@ class Client {
 	 * make sure that body hashes are made ith the string version, which is what will be seen after a
 	 * server pulls up the data in the $_POST array.
 	 *
-	 * @param Array|Mixed $data the data that needs to be stringified.
+	 * @param array|Mixed $data the data that needs to be stringified.
 	 *
 	 * @return array|string
 	 */
@@ -428,28 +468,10 @@ class Client {
 			return (string) $data;
 		}
 
-		foreach ( $data as $key => &$value ) {
+		foreach ( $data as &$value ) {
 			$value = self::_stringify_data( $value );
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Gets protocol string.
-	 *
-	 * @return string `https` (if possible), else `http`.
-	 */
-	public static function protocol() {
-		/**
-		 * Determines whether Jetpack can send outbound https requests to the WPCOM api.
-		 *
-		 * @since 3.6.0
-		 *
-		 * @param bool $proto Defaults to true.
-		 */
-		$https = apply_filters( 'jetpack_can_make_outbound_https', true );
-
-		return $https ? 'https' : 'http';
 	}
 }

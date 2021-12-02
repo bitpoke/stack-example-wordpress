@@ -11,8 +11,8 @@
  * the readme will list any important changes.
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates/Emails
- * @version 3.3.0
+ * @package WooCommerce\Templates\Emails
+ * @version 4.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -76,6 +76,7 @@ body {
 #template_header h1,
 #template_header h1 a {
 	color: <?php echo esc_attr( $base_text ); ?>;
+	background-color: inherit;
 }
 
 #template_header_image img {
@@ -164,7 +165,7 @@ body {
 }
 
 .link {
-	color: <?php echo esc_attr( $base ); ?>;
+	color: <?php echo esc_attr( $link_color ); ?>;
 }
 
 #header_wrapper {
@@ -222,5 +223,7 @@ img {
 	text-transform: capitalize;
 	vertical-align: middle;
 	margin-<?php echo is_rtl() ? 'left' : 'right'; ?>: 10px;
+	max-width: 100%;
+	height: auto;
 }
 <?php

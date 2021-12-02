@@ -141,9 +141,15 @@ function xprofile_filter_kses( $content, $data_obj = null, $field_id = null ) {
 			'ul'   => array(),
 			'ol'   => array(),
 			'li'   => array(),
-			'span' => array( 'style' => 1 ),
-			'p'    => array( 'style' => 1 ),
+			'span' => array(),
+			'p'    => array(),
 		);
+
+		// Allow style attributes on certain elements for capable users
+		if ( bp_current_user_can( 'unfiltered_html' ) ) {
+			$richtext_tags['span'] = array( 'style' => 1 );
+			$richtext_tags['p']    = array( 'style' => 1 );
+		}
 
 		$xprofile_allowedtags = array_merge( $allowedtags, $richtext_tags );
 	}
@@ -164,7 +170,7 @@ function xprofile_filter_kses( $content, $data_obj = null, $field_id = null ) {
 }
 
 /**
- * Filters profile field values for whitelisted HTML.
+ * Filters profile field values for allowed HTML.
  *
  * @since 5.0.0
  *
@@ -177,7 +183,7 @@ function xprofile_sanitize_data_value_before_display( $value, $type, $field_id )
 }
 
 /**
- * Filters profile field values for whitelisted HTML, when coming from xprofile_get_field_data().
+ * Filters profile field values for allowed HTML, when coming from xprofile_get_field_data().
  *
  * @since 5.0.0
  *
@@ -193,7 +199,7 @@ function xprofile_sanitize_data_value_before_display_from_get_field_data( $value
  *
  * @since 1.2.6
  *
- * @param string      $field_value Field value being santized.
+ * @param string      $field_value Field value being sanitized.
  * @param int         $field_id    Field ID being sanitized.
  * @param bool        $reserialize Whether to reserialize arrays before returning. Defaults to true.
  * @param object|null $data_obj    The BP_XProfile_ProfileData object.
@@ -310,7 +316,7 @@ function xprofile_filter_format_field_value_by_type( $field_value, $field_type =
  * @return string
  */
 function xprofile_filter_format_field_value_by_field_id( $field_value, $field_id ) {
-	$field = xprofile_get_field( $field_id );
+	$field = xprofile_get_field( $field_id, null, false );
 	return xprofile_filter_format_field_value_by_type( $field_value, $field->type, $field_id );
 }
 
@@ -336,7 +342,7 @@ function xprofile_filter_pre_validate_value_by_field_type( $value, $field, $fiel
  * Escape field value for display.
  *
  * Most field values are simply run through esc_html(). Those that support rich text (by default, `textarea` only)
- * are sanitized using kses, which allows a whitelist of HTML tags.
+ * are sanitized using kses, which allows HTML tags from a controlled list.
  *
  * @since 2.4.0
  *
@@ -346,6 +352,11 @@ function xprofile_filter_pre_validate_value_by_field_type( $value, $field, $fiel
  * @return string
  */
 function bp_xprofile_escape_field_data( $value, $field_type, $field_id ) {
+	// Sanitization for these types is directly done into their `display_filter()` method.
+	if ( 'wp-biography' === $field_type || 'wp-textbox' === $field_type ) {
+		return $value;
+	}
+
 	if ( bp_xprofile_is_richtext_enabled_for_field( $field_id ) ) {
 		// The xprofile_filter_kses() expects a BP_XProfile_ProfileData object.
 		$data_obj = null;
@@ -408,7 +419,7 @@ function xprofile_filter_link_profile_data( $field_value, $field_type = 'textbox
 		 *
 		 * Before splitting on the ";" character, decode the HTML entities, and re-encode after.
 		 * This prevents input like "O'Hara" rendering as "O&#039; Hara" (with each of those parts
-		 * having a seperate HTML link).
+		 * having a separate HTML link).
 		 */
 		$list_type   = 'semicolon';
 		$field_value = wp_specialchars_decode( $field_value, ENT_QUOTES );
@@ -680,3 +691,79 @@ function bp_xprofile_register_personal_data_exporter( $exporters ) {
 
 	return $exporters;
 }
+
+/**
+ * Used to edit the field input name inside the xProfile Admin Screen
+ *
+ * @see bp_xprofile_admin_get_signup_field()
+ *
+ * @since 8.0.0
+ *
+ * @param string $field_selector The text to use as the input name/id attribute.
+ * @return string                The text to use as the input name/id attribute.
+ */
+function bp_get_the_profile_signup_field_input_name( $field_selector = '' ) {
+	global $field;
+
+	if ( isset( $field->id ) && $field->id ) {
+		$field_selector = sprintf( 'signup_field_%d', $field->id );
+	}
+
+	return $field_selector;
+}
+
+/**
+ * Provides Signup fields argument back compatibility for template overrides.
+ *
+ * @since 8.0.0
+ * @access private
+ *
+ * @param array $args The xProfile loop's signup arguments.
+ * @return array The xProfile loop's signup arguments.
+ */
+function _bp_xprofile_signup_do_backcompat( $args = array() ) {
+	$expected_args = bp_xprofile_signup_args();
+	$needed_args   = array_intersect_key( $args, $expected_args );
+
+	if ( 1 === $args['profile_group_id'] || array_diff_key( $expected_args, $needed_args ) ) {
+		_doing_it_wrong( 'bp_has_profile()', __( 'The argument of this function into your custom `members/register.php` template should be bp_xprofile_signup_args()', 'buddypress' ), '8.0.0' );
+		$args = $expected_args;
+	}
+
+	return $args;
+}
+
+/**
+ * Checks whether back compatibility is needed about xProfile loop's signup arguments.
+ *
+ * @since 8.0.0
+ * @access private
+ *
+ * @param string $template      The located path for registration template.
+ * @param string $template_name The needed template name.
+ */
+function _bp_xprofile_signup_check_backcompat( $template = '', $template_name = '' ) {
+	if ( 'members/register.php' !== $template_name ) {
+		return;
+	}
+
+	if ( 0 !== strpos( $template, buddypress()->theme_compat->theme->dir ) ) {
+		add_filter( 'bp_after_has_profile_parse_args', '_bp_xprofile_signup_do_backcompat', 100 );
+	}
+}
+
+/**
+ * Starts Signup fields back compatibility process only on the signup's page.
+ *
+ * @since 8.0.0
+ * @access private
+ */
+function _bp_xprofile_signup_start_backcompat() {
+	$signup_fields = (array) bp_xprofile_get_signup_field_ids();
+	if ( ! $signup_fields ) {
+		return;
+	}
+
+	add_action( 'bp_locate_template', '_bp_xprofile_signup_check_backcompat', 10, 2 );
+}
+add_action( 'bp_core_screen_signup', '_bp_xprofile_signup_start_backcompat' );

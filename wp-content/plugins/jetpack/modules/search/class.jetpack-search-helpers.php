@@ -9,6 +9,8 @@
 
 use Automattic\Jetpack\Constants;
 
+require_once dirname( __FILE__ ) . '/class-jetpack-search-options.php';
+
 /**
  * Various helper functions for reuse throughout the Jetpack Search code.
  *
@@ -148,9 +150,11 @@ class Jetpack_Search_Helpers {
 	 *
 	 * @since 5.8.0
 	 *
+	 * @param array|null $allowed_widget_ids array of allowed widget IDs.
+	 *
 	 * @return array Active filters.
 	 */
-	static function get_filters_from_widgets() {
+	public static function get_filters_from_widgets( $allowed_widget_ids = null ) {
 		$filters = array();
 
 		$widget_options = self::get_widgets_from_option();
@@ -163,6 +167,9 @@ class Jetpack_Search_Helpers {
 			if ( ! self::is_active_widget( $widget_id ) || empty( $settings['filters'] ) ) {
 				continue;
 			}
+			if ( isset( $allowed_widget_ids ) && ! in_array( $widget_id, $allowed_widget_ids, true ) ) {
+				continue;
+			}
 
 			foreach ( (array) $settings['filters'] as $widget_filter ) {
 				$widget_filter['widget_id'] = $widget_id;
@@ -171,7 +178,8 @@ class Jetpack_Search_Helpers {
 					$widget_filter['name'] = self::generate_widget_filter_name( $widget_filter );
 				}
 
-				$key = sprintf( '%s_%d', $widget_filter['type'], count( $filters ) );
+				$type = ( isset( $widget_filter['type'] ) ) ? $widget_filter['type'] : '';
+				$key  = sprintf( '%s_%d', $type, count( $filters ) );
 
 				$filters[ $key ] = $widget_filter;
 			}
@@ -219,6 +227,10 @@ class Jetpack_Search_Helpers {
 	 */
 	static function generate_widget_filter_name( $widget_filter ) {
 		$name = '';
+
+		if ( ! isset( $widget_filter['type'] ) ) {
+			return $name;
+		}
 
 		switch ( $widget_filter['type'] ) {
 			case 'post_type':
@@ -653,31 +665,6 @@ class Jetpack_Search_Helpers {
 	}
 
 	/**
-	 * Returns a boolean for whether the current site has a VIP index.
-	 *
-	 * @since 5.8.0
-	 *
-	 * @return bool
-	 */
-	public static function site_has_vip_index() {
-		$has_vip_index = (
-			Constants::is_defined( 'JETPACK_SEARCH_VIP_INDEX' ) &&
-			Constants::get_constant( 'JETPACK_SEARCH_VIP_INDEX' )
-		);
-
-		/**
-		 * Allows developers to filter whether the current site has a VIP index.
-		 *
-		 * @module search
-		 *
-		 * @since  5.8.0
-		 *
-		 * @param bool $has_vip_index Whether the current site has a VIP index.
-		 */
-		return apply_filters( 'jetpack_search_has_vip_index', $has_vip_index );
-	}
-
-	/**
 	 * Returns the maximum posts per page for a search query.
 	 *
 	 * @since 5.8.0
@@ -685,7 +672,7 @@ class Jetpack_Search_Helpers {
 	 * @return int
 	 */
 	public static function get_max_posts_per_page() {
-		return self::site_has_vip_index() ? 1000 : 100;
+		return Jetpack_Search_Options::site_has_vip_index() ? 1000 : 100;
 	}
 
 	/**
@@ -696,6 +683,225 @@ class Jetpack_Search_Helpers {
 	 * @return int
 	 */
 	public static function get_max_offset() {
-		return self::site_has_vip_index() ? 9000 : 1000;
+		return Jetpack_Search_Options::site_has_vip_index() ? 9000 : 1000;
+	}
+
+	/**
+	 * Returns the maximum offset for a search query.
+	 *
+	 * @since 8.4.0
+	 * @param string $locale    A potentially valid locale string.
+	 *
+	 * @return bool
+	 */
+	public static function is_valid_locale( $locale ) {
+		if ( ! class_exists( 'GP_Locales' ) ) {
+			if ( defined( 'JETPACK__GLOTPRESS_LOCALES_PATH' ) && file_exists( JETPACK__GLOTPRESS_LOCALES_PATH ) ) {
+				require JETPACK__GLOTPRESS_LOCALES_PATH;
+			} else {
+				// Assume locale to be valid if we can't check with GlotPress.
+				return true;
+			}
+		}
+		return false !== GP_Locales::by_field( 'wp_locale', $locale );
+	}
+
+	/**
+	 * Get the version number to use when loading the file. Allows us to bypass cache when developing.
+	 *
+	 * @since 8.6.0
+	 * @param string $file Path of the file we are looking for.
+	 * @return string $script_version Version number.
+	 */
+	public static function get_asset_version( $file ) {
+		return Jetpack::is_development_version() && file_exists( JETPACK__PLUGIN_DIR . $file )
+			? filemtime( JETPACK__PLUGIN_DIR . $file )
+			: JETPACK__VERSION;
+	}
+
+
+	/**
+	 * Generates a customizer settings ID for a given post type.
+	 *
+	 * @since 8.8.0
+	 * @param object $post_type Post type object returned from get_post_types.
+	 * @return string $customizer_id Customizer setting ID.
+	 */
+	public static function generate_post_type_customizer_id( $post_type ) {
+		return Jetpack_Search_Options::OPTION_PREFIX . 'disable_post_type_' . $post_type->name;
+	}
+
+	/**
+	 * Generates an array of post types associated with their customizer IDs.
+	 *
+	 * @since 8.8.0
+	 * @return array $ids Post type => post type customizer ID object.
+	 */
+	public static function generate_post_type_customizer_ids() {
+		return array_map(
+			array( 'self', 'generate_post_type_customizer_id' ),
+			get_post_types( array( 'exclude_from_search' => false ), 'objects' )
+		);
+	}
+
+	/**
+	 * Sanitizes a checkbox value for writing to the database.
+	 *
+	 * @since 8.9.0
+	 *
+	 * @param any $value from the customizer form.
+	 * @return string either '0' or '1'.
+	 */
+	public static function sanitize_checkbox_value( $value ) {
+		return true === $value ? '1' : '0';
+	}
+
+	/**
+	 * Sanitizes a checkbox value for rendering the Customizer.
+	 *
+	 * @since 8.9.0
+	 *
+	 * @param any $value from the database.
+	 * @return boolean
+	 */
+	public static function sanitize_checkbox_value_for_js( $value ) {
+		return '1' === $value;
+	}
+
+	/**
+	 * Passes all options to the JS app.
+	 */
+	public static function generate_initial_javascript_state() {
+		$widget_options = self::get_widgets_from_option();
+		if ( is_array( $widget_options ) ) {
+			$widget_options = end( $widget_options );
+		}
+
+		$overlay_widget_ids      = is_active_sidebar( 'jetpack-instant-search-sidebar' ) ?
+			wp_get_sidebars_widgets()['jetpack-instant-search-sidebar'] : array();
+		$filters                 = self::get_filters_from_widgets();
+		$widgets                 = array();
+		$widgets_outside_overlay = array();
+		foreach ( $filters as $key => &$filter ) {
+			$filter['filter_id'] = $key;
+
+			if ( in_array( $filter['widget_id'], $overlay_widget_ids, true ) ) {
+				if ( ! isset( $widgets[ $filter['widget_id'] ] ) ) {
+					$widgets[ $filter['widget_id'] ]['filters']   = array();
+					$widgets[ $filter['widget_id'] ]['widget_id'] = $filter['widget_id'];
+				}
+				$widgets[ $filter['widget_id'] ]['filters'][] = $filter;
+			} else {
+				if ( ! isset( $widgets_outside_overlay[ $filter['widget_id'] ] ) ) {
+					$widgets_outside_overlay[ $filter['widget_id'] ]['filters']   = array();
+					$widgets_outside_overlay[ $filter['widget_id'] ]['widget_id'] = $filter['widget_id'];
+				}
+				$widgets_outside_overlay[ $filter['widget_id'] ]['filters'][] = $filter;
+			}
+		}
+		unset( $filter );
+
+		$has_non_search_widgets = false;
+		foreach ( $overlay_widget_ids as $overlay_widget_id ) {
+			if ( strpos( $overlay_widget_id, self::FILTER_WIDGET_BASE ) === false ) {
+				$has_non_search_widgets = true;
+				break;
+			}
+		}
+
+		$post_type_objs   = get_post_types( array( 'exclude_from_search' => false ), 'objects' );
+		$post_type_labels = array();
+		foreach ( $post_type_objs as $key => $obj ) {
+			$post_type_labels[ $key ] = array(
+				'singular_name' => $obj->labels->singular_name,
+				'name'          => $obj->labels->name,
+			);
+		}
+
+		$prefix         = Jetpack_Search_Options::OPTION_PREFIX;
+		$posts_per_page = (int) get_option( 'posts_per_page' );
+		if ( ( $posts_per_page > 20 ) || ( $posts_per_page <= 0 ) ) {
+			$posts_per_page = 20;
+		}
+
+		$excluded_post_types   = get_option( $prefix . 'excluded_post_types' ) ? explode( ',', get_option( $prefix . 'excluded_post_types', '' ) ) : array();
+		$post_types            = array_values(
+			get_post_types(
+				array(
+					'exclude_from_search' => false,
+					'public'              => true,
+				)
+			)
+		);
+		$unexcluded_post_types = array_diff( $post_types, $excluded_post_types );
+		// NOTE: If all post types are being excluded, ignore the option value.
+		if ( count( $unexcluded_post_types ) === 0 ) {
+			$excluded_post_types = array();
+		}
+
+		$is_wpcom                  = defined( 'IS_WPCOM' ) && IS_WPCOM;
+		$is_private_site           = '-1' === get_option( 'blog_public' );
+		$is_jetpack_photon_enabled = method_exists( 'Jetpack', 'is_module_active' ) && Jetpack::is_module_active( 'photon' );
+
+		$options = array(
+			'overlayOptions'        => array(
+				'colorTheme'        => get_option( $prefix . 'color_theme', 'light' ),
+				'enableInfScroll'   => get_option( $prefix . 'inf_scroll', '1' ) === '1',
+				'enableSort'        => get_option( $prefix . 'enable_sort', '1' ) === '1',
+				'highlightColor'    => get_option( $prefix . 'highlight_color', '#FFC' ),
+				'overlayTrigger'    => get_option( $prefix . 'overlay_trigger', 'immediate' ),
+				'resultFormat'      => get_option( $prefix . 'result_format', Jetpack_Search_Options::RESULT_FORMAT_MINIMAL ),
+				'showPoweredBy'     => get_option( $prefix . 'show_powered_by', '1' ) === '1',
+
+				// These options require kicking off a new search.
+				'defaultSort'       => get_option( $prefix . 'default_sort', 'relevance' ),
+				'excludedPostTypes' => $excluded_post_types,
+			),
+
+			// core config.
+			'homeUrl'               => home_url(),
+			'locale'                => str_replace( '_', '-', self::is_valid_locale( get_locale() ) ? get_locale() : 'en_US' ),
+			'postsPerPage'          => $posts_per_page,
+			'siteId'                => class_exists( 'Jetpack' ) && method_exists( 'Jetpack', 'get_option' ) ? Jetpack::get_option( 'id' ) : get_current_blog_id(),
+			'postTypes'             => $post_type_labels,
+			'webpackPublicPath'     => plugins_url( '_inc/build/instant-search/', JETPACK__PLUGIN_FILE ),
+			'isPhotonEnabled'       => ( $is_wpcom || $is_jetpack_photon_enabled ) && ! $is_private_site,
+
+			// config values related to private site support.
+			'apiRoot'               => esc_url_raw( rest_url() ),
+			'apiNonce'              => wp_create_nonce( 'wp_rest' ),
+			'isPrivateSite'         => $is_private_site,
+			'isWpcom'               => $is_wpcom,
+
+			// widget info.
+			'hasOverlayWidgets'     => count( $overlay_widget_ids ) > 0,
+			'widgets'               => array_values( $widgets ),
+			'widgetsOutsideOverlay' => array_values( $widgets_outside_overlay ),
+			'hasNonSearchWidgets'   => $has_non_search_widgets,
+		);
+
+		/**
+		 * Customize Instant Search Options.
+		 *
+		 * @module search
+		 *
+		 * @since 7.7.0
+		 *
+		 * @param array $options Array of parameters used in Instant Search queries.
+		 */
+		return apply_filters( 'jetpack_instant_search_options', $options );
+	}
+
+	/**
+	 * Prints the Instant Search sidebar.
+	 */
+	public static function print_instant_search_sidebar() {
+		?>
+		<div class="jetpack-instant-search__widget-area" style="display: none">
+			<?php if ( is_active_sidebar( 'jetpack-instant-search-sidebar' ) ) { ?>
+				<?php dynamic_sidebar( 'jetpack-instant-search-sidebar' ); ?>
+			<?php } ?>
+		</div>
+		<?php
 	}
 }

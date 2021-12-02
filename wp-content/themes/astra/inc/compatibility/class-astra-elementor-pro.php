@@ -5,18 +5,20 @@
  * @package Astra
  */
 
-namespace Elementor;
+namespace Elementor; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
 
 // If plugin - 'Elementor' not exist then return.
 if ( ! class_exists( '\Elementor\Plugin' ) || ! class_exists( 'ElementorPro\Modules\ThemeBuilder\Module' ) ) {
 	return;
 }
 
-namespace ElementorPro\Modules\ThemeBuilder\ThemeSupport;
+namespace ElementorPro\Modules\ThemeBuilder\ThemeSupport; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
 
+// @codingStandardsIgnoreStart PHPCompatibility.Keywords.NewKeywords.t_useFound
 use Elementor\TemplateLibrary\Source_Local;
 use ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager;
 use ElementorPro\Modules\ThemeBuilder\Module;
+// @codingStandardsIgnoreEnd PHPCompatibility.Keywords.NewKeywords.t_useFound
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -73,6 +75,75 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			add_filter( 'post_class', array( $this, 'render_post_class' ), 99 );
 			// Override post meta.
 			add_action( 'wp', array( $this, 'override_meta' ), 0 );
+
+			/**
+			 * Compatibility for Elementor Pro's upcoming WooCommerce widget.
+			 *
+			 * @since  3.7.5
+			 */
+			add_filter( 'astra_theme_woocommerce_dynamic_css', array( $this, 'elementor_wc_widgets_compatibility_styles' ) );
+		}
+
+		/**
+		 * Compatibility CSS for Elementor Pro's WooCommerce widgets releasing in their v3.6.0
+		 *
+		 * @param  string $css_output CSS stylesheet.
+		 * @return string $css_output CSS stylesheet.
+		 *
+		 * @since  3.7.5
+		 */
+		public function elementor_wc_widgets_compatibility_styles( $css_output ) {
+
+			if ( ! astra_check_elementor_pro_3_5_version() ) {
+				return $css_output;
+			}
+
+			$woo_widgets_desktop_css = array(
+				'.woocommerce.woocommerce-checkout .elementor-widget-woocommerce-checkout-page #customer_details.col2-set, .woocommerce-page.woocommerce-checkout .elementor-widget-woocommerce-checkout-page #customer_details.col2-set' => array(
+					'width' => '100%',
+				),
+				'.woocommerce.woocommerce-checkout .elementor-widget-woocommerce-checkout-page #order_review, .woocommerce.woocommerce-checkout .elementor-widget-woocommerce-checkout-page #order_review_heading, .woocommerce-page.woocommerce-checkout .elementor-widget-woocommerce-checkout-page #order_review, .woocommerce-page.woocommerce-checkout .elementor-widget-woocommerce-checkout-page #order_review_heading' => array(
+					'width' => '100%',
+					'float' => 'inherit',
+				),
+				'.elementor-widget-woocommerce-checkout-page .select2-container .select2-selection--single, .elementor-widget-woocommerce-cart .select2-container .select2-selection--single' => array(
+					'padding' => '0',
+				),
+				'.elementor-widget-woocommerce-checkout-page .woocommerce form .woocommerce-additional-fields, .elementor-widget-woocommerce-checkout-page .woocommerce form .shipping_address, .elementor-widget-woocommerce-my-account .woocommerce-MyAccount-navigation-link, .elementor-widget-woocommerce-cart .woocommerce a.remove' => array(
+					'border' => 'none',
+				),
+				'.elementor-widget-woocommerce-cart .cart-collaterals .cart_totals > h2' => array(
+					'background-color' => 'inherit',
+					'border-bottom'    => '0px',
+					'margin'           => '0px',
+				),
+				'.elementor-widget-woocommerce-cart .cart-collaterals .cart_totals' => array(
+					'padding'       => '0',
+					'border-color'  => 'inherit',
+					'border-radius' => '0',
+					'margin-bottom' => '0px',
+					'border-width'  => '0px',
+				),
+				'.elementor-widget-woocommerce-cart .woocommerce-cart-form .e-apply-coupon' => array(
+					'line-height' => 'initial',
+				),
+				'.elementor-widget-woocommerce-my-account .woocommerce-MyAccount-content .woocommerce-Address-title h3' => array(
+					'margin-bottom' => 'var(--myaccount-section-title-spacing, 0px)',
+				),
+				'.elementor-widget-woocommerce-my-account .woocommerce-Addresses .woocommerce-Address-title, .elementor-widget-woocommerce-my-account table.shop_table thead, .elementor-widget-woocommerce-my-account .woocommerce-page table.shop_table thead, .elementor-widget-woocommerce-cart table.shop_table thead' => array(
+					'background' => 'inherit',
+				),
+				'.elementor-widget-woocommerce-cart .e-apply-coupon, .elementor-widget-woocommerce-cart #coupon_code, .elementor-widget-woocommerce-checkout-page .e-apply-coupon, .elementor-widget-woocommerce-checkout-page #coupon_code' => array(
+					'height' => '100%',
+				),
+				'.elementor-widget-woocommerce-cart td.product-name dl.variation dt' => array(
+					'font-weight' => 'inherit',
+				),
+			);
+
+			$css_output .= astra_parse_css( $woo_widgets_desktop_css );
+
+			return $css_output;
 		}
 
 		/**
@@ -97,8 +168,8 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			$did_location = Module::instance()->get_locations_manager()->do_location( 'archive' );
 			if ( $did_location ) {
 				// Search and default.
-				remove_action( 'astra_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_search' ) );
-				remove_action( 'astra_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_default' ) );
+				remove_action( 'astra_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_search' ) );// phpcs:ignore PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
+				remove_action( 'astra_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_default' ) );// phpcs:ignore PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
 
 				// Remove pagination.
 				remove_action( 'astra_pagination', 'astra_number_pagination' );
@@ -111,10 +182,13 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			// IS Single?
 			$did_location = Module::instance()->get_locations_manager()->do_location( 'single' );
 			if ( $did_location ) {
+
+				// @codingStandardsIgnoreStart PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
 				remove_action( 'astra_page_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_page' ) );
 				remove_action( 'astra_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_post' ) );
 				remove_action( 'astra_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_comments' ), 15 );
 				remove_action( 'astra_page_template_parts_content', array( \Astra_Loop::get_instance(), 'template_parts_comments' ), 15 );
+				// @codingStandardsIgnoreEnd PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
 			}
 		}
 
@@ -191,6 +265,8 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 				$sidebar = 'default';
 			}
 
+			// @codingStandardsIgnoreStart PHPCompatibility.FunctionDeclarations.NewClosure.Found
+
 			if ( 'default' !== $sidebar ) {
 				add_filter(
 					'astra_page_layout',
@@ -223,7 +299,7 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 
 			if ( 'disabled' === $footer_layout ) {
 				add_filter(
-					'ast_footer_sml_layout',
+					'astra_footer_sml_layout',
 					function( $is_footer ) {
 						return 'disabled';
 					}
@@ -254,12 +330,13 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			if ( 'disabled' === $main_header_display ) {
 				remove_action( 'astra_masthead', 'astra_masthead_primary_template' );
 				add_filter(
-					'ast_main_header_display',
+					'astra_main_header_display',
 					function( $display_header ) {
 						return 'disabled';
 					}
 				);
 			}
+			// @codingStandardsIgnoreEnd PHPCompatibility.FunctionDeclarations.NewClosure.Found
 		}
 
 		/**
@@ -272,6 +349,9 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			$did_location = Module::instance()->get_locations_manager()->do_location( 'header' );
 			if ( $did_location ) {
 				remove_action( 'astra_header', 'astra_header_markup' );
+				if ( true === \Astra_Builder_Helper::$is_header_footer_builder_active ) { // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
+					remove_action( 'astra_header', array( \Astra_Builder_Header::get_instance(), 'header_builder_markup' ) ); // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
+				}
 			}
 		}
 
@@ -285,6 +365,9 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			$did_location = Module::instance()->get_locations_manager()->do_location( 'footer' );
 			if ( $did_location ) {
 				remove_action( 'astra_footer', 'astra_footer_markup' );
+				if ( true === \Astra_Builder_Helper::$is_header_footer_builder_active ) { // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
+					remove_action( 'astra_footer', array( \Astra_Builder_Footer::get_instance(), 'footer_markup' ) ); // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
+				}
 			}
 		}
 

@@ -275,6 +275,34 @@ function bp_activate_slug() {
 	}
 
 /**
+ * Output the members invitation pane slug.
+ *
+ * @since 8.0.0
+ *
+ */
+function bp_members_invitations_slug() {
+	echo bp_get_members_invitations_slug();
+}
+	/**
+	 * Return the members invitations root slug.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @return string
+	 */
+	function bp_get_members_invitations_slug() {
+
+		/**
+		 * Filters the Members invitations pane root slug.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $slug Members invitations pane root slug.
+		 */
+		return apply_filters( 'bp_get_members_invitations_slug', _x( 'invitations', 'Member profile invitations pane URL base', 'buddypress' ) );
+	}
+
+/**
  * Initialize the members loop.
  *
  * Based on the $args passed, bp_has_members() populates the $members_template
@@ -282,6 +310,7 @@ function bp_activate_slug() {
  * display a list of members.
  *
  * @since 1.2.0
+ * @since 7.0.0 Added `xprofile_query` parameter. Added `user_ids` parameter.
  *
  * @global object $members_template {@link BP_Members_Template}
  *
@@ -309,6 +338,8 @@ function bp_activate_slug() {
  *     @type array|int|string|bool $exclude             Exclude users from results by ID. Accepts an array, a single
  *                                                      integer, a comma-separated list of IDs, or false (to disable
  *                                                      this limiting). Default: false.
+ *     @type array|string|bool     $user_ids            An array or comma-separated list of IDs, or false (to
+ *                                                      disable this limiting). Default: false.
  *     @type int                   $user_id             If provided, results are limited to the friends of the specified
  *                                                      user. When on a user's Friends page, defaults to the ID of the
  *                                                      displayed user. Otherwise defaults to 0.
@@ -325,6 +356,8 @@ function bp_activate_slug() {
  *                                                      Default: false.
  *     @type mixed                 $meta_value          When used with meta_key, limits results by the a matching
  *                                                      usermeta value. Default: false.
+ *     @type array                 $xprofile_query      Filter results by xprofile data. Requires the xprofile
+ *                                                      component. See {@see BP_XProfile_Query} for details.
  *     @type bool                  $populate_extras     Whether to fetch optional data, such as friend counts.
  *                                                      Default: true.
  * }
@@ -368,6 +401,7 @@ function bp_has_members( $args = '' ) {
 
 		'include'             => false,    // Pass a user_id or a list (comma-separated or array) of user_ids to only show these users.
 		'exclude'             => false,    // Pass a user_id or a list (comma-separated or array) of user_ids to exclude these users.
+		'user_ids'            => false,
 
 		'user_id'             => $user_id, // Pass a user_id to only show friends of this user.
 		'member_type'         => $member_type,
@@ -378,6 +412,7 @@ function bp_has_members( $args = '' ) {
 		'meta_key'            => false,    // Only return users with this usermeta.
 		'meta_value'          => false,    // Only return users where the usermeta value matches. Requires meta_key.
 
+		'xprofile_query'      => false,
 		'populate_extras'     => true      // Fetch usermeta? Friend count, last active etc.
 	), 'has_members' );
 
@@ -396,23 +431,7 @@ function bp_has_members( $args = '' ) {
 	}
 
 	// Query for members and populate $members_template global.
-	$members_template = new BP_Core_Members_Template(
-		$r['type'],
-		$r['page'],
-		$r['per_page'],
-		$r['max'],
-		$r['user_id'],
-		$r['search_terms'],
-		$r['include'],
-		$r['populate_extras'],
-		$r['exclude'],
-		$r['meta_key'],
-		$r['meta_value'],
-		$r['page_arg'],
-		$r['member_type'],
-		$r['member_type__in'],
-		$r['member_type__not_in']
-	);
+	$members_template = new BP_Core_Members_Template( $r );
 
 	/**
 	 * Filters whether or not BuddyPress has members to iterate over.
@@ -481,24 +500,28 @@ function bp_members_pagination_count() {
 			if ( 1 == $members_template->total_member_count ) {
 				$pag = __( 'Viewing 1 active member', 'buddypress' );
 			} else {
+				/* translators: 1: active member from number. 2: active member to number. 3: total active members. */
 				$pag = sprintf( _n( 'Viewing %1$s - %2$s of %3$s active member', 'Viewing %1$s - %2$s of %3$s active members', $members_template->total_member_count, 'buddypress' ), $from_num, $to_num, $total );
 			}
 		} elseif ( 'popular' == $members_template->type ) {
 			if ( 1 == $members_template->total_member_count ) {
 				$pag = __( 'Viewing 1 member with friends', 'buddypress' );
 			} else {
+				/* translators: 1: member with friends from number. 2: member with friends to number. 3: total members with friends. */
 				$pag = sprintf( _n( 'Viewing %1$s - %2$s of %3$s member with friends', 'Viewing %1$s - %2$s of %3$s members with friends', $members_template->total_member_count, 'buddypress' ), $from_num, $to_num, $total );
 			}
 		} elseif ( 'online' == $members_template->type ) {
 			if ( 1 == $members_template->total_member_count ) {
 				$pag = __( 'Viewing 1 online member', 'buddypress' );
 			} else {
+				/* translators: 1: online member from number. 2: online member to number. 3: total online members. */
 				$pag = sprintf( _n( 'Viewing %1$s - %2$s of %3$s online member', 'Viewing %1$s - %2$s of %3$s online members', $members_template->total_member_count, 'buddypress' ), $from_num, $to_num, $total );
 			}
 		} else {
 			if ( 1 == $members_template->total_member_count ) {
 				$pag = __( 'Viewing 1 member', 'buddypress' );
 			} else {
+				/* translators: 1: member from number. 2: member to number. 3: total members. */
 				$pag = sprintf( _n( 'Viewing %1$s - %2$s of %3$s member', 'Viewing %1$s - %2$s of %3$s members', $members_template->total_member_count, 'buddypress' ), $from_num, $to_num, $total );
 			}
 		}
@@ -960,7 +983,8 @@ function bp_member_last_active( $args = array() ) {
 
 		// Backwards compatibility for anyone forcing a 'true' active_format.
 		if ( true === $r['active_format'] ) {
-			$r['active_format'] = __( 'active %s', 'buddypress' );
+			/* translators: %s: last activity timestamp (e.g. "Active 1 hour ago") */
+			$r['active_format'] = __( 'Active %s', 'buddypress' );
 		}
 
 		// Member has logged in at least one time.
@@ -1040,6 +1064,7 @@ function bp_member_latest_update( $args = '' ) {
 		 */
 		$update_content = apply_filters( 'bp_get_activity_latest_update_excerpt', trim( strip_tags( bp_create_excerpt( $update['content'], $length ) ) ), $r );
 
+		/* translators: %s: the member latest activity update */
 		$update_content = sprintf( _x( '- &quot;%s&quot;', 'member latest update in member directory', 'buddypress' ), $update_content );
 
 		// If $view_link is true and the text returned by bp_create_excerpt() is different from the original text (ie it's
@@ -1205,6 +1230,7 @@ function bp_member_registered( $args = array() ) {
 			return esc_attr( $members_template->member->user_registered );
 		}
 
+		/* translators: %s: last activity timestamp (e.g. "active 1 hour ago") */
 		$registered = esc_attr( bp_core_get_last_activity( $members_template->member->user_registered, _x( 'registered %s', 'Records the timestamp that the user registered into the activity stream', 'buddypress' ) ) );
 
 		/**
@@ -1417,7 +1443,7 @@ function bp_displayed_user_get_front_template( $displayed_user = null ) {
 
 	// Init the hierarchy
 	$template_names = array(
-		'members/single/front-id-' . sanitize_file_name( $displayed_user->id ) . '.php',
+		'members/single/front-id-' . (int) $displayed_user->id . '.php',
 		'members/single/front-nicename-' . sanitize_file_name( $displayed_user->userdata->user_nicename ) . '.php',
 	);
 
@@ -1510,7 +1536,7 @@ function bp_get_displayed_user_nav() {
  *              False otherwise
  */
 function bp_displayed_user_use_cover_image_header() {
-	return (bool) bp_is_active( 'xprofile', 'cover_image' ) && ! bp_disable_cover_image_uploads() && bp_attachments_is_wp_version_supported();
+	return (bool) bp_is_active( 'members', 'cover_image' ) && ! bp_disable_cover_image_uploads();
 }
 
 /** Avatars *******************************************************************/
@@ -1689,10 +1715,12 @@ function bp_last_activity( $user_id = 0 ) {
 	 */
 	function bp_get_last_activity( $user_id = 0 ) {
 
-		if ( empty( $user_id ) )
+		if ( empty( $user_id ) ) {
 			$user_id = bp_displayed_user_id();
+		}
 
-		$last_activity = bp_core_get_last_activity( bp_get_user_last_activity( $user_id ), __('active %s', 'buddypress') );
+		/* translators: %s: last activity timestamp (e.g. "Active 1 hour ago") */
+		$last_activity = bp_core_get_last_activity( bp_get_user_last_activity( $user_id ), __( 'Active %s', 'buddypress') );
 
 		/**
 		 * Filters the 'active [x days ago]' string for a user.
@@ -2007,6 +2035,7 @@ function bp_current_member_type_message() {
 	function bp_get_current_member_type_message() {
 		$type_object = bp_get_member_type_object( bp_get_current_member_type() );
 
+		/* translators: %s: member type singular name */
 		$message = sprintf( __( 'Viewing members of the type: %s', 'buddypress' ), '<strong>' . $type_object->labels['singular_name'] . '</strong>' );
 
 		/**
@@ -2017,6 +2046,190 @@ function bp_current_member_type_message() {
 		 * @param string $message Message to filter.
 		 */
 		return apply_filters( 'bp_get_current_member_type_message', $message );
+	}
+
+/**
+ * Output member type directory link.
+ *
+ * @since 7.0.0
+ *
+ * @param string $member_type Unique member type identifier as used in bp_register_member_type().
+ */
+function bp_member_type_directory_link( $member_type = '' ) {
+	echo bp_get_member_type_directory_link( $member_type );
+}
+	/**
+	 * Return member type directory link.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string $member_type Unique member type identifier as used in bp_register_member_type().
+	 * @return string
+	 */
+	function bp_get_member_type_directory_link( $member_type = '' ) {
+		if ( empty( $member_type ) ) {
+			return '';
+		}
+
+		$member_type_object = bp_get_member_type_object( $member_type );
+
+		if ( ! isset( $member_type_object->labels['name'] ) ) {
+			return '';
+		}
+
+		$member_type_text = $member_type_object->labels['name'];
+		if ( isset( $member_type_object->labels['singular_name'] ) && $member_type_object->labels['singular_name'] ) {
+			$member_type_text = $member_type_object->labels['singular_name'];
+		}
+
+		if ( empty( $member_type_object->has_directory ) ) {
+			return esc_html( $member_type_text );
+		}
+
+		return sprintf(
+			'<a href="%1$s">%2$s</a>',
+			esc_url( bp_get_member_type_directory_permalink( $member_type ) ),
+			esc_html( $member_type_text )
+		);
+	}
+
+/**
+ * Output a comma-delimited list of member types.
+ *
+ * @since 7.0.0
+ * @see   bp_get_member_type_list() For additional information on default arguments.
+ *
+ * @param int   $user_id User ID.
+ * @param array $r       Optional. Member type list arguments. Default empty array.
+ */
+function bp_member_type_list( $user_id = 0, $r = array() ) {
+	echo bp_get_member_type_list( $user_id, $r );
+}
+	/**
+	 * Return a comma-delimited list of member types.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param int $user_id User ID. Defaults to displayed user ID if on a member page.
+	 * @param array|string $r {
+	 *     Array of parameters. All items are optional.
+	 *     @type string $parent_element     Element to wrap around the list. Defaults to 'p'.
+	 *     @type array  $parent_attr        Element attributes for parent element. Defaults to
+	 *                                      array( 'class' => 'bp-member-type-list' ).
+	 *     @type array  $label              Plural and singular labels to use before the list. Defaults to
+	 *                                      array( 'plural' => 'Member Types:', 'singular' => 'Member Type:' ).
+	 *     @type string $label_element      Element to wrap around the label. Defaults to 'strong'.
+	 *     @type array  $label_attr         Element attributes for label element. Defaults to array().
+	 *     @type bool   $show_all           Whether to show all registered group types. Defaults to 'false'. If
+	 *                                      'false', only shows member types with the 'show_in_list' parameter set to
+	 *                                      true. See bp_register_member_type() for more info.
+	 *     @type string $list_element       Element to wrap around the comma separated list of membet types. Defaults to ''.
+	 *     @type string $list_element_attr  Element attributes for list element. Defaults to array().
+	 * }
+	 * @return string
+	 */
+	function bp_get_member_type_list( $user_id = 0, $r = array() ) {
+		if ( empty( $user_id ) ) {
+			$user_id = bp_displayed_user_id();
+		}
+
+		$r = bp_parse_args(
+			$r,
+			array(
+				'parent_element'    => 'p',
+				'parent_attr'       => array(
+					'class' => 'bp-member-type-list',
+				),
+				'label'             => array(),
+				'label_element'     => 'strong',
+				'label_attr'        => array(),
+				'show_all'          => false,
+				'list_element'      => '',
+				'list_element_attr' => array(),
+			),
+			'member_type_list'
+		);
+
+		// Should the label be output?
+		$has_label = ! empty( $r['label'] );
+
+		$labels = wp_parse_args(
+			$r['label'],
+			array(
+				'plural'   => __( 'Member Types:', 'buddypress' ),
+				'singular' => __( 'Member Type:', 'buddypress' ),
+			)
+		);
+
+		$retval = '';
+		$types  = bp_get_member_type( $user_id, false );
+
+		if ( $types ) {
+			// Make sure we can show the type in the list.
+			if ( false === $r['show_all'] ) {
+				$types = array_intersect( bp_get_member_types( array( 'show_in_list' => true ) ), $types );
+				if ( empty( $types ) ) {
+					return $retval;
+				}
+			}
+
+			$before = $after = $label = '';
+			$count  = count( $types );
+
+			if ( 1 === $count ) {
+				$label_text = $labels['singular'];
+			} else {
+				$label_text = $labels['plural'];
+			}
+
+			// Render parent element.
+			if ( ! empty( $r['parent_element'] ) ) {
+				$parent_elem = new BP_Core_HTML_Element( array(
+					'element' => $r['parent_element'],
+					'attr'    => $r['parent_attr'],
+				) );
+
+				// Set before and after.
+				$before = $parent_elem->get( 'open_tag' );
+				$after  = $parent_elem->get( 'close_tag' );
+			}
+
+			// Render label element.
+			if ( ! empty( $r['label_element'] ) ) {
+				$label = new BP_Core_HTML_Element( array(
+					'element'    => $r['label_element'],
+					'attr'       => $r['label_attr'],
+					'inner_html' => esc_html( $label_text ),
+				) );
+				$label = $label->contents() . ' ';
+
+			// No element, just the label.
+			} elseif ( $has_label ) {
+				$label = esc_html( $label_text );
+			}
+
+			// The list of types.
+			$list = implode( ', ', array_map( 'bp_get_member_type_directory_link', $types ) );
+
+			// Render the list of types element.
+			if ( ! empty( $r['list_element'] ) ) {
+				$list_element = new BP_Core_HTML_Element( array(
+					'element'    => $r['list_element'],
+					'attr'       => $r['list_element_attr'],
+					'inner_html' => $list,
+				) );
+
+				$list = $list_element->contents();
+			}
+
+			// Comma-delimit each type into the group type directory link.
+			$label .= $list;
+
+			// Retval time!
+			$retval = $before . $label . $after;
+		}
+
+		return $retval;
 	}
 
 /** Signup Form ***************************************************************/
@@ -2196,8 +2409,14 @@ function bp_signup_email_value() {
 	 */
 	function bp_get_signup_email_value() {
 		$value = '';
-		if ( isset( $_POST['signup_email'] ) )
+		if ( isset( $_POST['signup_email'] ) ) {
 			$value = $_POST['signup_email'];
+		} else if ( bp_get_members_invitations_allowed() ) {
+			$invite = bp_get_members_invitation_from_request();
+			if ( $invite ) {
+				$value = $invite->invitee_email;
+			}
+		}
 
 		/**
 		 * Filters the email address submitted during signup.
@@ -2418,7 +2637,7 @@ function bp_signup_avatar_dir_value() {
  */
 function bp_signup_requires_privacy_policy_acceptance() {
 	// Bail if we're running a version of WP that doesn't have the Privacy Policy feature.
-	if ( version_compare( $GLOBALS['wp_version'], '4.9.6', '<' ) ) {
+	if ( bp_is_running_wp( '4.9.6', '<' ) ) {
 		return false;
 	}
 
@@ -2571,6 +2790,24 @@ function bp_signup_allowed() {
 	}
 
 /**
+ * Are users allowed to invite users to join this site?
+ *
+ * @since 8.0.0
+ *
+ * @return bool
+ */
+function bp_get_members_invitations_allowed() {
+	/**
+	 * Filters whether or not community invitations are allowed.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param bool $allowed Whether or not community invitations are allowed.
+	 */
+	return apply_filters( 'bp_get_members_invitations_allowed', bp_is_active( 'members', 'invitations' ) && (bool) bp_get_option( 'bp-enable-members-invitations' ) );
+}
+
+/**
  * Hook member activity feed to <head>.
  *
  * @since 1.5.0
@@ -2615,33 +2852,651 @@ function bp_members_component_link( $component, $action = '', $query_args = '', 
 	 * @return string
 	 */
 	function bp_get_members_component_link( $component, $action = '', $query_args = '', $nonce = false ) {
-
 		// Must be displayed user.
-		if ( !bp_displayed_user_id() )
+		if ( ! bp_displayed_user_id() ) {
 			return;
+		}
 
 		$bp = buddypress();
 
+		if ( 'xprofile' === $component ) {
+			$component = 'profile';
+		}
+
 		// Append $action to $url if there is no $type.
-		if ( !empty( $action ) )
+		if ( ! empty( $action ) ) {
 			$url = bp_displayed_user_domain() . $bp->{$component}->slug . '/' . $action;
-		else
+		} else {
 			$url = bp_displayed_user_domain() . $bp->{$component}->slug;
+		}
 
 		// Add a slash at the end of our user url.
 		$url = trailingslashit( $url );
 
 		// Add possible query arg.
-		if ( !empty( $query_args ) && is_array( $query_args ) )
+		if ( ! empty( $query_args ) && is_array( $query_args ) ) {
 			$url = add_query_arg( $query_args, $url );
+		}
 
 		// To nonce, or not to nonce...
-		if ( true === $nonce )
+		if ( true === $nonce ) {
 			$url = wp_nonce_url( $url );
-		elseif ( is_string( $nonce ) )
+		} elseif ( is_string( $nonce ) ) {
 			$url = wp_nonce_url( $url, $nonce );
+		}
 
 		// Return the url, if there is one.
-		if ( !empty( $url ) )
+		if ( ! empty( $url ) ) {
 			return $url;
+		}
 	}
+
+
+/**
+ * Render an avatar delete link.
+ *
+ * @since 1.1.0
+ * @since 6.0.0 Moved from /bp-xprofile/bp-xprofile-template.php to this file.
+ */
+function bp_avatar_delete_link() {
+	echo bp_get_avatar_delete_link();
+}
+
+	/**
+	 * Return an avatar delete link.
+	 *
+	 * @since 1.1.0
+	 * @since 6.0.0 Moved from /bp-xprofile/bp-xprofile-template.php to this file.
+	 *
+	 * @return string
+	 */
+	function bp_get_avatar_delete_link() {
+
+		/**
+		 * Filters the link used for deleting an avatar.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param string $value Nonced URL used for deleting an avatar.
+		 */
+		return apply_filters( 'bp_get_avatar_delete_link', wp_nonce_url( bp_displayed_user_domain() . bp_get_profile_slug() . '/change-avatar/delete-avatar/', 'bp_delete_avatar_link' ) );
+	}
+
+
+/** The Members Invitations Loop ******************************************************************/
+
+/**
+ * Initialize the community invitations loop.
+ *
+ * Based on the $args passed, bp_has_invitations() populates
+ * buddypress()->invitations->query_loop global, enabling the use of BP
+ * templates and template functions to display a list of invitations.
+ *
+ * @since 8.0.0
+ *
+ * @param array|string $args {
+ *     Arguments for limiting the contents of the invitations loop. Can be
+ *     passed as an associative array, or as a URL query string.
+ *
+ *     See {@link BP_Invitations_Invitation::get()} for detailed
+ *     information on the arguments.  In addition, also supports:
+ *
+ *     @type int    $max      Optional. Max items to display. Default: false.
+ *     @type string $page_arg URL argument to use for pagination.
+ *                            Default: 'ipage'.
+ * }
+ * @return bool
+ */
+function bp_has_members_invitations( $args = '' ) {
+
+	// Get the user ID.
+	if ( bp_displayed_user_id() ) {
+		$user_id = bp_displayed_user_id();
+	} else {
+		$user_id = bp_loggedin_user_id();
+	}
+
+	// Set the search terms (by default an empty string to get all notifications)
+	$search_terms = '';
+
+	if ( isset( $_REQUEST['s'] ) ) {
+		$search_terms = stripslashes( $_REQUEST['s'] );
+	}
+
+	// Parse the args.
+	$r = bp_parse_args( $args, array(
+		'id'                => false,
+		'inviter_id'        => $user_id,
+		'invitee_email'     => false,
+		'item_id'           => false,
+		'type'              => 'invite',
+		'invite_sent'       => 'all',
+		'accepted'          => 'pending',
+		'search_terms'      => $search_terms,
+		'order_by'          => 'date_modified',
+		'sort_order'        => 'DESC',
+		'page'              => 1,
+		'per_page'          => 25,
+		'fields'            => 'all',
+
+		// These are additional arguments that are not available in
+		// BP_Invitations_Invitation::get().
+		'page_arg'          => 'ipage',
+	), 'has_members_invitations' );
+
+	// Get the notifications.
+	$query_loop = new BP_Members_Invitations_Template( $r );
+
+	// Setup the global query loop.
+	buddypress()->members->invitations->query_loop = $query_loop;
+
+	/**
+	 * Filters whether or not the user has network invitations to display.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param bool                      $value      Whether or not there are network invitations to display.
+	 * @param BP_Notifications_Template $query_loop BP_Members_Invitations_Template object instance.
+	 * @param array                     $r          Array of arguments passed into the BP_Members_Invitations_Template class.
+	 */
+	return apply_filters( 'bp_has_members_invitations', $query_loop->has_invitations(), $query_loop, $r );
+}
+
+/**
+ * Get the network invitations returned by the template loop.
+ *
+ * @since 8.0.0
+ *
+ * @return array List of network invitations.
+ */
+function bp_the_members_invitations() {
+	return buddypress()->members->invitations->query_loop->invitations();
+}
+
+/**
+ * Get the current network invitation object in the loop.
+ *
+ * @since 8.0.0
+ *
+ * @return object The current network invitation within the loop.
+ */
+function bp_the_members_invitation() {
+	return buddypress()->members->invitations->query_loop->the_invitation();
+}
+
+/**
+ * Output the pagination count for the current network invitations loop.
+ *
+ * @since 8.0.0
+ */
+function bp_members_invitations_pagination_count() {
+	echo bp_get_members_invitations_pagination_count();
+}
+	/**
+	 * Return the pagination count for the current network invitation loop.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @return string HTML for the pagination count.
+	 */
+	function bp_get_members_invitations_pagination_count() {
+		$query_loop = buddypress()->members->invitations->query_loop;
+		$start_num  = intval( ( $query_loop->pag_page - 1 ) * $query_loop->pag_num ) + 1;
+		$from_num   = bp_core_number_format( $start_num );
+		$to_num     = bp_core_number_format( ( $start_num + ( $query_loop->pag_num - 1 ) > $query_loop->total_invitation_count ) ? $query_loop->total_invitation_count : $start_num + ( $query_loop->pag_num - 1 ) );
+		$total      = bp_core_number_format( $query_loop->total_invitation_count );
+
+		if ( 1 == $query_loop->total_invitation_count ) {
+			$pag = __( 'Viewing 1 invitation', 'buddypress' );
+		} else {
+			/* translators: 1: Invitations from number. 2: Invitations to number. 3: Total invitations. */
+			$pag = sprintf( _nx( 'Viewing %1$s - %2$s of %3$s invitation', 'Viewing %1$s - %2$s of %3$s invitations', $query_loop->total_invitation_count, 'Community invites pagination', 'buddypress' ), $from_num, $to_num, $total );
+		}
+
+		/**
+		 * Filters the pagination count for the current network invitation loop.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $pag HTML for the pagination count.
+		 */
+		return apply_filters( 'bp_get_members_invitations_pagination_count', $pag );
+	}
+
+/**
+ * Output the pagination links for the current network invitation loop.
+ *
+ * @since 8.0.0
+ */
+function bp_members_invitations_pagination_links() {
+	echo bp_get_members_invitations_pagination_links();
+}
+	/**
+	 * Return the pagination links for the current network invitations loop.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @return string HTML for the pagination links.
+	 */
+	function bp_get_members_invitations_pagination_links() {
+
+		/**
+		 * Filters the pagination links for the current network invitations loop.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $pag_links HTML for the pagination links.
+		 */
+		return apply_filters( 'bp_get_members_invitations_pagination_links', buddypress()->members->invitations->query_loop->pag_links );
+	}
+
+/**
+ * Output the requested property of the invitation currently being iterated on.
+ *
+ * @since 8.0.0
+ *
+ * @param string $property The name of the property to display.
+ * @param string $context  The context of display.
+ *                         Possible values are 'attribute' and 'html'.
+ */
+function bp_the_members_invitation_property( $property = '', $context = 'html' ) {
+	if ( ! $property ) {
+		return;
+	}
+
+	/**
+	 * Use this filter to sanitize the output.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param int|string $value    The value for the requested property.
+	 * @param string     $property The name of the requested property.
+	 * @param string     $context  The context of display.
+	 */
+	echo apply_filters( 'bp_the_members_invitation_property', bp_get_the_members_invitation_property( $property ), $property, $context );
+}
+	/**
+	 * Return the value for a property of the network invitation currently being iterated on.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @return int ID of the current network invitation.
+	 */
+	function bp_get_the_members_invitation_property( $property = 'id' ) {
+
+		switch ( $property ) {
+			case 'id':
+			case 'user_id':
+			case 'item_id':
+			case 'secondary_item_id':
+			case 'invite_sent':
+			case 'accepted':
+				$value = 0;
+				break;
+			case 'invitee_email':
+			case 'type':
+			case 'content':
+			case 'date_modified':
+				$value = '';
+				break;
+			default:
+				// A known property has not been specified.
+				$property = null;
+				$value = '';
+				break;
+		}
+
+		if ( isset( buddypress()->members->invitations->query_loop->invitation->{$property} ) ) {
+			$value = buddypress()->members->invitations->query_loop->invitation->{$property};
+		}
+
+		/**
+		 * Filters the property of the network invitation currently being iterated on.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param int|string $value Property value of the network invitation being iterated on.
+		 */
+		return apply_filters( 'bp_get_the_members_invitation_property_' . $property, $value );
+	}
+
+/**
+ * Output the action links for the current invitation.
+ *
+ * @since 8.0.0
+ *
+ * @param array|string $args Array of arguments.
+ */
+function bp_the_members_invitation_action_links( $args = '' ) {
+	echo bp_get_the_members_invitation_action_links( $args );
+}
+	/**
+	 * Return the action links for the current invitation.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param array|string $args {
+	 *     @type string $before  HTML before the links.
+	 *     @type string $after   HTML after the links.
+	 *     @type string $sep     HTML between the links.
+	 *     @type array  $links   Array of links to implode by 'sep'.
+	 *     @type int    $user_id User ID to fetch action links for. Defaults to displayed user ID.
+	 * }
+	 * @return string HTML links for actions to take on single notifications.
+	 */
+	function bp_get_the_members_invitation_action_links( $args = '' ) {
+		// Set default user ID to use.
+		$inviter_id = isset( $args['inviter_id'] ) ? $args['inviter_id'] : bp_displayed_user_id();
+
+		// Parse.
+		$r = wp_parse_args( $args, array(
+			'before' => '',
+			'after'  => '',
+			'sep'    => ' | ',
+			'links'  => array(
+				bp_get_the_members_invitation_resend_link( $inviter_id ),
+				bp_get_the_members_invitation_delete_link( $inviter_id )
+			)
+		) );
+
+		// Build the links.
+		$retval = $r['before'] . implode( $r['sep'], $r['links'] ) . $r['after'];
+
+		/**
+		 * Filters the action links for the current invitation.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $retval HTML links for actions to take on single invitation.
+		 * @param array  $r      Array of parsed arguments.
+		 */
+		return apply_filters( 'bp_get_the_members_invitation_action_links', $retval, $r );
+	}
+
+/**
+ * Output the resend link for the current invitation.
+ *
+ * @since 8.0.0
+ *
+ * @param int $user_id The user ID.
+ */
+function bp_the_members_invitations_resend_link( $user_id = 0 ) {
+	echo bp_get_the_members_invitation_delete_link( $user_id );
+}
+	/**
+	 * Return the resend link for the current notification.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param int $user_id The user ID.
+	 * @return string
+	 */
+	function bp_get_the_members_invitation_resend_link( $user_id = 0 ) {
+		// Set default user ID to use.
+		$user_id = 0 === $user_id ? bp_displayed_user_id() : $user_id;
+
+		// Don't allow resending of accepted invitations.
+		if ( bp_get_the_members_invitation_property( 'accepted' ) ) {
+			return;
+		}
+
+		$retval = sprintf( '<a href="%1$s" class="resend secondary confirm bp-tooltip">%2$s</a>', esc_url( bp_get_the_members_invitations_resend_url( $user_id ) ), __( 'Resend', 'buddypress' ) );
+
+		/**
+		 * Filters the resend link for the current invitation.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $retval  HTML for the delete link for the current notification.
+		 * @param int    $user_id The user ID.
+		 */
+		return apply_filters( 'bp_get_the_members_invitation_resend_link', $retval, $user_id );
+	}
+
+/**
+ * Output the URL used for resending a single invitation.
+ *
+ * Since this function directly outputs a URL, it is escaped.
+ *
+ * @since 8.0.0
+ *
+ * @param int $user_id The user ID.
+ */
+function bp_the_members_invitations_resend_url( $user_id = 0 ) {
+	echo esc_url( bp_get_the_members_invitations_resend_url( $user_id ) );
+}
+	/**
+	 * Return the URL used for resending a single invitation.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param int $user_id The user ID.
+	 * @return string
+	 */
+	function bp_get_the_members_invitations_resend_url( $user_id = 0 ) {
+		// Set default user ID to use.
+		$user_id = 0 === $user_id ? bp_displayed_user_id() : $user_id;
+		$link = bp_get_members_invitations_list_invites_permalink( $user_id );
+
+		// Get the ID.
+		$id = bp_get_the_members_invitation_property( 'id' );
+
+		// Get the args to add to the URL.
+		$args = array(
+			'action'        => 'resend',
+			'invitation_id' => $id
+		);
+
+		// Add the args.
+		$url = add_query_arg( $args, $link );
+
+		// Add the nonce.
+		$url = wp_nonce_url( $url, 'bp_members_invitation_resend_' . $id );
+
+		/**
+		 * Filters the URL used for resending a single invitation.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $url     URL used for deleting a single invitation.
+		 * @param int    $user_id The user ID.
+		 */
+		return apply_filters( 'bp_get_the_members_invitations_resend_url', $url, $user_id );
+	}
+
+/**
+ * Output the delete link for the current invitation.
+ *
+ * @since 8.0.0
+ *
+ * @param int $user_id The user ID.
+ */
+function bp_the_members_invitations_delete_link( $user_id = 0 ) {
+	echo bp_get_the_members_invitation_delete_link( $user_id );
+}
+	/**
+	 * Return the delete link for the current invitation.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param int $user_id The user ID.
+	 * @return string
+	 */
+	function bp_get_the_members_invitation_delete_link( $user_id = 0 ) {
+		// Set default user ID to use.
+		$user_id = 0 === $user_id ? bp_displayed_user_id() : $user_id;
+
+		// Modify the message for accepted/not accepted invitatons.
+		if ( bp_get_the_members_invitation_property( 'accepted' ) ) {
+			$message = __( 'Delete', 'buddypress' );
+		} else {
+			$message = __( 'Cancel', 'buddypress' );
+		}
+
+		$retval = sprintf(
+			'<a href="%1$s" class="delete secondary confirm bp-tooltip">%2$s</a>',
+			esc_url( bp_get_the_members_invitations_delete_url( $user_id ) ),
+			esc_html( $message )
+		);
+
+		/**
+		 * Filters the delete link for the current invitation.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $retval  HTML for the delete link for the current notification.
+		 * @param int    $user_id The user ID.
+		 */
+		return apply_filters( 'bp_get_the_members_invitation_delete_link', $retval, $user_id );
+	}
+
+/**
+ * Output the URL used for deleting a single invitation.
+ *
+ * Since this function directly outputs a URL, it is escaped.
+ *
+ * @since 8.0.0
+ *
+ * @param int $user_id The user ID.
+ */
+function bp_the_members_invitations_delete_url( $user_id = 0 ) {
+	echo esc_url( bp_get_the_members_invitations_delete_url( $user_id ) );
+}
+	/**
+	 * Return the URL used for deleting a single invitation.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param int $user_id The user ID.
+	 * @return string
+	 */
+	function bp_get_the_members_invitations_delete_url( $user_id = 0 ) {
+		// Set default user ID to use.
+		$user_id = 0 === $user_id ? bp_displayed_user_id() : $user_id;
+		$link = bp_get_members_invitations_list_invites_permalink( $user_id );
+
+		// Get the ID.
+		$id = bp_get_the_members_invitation_property( 'id' );
+
+		// Get the args to add to the URL.
+		$args = array(
+			'action'        => 'cancel',
+			'invitation_id' => $id
+		);
+
+		// Add the args.
+		$url = add_query_arg( $args, $link );
+
+		// Add the nonce.
+		$url = wp_nonce_url( $url, 'bp_members_invitations_cancel_' . $id );
+
+		/**
+		 * Filters the URL used for deleting a single invitation.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $url     URL used for deleting a single invitation.
+		 * @param int    $user_id The user ID.
+		 */
+		return apply_filters( 'bp_get_the_members_invitations_delete_url', $url, $user_id );
+	}
+
+/**
+ * Output the members invitations list permalink for a user.
+ *
+ * @since 8.0.0
+ *
+ * @param int $user_id The user ID.
+ */
+function bp_members_invitations_list_invites_permalink( $user_id = 0 ) {
+	echo bp_get_members_invitations_list_invites_permalink( $user_id );
+}
+	/**
+	 * Return the members invitations list permalink for a user.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @return string Members invitations list permalink for a user.
+	 */
+	function bp_get_members_invitations_list_invites_permalink( $user_id = 0 ) {
+		if ( 0 === $user_id ) {
+			$user_id = bp_loggedin_user_id();
+			$domain  = bp_loggedin_user_domain();
+		} else {
+			$domain = bp_core_get_user_domain( (int) $user_id );
+		}
+
+		$retval = trailingslashit( $domain . bp_get_members_invitations_slug() . '/list-invites' );
+
+		/**
+		 * Filters the members invitations list permalink for a user.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $retval  Permalink for the sent invitation list screen.
+		 * @param int    $user_id The user ID.
+		 */
+		return apply_filters( 'bp_get_members_invitations_list_invites_permalink', $retval, $user_id );
+	}
+
+/**
+ * Output the send invitation permalink for a user.
+ *
+ * @since 8.0.0
+ *
+ * @param int $user_id The user ID.
+ */
+function bp_members_invitations_send_invites_permalink( $user_id = 0 ) {
+	echo bp_get_members_invitations_send_invites_permalink( $user_id );
+}
+	/**
+	 * Return the send invitations permalink.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param int $user_id The user ID.
+	 * @return string      The send invitations permalink.
+	 */
+	function bp_get_members_invitations_send_invites_permalink( $user_id = 0 ) {
+		if ( 0 === $user_id ) {
+			$user_id = bp_loggedin_user_id();
+			$domain  = bp_loggedin_user_domain();
+		} else {
+			$domain = bp_core_get_user_domain( (int) $user_id );
+		}
+
+		$retval = trailingslashit( $domain . bp_get_members_invitations_slug() . '/send-invites' );
+
+		/**
+		 * Filters the send invitations permalink.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $retval  Permalink for the sent invitation list screen.
+		 * @param int    $user_id The user ID.
+		 */
+		return apply_filters( 'bp_get_members_invitations_send_invites_permalink', $retval, $user_id );
+	}
+
+/**
+ * Output the dropdown for bulk management of invitations.
+ *
+ * @since 8.0.0
+ */
+function bp_members_invitations_bulk_management_dropdown() {
+	?>
+	<label class="bp-screen-reader-text" for="invitation-select">
+		<?php
+		esc_html_e( 'Select Bulk Action', 'buddypress' );
+		?>
+	</label>
+
+	<select name="invitation_bulk_action" id="invitation-select">
+		<option value="" selected="selected"><?php esc_html_e( 'Bulk Actions', 'buddypress' ); ?></option>
+		<option value="resend"><?php echo esc_html_x( 'Resend', 'button', 'buddypress' ); ?></option>
+		<option value="cancel"><?php echo esc_html_x( 'Cancel', 'button', 'buddypress' ); ?></option>
+	</select>
+
+	<input type="submit" id="invitation-bulk-manage" class="button action" value="<?php echo esc_attr_x( 'Apply', 'button', 'buddypress' ); ?>">
+	<?php
+}

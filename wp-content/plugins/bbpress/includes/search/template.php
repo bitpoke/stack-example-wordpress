@@ -297,8 +297,11 @@ function bbp_search_terms( $search_terms = '' ) {
 		} else {
 
 			// Global
-			if ( get_query_var( bbp_get_search_rewrite_id() ) ) {
-				$search_terms = get_query_var( bbp_get_search_rewrite_id() );
+			$search_terms = get_query_var( bbp_get_search_rewrite_id(), null );
+
+			// Searching globally
+			if ( ! is_null( $search_terms )  ) {
+				$search_terms = wp_unslash( $search_terms );
 
 			// Other searches
 			} else {
@@ -350,8 +353,8 @@ function bbp_get_search_pagination_base() {
 	// If pretty permalinks are enabled, make our pagination pretty
 	if ( bbp_use_pretty_urls() ) {
 
-		// Shortcode territory
-		if ( is_page() || is_single() ) {
+		// Any single post (for shortcodes)
+		if ( is_singular() ) {
 			$base = get_permalink();
 
 		// Default search location

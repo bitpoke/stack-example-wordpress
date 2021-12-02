@@ -3,8 +3,6 @@
  * REST API Reports products controller
  *
  * Handles requests to the /reports/products endpoint.
- *
- * @package WooCommerce Admin/API
  */
 
 namespace Automattic\WooCommerce\Admin\API\Reports\Products;
@@ -16,7 +14,6 @@ use \Automattic\WooCommerce\Admin\API\Reports\ExportableInterface;
 /**
  * REST API Reports products controller class.
  *
- * @package WooCommerce/API
  * @extends WC_REST_Reports_Controller
  */
 class Controller extends \WC_REST_Reports_Controller implements ExportableInterface {
@@ -41,7 +38,9 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 	 * @var array
 	 */
 	protected $param_mapping = array(
-		'products' => 'product_includes',
+		'categories' => 'category_includes',
+		'products'   => 'product_includes',
+		'variations' => 'variation_includes',
 	);
 
 	/**
@@ -70,7 +69,10 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 		$data = array();
 
 		foreach ( $products_data->data as $product_data ) {
-			$item   = $this->prepare_item_for_response( $product_data, $request );
+			$item = $this->prepare_item_for_response( $product_data, $request );
+			if ( isset( $item->data['extended_info']['name'] ) ) {
+				$item->data['extended_info']['name'] = wp_strip_all_tags( $item->data['extended_info']['name'] );
+			}
 			$data[] = $this->prepare_response_for_collection( $item );
 		}
 
@@ -171,7 +173,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 					'type'        => 'number',
 					'readonly'    => true,
 					'context'     => array( 'view', 'edit' ),
-					'description' => __( 'Total Net Sales of all items sold.', 'woocommerce-admin' ),
+					'description' => __( 'Total Net sales of all items sold.', 'woocommerce-admin' ),
 				),
 				'orders_count'  => array(
 					'type'        => 'integer',
@@ -383,9 +385,9 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 	 */
 	public function get_export_columns() {
 		$export_columns = array(
-			'product_name' => __( 'Product Title', 'woocommerce-admin' ),
+			'product_name' => __( 'Product title', 'woocommerce-admin' ),
 			'sku'          => __( 'SKU', 'woocommerce-admin' ),
-			'items_sold'   => __( 'Items Sold', 'woocommerce-admin' ),
+			'items_sold'   => __( 'Items sold', 'woocommerce-admin' ),
 			'net_revenue'  => __( 'N. Revenue', 'woocommerce-admin' ),
 			'orders_count' => __( 'Orders', 'woocommerce-admin' ),
 			'product_cat'  => __( 'Category', 'woocommerce-admin' ),
@@ -397,7 +399,16 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 			$export_columns['stock']        = __( 'Stock', 'woocommerce-admin' );
 		}
 
-		return $export_columns;
+		/**
+		 * Filter to add or remove column names from the products report for
+		 * export.
+		 *
+		 * @since 1.6.0
+		 */
+		return apply_filters(
+			'woocommerce_report_products_export_columns',
+			$export_columns
+		);
 	}
 
 	/**
@@ -427,6 +438,16 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 			}
 		}
 
-		return $export_item;
+		/**
+		 * Filter to prepare extra columns in the export item for the products
+		 * report.
+		 *
+		 * @since 1.6.0
+		 */
+		return apply_filters(
+			'woocommerce_report_products_prepare_export_item',
+			$export_item,
+			$item
+		);
 	}
 }

@@ -147,6 +147,62 @@ function bp_admin_sanitize_callback_blogforum_comments( $value = false ) {
 	return $value ? 0 : 1;
 }
 
+/** Members *******************************************************************/
+
+/**
+ * Profile settings section description for the settings page.
+ *
+ * @since 1.6.0
+ */
+function bp_admin_setting_callback_members_section() { }
+
+/**
+ * Allow members to upload avatars field.
+ *
+ * @since 1.6.0
+ * @since 6.0.0 Setting has been moved into the Members section.
+ */
+function bp_admin_setting_callback_avatar_uploads() {
+?>
+	<input id="bp-disable-avatar-uploads" name="bp-disable-avatar-uploads" type="checkbox" value="1" <?php checked( !bp_disable_avatar_uploads( false ) ); ?> />
+	<label for="bp-disable-avatar-uploads"><?php _e( 'Allow registered members to upload avatars', 'buddypress' ); ?></label>
+<?php
+}
+
+/**
+ * Allow members to upload cover images field.
+ *
+ * @since 2.4.0
+ * @since 6.0.0 Setting has been moved into the Members section.
+ */
+function bp_admin_setting_callback_cover_image_uploads() {
+?>
+	<input id="bp-disable-cover-image-uploads" name="bp-disable-cover-image-uploads" type="checkbox" value="1" <?php checked( ! bp_disable_cover_image_uploads() ); ?> />
+	<label for="bp-disable-cover-image-uploads"><?php _e( 'Allow registered members to upload cover images', 'buddypress' ); ?></label>
+<?php
+}
+
+/**
+ * Allow members to invite non-members to the network.
+ *
+ * @since 8.0.0
+ */
+function bp_admin_setting_callback_members_invitations() {
+?>
+	<input id="bp-enable-members-invitations" name="bp-enable-members-invitations" type="checkbox" value="1" <?php checked( bp_get_members_invitations_allowed() ); ?> />
+	<label for="bp-enable-members-invitations"><?php _e( 'Allow registered members to invite people to join this network', 'buddypress' ); ?></label>
+	<?php if ( ! bp_get_signup_allowed() ) : ?>
+		<p class="description"><?php _e( 'Public registration is currently disabled. However, invitees will still be able to register if network invitations are enabled.', 'buddypress' ); ?></p>
+	<?php endif; ?>
+	<?php
+	/**
+	 * Fires after the output of the invitations settings section.
+	 *
+	 * @since 8.0.0
+	 */
+	do_action( 'bp_admin_settings_after_members_invitations' );
+}
+
 /** XProfile ******************************************************************/
 
 /**
@@ -168,33 +224,6 @@ function bp_admin_setting_callback_profile_sync() {
 	<input id="bp-disable-profile-sync" name="bp-disable-profile-sync" type="checkbox" value="1" <?php checked( !bp_disable_profile_sync( false ) ); ?> />
 	<label for="bp-disable-profile-sync"><?php _e( 'Enable BuddyPress to WordPress profile syncing', 'buddypress' ); ?></label>
 
-<?php
-}
-
-/**
- * Allow members to upload avatars field.
- *
- * @since 1.6.0
- *
- */
-function bp_admin_setting_callback_avatar_uploads() {
-?>
-
-	<input id="bp-disable-avatar-uploads" name="bp-disable-avatar-uploads" type="checkbox" value="1" <?php checked( !bp_disable_avatar_uploads( false ) ); ?> />
-	<label for="bp-disable-avatar-uploads"><?php _e( 'Allow registered members to upload avatars', 'buddypress' ); ?></label>
-
-<?php
-}
-
-/**
- * Allow members to upload cover images field.
- *
- * @since 2.4.0
- */
-function bp_admin_setting_callback_cover_image_uploads() {
-?>
-	<input id="bp-disable-cover-image-uploads" name="bp-disable-cover-image-uploads" type="checkbox" value="1" <?php checked( ! bp_disable_cover_image_uploads() ); ?> />
-	<label for="bp-disable-cover-image-uploads"><?php _e( 'Allow registered members to upload cover images', 'buddypress' ); ?></label>
 <?php
 }
 
@@ -264,9 +293,10 @@ function bp_core_admin_settings() {
 
 	<div class="wrap">
 
-		<h1><?php _e( 'BuddyPress Settings', 'buddypress' ); ?> </h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'BuddyPress Settings', 'buddypress' ); ?></h1>
+		<hr class="wp-header-end">
 
-		<h2 class="nav-tab-wrapper"><?php bp_core_admin_tabs( __( 'Options', 'buddypress' ) ); ?></h2>
+		<h2 class="nav-tab-wrapper"><?php bp_core_admin_tabs( esc_html__( 'Options', 'buddypress' ) ); ?></h2>
 
 		<form action="<?php echo esc_url( $form_action ) ?>" method="post">
 

@@ -7,6 +7,11 @@
 
 namespace Automattic\Jetpack\Sync;
 
+use Automattic\Jetpack\Sync\Replicastore\Table_Checksum;
+use Automattic\Jetpack\Sync\Replicastore\Table_Checksum_Usermeta;
+use Exception;
+use WP_Error;
+
 /**
  * An implementation of Replicastore Interface which returns data stored in a WordPress.org DB.
  * This is useful to compare values in the local WP DB to values in the synced replica store
@@ -21,6 +26,12 @@ class Replicastore implements Replicastore_Interface {
 		global $wpdb;
 
 		$wpdb->query( "DELETE FROM $wpdb->posts" );
+
+		// Delete comments from cache.
+		$comment_ids = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments" );
+		if ( ! empty( $comment_ids ) ) {
+			clean_comment_cache( $comment_ids );
+		}
 		$wpdb->query( "DELETE FROM $wpdb->comments" );
 
 		// Also need to delete terms from cache.
@@ -121,11 +132,11 @@ class Replicastore implements Replicastore_Interface {
 		}
 
 		if ( ! empty( $min_id ) ) {
-			$where .= ' AND ID >= ' . intval( $min_id );
+			$where .= ' AND ID >= ' . (int) $min_id;
 		}
 
 		if ( ! empty( $max_id ) ) {
-			$where .= ' AND ID <= ' . intval( $max_id );
+			$where .= ' AND ID <= ' . (int) $max_id;
 		}
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -144,7 +155,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @param int    $max_id Maximum post ID.
 	 * @return array Array of posts.
 	 */
-	public function get_posts( $status = null, $min_id = null, $max_id = null ) {
+	public function get_posts( $status = null, $min_id = null, $max_id = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$args = array(
 			'orderby'        => 'ID',
 			'posts_per_page' => -1,
@@ -179,7 +190,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @param \WP_Post $post   Post object.
 	 * @param bool     $silent Whether to perform a silent action. Not used in this implementation.
 	 */
-	public function upsert_post( $post, $silent = false ) {
+	public function upsert_post( $post, $silent = false ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		global $wpdb;
 
 		// Reject the post if it's not a \WP_Post.
@@ -260,8 +271,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @return int The checksum.
 	 */
 	public function posts_checksum( $min_id = null, $max_id = null ) {
-		global $wpdb;
-		return $this->table_checksum( $wpdb->posts, Defaults::$default_post_checksum_columns, 'ID', Settings::get_blacklisted_post_types_sql(), $min_id, $max_id );
+		return $this->summarize_checksum_histogram( $this->checksum_histogram( 'posts', null, $min_id, $max_id ) );
 	}
 
 	/**
@@ -274,8 +284,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @return int The checksum.
 	 */
 	public function post_meta_checksum( $min_id = null, $max_id = null ) {
-		global $wpdb;
-		return $this->table_checksum( $wpdb->postmeta, Defaults::$default_post_meta_checksum_columns, 'meta_id', Settings::get_whitelisted_post_meta_sql(), $min_id, $max_id );
+		return $this->summarize_checksum_histogram( $this->checksum_histogram( 'postmeta', null, $min_id, $max_id ) );
 	}
 
 	/**
@@ -302,11 +311,11 @@ class Replicastore implements Replicastore_Interface {
 		}
 
 		if ( ! empty( $min_id ) ) {
-			$where .= ' AND comment_ID >= ' . intval( $min_id );
+			$where .= ' AND comment_ID >= ' . (int) $min_id;
 		}
 
 		if ( ! empty( $max_id ) ) {
-			$where .= ' AND comment_ID <= ' . intval( $max_id );
+			$where .= ' AND comment_ID <= ' . (int) $max_id;
 		}
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -316,25 +325,27 @@ class Replicastore implements Replicastore_Interface {
 	/**
 	 * Translate a comment status to a value of the comment_approved field.
 	 *
-	 * @access private
+	 * @access protected
 	 *
 	 * @param string $status Comment status.
 	 * @return string|bool New comment_approved value, false if the status doesn't affect it.
 	 */
-	private function comment_status_to_approval_value( $status ) {
-		switch ( $status ) {
+	protected function comment_status_to_approval_value( $status ) {
+		switch ( (string) $status ) {
 			case 'approve':
+			case '1':
 				return '1';
 			case 'hold':
+			case '0':
 				return '0';
 			case 'spam':
 				return 'spam';
 			case 'trash':
 				return 'trash';
+			case 'post-trashed':
+				return 'post-trashed';
 			case 'any':
-				return false;
 			case 'all':
-				return false;
 			default:
 				return false;
 		}
@@ -352,7 +363,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @param int    $max_id Maximum comment ID.
 	 * @return array Array of comments.
 	 */
-	public function get_comments( $status = null, $min_id = null, $max_id = null ) {
+	public function get_comments( $status = null, $min_id = null, $max_id = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$args = array(
 			'orderby' => 'ID',
 			'status'  => 'all',
@@ -426,6 +437,8 @@ class Replicastore implements Replicastore_Interface {
 		} else {
 			$wpdb->insert( $wpdb->comments, $comment );
 		}
+		// Remove comment from cache.
+		clean_comment_cache( $comment['comment_ID'] );
 
 		wp_update_comment_count( $comment['comment_post_ID'] );
 	}
@@ -496,8 +509,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @return int The checksum.
 	 */
 	public function comments_checksum( $min_id = null, $max_id = null ) {
-		global $wpdb;
-		return $this->table_checksum( $wpdb->comments, Defaults::$default_comment_checksum_columns, 'comment_ID', Settings::get_comments_filter_sql(), $min_id, $max_id );
+		return $this->summarize_checksum_histogram( $this->checksum_histogram( 'comments', null, $min_id, $max_id ) );
 	}
 
 	/**
@@ -510,23 +522,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @return int The checksum.
 	 */
 	public function comment_meta_checksum( $min_id = null, $max_id = null ) {
-		global $wpdb;
-		return $this->table_checksum( $wpdb->commentmeta, Defaults::$default_comment_meta_checksum_columns, 'meta_id', Settings::get_whitelisted_comment_meta_sql(), $min_id, $max_id );
-	}
-
-	/**
-	 * Retrieve the checksum for all options.
-	 *
-	 * @access public
-	 *
-	 * @return int The checksum.
-	 */
-	public function options_checksum() {
-		global $wpdb;
-		$options_whitelist = "'" . implode( "', '", Defaults::$default_options_whitelist ) . "'";
-		$where_sql         = "option_name IN ( $options_whitelist )";
-
-		return $this->table_checksum( $wpdb->options, Defaults::$default_option_checksum_columns, null, $where_sql, null, null );
+		return $this->summarize_checksum_histogram( $this->checksum_histogram( 'commentmeta', null, $min_id, $max_id ) );
 	}
 
 	/**
@@ -568,14 +564,13 @@ class Replicastore implements Replicastore_Interface {
 	}
 
 	/**
-	 * Change the features that the current theme supports.
-	 * Intentionally not implemented in this replicastore.
+	 * Change the info of the current theme.
 	 *
 	 * @access public
 	 *
-	 * @param array $theme_support Features that the theme supports.
+	 * @param array $theme_info Theme info array.
 	 */
-	public function set_theme_support( $theme_support ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function set_theme_info( $theme_info ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		// Noop.
 	}
 
@@ -726,6 +721,8 @@ class Replicastore implements Replicastore_Interface {
 	/**
 	 * Retrieve value of a constant based on the constant name.
 	 *
+	 * We explicitly return null instead of false if the constant doesn't exist.
+	 *
 	 * @access public
 	 *
 	 * @param string $constant Name of constant to retrieve.
@@ -860,9 +857,14 @@ class Replicastore implements Replicastore_Interface {
 	 * @access public
 	 *
 	 * @param string $taxonomy Taxonomy slug.
-	 * @return array Array of terms.
+	 *
+	 * @return array|WP_Error Array of terms or WP_Error object on failure.
 	 */
 	public function get_terms( $taxonomy ) {
+		$t = $this->ensure_taxonomy( $taxonomy );
+		if ( ! $t || is_wp_error( $t ) ) {
+			return $t;
+		}
 		return get_terms( $taxonomy );
 	}
 
@@ -873,10 +875,17 @@ class Replicastore implements Replicastore_Interface {
 	 *
 	 * @param string $taxonomy   Taxonomy slug.
 	 * @param int    $term_id    ID of the term.
-	 * @param bool   $is_term_id Whether this is a `term_id` or a `term_taxonomy_id`.
-	 * @return \WP_Term|\WP_Error Term object on success, \WP_Error object on failure.
+	 * @param string $term_key   ID Field `term_id` or `term_taxonomy_id`.
+	 *
+	 * @return \WP_Term|WP_Error Term object on success, \WP_Error object on failure.
 	 */
-	public function get_term( $taxonomy, $term_id, $is_term_id = true ) {
+	public function get_term( $taxonomy, $term_id, $term_key = 'term_id' ) {
+
+		// Full Sync will pass false for the $taxonomy so a check for term_taxonomy_id is needed before ensure_taxonomy.
+		if ( 'term_taxonomy_id' === $term_key ) {
+			return get_term_by( 'term_taxonomy_id', $term_id );
+		}
+
 		$t = $this->ensure_taxonomy( $taxonomy );
 		if ( ! $t || is_wp_error( $t ) ) {
 			return $t;
@@ -891,7 +900,8 @@ class Replicastore implements Replicastore_Interface {
 	 * @access private
 	 *
 	 * @param string $taxonomy Taxonomy slug.
-	 * @return bool|void|\WP_Error True if already exists; void if it was registered; \WP_Error on error.
+	 *
+	 * @return bool|void|WP_Error True if already exists; void if it was registered; \WP_Error on error.
 	 */
 	private function ensure_taxonomy( $taxonomy ) {
 		if ( ! taxonomy_exists( $taxonomy ) ) {
@@ -899,7 +909,7 @@ class Replicastore implements Replicastore_Interface {
 			$taxonomies = $this->get_callable( 'taxonomies' );
 			if ( ! isset( $taxonomies[ $taxonomy ] ) ) {
 				// Doesn't exist, or somehow hasn't been synced.
-				return new \WP_Error( 'invalid_taxonomy', "The taxonomy '$taxonomy' doesn't exist" );
+				return new WP_Error( 'invalid_taxonomy', "The taxonomy '$taxonomy' doesn't exist" );
 			}
 			$t = $taxonomies[ $taxonomy ];
 
@@ -920,7 +930,8 @@ class Replicastore implements Replicastore_Interface {
 	 *
 	 * @param int    $object_id Object ID.
 	 * @param string $taxonomy  Taxonomy slug.
-	 * @return array|bool|\WP_Error Array of terms on success, `false` if no terms or post doesn't exist, \WP_Error on failure.
+	 *
+	 * @return array|bool|WP_Error Array of terms on success, `false` if no terms or post doesn't exist, \WP_Error on failure.
 	 */
 	public function get_the_terms( $object_id, $taxonomy ) {
 		return get_the_terms( $object_id, $taxonomy );
@@ -932,7 +943,8 @@ class Replicastore implements Replicastore_Interface {
 	 * @access public
 	 *
 	 * @param \WP_Term $term_object Term object.
-	 * @return array|bool|\WP_Error Array of term_id and term_taxonomy_id if updated, true if inserted, \WP_Error on failure.
+	 *
+	 * @return array|bool|WP_Error Array of term_id and term_taxonomy_id if updated, true if inserted, \WP_Error on failure.
 	 */
 	public function update_term( $term_object ) {
 		$taxonomy = $term_object->taxonomy;
@@ -944,7 +956,7 @@ class Replicastore implements Replicastore_Interface {
 			)
 		);
 		if ( ! $exists ) {
-			$term_object   = sanitize_term( clone( $term_object ), $taxonomy, 'db' );
+			$term_object   = sanitize_term( clone $term_object, $taxonomy, 'db' );
 			$term          = array(
 				'term_id'    => $term_object->term_id,
 				'name'       => $term_object->name,
@@ -975,9 +987,11 @@ class Replicastore implements Replicastore_Interface {
 	 *
 	 * @param int    $term_id  Term ID.
 	 * @param string $taxonomy Taxonomy slug.
-	 * @return bool|int|\WP_Error True on success, false if term doesn't exist. Zero if trying with default category. \WP_Error on invalid taxonomy.
+	 *
+	 * @return bool|int|WP_Error True on success, false if term doesn't exist. Zero if trying with default category. \WP_Error on invalid taxonomy.
 	 */
 	public function delete_term( $term_id, $taxonomy ) {
+		$this->ensure_taxonomy( $taxonomy );
 		return wp_delete_term( $term_id, $taxonomy );
 	}
 
@@ -992,6 +1006,7 @@ class Replicastore implements Replicastore_Interface {
 	 * @param bool             $append    Optional. If false will delete difference of terms. Default false.
 	 */
 	public function update_object_terms( $object_id, $taxonomy, $terms, $append ) {
+		$this->ensure_taxonomy( $taxonomy );
 		wp_set_object_terms( $object_id, $terms, $taxonomy, $append );
 	}
 
@@ -1023,7 +1038,8 @@ class Replicastore implements Replicastore_Interface {
 			/**
 			 * Fires immediately before an object-term relationship is deleted.
 			 *
-			 * @since 2.9.0
+			 * @since 1.6.3
+			 * @since-jetpack 2.9.0
 			 *
 			 * @param int   $object_id Object ID.
 			 * @param array $tt_ids    An array of term taxonomy IDs.
@@ -1037,7 +1053,8 @@ class Replicastore implements Replicastore_Interface {
 				/**
 				 * Fires immediately after an object-term relationship is deleted.
 				 *
-				 * @since 2.9.0
+				 * @since 1.6.3
+				 * @since-jetpack 2.9.0
 				 *
 				 * @param int   $object_id Object ID.
 				 * @param array $tt_ids    An array of term taxonomy IDs.
@@ -1079,7 +1096,7 @@ class Replicastore implements Replicastore_Interface {
 	 * Not supported in this replicastore.
 	 *
 	 * @access public
-	 * @throws \Exception If this method is invoked.
+	 * @throws Exception If this method is invoked.
 	 *
 	 * @param \WP_User $user User object.
 	 */
@@ -1092,7 +1109,7 @@ class Replicastore implements Replicastore_Interface {
 	 * Not supported in this replicastore.
 	 *
 	 * @access public
-	 * @throws \Exception If this method is invoked.
+	 * @throws Exception If this method is invoked.
 	 *
 	 * @param int $user_id User ID.
 	 */
@@ -1105,7 +1122,7 @@ class Replicastore implements Replicastore_Interface {
 	 * Not supported in this replicastore.
 	 *
 	 * @access public
-	 * @throws \Exception If this method is invoked.
+	 * @throws Exception If this method is invoked.
 	 *
 	 * @param int    $user_id User ID.
 	 * @param string $local   The user locale.
@@ -1119,7 +1136,7 @@ class Replicastore implements Replicastore_Interface {
 	 * Not supported in this replicastore.
 	 *
 	 * @access public
-	 * @throws \Exception If this method is invoked.
+	 * @throws Exception If this method is invoked.
 	 *
 	 * @param int $user_id User ID.
 	 */
@@ -1157,48 +1174,82 @@ class Replicastore implements Replicastore_Interface {
 	 *
 	 * @access public
 	 *
+	 * @param boolean $perform_text_conversion If text fields should be latin1 converted.
+	 *
 	 * @return array Checksums.
 	 */
-	public function checksum_all() {
-		$post_meta_checksum    = $this->checksum_histogram( 'post_meta', 1 );
-		$comment_meta_checksum = $this->checksum_histogram( 'comment_meta', 1 );
+	public function checksum_all( $perform_text_conversion = false ) {
+		$post_checksum               = $this->checksum_histogram( 'posts', null, null, null, null, true, '', false, false, $perform_text_conversion );
+		$comments_checksum           = $this->checksum_histogram( 'comments', null, null, null, null, true, '', false, false, $perform_text_conversion );
+		$post_meta_checksum          = $this->checksum_histogram( 'postmeta', null, null, null, null, true, '', false, false, $perform_text_conversion );
+		$comment_meta_checksum       = $this->checksum_histogram( 'commentmeta', null, null, null, null, true, '', false, false, $perform_text_conversion );
+		$terms_checksum              = $this->checksum_histogram( 'terms', null, null, null, null, true, '', false, false, $perform_text_conversion );
+		$term_relationships_checksum = $this->checksum_histogram( 'term_relationships', null, null, null, null, true, '', false, false, $perform_text_conversion );
+		$term_taxonomy_checksum      = $this->checksum_histogram( 'term_taxonomy', null, null, null, null, true, '', false, false, $perform_text_conversion );
 
-		return array(
-			'posts'        => $this->posts_checksum(),
-			'comments'     => $this->comments_checksum(),
-			'post_meta'    => reset( $post_meta_checksum ),
-			'comment_meta' => reset( $comment_meta_checksum ),
+		$result = array(
+			'posts'              => $this->summarize_checksum_histogram( $post_checksum ),
+			'comments'           => $this->summarize_checksum_histogram( $comments_checksum ),
+			'post_meta'          => $this->summarize_checksum_histogram( $post_meta_checksum ),
+			'comment_meta'       => $this->summarize_checksum_histogram( $comment_meta_checksum ),
+			'terms'              => $this->summarize_checksum_histogram( $terms_checksum ),
+			'term_relationships' => $this->summarize_checksum_histogram( $term_relationships_checksum ),
+			'term_taxonomy'      => $this->summarize_checksum_histogram( $term_taxonomy_checksum ),
 		);
+
+		/**
+		 * WooCommerce tables
+		 */
+
+		/**
+		 * On WordPress.com, we can't directly check if the site has support for WooCommerce.
+		 * Having the option to override the functionality here helps with syncing WooCommerce tables.
+		 *
+		 * @since 10.1
+		 *
+		 * @param bool If we should we force-enable WooCommerce tables support.
+		 */
+		$force_woocommerce_support = apply_filters( 'jetpack_table_checksum_force_enable_woocommerce', false );
+
+		if ( $force_woocommerce_support || class_exists( 'WooCommerce' ) ) {
+			/**
+			 * Guard in Try/Catch as it's possible for the WooCommerce class to exist, but
+			 * the tables to not. If we don't do this, the response will be just the exception, without
+			 * returning any valid data. This will prevent us from ever performing a checksum/fix
+			 * for sites like this.
+			 * It's better to just skip the tables in the response, instead of completely failing.
+			 */
+
+			try {
+				$woocommerce_order_items_checksum  = $this->checksum_histogram( 'woocommerce_order_items' );
+				$result['woocommerce_order_items'] = $this->summarize_checksum_histogram( $woocommerce_order_items_checksum );
+			} catch ( Exception $ex ) {
+				$result['woocommerce_order_items'] = null;
+			}
+
+			try {
+				$woocommerce_order_itemmeta_checksum  = $this->checksum_histogram( 'woocommerce_order_itemmeta' );
+				$result['woocommerce_order_itemmeta'] = $this->summarize_checksum_histogram( $woocommerce_order_itemmeta_checksum );
+			} catch ( Exception $ex ) {
+				$result['woocommerce_order_itemmeta'] = null;
+			}
+		}
+
+		return $result;
 	}
 
 	/**
-	 * Retrieve the columns that are needed to calculate a checksum for an object type.
+	 * Return the summarized checksum from buckets or the WP_Error.
 	 *
-	 * @access public
+	 * @param array $histogram checksum_histogram result.
 	 *
-	 * @todo Refactor to not use interpolated values and prepare the SQL query.
-	 *
-	 * @param string $object_type Object type.
-	 * @return array|bool Columns, or false if invalid object type is specified.
+	 * @return int|WP_Error checksum or Error.
 	 */
-	public function get_checksum_columns_for_object_type( $object_type ) {
-		switch ( $object_type ) {
-			case 'posts':
-				return Defaults::$default_post_checksum_columns;
-			case 'post_meta':
-				return Defaults::$default_post_meta_checksum_columns;
-			case 'comments':
-				return Defaults::$default_comment_checksum_columns;
-			case 'comment_meta':
-				return Defaults::$default_post_meta_checksum_columns;
-			case 'terms':
-				return Defaults::$default_term_checksum_columns;
-			case 'term_taxonomy':
-				return Defaults::$default_term_taxonomy_checksum_columns;
-			case 'term_relationships':
-				return Defaults::$default_term_relationships_checksum_columns;
-			default:
-				return false;
+	protected function summarize_checksum_histogram( $histogram ) {
+		if ( is_wp_error( $histogram ) ) {
+			return $histogram;
+		} else {
+			return array_sum( $histogram );
 		}
 	}
 
@@ -1242,185 +1293,83 @@ class Replicastore implements Replicastore_Interface {
 	 *
 	 * @access public
 	 *
-	 * @todo Refactor to not use interpolated values and properly prepare the SQL query.
+	 * @param string $table                   Object type.
+	 * @param null   $buckets                 Number of buckets to split the objects to.
+	 * @param null   $start_id                Minimum object ID.
+	 * @param null   $end_id                  Maximum object ID.
+	 * @param null   $columns                 Table columns to calculate the checksum from.
+	 * @param bool   $strip_non_ascii         Whether to strip non-ASCII characters.
+	 * @param string $salt                    Salt, used for $wpdb->prepare()'s args.
+	 * @param bool   $only_range_edges        Only return the range edges and not the actual checksums.
+	 * @param bool   $detailed_drilldown      If the call should return a detailed drilldown for the checksum or only the checksum.
+	 * @param bool   $perform_text_conversion If text fields should be converted to latin1 during the checksum calculation.
 	 *
-	 * @param string $object_type     Object type.
-	 * @param int    $buckets         Number of buckets to split the objects to.
-	 * @param int    $start_id        Minimum object ID.
-	 * @param int    $end_id          Maximum object ID.
-	 * @param array  $columns         Table columns to calculate the checksum from.
-	 * @param bool   $strip_non_ascii Whether to strip non-ASCII characters.
-	 * @param string $salt            Salt, used for $wpdb->prepare()'s args.
-	 * @return array The checksum histogram.
+	 * @return array|WP_Error The checksum histogram.
+	 * @throws Exception Throws an exception if data validation fails inside `Table_Checksum` calls.
 	 */
-	public function checksum_histogram( $object_type, $buckets, $start_id = null, $end_id = null, $columns = null, $strip_non_ascii = true, $salt = '' ) {
+	public function checksum_histogram( $table, $buckets = null, $start_id = null, $end_id = null, $columns = null, $strip_non_ascii = true, $salt = '', $only_range_edges = false, $detailed_drilldown = false, $perform_text_conversion = false ) {
 		global $wpdb;
 
 		$wpdb->queries = array();
-
-		if ( empty( $columns ) ) {
-			$columns = $this->get_checksum_columns_for_object_type( $object_type );
+		try {
+			$checksum_table = $this->get_table_checksum_instance( $table, $salt, $perform_text_conversion );
+		} catch ( Exception $ex ) {
+			return new WP_Error( 'checksum_disabled', $ex->getMessage() );
 		}
 
-		switch ( $object_type ) {
-			case 'posts':
-				$object_count = $this->post_count( null, $start_id, $end_id );
-				$object_table = $wpdb->posts;
-				$id_field     = 'ID';
-				$where_sql    = Settings::get_blacklisted_post_types_sql();
-				break;
-			case 'post_meta':
-				$object_table = $wpdb->postmeta;
-				$where_sql    = Settings::get_whitelisted_post_meta_sql();
-				$object_count = $this->meta_count( $object_table, $where_sql, $start_id, $end_id );
-				$id_field     = 'meta_id';
-				break;
-			case 'comments':
-				$object_count = $this->comment_count( null, $start_id, $end_id );
-				$object_table = $wpdb->comments;
-				$id_field     = 'comment_ID';
-				$where_sql    = Settings::get_comments_filter_sql();
-				break;
-			case 'comment_meta':
-				$object_table = $wpdb->commentmeta;
-				$where_sql    = Settings::get_whitelisted_comment_meta_sql();
-				$object_count = $this->meta_count( $object_table, $where_sql, $start_id, $end_id );
-				$id_field     = 'meta_id';
-				break;
-			case 'terms':
-				$object_table = $wpdb->terms;
-				$object_count = $this->term_count();
-				$id_field     = 'term_id';
-				$where_sql    = '1=1';
-				break;
-			case 'term_taxonomy':
-				$object_table = $wpdb->term_taxonomy;
-				$object_count = $this->term_taxonomy_count();
-				$id_field     = 'term_taxonomy_id';
-				$where_sql    = '1=1';
-				break;
-			case 'term_relationships':
-				$object_table = $wpdb->term_relationships;
-				$object_count = $this->term_relationship_count();
-				$id_field     = 'object_id';
-				$where_sql    = '1=1';
-				break;
-			default:
-				return false;
+		// Validate / Determine Buckets.
+		if ( is_null( $buckets ) || $buckets < 1 ) {
+			$buckets = $this->calculate_buckets( $table, $start_id, $end_id );
+		}
+		if ( is_wp_error( $buckets ) ) {
+			return $buckets;
 		}
 
-		$bucket_size     = intval( ceil( $object_count / $buckets ) );
-		$previous_max_id = 0;
+		$range_edges = $checksum_table->get_range_edges( $start_id, $end_id );
+
+		if ( $only_range_edges ) {
+			return $range_edges;
+		}
+
+		$object_count = (int) $range_edges['item_count'];
+
+		if ( 0 === $object_count ) {
+			return array();
+		}
+
+		$bucket_size     = (int) ceil( $object_count / $buckets );
+		$previous_max_id = max( 0, $range_edges['min_range'] );
 		$histogram       = array();
 
-		// This is used for the min / max query, while $where_sql is used for the checksum query.
-		$where = $where_sql;
-
-		if ( $start_id ) {
-			$where .= " AND $id_field >= " . intval( $start_id );
-		}
-
-		if ( $end_id ) {
-			$where .= " AND $id_field <= " . intval( $end_id );
-		}
-
 		do {
-			$result = $this->get_min_max_object_id(
-				$id_field,
-				$object_table,
-				$where . " AND $id_field > $previous_max_id",
-				$bucket_size
-			);
+			$ids_range = $checksum_table->get_range_edges( $previous_max_id, null, $bucket_size );
 
-			if ( null === $result->min || null === $result->max ) {
+			if ( empty( $ids_range['min_range'] ) || empty( $ids_range['max_range'] ) ) {
 				// Nothing to checksum here...
 				break;
 			}
 
 			// Get the checksum value.
-			$value = $this->table_checksum( $object_table, $columns, $id_field, $where_sql, $result->min, $result->max, $strip_non_ascii, $salt );
+			$batch_checksum = $checksum_table->calculate_checksum( $ids_range['min_range'], $ids_range['max_range'], null, $detailed_drilldown );
 
-			if ( is_wp_error( $value ) ) {
-				return $value;
+			if ( is_wp_error( $batch_checksum ) ) {
+				return $batch_checksum;
 			}
 
-			if ( null === $result->min || null === $result->max ) {
-				break;
-			} elseif ( $result->min === $result->max ) {
-				$histogram[ $result->min ] = $value;
+			if ( $ids_range['min_range'] === $ids_range['max_range'] ) {
+				$histogram[ $ids_range['min_range'] ] = $batch_checksum;
 			} else {
-				$histogram[ "{$result->min}-{$result->max}" ] = $value;
+				$histogram[ "{$ids_range[ 'min_range' ]}-{$ids_range[ 'max_range' ]}" ] = $batch_checksum;
 			}
 
-			$previous_max_id = $result->max;
+			$previous_max_id = $ids_range['max_range'] + 1;
+			// If we've reached the max_range lets bail out.
+			if ( $previous_max_id > $range_edges['max_range'] ) {
+				break;
+			}
 		} while ( true );
 
 		return $histogram;
-	}
-
-	/**
-	 * Retrieve the checksum for a specific database table.
-	 *
-	 * @access private
-	 *
-	 * @todo Refactor to properly prepare the SQL query.
-	 *
-	 * @param string $table           Table name.
-	 * @param array  $columns         Table columns to calculate the checksum from.
-	 * @param int    $id_column       Name of the unique ID column.
-	 * @param string $where_sql       Additional WHERE clause SQL.
-	 * @param int    $min_id          Minimum object ID.
-	 * @param int    $max_id          Maximum object ID.
-	 * @param bool   $strip_non_ascii Whether to strip non-ASCII characters.
-	 * @param string $salt            Salt, used for $wpdb->prepare()'s args.
-	 * @return int|\WP_Error The table histogram, or \WP_Error on failure.
-	 */
-	private function table_checksum( $table, $columns, $id_column, $where_sql = '1=1', $min_id = null, $max_id = null, $strip_non_ascii = true, $salt = '' ) {
-		global $wpdb;
-
-		// Sanitize to just valid MySQL column names.
-		$sanitized_columns = preg_grep( '/^[0-9,a-z,A-Z$_]+$/i', $columns );
-
-		if ( $strip_non_ascii ) {
-			$columns_sql = implode( ',', array_map( array( $this, 'strip_non_ascii_sql' ), $sanitized_columns ) );
-		} else {
-			$columns_sql = implode( ',', $sanitized_columns );
-		}
-
-		if ( null !== $min_id && null !== $max_id ) {
-			if ( $min_id === $max_id ) {
-				$min_id     = intval( $min_id );
-				$where_sql .= " AND $id_column = $min_id LIMIT 1";
-			} else {
-				$min_id     = intval( $min_id );
-				$max_id     = intval( $max_id );
-				$size       = $max_id - $min_id;
-				$where_sql .= " AND $id_column >= $min_id AND $id_column <= $max_id LIMIT $size";
-			}
-		} else {
-			if ( null !== $min_id ) {
-				$min_id     = intval( $min_id );
-				$where_sql .= " AND $id_column >= $min_id";
-			}
-
-			if ( null !== $max_id ) {
-				$max_id     = intval( $max_id );
-				$where_sql .= " AND $id_column <= $max_id";
-			}
-		}
-
-		$query = <<<ENDSQL
-			SELECT CAST( SUM( CRC32( CONCAT_WS( '#', '%s', {$columns_sql} ) ) ) AS UNSIGNED INT )
-			FROM $table
-			WHERE $where_sql;
-ENDSQL;
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$result = $wpdb->get_var( $wpdb->prepare( $query, $salt ) );
-		if ( $wpdb->last_error ) {
-			return new \WP_Error( 'database_error', $wpdb->last_error );
-		}
-
-		return $result;
 	}
 
 	/**
@@ -1435,55 +1384,70 @@ ENDSQL;
 	}
 
 	/**
-	 * Count the meta values in a table, within a specified range.
-	 *
-	 * @access private
-	 *
-	 * @todo Refactor to not use interpolated values when preparing the SQL query.
-	 *
-	 * @param string $table     Table name.
-	 * @param string $where_sql Additional WHERE SQL.
-	 * @param int    $min_id    Minimum meta ID.
-	 * @param int    $max_id    Maximum meta ID.
-	 * @return int Number of meta values.
-	 */
-	private function meta_count( $table, $where_sql, $min_id, $max_id ) {
-		global $wpdb;
-
-		if ( ! empty( $min_id ) ) {
-			$where_sql .= ' AND meta_id >= ' . intval( $min_id );
-		}
-
-		if ( ! empty( $max_id ) ) {
-			$where_sql .= ' AND meta_id <= ' . intval( $max_id );
-		}
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		return $wpdb->get_var( "SELECT COUNT(*) FROM $table WHERE $where_sql" );
-	}
-
-	/**
-	 * Wraps a column name in SQL which strips non-ASCII chars.
-	 * This helps normalize data to avoid checksum differences caused by
-	 * badly encoded data in the DB.
-	 *
-	 * @param string $column_name Name of the column.
-	 * @return string Column name, without the non-ASCII chars.
-	 */
-	public function strip_non_ascii_sql( $column_name ) {
-		return "REPLACE( CONVERT( $column_name USING ascii ), '?', '' )";
-	}
-
-	/**
 	 * Used in methods that are not implemented and shouldn't be invoked.
 	 *
 	 * @access private
-	 * @throws \Exception If this method is invoked.
+	 * @throws Exception If this method is invoked.
 	 */
 	private function invalid_call() {
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
 		$backtrace = debug_backtrace();
 		$caller    = $backtrace[1]['function'];
-		throw new \Exception( "This function $caller is not supported on the WP Replicastore" );
+		throw new Exception( "This function $caller is not supported on the WP Replicastore" );
+	}
+
+	/**
+	 * Determine number of buckets to use in full table checksum.
+	 *
+	 * @param string $table Object Type.
+	 * @param int    $start_id Min Object ID.
+	 * @param int    $end_id Max Object ID.
+	 * @return int|WP_Error Number of Buckets to use.
+	 */
+	private function calculate_buckets( $table, $start_id = null, $end_id = null ) {
+		// Get # of objects.
+		try {
+			$checksum_table = $this->get_table_checksum_instance( $table );
+		} catch ( Exception $ex ) {
+			return new WP_Error( 'checksum_disabled', $ex->getMessage() );
+		}
+		$range_edges  = $checksum_table->get_range_edges( $start_id, $end_id );
+		$object_count = $range_edges['item_count'];
+
+		// Ensure no division by 0.
+		if ( 0 === (int) $object_count ) {
+			return 1;
+		}
+
+		// Default Bucket sizes.
+		$bucket_size = 10000; // Default bucket size is 10,000 items.
+		switch ( $table ) {
+			case 'postmeta':
+			case 'commentmeta':
+			case 'order_itemmeta':
+				$bucket_size = 1000; // Meta bucket size is restricted to 1000 items.
+		}
+
+		return (int) ceil( $object_count / $bucket_size );
+	}
+
+	/**
+	 * Return an instance for `Table_Checksum`, depending on the table.
+	 *
+	 * Some tables require custom instances, due to different checksum logic.
+	 *
+	 * @param string $table The table that we want to get the instance for.
+	 * @param null   $salt  Salt to be used when generating the checksums.
+	 * @param false  $perform_text_conversion Should we perform text encoding conversion when calculating the checksum.
+	 *
+	 * @return Table_Checksum|Table_Checksum_Usermeta
+	 * @throws Exception Might throw an exception if any of the input parameters were invalid.
+	 */
+	public function get_table_checksum_instance( $table, $salt = null, $perform_text_conversion = false ) {
+		if ( 'usermeta' === $table ) {
+			return new Table_Checksum_Usermeta( $table, $salt, $perform_text_conversion );
+		}
+
+		return new Table_Checksum( $table, $salt, $perform_text_conversion );
 	}
 }

@@ -1,6 +1,7 @@
 <?php
-include_once('WPPerformanceTester_LifeCycle.php');
-require_once('benchmark.php');
+require_once( 'WPPerformanceTester_LifeCycle.php' );
+require_once( 'benchmark.php' );
+
 class WPPerformanceTester_Plugin extends WPPerformanceTester_LifeCycle {
 
     /**
@@ -9,10 +10,10 @@ class WPPerformanceTester_Plugin extends WPPerformanceTester_LifeCycle {
     public function settingsPage() {
 
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'TEXT-DOMAIN'));
+            wp_die(__('You do not have sufficient permissions to access this page.'));
         }
         $performTest = false;
-        if ($_POST['performTest'] == true){
+        if ( !empty( $_POST['performTest'] ) && ( $_POST['performTest'] == true ) ) {
             $performTest=true;
         }
         ?>
@@ -20,28 +21,59 @@ class WPPerformanceTester_Plugin extends WPPerformanceTester_LifeCycle {
             <h2>WPPerformanceTester</h2>
             <p>WPPerformanceTester performs a series of tests to see how well your server performs. The first set test the raw server performance. The second is WordPress specific. Your results will be displayed and you can see how your results stack up against others.</p>
 
-            <form method="post" action="<?php echo admin_url('tools.php?page=WPPerformanceTester_PluginSettings'); ?>">
+            <form method="post" action="<?php echo esc_url( admin_url('tools.php?page=WPPerformanceTester_PluginSettings') ); ?>">
                 <input type="hidden" name="performTest" value="true">
                 <input type="submit" value="Begin Performance Test" onclick="this.value='This may take a minute...'">
             </form>
 
             <?php
-            if ($performTest){
+            if ( $performTest ) {
                 //do test
+                global $wpdb;
                 $arr_cfg = array();
-                $arr_cfg['db.host'] = DB_HOST;
-                $arr_cfg['db.user'] = DB_USER;
-                $arr_cfg['db.pw'] = DB_PASSWORD;
-                $arr_cfg['db.name'] = DB_NAME; 
+
+                // We need special handling for hyperdb
+                if ( is_a( $wpdb, 'hyperdb' ) && ! empty( $wpdb->hyper_servers ) ) {
+                  // Grab a `write` server for the `global` dataset and fallback to `read`.
+                  // We're not really paying attention to priority or have much in the way of error checking. Use at your own risk :)
+                  $db_server = false;
+                  if ( ! empty( $wpdb->hyper_servers['global']['write'] ) ) {
+                    foreach ( $wpdb->hyper_servers['global']['write'] as $group => $dbs ) {
+                      $db_server = current( $dbs );
+                      break;
+                    }
+                  } elseif ( ! empty( $wpdb->hyper_servers['global']['read'] ) ) {
+                    foreach ( $wpdb->hyper_servers['global']['read'] as $group => $dbs ) {
+                      $db_server = current( $dbs );
+                      break;
+                    }
+                  }
+
+                  if ( $db_server ) {
+                    $arr_cfg['db.host'] = $db_server['host'];
+                    $arr_cfg['db.user'] = $db_server['user'];
+                    $arr_cfg['db.pw'] = $db_server['password'];
+                    $arr_cfg['db.name'] = $db_server['name'];
+                  }
+                } else {
+                  // Vanilla WordPress install with standard `wpdb`
+                  $arr_cfg['db.host'] = DB_HOST;
+                  $arr_cfg['db.user'] = DB_USER;
+                  $arr_cfg['db.pw'] = DB_PASSWORD;
+                  $arr_cfg['db.name'] = DB_NAME; 
+                }
+                
                 $arr_benchmark = test_benchmark($arr_cfg);
                 $arr_wordpress = test_wordpress();
               
 
                 //charting from results goes here
                 ?>
+                <h2>Performance Test Results (in seconds)</h2>
                 <div id="chartDiv">
                     <div id="legendDiv"></div>
                     <canvas id="myChart" height="400" width="600"></canvas>
+                    <p style="text-align: center; font-style: italic;">Test Type</p>
                 </div>
                 <p>* Lower (faster) time is better. Please submit your results to improve our industry average data :)</p>
                 <script>
@@ -50,7 +82,7 @@ class WPPerformanceTester_Plugin extends WPPerformanceTester_LifeCycle {
                         var ctx = document.getElementById("myChart").getContext("2d");
                         
                         var data = {
-                            labels: ["Math", "String", "Loops", "Conditionals", "MySql", "Server Overall", "WordPress"],
+                            labels: ["Math (CPU)", "String (CPU)", "Loops (CPU)", "Conditionals (CPU)", "MySql (Database)", "Server Total", "WordPress Performance"],
                             datasets: [
                                 {
                                     label: "Your Results",
@@ -257,7 +289,7 @@ class WPPerformanceTester_Plugin extends WPPerformanceTester_LifeCycle {
         $options = $this->getOptionMetaData();
         if (!empty($options)) {
             foreach ($options as $key => $arr) {
-                if (is_array($arr) && count($arr > 1)) {
+                if (is_array($arr) && count($arr) > 1) {
                     $this->addOption($key, $arr[1]);
                 }
             }
@@ -307,42 +339,21 @@ class WPPerformanceTester_Plugin extends WPPerformanceTester_LifeCycle {
     public function upgrade() {
     }
 
+    public function enqueue_scripts_and_style( $hook ) {
+        if ( $hook != 'tools_page_WPPerformanceTester_PluginSettings' ) {
+            return;
+        }
+        wp_enqueue_script( 'chart-js', plugins_url('/js/Chart.js', __FILE__) );
+        wp_enqueue_script( 'jquery');
+        wp_enqueue_style( 'wppt-style', plugins_url('/css/wppt.css', __FILE__) );
+        wp_enqueue_style( 'simptip-style', plugins_url('/css/simptip.css', __FILE__) );
+    }
+
     public function addActionsAndFilters() {
 
         // Add options administration page
         // http://plugin.michael-simpson.com/?page_id=47
-        add_action('admin_menu', array(&$this, 'addSettingsSubMenuPage'));
-
-        // Example adding a script & style just for the options administration page
-        // http://plugin.michael-simpson.com/?page_id=47
-                if (strpos($_SERVER['REQUEST_URI'], $this->getSettingsSlug()) !== false) {
-                    wp_enqueue_script('chart-js', plugins_url('/js/Chart.js', __FILE__));
-                    wp_enqueue_script('jquery');
-                    wp_enqueue_style('wppt-style', plugins_url('/css/wppt.css', __FILE__));
-                    wp_enqueue_style('simptip-style', plugins_url('/css/simptip.css', __FILE__));
-                }
-
-
-        // Add Actions & Filters
-        // http://plugin.michael-simpson.com/?page_id=37
-
-
-        // Adding scripts & styles to all pages
-        // Examples:
-        //        wp_enqueue_script('jquery');
-        //        wp_enqueue_style('my-style', plugins_url('/css/my-style.css', __FILE__));
-        //        wp_enqueue_script('my-script', plugins_url('/js/my-script.js', __FILE__));
-
-
-        // Register short codes
-        // http://plugin.michael-simpson.com/?page_id=39
-
-
-        // Register AJAX hooks
-        // http://plugin.michael-simpson.com/?page_id=41
-
+        add_action('admin_menu', array( $this, 'addSettingsSubMenuPage'));
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_style' ) );
     }
-
-
 }
-

@@ -79,9 +79,6 @@
 	 * Products
 	 */
   /**
-	 * Product Details
-	 */
-  /**
 	 * Cart
 	 */
   /**
@@ -172,18 +169,6 @@
   margin-right: 20px;
   vertical-align: top;
   clear: none;
-}
-
-.woocommerce div.product div.images,
-.woocommerce div.product div.summary,
-.woocommerce #content div.product div.images,
-.woocommerce #content div.product div.summary,
-.woocommerce-page div.product div.images,
-.woocommerce-page div.product div.summary,
-.woocommerce-page #content div.product div.images,
-.woocommerce-page #content div.product div.summary {
-  float: none;
-  width: 100%;
 }
 
 .woocommerce table.cart .product-thumbnail,

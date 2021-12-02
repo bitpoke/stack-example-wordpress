@@ -1,5 +1,6 @@
 // BP primary & secondary navigation - directory and single screens
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 
 // all devices & generic styles sitewide
 .bp-navs {
@@ -100,7 +101,7 @@
 		}
 
 		li:not(.current),
-		li:not(.selected), {
+		li:not(.selected) {
 
 			a:focus,
 			a:hover {
@@ -251,7 +252,6 @@
 			}
 		}
 	}
-
 } // close .buddypress-wrap
 
 // Single screens object navs
@@ -421,7 +421,6 @@
 		}
 
 	} // close @media
-
 } // close .buddypress-wrap
 
 
@@ -440,7 +439,6 @@
 				}
 			}
 		}
-
 	}
 }
 
@@ -483,10 +481,6 @@
 		.bp-navs.tabbed-links {
 			background: none;
 			margin-top: 2px;
-
-			&.main-navs {
-
-			}
 
 			// For tabbed nav we remove any default button nav styles.
 			ul {

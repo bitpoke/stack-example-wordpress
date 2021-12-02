@@ -7,7 +7,7 @@
  * own in a safe and reliable way.
  *
  * We do this in BuddyPress by mirroring existing WordPress hooks in many places
- * allowing dependant plugins to hook into the BuddyPress specific ones, thus
+ * allowing dependent plugins to hook into the BuddyPress specific ones, thus
  * guaranteeing proper code execution only when BuddyPress is active.
  *
  * The following functions are wrappers for hooks, allowing them to be
@@ -93,6 +93,21 @@ function bp_register_taxonomies() {
 	 * @since 2.2.0
 	 */
 	do_action( 'bp_register_taxonomies' );
+}
+
+/**
+ * Fire the 'bp_register_type_metadata' action, where plugins should register metadata for their custom BuddyPress types.
+ *
+ * @since 7.0.0
+ */
+function bp_register_type_metadata() {
+
+	/**
+	 * Fires inside the 'bp_register_type_metadata' function, where plugins should register metadata for their custom BuddyPress types.
+	 *
+	 * @since 7.0.0
+	 */
+	do_action( 'bp_register_type_metadata' );
 }
 
 /**
@@ -265,6 +280,20 @@ function bp_rest_api_init() {
 	 * @since 2.6.0
 	 */
 	do_action( 'bp_rest_api_init' );
+}
+
+/**
+ * BP Blocks Init hook.
+ *
+ * @since 6.0.0
+ */
+function bp_blocks_init() {
+	/**
+	 * Hook here to register your BuddyPress blocks.
+	 *
+	 * @since 6.0.0
+	 */
+	do_action( 'bp_blocks_init' );
 }
 
 /**

@@ -33,24 +33,12 @@ if ( ! class_exists( 'Astra_Edd_Sidebar_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[edd-product-sidebar-layout-divider]',
-					'section'  => 'section-sidebars',
-					'type'     => 'control',
-					'control'  => 'ast-divider',
-					'priority' => 5,
-					'settings' => array(),
-				),
-
-				/**
 				 * Option: Shop Page
 				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[edd-sidebar-layout]',
 					'type'     => 'control',
-					'control'  => 'select',
+					'control'  => 'ast-select',
 					'section'  => 'section-sidebars',
 					'default'  => astra_get_option( 'edd-sidebar-layout' ),
 					'priority' => 5,
@@ -69,7 +57,7 @@ if ( ! class_exists( 'Astra_Edd_Sidebar_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[edd-single-product-sidebar-layout]',
 					'type'     => 'control',
-					'control'  => 'select',
+					'control'  => 'ast-select',
 					'default'  => astra_get_option( 'edd-single-product-sidebar-layout' ),
 					'section'  => 'section-sidebars',
 					'priority' => 5,
@@ -80,6 +68,7 @@ if ( ! class_exists( 'Astra_Edd_Sidebar_Configs' ) ) {
 						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
 						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
 					),
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 			);
 

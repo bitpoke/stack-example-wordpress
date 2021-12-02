@@ -8,17 +8,24 @@
   font-weight: normal;
   font-style: normal;
 }
-
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
     font-family: "jetpack";
     src: url("../_inc/fonts/jetpack/jetpack.svg#jetpack") format("svg");
   }
 }
-
 li.toplevel_page_jetpack .wp-menu-image:before {
-  font-family: 'jetpack' !important;
-  content: '\f100';
+  font-family: "jetpack" !important;
+  content: "\f100";
 }
 
+#menu-posts-feedback .wp-menu-image:before {
+  font-family: dashicons !important;
+  content: "\f175";
+}
+
+#adminmenu #menu-posts-feedback div.wp-menu-image {
+  background: none !important;
+  background-repeat: no-repeat;
+}
 /*# sourceMappingURL=jetpack-icons.css.map */

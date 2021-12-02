@@ -57,16 +57,41 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 		wp_style_add_data( 'jetpack_facebook_likebox', 'jetpack-inline', true );
 	}
 
-	function widget( $args, $instance ) {
-		extract( $args );
+	/**
+	 * Display the widget.
+	 *
+	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
+	 * @param array $instance The settings for the particular instance of the widget.
+	 */
+	public function widget( $args, $instance ) {
+		$before_widget = isset( $args['before_widget'] ) ? $args['before_widget'] : '';
+		$before_title  = isset( $args['before_title'] ) ? $args['before_title'] : '';
+		$after_title   = isset( $args['after_title'] ) ? $args['after_title'] : '';
+		$after_widget  = isset( $args['after_widget'] ) ? $args['after_widget'] : '';
+		$like_args     = $this->get_default_args();
 
-		$like_args = $this->normalize_facebook_args( $instance['like_args'] );
+		if ( isset( $instance['like_args'] ) ) {
+			$like_args = $this->normalize_facebook_args( $instance['like_args'] );
+		}
 
 		if ( empty( $like_args['href'] ) || ! $this->is_valid_facebook_url( $like_args['href'] ) ) {
 			if ( current_user_can( 'edit_theme_options' ) ) {
-				echo $before_widget;
-				echo '<p>' . sprintf( __( 'It looks like your Facebook URL is incorrectly configured. Please check it in your <a href="%s">widget settings</a>.', 'jetpack' ), admin_url( 'widgets.php' ) ) . '</p>';
-				echo $after_widget;
+				echo $before_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+				$error_link = wp_kses(
+					sprintf(
+						/* translators: %s: link to widgets administration screen. */
+						__( 'It looks like your Facebook URL is incorrectly configured. Please check it in your <a href="%1$s">widget settings</a>.', 'jetpack' ),
+						esc_url( admin_url( 'widgets.php' ) )
+					),
+					array( 'a' => array( 'href' => array() ) )
+				);
+				printf(
+					'<p>%s</p>',
+					$error_link // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+
+				echo $after_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			echo '<!-- Invalid Facebook Page URL -->';
 			return;
@@ -76,17 +101,28 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 		$title    = apply_filters( 'widget_title', $instance['title'] );
 		$page_url = set_url_scheme( $like_args['href'], 'https' );
 
-		$like_args['show_faces'] = (bool) $like_args['show_faces'] ? 'true' : 'false';
-		$like_args['stream']     = (bool) $like_args['stream'] ? 'timeline' : 'false';
-		$like_args['cover']      = (bool) $like_args['cover'] ? 'false' : 'true';
+		$like_args['show_faces']   = (bool) $like_args['show_faces'] ? 'true' : 'false';
+		$like_args['stream']       = (bool) $like_args['stream'] ? 'timeline' : 'false';
+		$like_args['cover']        = (bool) $like_args['cover'] ? 'false' : 'true';
+		$like_args['small_header'] = (bool) $like_args['small_header'] ? 'true' : 'false';
 
-		echo $before_widget;
+		/**
+		 * Filter Facebook Likebox's widget call to action button
+		 *
+		 * @module widgets
+		 *
+		 * @since 8.4.0
+		 *
+		 * @param bool True value hides the call to action button
+		 */
+		$hide_cta = apply_filters( 'jetpack_facebook_likebox_hide_cta', false );
+
+		echo $before_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		if ( ! empty( $title ) ) :
-			echo $before_title;
+			echo $before_title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			$likebox_widget_title = '<a href="' . esc_url( $page_url ) . '">' . esc_html( $title ) . '</a>';
-
 			/**
 			 * Filter Facebook Likebox's widget title.
 			 *
@@ -98,43 +134,50 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 			 * @param string $title Widget title as set in the widget settings.
 			 * @param string $page_url Facebook Page URL.
 			 */
-			echo apply_filters( 'jetpack_facebook_likebox_title', $likebox_widget_title, $title, $page_url );
+			$likebox_widget_title = apply_filters( 'jetpack_facebook_likebox_title', $likebox_widget_title, $title, $page_url );
 
-			echo $after_title;
+			echo wp_kses(
+				$likebox_widget_title,
+				array( 'a' => array( 'href' => array() ) )
+			);
+
+			echo $after_title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		endif;
 
 		?>
 		<div id="fb-root"></div>
-		<div class="fb-page" data-href="<?php echo esc_url( $page_url ); ?>" data-width="<?php echo intval( $like_args['width'] ); ?>"  data-height="<?php echo intval( $like_args['height'] ); ?>" data-hide-cover="<?php echo esc_attr( $like_args['cover'] ); ?>" data-show-facepile="<?php echo esc_attr( $like_args['show_faces'] ); ?>" data-tabs="<?php echo esc_attr( $like_args['stream'] ); ?>">
+		<div class="fb-page" data-href="<?php echo esc_url( $page_url ); ?>" data-width="<?php echo (int) $like_args['width']; ?>"  data-height="<?php echo (int) $like_args['height']; ?>" data-hide-cover="<?php echo esc_attr( $like_args['cover'] ); ?>" data-show-facepile="<?php echo esc_attr( $like_args['show_faces'] ); ?>" data-tabs="<?php echo esc_attr( $like_args['stream'] ); ?>" data-hide-cta="<?php echo esc_attr( $hide_cta ? 'true' : 'false' ); ?>" data-small-header="<?php echo esc_attr( $like_args['small_header'] ); ?>">
 		<div class="fb-xfbml-parse-ignore"><blockquote cite="<?php echo esc_url( $page_url ); ?>"><a href="<?php echo esc_url( $page_url ); ?>"><?php echo esc_html( $title ); ?></a></blockquote></div>
 		</div>
 		<?php
 		wp_enqueue_script( 'jetpack-facebook-embed' );
-		echo $after_widget;
+
+		echo $after_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		/** This action is documented in modules/widgets/gravatar-profile.php */
 		do_action( 'jetpack_stats_extra', 'widget_view', 'facebook-likebox' );
 	}
 
 	function update( $new_instance, $old_instance ) {
-		$instance = array(
-			'title'     => '',
-			'like_args' => $this->get_default_args(),
-		);
+		$instance = array();
 
 		$instance['title'] = trim( strip_tags( stripslashes( $new_instance['title'] ) ) );
 
-		// Set up widget values
+		// Set up widget values.
 		$instance['like_args'] = array(
-			'href'       => trim( strip_tags( stripslashes( $new_instance['href'] ) ) ),
-			'width'      => (int) $new_instance['width'],
-			'height'     => (int) $new_instance['height'],
-			'show_faces' => isset( $new_instance['show_faces'] ),
-			'stream'     => isset( $new_instance['stream'] ),
-			'cover'      => isset( $new_instance['cover'] ),
+			'href'         => trim( strip_tags( stripslashes( $new_instance['href'] ) ) ),
+			'width'        => (int) $new_instance['width'],
+			'height'       => (int) $new_instance['height'],
+			'show_faces'   => isset( $new_instance['show_faces'] ),
+			'stream'       => isset( $new_instance['stream'] ),
+			'cover'        => isset( $new_instance['cover'] ),
+			'small_header' => isset( $new_instance['small_header'] ),
 		);
 
 		$instance['like_args'] = $this->normalize_facebook_args( $instance['like_args'] );
+
+		// Include the new instance's args in the array's top level to support updating from the Widgets page.
+		$instance = array_merge( $instance, array_intersect_key( $instance['like_args'], $new_instance ) );
 
 		return $instance;
 	}
@@ -151,23 +194,23 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>">
-				<?php _e( 'Title', 'jetpack' ); ?>
+				<?php esc_html_e( 'Title', 'jetpack' ); ?>
 				<input type="text" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 			</label>
 		</p>
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'href' ) ); ?>">
-				<?php _e( 'Facebook Page URL', 'jetpack' ); ?>
+				<?php esc_html_e( 'Facebook Page URL', 'jetpack' ); ?>
 				<input type="text" name="<?php echo esc_attr( $this->get_field_name( 'href' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'href' ) ); ?>" value="<?php echo esc_url( $like_args['href'] ); ?>" class="widefat" />
 				<br />
-				<small><?php _e( 'The widget only works with Facebook Pages.', 'jetpack' ); ?></small>
+				<small><?php esc_html_e( 'The widget only works with Facebook Pages.', 'jetpack' ); ?></small>
 			</label>
 		</p>
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'width' ) ); ?>">
-				<?php _e( 'Width in pixels', 'jetpack' ); ?>
+				<?php esc_html_e( 'Width in pixels', 'jetpack' ); ?>
 				<input type="number" class="smalltext" min="<?php echo esc_attr( $this->min_width ); ?>" max="<?php echo esc_attr( $this->max_width ); ?>" maxlength="3" name="<?php echo esc_attr( $this->get_field_name( 'width' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'width' ) ); ?>" value="<?php echo esc_attr( $like_args['width'] ); ?>" style="text-align: center;" />
 				<small><?php echo sprintf( __( 'Minimum: %s', 'jetpack' ), $this->min_width ); ?> / <?php echo sprintf( __( 'Maximum: %s', 'jetpack' ), $this->max_width ); ?></small>
 			</label>
@@ -175,7 +218,7 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'height' ) ); ?>">
-				<?php _e( 'Height in pixels', 'jetpack' ); ?>
+				<?php esc_html_e( 'Height in pixels', 'jetpack' ); ?>
 				<input type="number" class="smalltext" min="<?php echo esc_attr( $this->min_height ); ?>" max="<?php echo esc_attr( $this->max_height ); ?>" maxlength="3" name="<?php echo esc_attr( $this->get_field_name( 'height' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'height' ) ); ?>" value="<?php echo esc_attr( $like_args['height'] ); ?>" style="text-align: center;" />
 				<small><?php echo sprintf( __( 'Minimum: %s', 'jetpack' ), $this->min_height ); ?> / <?php echo sprintf( __( 'Maximum: %s', 'jetpack' ), $this->max_height ); ?></small>
 			</label>
@@ -184,25 +227,33 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'show_faces' ) ); ?>">
 				<input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_faces' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'show_faces' ) ); ?>" <?php checked( $like_args['show_faces'] ); ?> />
-				<?php _e( 'Show Faces', 'jetpack' ); ?>
+				<?php esc_html_e( 'Show Faces', 'jetpack' ); ?>
 				<br />
-				<small><?php _e( 'Show profile photos in the plugin.', 'jetpack' ); ?></small>
+				<small><?php esc_html_e( 'Show profile photos in the plugin.', 'jetpack' ); ?></small>
 			</label>
 		</p>
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'stream' ) ); ?>">
 				<input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'stream' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'stream' ) ); ?>" <?php checked( $like_args['stream'] ); ?> />
-				<?php _e( 'Show Timeline', 'jetpack' ); ?>
+				<?php esc_html_e( 'Show Timeline', 'jetpack' ); ?>
 				<br />
-				<small><?php _e( 'Show Page Posts.', 'jetpack' ); ?></small>
+				<small><?php esc_html_e( 'Show Page Posts.', 'jetpack' ); ?></small>
 			</label>
 		</p>
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'cover' ) ); ?>">
 				<input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'cover' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'cover' ) ); ?>" <?php checked( $like_args['cover'] ); ?> />
-				<?php _e( 'Show Cover Photo', 'jetpack' ); ?>
+				<?php esc_html_e( 'Show Cover Photo', 'jetpack' ); ?>
+				<br />
+			</label>
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'small_header' ) ); ?>">
+				<input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'small_header' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'small_header' ) ); ?>" <?php checked( $like_args['small_header'] ); ?> />
+				<?php esc_html_e( 'Use Small Header', 'jetpack' ); ?>
 				<br />
 			</label>
 		</p>
@@ -212,12 +263,13 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 
 	function get_default_args() {
 		$defaults = array(
-			'href'       => '',
-			'width'      => $this->default_width,
-			'height'     => $this->default_height,
-			'show_faces' => 'true',
-			'stream'     => '',
-			'cover'      => 'true',
+			'href'         => '',
+			'width'        => $this->default_width,
+			'height'       => $this->default_height,
+			'show_faces'   => 'true',
+			'stream'       => '',
+			'cover'        => 'true',
+			'small_header' => '',
 		);
 
 		/**
@@ -243,11 +295,12 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 			$args['href'] = '';
 		}
 
-		$args['width']      = $this->normalize_int_value( (int) $args['width'], $this->default_width, $this->max_width, $this->min_width );
-		$args['height']     = $this->normalize_int_value( (int) $args['height'], $this->default_height, $this->max_height, $this->min_height );
-		$args['show_faces'] = (bool) $args['show_faces'];
-		$args['stream']     = (bool) $args['stream'];
-		$args['cover']      = (bool) $args['cover'];
+		$args['width']        = $this->normalize_int_value( (int) $args['width'], $this->default_width, $this->max_width, $this->min_width );
+		$args['height']       = $this->normalize_int_value( (int) $args['height'], $this->default_height, $this->max_height, $this->min_height );
+		$args['show_faces']   = (bool) $args['show_faces'];
+		$args['stream']       = (bool) $args['stream'];
+		$args['cover']        = (bool) $args['cover'];
+		$args['small_header'] = (bool) $args['small_header'];
 
 		// The height used to be dependent on other widget settings
 		// If the user changes those settings but doesn't customize the height,
@@ -289,21 +342,5 @@ class WPCOM_Widget_Facebook_LikeBox extends WP_Widget {
 		}
 
 		return $value;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	function guess_locale_from_lang( $lang ) {
-		_deprecated_function( __METHOD__, '4.0.0', 'Jetpack::guess_locale_from_lang()' );
-		Jetpack::$instance->guess_locale_from_lang( $lang );
-	}
-
-	/**
-	 * @deprecated
-	 */
-	function get_locale() {
-		_deprecated_function( __METHOD__, '4.0.0', 'Jetpack::get_locale()' );
-		Jetpack::$instance->get_locale();
 	}
 }

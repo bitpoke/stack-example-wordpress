@@ -183,7 +183,7 @@ class BP_User_Query {
 			 */
 			do_action_ref_array( 'bp_pre_user_query_construct', array( &$this ) );
 
-			// Get user ids
+			// Get user ids.
 			// If the user_ids param is present, we skip the query.
 			if ( false !== $this->query_vars['user_ids'] ) {
 				$this->user_ids = wp_parse_id_list( $this->query_vars['user_ids'] );
@@ -573,10 +573,12 @@ class BP_User_Query {
 
 		), $this ) );
 
-		// We calculate total_users using a standalone query, except
-		// when a whitelist of user_ids is passed to the constructor.
-		// This clause covers the latter situation, and ensures that
-		// pagination works when querying by $user_ids.
+		/*
+		 * We calculate total_users using a standalone query, except
+		 * when a list of specific user_ids is passed to the constructor.
+		 * This clause covers the latter situation, and ensures that
+		 * pagination works when querying by $user_ids.
+		 */
 		if ( empty( $this->total_users ) ) {
 			$this->total_users = count( $wp_user_query->results );
 		}
@@ -684,7 +686,7 @@ class BP_User_Query {
 
 		// Set a last_activity value for each user, even if it's empty.
 		foreach ( $this->results as $user_id => $user ) {
-			$user_last_activity = isset( $last_activities[ $user_id ] ) ? $last_activities[ $user_id ]['date_recorded'] : '';
+			$user_last_activity = isset( $last_activities[ $user_id ]['date_recorded'] ) ? $last_activities[ $user_id ]['date_recorded'] : '';
 			$this->results[ $user_id ]->last_activity = $user_last_activity;
 		}
 

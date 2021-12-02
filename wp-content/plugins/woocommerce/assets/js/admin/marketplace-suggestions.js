@@ -121,7 +121,8 @@
 			var newTabContexts = [
 				'product-edit-meta-tab-header',
 				'product-edit-meta-tab-footer',
-				'product-edit-meta-tab-body'
+				'product-edit-meta-tab-body',
+				'products-list-empty-footer'
 			];
 			if ( _.includes( newTabContexts, context ) ) {
 				linkoutButton.setAttribute( 'target', 'blank' );
@@ -405,7 +406,7 @@
 				}
 
 				// Track when suggestions are displayed (and not already visible).
-				$( 'ul.product_data_tabs li.marketplace-suggestions_options a' ).click( function( e ) {
+				$( 'ul.product_data_tabs li.marketplace-suggestions_options a' ).on( 'click', function( e ) {
 					e.preventDefault();
 
 					if ( '#marketplace_suggestions' === currentTab ) {

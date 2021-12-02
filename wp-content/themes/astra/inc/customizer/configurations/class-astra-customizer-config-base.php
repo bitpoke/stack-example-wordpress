@@ -56,10 +56,8 @@ if ( ! class_exists( 'Astra_Customizer_Config_Base' ) ) {
 		public function section_get_description( $args ) {
 
 			// Return if white labeled.
-			if ( class_exists( 'Astra_Ext_White_Label_Markup' ) ) {
-				if ( ! empty( Astra_Ext_White_Label_Markup::$branding['astra']['name'] ) ) {
-					return '';
-				}
+			if ( astra_is_white_labelled() ) {
+				return '';
 			}
 
 			// Description.

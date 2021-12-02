@@ -46,11 +46,13 @@ class BP_Friends_Component extends BP_Component {
 	 */
 	public function includes( $includes = array() ) {
 		$includes = array(
+			'cssjs',
 			'cache',
 			'filters',
 			'template',
 			'functions',
 			'widgets',
+			'blocks',
 		);
 
 		// Conditional includes.
@@ -133,7 +135,12 @@ class BP_Friends_Component extends BP_Component {
 			'has_directory'         => false,
 			'search_string'         => __( 'Search Friends...', 'buddypress' ),
 			'notification_callback' => 'friends_format_notifications',
-			'global_tables'         => $global_tables
+			'global_tables'         => $global_tables,
+			'block_globals'         => array(
+				'bp/friends' => array(
+					'widget_classnames' => array( 'widget_bp_core_friends_widget', 'buddypress' ),
+				)
+			),
 		);
 
 		parent::setup_globals( $args );
@@ -176,7 +183,7 @@ class BP_Friends_Component extends BP_Component {
 			sprintf(
 				'<span class="%s">%s</span>',
 				esc_attr( $class ),
-				bp_core_number_format( $count )
+				esc_html( $count )
 			)
 		);
 
@@ -296,7 +303,11 @@ class BP_Friends_Component extends BP_Component {
 				$bp->bp_options_avatar = bp_core_fetch_avatar( array(
 					'item_id' => bp_displayed_user_id(),
 					'type'    => 'thumb',
-					'alt'     => sprintf( __( 'Profile picture of %s', 'buddypress' ), bp_get_displayed_user_fullname() )
+					'alt'     => sprintf(
+						/* translators: %s: member name */
+						__( 'Profile picture of %s', 'buddypress' ),
+						bp_get_displayed_user_fullname()
+					),
 				) );
 				$bp->bp_options_title = bp_get_displayed_user_fullname();
 			}
@@ -320,5 +331,67 @@ class BP_Friends_Component extends BP_Component {
 		) );
 
 		parent::setup_cache_groups();
+	}
+
+	/**
+	 * Init the BP REST API.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $controllers Optional. See BP_Component::rest_api_init() for
+	 *                           description.
+	 */
+	public function rest_api_init( $controllers = array() ) {
+		parent::rest_api_init( array( 'BP_REST_Friends_Endpoint' ) );
+	}
+
+	/**
+	 * Register the BP Friends Blocks.
+	 *
+	 * @since 9.0.0
+	 *
+	 * @param array $blocks Optional. See BP_Component::blocks_init() for
+	 *                      description.
+	 */
+	public function blocks_init( $blocks = array() ) {
+		parent::blocks_init(
+			array(
+				'bp/friends' => array(
+					'name'               => 'bp/friends',
+					'editor_script'      => 'bp-friends-block',
+					'editor_script_url'  => plugins_url( 'js/blocks/friends.js', dirname( __FILE__ ) ),
+					'editor_script_deps' => array(
+						'wp-blocks',
+						'wp-element',
+						'wp-components',
+						'wp-i18n',
+						'wp-block-editor',
+						'bp-block-data',
+						'bp-block-components',
+					),
+					'style'              => 'bp-friends-block',
+					'style_url'          => plugins_url( 'css/blocks/friends.css', dirname( __FILE__ ) ),
+					'attributes'         => array(
+						'maxFriends'    => array(
+							'type'    => 'number',
+							'default' => 5,
+						),
+						'friendDefault' => array(
+							'type'    => 'string',
+							'default' => 'active',
+						),
+						'linkTitle'     => array(
+							'type'    => 'boolean',
+							'default' => false,
+						),
+						'postId'        => array(
+							'type'    => 'number',
+							'default' => 0,
+						),
+					),
+					'render_callback'    => 'bp_friends_render_friends_block',
+				),
+			)
+		);
 	}
 }

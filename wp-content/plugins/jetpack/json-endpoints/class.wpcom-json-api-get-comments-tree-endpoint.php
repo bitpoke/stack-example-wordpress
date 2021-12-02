@@ -102,10 +102,9 @@ class WPCOM_JSON_API_Get_Comments_Tree_Endpoint extends WPCOM_JSON_API_Endpoint 
 	 */
 	function get_site_tree_total_count( $status, $type ) {
 		global $wpdb;
+
 		$db_status = $this->get_comment_db_status( $status );
-		$type = $this->get_sanitized_comment_type( $type );
-		// An empty value in the comments_type column denotes a regular comment.
-		$type = ( 'comment' === $type ) ? '' : $type;
+		$type      = $this->get_sanitized_comment_type( $type );
 
 		$result = $wpdb->get_var(
 			$wpdb->prepare(
@@ -113,10 +112,12 @@ class WPCOM_JSON_API_Get_Comments_Tree_Endpoint extends WPCOM_JSON_API_Endpoint 
 				"FROM $wpdb->comments AS comments " .
 				"INNER JOIN $wpdb->posts AS posts ON comments.comment_post_ID = posts.ID " .
 				"WHERE comment_type = %s AND ( %s = 'all' OR comment_approved = %s )",
-				$type, $db_status, $db_status
+				$type,
+				$db_status,
+				$db_status
 			)
 		);
-		return intval( $result );
+		return (int) $result;
 	}
 
 	/**

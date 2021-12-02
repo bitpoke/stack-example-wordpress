@@ -8,13 +8,13 @@
  * Released under the MIT license
  */
 (function(factory) {
-	// AMD
+	// AMD.
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);
-	// CommonJS
+	// CommonJS.
 	} else if (typeof exports === 'object') {
 		factory(require('jquery'));
-	// Browser globals
+	// Browser globals.
 	} else {
 		factory(jQuery);
 	}
@@ -52,14 +52,14 @@
 
 	function read(s, converter) {
 		var value = config.raw ? s : parseCookieValue(s);
-		return $.isFunction(converter) ? converter(value) : value;
+		return typeof converter === 'function' ? converter(value) : value;
 	}
 
 	var config = $.cookie = function(key, value, options) {
 
-		// Write
+		// Write.
 
-		if (value !== undefined && !$.isFunction(value)) {
+		if (value !== undefined && typeof value !== 'function' ) {
 			options = $.extend({}, config.defaults, options);
 
 			if (typeof options.expires === 'number') {
@@ -76,7 +76,7 @@
 			].join(''));
 		}
 
-		// Read
+		// Read.
 
 		var result = key ? undefined : {};
 

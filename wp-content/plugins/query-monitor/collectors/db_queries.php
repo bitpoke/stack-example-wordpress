@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 if ( ! defined( 'SAVEQUERIES' ) ) {
 	define( 'SAVEQUERIES', true );
 }
@@ -111,7 +113,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		foreach ( (array) $db->queries as $query ) {
 
 			# @TODO: decide what I want to do with this:
-			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) ) { // @codingStandardsIgnoreLine
+			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) ) { // phpcs:ignore
 				continue;
 			}
 

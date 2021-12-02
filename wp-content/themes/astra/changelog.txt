@@ -1,3 +1,564 @@
+v3.7.5
+- Improvement: Added compatibility for Elementor Pro v3.5.0 WooCommerce widgets.
+- Fix: WPForms submit button not inheriting global button text color.
+- Fix: 'Disable Below Header' option is not visible in Astra meta settings.
+- Fix: LearnDash - Astra meta settings are not getting saved for the course page.
+
+v3.7.4
+- New: Breadcrumb compatibility with SEOPress plugin. ( https://wpastra.com/docs/add-breadcrumbs-with-astra/#support-for-third-party-plugins )
+- Improvement: Gutenberg editor core blocks UI/UX improvement. ( https://wpastra.com/docs/gutenberg-ui-improvements-with-astra/ )
+- Improvement: Code refactor – Some filters, functions, hooks are deprecated and replaced with astra_ prefix NamingConvention. ( https://wpastra.com/docs/deprecated-astra-hooks/ )
+- Improvement: Gutenberg frontend blocks UI improvement. ( https://wpastra.com/docs/gutenberg-ui-improvements-with-astra/ )
+- Improvement: Global – Typography – Heading presets value should also retain in H1 to H6.
+- Improvement: Moved Astra meta settings into a separate Gutenberg sidebar panel. ( https://wpastra.com/astra-3-7-4/ )
+- Fix: W3 validation - Getting duplicate H1 tag for site-title.
+- Fix: W3 validation - Duplicate HTML id '#site-navigation' if there are multiple menus on a single page.
+- Fix: W3 validation - CSS parse error for '.menu-link' & '.wp-block-button__link'.
+- Fix: W3 validation - Duplicate ID: '#ast-hf-mobile-menu'. This change may break CSS if you have used custom CSS on '#ast-hf-mobile-menu' HTML ID.
+- Fix: W3 validation - Duplicate ID: '#Layer_1'. This change may break CSS if you have used custom CSS on '#Layer_1' HTML ID.
+- Fix: Gutenberg Editor content area showing white background color when Full-screen mode is active.
+- Fix: Color picker tooltip appears on hover of selection area & its palette.
+- Fix: The default "Add Widget" text alignment issue in the header.
+- Fix: Image and Text blocks alignment not working properly with Image size - Medium in the editor.
+- Fix: Alignwide blocks getting horizontal scrollbar on tablet breakpoint & 1400px between devices. (Props - https://github.com/ZebulanStanphill)
+- Fix: Inner container Gutenberg block's content width not affected by "Container Width" option. (Props - https://github.com/ZebulanStanphill)
+- Fix: Gutenberg - Font weight for the heading typography is appearing differently on the editor and frontend.
+- Fix: WooCommerce - Broken grid layout on mobile view for products shortcode.
+- Fix: Title is misaligned in Gutenberg editor when the Gutenberg plugin v11.4.1 and above is active.
+- Fix: The hamburger button is not changing its aria-expanded attribute to true on expanding.
+
+v3.7.3
+- Fix: Builder - Offcanvas content directly visible on frontend even 'Toggle Button' component is not added in builder area.
+- Fix: Full Size & Wide Size block layout options missing from core/image block.
+- Fix: Button Preset preview not working for an edge case.
+- Fix: Global color palette - customizer preview for Elementor pages not working.
+- Fix: Customizer - Block Settings area getting irrelevant round shapes.
+
+v3.7.2
+- Fix: Incorrect Site Background Color on pages with Full Width layout.
+
+v3.7.1
+- Fix: Gutenberg - Group Block appearing full width on frontend.
+
+v3.7.0
+- New: Global Color Palette compatibility for Block editor using theme.json. (https://wpastra.com/astra-3-7/)
+- Improvement: Updated labels for Global Palette colors.
+- Improvement: Global Color Palette preview time optimized.
+- Improvement: Footer - Copyright text color compatibility with Global Color Palette.
+- Improvement: Added tooltip for palette inside colorpicker control.
+- Fix: Color Palette options appearing outside control container.
+
+v3.7.0-beta.1
+- New: Introduced Global Color Palette Feature. (https://wpastra.com/docs/astra-global-color-palette-settings/)
+- New: Introduced Typography Presets Feature. (https://wpastra.com/docs/astra-typography-presets/)
+- New: Introduced Button Presets Feature. (https://wpastra.com/docs/astra-button-styles-presets/)
+- New: Added Heading Typography options for H4-H6 also.
+- New: Content background color option.
+- Fix: Heading color option not working for Sidebar, Footer widget title.
+- Fix: Heading color option not working for the Archive page title.
+- Fix: Live preview for content background option not working.
+- Fix: Content background image not working for related posts section.
+
+v3.6.9
+- Improvement: In the font size option, users cannot set the value '0'.
+- Improvement: Introduced filter to exclude anchor links from text-decoration style. ( https://wpastra.com/docs/remove-underlined-content-links/ )
+- Improvement: Clear asset cache of theme and addon on every new update of the theme.
+- Improvement: Moved addon related Toggle for Desktop frontend-pro.js file from theme to the addon.
+- Improvement: Moved the 'Site Icon' control to a separate section, 'Site Identity'.
+- Fix: Auto-scroll not working on clicking Footer Builder in the customizer preview.
+- Fix: WooCommerce - Cart icon not appearing correctly on Tablet & Mobile devices.
+- Fix: Dropdown target as a link not working if the menu item has a link.
+- Fix: WooCommerce - Cart count is overlapping on submenu section.
+- Fix: The submenu toggle is not working when 'Flyout Menu' is used, and the page is resized.
+- Fix: Customizer color group control's reset position misaligned.
+- Fix: Desktop logo width is applying on the mobile devices during page load.
+- Fix: Social icon does not change in the customizer preview.
+- Fix: Gutenberg Editor content area showing white background color when Full-Width Contained / Stretched layout is active.
+- Deprecated: Builder - Account Element - Deprecated transparent header's responsive options for menu colors.
+
+v3.6.8
+- Improvement: Added WPML translation support for all customizer's strings through wpml-config.xml file.
+- Fix: Elementor Pro's Header-Footer theme builder layouts does not override theme's Header-Footer builder layouts.
+- Fix: Bulk action selection not working on any WordPress list table when theme's "Get Started" notice is active.
+- Fix: Header Footer Widgets: Off-canvas content is displaying over Legacy widget's preview in the customizer for WordPress 5.8.
+- Deprecated: Header Footer Widgets - Deprecated design specific options for better compatibility with WordPress 5.8. ( https://wpastra.com/docs/enable-astra-widget-design-options/ )
+
+v3.6.7
+- Improvement: Rendered Addon dependent toggle code conditionally and removed unwanted code.
+- Improvement: Changed the screen reader text tag from 'h2' to 'span' for better SEO.
+- Fix: Changing Off-canvas flyout close button color not reflecting on frontend.
+- Fix: Broken layout WooCommerce Shop/Archive page on mobile view when using elementor template or Product archive widget.
+- Fix: Next and Previous pagination button is not aligned with page numbers for mobile view.
+- Fix: Added dynamic breakpoint support for the responsive view of the sidebar and main content.
+- Fix: Heading color h1-h6 of customizer not working in the Gutenberg editor.
+- Fix: Global headings font family not working in the Gutenberg editor.
+- Fix: Footer Builder - Widgets - Right margin space not working. ( https://wpastra.com/docs/fix-footer-widget-right-margin/ )
+- Fix: Search icon color is not applying to the Standard and Transparent Header Search Box style.
+- Fix: Removed the spacing applied for the menu items in the customizer section.
+- Fix: Builder - WooCommerce & EDD cart - Cart and Checkout buttons not visible when multiple products added to cart flyout.
+- Fix: Builder - Social Icons - Tiktok icon not appearing in customizer and on frontend.
+- Fix: 'Disable Footer' option is missing in Page meta settings for new Header Footer builder.
+- Fix: Removed 'Disable Footer Widgets' option in Page meta settings for new Header Footer builder.
+- Fix: Sidebar block editor width changes on the widgets page.
+- Fix: Off-canvas menu closes on scrolling on mobile devices.
+- Fix: Customizer builder section not scrollable when multiple elements dropped in builder area.
+- Fix: Theme's default margin space of OL tag apply to Elementor's TOC widget. ( https://wpastra.com/docs/remove-spacing-elementor-toc/ )
+- Fix: Menu dropdown icons showing at incorrect position in RTL languages.
+- Fix: “Search” string in Search Form is not translatable.
+- Fix: Transparent header showing border even if it is not set from customizer in FireFox browser.
+- Fix: AMP - Old header center layout is not compatiblle.
+
+v3.6.6
+- Fix: Installing Starter Templates plugin notice's "Get Started" button not working.
+
+v3.6.5
+- Improvement: Compatibility with WordPress 5.8.
+- Improvement: Added default styling for - Site Logo, Site Tagline, Login/out and Search blocks.
+- Improvement: Widget Element - block editor and design section added.
+- Improvement: Theme support added for Rank Math plugin - breadcrumbs module.
+- Fix: Customizer not working due to conflict with block editor JS.
+- Fix: Alignment of title and content in the editor.
+- Fix: WP 5.8 UI conflict with extra control spacing and section title font in the customizer.
+- Fix: Widget page block editor width not appearing properly.
+- Fix: Headers showing border even though its not set from customizer in FireFox browser.
+
+v3.6.4
+- Improvement: Introducing content links underline option.
+
+v3.6.3
+- Improvement: Global button default padding values updated.
+- Fix: Global button padding settings not working for Gutenberg buttons. ( https://wpastra.com/docs/apply-default-button-padding/ )
+
+v3.6.2
+- Fix: Enable 'Preload Local Fonts' option affects on height of Gutenberg Cover edit block.
+- Fix: Related Posts articles showing meta structure based on current active post.
+
+v3.6.1
+- Fix: Theme check warning - Replaced search form markup with get_search_form().
+- Fix: Both desktop and mobile headers appearing on desktop due to Astra's cache.
+
+v3.6.0
+- New: Performance - Load Google Font locally. (https://wpastra.com/docs/self-hosted-google-fonts/)
+- New: Performance - Preload locally hosted Google Font. (https://wpastra.com/docs/self-hosted-google-fonts/)
+- Improvement: Added SVG logo height option to resolve the CLS issue. (https://wpastra.com/docs/fix-svg-logo-cls-issue/)
+- Improvement: Added close button for multiselect selected items in Google font variants.
+- Improvement: Changed customizer submenu control title from 'Container Animation' to 'Submenu Animation'.
+- Improvement: Moved 'Submenu Animation' control from General tab to Design  tab.
+- Improvement: Changed sub-menu container animation option name from 'Default' to 'None'.
+- Improvement: Added headings font-weight support to widget-title headings. (https://wpastra.com/docs/font-weight-for-widget-titles/)
+- Improvement: Changed Transparent Header Border Bottom default value from '' to 0;
+- Fix: Customizer's font & color settings not reflecting in Gutenberg editor. (https://wpastra.com/astra-3-6/)
+- Fix: Max-width responsive CSS enlarges logo size on mobile devices in old header layout.
+- Fix: Cart Icon not working with Sticky Header after enabling the option "Hide when scrolling down" on mobile devices.
+- Fix: Secondary menu not expendable on mobile when it is outside of Off Canvas.
+- Fix: CLS – Flashing desktop menu on mobile view.
+- Fix: WooCommerce - product search widget button not aligned on other than shop and single product page.
+- Fix: Sticky Header - Transition effect of headers when Shrink Effect is enabled.
+- Fix: Two search buttons visible on the result page when Astra SVG icons enabled.
+
+v3.5.0
+- Fix: Aspect ratio is changed for YouTube embed block.
+- Fix: Spacing CSS missing when 'Inline Logo and Title' option is enabled.
+- Updated the theme screenshot.
+- Fix: JS Console error in blog/archive customizer settings.
+- Fix: WooCommerce - Product's Sale bubble appears on the header on scroll due to z-index.
+- Fix: Site Title and Tagline context not working properly for new Header Footer builder.
+- Fix: Version compare updated to v3.5.0 to support Site Title & Tagline pro color controls dependency.
+
+v3.5.0-beta.1
+- New: Related Posts - Option to change "Related Posts" title.
+- New: Related Posts - Alignment option for "Related Posts" title.
+- Improvement: Frontend optimization by reducing static CSS and loading it conditionally. (https://wpastra.com/astra-3-5/)
+- Improvement: Added Site Title & Tagline color options from Astra Pro to free theme.
+- Improvement: Builder - WooCommerce Cart & EDD Cart - Filter to change "Shopping Cart" text in responsive flyout. (https://wpastra.com/docs/update-mobile-cart-title/)
+- Improvement: Related Posts - Added responsive support to posts Grid Column Layout.
+- Improvement: Core Web Vital – Accessibility - always show aria-label attribute on builder social icons. (Props - https://github.com/tristanmason)
+- Improvement: Core Web Vital - Accessibility - Background and foreground colors do not have a sufficient contrast ratio.
+- Improvement: Increase max submenu width option value from 200 to 1920 same as the container.
+- Improvement: Added responsive control for 'Display Site Title' and 'Display Site Tagline' settings.
+- Fix: PHP error with Uncaught Error: Class 'Astra_Icons' not found in searchform.php when using plugin 'LearnDash Ratings Review Feedbacks'.
+- Fix: Added accessibility for search button of search form.
+- Fix: Text alignment issue for footer Widget 3 and Widget 4 when Astra Pro is deactivated.
+- Fix: Removed unwanted dividers from customizer setting sections.
+- Fix: Builder - WooCommerce & EDD cart - Duplicate transition CSS avoided in case normal Astra CSS icons.
+- Fix: WooCommerce - "Product Categories" widget's child elements have missing icon when Astra's SVGs enabled.
+- Fix: Footer Builder - Hide on mobile/tablet for above footer is not working on frontend.
+
+v3.4.8
+- Fix: Customizer not working when Gutenberg plugin v10.7.0 and above is active.
+
+v3.4.7
+- Updated the theme screenshot and added license information for the images used in the screenshot.
+
+v3.4.6
+- Fix: Footer alignment not working after update of v3.4.5.
+
+v3.4.5
+- Fix: Compatibility with Google Web Stories plugin v1.7.0.
+
+v3.4.4
+- Fix: Dropdown menu disappears while scrolling on mobile device.
+- Fix: Editor selection color not visible on default background color setting.
+- Fix: Placeholder for title not visible when the default(white) background is set for the content.
+- Fix: Image caption not visible in the editor view.
+
+v3.4.3
+- Improvement: Builder - WooCommerce & EDD Cart - Compatibility with Border width option for cart outline style from Astra Pro. (https://wpastra.com/docs/remove-border-around-cart/)
+- Fix: Search widget not working inside menu on mobile devices.
+- Fix: Elementor popup close on click of input fields.
+- Fix: Page Builder's menu elements show double arrow icons when Astra's SVG icons are enabled.
+- Fix: WooCommerce - Shop Grid and Related Product's column layout not working for new users on responsive devices.
+
+v3.4.2
+- Fix: JS console error when Off-canvas type 'Dropdown' is selected.
+- Fix: Dropdown does not close when you click a one page navigation link inside them.
+- Fix: Zero value not accepting in slider customizer settings.
+- Fix: Existing comments are not styled when post comments are disabled.
+- Fix: Gutenberg editor getting Grey overlay when layout is Full-width Contained or Full-width Stretched.
+
+v3.4.1
+- Fix: Off-canvas - Mobile - Left aligned flyout style not working.
+- Fix: Mobile Menu hides when menu item having hash(#) link is clicked.
+
+v3.4.0
+- New: 'Related Posts' feature for single post layout. (https://wpastra.com/docs/display-related-posts/)
+- Improvement: Customizer - Reduce one click in Global Colors section by popping out Base Colors into parent section.
+- Improvement: Gutenberg Editor - Compatibility with Starter Templates Blocks design in editor. (https://wpastra.com/docs/fix-spacing-gb-blocks/)
+- Improvement: Update toolset-config.json towards Toolset 1.5 compatibility. (Props - https://github.com/decodekult)
+- Improvement: Frontend optimization by reducing one request for Menu animation CSS in default theme though option is available to add menu animation.
+- Improvement: Frontend optimization by replacing Flyout Menu with Dropdown menu for default theme.
+- Fix: AMP - Mobile menu not working for AMP pages for the Header Footer builder.
+- Fix: Cart & Toggle Button elements are not aligned with each other on Mobile Devices.
+- Fix: Search Element alignment in Off-Canvas & Dropdown.
+- Fix: Builder - Menu - Submenu hover color from Transparent Header directly applying to nested sub-menu items without hovering them.
+- Fix: Search - Search Box opens & gets closed automatically on click of search icon in slide search style on mobile devices.
+- Fix: Customizer - Edit shortcut button design breaks when Elementor template kit is active on site.
+- Fix: Customizer - Maintained identical reset buttons UI in background control.
+- Fix: Builder - HTML - If element is used in Primary Header & line-height is blank in element then it's inheriting from Primary Header bar which is 3em.
+- Fix: Builder - Footer - Background Color picker popup cutting at it's edge in Footer Builder section.
+- Fix: Menu Hover/Active link not working in Customizer & Frontend for tablet & mobile.
+- Fix: Off-Canvas & Dropdown does not close when you click a one page navigation link inside them.
+- Fix: Gutenberg Editor - Unable to edit content in editor when background styles applied to Content and Site Layout is Max-Width.
+- Fix: Height of Mobile Header increases when we open Dropdown for Old Header.
+- Fix: Builder - Menu – After partial refresh megamenu's width & left position removes in customizer.
+- Fix: Transparent Header - Normal colors not working for transparent header if colors are not set from Transparent Header settings.
+- Fix: Container Width option hides in Container section when Astra Pro is active but all addons are deactivate.
+- Fix: Context Switch does not work if there are no elements in Primary Header for both Desktop & Mobile.
+- Fix: Deprecated the Cart Style 'None' & merged it with existing option 'Outline' for WooCommerce and EDD.
+- Fix: Accessibility - Tab navigation does not highlight menu with submenus.
+- Fix: JavaScript error when clicking on the Dropdown Toggle for Sticky Header on Mobile.
+- Fix: Scroll does not work in Off-Canvas.
+- Fix: Spacing not working properly for Social Element when 'Stack on' & 'Icon Spacing' options value is changed in Customizer Preview.
+- Fix: RTL WooCommerce Shop page - on Mobile Grid single column was appearing when two columns were set from the customizer setting for existing users.
+
+v3.3.3
+- Fix: Elementor - Theme Builder archive page contents are not aligned center.
+- Fix: Elementor - Elementor editor panel switches back to the main panel while using the responsive view.
+
+v3.3.2
+- Fix: Transparent Header disappears if we add Widget 2 element.
+- Fix: Builder - Multiple headers visible on frontend.
+- Fix: Builder - Menu - not able to hover and click on submenu.
+- Fix: Blog Archive - Layout 1 and Layout 2 are not working for existing users when addon activated.
+
+v3.3.1
+- Fix: WooCommerce Shop page - on Mobile Grid single column was appearing when two columns were set from the customizer setting for existing users.
+- Fix: Fatal error on sites due to incorrect migration flag.
+
+v3.3.0
+- New: Transparent Header - WooCommerce Cart & EDD Cart icon color options.
+- New: Builder - Off-Canvas - Added spacing option for Off-Canvas.
+- New: SVG Icons support ( deprecating astra.woff font file ). (https://wpastra.com/docs/ast-font-icons-to-svg/)
+- Improvement: Builder - Mobile Menu - Renamed Mobile Menu to Off-Canvas Menu.
+- Improvement: Builder - Added instructive message in the builder side panel when builder layout does not have any element in use.
+- Improvement: Replaced responsive number control with a responsive slider control for Base Font Size in Typography section.
+- Improvement: Gutenberg Editor - Block patterns compatibility. (https://wpastra.com/docs/fix-spacing-gb-blocks/)
+- Improvement: Compatibility with WordPress 5.7.
+- Improvement: Code quality improvements for better performance.
+- Improvement: Load minified customizer preview files for better performance.
+- Improvement: Frontend optimization - Comments, Pagination, Single Page, Single Post, Archive Page. (https://wpastra.com/docs/optimize-css-html-before-3-3/)
+- Improvement: Frontend optimization - WooCommerce - Shop Page, Single Product Page.
+- Improvement: Frontend optimization - EDD - Shop Page, Single Product Page.
+- Improvement: Frontend optimization - LifterLMS - All Courses Page.
+- Improvement: Frontend optimization - LearnDash - All Courses Page, Single Course Page.
+- Improvement: Added AMP Meta in style.css. ( Props - https://github.com/milindmore22 )
+- Fix: White Label – White-labeled the Astra Header Footer setting notice.
+- Fix: WooCommerce - Single Product page - Save review form fields cookies consent is misaligned.
+- Fix: Builder - Off-Canvas - Close submenu toggle icon not changing in Mobile Menu element when the submenu is in the expanded state.
+- Fix: Builder - Header - Frontend grid layout overlaps on the content section when multiple elements added in the same header layout.
+- Fix: Builder - Footer - Customizer's 2nd column stack layout SVG is missing in footer layouts for responsive devices.
+- Fix: Builder - Footer - Responsive control for layouts gets hidden with the click of WordPress default responsive controls.
+- Fix: Block Editor - Code Block spacing CSS tweaks when it is left aligned.
+
+v3.2.0
+- New: Support for the Web Stories plugin by Google - Show off your web stories in the header of your website.
+- Fix: Transparent Header - Submenu background alpha not working for the old header.
+
+v3.1.2
+- Fix: Customizer not working due to fatal error in Color Group control for some edge cases.
+- Fix: Header getting hidden in a rare case on some first loads in chrome due to miscalculated browser window width.
+- Fix: Showing multiple menu locations on the menu admin page.
+- Fix: Transparent Header - Submenu color not working for the older header.
+- Fix: Transparent Header - Submenu background color not working for the older header.
+
+v3.1.1
+- Fix: Saved value is overridden by Default value for HTML Element and Copyright Element in Customizer.
+- Fix: Header Builder margin option default units were missing.
+- Fix: Transparent Header - Submenu background color not working.
+
+v3.1.0
+- Improvement: Redesigned the entire customizer UI for better user experience. (https://wpastra.com/docs/revamped-astra-customizer/)
+- Improvement: Added design options for Builder - Toggle Menu in Transparent header.
+- Improvement: Optimized dynamic CSS functionality to reduce unwanted CSS on the page.
+- Improvement: Overall HTML Structure improvement which includes removing blank spaces and removing unwanted HTML Tags.
+- Improvement: Optimized customizer by removing PHP controls.
+- Improvement: Optimized the SVG icons.
+- Improvement: Builder - Transparent Header - Placeholder Text and Color options for Search.
+- Improvement: Builder - Social Icons - Ability to add an extra Phone and Contact icons.
+- Improvement: Builder - Social Icons - Added ability to select icon from an Icon Picker for individual social elements
+- Improvement: Builder - Social Icons - Added a color option for labels of social icons.
+- Improvement: Builder - Off-Canvas - Added an option to manage spacing between inner elements of the Off-Canvas.
+- Improvement: Added new Page meta options for Above, Below and Mobile header.
+- Fix: Footer vertical alignment option not working.
+- Fix: Above Footer & Below Footer showing up an unwanted border in the customizer preview.
+- Fix: Updated Learn More Links on Astra Options page for Nav Menu & Easy Digital Downloads addon.
+- Fix: Overflowing content not wrapping as per grid layout on responsive device for Header Footer builder layout.
+- Fix: Builder - Transparent Header - Social icon, label custom color & official color not working.
+- Fix: Builder - Transparent Header - Menu & Submenu style applying to Off-Canvas Menu.
+- Fix: Block Cover align full CSS compatibility in Block editor with sidebar.
+- Fix: Color picker icon not visible on hover.
+- Fix: Font size not reverted back to the initial size when the value is deleted.
+- Fix: Menu active link style not working when sub-menu item is active.
+- Fix: Menu line height not being applied in frontend.
+- Fix: Global Button Border and Typography controls are not working in the customizer preview.
+- Fix: Breadcrumb position misalignment issue for inside header option.
+- Fix: Search box misaligned in Dropdown option for Off-Canvas in Mobile.
+- Fix: Submenu divider option adding heavy border around menu items on responsive devices.
+- Fix: JS console error with Elementor – Header, Footer & Blocks plugin.
+- Fix: Console error in customizer due to third party plugin dependency.
+- Fix: Menu font size not working with old Header.
+- Fix: Transparent Header - Menu link, background and hover colors not working for old header.
+- Fix: Builder - Menu - Submenu container get hides when hover in between Top Offset spacing.
+
+v3.0.3
+- Fix: JS console error when Theme Header is replaced with third-party plugins header.
+
+v3.0.2
+- Fix: Dropdown link target option not working for menus inside Off-Canvas, when Off-Canvas type is Flyout or Full-Screen.
+- Fix: Responsive option missing for typography.
+- Fix: Submenu divider option adding heavy border around menu items on responsive devices.
+
+v3.0.1
+- Fix: Astra assets cache regeneration issue when Astra Pro is updated to v3.0.0 prior to theme. ( https://wpastra.com/docs/clear-astra-cache/ )
+- Fix: UI Tab switching in color options for RTL websites.
+- Fix: Builder - Duplicate listing of social icons in customizer.
+
+v3.0.0
+- New: Account element added for Header Builder. ( https://wpastra.com/astra-3-0/ )
+- Improvement: Removed old CSS that is already supported by browsers.
+- Improvement: Removed unused grid layout related CSS.
+- Improvement: Overall HTML Structure improvement which includes removing blank spaces and removing unwanted HTML Tags.
+- Improvement: Conditionally loaded Elementor, EDD, Comment and Pagination related CSS only when they are used.
+- Improvement: Replaced flex related CSS with theme predefined CSS classes.
+- Improvement: Main JS code optimization.
+- Improvement: Added customizer partial refresh support in a few options.
+- Improvement: Added Stack and Inline option for Footer.
+- Improvement: Builder - Menu - Added Submenu container width option.
+- Improvement: Builder - Menu - Added Submenu container radius option.
+- Improvement: Builder - Menu - Added Submenu container top offset.
+- Improvement: Builder - Menu - Added menu hover animation styles.
+- Improvement: Builder - Off-Canvas - Added container alignment option.
+- Improvement: Removed extra localized variable declaration.
+- Fix: RTL fixes for customizer custom controls.
+- Fix: Black patch being shown while transitioning between show/hide click of the builder.
+- Fix: Socials element edit pencil icon was misaligned in Header and Footer.
+- Fix: Margin and Padding option for Header / Footer Elements not working with defaults.
+- Fix: Builder - Social spacing option not accepting 0 as a value.
+
+v3.0.0-beta.2
+- New: Visibility options - Now user can hide few options as per devices.
+- New: Divider Element - Horizontal & Vertical Divider for both Header and Footer
+- New: WooCommerce Cart and EDD Cart Element for Header
+- New: Added new Mobile Menu element.
+- Improvement: Load CSS only when their respective options are enabled - Frontend optimization.
+- Improvement: Removed .wp-smiley CSS - Frontend optimization.
+- Improvement: Removed unused extra CSS from main CSS file - Frontend optimization.
+- Improvement: Replace flex related CSS with the predefined CSS classes present in theme - Frontend optimization.
+- Improvement: Faster Customizer experience with respect to Design/General Tab change.
+- Improvement: Ability to add any number Elements in Header and Footer using a filter from child theme.
+- Improvement: Loaded animation CSS only when needed.
+- Improvement: Improved the UI in customizer for Footer Builder.
+- Improvement: Custom Layouts - Added compatibility to new Custom Layouts Hooks with respect to the new Header/Footer.
+- Improvement: Page Header - Added compatibility to Page Headers with respect to the new Header/Footer.
+- Improvement: Responsive - Added responsive compatibility to Footer Inner Column Spacing.
+- Improvement: Responsive - Added responsive compatibility to Social Icon Size and Social Icon Spacing.
+- Improvement: Responsive - Added responsive compatibility to Search Icon Color.
+- Improvement: Responsive - Added responsive compatibility to HTML Element related Colors.
+- Improvement: Responsive - Added responsive compatibility to Widget Element related Colors.
+- Improvement: Responsive - Added responsive compatibility to Above, Below and Primary Header height.
+- Improvement: Responsive - Added responsive compatibility to Footer Menu layout.
+- Improvement: Responsive - Added responsive compatibility to Footer Column Layout.
+- Fix: Allowed negative margin values
+- Fix: Fixed the issue with Global Button hover color not being applied to Header/Footer Buttons.
+- Fix: Sticky Header - Shrink option issue with alignment.
+- Fix: Primary Menu - Font Weight not being applied in frontend.
+- Fix: Off Canvas - Fixed issue with Sub Menu colors, typography and other inheriting properties.
+- Fix: Primary Menu - Fixed an issue with Stack on Mobile option not in action in some rare scenario.
+- Fix: Footer - Added default Stack layout for Footer Columns.
+- Fix: Toggle Button - Fixed an issue Toggle Button SVG looking odd.
+- Fix: Button - Fixed an issue with mismatched EM/PX with respect to Margin.
+- Fix: AMP Compatibility - Fixed an issue with Menu animation JS for AMP pages.
+- Fix: Slider Control - Fixed an issue with zero value not being accepted by the Slider Control.
+
+v3.0.0-beta.1
+- New: Header Builder
+- Introducing a new visual Header Builder that gives a flexible and advanced header designing experience.
+- It offers different layers for header - Above Header, Primary Header, and Below Header.
+- You can drag-n-drop elements in different sections of the header. It gives you the freedom to place elements at any location in the header quickly.
+- It offers different essential header elements like Button, HTML, Widget, Social Icon, Search, Menu, etc. So that you can add all the required information easily with few clicks.
+- Get background and height options for Above, Below, and Primary header.
+- Spacing options for each element in the header.
+- You can design a completely different header for responsive devices with handy mobile header options.
+- Refer to a detailed comparison of features available with Astra free and Pro. ( https://wpastra.com/astra-free-vs-pro/ )
+
+- New: Footer Builder
+- Introducing a new visual Footer Builder that gives the ability to design unique footers for your website.
+- It offers different layers for the footer - Above Footer, Primary Footer, and Below Footer.
+- You can drag-n-drop elements in different sections of the footer. It gives you the freedom to place elements at any location in the footer quickly.
+-  It offers different essential footer elements like Copyright, Button, HTML, Widget, Social Icon, Search, Footer Menu, etc. So that you can add all the required information easily with few clicks.
+- It provides a flexible columns-based structure where you can select column count and column layouts. This lets you manage the footer look easily.
+- Create responsive layouts for the footer.
+- Spacing and alignment options for each element in the footer.
+- Refer to a detailed comparison of features available with Astra free and Pro. ( https://wpastra.com/astra-free-vs-pro/ )
+
+- Improvement: Improved Customizer
+- Experience faster loading customizer. Astra customizer is now upgraded with ReactJS that gives a quick and swift customizer experience.
+- For quick access and faster editing, customization options are segregated and served with two different tabs - General and Design.
+- Now get a faster customizer preview than before. Header and Footer sections will be partially refreshed on any change in the customizer.
+
+v2.6.2
+- Fix: Gradient Color control UI compatibility with WordPress 5.6.
+- Fix: Background Image control UI compatibility with WordPress 5.6.
+- Fix: Fatal error on changing the value of some controls in Customizer - compatibility with PHP 8.0.
+
+v2.6.1
+- Improvement: Compatibility with the Gutenberg plugin.
+
+v2.6.0
+- New: Gradient color option for background control in customizer. ( https://wpastra.com/docs/new-color-controls-in-astra/ )
+- New: Partial refresh for Mobile Menu Label option in the customizer.
+- Improvement: Color, Responsive Color, Background & Responsive Background control now uses Gutenberg's control in customizer. ( https://wpastra.com/docs/new-color-controls-in-astra/ )
+- Improvement: All custom controls HTML markup was loading from PHP, which is now moved to React JS for the better and optimized customizer performance. ( https://wpastra.com/astra-2-6/ )
+- Improvement: Use "customize_controls_enqueue_scripts" action for enqueueing customizer script to avoid loading on all admin pages. (Props - https://github.com/westonruter)
+- Improvement: Compatibility with the Gutenberg plugin. ( https://wpastra.com/astra-2-6/ )
+- Fix: JS Console error with PWA plugin.
+- Fix: Remove the customizer section description link when White Label is enabled.
+- Fix: Partial refresh was not working for the Button text in the customizer.
+- Fix: CSS conflict with Product Search widget of WooCommerce in Firefox.
+- Fix: ID mismatch JS console error in case of RTL languages while changing Hover/Active color in the customizer.
+- Fix: Extra top spacing appearing in Tablet and Mobile when the transparent header is enabled.
+
+v2.5.5
+- Fix: Improvements as per WordPress coding standards.
+
+v2.5.4
+- Fix: Code improvements as per WordPress theme review coding standards.
+- Fix: Incorrectly printed styles causing JS error with the PWA Plugin.
+- Fix: Block pattern compatibility with WordPress 5.5.
+- Fix: Gutenberg editor image alignment compatibility with WordPress 5.5.
+
+v2.5.3
+- Fix: Code improvements as per WordPress theme review guidelines.
+- Fix: Removed third-party recommended plugins from options page.
+- Fix: RGB color not working in Customizer for WordPress 5.5.
+
+v2.5.2
+- Fix: Footer Widgets background color option not working for new users.
+
+v2.5.1
+- Fix: CSS not working on Menu with third-party plugins having filter 'nav_menu_link_attributes' of lower priority.
+
+v2.5.0
+- New: Typography options for Header Button.
+- Improvement: Filters to support CPT for Blog Meta & Single Blog Meta. ( https://wpastra.com/docs/add-blog-meta-support-cpts )
+- Improvement: Deprecated 'astra_google_fonts_json_file' filter. Use 'astra_google_fonts_php_file' instead. ( https://wpastra.com/docs/deprecated-google-fonts-filter/ )
+- Improvement: Gutenberg above and below space compatibility with Full Width / Contained layout. ( https://wpastra.com/docs/support-for-gutenberg-cover-and-group-blocks/ )
+- Improvement: Header frontend CSS optimization. ( https://wpastra.com/docs/header-improvements-in-astra )
+- Improvement: Support for Gutenberg Cover and Group blocks. ( https://wpastra.com/docs/support-for-gutenberg-cover-and-group-blocks )
+- Improvement: Hardened security of the SelectWoo library.
+- Improvement: Theme check new standards.
+- Improvement: Global Button options support with WooCommerce buttons.
+- Fix: PHP warning on some specific servers when the Elementor plugin is activated.
+- Fix: Text highlight color issue when color is set to blank.
+
+v2.4.5
+- Improvement: Transparent Header Logo notice in Site Identity section if the logo is set from Transparent Header in customizer.
+- Fix: Toggle Button contrast color not working properly.
+- Fix: Introducing new CSS class for Single Product having stock available in backorder. (props @pippyn)
+- Fix: Transparent Header Logo disappearing when Site Identity Logo is removed in the customizer.
+- Fix: Read Time meta option appearing in customizer even when Addon is deactivated.
+- Fix: Space appearing below Elementor Heading after updating Elementor plugin to v2.9.9 and above.
+
+v2.4.4
+- Improvement: Gutenberg editor improvements.
+- Improvement: Hardened the security of theme.
+- Fix: Added ID attribute for WP Header and WP Footer schema.
+- Fix: Different image size on elementor product pages in mobile view.
+- Fix: Renamed .hidden CSS class to .ast-hidden to avoid conflict with other plugins.
+- Fix: UAE Nav Menu widget conflict with Mega Menu.
+- Fix: Submenu icon not appearing properly on AMP pages.
+- Fix: Transparent header bottom border is not working on mobile and tablet.
+- Fix: Prevent PHP notice for PHP 7.4.
+
+v2.4.3
+- New: Users can now share non-personal usage data to help us test and develop better products. ( https://store.brainstormforce.com/usage-tracking/?utm_source=wp_dashboard&utm_medium=general_settings&utm_campaign=usage_tracking )
+- Fix: Updated Breadcrumb schema.
+- Fix: Customizer scrolling issue on Firefox.
+- Fix: Gutenberg editor Full Width layout background color not working for new post.
+- Fix: Gutenberg editor Headings color and typography not working.
+
+v2.4.2
+- Fix: Updated the theme screenshot and added license information for the images used in the screenshot.
+- Fix: Theme check warnings.
+
+v2.4.1
+- Fix: Updated the theme screenshot and added license information for the images used in the screenshot.
+
+v2.4.0
+- New: Filter to change default breakpoint of tablet & mobile devices. ( https://wpastra.com/docs/set-update-breakpoints-tablet-mobile-in-astra/ )
+- Improvement: Background color/image responsive param. ( https://wpastra.com/docs/how-to-set-background-image-for-the-site/ )
+- Improvement: Updated admin Starter Templates plugin's informative strings.
+- Improvement: Addon minimum version notice is now dismissible.
+- Fix: Global button Color and Background Color options not working with Gutenberg button.
+- Fix: W3C markup validation.
+- Fix: GiveWP two 'Add-ons' submenu display issue for version 2.6.0 and greater.
+
+v2.3.5
+- Fix: WordPress 5.4 compatibility with Gutenberg Editor.
+
+v2.3.4
+- Fix: Lightning icon not appearing on astra options page.
+- Fix: Breadcrumb separator appearing as HTML entity for new users.
+
+v2.3.3
+- Improvement: Compatibility with Elementor Theme Style.
+- Improvement: Theme Button options dependency on Elementor global color/font settings.
+- Improvement: Deprecated ast-spacing param.
+- Improvement: Customizer - changed 'Learn More' button to secondary button from primary button for UX.
+- Improvement: Added new Edit Shortcuts in the Customizer Preview.
+- Fix: Elementor Theme Style button color conflict with customizer global button color.
+- Fix: Theme check warnings and recommendations.
+- Fix: Conflict with Fast Velocity Minify plugin.
+- Fix: Unable to copy paste or type RGBA color code in color picker.
+- Fix: Updated Iris library for Color Picker param.
+- Fix: Lifter LMS certificate CSS issue with Boxed and Content Boxed layout.
+
+v2.3.2
+- Fix: Updated links for Starter Templates plugin.
+
+v2.3.1
+- Fix: Theme minimum version notice appearing in some cases even after theme is updated.
+
 v2.3.0
 - New: Options for Header Button - Open link in New Tab, add rel attribute. ( https://wpastra.com/docs/new-button-options-in-astra-theme/ )
 - Improvement: Hardened the security of theme.
@@ -35,7 +596,7 @@ v2.2.0
 - Fix: Schema error for author name in author info.
 
 v2.1.4
-- Improvement: Updated theme description and tags on WordPress.org. 
+- Improvement: Updated theme description and tags on WordPress.org.
 - Improvement: Updated minimum required version of PHP on WordPress.org.
 
 v2.1.3
@@ -46,7 +607,7 @@ v2.1.3
 - Fix: Compatibility with WordPress 5.3.
 - Fix: Gutenberg editor block mover controls not visible in case of full width stretched layout.
 - Fix: Primary menu padding bug on the closing of the menu on mobile devices.
-- Fix: Hide last menu item not working on mobile device when Above or Below header menu is merged. 
+- Fix: Hide last menu item not working on mobile device when Above or Below header menu is merged.
 - Fix: Submenu not opening below the header. ( https://wpastra.com/docs/display-sub-menu-below-the-header/ )
 - Fix: .hidden CSS class renamed to .ast-hidden class due to conflict with third-party plugins.
 - Fix: Full content displayed on the archive page for post format video, image, and attachment.
@@ -59,23 +620,23 @@ v2.1.2
 - Improvement: Added style and script HTML5 theme support.
 - Fix: Added correct admin styles for fullwidth stretch layout in WordPress editor.
 - Fix: PHP Notice on the add new donation form page of Give.
-- Fix: Remove unwanted schema meta of comment from creative work schema. 
+- Fix: Remove unwanted schema meta of comment from creative work schema.
 - Fix: Transparent header style not working in a few scenarios.
 - Fix: Unwanted border appearing below header when the above header is active.
 - Fix: Upload Theme button not working when Astra Notice enabled.
 
 v2.1.1
-- Fix: HTML markup break errors users facing when minify HTML is enabled from a few caching plugins. 
+- Fix: HTML markup break errors users facing when minify HTML is enabled from a few caching plugins.
 
 v2.1.0
-- New: Introduce filter `astra_get_pro_url`. 
-- New: New filter `astra_single_post_comment_time_enabled` to disable post comment time on single blog page. 
+- New: Introduce filter `astra_get_pro_url`.
+- New: New filter `astra_single_post_comment_time_enabled` to disable post comment time on single blog page.
 - Improvement: Redesign admin notices as per WordPress standards
-- Fix: Broken menu style on iOS safari browsers for version 11 or lower.  
-- Fix: JavaScript conflict with WP Google maps plugin. 
-- Fix: Drag scrollbar not working inside sections in the customizer. 
-- Fix: Search bar not working on android tablet devices.  
-- Fix: Font weights not displaying in the customizer for fonts added from Custom Adobe Fonts plugin. 
+- Fix: Broken menu style on iOS safari browsers for version 11 or lower.
+- Fix: JavaScript conflict with WP Google maps plugin.
+- Fix: Drag scrollbar not working inside sections in the customizer.
+- Fix: Search bar not working on android tablet devices.
+- Fix: Font weights not displaying in the customizer for fonts added from Custom Adobe Fonts plugin.
 - Fix: Removed extra padding that was being applied to all the Gutenberg blocks.
 - Fix: SVG logo not working for mobile devices.
 - Fix: Transparent Header menu background color not working on tablet devices.
@@ -83,21 +644,21 @@ v2.1.0
 v2.0.1
 - Fix: JavaScript error causing customizer to not load for a few users due to conflict with some third-party plugins.
 - Fix: Do not load accessibility fix for skip link in AMP endpoint as it is included in the amphtml (props @amedina)
-- Fix: Rename function astra_is_emp_endpoint() to astra_is_amp_endpoint() and depracate astra_is_emp_endpoint() to fix the typo in the function name.  
+- Fix: Rename function astra_is_emp_endpoint() to astra_is_amp_endpoint() and depracate astra_is_emp_endpoint() to fix the typo in the function name.
 
 v2.0.0
 - Improvement: Loading combined CSS and JS file for params in the customizer.
-- Improvement: Remove unnecessary role attribute from HTML. 
-- Improvement: Crossbrowser compatibility for customizer UI. 
-- Improvement: Optimized number of queries executed on admin pages.  
-- Improvement: Live preview for controls. 
-- Improvement: Optimized logic for generating settings group control data. 
+- Improvement: Remove unnecessary role attribute from HTML.
+- Improvement: Crossbrowser compatibility for customizer UI.
+- Improvement: Optimized number of queries executed on admin pages.
+- Improvement: Live preview for controls.
+- Improvement: Optimized logic for generating settings group control data.
 - Fix: WooCommerce shop page cannot take fullwidth stretch layout when using Elementor/Beaver Builder page builder.
 - Fix: Prevent PHP warning in the customizer for PHP 7.1.
 - Fix: Infinite Scroll not working on WooCommerce Subcategory pages.
-- Fix: Fonts from custom font plugin not appearing in fonts list in the customizer. 
-- Fix: Group popup not closing in customizer for the WooCommerce product catalog section. 
-- Fix: Section title does not stick in the customizer. 
+- Fix: Fonts from custom font plugin not appearing in fonts list in the customizer.
+- Fix: Group popup not closing in customizer for the WooCommerce product catalog section.
+- Fix: Section title does not stick in the customizer.
 - Fix: RTL fixes for customizer custom controls.
 
 v2.0.0-rc.1
@@ -108,8 +669,8 @@ v2.0.0-rc.1
 v2.0.0-beta.4
 - Improvement: Layout design images.
 - Improvement: Control Sequence in WooCommerce Single Product Section in the Customizer.
-- Improvement: Distinguish Astra Sections from Default Sections in the Customizer. 
-- Improvement: Option Labels in the Customizer. 
+- Improvement: Distinguish Astra Sections from Default Sections in the Customizer.
+- Improvement: Option Labels in the Customizer.
 - Fix: PHP Warning in the Customizer while Woocommerce is not Active.
 
 v2.0.0-beta.3
@@ -118,7 +679,7 @@ v2.0.0-beta.3
 
 v2.0.0-beta.2
 - Improvement: Preview for base typography options without page refresh.
-- Fix: Toggle button displays when there are no items to display in the menu. 
+- Fix: Toggle button displays when there are no items to display in the menu.
 
 v1.8.7
 - New: Introduced wp_body_open action hook.
@@ -127,7 +688,7 @@ v1.8.7
 - Fix: Padding added from Elementor product widget not working on the Front-end.
 
 v2.0.0-beta.1
-- New: Introduced a Group Param for customizer Settings. 
+- New: Introduced a Group Param for customizer Settings.
 - Improvement: Live preview for Typography options.
 - Improvement: Customizer performance.
 
@@ -171,7 +732,7 @@ v1.8.0
 - New: Breadcrumb customizer option. Read more about here - https://wpastra.com/docs/add-breadcrumbs-with-astra/
 - New: Action hooks - astra_before_archive_title, astra_after_archive_title, astra_after_archive_description, astra_header_markup_after, astra_header_markup_before.
 - Improvement: Remove body schema when using WooCommerce template.
-- Fix: WP Block pullquote border not visible issue. 
+- Fix: WP Block pullquote border not visible issue.
 - Fix: LearnDash: sortable/dragable elements unable to scroll the page.
 - Fix: HTML 5 Validation error in the main header menu header toggle button classes.
 
@@ -294,7 +855,7 @@ v1.5.0-rc.2
 Fix: Menu highlight labels not working for non mega menus.
 
 v1.5.0-rc.1
-- Improvement: Submenu opens below the header instead of cropping the header. This fix introduces padding difference of ~5px in the header hence for existing sites updating to this version this change will be disabled by default. 
+- Improvement: Submenu opens below the header instead of cropping the header. This fix introduces padding difference of ~5px in the header hence for existing sites updating to this version this change will be disabled by default.
 You can enable this by adding a filter `add_filter( 'astra_submenu_below_header_fix', '__return_true' );` in your child theme's functions'php file.
 For all the new installations this option will be enabled by default and don't need any snippet.
 - Improvement: If the content in header is larger the navigation menu will drop on a new line.
@@ -312,7 +873,7 @@ v1.5.0-beta.3
 v1.5.0-beta.2
 - New: Menu container animation.
 
-v1.5.0-beta.1 
+v1.5.0-beta.1
 - Introducing Nav Menu from Astra Pro
 
 v1.4.9
@@ -329,7 +890,7 @@ v1.4.7
 
 v1.4.6
 - Improvement: Default thumbnail size for blog set to `large` instead of full. credit - (ipokkel)[https://github.com/ipokkel] (#697)[https://github.com/brainstormforce/astra/pull/697]
-- Improvement: Contact form 7 & Gravity Forms compatibility CSS will load only on the pages where contact forms are used. 
+- Improvement: Contact form 7 & Gravity Forms compatibility CSS will load only on the pages where contact forms are used.
 - Fix: SVG logo getting incorrect height in firefox browser.
 - Fix: Header layouts not correctly aligned in case of IE10 & IE 11.
 
@@ -343,7 +904,7 @@ v1.4.3
 - New: Option to select Dropdown target - Submenu icon or Menu Link.
 - Improvement: Ask if the retina logo is to be added using a checkbox setting.
 - Fix: LifterLMS - When center header layout is selected mobile menu toggle doe snot work.
-- Fix: Inline logo and the title does not work correctly if the custom menu item is set to be outside. 
+- Fix: Inline logo and the title does not work correctly if the custom menu item is set to be outside.
 - Fix: When option 'Inline Logo & site title' checked then the site title getting left aligned.
 - Fix: Custom Menu item outside class is added to the body even if the last menu item is disabled.
 

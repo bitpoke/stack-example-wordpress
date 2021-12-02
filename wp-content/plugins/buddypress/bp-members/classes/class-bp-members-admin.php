@@ -140,6 +140,8 @@ class BP_Members_Admin {
 		$this->users_url    = bp_get_admin_url( 'users.php' );
 		$this->users_screen = bp_core_do_network_admin() ? 'users-network' : 'users';
 
+		$this->members_invites_page = '';
+
 		// Specific config: BuddyPress is not network activated.
 		$this->subsite_activated = (bool) is_multisite() && ! bp_is_network_activated();
 
@@ -219,6 +221,13 @@ class BP_Members_Admin {
 			// Registration is turned on.
 			add_action( 'update_site_option_registration',  array( $this, 'multisite_registration_on' ),   10, 2 );
 			add_action( 'update_option_users_can_register', array( $this, 'single_site_registration_on' ), 10, 2 );
+
+			// Member invitations are enabled.
+			if ( bp_is_network_activated() ) {
+				add_action( 'update_site_option_bp-enable-members-invitations', array( $this, 'multisite_registration_on' ), 10, 2 );
+			} else {
+				add_action( 'update_option_bp-enable-members-invitations', array( $this, 'single_site_registration_on' ), 10, 2 );
+			}
 		}
 
 		/** Users List - Members Types ***************************************
@@ -248,7 +257,9 @@ class BP_Members_Admin {
 	 * @param string $value
 	 */
 	public function multisite_registration_on( $option_name, $value ) {
-		if ( 'user' === $value || 'all' === $value ) {
+		// Is registration enabled or are network invitations enabled?
+		if ( ( 'user' === $value || 'all' === $value )
+			|| bp_get_members_invitations_allowed() ) {
 			bp_core_add_page_mappings( array(
 				'register' => 1,
 				'activate' => 1
@@ -266,7 +277,7 @@ class BP_Members_Admin {
 	 */
 	public function single_site_registration_on( $old_value, $value ) {
 		// Single site.
-		if ( ! is_multisite() && ! empty( $value ) ) {
+		if ( ! is_multisite() && ( ! empty( $value ) || bp_get_members_invitations_allowed() ) ) {
 			bp_core_add_page_mappings( array(
 				'register' => 1,
 				'activate' => 1
@@ -490,6 +501,23 @@ class BP_Members_Admin {
 			);
 		}
 
+		// For consistency with non-Multisite, we add a Tools menu in
+		// the Network Admin as a home for our Tools panel.
+		if ( is_multisite() && bp_core_do_network_admin() ) {
+			$tools_parent = 'network-tools';
+		} else {
+			$tools_parent = 'tools.php';
+		}
+
+		$hooks['members_invitations'] = $this->members_invites_page = add_submenu_page(
+			$tools_parent,
+			__( 'Manage Invitations',  'buddypress' ),
+			__( 'Manage Invitations',  'buddypress' ),
+			$this->capability,
+			'bp-members-invitations',
+			array( $this, 'invitations_admin' )
+		);
+
 		$edit_page         = 'user-edit';
 		$profile_page      = 'profile';
 		$this->users_page  = 'users';
@@ -509,6 +537,8 @@ class BP_Members_Admin {
 			$this->user_page    .= '-network';
 			$this->users_page   .= '-network';
 			$this->signups_page .= '-network';
+
+			$this->members_invites_page .= '-network';
 		}
 
 		// Setup the screen ID's.
@@ -527,6 +557,9 @@ class BP_Members_Admin {
 		foreach ( $page_head as $head ) {
 			add_action( "admin_head-{$head}", array( $this, 'profile_admin_head' ) );
 		}
+
+		// Highlight the BuddyPress tools submenu when managing invitations.
+		add_action( "admin_head-{$this->members_invites_page}", 'bp_core_modify_admin_menu_highlight' );
 	}
 
 	/**
@@ -596,6 +629,13 @@ class BP_Members_Admin {
 	public function admin_head() {
 		remove_submenu_page( 'users.php',   'bp-profile-edit' );
 		remove_submenu_page( 'profile.php', 'bp-profile-edit' );
+
+		// Manage Invitations Tool screen is a tab of BP Tools.
+		if ( is_network_admin() ) {
+			remove_submenu_page( 'network-tools', 'bp-members-invitations' );
+		} else {
+			remove_submenu_page( 'tools.php', 'bp-members-invitations' );
+		}
 	}
 
 	/** Community Profile *****************************************************/
@@ -642,6 +682,22 @@ class BP_Members_Admin {
 			 */
 			$js = apply_filters( 'bp_members_admin_js', $js );
 			wp_enqueue_script( 'bp-members-js', $js, array( 'jquery' ), bp_get_version(), true );
+
+			if ( ! bp_core_get_root_option( 'bp-disable-avatar-uploads' ) && buddypress()->avatar->show_avatars ) {
+				/**
+				 * Get Thickbox.
+				 *
+				 * We cannot simply use add_thickbox() here as WordPress is not playing
+				 * nice with Thickbox width/height see https://core.trac.wordpress.org/ticket/17249
+				 * Using media-upload might be interesting in the future for the send to editor stuff
+				 * and we make sure the tb_window is wide enough
+				 */
+				wp_enqueue_style ( 'thickbox' );
+				wp_enqueue_script( 'media-upload' );
+
+				// Get Avatar Uploader.
+				bp_attachments_enqueue_scripts( 'BP_Attachment_Avatar' );
+			}
 		}
 
 		/**
@@ -723,6 +779,7 @@ class BP_Members_Admin {
 	 * help, and setting up screen options.
 	 *
 	 * @since 2.0.0
+	 * @since 6.0.0 The `delete_avatar` action is now managed into this method.
 	 */
 	public function user_admin_load() {
 
@@ -819,15 +876,34 @@ class BP_Members_Admin {
 				$display_name = __( 'Member', 'buddypress' );
 			}
 
+			// Set the screen id.
+			$screen_id = get_current_screen()->id;
+
 			// User Stat metabox.
 			add_meta_box(
 				'bp_members_admin_user_stats',
-				sprintf( _x( "%s's Stats", 'members user-admin edit screen', 'buddypress' ), $display_name ),
+				sprintf(
+					/* translators: %s: member name */
+					_x( "%s's Stats", 'members user-admin edit screen', 'buddypress' ),
+					$display_name
+				),
 				array( $this, 'user_admin_stats_metabox' ),
-				get_current_screen()->id,
+				$screen_id,
 				sanitize_key( $this->stats_metabox->context ),
 				sanitize_key( $this->stats_metabox->priority )
 			);
+
+			if ( buddypress()->avatar->show_avatars ) {
+				// Avatar Metabox.
+				add_meta_box(
+					'bp_members_user_admin_avatar',
+					_x( 'Profile Photo', 'members user-admin edit screen', 'buddypress' ),
+					array( $this, 'user_admin_avatar_metabox' ),
+					$screen_id,
+					'side',
+					'low'
+				);
+			}
 
 			// Member Type metabox. Only added if member types have been registered.
 			$member_types = bp_get_member_types();
@@ -836,7 +912,7 @@ class BP_Members_Admin {
 					'bp_members_admin_member_type',
 					_x( 'Member Type', 'members user-admin edit screen', 'buddypress' ),
 					array( $this, 'user_admin_member_type_metabox' ),
-					get_current_screen()->id,
+					$screen_id,
 					'side',
 					'core'
 				);
@@ -870,6 +946,22 @@ class BP_Members_Admin {
 				$redirect_to = add_query_arg( 'updated', $doaction, $redirect_to );
 			} else {
 				$redirect_to = add_query_arg( 'error', $doaction, $redirect_to );
+			}
+
+			bp_core_redirect( $redirect_to );
+
+		// Eventually delete avatar.
+		} elseif ( 'delete_avatar' === $doaction ) {
+
+			// Check the nonce.
+			check_admin_referer( 'delete_avatar' );
+
+			$redirect_to = remove_query_arg( '_wpnonce', $redirect_to );
+
+			if ( bp_core_delete_existing_avatar( array( 'item_id' => $user_id ) ) ) {
+				$redirect_to = add_query_arg( 'updated', 'avatar', $redirect_to );
+			} else {
+				$redirect_to = add_query_arg( 'error', 'avatar', $redirect_to );
 			}
 
 			bp_core_redirect( $redirect_to );
@@ -931,7 +1023,7 @@ class BP_Members_Admin {
 
 		if ( ! empty( $notice ) ) : ?>
 
-			<div <?php if ( 'updated' === $notice['class'] ) : ?>id="message" <?php endif; ?>class="<?php echo esc_attr( $notice['class'] ); ?>">
+			<div <?php if ( 'updated' === $notice['class'] ) : ?>id="message" <?php endif; ?>class="<?php echo esc_attr( $notice['class'] ); ?>  notice is-dismissible">
 
 				<p><?php echo esc_html( $notice['message'] ); ?></p>
 
@@ -946,46 +1038,23 @@ class BP_Members_Admin {
 		<?php endif; ?>
 
 		<div class="wrap" id="community-profile-page">
-			<?php if ( version_compare( $GLOBALS['wp_version'], '4.8', '>=' ) ) : ?>
+			<h1 class="wp-heading-inline"><?php echo esc_html( $title ); ?></h1>
 
-				<h1 class="wp-heading-inline"><?php echo esc_html( $title ); ?></h1>
+			<?php if ( empty( $this->is_self_profile ) ) : ?>
 
-				<?php if ( empty( $this->is_self_profile ) ) : ?>
+				<?php if ( current_user_can( 'create_users' ) ) : ?>
 
-					<?php if ( current_user_can( 'create_users' ) ) : ?>
+					<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user', 'buddypress' ); ?></a>
 
-						<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user', 'buddypress' ); ?></a>
+				<?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
 
-					<?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
-
-						<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user', 'buddypress' ); ?></a>
-
-					<?php endif; ?>
+					<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user', 'buddypress' ); ?></a>
 
 				<?php endif; ?>
 
-				<hr class="wp-header-end">
-
-			<?php else : ?>
-
-				<h1><?php echo esc_html( $title ); ?>
-
-					<?php if ( empty( $this->is_self_profile ) ) : ?>
-
-						<?php if ( current_user_can( 'create_users' ) ) : ?>
-
-							<a href="user-new.php" class="add-new-h2"><?php echo esc_html_x( 'Add New', 'user', 'buddypress' ); ?></a>
-
-						<?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
-
-							<a href="user-new.php" class="add-new-h2"><?php echo esc_html_x( 'Add Existing', 'user', 'buddypress' ); ?></a>
-
-						<?php endif; ?>
-
-					<?php endif; ?>
-				</h1>
-
 			<?php endif; ?>
+
+			<hr class="wp-header-end">
 
 			<?php if ( ! empty( $user ) ) :
 
@@ -1090,7 +1159,12 @@ class BP_Members_Admin {
 						$datef = __( 'M j, Y @ G:i', 'buddypress' );
 						$date  = date_i18n( $datef, strtotime( $user->user_registered ) );
 						?>
-						<span id="timestamp"><?php printf( __( 'Registered on: %s', 'buddypress' ), '<strong>' . $date . '</strong>' ); ?></span>
+						<span id="timestamp">
+							<?php
+							/* translators: %s: registration date */
+							printf( __( 'Registered on: %s', 'buddypress' ), '<strong>' . $date . '</strong>' );
+							?>
+						</span>
 					</div>
 				</div> <!-- #misc-publishing-actions -->
 
@@ -1120,7 +1194,12 @@ class BP_Members_Admin {
 	 */
 	public function user_admin_spammer_metabox( $user = null ) {
 	?>
-		<p><?php printf( __( '%s has been marked as a spammer. All BuddyPress data associated with the user has been removed', 'buddypress' ), esc_html( bp_core_get_user_displayname( $user->ID ) ) ) ;?></p>
+		<p>
+			<?php
+			/* translators: %s: member name */
+			printf( __( '%s has been marked as a spammer. All BuddyPress data associated with the user has been removed', 'buddypress' ), esc_html( bp_core_get_user_displayname( $user->ID ) ) );
+			?>
+		</p>
 	<?php
 	}
 
@@ -1151,7 +1230,12 @@ class BP_Members_Admin {
 		$date  = date_i18n( $datef, strtotime( $last_active ) ); ?>
 
 		<ul>
-			<li class="bp-members-profile-stats"><?php printf( __( 'Last active: %1$s', 'buddypress' ), '<strong>' . $date . '</strong>' ); ?></li>
+			<li class="bp-members-profile-stats">
+				<?php
+				/* translators: %s: date */
+				printf( __( 'Last active: %1$s', 'buddypress' ), '<strong>' . $date . '</strong>' );
+				?>
+			</li>
 
 			<?php
 			// Loading other stats only if user has activated their account.
@@ -1174,6 +1258,61 @@ class BP_Members_Admin {
 	}
 
 	/**
+	 * Render the Avatar metabox to moderate inappropriate images.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param WP_User|null $user The WP_User object for the user being edited.
+	 */
+	public function user_admin_avatar_metabox( $user = null ) {
+
+		if ( empty( $user->ID ) ) {
+			return;
+		} ?>
+
+		<div class="avatar">
+
+			<?php echo bp_core_fetch_avatar( array(
+				'item_id' => $user->ID,
+				'object'  => 'user',
+				'type'    => 'full',
+				'title'   => $user->display_name
+			) ); ?>
+
+			<?php if ( bp_get_user_has_avatar( $user->ID ) ) :
+
+				$query_args = array(
+					'user_id' => $user->ID,
+					'action'  => 'delete_avatar'
+				);
+
+				if ( ! empty( $_REQUEST['wp_http_referer'] ) ) {
+					$wp_http_referer = wp_unslash( $_REQUEST['wp_http_referer'] );
+					$wp_http_referer = remove_query_arg( array( 'action', 'updated' ), $wp_http_referer );
+					$wp_http_referer = wp_validate_redirect( esc_url_raw( $wp_http_referer ) );
+					$query_args['wp_http_referer'] = urlencode( $wp_http_referer );
+				}
+
+				$community_url = add_query_arg( $query_args, $this->edit_profile_url );
+				$delete_link   = wp_nonce_url( $community_url, 'delete_avatar' ); ?>
+
+				<a href="<?php echo esc_url( $delete_link ); ?>" class="bp-members-avatar-user-admin"><?php esc_html_e( 'Delete Profile Photo', 'buddypress' ); ?></a>
+
+			<?php endif;
+
+			// Load the Avatar UI templates if user avatar uploads are enabled.
+			if ( ! bp_core_get_root_option( 'bp-disable-avatar-uploads' ) ) : ?>
+				<a href="#TB_inline?width=800px&height=400px&inlineId=bp-members-avatar-editor" class="thickbox bp-members-avatar-user-edit"><?php esc_html_e( 'Edit Profile Photo', 'buddypress' ); ?></a>
+				<div id="bp-members-avatar-editor" style="display:none;">
+					<?php bp_attachments_get_template_part( 'avatars/index' ); ?>
+				</div>
+			<?php endif; ?>
+
+		</div>
+		<?php
+	}
+
+	/**
 	 * Render the Member Type metabox.
 	 *
 	 * @since 2.2.0
@@ -1187,26 +1326,30 @@ class BP_Members_Admin {
 			return;
 		}
 
-		$types = bp_get_member_types( array(), 'objects' );
-		$current_type = bp_get_member_type( $user->ID );
+		$types        = bp_get_member_types( array(), 'objects' );
+		$current_type = (array) bp_get_member_type( $user->ID, false );
+		$types_count  = count( array_filter( $current_type ) );
 		?>
 
-		<label for="bp-members-profile-member-type" class="screen-reader-text"><?php
+		<label for="bp-members-profile-member-type" class="screen-reader-text">
+			<?php
 			/* translators: accessibility text */
 			esc_html_e( 'Select member type', 'buddypress' );
-		?></label>
-		<select name="bp-members-profile-member-type" id="bp-members-profile-member-type">
-			<option value="" <?php selected( '', $current_type ); ?>><?php
-				/* translators: no option picked in select box */
-				esc_attr_e( '----', 'buddypress' );
-			?></option>
+			?>
+		</label>
+		<ul class="categorychecklist form-no-clear">
 			<?php foreach ( $types as $type ) : ?>
-				<option value="<?php echo esc_attr( $type->name ) ?>" <?php selected( $type->name, $current_type ) ?>><?php echo esc_html( $type->labels['singular_name'] ) ?></option>
+				<li>
+					<label class="selectit">
+						<input value="<?php echo esc_attr( $type->name ) ?>" name="bp-members-profile-member-type[]" type="checkbox" <?php checked( true, in_array( $type->name, $current_type ) ); ?>>
+						<?php echo esc_html( $type->labels['singular_name'] ); ?>
+					</label>
+				</li>
 			<?php endforeach; ?>
-		</select>
+			<input type="hidden" value="<?php echo intval( $types_count ); ?>" name="bp-members-profile-member-types-count" />
+		</ul>
 
 		<?php
-
 		wp_nonce_field( 'bp-member-type-change-' . $user->ID, 'bp-member-type-nonce' );
 	}
 
@@ -1216,7 +1359,7 @@ class BP_Members_Admin {
 	 * @since 2.2.0
 	 */
 	public function process_member_type_update() {
-		if ( ! isset( $_POST['bp-member-type-nonce'] ) || ! isset( $_POST['bp-members-profile-member-type'] ) ) {
+		if ( ! isset( $_POST['bp-member-type-nonce'] ) || ! isset( $_POST['bp-members-profile-member-types-count'] ) ) {
 			return;
 		}
 
@@ -1229,9 +1372,16 @@ class BP_Members_Admin {
 			return;
 		}
 
-		// Member type string must either reference a valid member type, or be empty.
-		$member_type = stripslashes( $_POST['bp-members-profile-member-type'] );
-		if ( ! empty( $member_type ) && ! bp_get_member_type_object( $member_type ) ) {
+		if ( isset( $_POST['bp-members-profile-member-type'] ) ) {
+			// Member type [string] must either reference a valid member type, or be empty.
+			$member_type = wp_parse_slug_list( wp_unslash( $_POST['bp-members-profile-member-type'] ) );
+			$member_type = array_filter( $member_type );
+		} elseif ( 0 !== intval( $_POST['bp-members-profile-member-types-count'] ) ) {
+			$member_type = false;
+		}
+
+		// Nothing to do there.
+		if ( ! isset( $member_type ) ) {
 			return;
 		}
 
@@ -1438,8 +1588,10 @@ class BP_Members_Admin {
 			$base_url = bp_get_admin_url( 'users.php' );
 		}
 
-		$url     = add_query_arg( 'page', 'bp-signups', $base_url );
-		$text    = sprintf( _x( 'Pending %s', 'signup users', 'buddypress' ), '<span class="count">(' . number_format_i18n( $signups ) . ')</span>' );
+		$url = add_query_arg( 'page', 'bp-signups', $base_url );
+
+		/* translators: %s: number of pending accounts */
+		$text = sprintf( _x( 'Pending %s', 'signup users', 'buddypress' ), '<span class="count">(' . number_format_i18n( $signups ) . ')</span>' );
 
 		$views['registered'] = sprintf( '<a href="%1$s" class="%2$s">%3$s</a>', esc_url( $url ), $class, $text );
 
@@ -1708,6 +1860,7 @@ class BP_Members_Admin {
 
 					if ( ! empty( $_REQUEST['resent'] ) ) {
 						$notice['message'] .= sprintf(
+							/* translators: %s: number of activation emails sent */
 							_nx( '%s activation email successfully sent! ', '%s activation emails successfully sent! ',
 							 absint( $_REQUEST['resent'] ),
 							 'signup resent',
@@ -1719,6 +1872,7 @@ class BP_Members_Admin {
 
 					if ( ! empty( $_REQUEST['notsent'] ) ) {
 						$notice['message'] .= sprintf(
+							/* translators: %s: number of unsent activation emails */
 							_nx( '%s activation email was not sent.', '%s activation emails were not sent.',
 							 absint( $_REQUEST['notsent'] ),
 							 'signup notsent',
@@ -1742,6 +1896,7 @@ class BP_Members_Admin {
 
 					if ( ! empty( $_REQUEST['activated'] ) ) {
 						$notice['message'] .= sprintf(
+							/* translators: %s: number of activated accounts */
 							_nx( '%s account successfully activated! ', '%s accounts successfully activated! ',
 							 absint( $_REQUEST['activated'] ),
 							 'signup resent',
@@ -1753,6 +1908,7 @@ class BP_Members_Admin {
 
 					if ( ! empty( $_REQUEST['notactivated'] ) ) {
 						$notice['message'] .= sprintf(
+							/* translators: %s: number of accounts not activated */
 							_nx( '%s account was not activated.', '%s accounts were not activated.',
 							 absint( $_REQUEST['notactivated'] ),
 							 'signup notsent',
@@ -1776,6 +1932,7 @@ class BP_Members_Admin {
 
 					if ( ! empty( $_REQUEST['deleted'] ) ) {
 						$notice['message'] .= sprintf(
+							/* translators: %s: number of deleted signups */
 							_nx( '%s sign-up successfully deleted!', '%s sign-ups successfully deleted!',
 							 absint( $_REQUEST['deleted'] ),
 							 'signup deleted',
@@ -1786,13 +1943,16 @@ class BP_Members_Admin {
 					}
 
 					if ( ! empty( $_REQUEST['notdeleted'] ) ) {
+						$notdeleted         = absint( $_REQUEST['notdeleted'] );
 						$notice['message'] .= sprintf(
-							_nx( '%s sign-up was not deleted.', '%s sign-ups were not deleted.',
-							 absint( $_REQUEST['notdeleted'] ),
-							 'signup notdeleted',
-							 'buddypress'
+							_nx(
+								/* translators: %s: number of deleted signups not deleted */
+								'%s sign-up was not deleted.', '%s sign-ups were not deleted.',
+								$notdeleted,
+								'signup notdeleted',
+								'buddypress'
 							),
-							number_format_i18n( absint( $_REQUEST['notdeleted'] ) )
+							number_format_i18n( $notdeleted )
 						);
 
 						if ( empty( $_REQUEST['deleted'] ) ) {
@@ -1856,11 +2016,11 @@ class BP_Members_Admin {
 		if ( ! empty( $notice ) ) :
 			if ( 'updated' === $notice['class'] ) : ?>
 
-				<div id="message" class="<?php echo esc_attr( $notice['class'] ); ?>">
+				<div id="message" class="<?php echo esc_attr( $notice['class'] ); ?> notice is-dismissible">
 
 			<?php else: ?>
 
-				<div class="<?php echo esc_attr( $notice['class'] ); ?>">
+				<div class="<?php echo esc_attr( $notice['class'] ); ?> notice is-dismissible">
 
 			<?php endif; ?>
 
@@ -1946,49 +2106,24 @@ class BP_Members_Admin {
 		?>
 
 		<div class="wrap">
-			<?php if ( version_compare( $GLOBALS['wp_version'], '4.8', '>=' ) ) : ?>
+			<h1 class="wp-heading-inline"><?php _e( 'Users', 'buddypress' ); ?></h1>
 
-				<h1 class="wp-heading-inline"><?php _e( 'Users', 'buddypress' ); ?></h1>
+			<?php if ( current_user_can( 'create_users' ) ) : ?>
 
-				<?php if ( current_user_can( 'create_users' ) ) : ?>
+				<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user', 'buddypress' ); ?></a>
 
-					<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user', 'buddypress' ); ?></a>
+			<?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
 
-				<?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
+				<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user', 'buddypress' ); ?></a>
 
-					<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user', 'buddypress' ); ?></a>
+			<?php endif;
 
-				<?php endif;
+			if ( $usersearch ) {
+				printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'buddypress' ) . '</span>', esc_html( $usersearch ) );
+			}
+			?>
 
-				if ( $usersearch ) {
-					printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'buddypress' ) . '</span>', esc_html( $usersearch ) );
-				}
-				?>
-
-				<hr class="wp-header-end">
-
-			<?php else : ?>
-
-				<h1><?php _e( 'Users', 'buddypress' ); ?>
-
-					<?php if ( current_user_can( 'create_users' ) ) : ?>
-
-						<a href="user-new.php" class="add-new-h2"><?php echo esc_html_x( 'Add New', 'user', 'buddypress' ); ?></a>
-
-					<?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
-
-						<a href="user-new.php" class="add-new-h2"><?php echo esc_html_x( 'Add Existing', 'user', 'buddypress' ); ?></a>
-
-					<?php endif;
-
-					if ( $usersearch ) {
-						printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'buddypress' ) . '</span>', esc_html( $usersearch ) );
-					}
-
-					?>
-				</h1>
-
-			<?php endif; ?>
+			<hr class="wp-header-end">
 
 			<?php // Display each signups on its own row. ?>
 			<?php $bp_members_signup_list_table->views(); ?>
@@ -2113,7 +2248,9 @@ class BP_Members_Admin {
 		?>
 
 		<div class="wrap">
-			<h1><?php echo esc_html( $header_text ); ?></h1>
+			<h1 class="wp-heading-inline"><?php echo esc_html( $header_text ); ?></h1>
+			<hr class="wp-header-end">
+
 			<p><?php echo esc_html( $helper_text ); ?></p>
 
 			<ol class="bp-signups-list">
@@ -2155,14 +2292,40 @@ class BP_Members_Admin {
 
 								<?php endif; ?>
 
+								<?php
+								/**
+								 * Fires inside the table listing the activate action confirmation details.
+								 *
+								 * @since 6.0.0
+								 *
+								 * @param object $signup The Sign-up Object.
+								 */
+								do_action( 'bp_activate_signup_confirmation_details', $signup );
+								?>
+
 							</tbody>
 						</table>
+
+						<?php
+						/**
+						 * Fires outside the table listing the activate action confirmation details.
+						 *
+						 * @since 6.0.0
+						 *
+						 * @param object $signup The Sign-up Object.
+						 */
+						do_action( 'bp_activate_signup_confirmation_after_details', $signup );
+						?>
+
 					<?php endif; ?>
 
 					<?php if ( 'resend' == $action ) : ?>
 
 						<p class="description">
-							<?php printf( esc_html__( 'Last notified: %s', 'buddypress'), $last_notified ) ;?>
+							<?php
+							/* translators: %s: notification date */
+							printf( esc_html__( 'Last notified: %s', 'buddypress'), $last_notified );
+							?>
 
 							<?php if ( ! empty( $signup->recently_sent ) ) : ?>
 
@@ -2277,25 +2440,22 @@ class BP_Members_Admin {
 			foreach ( (array) $_REQUEST['users'] as $user_id ) {
 				$user_id = (int) $user_id;
 
-				// Get the old member type to check against.
-				$member_type = bp_get_member_type( $user_id );
+				// Get the old member types to check against.
+				$current_types = bp_get_member_type( $user_id, false );
 
-				if ( 'remove_member_type' === $new_type ) {
-					// Remove the current member type, if there's one to remove.
-					if ( $member_type ) {
-						$removed = bp_remove_member_type( $user_id, $member_type );
-						if ( false === $removed || is_wp_error( $removed ) ) {
-							$error = true;
-						}
-					}
-				} else {
+				if ( $current_types && 'remove_member_type' === $new_type ) {
+					$member_types = array();
+				} elseif ( ! $current_types || 1 !== count( $current_types ) || $new_type !== $current_types[0] ) {
 					// Set the new member type.
-					if ( $new_type !== $member_type ) {
-						$set = bp_set_member_type( $user_id, $new_type );
-						if ( false === $set || is_wp_error( $set ) ) {
-							$error = true;
-						}
+					$member_types = array( $new_type );
+				}
+
+				if ( isset( $member_types ) ) {
+					$set = bp_set_member_type( $user_id, $member_types );
+					if ( false === $set || is_wp_error( $set ) ) {
+						$error = true;
 					}
+					unset( $member_types );
 				}
 			}
 		}
@@ -2367,12 +2527,26 @@ class BP_Members_Admin {
 		}
 
 		// Get the member type.
-		$type = bp_get_member_type( $user_id );
+		$member_type = bp_get_member_type( $user_id, false );
 
-		// Output the
-		if ( $type_obj = bp_get_member_type_object( $type ) ) {
-			$url = add_query_arg( array( 'bp-member-type' => urlencode( $type ) ) );
-			$retval = '<a href="' . esc_url( $url ) . '">' . esc_html( $type_obj->labels['singular_name'] ) . '</a>';
+		// Build the Output.
+		if ( $member_type ) {
+			$member_types = array_filter( array_map( 'bp_get_member_type_object', $member_type ) );
+			if ( ! $member_types ) {
+				return $retval;
+			}
+
+			$type_links = array();
+			foreach ( $member_types as $type ) {
+				$url          = add_query_arg( array( 'bp-member-type' => urlencode( $type->name ) ) );
+				$type_links[] = sprintf(
+					'<a href="%1$s">%2$s</a>',
+					esc_url( $url ),
+					esc_html( $type->labels['singular_name'] )
+				);
+			}
+
+			$retval = implode( ', ', $type_links );
 		}
 
 		return $retval;
@@ -2432,5 +2606,568 @@ class BP_Members_Admin {
 
 		return $value;
 	}
+
+	/**
+	 * Set up the signups admin page.
+	 *
+	 * Loaded before the page is rendered, this function does all initial
+	 * setup, including: processing form requests, registering contextual
+	 * help, and setting up screen options.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @global $bp_members_invitations_list_table
+	 */
+	public function members_invitations_admin_load() {
+		global $bp_members_invitations_list_table;
+
+		// Build redirection URL.
+		$redirect_to = remove_query_arg( array( 'action', 'error', 'updated', 'activated', 'notactivated', 'deleted', 'notdeleted', 'resent', 'notresent', 'do_delete', 'do_resend', 'do_activate', '_wpnonce', 'signup_ids' ), $_SERVER['REQUEST_URI'] );
+		$doaction    = bp_admin_list_table_current_bulk_action();
+
+		/**
+		 * Fires at the start of the member invitations admin load.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param string $doaction Current bulk action being processed.
+		 * @param array  $_REQUEST Current $_REQUEST global.
+		 */
+		do_action( 'bp_members_invitations_admin_load', $doaction, $_REQUEST );
+
+		/**
+		 * Filters the allowed actions for use in the user signups admin page.
+		 *
+		 * @since 8.0.0
+		 *
+		 * @param array $value Array of allowed actions to use.
+		 */
+		$allowed_actions = apply_filters( 'bp_members_invitations_admin_allowed_actions', array( 'do_delete',  'do_resend' ) );
+
+		// Prepare the display of the bulk invitation action screen.
+		if ( ! in_array( $doaction, $allowed_actions ) ) {
+
+			$bp_members_invitations_list_table = self::get_list_table_class( 'BP_Members_Invitations_List_Table', 'users' );
+
+			// The per_page screen option.
+			add_screen_option( 'per_page', array( 'label' => _x( 'Members Invitations', 'Members Invitations per page (screen options)', 'buddypress' ) ) );
+
+			get_current_screen()->add_help_tab( array(
+				'id'      => 'bp-members-invitations-overview',
+				'title'   => __( 'Overview', 'buddypress' ),
+				'content' =>
+				'<p>' . __( 'This is the administration screen for member invitations on your site.', 'buddypress' ) . '</p>' .
+				'<p>' . __( 'From the screen options, you can customize the displayed columns and the pagination of this screen.', 'buddypress' ) . '</p>' .
+				'<p>' . __( 'You can reorder the list of invitations by clicking on the Invitee, Inviter, Date Modified, Email Sent, or Accepted column headers.', 'buddypress' ) . '</p>' .
+				'<p>' . __( 'Using the search form, you can find specific invitations more easily. The Invitee Email field will be included in the search.', 'buddypress' ) . '</p>'
+			) );
+
+			get_current_screen()->add_help_tab( array(
+				'id'      => 'bp-members-invitations-actions',
+				'title'   => __( 'Actions', 'buddypress' ),
+				'content' =>
+				'<p>' . __( 'Hovering over a row in the pending accounts list will display action links that allow you to manage pending accounts. You can perform the following actions:', 'buddypress' ) . '</p>' .
+				'<ul><li>' . __( '"Send" or "Resend" takes you to the confirmation screen before being able to send or resend the invitation email to the desired pending invitee.', 'buddypress' ) . '</li>' .
+				'<li>' . __( '"Delete" allows you to delete an unsent or accepted invitation from your site; "Cancel" allows you to cancel a sent, but not yet accepted, invitation. You will be asked to confirm this deletion.', 'buddypress' ) . '</li></ul>' .
+				'<p>' . __( 'Bulk actions allow you to perform these actions for the selected rows.', 'buddypress' ) . '</p>'
+			) );
+
+			// Help panel - sidebar links.
+			get_current_screen()->set_help_sidebar(
+				'<p><strong>' . __( 'For more information:', 'buddypress' ) . '</strong></p>' .
+				'<p>' . __( '<a href="https://buddypress.org/support/">Support Forums</a>', 'buddypress' ) . '</p>'
+			);
+
+			// Add accessible hidden headings and text for the Pending Users screen.
+			get_current_screen()->set_screen_reader_content( array(
+				/* translators: accessibility text */
+				'heading_views'      => __( 'Filter invitations list', 'buddypress' ),
+				/* translators: accessibility text */
+				'heading_pagination' => __( 'Invitation list navigation', 'buddypress' ),
+				/* translators: accessibility text */
+				'heading_list'       => __( 'Invitations list', 'buddypress' ),
+			) );
+
+		} else {
+			if ( empty( $_REQUEST['invite_ids' ] ) ) {
+				return;
+			}
+			$invite_ids = wp_parse_id_list( $_REQUEST['invite_ids' ] );
+
+			// Handle resent invitations.
+			if ( 'do_resend' == $doaction ) {
+
+				// Nonce check.
+				check_admin_referer( 'invitations_resend' );
+
+				$success = 0;
+				foreach ( $invite_ids as $invite_id ) {
+					if ( bp_members_invitation_resend_by_id( $invite_id ) ) {
+						$success++;
+					}
+				}
+
+				$query_arg = array( 'updated' => 'resent' );
+
+				if ( ! empty( $success ) ) {
+					$query_arg['resent'] = $success;
+				}
+
+				$not_sent = count( $invite_ids ) - $success;
+				if ( $not_sent > 0 ) {
+					$query_arg['notsent'] = $not_sent;
+				}
+
+				$redirect_to = add_query_arg( $query_arg, $redirect_to );
+
+				bp_core_redirect( $redirect_to );
+
+			// Handle invitation deletion.
+			} elseif ( 'do_delete' == $doaction ) {
+
+				// Nonce check.
+				check_admin_referer( 'invitations_delete' );
+
+				$success = 0;
+				foreach ( $invite_ids as $invite_id ) {
+					if ( bp_members_invitations_delete_by_id( $invite_id ) ) {
+						$success++;
+					}
+				}
+
+				$query_arg = array( 'updated' => 'deleted' );
+
+				if ( ! empty( $success ) ) {
+					$query_arg['deleted'] = $success;
+				}
+
+				$notdeleted = count( $invite_ids ) - $success;
+				if ( $notdeleted > 0 ) {
+					$query_arg['notdeleted'] = $notdeleted;
+				}
+
+				$redirect_to = add_query_arg( $query_arg, $redirect_to );
+
+				bp_core_redirect( $redirect_to );
+
+			// Plugins can update other stuff from here.
+			} else {
+				$this->redirect = $redirect_to;
+
+				/**
+				 * Fires at end of member invitations admin load
+				 * if doaction does not match any actions.
+				 *
+				 * @since 8.0.0
+				 *
+				 * @param string $doaction Current bulk action being processed.
+				 * @param array  $_REQUEST Current $_REQUEST global.
+				 * @param string $redirect Determined redirect url to send user to.
+				 */
+				do_action( 'bp_members_admin_update_invitations', $doaction, $_REQUEST, $this->redirect );
+
+				bp_core_redirect( $this->redirect );
+			}
+		}
+	}
+
+	/**
+	 * Get admin notice when viewing the invitations management page.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @return array
+	 */
+	private function get_members_invitations_notice() {
+
+		// Setup empty notice for return value.
+		$notice = array();
+
+		// Updates.
+		if ( ! empty( $_REQUEST['updated'] ) ) {
+			switch ( $_REQUEST['updated'] ) {
+				case 'resent':
+					$notice = array(
+						'class'   => 'updated',
+						'message' => ''
+					);
+
+					if ( ! empty( $_REQUEST['resent'] ) ) {
+						$resent             = absint( $_REQUEST['resent'] );
+						$notice['message'] .= sprintf(
+							_nx(
+								/* translators: %s: number of invitation emails sent */
+								'%s invtitation email successfully sent! ', '%s invitation emails successfully sent! ',
+								$resent,
+								'members invitation resent',
+								'buddypress'
+							),
+							number_format_i18n( $resent )
+						);
+					}
+
+					if ( ! empty( $_REQUEST['notsent'] ) ) {
+						$notsent            = absint( $_REQUEST['notsent'] );
+						$notice['message'] .= sprintf(
+							_nx(
+								/* translators: %s: number of unsent invitation emails */
+								'%s invitation email was not sent.', '%s invitation emails were not sent.',
+								$notsent,
+								'members invitation notsent',
+								'buddypress'
+							),
+							number_format_i18n( $notsent )
+						);
+
+						if ( empty( $_REQUEST['resent'] ) ) {
+							$notice['class'] = 'error';
+						}
+					}
+
+					break;
+
+				case 'deleted':
+					$notice = array(
+						'class'   => 'updated',
+						'message' => ''
+					);
+
+					if ( ! empty( $_REQUEST['deleted'] ) ) {
+						$deleted            = absint( $_REQUEST['deleted'] );
+						$notice['message'] .= sprintf(
+							_nx(
+								/* translators: %s: number of deleted invitations */
+								'%s invitation successfully deleted!', '%s invitations successfully deleted!',
+								$deleted,
+								'members invitation deleted',
+								'buddypress'
+							),
+							number_format_i18n( $deleted )
+						);
+					}
+
+					if ( ! empty( $_REQUEST['notdeleted'] ) ) {
+						$notdeleted         = absint( $_REQUEST['notdeleted'] );
+						$notice['message'] .= sprintf(
+							_nx(
+								/* translators: %s: number of invitations that failed to be deleted */
+								'%s invitation was not deleted.', '%s invitations were not deleted.',
+								$notdeleted,
+								'members invitation notdeleted',
+								'buddypress'
+							),
+							number_format_i18n( $notdeleted )
+						);
+
+						if ( empty( $_REQUEST['deleted'] ) ) {
+							$notice['class'] = 'error';
+						}
+					}
+
+					break;
+			}
+		}
+
+		// Errors.
+		if ( ! empty( $_REQUEST['error'] ) ) {
+			switch ( $_REQUEST['error'] ) {
+				case 'do_resend':
+					$notice = array(
+						'class'   => 'error',
+						'message' => esc_html__( 'There was a problem sending the invitation emails. Please try again.', 'buddypress' ),
+					);
+					break;
+
+				case 'do_delete':
+					$notice = array(
+						'class'   => 'error',
+						'message' => esc_html__( 'There was a problem deleting invitations. Please try again.', 'buddypress' ),
+					);
+					break;
+			}
+		}
+
+		return $notice;
+	}
+
+	/**
+	 * Member invitations admin page router.
+	 *
+	 * Depending on the context, display
+	 * - the list of invitations,
+	 * - or the delete confirmation screen,
+	 * - or the "resend" email confirmation screen.
+	 *
+	 * Also prepare the admin notices.
+	 *
+	 * @since 8.0.0
+	 */
+	public function invitations_admin() {
+		$doaction = bp_admin_list_table_current_bulk_action();
+
+		// Prepare notices for admin.
+		$notice = $this->get_members_invitations_notice();
+
+		// Display notices.
+		if ( ! empty( $notice ) ) :
+			if ( 'updated' === $notice['class'] ) : ?>
+
+				<div id="message" class="<?php echo esc_attr( $notice['class'] ); ?> notice is-dismissible">
+
+			<?php else: ?>
+
+				<div class="<?php echo esc_attr( $notice['class'] ); ?> notice is-dismissible">
+
+			<?php endif; ?>
+
+				<p><?php echo $notice['message']; ?></p>
+			</div>
+
+		<?php endif;
+
+		// Show the proper screen.
+		switch ( $doaction ) {
+			case 'delete' :
+			case 'resend' :
+				$this->invitations_admin_manage( $doaction );
+				break;
+
+			default:
+				$this->invitations_admin_index();
+				break;
+		}
+	}
+
+	/**
+	 * This is the list of invitations.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @global $plugin_page
+	 * @global $bp_members_invitations_list_table
+	 */
+	public function invitations_admin_index() {
+		global $plugin_page, $bp_members_invitations_list_table;
+
+		$usersearch = ! empty( $_REQUEST['s'] ) ? stripslashes( $_REQUEST['s'] ) : '';
+
+		// Prepare the group items for display.
+		$bp_members_invitations_list_table->prepare_items();
+
+		if ( is_network_admin() ) {
+			$form_url = network_admin_url( 'admin.php' );
+		} else {
+			$form_url = bp_get_admin_url( 'tools.php' );
+		}
+
+		$form_url = add_query_arg(
+			array(
+				'page' => 'bp-members-invitations',
+			),
+			$form_url
+		);
+
+		$search_form_url = remove_query_arg(
+			array(
+				'action',
+				'deleted',
+				'notdeleted',
+				'error',
+				'updated',
+				'delete',
+				'activate',
+				'activated',
+				'notactivated',
+				'resend',
+				'resent',
+				'notresent',
+				'do_delete',
+				'do_activate',
+				'do_resend',
+				'action2',
+				'_wpnonce',
+				'invite_ids'
+			), $_SERVER['REQUEST_URI']
+		);
+
+		?>
+
+		<div class="wrap">
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'BuddyPress tools', 'buddypress' ); ?></h1>
+			<hr class="wp-header-end">
+
+			<h2 class="nav-tab-wrapper"><?php bp_core_admin_tabs( __( 'Manage Invitations', 'buddypress' ), 'tools' ); ?></h2>
+
+			<?php
+			if ( $usersearch ) {
+				printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'buddypress' ) . '</span>', esc_html( $usersearch ) );
+			}
+			?>
+
+			<?php // Display each invitation on its own row. ?>
+			<?php $bp_members_invitations_list_table->views(); ?>
+
+			<form id="bp-members-invitations-search-form" action="<?php echo esc_url( $search_form_url ) ;?>">
+				<input type="hidden" name="page" value="<?php echo esc_attr( $plugin_page ); ?>" />
+				<?php $bp_members_invitations_list_table->search_box( __( 'Search Invitations', 'buddypress' ), 'bp-members-invitations' ); ?>
+			</form>
+
+			<form id="bp-members-invitations-form" action="<?php echo esc_url( $form_url );?>" method="post">
+				<?php $bp_members_invitations_list_table->display(); ?>
+			</form>
+		</div>
+	<?php
+	}
+
+	/**
+	 * This is the confirmation screen for actions.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param string $action Delete or resend invitation.
+	 * @return null|false
+	 */
+	public function invitations_admin_manage( $action = '' ) {
+		if ( ! current_user_can( $this->capability ) || empty( $action ) ) {
+			die( '-1' );
+		}
+
+		// Get the IDs from the URL.
+		$ids = false;
+		if ( ! empty( $_POST['invite_ids'] ) ) {
+			$ids = wp_parse_id_list( $_POST['invite_ids'] );
+		} elseif ( ! empty( $_GET['invite_id'] ) ) {
+			$ids = absint( $_GET['invite_id'] );
+		}
+
+
+		if ( empty( $ids ) ) {
+			return false;
+		}
+
+		// Check invite IDs and set up strings.
+		switch ( $action ) {
+			case 'delete' :
+				// Query for matching invites, and filter out bad IDs.
+				$args = array(
+					'id'          => $ids,
+					'invite_sent' => 'all',
+					'accepted'    => 'all',
+				);
+				$invites    = bp_members_invitations_get_invites( $args );
+				$invite_ids = wp_list_pluck( $invites, 'id' );
+
+				$header_text = __( 'Delete Invitations', 'buddypress' );
+				if ( 0 === count( $invite_ids ) ) {
+					$helper_text = __( 'No invites were found, nothing to delete!', 'buddypress' );
+				} else {
+					$helper_text = _n( 'You are about to delete the following invitation:', 'You are about to delete the following invitations:', count( $invite_ids ), 'buddypress' );
+				}
+				break;
+
+			case 'resend' :
+				/**
+				 * Query for matching invites, and filter out bad IDs
+				 * or those that have already been accepted.
+				 */
+				$args = array(
+					'id'          => $ids,
+					'invite_sent' => 'all',
+					'accepted'    => 'pending',
+				);
+				$invites    = bp_members_invitations_get_invites( $args );
+				$invite_ids = wp_list_pluck( $invites, 'id' );
+
+				$header_text = __( 'Resend Invitation Emails', 'buddypress' );
+				if ( 0 === count( $invite_ids ) ) {
+					$helper_text = __( 'No pending invites were found, nothing to resend!', 'buddypress' );
+				} else {
+					$helper_text = _n( 'You are about to resend an invitation email to the following address:', 'You are about to resend invitation emails to the following addresses:', count( $invite_ids ), 'buddypress' );
+				}
+				break;
+		}
+
+		// These arguments are added to all URLs.
+		$url_args = array( 'page' => 'bp-members-invitations' );
+
+		// These arguments are only added when performing an action.
+		$action_args = array(
+			'action'     => 'do_' . $action,
+			'invite_ids' => implode( ',', $invite_ids )
+		);
+
+		if ( is_network_admin() ) {
+			$base_url = network_admin_url( 'admin.php' );
+		} else {
+			$base_url = bp_get_admin_url( 'tools.php' );
+		}
+
+		$cancel_url = add_query_arg( $url_args, $base_url );
+		$action_url = wp_nonce_url(
+			add_query_arg(
+				array_merge( $url_args, $action_args ),
+				$base_url
+			),
+			'invitations_' . $action
+		);
+
+		?>
+
+		<div class="wrap">
+			<h1 class="wp-heading-inline"><?php echo esc_html( $header_text ); ?></h1>
+			<hr class="wp-header-end">
+
+			<p><?php echo esc_html( $helper_text ); ?></p>
+
+			<?php if ( $invites ) : ?>
+
+				<ol class="bp-invitations-list">
+					<?php foreach ( $invites as $invite ) :
+						if ( $invite->invite_sent ) {
+							$last_notified = mysql2date( 'Y/m/d g:i:s a', $invite->date_modified );
+						} else {
+							$last_notified = __( 'Not yet notified', 'buddypress');
+						}
+						?>
+
+						<li>
+							<strong><?php echo esc_html( $invite->invitee_email ) ?></strong>
+
+							<?php if ( 'resend' === $action ) : ?>
+
+								<p class="description">
+									<?php
+									/* translators: %s: notification date */
+									printf( esc_html__( 'Last notified: %s', 'buddypress'), $last_notified );
+									?>
+								</p>
+
+							<?php endif; ?>
+
+						</li>
+
+					<?php endforeach; ?>
+				</ol>
+
+			<?php endif ; ?>
+
+			<?php if ( 'delete' === $action ) : ?>
+
+				<p><strong><?php esc_html_e( 'This action cannot be undone.', 'buddypress' ) ?></strong></p>
+
+			<?php endif; ?>
+
+			<?php if ( $invites ) : ?>
+
+				<a class="button-primary" href="<?php echo esc_url( $action_url ); ?>" <?php disabled( ! $invites ); ?>><?php esc_html_e( 'Confirm', 'buddypress' ); ?></a>
+
+			<?php endif; ?>
+
+			<a class="button" href="<?php echo esc_url( $cancel_url ); ?>"><?php esc_html_e( 'Cancel', 'buddypress' ) ?></a>
+		</div>
+
+		<?php
+	}
+
 }
 endif; // End class_exists check.

@@ -62,6 +62,10 @@ ul#field-group-tabs li.ui-state-active a.ui-tab {
 	color: #000;
 }
 
+li#signup-group a:focus {
+	box-shadow: none;
+}
+
 /* Toolbar */
 .tab-toolbar {
 	clear: left;
@@ -321,6 +325,12 @@ p.member-type-none-notice {
 	word-wrap: break-word;
 	word-break: break-all; /* e.g. Chinese, Japanese, Korean chars */
 }
+
+ul.bp-xprofile-delete-group-list {
+	list-style-type: disc;
+	margin: 4px 26px;
+}
+
 
 @media screen and (max-width: 782px) {
 

@@ -17,16 +17,16 @@ class Jetpack_Modules_List_Table extends WP_List_Table {
 			array_push( $this->compat_fields, 'all_items' );
 		}
 
-		$this->items = $this->all_items = Jetpack_Admin::init()->get_modules();
-		$this->items = $this->filter_displayed_table_items( $this->items );
 		/**
 		 * Filters the list of modules available to be displayed in the Jetpack Settings screen.
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $this->items Array of Jetpack modules.
+		 * @param array $modules Array of Jetpack modules.
 		 */
-		$this->items           = apply_filters( 'jetpack_modules_list_table_items', $this->items );
+		$this->all_items       = apply_filters( 'jetpack_modules_list_table_items', Jetpack_Admin::init()->get_modules() );
+		$this->items           = $this->all_items;
+		$this->items           = $this->filter_displayed_table_items( $this->items );
 		$this->_column_headers = array( $this->get_columns(), array(), array(), 'name' );
 		$modal_info            = isset( $_GET['info'] ) ? $_GET['info'] : false;
 
@@ -96,14 +96,10 @@ class Jetpack_Modules_List_Table extends WP_List_Table {
 			<# var i = 0;
 			if ( data.items.length ) {
 			_.each( data.items, function( item, key, list ) {
-				if ( item === undefined ) return;
-				if ( 'minileven' == item.module && ! item.activated ) return;
-				if ( 'manage' == item.module && item.activated ) return; #>
+				if ( item === undefined ) return; #>
 				<tr class="jetpack-module <# if ( ++i % 2 ) { #> alternate<# } #><# if ( item.activated ) { #> active<# } #><# if ( ! item.available ) { #> unavailable<# } #>" id="{{{ item.module }}}">
 					<th scope="row" class="check-column">
-						<# if ( 'videopress' !== item.module ) { #>
 						<input type="checkbox" name="modules[]" value="{{{ item.module }}}" />
-						<# } #>
 					</th>
 					<td class='name column-name'>
 						<span class='info'><a href="{{{item.learn_more_button}}}" target="blank">{{{ item.name }}}</a></span>
@@ -111,10 +107,13 @@ class Jetpack_Modules_List_Table extends WP_List_Table {
 						<# if ( item.configurable ) { #>
 							<span class='configure'>{{{ item.configurable }}}</span>
 						<# } #>
-						<# if ( item.activated && 'vaultpress' !== item.module && item.available && 'videopress' !== item.module ) { #>
+						<# if ( item.activated && 'vaultpress' !== item.module && item.available ) { #>
 							<span class='delete'><a href="<?php echo admin_url( 'admin.php' ); ?>?page=jetpack&#038;action=deactivate&#038;module={{{ item.module }}}&#038;_wpnonce={{{ item.deactivate_nonce }}}"><?php _e( 'Deactivate', 'jetpack' ); ?></a></span>
-						<# } else if ( item.available && 'videopress' !== item.module ) { #>
+						<# } else if ( item.available ) { #>
 							<span class='activate'><a href="<?php echo admin_url( 'admin.php' ); ?>?page=jetpack&#038;action=activate&#038;module={{{ item.module }}}&#038;_wpnonce={{{ item.activate_nonce }}}"><?php _e( 'Activate', 'jetpack' ); ?></a></span>
+						<# } #>
+						<# if ( ! item.available ) { #>
+							<span class='unavailable_reason'>{{{ item.unavailable_reason }}}</span>
 						<# } #>
 						</div>
 					</td>
@@ -134,9 +133,10 @@ class Jetpack_Modules_List_Table extends WP_List_Table {
 	}
 
 	function get_views() {
-		$modules              = Jetpack_Admin::init()->get_modules();
+		/** This filter is already documented in class.jetpack-modules-list-table.php */
+		$modules              = apply_filters( 'jetpack_modules_list_table_items', Jetpack_Admin::init()->get_modules() );
 		$array_of_module_tags = wp_list_pluck( $modules, 'module_tags' );
-		$module_tags          = call_user_func_array( 'array_merge', $array_of_module_tags );
+		$module_tags          = array_merge( ...array_values( $array_of_module_tags ) );
 		$module_tags_unique   = array_count_values( $module_tags );
 		ksort( $module_tags_unique );
 
@@ -333,7 +333,7 @@ class Jetpack_Modules_List_Table extends WP_List_Table {
 	}
 
 	// Check if the info parameter provided in the URL corresponds to an actual module
-	function module_info_check( $info = false, $modules ) {
+	function module_info_check( $info, $modules ) {
 		if ( false == $info ) {
 			return false;
 		} elseif ( array_key_exists( $info, $modules ) ) {

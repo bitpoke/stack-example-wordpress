@@ -20,8 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * @param int    $secondary_item_id The secondary item id.
  * @param int    $total_items       The total number of messaging-related notifications
  *                                  waiting for the user.
- * @param string $format            Return value format. 'string' for BuddyBar-compatible
- *                                  notifications; 'array' for WP Toolbar. Default: 'string'.
+ * @param string $format            'string' for notification HTML link or 'array' for separate link and text.
  * @return string|array Formatted notifications.
  */
 function messages_format_notifications( $action, $item_id, $secondary_item_id, $total_items, $format = 'string' ) {
@@ -34,7 +33,9 @@ function messages_format_notifications( $action, $item_id, $secondary_item_id, $
 	if ( 'new_message' === $action ) {
 		if ( $total_items > 1 ) {
 			$amount = 'multiple';
-			$text   = sprintf( __( 'You have %d new messages', 'buddypress' ), $total_items );
+
+			/* translators: %s: number of new messages */
+			$text = sprintf( __( 'You have %d new messages', 'buddypress' ), $total_items );
 
 		} else {
 			// Get message thread ID.
@@ -45,8 +46,10 @@ function messages_format_notifications( $action, $item_id, $secondary_item_id, $
 				: false;
 
 			if ( ! empty( $secondary_item_id ) ) {
+				/* translators: %s: member name */
 				$text = sprintf( __( '%s sent you a new private message', 'buddypress' ), bp_core_get_user_displayname( $secondary_item_id ) );
 			} else {
+				/* translators: %s: number of private messages */
 				$text = sprintf( _n( 'You have %s new private message', 'You have %s new private messages', $total_items, 'buddypress' ), bp_core_number_format( $total_items ) );
 			}
 		}

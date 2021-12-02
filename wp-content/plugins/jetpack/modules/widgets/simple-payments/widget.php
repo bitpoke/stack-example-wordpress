@@ -1,8 +1,8 @@
 <?php
 /**
- * Display the Simple Payments Widget.
+ * Display the Pay with PayPal Widget.
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
 ?>

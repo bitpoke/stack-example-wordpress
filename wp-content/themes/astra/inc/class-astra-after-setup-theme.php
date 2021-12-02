@@ -101,9 +101,11 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 
 			// Switch default core markup for search form, comment form, and comments.
 			// to output valid HTML5.
+			// Added a new value in HTML5 array 'navigation-widgets' as this was introduced in WP5.5 for better accessibility.
 			add_theme_support(
 				'html5',
 				array(
+					'navigation-widgets',
 					'search-form',
 					'gallery',
 					'caption',
@@ -160,6 +162,9 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 			// WooCommerce.
 			add_theme_support( 'woocommerce' );
 
+			// Rank Math Breadcrumb.
+			add_theme_support( 'rank-math-breadcrumbs' );
+
 			// Native AMP Support.
 			if ( true === apply_filters( 'astra_amp_support', true ) ) {
 				add_theme_support(
@@ -173,6 +178,8 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 				);
 			}
 
+			// Remove Template Editor support until WP 5.9 since more Theme Blocks are going to be introduced.
+			remove_theme_support( 'block-templates' );
 		}
 
 		/**

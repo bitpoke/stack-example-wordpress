@@ -166,10 +166,46 @@ class BP_Core_User {
 			$this->email     = esc_attr( bp_core_get_user_email( $this->id ) );
 		}
 
-		$this->avatar       = bp_core_fetch_avatar( array( 'item_id' => $this->id, 'type' => 'full', 'alt' => sprintf( __( 'Profile photo of %s', 'buddypress' ), $this->fullname ) ) );
-		$this->avatar_thumb = bp_core_fetch_avatar( array( 'item_id' => $this->id, 'type' => 'thumb', 'alt' => sprintf( __( 'Profile photo of %s', 'buddypress' ), $this->fullname ) ) );
-		$this->avatar_mini  = bp_core_fetch_avatar( array( 'item_id' => $this->id, 'type' => 'thumb', 'alt' => sprintf( __( 'Profile photo of %s', 'buddypress' ), $this->fullname ), 'width' => 30, 'height' => 30 ) );
-		$this->last_active  = bp_core_get_last_activity( bp_get_user_last_activity( $this->id ), __( 'active %s', 'buddypress' ) );
+		$this->avatar = bp_core_fetch_avatar(
+			array(
+				'item_id' => $this->id,
+				'type'    => 'full',
+				'alt'     => sprintf(
+					/* translators: %s: member name */
+					__( 'Profile photo of %s', 'buddypress' ),
+					$this->fullname
+				)
+			)
+		);
+
+		$this->avatar_thumb = bp_core_fetch_avatar(
+			array(
+				'item_id' => $this->id,
+				'type'    => 'thumb',
+				'alt'     => sprintf(
+					/* translators: %s: member name */
+					__( 'Profile photo of %s', 'buddypress' ),
+					$this->fullname
+				)
+			)
+		);
+
+		$this->avatar_mini = bp_core_fetch_avatar(
+			array(
+				'item_id' => $this->id,
+				'type'    => 'thumb',
+				'alt'     => sprintf(
+					/* translators: %s: member name */
+					__( 'Profile photo of %s', 'buddypress' ),
+					$this->fullname
+				),
+				'width'   => 30,
+				'height'  => 30
+			)
+		);
+
+		/* translators: %s: human time diff of the last time the user was active on the site. */
+		$this->last_active = bp_core_get_last_activity( bp_get_user_last_activity( $this->id ), _x( 'Active %s', 'last time the user was active', 'buddypress' ) );
 	}
 
 	/**
@@ -183,7 +219,11 @@ class BP_Core_User {
 
 		if ( bp_is_active( 'groups' ) ) {
 			$this->total_groups = BP_Groups_Member::total_group_count( $this->id );
-			$this->total_groups = sprintf( _n( '%d group', '%d groups', $this->total_groups, 'buddypress' ), $this->total_groups );
+			$this->total_groups = sprintf(
+				/* translators: %s: total groups count */
+				_n( '%d group', '%d groups', $this->total_groups, 'buddypress' ),
+				$this->total_groups
+			);
 		}
 	}
 
@@ -720,11 +760,12 @@ class BP_Core_User {
 
 		// Fetch the user's last_activity.
 		if ( 'active' != $type ) {
-			$user_activity = $wpdb->get_results( $wpdb->prepare( "SELECT user_id as id, meta_value as last_activity FROM {$wpdb->usermeta} WHERE meta_key = %s AND user_id IN ( {$user_ids} )", bp_get_user_meta_key( 'last_activity' ) ) );
+			$user_activity = self::get_last_activity( $user_ids );
 			for ( $i = 0, $count = count( $paged_users ); $i < $count; ++$i ) {
 				foreach ( (array) $user_activity as $activity ) {
-					if ( $activity->id == $paged_users[$i]->id )
-						$paged_users[$i]->last_activity = $activity->last_activity;
+					if ( ! empty( $activity['user_id'] ) && (int) $activity['user_id'] === (int) $paged_users[$i]->id ) {
+						$paged_users[$i]->last_activity = $activity['date_recorded'];
+					}
 				}
 			}
 		}

@@ -493,7 +493,7 @@ if ( ! function_exists( 'wp_body_open' ) ) {
 	 *
 	 * @since 1.8.7
 	 */
-	function wp_body_open() {
-		do_action( 'wp_body_open' );
+	function wp_body_open() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+		do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 }

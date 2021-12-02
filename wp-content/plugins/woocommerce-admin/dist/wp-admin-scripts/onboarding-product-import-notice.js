@@ -1,1 +1,269 @@
-this.wc=this.wc||{},this.wc.onboardingProductImportNotice=function(t){var e={};function n(r){if(e[r])return e[r].exports;var o=e[r]={i:r,l:!1,exports:{}};return t[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var o in t)n.d(r,o,function(e){return t[e]}.bind(null,o));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=750)}({1:function(t,e){!function(){t.exports=this.wp.i18n}()},12:function(t,e,n){"use strict";var r={};n.r(r),n.d(r,"ADMIN_URL",(function(){return l})),n.d(r,"COUNTRIES",(function(){return p})),n.d(r,"CURRENCY",(function(){return y})),n.d(r,"LOCALE",(function(){return b})),n.d(r,"ORDER_STATUSES",(function(){return S})),n.d(r,"SITE_TITLE",(function(){return m})),n.d(r,"WC_ASSET_URL",(function(){return g})),n.d(r,"DEFAULT_DATE_RANGE",(function(){return O})),n.d(r,"getSetting",(function(){return v})),n.d(r,"setSetting",(function(){return E})),n.d(r,"getAdminLink",(function(){return w}));var o=n(48),u=n(13),c=n.n(u),i=n(49);function a(t,e){var n=Object.keys(t);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(t);e&&(r=r.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),n.push.apply(n,r)}return n}function f(t){for(var e=1;e<arguments.length;e++){var n=null!=arguments[e]?arguments[e]:{};e%2?a(Object(n),!0).forEach((function(e){c()(t,e,n[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(n)):a(Object(n)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(n,e))}))}return t}var s={adminUrl:"",countries:[],currency:{code:"USD",precision:2,symbol:"$",symbolPosition:"left",decimalSeparator:".",priceFormat:"%1$s%2$s",thousandSeparator:","},defaultDateRange:"period=month&compare=previous_year",locale:{siteLocale:"en_US",userLocale:"en_US",weekdaysShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]},orderStatuses:[],siteTitle:"",wcAssetUrl:""},d=f({},s,{},"object"===("undefined"==typeof wcSettings?"undefined":n.n(i)()(wcSettings))?wcSettings:{});d.currency=f({},s.currency,{},d.currency),d.locale=f({},s.locale,{},d.locale);var l=d.adminUrl,p=d.countries,y=d.currency,b=d.locale,S=d.orderStatuses,m=d.siteTitle,g=d.wcAssetUrl,O=d.defaultDateRange;function v(t){var e=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:function(t){return t},r=d.hasOwnProperty(t)?d[t]:e;return n(r,e)}function E(t,e){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:function(t){return t};d[t]=n(e)}function w(t){return(l||"")+t}n.d(e,"a",(function(){return _})),n.d(e,"b",(function(){return j})),n.d(e,"c",(function(){return h})),n.d(e,"d",(function(){return L})),n.d(e,"e",(function(){return A})),n.d(e,"g",(function(){return U})),n.d(e,"h",(function(){return R})),n.d(e,"f",(function(){return P}));var T=o&&void 0!==o.getSetting?o:r,_=T.ADMIN_URL,j=(T.COUNTRIES,T.CURRENCY),h=T.LOCALE,L=T.ORDER_STATUSES,A=(T.SITE_TITLE,T.WC_ASSET_URL),U=(T.DEFAULT_DATE_RANGE,T.getSetting),R=T.setSetting,P=T.getAdminLink||w},13:function(t,e){t.exports=function(t,e,n){return e in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t}},48:function(t,e){!function(){t.exports=this.wc.wcSettings}()},49:function(t,e){function n(e){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?t.exports=n=function(t){return typeof t}:t.exports=n=function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},n(e)}t.exports=n},59:function(t,e,n){"use strict";function r(t){"complete"!==document.readyState&&"interactive"!==document.readyState?document.addEventListener("DOMContentLoaded",t):t()}n.d(e,"a",(function(){return r}))},750:function(t,e,n){"use strict";n.r(e);var r=n(1),o=n(59),u=n(12);Object(o.a)((function(){var t=document.querySelector(".wc-actions");if(t){var e=document.querySelector(".wc-actions .button-primary");e&&(e.classList.remove("button"),e.classList.remove("button-primary"));var n=document.createElement("a");n.classList.add("button"),n.classList.add("button-primary"),n.setAttribute("href",Object(u.f)("admin.php?page=wc-admin")),n.innerText=Object(r.__)("Continue setup","woocommerce-admin"),t.appendChild(n)}}))}});
+this["wc"] = this["wc"] || {}; this["wc"]["onboardingProductImportNotice"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 459);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 13:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export ADMIN_URL */
+/* unused harmony export COUNTRIES */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CURRENCY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LOCALE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ORDER_STATUSES; });
+/* unused harmony export SITE_TITLE */
+/* unused harmony export WC_ASSET_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getSetting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return setSetting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getAdminLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return enqueueScript; });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/**
+ * External dependencies
+ */
+ // Remove mutable data from settings object to prevent access. Data stores should be used instead.
+
+const mutableSources = ['wcAdminSettings', 'preloadSettings'];
+const settings = typeof wcSettings === 'object' ? wcSettings : {};
+const SOURCE = Object.keys(settings).reduce((source, key) => {
+  if (!mutableSources.includes(key)) {
+    source[key] = settings[key];
+  }
+
+  return source;
+}, {});
+Object.keys(settings.admin || {}).forEach(key => {
+  if (!mutableSources.includes(key)) {
+    SOURCE[key] = settings.admin[key];
+  }
+});
+const ADMIN_URL = SOURCE.adminUrl;
+const COUNTRIES = SOURCE.countries;
+const CURRENCY = SOURCE.currency;
+const LOCALE = SOURCE.locale;
+const ORDER_STATUSES = SOURCE.orderStatuses;
+const SITE_TITLE = SOURCE.siteTitle;
+const WC_ASSET_URL = SOURCE.wcAssetUrl;
+/**
+ * Retrieves a setting value from the setting state.
+ *
+ * @param {string}   name                         The identifier for the setting.
+ * @param {*}    [fallback=false]             The value to use as a fallback
+ *                                                if the setting is not in the
+ *                                                state.
+ * @param {Function} [filter=( val ) => val]  	  A callback for filtering the
+ *                                                value before it's returned.
+ *                                                Receives both the found value
+ *                                                (if it exists for the key) and
+ *                                                the provided fallback arg.
+ *
+ * @return {*}  The value present in the settings state for the given
+ *                   name.
+ */
+
+function getSetting(name, fallback = false, filter = val => val) {
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be accessed via data store.'));
+  }
+
+  const value = SOURCE.hasOwnProperty(name) ? SOURCE[name] : fallback;
+  return filter(value, fallback);
+}
+/**
+ * Sets a value to a property on the settings state.
+ *
+ * NOTE: This feature is to be removed in favour of data stores when a full migration
+ * is complete.
+ *
+ * @deprecated
+ *
+ * @param {string}   name                        The setting property key for the
+ *                                               setting being mutated.
+ * @param {*}    value                       The value to set.
+ * @param {Function} [filter=( val ) => val]     Allows for providing a callback
+ *                                               to sanitize the setting (eg.
+ *                                               ensure it's a number)
+ */
+
+function setSetting(name, value, filter = val => val) {
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be mutated via data store.'));
+  }
+
+  SOURCE[name] = filter(value);
+}
+/**
+ * Returns a string with the site's wp-admin URL appended. JS version of `admin_url`.
+ *
+ * @param {string} path Relative path.
+ * @return {string} Full admin URL.
+ */
+
+function getAdminLink(path) {
+  return (ADMIN_URL || '') + path;
+}
+/**
+ * Adds a script to the page if it has not already been loaded. JS version of `wp_enqueue_script`.
+ *
+ * @param {Object} script WP_Script
+ * @param {string} script.handle Script handle.
+ * @param {string} script.src Script URL.
+ */
+
+function enqueueScript(script) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`#${script.handle}-js`)) {
+      resolve();
+    }
+
+    const domElement = document.createElement('script');
+    domElement.src = script.src;
+    domElement.id = `${script.handle}-js`;
+    domElement.async = true;
+    domElement.onload = resolve;
+    domElement.onerror = reject;
+    document.body.appendChild(domElement);
+  });
+}
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["i18n"]; }());
+
+/***/ }),
+
+/***/ 459:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(51);
+/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+/**
+ * External dependencies
+ */
+
+
+
+_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_1___default()(() => {
+  const actionButtons = document.querySelector('.wc-actions');
+
+  if (actionButtons) {
+    const primaryButton = document.querySelector('.wc-actions .button-primary');
+
+    if (primaryButton) {
+      primaryButton.classList.remove('button');
+      primaryButton.classList.remove('button-primary');
+    }
+
+    const continueButton = document.createElement('a');
+    continueButton.classList.add('button');
+    continueButton.classList.add('button-primary');
+    continueButton.setAttribute('href', Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__[/* getAdminLink */ "e"])('admin.php?page=wc-admin'));
+    continueButton.innerText = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Continue setup', 'woocommerce-admin');
+    actionButtons.appendChild(continueButton);
+  }
+});
+
+/***/ }),
+
+/***/ 51:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["domReady"]; }());
+
+/***/ })
+
+/******/ });

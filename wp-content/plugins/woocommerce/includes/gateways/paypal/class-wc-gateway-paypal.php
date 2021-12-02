@@ -7,8 +7,10 @@
  * @class       WC_Gateway_Paypal
  * @extends     WC_Payment_Gateway
  * @version     2.3.0
- * @package     WooCommerce/Classes/Payment
+ * @package     WooCommerce\Classes\Payment
  */
+
+use Automattic\Jetpack\Constants;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -40,7 +42,7 @@ class WC_Gateway_Paypal extends WC_Payment_Gateway {
 		$this->id                = 'paypal';
 		$this->has_fields        = false;
 		$this->order_button_text = __( 'Proceed to PayPal', 'woocommerce' );
-		$this->method_title      = __( 'PayPal', 'woocommerce' );
+		$this->method_title      = __( 'PayPal Standard', 'woocommerce' );
 		/* translators: %s: Link to WC system status page */
 		$this->method_description = __( 'PayPal Standard redirects customers to PayPal to enter their payment information.', 'woocommerce' );
 		$this->supports           = array(
@@ -281,7 +283,7 @@ class WC_Gateway_Paypal extends WC_Payment_Gateway {
 			?>
 			<div class="inline error">
 				<p>
-					<strong><?php esc_html_e( 'Gateway disabled', 'woocommerce' ); ?></strong>: <?php esc_html_e( 'PayPal does not support your store currency.', 'woocommerce' ); ?>
+					<strong><?php esc_html_e( 'Gateway disabled', 'woocommerce' ); ?></strong>: <?php esc_html_e( 'PayPal Standard does not support your store currency.', 'woocommerce' ); ?>
 				</p>
 			</div>
 			<?php
@@ -292,7 +294,7 @@ class WC_Gateway_Paypal extends WC_Payment_Gateway {
 	 * Initialise Gateway Settings Form Fields.
 	 */
 	public function init_form_fields() {
-		$this->form_fields = include 'includes/settings-paypal.php';
+		$this->form_fields = include __DIR__ . '/includes/settings-paypal.php';
 	}
 
 	/**
@@ -450,9 +452,10 @@ class WC_Gateway_Paypal extends WC_Payment_Gateway {
 			return;
 		}
 
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$suffix  = Constants::is_true( 'SCRIPT_DEBUG' ) ? '' : '.min';
+		$version = Constants::get_constant( 'WC_VERSION' );
 
-		wp_enqueue_script( 'woocommerce_paypal_admin', WC()->plugin_url() . '/includes/gateways/paypal/assets/js/paypal-admin' . $suffix . '.js', array(), WC_VERSION, true );
+		wp_enqueue_script( 'woocommerce_paypal_admin', WC()->plugin_url() . '/includes/gateways/paypal/assets/js/paypal-admin' . $suffix . '.js', array(), $version, true );
 	}
 
 	/**
@@ -469,5 +472,43 @@ class WC_Gateway_Paypal extends WC_Payment_Gateway {
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Determines whether PayPal Standard should be loaded or not.
+	 *
+	 * By default PayPal Standard isn't loaded on new installs or on existing sites which haven't set up the gateway.
+	 *
+	 * @since 5.5.0
+	 *
+	 * @return bool Whether PayPal Standard should be loaded.
+	 */
+	public function should_load() {
+		$option_key  = '_should_load';
+		$should_load = $this->get_option( $option_key );
+
+		if ( '' === $should_load ) {
+
+			// New installs without PayPal Standard enabled don't load it.
+			if ( 'no' === $this->enabled && WC_Install::is_new_install() ) {
+				$should_load = false;
+			} else {
+				$should_load = true;
+			}
+
+			$this->update_option( $option_key, wc_bool_to_string( $should_load ) );
+		} else {
+			$should_load = wc_string_to_bool( $should_load );
+		}
+
+		/**
+		 * Allow third-parties to filter whether PayPal Standard should be loaded or not.
+		 *
+		 * @since 5.5.0
+		 *
+		 * @param bool              $should_load Whether PayPal Standard should be loaded.
+		 * @param WC_Gateway_Paypal $this        The WC_Gateway_Paypal instance.
+		 */
+		return apply_filters( 'woocommerce_should_load_paypal_standard', $should_load, $this );
 	}
 }

@@ -58,11 +58,13 @@ function bp_settings_action_general() {
 	// Validate the user again for the current password when making a big change.
 	if ( ( is_super_admin() ) || ( !empty( $_POST['pwd'] ) && wp_check_password( $_POST['pwd'], $bp->displayed_user->userdata->user_pass, bp_displayed_user_id() ) ) ) {
 
-		$update_user = get_userdata( bp_displayed_user_id() );
+		$update_user = array(
+			'ID' => (int) bp_displayed_user_id(),
+		);
 
 		/* Email Change Attempt ******************************************/
 
-		if ( !empty( $_POST['email'] ) ) {
+		if ( ! empty( $_POST['email'] ) ) {
 
 			// What is missing from the profile page vs signup -
 			// let's double check the goodies.
@@ -70,7 +72,7 @@ function bp_settings_action_general() {
 			$old_user_email = $bp->displayed_user->userdata->user_email;
 
 			// User is changing email address.
-			if ( $old_user_email != $user_email ) {
+			if ( $old_user_email !== $user_email ) {
 
 				// Run some tests on the email address.
 				$email_checks = bp_core_validate_email_address( $user_email );
@@ -110,11 +112,10 @@ function bp_settings_action_general() {
 							'verify.url'     => esc_url( $verify_link ),
 						),
 					);
-					bp_send_email( 'settings-verify-email-change', bp_displayed_user_id(), $args );
+					bp_send_email( 'settings-verify-email-change', $user_email, $args );
 
 					// We mark that the change has taken place so as to ensure a
 					// success message, even though verification is still required.
-					$_POST['email'] = $update_user->user_email;
 					$email_changed = true;
 				}
 
@@ -130,23 +131,22 @@ function bp_settings_action_general() {
 
 		/* Password Change Attempt ***************************************/
 
-		if ( !empty( $_POST['pass1'] ) && !empty( $_POST['pass2'] ) ) {
+		if ( ! empty( $_POST['pass1'] ) && ! empty( $_POST['pass2'] ) ) {
+			$pass         = wp_unslash( $_POST['pass1'] );
+			$pass_confirm = wp_unslash( $_POST['pass2'] );
+			$pass_error   = bp_members_validate_user_password( $pass, $pass_confirm, $update_user );
 
-			if ( ( $_POST['pass1'] == $_POST['pass2'] ) && !strpos( " " . wp_unslash( $_POST['pass1'] ), "\\" ) ) {
-
+			if ( ! $pass_error->get_error_message() ) {
 				// Password change attempt is successful.
-				if ( ( ! empty( $_POST['pwd'] ) && $_POST['pwd'] != $_POST['pass1'] ) || is_super_admin() )  {
-					$update_user->user_pass = $_POST['pass1'];
-					$pass_changed = true;
+				if ( ( ! empty( $_POST['pwd'] ) && wp_unslash( $_POST['pwd'] ) !== $pass ) || is_super_admin() )  {
+					$update_user['user_pass'] = $_POST['pass1'];
+					$pass_error               = false;
+					$pass_changed             = true;
 
 				// The new password is the same as the current password.
 				} else {
-					$pass_error = 'same';
+					$pass_error->add( 'same_user_password', __( 'The new password must be different from the current password.', 'buddypress' ) );
 				}
-
-			// Password change attempt was unsuccessful.
-			} else {
-				$pass_error = 'mismatch';
 			}
 
 		// Both password fields were empty.
@@ -154,22 +154,14 @@ function bp_settings_action_general() {
 			$pass_error = false;
 
 		// One of the password boxes was left empty.
-		} elseif ( ( empty( $_POST['pass1'] ) && !empty( $_POST['pass2'] ) ) || ( !empty( $_POST['pass1'] ) && empty( $_POST['pass2'] ) ) ) {
-			$pass_error = 'empty';
+		} elseif ( ( empty( $_POST['pass1'] ) && ! empty( $_POST['pass2'] ) ) || ( ! empty( $_POST['pass1'] ) && empty( $_POST['pass2'] ) ) ) {
+			$pass_error = new WP_Error( 'empty_user_password', __( 'One of the password fields was empty.', 'buddypress' ) );
 		}
 
-		// The structure of the $update_user object changed in WP 3.3, but
-		// wp_update_user() still expects the old format.
-		if ( isset( $update_user->data ) && is_object( $update_user->data ) ) {
-			$update_user = $update_user->data;
-			$update_user = get_object_vars( $update_user );
-
-			// Unset the password field to prevent it from emptying out the
-			// user's user_pass field in the database.
-			// @see wp_update_user().
-			if ( false === $pass_changed ) {
-				unset( $update_user['user_pass'] );
-			}
+		// Unset the password field to prevent it from emptying out the
+		// user's user_pass field in the database.
+		if ( false === $pass_changed ) {
+			unset( $update_user['user_pass'] );
 		}
 
 		// Clear cached data, so that the changed settings take effect
@@ -180,7 +172,7 @@ function bp_settings_action_general() {
 
 	// Password Error.
 	} else {
-		$pass_error = 'invalid';
+		$pass_error = new WP_Error( 'invalid_user_password', __( 'Your current password is invalid.', 'buddypress' ) );
 	}
 
 	// Email feedback.
@@ -202,23 +194,8 @@ function bp_settings_action_general() {
 			break;
 	}
 
-	// Password feedback.
-	switch ( $pass_error ) {
-		case 'invalid' :
-			$feedback['pass_error']    = __( 'Your current password is invalid.', 'buddypress' );
-			break;
-		case 'mismatch' :
-			$feedback['pass_mismatch'] = __( 'The new password fields did not match.', 'buddypress' );
-			break;
-		case 'empty' :
-			$feedback['pass_empty']    = __( 'One of the password fields was empty.', 'buddypress' );
-			break;
-		case 'same' :
-			$feedback['pass_same'] 	   = __( 'The new password must be different from the current password.', 'buddypress' );
-			break;
-		case false :
-			// No change.
-			break;
+	if ( is_wp_error( $pass_error ) && $pass_error->get_error_message() ) {
+		$feedback[ $pass_error->get_error_code() ] = $pass_error->get_error_message();
 	}
 
 	// No errors so show a simple success message.
@@ -268,7 +245,25 @@ function bp_settings_verify_email_change() {
 
 	// Email change is being verified.
 	if ( isset( $_GET['verify_email_change'] ) ) {
-		$pending_email = bp_get_user_meta( bp_displayed_user_id(), 'pending_email_change', true );
+		$user_id       = bp_displayed_user_id();
+		$pending_email = (array) bp_get_user_meta( $user_id, 'pending_email_change', true );
+
+		// The user may have dismissed the email change.
+		if ( ! array_filter( $pending_email ) ) {
+			/**
+			 * Fires when a Pending Email Change is missing and before
+			 * BuddyPress redirects the user to an error message.
+			 *
+			 * @since 9.1.0
+			 *
+			 * @param int    $user_id     The user ID.
+			 * @param string $redirect_to The Default Front-end Settings Screen URL.
+			 */
+			do_action( 'bp_settings_missing_pending_email_change_hash', $user_id, $redirect_to );
+
+			bp_core_add_message( __( 'There was a problem verifying your new email address. If you haven’t dismissed the pending email change, please request a new email update.', 'buddypress' ), 'error' );
+			bp_core_redirect( $redirect_to );
+		}
 
 		// Bail if the hash provided doesn't match the one saved in the database.
 		if ( ! hash_equals( urldecode( $_GET['verify_email_change'] ), $pending_email['hash'] ) ) {
@@ -276,14 +271,24 @@ function bp_settings_verify_email_change() {
 		}
 
 		$email_changed = wp_update_user( array(
-			'ID'         => bp_displayed_user_id(),
+			'ID'         => $user_id,
 			'user_email' => trim( $pending_email['newemail'] ),
 		) );
 
 		if ( $email_changed ) {
-
 			// Delete the pending email change key.
-			bp_delete_user_meta( bp_displayed_user_id(), 'pending_email_change' );
+			bp_delete_user_meta( $user_id, 'pending_email_change' );
+
+			/**
+			 * Fires when a Pending Email Change has been validated and before
+			 * BuddyPress redirects the user to a success message.
+			 *
+			 * @since 9.1.0
+			 *
+			 * @param int    $user_id     The user ID.
+			 * @param string $redirect_to The Default Front-end Settings Screen URL.
+			 */
+			do_action( 'bp_settings_email_changed', $user_id, $redirect_to );
 
 			// Post a success message and redirect.
 			bp_core_add_message( __( 'You have successfully verified your new email address.', 'buddypress' ) );
@@ -293,19 +298,30 @@ function bp_settings_verify_email_change() {
 		}
 
 		bp_core_redirect( $redirect_to );
-		die();
 
 	// Email change is being dismissed.
 	} elseif ( ! empty( $_GET['dismiss_email_change'] ) ) {
 		$nonce_check = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( wp_unslash( $_GET['_wpnonce'] ), 'bp_dismiss_email_change' );
 
 		if ( $nonce_check ) {
-			bp_delete_user_meta( bp_displayed_user_id(), 'pending_email_change' );
+			$user_id = bp_displayed_user_id();
+			bp_delete_user_meta( $user_id, 'pending_email_change' );
+
+			/**
+			 * Fires when a Pending Email Change has been dismissed and before
+			 * BuddyPress redirects the user to a success message.
+			 *
+			 * @since 9.1.0
+			 *
+			 * @param int    $user_id     The user ID.
+			 * @param string $redirect_to The Default Front-end Settings Screen URL.
+			 */
+			do_action( 'bp_settings_email_change_dismissed', $user_id, $redirect_to );
+
 			bp_core_add_message( __( 'You have successfully dismissed your pending email change.', 'buddypress' ) );
 		}
 
 		bp_core_redirect( $redirect_to );
-		die();
 	}
 }
 add_action( 'bp_actions', 'bp_settings_verify_email_change' );

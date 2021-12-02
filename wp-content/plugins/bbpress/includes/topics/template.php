@@ -2851,6 +2851,8 @@ function bbp_topic_reply_link( $args = array() ) {
 			'link_before' => '',
 			'link_after'  => '',
 			'reply_text'  => esc_html_x( 'Reply', 'verb', 'bbpress' ),
+			'add_below'   => 'post',
+			'respond_id'  => 'new-reply-' . bbp_get_topic_id(),
 		), 'get_topic_reply_link' );
 
 		// Get the topic to use it's ID and post_parent
@@ -2861,9 +2863,14 @@ function bbp_topic_reply_link( $args = array() ) {
 			return;
 		}
 
+		// Only add onclick if replies are threaded
+		$onclick = bbp_thread_replies()
+			? ' onclick="return addReply.cancelForm();"'
+			: '';
+
 		// Add $uri to the array, to be passed through the filter
-		$r['uri'] = '#new-post';
-		$retval   = $r['link_before'] . '<a role="button" href="' . esc_url( $r['uri'] ) . '" class="bbp-topic-reply-link">' . $r['reply_text'] . '</a>' . $r['link_after'];
+		$r['uri'] = remove_query_arg( array( 'bbp_reply_to', '_wpnonce' ) ) . '#new-post';
+		$retval   = $r['link_before'] . '<a role="button" href="' . esc_url( $r['uri'] ) . '" class="bbp-topic-reply-link"' . $onclick . '>' . $r['reply_text'] . '</a>' . $r['link_after'];
 
 		// Filter & return
 		return apply_filters( 'bbp_get_topic_reply_link', $retval, $r, $args );
@@ -2904,6 +2911,10 @@ function bbp_get_topics_pagination_base( $forum_id = 0 ) {
 		} elseif ( bbp_is_single_user() ) {
 			$base = bbp_get_user_profile_url( bbp_get_displayed_user_id() );
 
+		// Any single post (for shortcodes, ahead of shortcodeables below)
+		} elseif ( is_singular() ) {
+			$base = get_permalink();
+
 		// View
 		} elseif ( bbp_is_single_view() ) {
 			$base = bbp_get_view_url();
@@ -2911,10 +2922,6 @@ function bbp_get_topics_pagination_base( $forum_id = 0 ) {
 		// Topic tag
 		} elseif ( bbp_is_topic_tag() ) {
 			$base = bbp_get_topic_tag_link();
-
-		// Page or single post
-		} elseif ( is_page() || is_single() ) {
-			$base = get_permalink();
 
 		// Forum archive
 		} elseif ( bbp_is_forum_archive() ) {

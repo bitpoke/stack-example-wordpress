@@ -35,7 +35,7 @@ class Constants {
 
 	/**
 	 * Checks if a "constant" has been set in constants Manager
-	 * and has the value of true
+	 * and has a truthy value (e.g. not null, not false, not 0, any string).
 	 *
 	 * @param string $name The name of the constant.
 	 *
@@ -61,7 +61,8 @@ class Constants {
 
 	/**
 	 * Attempts to retrieve the "constant" from constants Manager, and if it hasn't been set,
-	 * then attempts to get the constant with the constant() function.
+	 * then attempts to get the constant with the constant() function. If that also hasn't
+	 * been set, attempts to get a value from filters.
 	 *
 	 * @param string $name The name of the constant.
 	 *
@@ -72,7 +73,19 @@ class Constants {
 			return self::$set_constants[ $name ];
 		}
 
-		return defined( $name ) ? constant( $name ) : null;
+		if ( defined( $name ) ) {
+			return constant( $name );
+		}
+
+		/**
+		 * Filters the value of the constant.
+		 *
+		 * @since 1.2.0
+		 *
+		 * @param null The constant value to be filtered. The default is null.
+		 * @param String $name The constant name.
+		 */
+		return apply_filters( 'jetpack_constant_default_value', null, $name );
 	}
 
 	/**

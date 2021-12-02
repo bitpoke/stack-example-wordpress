@@ -34,7 +34,7 @@ class Terms extends Module {
 	 * @return string
 	 */
 	public function id_field() {
-		return 'term_id';
+		return 'term_taxonomy_id';
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Terms extends Module {
 		global $wpdb;
 		$object = false;
 		if ( 'term' === $object_type ) {
-			$object = get_term( intval( $id ) );
+			$object = get_term( (int) $id );
 
 			if ( is_wp_error( $object ) && $object->get_error_code() === 'invalid_taxonomy' ) {
 				// Fetch raw term.
@@ -104,6 +104,7 @@ class Terms extends Module {
 		add_action( 'delete_term', $callable, 10, 4 );
 		add_action( 'set_object_terms', $callable, 10, 6 );
 		add_action( 'deleted_term_relationships', $callable, 10, 2 );
+		add_filter( 'jetpack_sync_before_enqueue_set_object_terms', array( $this, 'filter_set_object_terms_no_update' ) );
 		add_filter( 'jetpack_sync_before_enqueue_jetpack_sync_save_term', array( $this, 'filter_blacklisted_taxonomies' ) );
 		add_filter( 'jetpack_sync_before_enqueue_jetpack_sync_add_term', array( $this, 'filter_blacklisted_taxonomies' ) );
 	}
@@ -219,7 +220,8 @@ class Terms extends Module {
 			/**
 			 * Fires when the client needs to add a new term
 			 *
-			 * @since 5.0.0
+			 * @since 1.6.3
+			 * @since-jetpack 5.0.0
 			 *
 			 * @param object the Term object
 			 */
@@ -230,7 +232,8 @@ class Terms extends Module {
 		/**
 		 * Fires when the client needs to update a term
 		 *
-		 * @since 4.2.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.2.0
 		 *
 		 * @param object the Term object
 		 */
@@ -252,6 +255,23 @@ class Terms extends Module {
 			return false;
 		}
 
+		return $args;
+	}
+
+	/**
+	 * Filter out set_object_terms actions where the terms have not changed.
+	 *
+	 * @param array $args Hook args.
+	 * @return array|boolean False if no change in terms, the original hook args otherwise.
+	 */
+	public function filter_set_object_terms_no_update( $args ) {
+		// There is potential for other plugins to modify args, therefore lets validate # of and types.
+		// $args[2] is $tt_ids, $args[5] is $old_tt_ids see wp-includes/taxonomy.php L2740.
+		if ( 6 === count( $args ) && is_array( $args[2] ) && is_array( $args[5] ) ) {
+			if ( empty( array_diff( $args[2], $args[5] ) ) && empty( array_diff( $args[5], $args[2] ) ) ) {
+				return false;
+			}
+		}
 		return $args;
 	}
 

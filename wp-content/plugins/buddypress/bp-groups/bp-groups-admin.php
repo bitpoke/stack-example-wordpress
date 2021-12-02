@@ -14,11 +14,14 @@
 defined( 'ABSPATH' ) || exit;
 
 // Include WP's list table class.
-if ( !class_exists( 'WP_List_Table' ) ) require( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+if ( ! class_exists( 'WP_List_Table' ) ) {
+	require ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+}
 
 // The per_page screen option. Has to be hooked in extremely early.
-if ( is_admin() && ! empty( $_REQUEST['page'] ) && 'bp-groups' == $_REQUEST['page'] )
+if ( is_admin() && ! empty( $_REQUEST['page'] ) && 'bp-groups' == $_REQUEST['page'] ) {
 	add_filter( 'set-screen-option', 'bp_groups_admin_screen_options', 10, 3 );
+}
 
 /**
  * Register the Groups component admin screen.
@@ -41,6 +44,63 @@ function bp_groups_add_admin_menu() {
 	add_action( "load-$hook", 'bp_groups_admin_load' );
 }
 add_action( bp_core_admin_hook(), 'bp_groups_add_admin_menu' );
+
+/**
+ * Redirects the user on the Goups network admin screen when BuddyPress is network activated.
+ *
+ * @since 7.0.0
+ */
+function bp_group_site_admin_network_admin_redirect() {
+	wp_safe_redirect( add_query_arg( 'page', 'bp-groups', network_admin_url( 'admin.php' ) ) );
+	exit();
+}
+
+/**
+ * Create Groups submenu to manage BuddyPress types.
+ *
+ * @since 7.0.0
+ */
+function bp_groups_admin_types_menu() {
+	if ( ! bp_is_root_blog() ) {
+		return;
+	}
+
+	if ( bp_is_network_activated() && ! bp_is_multiblog_mode() && is_network_admin() ) {
+		// Adds a 'bp-groups' submenu to go to the root blog Group types screen.
+		$group_type_admin_url = add_query_arg( 'taxonomy', 'bp_group_type', get_admin_url( bp_get_root_blog_id(), 'edit-tags.php' ) );
+		add_submenu_page(
+			'bp-groups',
+			__( 'Group Types', 'buddypress' ),
+			__( 'Group Types', 'buddypress' ),
+			'bp_moderate',
+			esc_url( $group_type_admin_url )
+		);
+	} elseif ( ! is_network_admin() ) {
+		if ( bp_is_network_activated() && ! bp_is_multiblog_mode() ) {
+			// Adds a 'bp-groups' menu to the root blog menu.
+			$redirect_hook = add_menu_page(
+				_x( 'Groups', 'Admin Groups page title', 'buddypress' ),
+				_x( 'Groups', 'Admin Groups menu', 'buddypress' ),
+				'bp_moderate',
+				'bp-groups',
+				'__return_empty_string',
+				'div'
+			);
+
+			add_action( "load-{$redirect_hook}", 'bp_group_site_admin_network_admin_redirect' );
+		}
+
+		// Add the submenu to manage Group Types.
+		add_submenu_page(
+			'bp-groups',
+			__( 'Group Types', 'buddypress' ),
+			__( 'Group Types', 'buddypress' ),
+			'bp_moderate',
+			basename( add_query_arg( 'taxonomy', 'bp_group_type', bp_get_admin_url( 'edit-tags.php' ) ) )
+		);
+	}
+}
+add_action( 'bp_admin_menu', 'bp_groups_admin_types_menu' );
 
 /**
  * Add groups component to custom menus array.
@@ -537,20 +597,24 @@ function bp_groups_admin_edit() {
 		}
 
 		if ( ! empty( $error_new ) ) {
+			/* translators: %s: comma separated list of usernames */
 			$messages[] = sprintf( __( 'The following users could not be added to the group: %s', 'buddypress' ), '<em>' . esc_html( implode( ', ', $error_new ) ) . '</em>' );
 		}
 
 		if ( ! empty( $success_new ) ) {
+			/* translators: %s: comma separated list of usernames */
 			$messages[] = sprintf( __( 'The following users were successfully added to the group: %s', 'buddypress' ), '<em>' . esc_html( implode( ', ', $success_new ) ) . '</em>' );
 		}
 
 		if ( ! empty( $error_modified ) ) {
 			$error_modified = bp_groups_admin_get_usernames_from_ids( $error_modified );
+			/* translators: %s: comma separated list of usernames */
 			$messages[] = sprintf( __( 'An error occurred when trying to modify the following members: %s', 'buddypress' ), '<em>' . esc_html( implode( ', ', $error_modified ) ) . '</em>' );
 		}
 
 		if ( ! empty( $success_modified ) ) {
 			$success_modified = bp_groups_admin_get_usernames_from_ids( $success_modified );
+			/* translators: %s: comma separated list of usernames */
 			$messages[] = sprintf( __( 'The following members were successfully modified: %s', 'buddypress' ), '<em>' . esc_html( implode( ', ', $success_modified ) ) . '</em>' );
 		}
 	}
@@ -558,7 +622,7 @@ function bp_groups_admin_edit() {
 	$is_error = ! empty( $no_admins ) || ! empty( $errors ) || ! empty( $error_new ) || ! empty( $error_modified );
 
 	// Get the group from the database.
-	$group      = groups_get_group( (int) $_GET['gid'] );
+	$group = groups_get_group( (int) $_GET['gid'] );
 
 	$group_name = isset( $group->name ) ? bp_get_group_name( $group ) : '';
 
@@ -578,31 +642,17 @@ function bp_groups_admin_edit() {
 	do_action_ref_array( 'bp_groups_admin_edit', array( &$group ) ); ?>
 
 	<div class="wrap">
-		<?php if ( version_compare( $GLOBALS['wp_version'], '4.8', '>=' ) ) : ?>
+		<h1 class="wp-heading-inline"><?php _e( 'Edit Group', 'buddypress' ); ?></h1>
 
-			<h1 class="wp-heading-inline"><?php _e( 'Edit Group', 'buddypress' ); ?></h1>
-
-			<?php if ( is_user_logged_in() && bp_user_can_create_groups() ) : ?>
-				<a class="page-title-action" href="<?php echo trailingslashit( bp_get_groups_directory_permalink() . 'create' ); ?>"><?php _e( 'Add New', 'buddypress' ); ?></a>
-			<?php endif; ?>
-
-			<hr class="wp-header-end">
-
-		<?php else : ?>
-
-			<h1><?php _e( 'Edit Group', 'buddypress' ); ?>
-
-				<?php if ( is_user_logged_in() && bp_user_can_create_groups() ) : ?>
-					<a class="add-new-h2" href="<?php echo trailingslashit( bp_get_groups_directory_permalink() . 'create' ); ?>"><?php _e( 'Add New', 'buddypress' ); ?></a>
-				<?php endif; ?>
-
-			</h1>
-
+		<?php if ( is_user_logged_in() && bp_user_can_create_groups() ) : ?>
+			<a class="page-title-action" href="<?php echo trailingslashit( bp_get_groups_directory_permalink() . 'create' ); ?>"><?php _e( 'Add New', 'buddypress' ); ?></a>
 		<?php endif; ?>
+
+		<hr class="wp-header-end">
 
 		<?php // If the user has just made a change to an group, display the status messages. ?>
 		<?php if ( !empty( $messages ) ) : ?>
-			<div id="moderated" class="<?php echo ( $is_error ) ? 'error' : 'updated'; ?>"><p><?php echo implode( "</p><p>", $messages ); ?></p></div>
+			<div id="moderated" class="<?php echo ( $is_error ) ? 'error' : 'updated'; ?> notice is-dismissible"><p><?php echo implode( "</p><p>", $messages ); ?></p></div>
 		<?php endif; ?>
 
 		<?php if ( $group->id ) : ?>
@@ -707,7 +757,9 @@ function bp_groups_admin_delete() {
 	$base_url  = remove_query_arg( array( 'action', 'action2', 'paged', 's', '_wpnonce', 'gid' ), $_SERVER['REQUEST_URI'] ); ?>
 
 	<div class="wrap">
-		<h1><?php _e( 'Delete Groups', 'buddypress' ) ?></h1>
+		<h1 class="wp-heading-inline"><?php _e( 'Delete Groups', 'buddypress' ) ?></h1>
+		<hr class="wp-header-end">
+
 		<p><?php _e( 'You are about to delete the following groups:', 'buddypress' ) ?></p>
 
 		<ul class="bp-group-delete-list">
@@ -745,6 +797,7 @@ function bp_groups_admin_index() {
 		$deleted  = ! empty( $_REQUEST['deleted'] ) ? (int) $_REQUEST['deleted'] : 0;
 
 		if ( $deleted > 0 ) {
+			/* translators: %s: number of deleted groups */
 			$messages[] = sprintf( _n( '%s group has been permanently deleted.', '%s groups have been permanently deleted.', $deleted, 'buddypress' ), number_format_i18n( $deleted ) );
 		}
 	}
@@ -764,39 +817,22 @@ function bp_groups_admin_index() {
 	do_action( 'bp_groups_admin_index', $messages ); ?>
 
 	<div class="wrap">
-		<?php if ( version_compare( $GLOBALS['wp_version'], '4.8', '>=' ) ) : ?>
 
-			<h1 class="wp-heading-inline"><?php _e( 'Groups', 'buddypress' ); ?></h1>
+		<h1 class="wp-heading-inline"><?php _e( 'Groups', 'buddypress' ); ?></h1>
 
-			<?php if ( is_user_logged_in() && bp_user_can_create_groups() ) : ?>
-				<a class="page-title-action" href="<?php echo trailingslashit( bp_get_groups_directory_permalink() . 'create' ); ?>"><?php _e( 'Add New', 'buddypress' ); ?></a>
-			<?php endif; ?>
-
-			<?php if ( !empty( $_REQUEST['s'] ) ) : ?>
-				<span class="subtitle"><?php printf( __( 'Search results for &#8220;%s&#8221;', 'buddypress' ), wp_html_excerpt( esc_html( stripslashes( $_REQUEST['s'] ) ), 50 ) ); ?></span>
-			<?php endif; ?>
-
-			<hr class="wp-header-end">
-
-		<?php else : ?>
-
-		<h1>
-			<?php _e( 'Groups', 'buddypress' ); ?>
-
-			<?php if ( is_user_logged_in() && bp_user_can_create_groups() ) : ?>
-				<a class="add-new-h2" href="<?php echo trailingslashit( bp_get_groups_directory_permalink() . 'create' ); ?>"><?php _e( 'Add New', 'buddypress' ); ?></a>
-			<?php endif; ?>
-
-			<?php if ( !empty( $_REQUEST['s'] ) ) : ?>
-				<span class="subtitle"><?php printf( __( 'Search results for &#8220;%s&#8221;', 'buddypress' ), wp_html_excerpt( esc_html( stripslashes( $_REQUEST['s'] ) ), 50 ) ); ?></span>
-			<?php endif; ?>
-		</h1>
-
+		<?php if ( is_user_logged_in() && bp_user_can_create_groups() ) : ?>
+			<a class="page-title-action" href="<?php echo trailingslashit( bp_get_groups_directory_permalink() . 'create' ); ?>"><?php _e( 'Add New', 'buddypress' ); ?></a>
 		<?php endif; ?>
+
+		<?php if ( !empty( $_REQUEST['s'] ) ) : ?>
+			<span class="subtitle"><?php printf( __( 'Search results for &#8220;%s&#8221;', 'buddypress' ), wp_html_excerpt( esc_html( stripslashes( $_REQUEST['s'] ) ), 50 ) ); ?></span>
+		<?php endif; ?>
+
+		<hr class="wp-header-end">
 
 		<?php // If the user has just made a change to an group, display the status messages. ?>
 		<?php if ( !empty( $messages ) ) : ?>
-			<div id="moderated" class="<?php echo ( ! empty( $_REQUEST['error'] ) ) ? 'error' : 'updated'; ?>"><p><?php echo implode( "<br/>\n", $messages ); ?></p></div>
+			<div id="moderated" class="<?php echo ( ! empty( $_REQUEST['error'] ) ) ? 'error' : 'updated'; ?> notice is-dismissible"><p><?php echo implode( "<br/>\n", $messages ); ?></p></div>
 		<?php endif; ?>
 
 		<?php // Display each group on its own row. ?>
@@ -1229,6 +1265,7 @@ function bp_groups_admin_create_pagination_links( BP_Group_Member_Query $query, 
 		$viewing_text = __( 'Viewing 1 member', 'buddypress' );
 	} else {
 		$viewing_text = sprintf(
+			/* translators: 1: group member from number. 2: group member to number. 3: total group members. */
 			_nx( 'Viewing %1$s - %2$s of %3$s member', 'Viewing %1$s - %2$s of %3$s members', $query->total_users, 'Group members pagination in group admin', 'buddypress' ),
 			bp_core_number_format( $current_page_start ),
 			bp_core_number_format( $current_page_end ),
@@ -1345,24 +1382,21 @@ function bp_groups_admin_process_group_type_bulk_changes( $doaction ) {
 			$group_id = (int) $group_id;
 
 			// Get the old group type to check against.
-			$group_type = bp_groups_get_group_type( $group_id );
+			$current_types = bp_groups_get_group_type( $group_id, false );
 
-			if ( 'remove_group_type' === $new_type ) {
-				// Remove the current group type, if there's one to remove.
-				if ( $group_type ) {
-					$removed = bp_groups_remove_group_type( $group_id, $group_type );
-					if ( false === $removed || is_wp_error( $removed ) ) {
-						$error = true;
-					}
+			if ( $current_types && 'remove_group_type' === $new_type ) {
+				$group_types = array();
+			} elseif ( ! $current_types || 1 !== count( $current_types ) || $new_type !== $current_types[0] ) {
+				$group_types = array( $new_type );
+			}
+
+			// Set the new group type.
+			if ( isset( $group_types ) ) {
+				$set = bp_groups_set_group_type( $group_id, $group_types );
+				if ( false === $set || is_wp_error( $set ) ) {
+					$error = true;
 				}
-			} else {
-				// Set the new group type.
-				if ( $new_type !== $group_type ) {
-					$set = bp_groups_set_group_type( $group_id, $new_type );
-					if ( false === $set || is_wp_error( $set ) ) {
-						$error = true;
-					}
-				}
+				unset( $group_types );
 			}
 		}
 	}
@@ -1402,3 +1436,51 @@ function bp_groups_admin_groups_type_change_notice() {
 	}
 }
 add_action( bp_core_admin_hook(), 'bp_groups_admin_groups_type_change_notice' );
+
+/**
+ * Checks whether a group type already exists.
+ *
+ * @since 7.0.0
+ *
+ * @param  boolean $exists  True if the group type already exists. False otherwise.
+ * @param  string  $type_id The group type identifier.
+ * @return boolean          True if the group type already exists. False otherwise.
+ */
+function bp_groups_type_admin_type_exists( $exists = false, $type_id = '' ) {
+	if ( ! $type_id ) {
+		return $exists;
+	}
+
+	return ! is_null( bp_groups_get_group_type_object( $type_id ) );
+}
+add_filter( bp_get_group_type_tax_name() . '_check_existing_type', 'bp_groups_type_admin_type_exists', 1, 2 );
+
+/**
+ * Set the feedback messages for the Group Types Admin actions.
+ *
+ * @since 7.0.0
+ *
+ * @param array  $messages The feedback messages.
+ * @return array           The feedback messages including the ones for the Group Types Admin actions.
+ */
+function bp_groups_type_admin_updated_messages( $messages = array() ) {
+	$type_taxonomy = bp_get_group_type_tax_name();
+
+	$messages[ $type_taxonomy ] = array(
+		0  => '',
+		1  => __( 'Please define the Group Type ID field.', 'buddypress' ),
+		2  => __( 'Group type successfully added.', 'buddypress' ),
+		3  => __( 'Sorry, there was an error and the Group type wasn’t added.', 'buddypress' ),
+		// The following one needs to be != 5.
+		4  => __( 'Group type successfully updated.', 'buddypress' ),
+		5  => __( 'Sorry, this Group type already exists.', 'buddypress' ),
+		6  => __( 'Sorry, the Group type was not deleted: it does not exist.', 'buddypress' ),
+		7  => __( 'Sorry, This Group type is registered using code, deactivate the plugin or remove the custom code before trying to delete it again.', 'buddypress' ),
+		8  => __( 'Sorry, there was an error while trying to delete this Group type.', 'buddypress' ),
+		9  => __( 'Group type successfully deleted.', 'buddypress' ),
+		10 => __( 'Group type could not be updated due to missing required information.', 'buddypress' ),
+	);
+
+	return $messages;
+}
+add_filter( 'term_updated_messages', 'bp_groups_type_admin_updated_messages' );

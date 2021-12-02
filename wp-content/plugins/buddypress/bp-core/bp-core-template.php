@@ -143,6 +143,7 @@ function bp_get_directory_title( $component = '' ) {
 
 	// If none is found, concatenate.
 	} elseif ( isset( buddypress()->{$component}->name ) ) {
+		/* translators: %s: Name of the BuddyPress component */
 		$title = sprintf( __( '%s Directory', 'buddypress' ), buddypress()->{$component}->name );
 	}
 
@@ -152,7 +153,7 @@ function bp_get_directory_title( $component = '' ) {
 	 * @since 2.0.0
 	 *
 	 * @param string $title     Text to be used in <title> tag.
-	 * @param string $component Current componet being displayed.
+	 * @param string $component Current component being displayed.
 	 */
 	return apply_filters( 'bp_get_directory_title', $title, $component );
 }
@@ -195,7 +196,11 @@ function bp_comment_author_avatar() {
 	echo apply_filters( 'bp_comment_author_avatar', bp_core_fetch_avatar( array(
 		'item_id' => $comment->user_id,
 		'type'    => 'thumb',
-		'alt'     => sprintf( __( 'Profile photo of %s', 'buddypress' ), bp_core_get_user_displayname( $comment->user_id ) )
+		'alt'     => sprintf(
+			/* translators: %s: member name */
+			__( 'Profile photo of %s', 'buddypress' ),
+			bp_core_get_user_displayname( $comment->user_id )
+		),
 	) ) );
 }
 
@@ -210,7 +215,11 @@ function bp_post_author_avatar() {
 	echo apply_filters( 'bp_post_author_avatar', bp_core_fetch_avatar( array(
 		'item_id' => $post->post_author,
 		'type'    => 'thumb',
-		'alt'     => sprintf( __( 'Profile photo of %s', 'buddypress' ), bp_core_get_user_displayname( $post->post_author ) )
+		'alt'     => sprintf(
+			/* translators: %s: member name */
+			__( 'Profile photo of %s', 'buddypress' ),
+			bp_core_get_user_displayname( $post->post_author )
+		),
 	) ) );
 }
 
@@ -352,7 +361,7 @@ function bp_site_name() {
  * Format a date based on a UNIX timestamp.
  *
  * This function can be used to turn a UNIX timestamp into a properly formatted
- * (and possibly localized) string, userful for ouputting the date & time an
+ * (and possibly localized) string, useful for outputting the date & time an
  * action took place.
  *
  * Not to be confused with `bp_core_time_since()`, this function is best used
@@ -979,7 +988,7 @@ function bp_create_excerpt( $text, $length = 225, $options = array() ) {
 			 *
 			 * @since 1.1.0
 			 *
-			 * @param string $truncate      Generated excerpt.
+			 * @param string $text          Generated excerpt.
 			 * @param string $original_text Original text provided.
 			 * @param int    $length        Length of returned string, including ellipsis.
 			 * @param array  $options       Array of HTML attributes and options.
@@ -1219,7 +1228,7 @@ function bp_get_email_subject( $args = array() ) {
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param string $subject Client friendy version of the root blog name.
+	 * @param string $subject Client friendly version of the root blog name.
 	 * @param array  $r       Array of arguments for the email subject.
 	 */
 	return apply_filters( 'bp_get_email_subject', $subject, $r );
@@ -1248,7 +1257,7 @@ function bp_ajax_querystring( $object = false ) {
 	}
 
 	/**
-	 * Filters the template paramenters to be used in the query string.
+	 * Filters the template parameters to be used in the query string.
 	 *
 	 * Allows templates to pass parameters into the template loops via AJAX.
 	 *
@@ -2073,7 +2082,7 @@ function bp_is_active( $component = '', $feature = '' ) {
 	}
 
 	// Is component in either the active or required components arrays.
-	if ( isset( buddypress()->active_components[ $component ] ) || isset( buddypress()->required_components[ $component ] ) ) {
+	if ( isset( buddypress()->active_components[ $component ] ) || in_array( $component, buddypress()->required_components, true ) ) {
 		$retval = true;
 
 		// Is feature active?
@@ -2081,6 +2090,19 @@ function bp_is_active( $component = '', $feature = '' ) {
 			// The xProfile component is specific.
 			if ( 'xprofile' === $component ) {
 				$component = 'profile';
+
+				// The Cover Image feature has been moved to the Members component in 6.0.0.
+				if ( 'cover_image' === $feature && 'profile' === $component ) {
+					_doing_it_wrong( 'bp_is_active( \'profile\', \'cover_image\' )', esc_html__( 'The cover image is a Members component feature, please use bp_is_active( \'members\', \'cover_image\' ) instead.', 'buddypress' ), '6.0.0' );
+					$members_component = buddypress()->members;
+
+					if ( ! isset( $members_component->features ) || false === in_array( $feature, $members_component->features, true ) ) {
+						$retval = false;
+					}
+
+					/** This filter is documented in wp-includes/deprecated.php */
+					return apply_filters_deprecated( 'bp_is_profile_cover_image_active', array( $retval ), '6.0.0', 'bp_is_members_cover_image_active' );
+				}
 			}
 
 			$component_features = isset( buddypress()->{$component}->features ) ? buddypress()->{$component}->features : array();
@@ -2223,6 +2245,17 @@ function bp_is_notifications_component() {
  */
 function bp_is_settings_component() {
 	return (bool) bp_is_current_component( 'settings' );
+}
+
+/**
+ * Check whether the current page is an Invitations screen.
+ *
+ * @since 8.0.0
+ *
+ * @return bool True if the current page is an Invitations screen.
+ */
+function bp_is_members_invitations_screen() {
+	return (bool) bp_is_current_component( bp_get_members_invitations_slug() );
 }
 
 /**
@@ -2625,6 +2658,45 @@ function bp_is_user_settings_profile() {
 	return (bool) ( bp_is_user_settings() && bp_is_current_action( 'profile' ) );
 }
 
+/**
+ * Is the current page a user's community invitations page?
+ *
+ * Eg http://example.com/members/cassie/invitations/ (or a subpage thereof).
+ *
+ * @since 8.0.0
+ *
+ * @return bool True if the current page is a user's community invitations page.
+ */
+function bp_is_user_members_invitations() {
+	return (bool) ( bp_is_user() && bp_is_members_invitations_screen() );
+}
+
+/**
+ * Is the current page a user's List Invites page?
+ *
+ * Eg http://example.com/members/cassie/invitations/list-invites/.
+ *
+ * @since 8.0.0
+ *
+ * @return bool True if the current page is a user's List Invites page.
+ */
+function bp_is_user_members_invitations_list() {
+	return (bool) ( bp_is_user_members_invitations() && bp_is_current_action( 'list-invites' ) );
+}
+
+/**
+ * Is the current page a user's Send Invites page?
+ *
+ * Eg http://example.com/members/cassie/invitations/send-invites/.
+ *
+ * @since 8.0.0
+ *
+ * @return bool True if the current page is a user's Send Invites page.
+ */
+function bp_is_user_members_invitations_send_screen() {
+	return (bool) ( bp_is_user_members_invitations() && bp_is_current_action( 'send-invites' ) );
+}
+
 /** Groups ********************************************************************/
 
 /**
@@ -3016,7 +3088,7 @@ function bp_get_title_parts( $seplocation = 'right' ) {
 		return $bp_title_parts;
 	}
 
-	// Now we can build the BP Title Parts
+	// Now we can build the BP Title Parts.
 	// Is there a displayed user, and do they have a name?
 	$displayed_user_name = bp_get_displayed_user_fullname();
 
@@ -3619,7 +3691,7 @@ function bp_nav_menu( $args = array() ) {
 		$args->walker = new BP_Walker_Nav_Menu;
 	}
 
-	// Sanitise values for class and ID.
+	// Sanitize values for class and ID.
 	$args->container_class = sanitize_html_class( $args->container_class );
 	$args->container_id    = sanitize_html_class( $args->container_id );
 
@@ -3728,21 +3800,110 @@ function bp_email_the_salutation( $settings = array() ) {
 	 * Gets the Recipient Salutation.
 	 *
 	 * @since 2.5.0
+	 * @since 8.0.0 Checks current BP Email type schema to eventually use the unnamed salutation.
 	 *
 	 * @param array $settings Email Settings.
 	 * @return string The Recipient Salutation.
 	 */
 	function bp_email_get_salutation( $settings = array() ) {
-		$token = '{{recipient.name}}';
+		$email_type = bp_email_get_type();
+		$salutation  = '';
 
-		/**
-		 * Filters The Recipient Salutation inside the Email Template.
-		 *
-		 * @since 2.5.0
-		 *
-		 * @param string $value    The Recipient Salutation.
-		 * @param array  $settings Email Settings.
-		 * @param string $token    The Recipient token.
-		 */
-		return apply_filters( 'bp_email_get_salutation', sprintf( _x( 'Hi %s,', 'recipient salutation', 'buddypress' ), $token ), $settings, $token );
+		if ( $email_type ) {
+			$types_schema = bp_email_get_type_schema( 'named_salutation' );
+
+			if ( isset( $types_schema[ $email_type ] ) && false === $types_schema[ $email_type ] ) {
+				/**
+				 * Filters The Recipient Unnamed Salutation inside the Email Template.
+				 *
+				 * @since 8.0.0
+				 *
+				 * @param string $value    The Recipient Salutation.
+				 * @param array  $settings Email Settings.
+				 */
+				$salutation = apply_filters(
+					'bp_email_get_unnamed_salutation',
+					_x( 'Hi,', 'Unnamed recipient salutation', 'buddypress' ),
+					$settings
+				);
+			}
+		}
+
+		// Named salutations are default.
+		if ( ! $salutation ) {
+			$token = '{{recipient.name}}';
+
+			/**
+			 * Filters The Recipient Named Salutation inside the Email Template.
+			 *
+			 * @since 2.5.0
+			 *
+			 * @param string $value    The Recipient Salutation.
+			 * @param array  $settings Email Settings.
+			 * @param string $token    The Recipient token.
+			 */
+			$salutation = apply_filters(
+				'bp_email_get_salutation',
+				sprintf(
+					/* translators: %s: the email token for the recipient name */
+					_x( 'Hi %s,', 'Named recipient salutation', 'buddypress' ),
+					$token
+				),
+				$settings,
+				$token
+			);
+		}
+
+		return $salutation;
 	}
+
+/**
+ * Checks if a Widget/Block is active.
+ *
+ * @since 9.0.0
+ *
+ * @param string $block_name     The Block name to check (eg: 'bp/sitewide-notices'). Optional.
+ * @param string $widget_id_base The Widget ID base to check (eg: 'bp_messages_sitewide_notices_widget' ). Optional.
+ * @return boolean True if the Widget/Block is active. False otherwise.
+ */
+function bp_is_widget_block_active( $block_name = '', $widget_id_base = '' ) {
+	$is_active = array(
+		'widget' => false,
+		'block'  => false,
+	);
+
+	if ( $block_name && bp_is_running_wp( '5.0.0', '>=' ) ) {
+		$widget_blocks = get_option( 'widget_block', array() );
+		$sidebars      = wp_get_sidebars_widgets();
+
+		if ( ! $widget_blocks || ! $sidebars ) {
+			return false;
+		}
+
+		// Neutralize inactive sidebar.
+		unset( $sidebars['wp_inactive_widgets'] );
+
+		$widgets_content = '';
+		foreach ( $widget_blocks as $key => $widget_block ) {
+			$widget_block_reference = 'block-' . $key;
+
+			if ( ! isset( $widget_block['content'] ) || ! $widget_block['content'] ) {
+				continue;
+			}
+
+			foreach ( $sidebars as $sidebar ) {
+				if ( is_array( $sidebar ) && in_array( $widget_block_reference, $sidebar, true ) ) {
+					$widgets_content .= $widget_block['content'] . "\n";
+				}
+			}
+		}
+
+		$is_active['block'] = has_block( $block_name, $widgets_content );
+	}
+
+	if ( $widget_id_base ) {
+		$is_active['widget'] = is_active_widget( false, false, $widget_id_base, true );
+	}
+
+	return 0 !== count( array_filter( $is_active ) );
+}

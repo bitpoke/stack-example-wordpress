@@ -2,7 +2,7 @@
 /**
  * Products shortcode
  *
- * @package  WooCommerce/Shortcodes
+ * @package  WooCommerce\Shortcodes
  * @version  3.2.4
  */
 
@@ -84,7 +84,7 @@ class WC_Shortcode_Products {
 	 * Get shortcode type.
 	 *
 	 * @since  3.2.0
-	 * @return array
+	 * @return string
 	 */
 	public function get_type() {
 		return $this->type;
@@ -507,7 +507,7 @@ class WC_Shortcode_Products {
 	}
 
 	/**
-	 * Set product as visible when quering for hidden products.
+	 * Set product as visible when querying for hidden products.
 	 *
 	 * @since  3.2.0
 	 * @param  bool $visibility Product visibility.
@@ -521,7 +521,7 @@ class WC_Shortcode_Products {
 	 * Get wrapper classes.
 	 *
 	 * @since  3.2.0
-	 * @param  array $columns Number of columns.
+	 * @param  int $columns Number of columns.
 	 * @return array
 	 */
 	protected function get_wrapper_classes( $columns ) {
@@ -593,7 +593,14 @@ class WC_Shortcode_Products {
 		// Remove ordering query arguments which may have been added by get_catalog_ordering_args.
 		WC()->query->remove_ordering_args();
 
-		return $results;
+		/**
+		 * Filter shortcode products query results.
+		 *
+		 * @since 4.0.0
+		 * @param stdClass $results Query results.
+		 * @param WC_Shortcode_Products $this WC_Shortcode_Products instance.
+		 */
+		return apply_filters( 'woocommerce_shortcode_products_query_results', $results, $this );
 	}
 
 	/**

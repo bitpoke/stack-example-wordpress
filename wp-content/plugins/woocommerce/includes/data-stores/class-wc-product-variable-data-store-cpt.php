@@ -2,7 +2,7 @@
 /**
  * File for WC Variable Product Data Store class.
  *
- * @package WooCommerce/Classes
+ * @package WooCommerce\Classes
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -190,7 +190,7 @@ class WC_Product_Variable_Data_Store_CPT extends WC_Product_Data_Store_CPT imple
 					$query_args = array( 'attribute_name' => wc_variation_attribute_name( $attribute['name'] ) ) + $child_ids;
 					$values     = array_unique(
 						$wpdb->get_col(
-							$wpdb->prepare( // wpcs: PreparedSQLPlaceholders replacement count ok.
+							$wpdb->prepare(
 								"SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND post_id IN {$query_in}", // @codingStandardsIgnoreLine.
 								$query_args
 							)
@@ -397,7 +397,16 @@ class WC_Product_Variable_Data_Store_CPT extends WC_Product_Data_Store_CPT imple
 	protected function get_price_hash( &$product, $for_display = false ) {
 		global $wp_filter;
 
-		$price_hash   = $for_display && wc_tax_enabled() ? array( get_option( 'woocommerce_tax_display_shop', 'excl' ), WC_Tax::get_rates() ) : array( false );
+		$price_hash = array( false );
+
+		if ( $for_display && wc_tax_enabled() ) {
+			$price_hash = array(
+				get_option( 'woocommerce_tax_display_shop', 'excl' ),
+				WC_Tax::get_rates(),
+				empty( WC()->customer ) ? false : WC()->customer->is_vat_exempt(),
+			);
+		}
+
 		$filter_names = array( 'woocommerce_variation_prices_price', 'woocommerce_variation_prices_regular_price', 'woocommerce_variation_prices_sale_price' );
 
 		foreach ( $filter_names as $filter_name ) {

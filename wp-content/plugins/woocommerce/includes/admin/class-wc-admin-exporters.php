@@ -2,9 +2,11 @@
 /**
  * Init WooCommerce data exporters.
  *
- * @package     WooCommerce/Admin
+ * @package     WooCommerce\Admin
  * @version     3.1.0
  */
+
+use Automattic\Jetpack\Constants;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -84,8 +86,9 @@ class WC_Admin_Exporters {
 	 * Enqueue scripts.
 	 */
 	public function admin_scripts() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( 'wc-product-export', WC()->plugin_url() . '/assets/js/admin/wc-product-export' . $suffix . '.js', array( 'jquery' ), WC_VERSION );
+		$suffix  = Constants::is_true( 'SCRIPT_DEBUG' ) ? '' : '.min';
+		$version = Constants::get_constant( 'WC_VERSION' );
+		wp_register_script( 'wc-product-export', WC()->plugin_url() . '/assets/js/admin/wc-product-export' . $suffix . '.js', array( 'jquery' ), $version );
 		wp_localize_script(
 			'wc-product-export',
 			'wc_product_export_params',
@@ -187,6 +190,30 @@ class WC_Admin_Exporters {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Gets the product types that can be exported.
+	 *
+	 * @since 5.1.0
+	 * @return array The product types keys and labels.
+	 */
+	public static function get_product_types() {
+		$product_types = wc_get_product_types();
+		$product_types['variation'] = __( 'Product variations', 'woocommerce' );
+
+		/**
+		 * Allow third-parties to filter the exportable product types.
+		 *
+		 * @since 5.1.0
+		 * @param array $product_types {
+		 *     The product type key and label.
+		 *
+		 *     @type string Product type key - eg 'variable', 'simple' etc.
+		 *     @type string A translated product label which appears in the export product type dropdown.
+		 * }
+		 */
+		return apply_filters( 'woocommerce_exporter_product_types', $product_types );
 	}
 }
 

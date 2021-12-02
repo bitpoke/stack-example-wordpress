@@ -112,7 +112,25 @@ final class Astra_Fonts {
 		}
 
 		$google_font_url = self::google_fonts_url( $google_fonts, $font_subset );
-		wp_enqueue_style( 'astra-google-fonts', $google_font_url, array(), ASTRA_THEME_VERSION, 'all' );
+
+		// Do not load Google font remote or local font asset if not any font selected.
+		if ( '' === $google_font_url ) {
+			return;
+		}
+
+		/**
+		 * Support self hosted Google Fonts.
+		 *
+		 * @since 3.6.0
+		 */
+		if ( astra_get_option( 'load-google-fonts-locally' ) && ! is_customize_preview() && ! is_admin() ) {
+			if ( astra_get_option( 'preload-local-fonts' ) ) {
+				astra_load_preload_local_fonts( $google_font_url );
+			}
+			wp_enqueue_style( 'astra-google-fonts', astra_get_webfont_url( $google_font_url ), array(), ASTRA_THEME_VERSION, 'all' );
+		} else {
+			wp_enqueue_style( 'astra-google-fonts', $google_font_url, array(), ASTRA_THEME_VERSION, 'all' );
+		}
 	}
 
 	/**
@@ -128,7 +146,7 @@ final class Astra_Fonts {
 	public static function google_fonts_url( $fonts, $subsets = array() ) {
 
 		/* URL */
-		$base_url  = '//fonts.googleapis.com/css';
+		$base_url  = 'https://fonts.googleapis.com/css';
 		$font_args = array();
 		$family    = array();
 

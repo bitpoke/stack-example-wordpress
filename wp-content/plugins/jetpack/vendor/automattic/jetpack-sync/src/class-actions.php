@@ -8,9 +8,11 @@
 namespace Automattic\Jetpack\Sync;
 
 use Automattic\Jetpack\Connection\Manager as Jetpack_Connection;
+use Automattic\Jetpack\Connection\Urls;
 use Automattic\Jetpack\Constants;
+use Automattic\Jetpack\Identity_Crisis;
 use Automattic\Jetpack\Status;
-use Automattic\Jetpack\Sync\Modules;
+use WP_Error;
 
 /**
  * The role of this class is to hook the Sync subsystem into WordPress - when to listen for actions,
@@ -19,6 +21,34 @@ use Automattic\Jetpack\Sync\Modules;
  * It also binds the action to send data to WPCOM to Jetpack's XMLRPC client object.
  */
 class Actions {
+
+	/**
+	 * Name of the retry-after option prefix.
+	 *
+	 * @access public
+	 *
+	 * @var string
+	 */
+	const RETRY_AFTER_PREFIX = 'jp_sync_retry_after_';
+
+	/**
+	 * Name of the error log option prefix.
+	 *
+	 * @access public
+	 *
+	 * @var string
+	 */
+	const ERROR_LOG_PREFIX = 'jp_sync_error_log_';
+
+	/**
+	 * Name of the last successful sync option prefix.
+	 *
+	 * @access public
+	 *
+	 * @var string
+	 */
+	const LAST_SUCCESS_PREFIX = 'jp_sync_last_success_';
+
 	/**
 	 * A variable to hold a sync sender object.
 	 *
@@ -92,7 +122,8 @@ class Actions {
 		 * By default this returns true for cron jobs, non-GET-requests, or requests where the
 		 * user is logged-in.
 		 *
-		 * @since 4.2.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.2.0
 		 *
 		 * @param bool should we load sync listener code for this request
 		 */
@@ -118,7 +149,8 @@ class Actions {
 		 * By default this returns true for cron jobs, POST requests, admin requests, or requests
 		 * by users who can manage_options.
 		 *
-		 * @since 4.2.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.2.0
 		 *
 		 * @param bool should we load sync sender code for this request
 		 */
@@ -133,6 +165,17 @@ class Actions {
 	}
 
 	/**
+	 * Define JETPACK_SYNC_READ_ONLY constant if not defined.
+	 * This notifies sync to not run in shutdown if it was initialized during init.
+	 *
+	 * @access public
+	 * @static
+	 */
+	public static function mark_sync_read_only() {
+		Constants::set_constant( 'JETPACK_SYNC_READ_ONLY', true );
+	}
+
+	/**
 	 * Decides if the sender should run on shutdown for this request.
 	 *
 	 * @access public
@@ -141,6 +184,13 @@ class Actions {
 	 * @return bool
 	 */
 	public static function should_initialize_sender() {
+
+		// Allow for explicit disable of Sync from request param jetpack_sync_read_only.
+		if ( isset( $_REQUEST['jetpack_sync_read_only'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			self::mark_sync_read_only();
+			return false;
+		}
+
 		if ( Constants::is_true( 'DOING_CRON' ) ) {
 			return self::sync_via_cron_allowed();
 		}
@@ -169,6 +219,29 @@ class Actions {
 	}
 
 	/**
+	 * Decides if the sender should run on shutdown when actions are queued.
+	 *
+	 * @access public
+	 * @static
+	 *
+	 * @param bool $enable Should we initilize sender.
+	 * @return bool
+	 */
+	public static function should_initialize_sender_enqueue( $enable ) {
+
+		// If $enabled is false don't modify it, only check cron if enabled.
+		if ( false === $enable ) {
+			return $enable;
+		}
+
+		if ( Constants::is_true( 'DOING_CRON' ) ) {
+			return self::sync_via_cron_allowed();
+		}
+
+		return true;
+	}
+
+	/**
 	 * Decides if sync should run at all during this request.
 	 *
 	 * @access public
@@ -189,7 +262,7 @@ class Actions {
 			return false;
 		}
 
-		if ( ( new Status() )->is_development_mode() ) {
+		if ( ( new Status() )->is_offline_mode() ) {
 			return false;
 		}
 
@@ -198,13 +271,54 @@ class Actions {
 		}
 
 		$connection = new Jetpack_Connection();
-		if ( ! $connection->is_active() ) {
-			if ( ! doing_action( 'jetpack_user_authorized' ) ) {
+		if ( ! $connection->is_connected() ) {
+			if ( ! doing_action( 'jetpack_site_registered' ) ) {
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * Helper function to get details as to why sync is not allowed, if it is not allowed.
+	 *
+	 * @return array
+	 */
+	public static function get_debug_details() {
+		$debug                                  = array();
+		$debug['debug_details']['sync_allowed'] = self::sync_allowed();
+		$debug['debug_details']['sync_health']  = Health::get_status();
+		if ( false === $debug['debug_details']['sync_allowed'] ) {
+			if ( defined( 'IS_WPCOM' ) && IS_WPCOM ) {
+				$debug['debug_details']['is_wpcom'] = true;
+			}
+			if ( defined( 'PHPUNIT_JETPACK_TESTSUITE' ) ) {
+				$debug['debug_details']['PHPUNIT_JETPACK_TESTSUITE'] = true;
+			}
+			if ( ! Settings::is_sync_enabled() ) {
+				$debug['debug_details']['is_sync_enabled']              = false;
+				$debug['debug_details']['jetpack_sync_disable']         = Settings::get_setting( 'disable' );
+				$debug['debug_details']['jetpack_sync_network_disable'] = Settings::get_setting( 'network_disable' );
+			}
+			if ( ( new Status() )->is_offline_mode() ) {
+				$debug['debug_details']['is_offline_mode'] = true;
+			}
+			if ( ( new Status() )->is_staging_site() ) {
+				$debug['debug_details']['is_staging_site'] = true;
+			}
+			$connection = new Jetpack_Connection();
+			if ( ! $connection->is_connected() ) {
+				$debug['debug_details']['active_connection'] = false;
+			}
+		}
+
+		// Sync Logs.
+		$debug['debug_details']['last_succesful_sync'] = get_option( self::LAST_SUCCESS_PREFIX . 'sync', '' );
+		$debug['debug_details']['sync_error_log']      = get_option( self::ERROR_LOG_PREFIX . 'sync', '' );
+
+		return $debug;
+
 	}
 
 	/**
@@ -259,22 +373,27 @@ class Actions {
 	 * @param string $queue_id               The queue the action belongs to, sync or full_sync.
 	 * @param float  $checkout_duration      Time spent retrieving queue items from the DB.
 	 * @param float  $preprocess_duration    Time spent converting queue items into data to send.
-	 * @return Jetpack_Error|mixed|WP_Error  The result of the sending request.
+	 * @param int    $queue_size             The size of the sync queue at the time of processing.
+	 * @param string $buffer_id              The ID of the Queue buffer checked out for processing.
+	 * @return mixed|WP_Error                The result of the sending request.
 	 */
-	public static function send_data( $data, $codec_name, $sent_timestamp, $queue_id, $checkout_duration, $preprocess_duration ) {
+	public static function send_data( $data, $codec_name, $sent_timestamp, $queue_id, $checkout_duration, $preprocess_duration, $queue_size = null, $buffer_id = null ) {
+
 		$query_args = array(
-			'sync'      => '1',             // Add an extra parameter to the URL so we can tell it's a sync action.
-			'codec'     => $codec_name,
-			'timestamp' => $sent_timestamp,
-			'queue'     => $queue_id,
-			'home'      => Functions::home_url(),  // Send home url option to check for Identity Crisis server-side.
-			'siteurl'   => Functions::site_url(),  // Send siteurl option to check for Identity Crisis server-side.
-			'cd'        => sprintf( '%.4f', $checkout_duration ),
-			'pd'        => sprintf( '%.4f', $preprocess_duration ),
+			'sync'       => '1',             // Add an extra parameter to the URL so we can tell it's a sync action.
+			'codec'      => $codec_name,
+			'timestamp'  => $sent_timestamp,
+			'queue'      => $queue_id,
+			'home'       => Urls::home_url(),  // Send home url option to check for Identity Crisis server-side.
+			'siteurl'    => Urls::site_url(),  // Send siteurl option to check for Identity Crisis server-side.
+			'cd'         => sprintf( '%.4f', $checkout_duration ),
+			'pd'         => sprintf( '%.4f', $preprocess_duration ),
+			'queue_size' => $queue_size,
+			'buffer_id'  => $buffer_id,
 		);
 
 		// Has the site opted in to IDC mitigation?
-		if ( \Jetpack::sync_idc_optin() ) {
+		if ( Identity_Crisis::should_handle_idc() ) {
 			$query_args['idc'] = true;
 		}
 
@@ -282,12 +401,16 @@ class Actions {
 			$query_args['migrate_for_idc'] = true;
 		}
 
-		$query_args['timeout'] = Settings::is_doing_cron() ? 30 : 15;
+		$query_args['timeout'] = Settings::is_doing_cron() ? 30 : 20;
+		if ( 'immediate-send' === $queue_id ) {
+			$query_args['timeout'] = 30;
+		}
 
 		/**
 		 * Filters query parameters appended to the Sync request URL sent to WordPress.com.
 		 *
-		 * @since 4.7.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.7.0
 		 *
 		 * @param array $query_args associative array of query parameters.
 		 */
@@ -299,7 +422,7 @@ class Actions {
 		// If we're currently updating to Jetpack 7.7, the IXR client may be missing briefly
 		// because since 7.7 it's being autoloaded with Composer.
 		if ( ! class_exists( '\\Jetpack_IXR_Client' ) ) {
-			return new \WP_Error(
+			return new WP_Error(
 				'ixr_client_missing',
 				esc_html__( 'Sync has been aborted because the IXR client is missing.', 'jetpack' )
 			);
@@ -308,40 +431,58 @@ class Actions {
 		$rpc = new \Jetpack_IXR_Client(
 			array(
 				'url'     => $url,
-				'user_id' => JETPACK_MASTER_USER,
 				'timeout' => $query_args['timeout'],
 			)
 		);
 
 		$result = $rpc->query( 'jetpack.syncActions', $data );
 
+		// Adhere to Retry-After headers.
+		$retry_after = $rpc->get_response_header( 'Retry-After' );
+		if ( false !== $retry_after ) {
+			if ( (int) $retry_after > 0 ) {
+				update_option( self::RETRY_AFTER_PREFIX . $queue_id, microtime( true ) + (int) $retry_after, false );
+			} else {
+				// if unexpected value default to 3 minutes.
+				update_option( self::RETRY_AFTER_PREFIX . $queue_id, microtime( true ) + 180, false );
+			}
+		}
+
 		if ( ! $result ) {
+			if ( false === $retry_after ) {
+				// We received a non standard response from WP.com, lets backoff from sending requests for 1 minute.
+				update_option( self::RETRY_AFTER_PREFIX . $queue_id, microtime( true ) + 60, false );
+			}
+			// Record Sync Errors.
+			$error_log = get_option( self::ERROR_LOG_PREFIX . $queue_id, array() );
+			if ( ! is_array( $error_log ) ) {
+				$error_log = array();
+			}
+			// Trim existing array to last 4 entries.
+			if ( 5 <= count( $error_log ) ) {
+				$error_log = array_slice( $error_log, -4, null, true );
+			}
+			// Add new error indexed to time.
+			$error_log[ microtime( true ) ] = $rpc->get_jetpack_error();
+			// Update the error log.
+			update_option( self::ERROR_LOG_PREFIX . $queue_id, $error_log );
+
+			// return request error.
 			return $rpc->get_jetpack_error();
 		}
 
 		$response = $rpc->getResponse();
 
 		// Check if WordPress.com IDC mitigation blocked the sync request.
-		if ( is_array( $response ) && isset( $response['error_code'] ) ) {
-			$error_code              = $response['error_code'];
-			$allowed_idc_error_codes = array(
-				'jetpack_url_mismatch',
-				'jetpack_home_url_mismatch',
-				'jetpack_site_url_mismatch',
-			);
-
-			if ( in_array( $error_code, $allowed_idc_error_codes, true ) ) {
-				\Jetpack_Options::update_option(
-					'sync_error_idc',
-					\Jetpack::get_sync_error_idc_option( $response )
-				);
-			}
-
-			return new \WP_Error(
+		if ( Identity_Crisis::init()->check_response_for_idc( $response ) ) {
+			return new WP_Error(
 				'sync_error_idc',
 				esc_html__( 'Sync has been blocked from WordPress.com because it would cause an identity crisis', 'jetpack' )
 			);
 		}
+
+		// Record last successful sync.
+		update_option( self::LAST_SUCCESS_PREFIX . $queue_id, microtime( true ), false );
 
 		return $response;
 	}
@@ -367,15 +508,12 @@ class Actions {
 		}
 
 		$initial_sync_config = array(
-			'options'   => true,
-			'functions' => true,
-			'constants' => true,
-			'users'     => array( get_current_user_id() ),
+			'options'         => true,
+			'functions'       => true,
+			'constants'       => true,
+			'users'           => array( get_current_user_id() ),
+			'network_options' => true,
 		);
-
-		if ( is_multisite() ) {
-			$initial_sync_config['network_options'] = true;
-		}
 
 		self::do_full_sync( $initial_sync_config );
 	}
@@ -418,7 +556,7 @@ class Actions {
 	 */
 	public static function jetpack_cron_schedule( $schedules ) {
 		if ( ! isset( $schedules[ self::DEFAULT_SYNC_CRON_INTERVAL_NAME ] ) ) {
-			$minutes = intval( self::DEFAULT_SYNC_CRON_INTERVAL_VALUE / 60 );
+			$minutes = (int) ( self::DEFAULT_SYNC_CRON_INTERVAL_VALUE / 60 );
 			$display = ( 1 === $minutes ) ?
 				__( 'Every minute', 'jetpack' ) :
 				/* translators: %d is an integer indicating the number of minutes. */
@@ -470,6 +608,7 @@ class Actions {
 
 		$time_limit = Settings::get_setting( 'cron_sync_time_limit' );
 		$start_time = time();
+		$executions = 0;
 
 		do {
 			$next_sync_time = self::$sender->get_next_sync_time( $type );
@@ -483,8 +622,20 @@ class Actions {
 				}
 			}
 
+			// Explicitly only allow 1 do_full_sync call until issue with Immediate Full Sync is resolved.
+			// For more context see p1HpG7-9pe-p2.
+			if ( 'full_sync' === $type && $executions >= 1 ) {
+				break;
+			}
+
 			$result = 'full_sync' === $type ? self::$sender->do_full_sync() : self::$sender->do_sync();
+
+			// # of send actions performed.
+			$executions ++;
+
 		} while ( $result && ! is_wp_error( $result ) && ( $start_time + $time_limit ) > time() );
+
+		return $executions;
 	}
 
 	/**
@@ -505,7 +656,7 @@ class Actions {
 	 */
 	public static function initialize_sender() {
 		self::$sender = Sender::get_instance();
-		add_filter( 'jetpack_sync_send_data', array( __CLASS__, 'send_data' ), 10, 6 );
+		add_filter( 'jetpack_sync_send_data', array( __CLASS__, 'send_data' ), 10, 8 );
 	}
 
 	/**
@@ -602,19 +753,18 @@ class Actions {
 		 * Allows overriding the offset that the sync cron jobs will first run. This can be useful when scheduling
 		 * cron jobs across multiple sites in a network.
 		 *
-		 * @since 4.5.0
+		 * @since 1.6.3
+		 * @since-jetpack 4.5.0
 		 *
 		 * @param int    $start_time_offset
 		 * @param string $hook
 		 * @param string $schedule
 		 */
-		return intval(
-			apply_filters(
-				'jetpack_sync_cron_start_time_offset',
-				$start_time_offset,
-				$hook,
-				$schedule
-			)
+		return (int) apply_filters(
+			'jetpack_sync_cron_start_time_offset',
+			$start_time_offset,
+			$hook,
+			$schedule
 		);
 	}
 
@@ -670,7 +820,8 @@ class Actions {
 		/**
 		 * Allows overriding of the default incremental sync cron schedule which defaults to once every 5 minutes.
 		 *
-		 * @since 4.3.2
+		 * @since 1.6.3
+		 * @since-jetpack 4.3.2
 		 *
 		 * @param string self::DEFAULT_SYNC_CRON_INTERVAL_NAME
 		 */
@@ -680,7 +831,8 @@ class Actions {
 		/**
 		 * Allows overriding of the full sync cron schedule which defaults to once every 5 minutes.
 		 *
-		 * @since 4.3.2
+		 * @since 1.6.3
+		 * @since-jetpack 4.3.2
 		 *
 		 * @param string self::DEFAULT_SYNC_CRON_INTERVAL_NAME
 		 */
@@ -711,6 +863,8 @@ class Actions {
 				)
 			);
 		}
+
+		Health::on_jetpack_upgraded();
 	}
 
 	/**
@@ -725,12 +879,15 @@ class Actions {
 	public static function get_sync_status( $fields = null ) {
 		self::initialize_sender();
 
-		$sync_module     = Modules::get_module( 'full-sync' );
-		$queue           = self::$sender->get_sync_queue();
-		$cron_timestamps = array_keys( _get_cron_array() );
-		$next_cron       = $cron_timestamps[0] - time();
+		$sync_module = Modules::get_module( 'full-sync' );
+		$queue       = self::$sender->get_sync_queue();
+
+		// _get_cron_array can be false
+		$cron_timestamps = ( _get_cron_array() ) ? array_keys( _get_cron_array() ) : array();
+		$next_cron       = ( ! empty( $cron_timestamps ) ) ? $cron_timestamps[0] - time() : '';
 
 		$checksums = array();
+		$debug     = array();
 
 		if ( ! empty( $fields ) ) {
 			$store         = new Replicastore();
@@ -748,6 +905,10 @@ class Actions {
 			if ( in_array( 'comment_meta_checksum', $fields_params, true ) ) {
 				$checksums['comment_meta_checksum'] = $store->comment_meta_checksum();
 			}
+
+			if ( in_array( 'debug_details', $fields_params, true ) ) {
+				$debug = self::get_debug_details();
+			}
 		}
 
 		$full_sync_status = ( $sync_module ) ? $sync_module->get_status() : array();
@@ -757,6 +918,7 @@ class Actions {
 		$result = array_merge(
 			$full_sync_status,
 			$checksums,
+			$debug,
 			array(
 				'cron_size'            => count( $cron_timestamps ),
 				'next_cron'            => $next_cron,
@@ -767,7 +929,8 @@ class Actions {
 			)
 		);
 
-		if ( false === strpos( get_class( $sync_module ), 'Full_Sync_Immediately' ) ) {
+		// Verify $sync_module is not false.
+		if ( ( $sync_module ) && false === strpos( get_class( $sync_module ), 'Full_Sync_Immediately' ) ) {
 			$result['full_queue_size'] = $full_queue->size();
 			$result['full_queue_lag']  = $full_queue->lag();
 		}

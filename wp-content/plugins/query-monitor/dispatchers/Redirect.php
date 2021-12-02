@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
 	public $id = 'redirect';
@@ -52,7 +54,7 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
 	public function is_active() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return false;
 		}
 

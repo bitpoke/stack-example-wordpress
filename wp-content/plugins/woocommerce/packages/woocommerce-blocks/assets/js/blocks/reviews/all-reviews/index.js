@@ -2,33 +2,44 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
-import { IconAllReviews } from '@woocommerce/block-components/icons';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
+import { Icon, discussion } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
 import '../editor.scss';
-import Editor from './edit';
+import edit from './edit';
 import sharedAttributes from '../attributes';
 import save from '../save.js';
 import { example } from '../example';
 
 /**
  * Register and run the "All Reviews" block.
+ * This block lists all product reviews.
  */
 registerBlockType( 'woocommerce/all-reviews', {
+	apiVersion: 2,
 	title: __( 'All Reviews', 'woocommerce' ),
 	icon: {
-		src: <IconAllReviews />,
+		src: <Icon srcElement={ discussion } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],
 	description: __(
-		'Shows a list of all product reviews.',
+		'Show a list of all product reviews.',
 		'woocommerce'
 	),
+	supports: {
+		html: false,
+		color: {
+			background: false,
+		},
+		typography: {
+			fontSize: true,
+		},
+	},
 	example: {
 		...example,
 		attributes: {
@@ -47,15 +58,27 @@ registerBlockType( 'woocommerce/all-reviews', {
 		},
 	},
 
-	/**
-	 * Renders and manages the block.
-	 */
-	edit( props ) {
-		return <Editor { ...props } />;
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'core/legacy-widget' ],
+				// We can't transform if raw instance isn't shown in the REST API.
+				isMatch: ( { idBase, instance } ) =>
+					idBase === 'woocommerce_recent_reviews' && !! instance?.raw,
+				transform: ( { instance } ) =>
+					createBlock( 'woocommerce/all-reviews', {
+						reviewsOnPageLoad: instance.raw.number,
+						imageType: 'product',
+						showLoadMore: false,
+						showOrderby: false,
+						showReviewDate: false,
+						showReviewContent: false,
+					} ),
+			},
+		],
 	},
 
-	/**
-	 * Save the props to post content.
-	 */
+	edit,
 	save,
 } );

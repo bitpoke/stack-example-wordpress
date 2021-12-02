@@ -3,8 +3,6 @@
  * REST API Reports taxes controller
  *
  * Handles requests to the /reports/taxes endpoint.
- *
- * @package WooCommerce Admin/API
  */
 
 namespace Automattic\WooCommerce\Admin\API\Reports\Taxes;
@@ -17,7 +15,6 @@ use \Automattic\WooCommerce\Admin\API\Reports\ExportableTraits;
 /**
  * REST API Reports taxes controller class.
  *
- * @package WooCommerce/API
  * @extends WC_REST_Reports_Controller
  */
 class Controller extends \WC_REST_Reports_Controller implements ExportableInterface {
@@ -175,7 +172,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 					'readonly'    => true,
 				),
 				'country'      => array(
-					'description' => __( 'Country.', 'woocommerce-admin' ),
+					'description' => __( 'Country / Region.', 'woocommerce-admin' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
@@ -302,11 +299,11 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 	 */
 	public function get_export_columns() {
 		return array(
-			'tax_code'     => __( 'Tax Code', 'woocommerce-admin' ),
+			'tax_code'     => __( 'Tax code', 'woocommerce-admin' ),
 			'rate'         => __( 'Rate', 'woocommerce-admin' ),
-			'total_tax'    => __( 'Total Tax', 'woocommerce-admin' ),
-			'order_tax'    => __( 'Order Tax', 'woocommerce-admin' ),
-			'shipping_tax' => __( 'Shipping Tax', 'woocommerce-admin' ),
+			'total_tax'    => __( 'Total tax', 'woocommerce-admin' ),
+			'order_tax'    => __( 'Order tax', 'woocommerce-admin' ),
+			'shipping_tax' => __( 'Shipping tax', 'woocommerce-admin' ),
 			'orders_count' => __( 'Orders', 'woocommerce-admin' ),
 		);
 	}

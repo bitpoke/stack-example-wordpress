@@ -3,7 +3,7 @@
  * Groups Ajax functions
  *
  * @since 3.0.0
- * @version 4.4.0
+ * @version 6.3.0
  */
 
 // Exit if accessed directly.
@@ -189,7 +189,7 @@ function bp_nouveau_ajax_joinleave_group() {
 			break;
 
 			case 'groups_request_membership' :
-				if ( ! groups_send_membership_request( bp_loggedin_user_id(), $group->id ) ) {
+				if ( ! groups_send_membership_request( [ 'user_id' => bp_loggedin_user_id(), 'group_id' => $group->id ] ) ) {
 					$response = array(
 						'feedback' => sprintf(
 							'<div class="bp-feedback error"><span class="bp-icon" aria-hidden="true"></span><p>%s</p></div>',
@@ -407,20 +407,8 @@ function bp_nouveau_ajax_send_group_invites() {
 		wp_send_json_error( $response );
 	}
 
-	if ( ! empty( $_POST['message'] ) ) {
-		$bp->groups->invites_message = wp_kses( wp_unslash( $_POST['message'] ), array() );
-
-		add_filter( 'groups_notification_group_invites_message', 'bp_nouveau_groups_invites_custom_message', 10, 1 );
-	}
-
 	// Send the invites.
 	groups_send_invites( array(	'group_id' => $group_id ) );
-
-	if ( ! empty( $_POST['message'] ) ) {
-		unset( $bp->groups->invites_message );
-
-		remove_filter( 'groups_notification_group_invites_message', 'bp_nouveau_groups_invites_custom_message', 10, 1 );
-	}
 
 	if ( array_search( false, $invited ) ) {
 		$errors = array_keys( $invited, false );

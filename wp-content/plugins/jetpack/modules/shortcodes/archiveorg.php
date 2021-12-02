@@ -9,7 +9,7 @@
 
  * <iframe src="http://archive.org/embed/Experime1940&autoplay=1&poster=http://archive.org/images/map.png" width="640" height="480" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
 /**
@@ -69,13 +69,13 @@ function jetpack_archiveorg_shortcode( $atts ) {
 	if ( ! $atts['width'] ) {
 		$width = absint( $content_width );
 	} else {
-		$width = intval( $atts['width'] );
+		$width = (int) $atts['width'];
 	}
 
 	if ( ! $atts['height'] ) {
 		$height = round( ( $width / 640 ) * 360 );
 	} else {
-		$height = intval( $atts['height'] );
+		$height = (int) $atts['height'];
 	}
 
 	if ( $atts['autoplay'] ) {
@@ -90,13 +90,13 @@ function jetpack_archiveorg_shortcode( $atts ) {
 		$poster = '';
 	}
 
-	$url = esc_url( "https://archive.org/embed/{$id}{$autoplay}{$poster}" );
-
-	$title = esc_html__( 'Archive.org', 'jetpack' );
-
-	$html = "<div class='embed-archiveorg' style='text-align:center;'><iframe title='$title' src='$url' width='$width' height='$height' style='border:0;' webkitallowfullscreen='true' mozallowfullscreen='true' allowfullscreen></iframe></div>";
-
-	return $html;
+	return sprintf(
+		'<div class="embed-archiveorg" style="text-align:center;"><iframe title="%s" src="%s" width="%s" height="%s" style="border:0;" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></div>',
+		esc_attr__( 'Archive.org', 'jetpack' ),
+		esc_url( "https://archive.org/embed/{$id}{$autoplay}{$poster}" ),
+		esc_attr( $width ),
+		esc_attr( $height )
+	);
 }
 
 add_shortcode( 'archiveorg', 'jetpack_archiveorg_shortcode' );

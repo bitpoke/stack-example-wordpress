@@ -24,10 +24,34 @@
   display: block !important;
 }
 
-.customize-control {
+.customize-control:not(.customize-control-nav_menu_item) {
   position: relative;
   margin-bottom: 0;
-  margin-top: 12px;
+  margin-top: 25px;
+}
+
+[ID*="-builder-layout-ast-context-tabs"] {
+  margin-top: 10px;
+}
+
+.customize-section-title {
+  margin: -12px -20px 0 -20px;
+}
+
+.customize-section-description-container, #customize-controls .customize-info.section-meta, #customize-controls .customize-info {
+  margin-bottom: 0;
+}
+
+#customize-controls #sub-accordion-panel-nav_menus .customize-info {
+  margin-bottom: 15px;
+}
+
+#customize-control-astra-settings-header-transparent-link-heading {
+  margin-top: 15px;
+}
+
+.components-base-control .components-base-control__field {
+  margin-bottom: 0;
 }
 
 .customize-control .customize-inside-control-row {
@@ -37,7 +61,13 @@
 
 .customize-control-title {
   display: inline-block;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
+  vertical-align: middle;
+}
+
+.customize-control-ast-color .customize-control-title, .customize-control-ast-responsive-background .customize-control-title,
+.customize-control-ast-background .customize-control-title, .customize-control-ast-responsive-color .customize-control-title {
+  display: contents;
 }
 
 .customize-control-ast-font-variant .select2 {
@@ -72,9 +102,16 @@ input[type="text"].select2-search__field {
   border-radius: 0;
 }
 
+/* CSS for a Description as a Notice. */
+.ast-customizer-notice {
+  margin: 0 -12px;
+  padding: 12px;
+}
+
 /* CSS to show popups without scroll */
 #customize-theme-controls .control-section.open {
   height: 100%;
+  padding: 12px 20px 25px 20px;
 }
 
 /* Safari Browser specific CSS */
@@ -90,6 +127,10 @@ input[type="text"].select2-search__field {
     }
     .ast-field-settings-modal .customize-control-ast-responsive .input-wrapper .ast-responsive-input.active + .ast-responsive-select {
       width: 20%;
+    }
+    .ast-reset-btn.components-button svg {
+      padding: 0px;
+      height: 13px;
     }
   }
 }
@@ -110,4 +151,28 @@ input[type="text"].select2-search__field {
     margin-left: 0px;
     margin-right: 20px;
   }
+}
+
+.wp-customizer li:not(.customize-control-sidebar_block_editor) h1,
+.wp-customizer li:not(.customize-control-sidebar_block_editor) h2,
+.wp-customizer li:not(.customize-control-sidebar_block_editor) h3,
+.wp-customizer li:not(.customize-control-sidebar_block_editor) h4,
+.wp-customizer li:not(.customize-control-sidebar_block_editor) h5,
+.wp-customizer li:not(.customize-control-sidebar_block_editor) h6 {
+  font-weight: 600;
+}
+
+/* Customizer - widget appender bottom space CSS */
+.block-list-appender {
+  margin-bottom: 20px;
+}
+
+.block-editor-block-inspector .block-editor-block-card {
+  margin-top: 12px;
+}
+
+/* Customizer - builder widget area's block gets round shapes in more-settings tab */
+.customize-widgets-layout__inspector .components-circular-option-picker__option::after {
+  box-shadow: none;
+  position: unset;
 }

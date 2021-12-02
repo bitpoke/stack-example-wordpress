@@ -6,7 +6,7 @@
  * actions throughout BuddyPress.
  *
  * @package BuddyPress
- * @supackage Cache
+ * @subpackage Cache
  * @since 1.5.0
  */
 
@@ -80,14 +80,14 @@ function bp_core_clear_directory_pages_cache_page_edit( $post_id = 0 ) {
 		return;
 	}
 
-	// Bail if not on the root blog
+	// Bail if not on the root blog.
 	if ( ! bp_is_root_blog() ) {
 		return;
 	}
 
 	$page_ids = bp_core_get_directory_page_ids( 'all' );
 
-	// Bail if post ID is not a directory page
+	// Bail if post ID is not a directory page.
 	if ( ! in_array( $post_id, $page_ids ) ) {
 		return;
 	}
@@ -390,3 +390,39 @@ function bp_invitations_reset_cache_incrementor() {
 }
 add_action( 'bp_invitation_after_save', 'bp_invitations_reset_cache_incrementor' );
 add_action( 'bp_invitation_after_delete', 'bp_invitations_reset_cache_incrementor' );
+
+/**
+ * Add a cache group for Database object types.
+ *
+ * @since 7.0.0
+ */
+function bp_set_object_type_terms_cache_group() {
+	wp_cache_add_global_groups( 'bp_object_terms' );
+}
+add_action( 'bp_setup_cache_groups', 'bp_set_object_type_terms_cache_group' );
+
+/**
+ * Clear the Database object types cache.
+ *
+ * @since 7.0.0
+ *
+ * @param int $type_id The Type's term ID.
+ * @param string $taxonomy The Type's taxonomy name.
+ */
+function bp_clear_object_type_terms_cache( $type_id = 0, $taxonomy = '' ) {
+	wp_cache_delete( $taxonomy, 'bp_object_terms' );
+}
+add_action( 'bp_type_inserted', 'bp_clear_object_type_terms_cache' );
+add_action( 'bp_type_updated', 'bp_clear_object_type_terms_cache' );
+add_action( 'bp_type_deleted', 'bp_clear_object_type_terms_cache' );
+
+/**
+ * Resets all incremented bp_optout caches.
+ *
+ * @since 8.0.0
+ */
+function bp_optouts_reset_cache_incrementor() {
+	bp_core_reset_incrementor( 'bp_optouts' );
+}
+add_action( 'bp_optout_after_save', 'bp_optouts_reset_cache_incrementor' );
+add_action( 'bp_optout_after_delete', 'bp_optouts_reset_cache_incrementor' );

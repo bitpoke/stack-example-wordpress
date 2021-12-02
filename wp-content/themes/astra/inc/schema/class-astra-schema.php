@@ -42,6 +42,7 @@ class Astra_Schema {
 	 * @since 2.1.3
 	 */
 	private function include_schemas() {
+		// @codingStandardsIgnoreStart WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 		require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-creativework-schema.php';
 		require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-wpheader-schema.php';
 		require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-wpfooter-schema.php';
@@ -50,6 +51,7 @@ class Astra_Schema {
 		require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-organization-schema.php';
 		require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-site-navigation-schema.php';
 		require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-breadcrumb-schema.php';
+		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 	}
 
 	/**

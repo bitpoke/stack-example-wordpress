@@ -149,16 +149,19 @@ function xprofile_update_field_group_position( $field_group_id = 0, $position = 
  */
 function bp_xprofile_get_field_types() {
 	$fields = array(
-		'checkbox'       => 'BP_XProfile_Field_Type_Checkbox',
-		'datebox'        => 'BP_XProfile_Field_Type_Datebox',
-		'multiselectbox' => 'BP_XProfile_Field_Type_Multiselectbox',
-		'number'         => 'BP_XProfile_Field_Type_Number',
-		'url'            => 'BP_XProfile_Field_Type_URL',
-		'radio'          => 'BP_XProfile_Field_Type_Radiobutton',
-		'selectbox'      => 'BP_XProfile_Field_Type_Selectbox',
-		'textarea'       => 'BP_XProfile_Field_Type_Textarea',
-		'textbox'        => 'BP_XProfile_Field_Type_Textbox',
-		'telephone'      => 'BP_XProfile_Field_Type_Telephone',
+		'checkbox'            => 'BP_XProfile_Field_Type_Checkbox',
+		'datebox'             => 'BP_XProfile_Field_Type_Datebox',
+		'multiselectbox'      => 'BP_XProfile_Field_Type_Multiselectbox',
+		'number'              => 'BP_XProfile_Field_Type_Number',
+		'url'                 => 'BP_XProfile_Field_Type_URL',
+		'radio'               => 'BP_XProfile_Field_Type_Radiobutton',
+		'selectbox'           => 'BP_XProfile_Field_Type_Selectbox',
+		'textarea'            => 'BP_XProfile_Field_Type_Textarea',
+		'textbox'             => 'BP_XProfile_Field_Type_Textbox',
+		'telephone'           => 'BP_XProfile_Field_Type_Telephone',
+		'wp-biography'        => 'BP_XProfile_Field_Type_WordPress_Biography',
+		'wp-textbox'          => 'BP_XProfile_Field_Type_WordPress_Textbox',
+		'checkbox_acceptance' => 'BP_XProfile_Field_Type_Checkbox_Acceptance',
 	);
 
 	/**
@@ -207,7 +210,7 @@ function bp_xprofile_create_field_type( $type ) {
  *     @type int    $field_id          Optional. Pass the ID of an existing field to edit that field.
  *     @type int    $field_group_id    ID of the associated field group.
  *     @type int    $parent_id         Optional. ID of the parent field.
- *     @type string $type              Field type. Checked against a field_types whitelist.
+ *     @type string $type              Field type. Checked against a list of allowed field_types.
  *     @type string $name              Name of the new field.
  *     @type string $description       Optional. Descriptive text for the field.
  *     @type bool   $is_required       Optional. Whether users must provide a value for the field. Default: false.
@@ -254,7 +257,7 @@ function xprofile_insert_field( $args = '' ) {
 
 	// Instantiate a new field object.
 	if ( ! empty( $r['field_id'] ) ) {
-		$field = xprofile_get_field( $r['field_id'] );
+		$field = xprofile_get_field( $r['field_id'], null, false );
 	} else {
 		$field = new BP_XProfile_Field;
 	}
@@ -308,6 +311,25 @@ function xprofile_get_field( $field, $user_id = null, $get_data = true ) {
 	}
 
 	return $_field;
+}
+
+/**
+ * Get a profile Field Type object.
+ *
+ * @since 8.0.0
+ *
+ * @param int $field_id ID of the field.
+ * @return BP_XProfile_Field_Type|null Field Type object if found, otherwise null.
+ */
+function bp_xprofile_get_field_type( $field_id ) {
+	$field_type = null;
+	$field      = xprofile_get_field( $field_id, null, false );
+
+	if ( $field instanceof BP_XProfile_Field ) {
+		$field_type = $field->type_obj;
+	}
+
+	return $field_type;
 }
 
 /**
@@ -452,9 +474,9 @@ function xprofile_set_field_data( $field, $user_id, $value, $is_required = false
 		return true;
 	}
 
-	// For certain fields, only certain parameters are acceptable, so add them to the whitelist.
+	// For certain fields, only certain parameters are acceptable, so add them to the list of allowed values.
 	if ( $field_type_obj->supports_options ) {
-		$field_type_obj->set_whitelist_values( wp_list_pluck( $field->get_children(), 'name' ) );
+		$field_type_obj->set_allowed_values( wp_list_pluck( $field->get_children(), 'name' ) );
 	}
 
 	// Check the value is in an accepted format for this form field.
@@ -462,14 +484,42 @@ function xprofile_set_field_data( $field, $user_id, $value, $is_required = false
 		return false;
 	}
 
-	$field           = new BP_XProfile_ProfileData();
-	$field->field_id = $field_id;
-	$field->user_id  = $user_id;
+	$field_args = compact( 'field_type_obj', 'field', 'user_id', 'value', 'is_required' );
 
-	// Gets un/reserialized via xprofile_sanitize_data_value_before_save()
-	$field->value    = maybe_serialize( $value );
+	/**
+	 * Return a WP_Error object or true to use your custom way of saving field values.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param boolean Whether to shortcircuit the $bp->profile->table_name_data table.
+	 * @param array $field_args {
+	 *     An array of arguments.
+	 *
+	 *     @type object            $field_type_obj Field type object.
+	 *     @type BP_XProfile_Field $field          Field object.
+	 *     @type integer           $user_id        The user ID.
+	 *     @type mixed             $value          Value passed to xprofile_set_field_data().
+	 *     @type boolean           $is_required    Whether or not the field is required.
+	 * }
+	 */
+	$retval = apply_filters( 'bp_xprofile_set_field_data_pre_save', false, $field_args );
 
-	return $field->save();
+	if ( is_wp_error( $retval ) ) {
+		return false;
+	}
+
+	if ( false === $retval ) {
+		$field           = new BP_XProfile_ProfileData();
+		$field->field_id = $field_id;
+		$field->user_id  = $user_id;
+
+		// Gets un/reserialized via xprofile_sanitize_data_value_before_save().
+		$field->value    = maybe_serialize( $value );
+
+		$retval = $field->save();
+	}
+
+	return $retval;
 }
 
 /**
@@ -479,7 +529,7 @@ function xprofile_set_field_data( $field, $user_id, $value, $is_required = false
  *
  * @param int    $field_id         The ID of the xprofile field.
  * @param int    $user_id          The ID of the user to whom the data belongs.
- * @param string $visibility_level What the visibity setting should be.
+ * @param string $visibility_level What the visibility setting should be.
  * @return bool True on success
  */
 function xprofile_set_field_visibility_level( $field_id = 0, $user_id = 0, $visibility_level = '' ) {
@@ -487,7 +537,7 @@ function xprofile_set_field_visibility_level( $field_id = 0, $user_id = 0, $visi
 		return false;
 	}
 
-	// Check against a whitelist.
+	// Check against a list of registered visibility levels.
 	$allowed_values = bp_xprofile_get_visibility_levels();
 	if ( !array_key_exists( $visibility_level, $allowed_values ) ) {
 		return false;
@@ -525,7 +575,7 @@ function xprofile_get_field_visibility_level( $field_id = 0, $user_id = 0 ) {
 	$current_level  = isset( $current_levels[ $field_id ] ) ? $current_levels[ $field_id ] : '';
 
 	// Use the user's stored level, unless custom visibility is disabled.
-	$field = xprofile_get_field( $field_id );
+	$field = xprofile_get_field( $field_id, null, false );
 	if ( isset( $field->allow_custom_visibility ) && 'disabled' === $field->allow_custom_visibility ) {
 		$current_level = $field->default_visibility;
 	}
@@ -706,52 +756,6 @@ function xprofile_override_user_fullnames() {
 add_action( 'bp_setup_globals', 'xprofile_override_user_fullnames', 100 );
 
 /**
- * Setup the avatar upload directory for a user.
- *
- * @since 1.0.0
- *
- * @package BuddyPress Core
- *
- * @param string $directory The root directory name. Optional.
- * @param int    $user_id   The user ID. Optional.
- * @return array Array containing the path, URL, and other helpful settings.
- */
-function xprofile_avatar_upload_dir( $directory = 'avatars', $user_id = 0 ) {
-
-	// Use displayed user if no user ID was passed.
-	if ( empty( $user_id ) ) {
-		$user_id = bp_displayed_user_id();
-	}
-
-	// Failsafe against accidentally nooped $directory parameter.
-	if ( empty( $directory ) ) {
-		$directory = 'avatars';
-	}
-
-	$path      = bp_core_avatar_upload_path() . '/' . $directory. '/' . $user_id;
-	$newbdir   = $path;
-	$newurl    = bp_core_avatar_url() . '/' . $directory. '/' . $user_id;
-	$newburl   = $newurl;
-	$newsubdir = '/' . $directory. '/' . $user_id;
-
-	/**
-	 * Filters the avatar upload directory for a user.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param array $value Array containing the path, URL, and other helpful settings.
-	 */
-	return apply_filters( 'xprofile_avatar_upload_dir', array(
-		'path'    => $path,
-		'url'     => $newurl,
-		'subdir'  => $newsubdir,
-		'basedir' => $newbdir,
-		'baseurl' => $newburl,
-		'error'   => false
-	) );
-}
-
-/**
  * When search_terms are passed to BP_User_Query, search against xprofile fields.
  *
  * @since 2.0.0
@@ -893,8 +897,23 @@ function xprofile_remove_data( $user_id ) {
 	BP_XProfile_ProfileData::delete_data_for_user( $user_id );
 }
 add_action( 'wpmu_delete_user',  'xprofile_remove_data' );
-add_action( 'delete_user',       'xprofile_remove_data' );
 add_action( 'bp_make_spam_user', 'xprofile_remove_data' );
+
+/**
+ * Deletes user XProfile data on the 'delete_user' hook.
+ *
+ * @since 6.0.0
+ *
+ * @param int $user_id The ID of the deleted user.
+ */
+function xprofile_remove_data_on_delete_user( $user_id ) {
+	if ( ! bp_remove_user_data_on_delete_user_hook( 'xprofile', $user_id ) ) {
+		return;
+	}
+
+	xprofile_remove_data( $user_id );
+}
+add_action( 'delete_user', 'xprofile_remove_data_on_delete_user' );
 
 /*** XProfile Meta ****************************************************/
 
@@ -1130,7 +1149,7 @@ function bp_xprofile_is_richtext_enabled_for_field( $field_id = null ) {
 		$field_id = bp_get_the_profile_field_id();
 	}
 
-	$field = xprofile_get_field( $field_id );
+	$field = xprofile_get_field( $field_id, null, false );
 
 	$enabled = false;
 	if ( $field instanceof BP_XProfile_Field ) {
@@ -1197,7 +1216,7 @@ function bp_xprofile_get_hidden_fields_for_user( $displayed_user_id = 0, $curren
 		$current_user_id = bp_loggedin_user_id();
 	}
 
-	// @todo - This is where you'd swap out for current_user_can() checks
+	// @todo - This is where you'd swap out for current_user_can() checks.
 	$hidden_levels = bp_xprofile_get_hidden_field_types_for_user( $displayed_user_id, $current_user_id );
 	$hidden_fields = bp_xprofile_get_fields_by_visibility_levels( $displayed_user_id, $hidden_levels );
 
@@ -1283,7 +1302,7 @@ function bp_xprofile_get_fields_by_visibility_levels( $user_id, $levels = array(
 		$levels = (array)$levels;
 	}
 
-	$user_visibility_levels = bp_get_user_meta( $user_id, 'bp_xprofile_visibility_levels', true );
+	$user_visibility_levels = (array) bp_get_user_meta( $user_id, 'bp_xprofile_visibility_levels', true );
 
 	// Parse the user-provided visibility levels with the default levels, which may take
 	// precedence.
@@ -1298,7 +1317,7 @@ function bp_xprofile_get_fields_by_visibility_levels( $user_id, $levels = array(
 	}
 
 	$field_ids = array();
-	foreach( (array) $user_visibility_levels as $field_id => $field_visibility ) {
+	foreach( $user_visibility_levels as $field_id => $field_visibility ) {
 		if ( in_array( $field_visibility, $levels ) ) {
 			$field_ids[] = $field_id;
 		}
@@ -1342,7 +1361,7 @@ function bp_xprofile_maybe_format_datebox_post_data( $field_id ) {
  *
  * @since 4.0.0
  *
- * @param string $email_address  The userss email address.
+ * @param string $email_address  The users email address.
  * @return array An array of personal data.
  */
 function bp_xprofile_personal_data_exporter( $email_address ) {
@@ -1387,4 +1406,65 @@ function bp_xprofile_personal_data_exporter( $email_address ) {
 		'data' => $data_to_export,
 		'done' => true,
 	);
+}
+
+/**
+ * Returns the list of supporterd WordPress field meta keys.
+ *
+ * @since 8.0.0
+ *
+ * @return string[] List of supported WordPress user keys.
+ */
+function bp_xprofile_get_wp_user_keys() {
+	return array_merge(
+		array( 'first_name', 'last_name', 'user_url', 'description' ),
+		array_keys( wp_get_user_contact_methods() )
+	);
+}
+
+/**
+ * Returns the signup field IDs.
+ *
+ * @since 8.0.0
+ *
+ * @return int[] The signup field IDs.
+ */
+function bp_xprofile_get_signup_field_ids() {
+	$signup_field_ids = wp_cache_get( 'signup_fields', 'bp_xprofile' );
+
+	if ( ! $signup_field_ids ) {
+		global $wpdb;
+		$bp = buddypress();
+
+		$signup_field_ids = $wpdb->get_col( "SELECT object_id FROM {$bp->profile->table_name_meta} WHERE object_type = 'field' AND meta_key = 'signup_position' ORDER BY CONVERT(meta_value, SIGNED) ASC" );
+
+		wp_cache_set( 'signup_fields', $signup_field_ids, 'bp_xprofile' );
+	}
+
+	return array_map( 'intval', $signup_field_ids );
+}
+
+/**
+ * Returns xProfile loop's signup arguments.
+ *
+ * @since 8.0.0
+ *
+ * @param array $extra Optional extra arguments.
+ * @return array The xProfile loop's signup arguments.
+ */
+function bp_xprofile_signup_args( $extra = array() ) {
+	$signup_fields = (array) bp_xprofile_get_signup_field_ids();
+	$default_args  = array(
+		'fetch_fields'     => true,
+		'fetch_field_data' => false,
+	);
+
+	// No signup fields? Let's bring back primary group.
+	if ( ! $signup_fields && bp_is_register_page() ) {
+		$default_args['profile_group_id'] = 1;
+	} else {
+		$default_args['signup_fields_only'] = true;
+	}
+
+	return array_merge( $default_args, $extra );
 }

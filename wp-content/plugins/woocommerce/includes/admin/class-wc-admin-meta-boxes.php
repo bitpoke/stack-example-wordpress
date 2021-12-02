@@ -4,8 +4,10 @@
  *
  * Sets up the write panels used by products and orders (custom post types).
  *
- * @package WooCommerce/Admin/Meta Boxes
+ * @package WooCommerce\Admin\Meta Boxes
  */
+
+use Automattic\Jetpack\Constants;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -47,9 +49,9 @@ class WC_Admin_Meta_Boxes {
 		 *      Save order data - also updates status and sends out admin emails if needed. Last to show latest data.
 		 *      Save actions - sends out other emails. Last to show latest data.
 		 */
-		add_action( 'woocommerce_process_shop_order_meta', 'WC_Meta_Box_Order_Items::save', 10, 2 );
+		add_action( 'woocommerce_process_shop_order_meta', 'WC_Meta_Box_Order_Items::save', 10 );
 		add_action( 'woocommerce_process_shop_order_meta', 'WC_Meta_Box_Order_Downloads::save', 30, 2 );
-		add_action( 'woocommerce_process_shop_order_meta', 'WC_Meta_Box_Order_Data::save', 40, 2 );
+		add_action( 'woocommerce_process_shop_order_meta', 'WC_Meta_Box_Order_Data::save', 40 );
 		add_action( 'woocommerce_process_shop_order_meta', 'WC_Meta_Box_Order_Actions::save', 50, 2 );
 
 		// Save Product Meta Boxes.
@@ -65,6 +67,8 @@ class WC_Admin_Meta_Boxes {
 		// Error handling (for showing errors from meta boxes on next page load).
 		add_action( 'admin_notices', array( $this, 'output_errors' ) );
 		add_action( 'shutdown', array( $this, 'save_errors' ) );
+
+		add_filter( 'theme_product_templates', array( $this, 'remove_block_templates' ), 10, 1 );
 	}
 
 	/**
@@ -133,7 +137,7 @@ class WC_Admin_Meta_Boxes {
 		add_meta_box( 'woocommerce-coupon-data', __( 'Coupon data', 'woocommerce' ), 'WC_Meta_Box_Coupon_Data::output', 'shop_coupon', 'normal', 'high' );
 
 		// Comment rating.
-		if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', wc_clean( wp_unslash( $_GET['c'] ) ), 'rating' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', wc_clean( wp_unslash( $_GET['c'] ) ), 'rating' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			add_meta_box( 'woocommerce-rating', __( 'Rating', 'woocommerce' ), 'WC_Meta_Box_Product_Reviews::output', 'comment', 'normal', 'high' );
 		}
 	}
@@ -188,7 +192,7 @@ class WC_Admin_Meta_Boxes {
 		}
 
 		// Dont' save meta boxes for revisions or autosaves.
-		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || is_int( wp_is_post_revision( $post ) ) || is_int( wp_is_post_autosave( $post ) ) ) {
+		if ( Constants::is_true( 'DOING_AUTOSAVE' ) || is_int( wp_is_post_revision( $post ) ) || is_int( wp_is_post_autosave( $post ) ) ) {
 			return;
 		}
 
@@ -219,6 +223,32 @@ class WC_Admin_Meta_Boxes {
 		} elseif ( in_array( $post->post_type, array( 'product', 'shop_coupon' ), true ) ) {
 			do_action( 'woocommerce_process_' . $post->post_type . '_meta', $post_id, $post );
 		}
+	}
+
+	/**
+	 * Remove block-based templates from the list of available templates for products.
+	 *
+	 * @param string[] $templates Array of template header names keyed by the template file name.
+	 *
+	 * @return string[] Templates array excluding block-based templates.
+	 */
+	public function remove_block_templates( $templates ) {
+		if ( count( $templates ) === 0 || ! function_exists( 'gutenberg_get_block_template' ) ) {
+			return $templates;
+		}
+
+		$theme              = wp_get_theme()->get_stylesheet();
+		$filtered_templates = array();
+
+		foreach ( $templates as $template_key => $template_name ) {
+			$gutenberg_template = gutenberg_get_block_template( $theme . '//' . $template_key );
+
+			if ( ! $gutenberg_template ) {
+				$filtered_templates[ $template_key ] = $template_name;
+			}
+		}
+
+		return $filtered_templates;
 	}
 }
 

@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR );
 
 class QM_Collector_PHP_Errors extends QM_Collector {
@@ -22,18 +24,35 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		parent::__construct();
+
+		// Capture the last error that occurred before QM loaded:
+		$prior_error = error_get_last();
+
+		// Non-fatal error handler for all PHP versions:
 		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
 		if ( ! interface_exists( 'Throwable' ) ) {
-			// PHP < 7 fatal error handler.
+			// Fatal error handler for PHP < 7:
 			register_shutdown_function( array( $this, 'shutdown_handler' ) );
 		}
+
+		// Fatal error handler for PHP >= 7, and uncaught exception handler for all PHP versions:
+		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
 		$this->display_errors  = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
 
-		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
+		if ( $prior_error ) {
+			$this->error_handler(
+				$prior_error['type'],
+				$prior_error['message'],
+				$prior_error['file'],
+				$prior_error['line'],
+				null,
+				false
+			);
+		}
 	}
 
 	/**
@@ -45,47 +64,35 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @param Throwable|Exception $e The error or exception.
 	 */
 	public function exception_handler( $e ) {
-		require_once __DIR__ . '/../output/Html.php';
-
 		if ( is_a( $e, 'Exception' ) ) {
 			$error = 'Uncaught Exception';
 		} else {
 			$error = 'Uncaught Error';
 		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e->getMessage(), ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e->getFile(), ENT_COMPAT, 'UTF-8' ),
-			intval( $e->getLine() )
-		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		echo '<ul>';
-		foreach ( $e->getTrace() as $frame ) {
-			$callback = QM_Util::populate_callback( $frame );
-
-			printf(
-				'<li>%s</li>',
-				QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'], true )
-			); // WPCS: XSS ok.
-		}
-		echo '</ul>';
+		$this->output_fatal( 'Fatal error', array(
+			'message' => sprintf(
+				'%s: %s',
+				$error,
+				$e->getMessage()
+			),
+			'file'    => $e->getFile(),
+			'line'    => $e->getLine(),
+			'trace'   => $e->getTrace(),
+		) );
 
 		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
 		// is logged appropriately instead of discarded silently.
 		if ( $this->exception_handler ) {
 			call_user_func( $this->exception_handler, $e );
 		} else {
-			throw new Exception( $e->getMessage(), $e->getCode(), $e );
+			throw $e;
 		}
 
 		exit( 1 );
 	}
 
-	public function error_handler( $errno, $message, $file = null, $line = null, $context = null ) {
+	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
 
 		/**
 		 * Fires before logging the PHP error in Query Monitor.
@@ -172,7 +179,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'file'     => $file,
 				'filename' => QM_Util::standard_dir( $file, '' ),
 				'line'     => $line,
-				'trace'    => $trace,
+				'trace'    => ( $do_trace ? $trace : null ),
 				'calls'    => 1,
 			);
 		}
@@ -196,10 +203,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$e = error_get_last();
 
-		if ( empty( $this->display_errors ) ) {
-			return;
-		}
-
 		if ( empty( $e ) || ! ( $e['type'] & QM_ERROR_FATALS ) ) {
 			return;
 		}
@@ -210,15 +213,88 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		$this->output_fatal( $error, $e );
+	}
+
+	protected function output_fatal( $error, array $e ) {
+		$dispatcher = QM_Dispatchers::get( 'html' );
+
+		if ( empty( $dispatcher ) ) {
+			return;
+		}
+
+		if ( empty( $this->display_errors ) && ! $dispatcher::user_can_view() ) {
+			return;
+		}
+
+		if ( ! function_exists( '__' ) ) {
+			wp_load_translations_early();
+		}
+
+		require_once dirname( __DIR__ ) . '/output/Html.php';
+
+		// This hides the subsequent message from the fatal error handler in core. It cannot be
+		// disabled by a plugin so we'll just hide its output.
+		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
+
 		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e['message'], ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e['file'], ENT_COMPAT, 'UTF-8' ),
-			intval( $e['line'] )
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( includes_url( 'css/dashicons.css' ) )
 		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) )
+		);
+
+		// This unused wrapper with ann attribute serves to help the #qm-fatal div break out of an
+		// attribute if a fatal has occured within one.
+		echo '<div data-qm="qm">';
+
+		printf(
+			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
+			esc_attr( $e['message'] ),
+			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
+			esc_attr( $e['line'] )
+		);
+
+		echo '<div class="qm-fatal-wrap">';
+
+		if ( QM_Output_Html::has_clickable_links() ) {
+			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
+		} else {
+			$file = esc_html( $e['file'] );
+		}
+
+		printf(
+			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
+			esc_html( $error ),
+			nl2br( esc_html( $e['message'] ), false ),
+			$file,
+			intval( $e['line'] )
+		); // WPCS: XSS ok.
+
+		if ( ! empty( $e['trace'] ) ) {
+			echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
+			echo '<ol>';
+			foreach ( $e['trace'] as $frame ) {
+				$callback = QM_Util::populate_callback( $frame );
+
+				printf(
+					'<li>%s</li>',
+					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
+				); // WPCS: XSS ok.
+			}
+			echo '</ol>';
+		}
+
+		echo '</div>';
+
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	public function post_process() {
@@ -317,8 +393,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
 						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
-							$component                      = $error['trace']->get_component();
-							$components[ $component->name ] = $component->name;
+							if ( $error['trace'] ) {
+								$component                      = $error['trace']->get_component();
+								$components[ $component->name ] = $component->name;
+							}
 						}
 					}
 				}
@@ -344,6 +422,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 					if ( $this->is_reportable_error( $error['errno'], $allowed_level ) ) {
 						continue;
 					}
+
+					if ( ! $error['trace'] ) {
+						continue;
+					}
+
 					if ( ! $this->is_affected_component( $error['trace']->get_component(), $component_type, $component_context ) ) {
 						continue;
 					}

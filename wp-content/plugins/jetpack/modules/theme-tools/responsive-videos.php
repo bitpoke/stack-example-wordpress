@@ -101,7 +101,7 @@ function jetpack_responsive_videos_maybe_wrap_oembed( $html, $url = null ) {
 	/**
 	 * oEmbed Video Providers.
 	 *
-	 * A whitelist of oEmbed video provider Regex patterns to check against before wrapping the output.
+	 * An allowed list of oEmbed video provider Regex patterns to check against before wrapping the output.
 	 *
 	 * @module theme-tools
 	 *
@@ -153,7 +153,10 @@ function jetpack_responsive_videos_maybe_wrap_oembed( $html, $url = null ) {
 function jetpack_responsive_videos_remove_wrap_oembed( $block_content, $block ) {
 	if (
 		isset( $block['blockName'] )
-		&& false !== strpos( $block['blockName'], 'core-embed' )
+		&& (
+			false !== strpos( $block['blockName'], 'core-embed' ) // pre-WP 5.6 embeds (multiple embed blocks starting with 'core-embed').
+			|| 'core/embed' === $block['blockName'] // WP 5.6 embed block format (single embed block w/ block variations).
+		)
 	) {
 		$block_content = preg_replace( '#<div class="jetpack-video-wrapper">(.*?)</div>#', '${1}', $block_content );
 	}

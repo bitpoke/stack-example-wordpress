@@ -61,7 +61,7 @@ if ( ! class_exists( 'Astra_ExtTransparenty_Header_Markup' ) ) {
 		 * @return array
 		 */
 		public function add_body_class( $classes ) {
-
+			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			$inherit_desk_logo              = astra_get_option( 'different-transparent-logo', false );
 			$transparent_header_logo        = astra_get_option( 'transparent-header-logo', true );
 			$transparent_header_logo_retina = astra_get_option( 'transparent-header-retina-logo', true );
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Astra_ExtTransparenty_Header_Markup' ) ) {
 		 * @since 1.0.0
 		 */
 		public function transparent_header_logo() {
-
+			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			$inherit_desk_logo       = astra_get_option( 'different-transparent-logo', false );
 			$transparent_header_logo = astra_get_option( 'transparent-header-logo' );
 
@@ -260,9 +260,7 @@ if ( ! class_exists( 'Astra_ExtTransparenty_Header_Markup' ) ) {
 				$file_extension = $file_type['ext'];
 
 				if ( 'svg' == $file_extension ) {
-					$attr['width']  = '100%';
-					$attr['height'] = '100%';
-					$attr['class']  = 'astra-logo-svg';
+					$attr['class'] = 'astra-logo-svg';
 				}
 
 				$diff_retina_logo = astra_get_option( 'different-transparent-retina-logo' );

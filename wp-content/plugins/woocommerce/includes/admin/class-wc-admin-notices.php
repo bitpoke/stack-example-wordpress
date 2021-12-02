@@ -6,6 +6,8 @@
  * @version 3.4.0
  */
 
+use Automattic\Jetpack\Constants;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -26,17 +28,18 @@ class WC_Admin_Notices {
 	 * @var array
 	 */
 	private static $core_notices = array(
-		'install'                      => 'install_notice',
-		'update'                       => 'update_notice',
-		'template_files'               => 'template_file_check_notice',
-		'legacy_shipping'              => 'legacy_shipping_notice',
-		'no_shipping_methods'          => 'no_shipping_methods_notice',
-		'regenerating_thumbnails'      => 'regenerating_thumbnails_notice',
-		'regenerating_lookup_table'    => 'regenerating_lookup_table_notice',
-		'no_secure_connection'         => 'secure_connection_notice',
-		'wc_admin'                     => 'wc_admin_feature_plugin_notice',
-		WC_PHP_MIN_REQUIREMENTS_NOTICE => 'wp_php_min_requirements_notice',
-		'maxmind_license_key'          => 'maxmind_missing_license_key_notice',
+		'update'                           => 'update_notice',
+		'template_files'                   => 'template_file_check_notice',
+		'legacy_shipping'                  => 'legacy_shipping_notice',
+		'no_shipping_methods'              => 'no_shipping_methods_notice',
+		'regenerating_thumbnails'          => 'regenerating_thumbnails_notice',
+		'regenerating_lookup_table'        => 'regenerating_lookup_table_notice',
+		'no_secure_connection'             => 'secure_connection_notice',
+		WC_PHP_MIN_REQUIREMENTS_NOTICE     => 'wp_php_min_requirements_notice',
+		'maxmind_license_key'              => 'maxmind_missing_license_key_notice',
+		'redirect_download_method'         => 'redirect_download_method_notice',
+		'uploads_directory_is_unprotected' => 'uploads_directory_is_unprotected_notice',
+		'base_tables_missing'              => 'base_tables_missing_notice',
 	);
 
 	/**
@@ -47,12 +50,31 @@ class WC_Admin_Notices {
 
 		add_action( 'switch_theme', array( __CLASS__, 'reset_admin_notices' ) );
 		add_action( 'woocommerce_installed', array( __CLASS__, 'reset_admin_notices' ) );
+		add_action( 'wp_loaded', array( __CLASS__, 'add_redirect_download_method_notice' ) );
 		add_action( 'wp_loaded', array( __CLASS__, 'hide_notices' ) );
-		add_action( 'shutdown', array( __CLASS__, 'store_notices' ) );
+		// @TODO: This prevents Action Scheduler async jobs from storing empty list of notices during WC installation.
+		// That could lead to OBW not starting and 'Run setup wizard' notice not appearing in WP admin, which we want
+		// to avoid.
+		if ( ! WC_Install::is_new_install() || ! wc_is_running_from_async_action_scheduler() ) {
+			add_action( 'shutdown', array( __CLASS__, 'store_notices' ) );
+		}
 
 		if ( current_user_can( 'manage_woocommerce' ) ) {
 			add_action( 'admin_print_styles', array( __CLASS__, 'add_notices' ) );
 		}
+	}
+
+	/**
+	 * Parses query to create nonces when available.
+	 *
+	 * @deprecated 5.4.0
+	 * @param object $response The WP_REST_Response we're working with.
+	 * @return object $response The prepared WP_REST_Response object.
+	 */
+	public static function prepare_note_with_nonce( $response ) {
+		wc_deprecated_function( __CLASS__ . '::' . __FUNCTION__, '5.4.0' );
+
+		return $response;
 	}
 
 	/**
@@ -85,7 +107,9 @@ class WC_Admin_Notices {
 		if ( ! self::is_ssl() ) {
 			self::add_notice( 'no_secure_connection' );
 		}
-		self::add_wc_admin_feature_plugin_notice();
+		if ( ! self::is_uploads_directory_protected() ) {
+			self::add_notice( 'uploads_directory_is_unprotected' );
+		}
 		self::add_notice( 'template_files' );
 		self::add_min_version_notice();
 		self::add_maxmind_missing_license_key_notice();
@@ -95,19 +119,31 @@ class WC_Admin_Notices {
 	 * Show a notice.
 	 *
 	 * @param string $name Notice name.
+	 * @param bool   $force_save Force saving inside this method instead of at the 'shutdown'.
 	 */
-	public static function add_notice( $name ) {
+	public static function add_notice( $name, $force_save = false ) {
 		self::$notices = array_unique( array_merge( self::get_notices(), array( $name ) ) );
+
+		if ( $force_save ) {
+			// Adding early save to prevent more race conditions with notices.
+			self::store_notices();
+		}
 	}
 
 	/**
 	 * Remove a notice from being displayed.
 	 *
 	 * @param string $name Notice name.
+	 * @param bool   $force_save Force saving inside this method instead of at the 'shutdown'.
 	 */
-	public static function remove_notice( $name ) {
+	public static function remove_notice( $name, $force_save = false ) {
 		self::$notices = array_diff( self::get_notices(), array( $name ) );
 		delete_option( 'woocommerce_admin_notice_' . $name );
+
+		if ( $force_save ) {
+			// Adding early save to prevent more race conditions with notices.
+			self::store_notices();
+		}
 	}
 
 	/**
@@ -166,7 +202,7 @@ class WC_Admin_Notices {
 			return;
 		}
 
-		wp_enqueue_style( 'woocommerce-activation', plugins_url( '/assets/css/activation.css', WC_PLUGIN_FILE ), array(), WC_VERSION );
+		wp_enqueue_style( 'woocommerce-activation', plugins_url( '/assets/css/activation.css', WC_PLUGIN_FILE ), array(), Constants::get_constant( 'WC_VERSION' ) );
 
 		// Add RTL support.
 		wp_style_add_data( 'woocommerce-activation', 'rtl', 'replace' );
@@ -211,9 +247,15 @@ class WC_Admin_Notices {
 	}
 
 	/**
-	 * If we need to update, include a message with the update button.
+	 * If we need to update the database, include a message with the DB update button.
 	 */
 	public static function update_notice() {
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+		if ( WC()->is_wc_admin_active() && in_array( $screen_id, wc_get_screen_ids(), true ) ) {
+			return;
+		}
+
 		if ( WC_Install::needs_db_update() ) {
 			$next_scheduled_date = WC()->queue()->get_next( 'woocommerce_run_update_callback', null, 'woocommerce-db-updates' );
 
@@ -223,16 +265,17 @@ class WC_Admin_Notices {
 				include dirname( __FILE__ ) . '/views/html-notice-update.php';
 			}
 		} else {
-			WC_Install::update_db_version();
 			include dirname( __FILE__ ) . '/views/html-notice-updated.php';
 		}
 	}
 
 	/**
 	 * If we have just installed, show a message with the install pages button.
+	 *
+	 * @deprecated 4.6.0
 	 */
 	public static function install_notice() {
-		include dirname( __FILE__ ) . '/views/html-notice-install.php';
+		_deprecated_function( __CLASS__ . '::' . __FUNCTION__, '4.6.0', __( 'Onboarding is maintained in WooCommerce Admin.', 'woocommerce' ) );
 	}
 
 	/**
@@ -347,34 +390,6 @@ class WC_Admin_Notices {
 		include dirname( __FILE__ ) . '/views/html-notice-regenerating-lookup-table.php';
 	}
 
-
-	/**
-	 * If on WordPress 5.0 or greater, inform users of WooCommerce Admin feature plugin.
-	 *
-	 * @since 3.6.4
-	 * @todo  Remove this notice and associated code once the feature plugin has been merged into core.
-	 */
-	public static function add_wc_admin_feature_plugin_notice() {
-		if ( version_compare( get_bloginfo( 'version' ), '5.0', '>=' ) ) {
-			self::add_notice( 'wc_admin' );
-		}
-	}
-
-	/**
-	 * Notice to try WooCommerce Admin
-	 *
-	 * @since 3.6.4
-	 * @todo  Remove this notice and associated code once the feature plugin has been merged into core.
-	 */
-	public static function wc_admin_feature_plugin_notice() {
-		if ( get_user_meta( get_current_user_id(), 'dismissed_wc_admin_notice', true ) || self::is_plugin_active( 'woocommerce-admin/woocommerce-admin.php' ) ) {
-			self::remove_notice( 'wc_admin' );
-			return;
-		}
-
-		include dirname( __FILE__ ) . '/views/html-notice-wc-admin.php';
-	}
-
 	/**
 	 * Add notice about minimum PHP and WordPress requirement.
 	 *
@@ -445,6 +460,18 @@ class WC_Admin_Notices {
 		$integration_options = get_option( 'woocommerce_maxmind_geolocation_settings' );
 		if ( empty( $integration_options['license_key'] ) ) {
 			self::add_notice( 'maxmind_license_key' );
+
+		}
+	}
+
+	/**
+	 *  Add notice about Redirect-only download method, nudging user to switch to a different method instead.
+	 */
+	public static function add_redirect_download_method_notice() {
+		if ( 'redirect' === get_option( 'woocommerce_file_download_method' ) ) {
+			self::add_notice( 'redirect_download_method' );
+		} else {
+			self::remove_notice( 'redirect_download_method' );
 		}
 	}
 
@@ -463,6 +490,49 @@ class WC_Admin_Notices {
 		}
 
 		include dirname( __FILE__ ) . '/views/html-notice-maxmind-license-key.php';
+	}
+
+	/**
+	 * Notice about Redirect-Only download method.
+	 *
+	 * @since 4.0
+	 */
+	public static function redirect_download_method_notice() {
+		if ( apply_filters( 'woocommerce_hide_redirect_method_nag', get_user_meta( get_current_user_id(), 'dismissed_redirect_download_method_notice', true ) ) ) {
+			self::remove_notice( 'redirect_download_method' );
+			return;
+		}
+
+		include dirname( __FILE__ ) . '/views/html-notice-redirect-only-download.php';
+	}
+
+	/**
+	 * Notice about uploads directory begin unprotected.
+	 *
+	 * @since 4.2.0
+	 */
+	public static function uploads_directory_is_unprotected_notice() {
+		if ( get_user_meta( get_current_user_id(), 'dismissed_uploads_directory_is_unprotected_notice', true ) || self::is_uploads_directory_protected() ) {
+			self::remove_notice( 'uploads_directory_is_unprotected' );
+			return;
+		}
+
+		include dirname( __FILE__ ) . '/views/html-notice-uploads-directory-is-unprotected.php';
+	}
+
+	/**
+	 * Notice about base tables missing.
+	 */
+	public static function base_tables_missing_notice() {
+		$notice_dismissed = apply_filters(
+			'woocommerce_hide_base_tables_missing_nag',
+			get_user_meta( get_current_user_id(), 'dismissed_base_tables_missing_notice', true )
+		);
+		if ( $notice_dismissed ) {
+			self::remove_notice( 'base_tables_missing' );
+		}
+
+		include dirname( __FILE__ ) . '/views/html-notice-base-table-missing.php';
 	}
 
 	/**
@@ -506,6 +576,42 @@ class WC_Admin_Notices {
 	 */
 	public static function theme_check_notice() {
 		wc_deprecated_function( 'WC_Admin_Notices::theme_check_notice', '3.3.0' );
+	}
+
+	/**
+	 * Check if uploads directory is protected.
+	 *
+	 * @since 4.2.0
+	 * @return bool
+	 */
+	protected static function is_uploads_directory_protected() {
+		$cache_key = '_woocommerce_upload_directory_status';
+		$status    = get_transient( $cache_key );
+
+		// Check for cache.
+		if ( false !== $status ) {
+			return 'protected' === $status;
+		}
+
+		// Get only data from the uploads directory.
+		$uploads = wp_get_upload_dir();
+
+		// Check for the "uploads/woocommerce_uploads" directory.
+		$response         = wp_safe_remote_get(
+			esc_url_raw( $uploads['baseurl'] . '/woocommerce_uploads/' ),
+			array(
+				'redirection' => 0,
+			)
+		);
+		$response_code    = intval( wp_remote_retrieve_response_code( $response ) );
+		$response_content = wp_remote_retrieve_body( $response );
+
+		// Check if returns 200 with empty content in case can open an index.html file,
+		// and check for non-200 codes in case the directory is protected.
+		$is_protected = ( 200 === $response_code && empty( $response_content ) ) || ( 200 !== $response_code );
+		set_transient( $cache_key, $is_protected ? 'protected' : 'unprotected', 1 * DAY_IN_SECONDS );
+
+		return $is_protected;
 	}
 }
 

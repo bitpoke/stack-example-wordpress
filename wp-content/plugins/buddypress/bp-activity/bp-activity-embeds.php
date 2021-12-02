@@ -100,7 +100,7 @@ function bp_activity_embed_has_activity( $activity_id = 0 ) {
 		$activity = (array) $activities_template->activities;
 		$activity = reset( $activity );
 
-		// No need to requery if we already got the embed activity
+		// No need to requery if we already got the embed activity.
 		if ( (int) $activity_id === $activity->id ) {
 			return $activities_template->has_activities();
 		}
@@ -234,10 +234,10 @@ function bp_activity_embed_media() {
 			$thumbnail = $oembed->thumbnail_url;
 
 		/* Non-oEmbed standard attributes */
-		// Mixcloud
+		// Mixcloud.
 		} elseif ( isset( $oembed->image ) ) {
 			$thumbnail = $oembed->image;
-		// ReverbNation
+		// ReverbNation.
 		} elseif ( isset( $oembed->{'thumbnail-url'} ) ) {
 			$thumbnail = $oembed->{'thumbnail-url'};
 		}
@@ -261,30 +261,31 @@ EOD;
 				$play_icon = sprintf( '<a rel="nofollow" class="play-btn" href="%1$s" onclick="top.location.href=\'%1$s\'">%2$s</a>', esc_url( $url ), $play_icon );
 			}
 
-			// Thumb width
+			// Thumb width.
 			$thumb_width = isset( $oembed->thumbnail_width ) && 'photo' !== $oembed->type && (int) $oembed->thumbnail_width < 550 ? (int) $oembed->thumbnail_width : $width;
 
 			$float_width = 350;
 
 			// Set up thumb.
-			$content = sprintf( '<div class="thumb" style="max-width:%1$spx">%2$s<a href="%3$s" rel="nofollow" onclick="top.location.href=\'%3$s\'"><img src="%4$s" /></a></div>', $thumb_width, $play_icon, esc_url( $url ), esc_url( $thumbnail ) );
+			$content = sprintf( '<div class="thumb" style="max-width:%1$spx">%2$s<a href="%3$s" rel="nofollow" onclick="top.location.href=\'%3$s\'"><img loading="lazy" src="%4$s" alt="" /></a></div>', $thumb_width, $play_icon, esc_url( $url ), esc_url( $thumbnail ) );
 
 			// Show title.
 			if ( isset( $oembed->title ) ) {
 				$caption .= sprintf( '<p class="caption-title"><strong>%s</strong></p>', apply_filters( 'single_post_title', $oembed->title ) );
 			}
 
-			// Show description (non-oEmbed standard)
+			// Show description (non-oEmbed standard).
 			if ( isset( $oembed->description ) ) {
 				$caption .= sprintf( '<div class="caption-description">%s</div>', apply_filters( 'bp_activity_get_embed_excerpt', $oembed->description ) );
 			}
 
 			// Show author info.
 			if ( isset( $oembed->provider_name ) && isset( $oembed->author_name ) ) {
-				/* translators: By [oEmbed author] on [oEmbed provider]. eg. By BuddyPress on YouTube. */
+				/* translators: 1: oEmbed author. 2: oEmbed provider. eg. By BuddyPress on YouTube. */
 				$anchor_text = sprintf( __( 'By %1$s on %2$s', 'buddypress' ), $oembed->author_name, $oembed->provider_name );
 
 			} elseif ( isset( $oembed->provider_name ) ) {
+				/* translators: %s: oEmbed provider. */
 				$anchor_text = sprintf( __( 'View on %s', 'buddypress' ), $oembed->provider_name );
 			}
 

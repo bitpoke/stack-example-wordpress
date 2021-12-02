@@ -3,8 +3,6 @@
  * REST API Reports stock controller
  *
  * Handles requests to the /reports/stock endpoint.
- *
- * @package WooCommerce Admin/API
  */
 
 namespace Automattic\WooCommerce\Admin\API\Reports\Stock;
@@ -16,7 +14,6 @@ use \Automattic\WooCommerce\Admin\API\Reports\ExportableInterface;
 /**
  * REST API Reports stock controller class.
  *
- * @package WooCommerce/API
  * @extends WC_REST_Reports_Controller
  */
 class Controller extends \WC_REST_Reports_Controller implements ExportableInterface {
@@ -34,6 +31,20 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 	 * @var string
 	 */
 	protected $rest_base = 'reports/stock';
+
+	/**
+	 * Registered stock status options.
+	 *
+	 * @var array
+	 */
+	protected $status_options;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->status_options = wc_get_product_stock_status_options();
+	}
 
 	/**
 	 * Maps query arguments from the REST request.
@@ -65,7 +76,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 
 		if ( 'lowstock' === $request['type'] ) {
 			$args['low_in_stock'] = true;
-		} elseif ( in_array( $request['type'], array_keys( wc_get_product_stock_status_options() ), true ) ) {
+		} elseif ( in_array( $request['type'], array_keys( $this->status_options ), true ) ) {
 			$args['stock_status'] = $request['type'];
 		}
 
@@ -290,7 +301,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 		$data = array(
 			'id'               => $product->get_id(),
 			'parent_id'        => $product->get_parent_id(),
-			'name'             => $product->get_name(),
+			'name'             => wp_strip_all_tags( $product->get_name() ),
 			'sku'              => $product->get_sku(),
 			'stock_status'     => $product->get_stock_status(),
 			'stock_quantity'   => (float) $product->get_stock_quantity(),
@@ -523,11 +534,22 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 	 * @return array Key value pair of Column ID => Label.
 	 */
 	public function get_export_columns() {
-		return array(
+		$export_columns = array(
 			'title'          => __( 'Product / Variation', 'woocommerce-admin' ),
 			'sku'            => __( 'SKU', 'woocommerce-admin' ),
 			'stock_status'   => __( 'Status', 'woocommerce-admin' ),
 			'stock_quantity' => __( 'Stock', 'woocommerce-admin' ),
+		);
+
+		/**
+		 * Filter to add or remove column names from the stock report for
+		 * export.
+		 *
+		 * @since 1.6.0
+		 */
+		return apply_filters(
+			'woocommerce_report_stock_export_columns',
+			$export_columns
 		);
 	}
 
@@ -538,11 +560,28 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 	 * @return array Key value pair of Column ID => Row Value.
 	 */
 	public function prepare_item_for_export( $item ) {
-		return array(
+		$status = $item['stock_status'];
+		if ( array_key_exists( $item['stock_status'], $this->status_options ) ) {
+			$status = $this->status_options[ $item['stock_status'] ];
+		}
+
+		$export_item = array(
 			'title'          => $item['name'],
 			'sku'            => $item['sku'],
-			'stock_status'   => $item['stock_status'],
+			'stock_status'   => $status,
 			'stock_quantity' => $item['stock_quantity'],
+		);
+
+		/**
+		 * Filter to prepare extra columns in the export item for the stock
+		 * report.
+		 *
+		 * @since 1.6.0
+		 */
+		return apply_filters(
+			'woocommerce_report_stock_prepare_export_item',
+			$export_item,
+			$item
 		);
 	}
 }

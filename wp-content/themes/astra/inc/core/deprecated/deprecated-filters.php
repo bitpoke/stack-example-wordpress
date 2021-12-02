@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Depreciating astra_color_palletes filter.
+// Deprecating astra_color_palletes filter.
 add_filter( 'astra_color_palettes', 'astra_deprecated_color_palette', 10, 1 );
 
 /**
@@ -81,8 +81,100 @@ if ( ! function_exists( 'astra_apply_filters_deprecated' ) ) {
 		if ( function_exists( 'apply_filters_deprecated' ) ) { /* WP >= 4.6 */
 			return apply_filters_deprecated( $tag, $args, $version, $replacement, $message );
 		} else {
-			return apply_filters_ref_array( $tag, $args );
+			return apply_filters_ref_array( $tag, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
 		}
 	}
 }
 
+// Deprecating ast_footer_bar_display filter.
+add_filter( 'astra_footer_bar_display', 'astra_deprecated_ast_footer_bar_display_filter', 10, 1 );
+
+/**
+ * Display footer builder markup.
+ *
+ * @since 3.7.4
+ * @param boolean $display_footer true | false.
+ * @return boolean true for enabled | false for disable.
+ */
+function astra_deprecated_ast_footer_bar_display_filter( $display_footer ) {
+	return astra_apply_filters_deprecated( 'ast_footer_bar_display', array( $display_footer ), '3.7.4', 'astra_footer_bar_display', '' );
+}
+
+// Deprecating ast_main_header_display filter.
+add_filter( 'astra_main_header_display', 'astra_deprecated_ast_main_header_display_filter', 10, 1 );
+
+/**
+ * Display header builder markup.
+ *
+ * @since 3.7.4
+ * @param boolean $display_header true | false.
+ * @return boolean true for enabled | false for disable.
+ */
+function astra_deprecated_ast_main_header_display_filter( $display_header ) {
+
+	return astra_apply_filters_deprecated( 'ast_main_header_display', array( $display_header ), '3.7.4', 'astra_main_header_display', '' );
+}
+
+// Deprecating secondary_submenu_border_class filter.
+add_filter( 'astra_secondary_submenu_border_class', 'astra_deprecated_secondary_submenu_border_class_filter', 10, 1 );
+
+/**
+ * Border class to secondary submenu
+ *
+ * @since 3.7.4
+ * @param string $class_selector custom class assigned to secondary submenu.
+ * @return string  $class_selector updated class selector.
+ */
+function astra_deprecated_secondary_submenu_border_class_filter( $class_selector ) {
+
+	$class_selector = astra_apply_filters_deprecated( 'secondary_submenu_border_class', array( $class_selector ), '3.7.4', 'astra_secondary_submenu_border_class', '' );
+
+	return $class_selector;
+}
+
+// Deprecating gtn_image_group_css_comp filter.
+add_filter( 'astra_gutenberg_image_group_style_support', 'astra_deprecated_gtn_image_group_css_comp_filter', 10, 1 );
+
+/**
+ * Image, group compatibility support released in v2.4.4.
+ *
+ * @since 3.7.4
+ * @param boolean $block_support true | false.
+ * @return boolean true for enabled | false for disable.
+ */
+function astra_deprecated_gtn_image_group_css_comp_filter( $block_support ) {
+
+	return astra_apply_filters_deprecated( 'gtn_image_group_css_comp', array( $block_support ), '3.7.4', 'astra_gutenberg_image_group_style_support', '' );
+}
+
+// Deprecating ast_footer_sml_layout filter.
+add_filter( 'astra_footer_sml_layout', 'astra_deprecated_ast_footer_sml_layout_filter', 10, 1 );
+
+/**
+ * Footer bar meta setting option.
+ *
+ * @since 3.7.4
+ * @param boolean $display_footer_bar true | false.
+ * @return boolean true for enabled | false for disable.
+ */
+function astra_deprecated_ast_footer_sml_layout_filter( $display_footer_bar ) {
+
+	return astra_apply_filters_deprecated( 'ast_footer_sml_layout', array( $display_footer_bar ), '3.7.4', 'astra_footer_sml_layout', '' );
+}
+
+// Deprecating primary_submenu_border_class filter.
+add_filter( 'astra_primary_submenu_border_class', 'astra_deprecated_primary_submenu_border_class_filter', 10, 1 );
+
+/**
+ * Border class to primary submenu
+ *
+ * @since 3.7.4
+ * @param string $class_selector custom class assigned to primary submenu.
+ * @return string  $class_selector updated class selector.
+ */
+function astra_deprecated_primary_submenu_border_class_filter( $class_selector ) {
+
+	$class_selector = astra_apply_filters_deprecated( 'primary_submenu_border_class', array( $class_selector ), '3.7.4', 'astra_primary_submenu_border_class', '' );
+
+	return $class_selector;
+}

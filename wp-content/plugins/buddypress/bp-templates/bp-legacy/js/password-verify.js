@@ -1,5 +1,6 @@
 /* jshint undef: false */
-/* @version 3.0.0 */
+/* @since 1.7.0 */
+/* @version 8.0.0 */
 /* Password Verify */
 ( function( $ ){
 	function check_pass_strength() {
@@ -14,7 +15,12 @@
 			return;
 		}
 
-		strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass2 );
+		// wp.passwordStrength.userInputBlacklist() has been deprecated in WP 5.5.0.
+		if ( 'function' === typeof wp.passwordStrength.userInputDisallowedList ) {
+			strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputDisallowedList(), pass2 );
+		} else {
+			strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass2 );
+		}
 
 		switch ( strength ) {
 			case 2:
@@ -36,9 +42,9 @@
 	}
 
 	// Bind check_pass_strength to keyup events in the password fields
-	$( document ).ready( function() {
-		$( '.password-entry' ).val( '' ).keyup( check_pass_strength );
-		$( '.password-entry-confirm' ).val( '' ).keyup( check_pass_strength );
+	$( function() {
+		$( '.password-entry' ).val( '' ).on( 'keyup', check_pass_strength );
+		$( '.password-entry-confirm' ).val( '' ).on( 'keyup', check_pass_strength );
 	});
 
 } )( jQuery );

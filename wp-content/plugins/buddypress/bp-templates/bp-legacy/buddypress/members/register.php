@@ -165,7 +165,7 @@
 					<h2><?php _e( 'Profile Details', 'buddypress' ); ?></h2>
 
 					<?php /* Use the profile field loop to render input fields for the 'base' profile field group */ ?>
-					<?php if ( bp_is_active( 'xprofile' ) ) : if ( bp_has_profile( array( 'profile_group_id' => 1, 'fetch_field_data' => false ) ) ) : while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
+					<?php if ( bp_is_active( 'xprofile' ) ) : if ( bp_has_profile( bp_xprofile_signup_args() ) ) : while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
 
 					<?php while ( bp_profile_fields() ) : bp_the_profile_field(); ?>
 
@@ -187,6 +187,7 @@
 								<p class="field-visibility-settings-toggle" id="field-visibility-settings-toggle-<?php bp_the_profile_field_id() ?>"><span id="<?php bp_the_profile_field_input_name(); ?>-2">
 									<?php
 									printf(
+										/* translators: %s: level of visibility */
 										__( 'This field can be seen by: %s', 'buddypress' ),
 										'<span class="current-visibility-level">' . bp_get_the_profile_field_visibility_level_label() . '</span>'
 									);

@@ -7,6 +7,8 @@
 
 namespace Automattic\Jetpack\Sync;
 
+use WP_Error;
+
 /**
  * A persistent queue that can be flushed in increments of N items,
  * and which blocks reads until checked-out buffers are checked in or
@@ -46,6 +48,19 @@ class Queue {
 	public function add( $item ) {
 		global $wpdb;
 		$added = false;
+
+		// If empty, don't add.
+		if ( empty( $item ) ) {
+			return;
+		}
+
+		// Attempt to serialize data, if an exception (closures) return early.
+		try {
+			$item = serialize( $item ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+		} catch ( \Exception $ex ) {
+			return;
+		}
+
 		// This basically tries to add the option until enough time has elapsed that
 		// it has a unique (microtime-based) option key.
 		while ( ! $added ) {
@@ -53,7 +68,7 @@ class Queue {
 				$wpdb->prepare(
 					"INSERT INTO $wpdb->options (option_name, option_value, autoload) VALUES (%s, %s,%s)",
 					$this->get_next_data_row_option_name(),
-					serialize( $item ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+					$item,
 					'no'
 				)
 			);
@@ -77,15 +92,24 @@ class Queue {
 		$rows        = array();
 		$count_items = count( $items );
 		for ( $i = 0; $i < $count_items; ++$i ) {
-			$option_name  = esc_sql( $base_option_name . '-' . $i );
-			$option_value = esc_sql( serialize( $items[ $i ] ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-			$rows[]       = "('$option_name', '$option_value', 'no')";
+			// skip empty items.
+			if ( empty( $items[ $i ] ) ) {
+				continue;
+			}
+			try {
+				$option_name  = esc_sql( $base_option_name . '-' . $i );
+				$option_value = esc_sql( serialize( $items[ $i ] ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+				$rows[]       = "('$option_name', '$option_value', 'no')";
+			} catch ( \Exception $e ) {
+				// Item cannot be serialized so skip.
+				continue;
+			}
 		}
 
 		$rows_added = $wpdb->query( $query . join( ',', $rows ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-		if ( count( $items ) === $rows_added ) {
-			return new \WP_Error( 'row_count_mismatch', "The number of rows inserted didn't match the size of the input array" );
+		if ( count( $items ) !== $rows_added ) {
+			return new WP_Error( 'row_count_mismatch', "The number of rows inserted didn't match the size of the input array" );
 		}
 		return true;
 	}
@@ -152,7 +176,7 @@ class Queue {
 		// Break apart the item name to get the timestamp.
 		$matches = null;
 		if ( preg_match( '/^jpsq_' . $this->id . '-(\d+\.\d+)-/', $first_item_name, $matches ) ) {
-			return $now - floatval( $matches[1] );
+			return $now - (float) $matches[1];
 		} else {
 			return 0;
 		}
@@ -216,7 +240,7 @@ class Queue {
 	 */
 	public function checkout( $buffer_size ) {
 		if ( $this->get_checkout_id() ) {
-			return new \WP_Error( 'unclosed_buffer', 'There is an unclosed buffer' );
+			return new WP_Error( 'unclosed_buffer', 'There is an unclosed buffer' );
 		}
 
 		$buffer_id = uniqid();
@@ -247,7 +271,7 @@ class Queue {
 	 */
 	public function get_ids( $items ) {
 		return array_map(
-			function( $item ) {
+			function ( $item ) {
 				return $item->id;
 			},
 			$items
@@ -287,7 +311,7 @@ class Queue {
 	 */
 	public function checkout_with_memory_limit( $max_memory, $max_buffer_size = 500 ) {
 		if ( $this->get_checkout_id() ) {
-			return new \WP_Error( 'unclosed_buffer', 'There is an unclosed buffer' );
+			return new WP_Error( 'unclosed_buffer', 'There is an unclosed buffer' );
 		}
 
 		$buffer_id = uniqid();
@@ -338,7 +362,9 @@ class Queue {
 
 		$items = $wpdb->get_results( $query, OBJECT ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		foreach ( $items as $item ) {
-			$item->value = maybe_unserialize( $item->value );
+			// @codingStandardsIgnoreStart
+			$item->value = @unserialize( $item->value );
+			// @codingStandardsIgnoreEnd
 		}
 
 		if ( count( $items ) === 0 ) {
@@ -383,6 +409,11 @@ class Queue {
 		$is_valid = $this->validate_checkout( $buffer );
 
 		if ( is_wp_error( $is_valid ) ) {
+			// Always delete ids_to_remove even when buffer is no longer checked-out.
+			// They were processed by WP.com so safe to remove from queue.
+			if ( ! is_null( $ids_to_remove ) ) {
+				$this->delete( $ids_to_remove );
+			}
 			return $is_valid;
 		}
 
@@ -463,11 +494,11 @@ class Queue {
 		}
 
 		if ( 30 === $tries ) {
-			return new \WP_Error( 'lock_timeout', 'Timeout waiting for sync queue to empty' );
+			return new WP_Error( 'lock_timeout', 'Timeout waiting for sync queue to empty' );
 		}
 
 		if ( $this->get_checkout_id() ) {
-			return new \WP_Error( 'unclosed_buffer', 'There is an unclosed buffer' );
+			return new WP_Error( 'unclosed_buffer', 'There is an unclosed buffer' );
 		}
 
 		// Hopefully this means we can acquire a checkout?
@@ -516,7 +547,7 @@ class Queue {
 
 		if ( $checkout_value ) {
 			list( $checkout_id, $timestamp ) = explode( ':', $checkout_value );
-			if ( intval( $timestamp ) > time() ) {
+			if ( (int) $timestamp > time() ) {
 				return $checkout_id;
 			}
 		}
@@ -644,6 +675,11 @@ class Queue {
 	private function fetch_items_by_id( $items_ids ) {
 		global $wpdb;
 
+		// return early if $items_ids is empty or not an array.
+		if ( empty( $items_ids ) || ! is_array( $items_ids ) ) {
+			return null;
+		}
+
 		$ids_placeholders        = implode( ', ', array_fill( 0, count( $items_ids ), '%s' ) );
 		$query_with_placeholders = "SELECT option_name AS id, option_value AS value
 				FROM $wpdb->options
@@ -662,15 +698,17 @@ class Queue {
 	/**
 	 * Unserialize item values.
 	 *
-	 * @param array $items Events from the Queue to be serialized.
+	 * @param array $items Events from the Queue to be unserialized.
 	 *
 	 * @return mixed
 	 */
 	private function unserialize_values( $items ) {
 		array_walk(
 			$items,
-			function( $item ) {
-				$item->value = maybe_unserialize( $item->value );
+			function ( $item ) {
+				// @codingStandardsIgnoreStart
+				$item->value = @unserialize( $item->value );
+				// @codingStandardsIgnoreEnd
 			}
 		);
 
@@ -683,22 +721,22 @@ class Queue {
 	 *
 	 * @param Automattic\Jetpack\Sync\Queue_Buffer $buffer The Queue_Buffer.
 	 *
-	 * @return bool|\WP_Error
+	 * @return bool|WP_Error
 	 */
 	private function validate_checkout( $buffer ) {
 		if ( ! $buffer instanceof Queue_Buffer ) {
-			return new \WP_Error( 'not_a_buffer', 'You must checkin an instance of Automattic\\Jetpack\\Sync\\Queue_Buffer' );
+			return new WP_Error( 'not_a_buffer', 'You must checkin an instance of Automattic\\Jetpack\\Sync\\Queue_Buffer' );
 		}
 
 		$checkout_id = $this->get_checkout_id();
 
 		if ( ! $checkout_id ) {
-			return new \WP_Error( 'buffer_not_checked_out', 'There are no checked out buffers' );
+			return new WP_Error( 'buffer_not_checked_out', 'There are no checked out buffers' );
 		}
 
 		// TODO: change to strict comparison.
 		if ( $checkout_id != $buffer->id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-			return new \WP_Error( 'buffer_mismatch', 'The buffer you checked in was not checked out' );
+			return new WP_Error( 'buffer_mismatch', 'The buffer you checked in was not checked out' );
 		}
 
 		return true;

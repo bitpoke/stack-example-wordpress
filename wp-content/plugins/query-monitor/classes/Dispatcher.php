@@ -52,6 +52,14 @@ abstract class QM_Dispatcher {
 		 *
 		 * The dynamic portion of the hook name, `$this->id`, refers to the dispatcher ID.
 		 *
+		 * Possible filter names include:
+		 *
+		 *  - `qm/dispatch/html`
+		 *  - `qm/dispatch/ajax`
+		 *  - `qm/dispatch/redirect`
+		 *  - `qm/dispatch/rest`
+		 *  - `qm/dispatch/wp_die`
+		 *
 		 * @since 2.8.0
 		 *
 		 * @param bool $true Whether or not the dispatcher is enabled.
@@ -90,7 +98,7 @@ abstract class QM_Dispatcher {
 	}
 
 	public function init() {
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
 		}
 
@@ -109,7 +117,7 @@ abstract class QM_Dispatcher {
 		// nothing
 	}
 
-	public function user_can_view() {
+	public static function user_can_view() {
 
 		if ( ! did_action( 'plugins_loaded' ) ) {
 			return false;
@@ -124,15 +132,15 @@ abstract class QM_Dispatcher {
 	}
 
 	public static function user_verified() {
-		if ( isset( $_COOKIE[QM_COOKIE] ) ) { // @codingStandardsIgnoreLine
-			return self::verify_cookie( wp_unslash( $_COOKIE[QM_COOKIE] ) ); // @codingStandardsIgnoreLine
+		if ( isset( $_COOKIE[QM_COOKIE] ) ) { // phpcs:ignore
+			return self::verify_cookie( wp_unslash( $_COOKIE[QM_COOKIE] ) ); // phpcs:ignore
 		}
 		return false;
 	}
 
 	public static function editor_cookie() {
-		if ( isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // @codingStandardsIgnoreLine
-			return $_COOKIE[QM_EDITOR_COOKIE]; // @codingStandardsIgnoreLine
+		if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // phpcs:ignore
+			return $_COOKIE[QM_EDITOR_COOKIE]; // phpcs:ignore
 		}
 		return '';
 	}

@@ -26,10 +26,11 @@ if ( ! function_exists( 'astra_get_foreground_color' ) ) {
 	 */
 	function astra_get_foreground_color( $hex ) {
 
+		$hex = apply_filters( 'astra_before_foreground_color_generation', $hex );
+
 		// bail early if color's not set.
 		if ( 'transparent' == $hex || 'false' == $hex || '#' == $hex || empty( $hex ) ) {
 			return 'transparent';
-
 		}
 
 		// Get clean hex code.
@@ -37,6 +38,19 @@ if ( ! function_exists( 'astra_get_foreground_color' ) ) {
 
 		if ( 3 == strlen( $hex ) ) {
 			$hex = str_repeat( substr( $hex, 0, 1 ), 2 ) . str_repeat( substr( $hex, 1, 1 ), 2 ) . str_repeat( substr( $hex, 2, 1 ), 2 );
+		}
+
+		if ( strpos( $hex, 'rgba' ) !== false ) {
+
+			$rgba = preg_replace( '/[^0-9,]/', '', $hex );
+			$rgba = explode( ',', $rgba );
+
+			$hex = sprintf( '#%02x%02x%02x', $rgba[0], $rgba[1], $rgba[2] );
+		}
+
+		// Return if non hex.
+		if ( ! ctype_xdigit( $hex ) ) {
+			return $hex;
 		}
 
 		// Get r, g & b codes from hex code.
@@ -98,8 +112,6 @@ if ( ! function_exists( 'astra_responsive_font' ) ) {
 	 */
 	function astra_responsive_font( $font, $device = 'desktop', $default = '' ) {
 
-		$css_val = '';
-
 		if ( isset( $font[ $device ] ) && isset( $font[ $device . '-unit' ] ) ) {
 			if ( '' != $default ) {
 				$font_size = astra_get_css_value( $font[ $device ], $font[ $device . '-unit' ], $default );
@@ -141,8 +153,8 @@ if ( ! function_exists( 'astra_get_font_css_value' ) ) {
 	 */
 	function astra_get_font_css_value( $value, $unit = 'px', $device = 'desktop' ) {
 
-		// If value is empty or 0 then return blank.
-		if ( '' == $value || 0 == $value ) {
+		// If value is empty then return blank.
+		if ( '' == $value || ( 0 == $value && ! astra_zero_font_size_case() ) ) {
 			return '';
 		}
 
@@ -315,16 +327,38 @@ if ( ! function_exists( 'astra_get_background_obj' ) ) {
 
 		$bg_img   = isset( $bg_obj['background-image'] ) ? $bg_obj['background-image'] : '';
 		$bg_color = isset( $bg_obj['background-color'] ) ? $bg_obj['background-color'] : '';
+		$bg_type  = isset( $bg_obj['background-type'] ) ? $bg_obj['background-type'] : '';
 
-		if ( '' !== $bg_img && '' !== $bg_color ) {
-			$gen_bg_css = array(
-				'background-color' => 'unset',
-				'background-image' => 'linear-gradient(to right, ' . esc_attr( $bg_color ) . ', ' . esc_attr( $bg_color ) . '), url(' . esc_url( $bg_img ) . ')',
-			);
-		} elseif ( '' !== $bg_img ) {
-			$gen_bg_css = array( 'background-image' => 'url(' . esc_url( $bg_img ) . ')' );
+		if ( '' !== $bg_type ) {
+			switch ( $bg_type ) {
+				case 'color':
+					if ( '' !== $bg_img && '' !== $bg_color ) {
+						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
+					} elseif ( '' === $bg_img ) {
+						$gen_bg_css['background-color'] = $bg_color . ';';
+					}
+					break;
+
+				case 'image':
+					if ( '' !== $bg_img && '' !== $bg_color && ( ! is_numeric( strpos( $bg_color, 'linear-gradient' ) ) && ! is_numeric( strpos( $bg_color, 'radial-gradient' ) ) ) ) {
+						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
+					}
+					if ( '' === $bg_color || is_numeric( strpos( $bg_color, 'linear-gradient' ) ) || is_numeric( strpos( $bg_color, 'radial-gradient' ) ) && '' !== $bg_img ) {
+						$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+					}
+					break;
+
+				case 'gradient':
+					if ( isset( $bg_color ) ) {
+						$gen_bg_css['background-image'] = $bg_color . ';';
+					}
+					break;
+
+				default:
+					break;
+			}
 		} elseif ( '' !== $bg_color ) {
-			$gen_bg_css = array( 'background-color' => esc_attr( $bg_color ) );
+			$gen_bg_css['background-color'] = $bg_color . ';';
 		}
 
 		if ( '' !== $bg_img ) {
@@ -374,15 +408,17 @@ if ( ! function_exists( 'astra_parse_css' ) ) {
 				}
 
 				if ( ! count( $properties ) ) {
-					continue; }
+					continue;
+				}
 
 				$temp_parse_css   = $selector . '{';
 				$properties_added = 0;
 
 				foreach ( $properties as $property => $value ) {
 
-					if ( '' === $value ) {
-						continue; }
+					if ( '' == $value && 0 !== $value ) {
+						continue;
+					}
 
 					$properties_added++;
 					$temp_parse_css .= $property . ':' . $value . ';';
@@ -431,9 +467,9 @@ if ( ! function_exists( 'astra_get_option' ) ) {
 	 * Return Theme options.
 	 *
 	 * @param  string $option       Option key.
-	 * @param  string $default      Option default value.
+	 * @param  mixed  $default      Option default value.
 	 * @param  string $deprecated   Option default value.
-	 * @return Mixed               Return option value.
+	 * @return mixed               Return option value.
 	 */
 	function astra_get_option( $option, $default = '', $deprecated = '' ) {
 
@@ -541,7 +577,7 @@ if ( ! function_exists( 'astra_get_option_meta' ) ) {
 
 			if ( empty( $value ) || 'default' == $value ) {
 
-				if ( true == $only_meta ) {
+				if ( true === $only_meta ) {
 					return false;
 				}
 
@@ -796,7 +832,7 @@ if ( ! function_exists( 'astra_the_title' ) ) {
 		$blog_post_title   = astra_get_option( 'blog-post-structure' );
 		$single_post_title = astra_get_option( 'blog-single-post-structure' );
 
-		if ( ( ( ! is_singular() && in_array( 'title-meta', $blog_post_title ) ) || ( is_single() && in_array( 'single-title-meta', $single_post_title ) ) || is_page() ) ) {
+		if ( ( ! is_singular() && in_array( 'title-meta', $blog_post_title ) ) || ( is_single() && in_array( 'single-title-meta', $single_post_title ) ) || is_page() ) {
 			if ( apply_filters( 'astra_the_title_enabled', true ) ) {
 
 				$title  = astra_get_the_title( $post_id );
@@ -988,6 +1024,11 @@ if ( ! function_exists( 'astra_adjust_brightness' ) ) {
 		// Get rgb vars.
 		$hex = str_replace( '#', '', $hex );
 
+		// Return if non hex.
+		if ( ! ctype_xdigit( $hex ) ) {
+			return $hex;
+		}
+
 		$shortcode_atts = array(
 			'r' => hexdec( substr( $hex, 0, 2 ) ),
 			'g' => hexdec( substr( $hex, 2, 2 ) ),
@@ -1110,11 +1151,11 @@ if ( ! function_exists( 'astra_get_pro_url' ) ) :
 		}
 		// Set up our URL if we have a medium.
 		if ( isset( $medium ) ) {
-			$astra_pro_url = add_query_arg( 'utm_medium', sanitize_text_field( $medium ), $url );
+			$astra_pro_url = add_query_arg( 'utm_medium', sanitize_text_field( $medium ), $astra_pro_url );
 		}
 		// Set up our URL if we have a campaign.
 		if ( isset( $campaign ) ) {
-			$astra_pro_url = add_query_arg( 'utm_campaign', sanitize_text_field( $campaign ), $url );
+			$astra_pro_url = add_query_arg( 'utm_campaign', sanitize_text_field( $campaign ), $astra_pro_url );
 		}
 
 		return esc_url( apply_filters( 'astra_get_pro_url', $astra_pro_url, $url ) );
@@ -1135,13 +1176,14 @@ if ( ! function_exists( 'astra_get_search_form' ) ) :
 	 */
 	function astra_get_search_form( $echo = true ) {
 
-		$form = '<form role="search" method="get" class="search-form" action="' . esc_url( home_url( '/' ) ) . '">
-			<label>
-				<span class="screen-reader-text">' . _x( 'Search for:', 'label', 'astra' ) . '</span>
-				<input type="search" class="search-field" ' . apply_filters( 'astra_search_field_toggle_data_attrs', '' ) . ' placeholder="' . apply_filters( 'astra_search_field_placeholder', esc_attr_x( 'Search &hellip;', 'placeholder', 'astra' ) ) . '" value="' . get_search_query() . '" name="s" role="search" tabindex="-1"/>
-			</label>
-			<button type="submit" class="search-submit" value="' . esc_attr__( 'Search', 'astra' ) . '"  aria-label="search submit"><i class="astra-search-icon"></i></button>
-		</form>';
+		$form = get_search_form(
+			array(
+				'input_placeholder' => apply_filters( 'astra_search_field_placeholder', esc_attr_x( 'Search &hellip;', 'placeholder', 'astra' ) ),
+				'data_attributes'   => apply_filters( 'astra_search_field_toggle_data_attrs', '' ),
+				'input_value'       => get_search_query(),
+				'show_input_submit' => false,
+			)
+		);
 
 		/**
 		 * Filters the HTML output of the search form.
@@ -1204,6 +1246,57 @@ if ( ! function_exists( 'astra_responsive_spacing' ) ) {
 	}
 }
 
+/**
+ * Get the tablet breakpoint value.
+ *
+ * @param string $min min.
+ * @param string $max max.
+ *
+ * @since 2.4.0
+ *
+ * @return number $breakpoint.
+ */
+function astra_get_tablet_breakpoint( $min = '', $max = '' ) {
+
+	$update_breakpoint = astra_get_option( 'can-update-theme-tablet-breakpoint', true );
+
+	// Change default for new users.
+	$default = ( true === $update_breakpoint ) ? 921 : 768;
+
+	$header_breakpoint = apply_filters( 'astra_tablet_breakpoint', $default );
+
+	if ( '' !== $min ) {
+		$header_breakpoint = $header_breakpoint - $min;
+	} elseif ( '' !== $max ) {
+		$header_breakpoint = $header_breakpoint + $max;
+	}
+
+	return absint( $header_breakpoint );
+}
+
+/**
+ * Get the mobile breakpoint value.
+ *
+ * @param string $min min.
+ * @param string $max max.
+ *
+ * @since 2.4.0
+ *
+ * @return number header_breakpoint.
+ */
+function astra_get_mobile_breakpoint( $min = '', $max = '' ) {
+
+	$header_breakpoint = apply_filters( 'astra_mobile_breakpoint', 544 );
+
+	if ( '' !== $min ) {
+		$header_breakpoint = $header_breakpoint - $min;
+	} elseif ( '' !== $max ) {
+		$header_breakpoint = $header_breakpoint + $max;
+	}
+
+	return absint( $header_breakpoint );
+}
+
 /*
  * Apply CSS for the element
  */
@@ -1223,10 +1316,10 @@ if ( ! function_exists( 'astra_color_responsive_css' ) ) {
 			$css .= $selector . '{' . $css_property . ':' . esc_attr( $setting['desktop'] ) . ';}';
 		}
 		if ( isset( $setting['tablet'] ) && ! empty( $setting['tablet'] ) ) {
-			$css .= '@media (max-width:768px) {' . $selector . '{' . $css_property . ':' . esc_attr( $setting['tablet'] ) . ';} }';
+			$css .= '@media (max-width:' . astra_get_tablet_breakpoint() . 'px) {' . $selector . '{' . $css_property . ':' . esc_attr( $setting['tablet'] ) . ';} }';
 		}
 		if ( isset( $setting['mobile'] ) && ! empty( $setting['mobile'] ) ) {
-			$css .= '@media (max-width:544px) {' . $selector . '{' . $css_property . ':' . esc_attr( $setting['mobile'] ) . ';} }';
+			$css .= '@media (max-width:' . astra_get_mobile_breakpoint() . 'px) {' . $selector . '{' . $css_property . ':' . esc_attr( $setting['mobile'] ) . ';} }';
 		}
 		return $css;
 	}
@@ -1315,4 +1408,145 @@ function astra_get_db_option( $option, $default = '', $deprecated = '' ) {
 	 * @var Mixed.
 	 */
 	return apply_filters( "astra_get_db_option_{$option}", $value, $option, $default );
+}
+
+/**
+ * Generate Responsive Background Color CSS.
+ *
+ * @param array  $bg_obj_res array of background object.
+ * @param string $device CSS for which device.
+ * @return array
+ */
+function astra_get_responsive_background_obj( $bg_obj_res, $device ) {
+
+	$gen_bg_css = array();
+
+	if ( ! is_array( $bg_obj_res ) ) {
+		return;
+	}
+
+	$bg_obj      = $bg_obj_res[ $device ];
+	$bg_img      = isset( $bg_obj['background-image'] ) ? $bg_obj['background-image'] : '';
+	$bg_tab_img  = isset( $bg_obj_res['tablet']['background-image'] ) ? $bg_obj_res['tablet']['background-image'] : '';
+	$bg_desk_img = isset( $bg_obj_res['desktop']['background-image'] ) ? $bg_obj_res['desktop']['background-image'] : '';
+	$bg_color    = isset( $bg_obj['background-color'] ) ? $bg_obj['background-color'] : '';
+	$tablet_css  = ( isset( $bg_obj_res['tablet']['background-image'] ) && $bg_obj_res['tablet']['background-image'] ) ? true : false;
+	$desktop_css = ( isset( $bg_obj_res['desktop']['background-image'] ) && $bg_obj_res['desktop']['background-image'] ) ? true : false;
+
+	$bg_type = ( isset( $bg_obj['background-type'] ) && $bg_obj['background-type'] ) ? $bg_obj['background-type'] : '';
+
+	if ( '' !== $bg_type ) {
+		switch ( $bg_type ) {
+			case 'color':
+				if ( '' !== $bg_img && '' !== $bg_color ) {
+					$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
+				} elseif ( 'mobile' === $device ) {
+					if ( $desktop_css ) {
+						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_desk_img . ');';
+					} elseif ( $tablet_css ) {
+						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_tab_img . ');';
+					} else {
+						$gen_bg_css['background-color'] = $bg_color . ';';
+						$gen_bg_css['background-image'] = 'none;';
+					}
+				} elseif ( 'tablet' === $device ) {
+					if ( $desktop_css ) {
+						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_desk_img . ');';
+					} else {
+						$gen_bg_css['background-color'] = $bg_color . ';';
+						$gen_bg_css['background-image'] = 'none;';
+					}
+				} elseif ( '' === $bg_img ) {
+					$gen_bg_css['background-color'] = $bg_color . ';';
+					$gen_bg_css['background-image'] = 'none;';
+				}
+				break;
+
+			case 'image':
+				if ( '' !== $bg_img && '' !== $bg_color && ( ! is_numeric( strpos( $bg_color, 'linear-gradient' ) ) && ! is_numeric( strpos( $bg_color, 'radial-gradient' ) ) ) ) {
+					$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
+				}
+				if ( '' === $bg_color || is_numeric( strpos( $bg_color, 'linear-gradient' ) ) || is_numeric( strpos( $bg_color, 'radial-gradient' ) ) && '' !== $bg_img ) {
+					$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+				}
+				break;
+
+			case 'gradient':
+				if ( isset( $bg_color ) ) {
+					$gen_bg_css['background-image'] = $bg_color . ';';
+				}
+				break;
+
+			default:
+				break;
+		}
+	} elseif ( '' !== $bg_color ) {
+		$gen_bg_css['background-color'] = $bg_color . ';';
+	}
+
+	if ( '' !== $bg_img ) {
+		if ( isset( $bg_obj['background-repeat'] ) ) {
+			$gen_bg_css['background-repeat'] = esc_attr( $bg_obj['background-repeat'] );
+		}
+
+		if ( isset( $bg_obj['background-position'] ) ) {
+			$gen_bg_css['background-position'] = esc_attr( $bg_obj['background-position'] );
+		}
+
+		if ( isset( $bg_obj['background-size'] ) ) {
+			$gen_bg_css['background-size'] = esc_attr( $bg_obj['background-size'] );
+		}
+
+		if ( isset( $bg_obj['background-attachment'] ) ) {
+			$gen_bg_css['background-attachment'] = esc_attr( $bg_obj['background-attachment'] );
+		}
+	}
+
+	return $gen_bg_css;
+}
+
+/**
+ * Common function to check is pagination is enabled on current page.
+ *
+ * @since 3.0.1
+ * @return boolean
+ */
+function astra_check_pagination_enabled() {
+	global  $wp_query;
+
+	return ( $wp_query->max_num_pages > 1 && apply_filters( 'astra_pagination_enabled', true ) );
+}
+
+/**
+ * Verify is current post comments are enabled or not for applying dynamic CSS.
+ *
+ * @since 3.0.1
+ * @return boolean
+ */
+function astra_check_current_post_comment_enabled() {
+	return ( is_singular() && comments_open() );
+}
+
+/**
+ * Dont apply zero size to existing user.
+ *
+ * @since 3.6.9
+ * @return boolean false if it is an existing user , true if not.
+ */
+function astra_zero_font_size_case() {
+	$astra_settings                                  = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings['astra-zero-font-size-case-css'] = isset( $astra_settings['astra-zero-font-size-case-css'] ) ? false : true;
+	return apply_filters( 'astra_zero_font_size_case', $astra_settings['astra-zero-font-size-case-css'] );
+}
+
+/**
+ * Check the WordPress version.
+ *
+ * @since  2.5.4
+ * @param string $version   WordPress version to compare with the current version.
+ * @param mixed  $compare   Comparison value i.e > or < etc.
+ * @return bool|null            True/False based on the  $version and $compare value.
+ */
+function astra_wp_version_compare( $version, $compare ) {
+	return version_compare( get_bloginfo( 'version' ), $version, $compare );
 }

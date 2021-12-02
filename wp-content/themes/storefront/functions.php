@@ -31,6 +31,7 @@ $storefront = (object) array(
 require 'inc/storefront-functions.php';
 require 'inc/storefront-template-hooks.php';
 require 'inc/storefront-template-functions.php';
+require 'inc/wordpress-shims.php';
 
 if ( class_exists( 'Jetpack' ) ) {
 	$storefront->jetpack = require 'inc/jetpack/class-storefront-jetpack.php';
@@ -61,10 +62,7 @@ if ( is_admin() ) {
 if ( version_compare( get_bloginfo( 'version' ), '4.7.3', '>=' ) && ( is_admin() || is_customize_preview() ) ) {
 	require 'inc/nux/class-storefront-nux-admin.php';
 	require 'inc/nux/class-storefront-nux-guided-tour.php';
-
-	if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
-		require 'inc/nux/class-storefront-nux-starter-content.php';
-	}
+	require 'inc/nux/class-storefront-nux-starter-content.php';
 }
 
 /**

@@ -30,11 +30,11 @@ if ( ! class_exists( 'Astra_Heading_Colors' ) ) {
 		 */
 		public function __construct() {
 
-			require_once ASTRA_THEME_HEADING_COLORS_DIR . 'class-astra-heading-colors-loader.php';
+			require_once ASTRA_THEME_HEADING_COLORS_DIR . 'class-astra-heading-colors-loader.php';// phpcs:ignore: WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 
 			// Include front end files.
 			if ( ! is_admin() ) {
-				require_once ASTRA_THEME_HEADING_COLORS_DIR . 'dynamic-css/dynamic.css.php';
+				require_once ASTRA_THEME_HEADING_COLORS_DIR . 'dynamic-css/dynamic.css.php';// phpcs:ignore: WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 			}
 		}
 	}

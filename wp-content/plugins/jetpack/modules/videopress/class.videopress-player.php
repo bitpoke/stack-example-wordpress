@@ -108,8 +108,8 @@ class VideoPress_Player {
 
 			if ( ! defined( 'WP_DEBUG' ) || WP_DEBUG !== true ) {
 				$expire = 3600;
-				if ( isset( $video->expires ) && is_int( $video->expires ) ) {
-					$expires_diff = time() - $video->expires;
+				if ( isset( $this->video->expires ) && is_int( $this->video->expires ) ) {
+					$expires_diff = time() - $this->video->expires;
 					if ( $expires_diff > 0 && $expires_diff < 86400 ) { // allowed range: 1 second to 1 day
 						$expire = $expires_diff;
 					}
@@ -622,6 +622,10 @@ class VideoPress_Player {
 			$this->options['hd'] = (bool) get_option( 'video_player_high_quality', false );
 		}
 
+		if ( ! array_key_exists( 'cover', $this->options ) ) {
+			$this->options['cover'] = true;
+		}
+
 		$videopress_options = array(
 			'width'  => absint( $this->video->calculated_width ),
 			'height' => absint( $this->video->calculated_height ),
@@ -629,8 +633,8 @@ class VideoPress_Player {
 		foreach ( $this->options as $option => $value ) {
 			switch ( $option ) {
 				case 'at':
-					if ( intval( $value ) ) {
-						$videopress_options[ $option ] = intval( $value );
+					if ( (int) $value ) {
+						$videopress_options[ $option ] = (int) $value;
 					}
 					break;
 				case 'autoplay':
@@ -638,6 +642,7 @@ class VideoPress_Player {
 				case 'hd':
 				case 'loop':
 				case 'permalink':
+				case 'cover':
 					if ( in_array( $value, array( 1, 'true' ) ) ) {
 						$videopress_options[ $option ] = true;
 					} elseif ( in_array( $value, array( 0, 'false' ) ) ) {

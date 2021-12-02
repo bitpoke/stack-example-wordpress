@@ -1,32 +1,76 @@
 <?php
 /**
- * Plugin Name: Jetpack by WordPress.com
+ * Plugin Name: Jetpack
  * Plugin URI: https://jetpack.com
- * Description: Bring the power of the WordPress.com cloud to your self-hosted WordPress. Jetpack enables you to connect your blog to a WordPress.com account to use the powerful features normally only available to WordPress.com users.
+ * Description: Security, performance, and marketing tools made by WordPress experts. Jetpack keeps your site protected so you can focus on more important things.
  * Author: Automattic
- * Version: 8.2
+ * Version: 10.3
  * Author URI: https://jetpack.com
  * License: GPL2+
  * Text Domain: jetpack
- * Domain Path: /languages/
+ * Requires at least: 5.7
+ * Requires PHP: 5.6
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
-define( 'JETPACK__MINIMUM_WP_VERSION', '5.2' );
+/*
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+define( 'JETPACK__MINIMUM_WP_VERSION', '5.7' );
 define( 'JETPACK__MINIMUM_PHP_VERSION', '5.6' );
-define( 'JETPACK__VERSION', '8.2' );
+define( 'JETPACK__VERSION', '10.3' );
+
+/**
+ * Constant used to fetch the connection owner token
+ *
+ * @deprecated 9.0.0
+ * @var boolean
+ */
 define( 'JETPACK_MASTER_USER', true );
+
 define( 'JETPACK__API_VERSION', 1 );
 define( 'JETPACK__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'JETPACK__PLUGIN_FILE', __FILE__ );
 
+defined( 'JETPACK__RELEASE_POST_BLOG_SLUG' ) || define( 'JETPACK__RELEASE_POST_BLOG_SLUG', 'jetpackreleaseblog.wordpress.com' );
 defined( 'JETPACK_CLIENT__AUTH_LOCATION' ) || define( 'JETPACK_CLIENT__AUTH_LOCATION', 'header' );
+
+/**
+ * WP.com API no longer supports `http://` protocol.
+ * This means Jetpack can't function properly on servers that can't send outbound HTTPS requests.
+ * The constant is no longer used.
+ *
+ * @deprecated 9.1.0
+ */
 defined( 'JETPACK_CLIENT__HTTPS' ) || define( 'JETPACK_CLIENT__HTTPS', 'AUTO' );
+
 defined( 'JETPACK__GLOTPRESS_LOCALES_PATH' ) || define( 'JETPACK__GLOTPRESS_LOCALES_PATH', JETPACK__PLUGIN_DIR . 'locales.php' );
 defined( 'JETPACK__API_BASE' ) || define( 'JETPACK__API_BASE', 'https://jetpack.wordpress.com/jetpack.' );
 defined( 'JETPACK_PROTECT__API_HOST' ) || define( 'JETPACK_PROTECT__API_HOST', 'https://api.bruteprotect.com/' );
+defined( 'JETPACK__WPCOM_JSON_API_BASE' ) || define( 'JETPACK__WPCOM_JSON_API_BASE', 'https://public-api.wordpress.com' );
+
+/**
+ * WP.com API no longer supports `http://` protocol.
+ * Use `JETPACK__WPCOM_JSON_API_BASE` instead, which has the protocol hardcoded.
+ *
+ * @deprecated 9.1.0
+ */
 defined( 'JETPACK__WPCOM_JSON_API_HOST' ) || define( 'JETPACK__WPCOM_JSON_API_HOST', 'public-api.wordpress.com' );
+
 defined( 'JETPACK__SANDBOX_DOMAIN' ) || define( 'JETPACK__SANDBOX_DOMAIN', '' );
 defined( 'JETPACK__DEBUGGER_PUBLIC_KEY' ) || define(
 	'JETPACK__DEBUGGER_PUBLIC_KEY',
@@ -91,9 +135,10 @@ if ( version_compare( $GLOBALS['wp_version'], JETPACK__MINIMUM_WP_VERSION, '<' )
  * - If it succeeds, we require load-jetpack.php, where all legacy files are required,
  *   and where we add on to various hooks that we expect to always run.
  */
-$jetpack_autoloader = JETPACK__PLUGIN_DIR . 'vendor/autoload_packages.php';
-if ( is_readable( $jetpack_autoloader ) ) {
-	require $jetpack_autoloader;
+$jetpack_autoloader           = JETPACK__PLUGIN_DIR . 'vendor/autoload_packages.php';
+$jetpack_module_headings_file = JETPACK__PLUGIN_DIR . 'modules/module-headings.php'; // This file is loaded later in load-jetpack.php, but let's check here to pause before half-loading Jetpack.
+if ( is_readable( $jetpack_autoloader ) && is_readable( $jetpack_module_headings_file ) ) {
+	require_once $jetpack_autoloader;
 } else {
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -110,7 +155,7 @@ if ( is_readable( $jetpack_autoloader ) ) {
 	 *
 	 * @since 7.4.0
 	 */
-	function jetpack_admin_missing_autoloader() {
+	function jetpack_admin_missing_files() {
 		?>
 		<div class="notice notice-error is-dismissible">
 			<p>
@@ -118,7 +163,7 @@ if ( is_readable( $jetpack_autoloader ) ) {
 				printf(
 					wp_kses(
 						/* translators: Placeholder is a link to a support document. */
-						__( 'Your installation of Jetpack is incomplete. If you installed Jetpack from GitHub, please refer to <a href="%1$s" target="_blank" rel="noopener noreferrer">this document</a> to set up your development environment.', 'jetpack' ),
+						__( 'Your installation of Jetpack is incomplete. If you installed Jetpack from GitHub, please refer to <a href="%1$s" target="_blank" rel="noopener noreferrer">this document</a> to set up your development environment. Jetpack must have Composer dependencies installed and built via the build command.', 'jetpack' ),
 						array(
 							'a' => array(
 								'href'   => array(),
@@ -127,7 +172,7 @@ if ( is_readable( $jetpack_autoloader ) ) {
 							),
 						)
 					),
-					'https://github.com/Automattic/jetpack/blob/master/docs/development-environment.md'
+					'https://github.com/Automattic/jetpack/blob/master/docs/development-environment.md#building-your-project'
 				);
 				?>
 			</p>
@@ -135,7 +180,7 @@ if ( is_readable( $jetpack_autoloader ) ) {
 		<?php
 	}
 
-	add_action( 'admin_notices', 'jetpack_admin_missing_autoloader' );
+	add_action( 'admin_notices', 'jetpack_admin_missing_files' );
 	return;
 }
 

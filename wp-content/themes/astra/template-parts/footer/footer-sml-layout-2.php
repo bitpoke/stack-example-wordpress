@@ -9,27 +9,27 @@
  * @since       Astra 1.0.0
  */
 
-$section_1 = astra_get_small_footer( 'footer-sml-section-1' );
-$section_2 = astra_get_small_footer( 'footer-sml-section-2' );
-$sections  = 0;
+$astra_footer_section_1 = astra_get_small_footer( 'footer-sml-section-1' );
+$astra_footer_section_2 = astra_get_small_footer( 'footer-sml-section-2' );
+$astra_footer_sections  = 0;
 
-if ( '' != $section_1 ) {
-	$sections++;
+if ( '' != $astra_footer_section_1 ) {
+	$astra_footer_sections++;
 }
 
-if ( '' != $section_2 ) {
-	$sections++;
+if ( '' != $astra_footer_section_2 ) {
+	$astra_footer_sections++;
 }
 
-switch ( $sections ) {
+switch ( $astra_footer_sections ) {
 
 	case '2':
-			$section_class = 'ast-small-footer-section-equally ast-col-md-6 ast-col-xs-12';
+			$astra_footer_section_class = 'ast-small-footer-section-equally ' . astra_attr( 'ast-grid-col-6' );
 		break;
 
 	case '1':
 	default:
-			$section_class = 'ast-small-footer-section-equally ast-col-xs-12';
+			$astra_footer_section_class = 'ast-small-footer-section-equally ' . astra_attr( 'ast-grid-common-col' );
 		break;
 }
 
@@ -41,18 +41,18 @@ switch ( $sections ) {
 			<div class="ast-small-footer-wrap" >
 					<div class="ast-row ast-flex">
 
-					<?php if ( $section_1 ) : ?>
-						<div class="ast-small-footer-section ast-small-footer-section-1 <?php echo esc_attr( $section_class ); ?>" >
+					<?php if ( $astra_footer_section_1 ) : ?>
+						<div class="ast-small-footer-section ast-small-footer-section-1 <?php echo esc_attr( $astra_footer_section_class ); ?>" >
 							<?php
-								echo $section_1; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								echo $astra_footer_section_1; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							?>
 						</div>
 				<?php endif; ?>
 
-					<?php if ( $section_2 ) : ?>
-						<div class="ast-small-footer-section ast-small-footer-section-2 <?php echo esc_attr( $section_class ); ?>" >
+					<?php if ( $astra_footer_section_2 ) : ?>
+						<div class="ast-small-footer-section ast-small-footer-section-2 <?php echo esc_attr( $astra_footer_section_class ); ?>" >
 							<?php
-								echo $section_2; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								echo $astra_footer_section_2; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							?>
 						</div>
 				<?php endif; ?>

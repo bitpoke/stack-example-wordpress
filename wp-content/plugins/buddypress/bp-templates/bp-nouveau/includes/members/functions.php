@@ -3,11 +3,33 @@
  * Members functions
  *
  * @since 3.0.0
- * @version 3.1.0
+ * @version 8.0.0
  */
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
+
+/**
+ * Register Scripts for the Members component
+ *
+ * @since 8.0.0
+ *
+ * @param array $scripts Optional. The array of scripts to register.
+ * @return array The same array with the specific members scripts.
+ */
+function bp_nouveau_members_register_scripts( $scripts = array() ) {
+	if ( ! isset( $scripts['bp-nouveau'] ) || ! bp_get_members_invitations_allowed() ) {
+		return $scripts;
+	}
+
+	return array_merge( $scripts, array(
+		'bp-nouveau-member-invites' => array(
+			'file'         => 'js/buddypress-member-invites%s.js',
+			'dependencies' => array(),
+			'footer'       => true,
+		),
+	) );
+}
 
 /**
  * Enqueue the members scripts
@@ -16,19 +38,20 @@ defined( 'ABSPATH' ) || exit;
  */
 function bp_nouveau_members_enqueue_scripts() {
 	// Neutralize Ajax when using BuddyPress Groups & member widgets on default front page
-	if ( ! bp_is_user_front() || ! bp_nouveau_get_appearance_settings( 'user_front_page' ) ) {
-		return;
+	if ( bp_is_user_front() && bp_nouveau_get_appearance_settings( 'user_front_page' ) ) {
+		wp_add_inline_style(
+			'bp-nouveau',
+			'#member-front-widgets #groups-list-options,
+			#member-front-widgets #members-list-options,
+			#member-front-widgets #friends-list-options {
+				display: none;
+			}'
+		);
 	}
 
-	wp_add_inline_style(
-		'bp-nouveau', '
-		#member-front-widgets #groups-list-options,
-		#member-front-widgets #members-list-options,
-		#member-front-widgets #friends-list-options {
-			display: none;
-		}
-	'
-	);
+	if ( bp_is_user_members_invitations_list() ) {
+		wp_enqueue_script( 'bp-nouveau-member-invites' );
+	}
 }
 
 /**
@@ -58,7 +81,7 @@ function bp_nouveau_get_members_directory_nav_items() {
 				'component' => 'members',
 				'slug'      => 'personal', // slug is used because BP_Core_Nav requires it, but it's the scope
 				'li_class'  => array(),
-				'link'      => bp_loggedin_user_domain() . bp_get_friends_slug() . '/my-friends/',
+				'link'      => bp_loggedin_user_domain() . bp_nouveau_get_component_slug( 'friends' ) . '/my-friends/',
 				'text'      => __( 'My Friends', 'buddypress' ),
 				'count'     => bp_get_total_friend_count( bp_loggedin_user_id() ),
 				'position'  => 15,
@@ -159,6 +182,8 @@ function bp_nouveau_members_catch_button_args( $button = array() ) {
  * and in the members loop.
  *
  * @since 3.0.0
+ * @since 6.0.0 Replace wrongly positioned `bp_directory_members_item`
+ *              with `bp_directory_members_item_meta`
  *
  * @return string|false HTML Output if hooked. False otherwise.
  */
@@ -167,11 +192,11 @@ function bp_nouveau_get_hooked_member_meta() {
 
 	if ( ! empty( $GLOBALS['members_template'] ) ) {
 		/**
-		 * Fires inside the display of a directory member item.
+		 * Fires inside the display of metas in the directory member item.
 		 *
-		 * @since 1.1.0
+		 * @since 6.0.0
 		 */
-		do_action( 'bp_directory_members_item' );
+		do_action( 'bp_directory_members_item_meta' );
 
 	// It's the user's header
 	} else {
@@ -262,7 +287,7 @@ function bp_nouveau_member_locate_template_part( $template = '' ) {
 	// Use a global to avoid requesting the hierarchy for each template
 	if ( ! isset( $bp_nouveau->members->displayed_user_hierarchy ) ) {
 		$bp_nouveau->members->displayed_user_hierarchy = array(
-			'members/single/%s-id-' . sanitize_file_name( $displayed_user->id ) . '.php',
+			'members/single/%s-id-' . (int) $displayed_user->id . '.php',
 			'members/single/%s-nicename-' . sanitize_file_name( $displayed_user->userdata->user_nicename ) . '.php',
 		);
 

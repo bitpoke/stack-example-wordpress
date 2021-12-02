@@ -21,7 +21,7 @@ abstract class QM_Plugin {
 	/**
 	 * Returns the URL for for a file/dir within this plugin.
 	 *
-	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param string $file The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string URL
 	 */
 	final public function plugin_url( $file = '' ) {
@@ -31,7 +31,7 @@ abstract class QM_Plugin {
 	/**
 	 * Returns the filesystem path for a file/dir within this plugin.
 	 *
-	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param string $file The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Filesystem path
 	 */
 	final public function plugin_path( $file = '' ) {
@@ -41,7 +41,7 @@ abstract class QM_Plugin {
 	/**
 	 * Returns a version number for the given plugin file.
 	 *
-	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param string $file The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Version
 	 */
 	final public function plugin_ver( $file ) {
@@ -60,7 +60,7 @@ abstract class QM_Plugin {
 	/**
 	 * Populates and returns the current plugin info.
 	 */
-	final private function _plugin( $item, $file = '' ) {
+	private function _plugin( $item, $file = '' ) {
 		if ( ! array_key_exists( $item, $this->plugin ) ) {
 			switch ( $item ) {
 				case 'url':

@@ -280,6 +280,10 @@ input[type="search"] {
   border: 0;
 }
 
+.search .site-main .ast-search-submit {
+  display: none;
+}
+
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
@@ -325,19 +329,6 @@ th {
 /*!
  * Bootstrap v4.0.0-alpha.2 (https://getbootstrap.com)
  */
-.ast-container {
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.ast-container::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
 @media (min-width: 544px) {
   .ast-container {
     max-width: 100%;
@@ -362,14 +353,14 @@ th {
   }
 }
 
-.ast-container-fluid {
+.ast-container-fluid, .ast-container {
   margin-left: auto;
   margin-right: auto;
   padding-left: 20px;
   padding-right: 20px;
 }
 
-.ast-container-fluid::after {
+.ast-container-fluid::after, .ast-container::after {
   content: "";
   display: table;
   clear: both;
@@ -1375,10 +1366,6 @@ blockquote {
   position: relative;
 }
 
-blockquote p:last-child {
-  margin: 0;
-}
-
 address {
   margin: 0 0 1.5em;
 }
@@ -1451,32 +1438,6 @@ ins {
   text-decoration: none;
 }
 
-ul, ol {
-  margin: 0 0 1.5em 3em;
-}
-
-ul {
-  list-style: disc;
-}
-
-ol {
-  list-style: decimal;
-}
-
-li > ul,
-li > ol {
-  margin-bottom: 0;
-  margin-left: 1.5em;
-}
-
-dt {
-  font-weight: bold;
-}
-
-dd {
-  margin: 0 1.5em 1.5em;
-}
-
 table, th, td {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -1495,7 +1456,6 @@ th {
 
 th, td {
   padding: 8px;
-  text-align: left;
   border-width: 0 1px 1px 0;
 }
 
@@ -1581,8 +1541,6 @@ textarea {
 .screen-reader-text {
   border: 0;
   clip: rect(1px, 1px, 1px, 1px);
-  -webkit-clip-path: inset(50%);
-  clip-path: inset(50%);
   height: 1px;
   margin: -1px;
   overflow: hidden;
@@ -1672,15 +1630,6 @@ textarea {
 /*--------------------------------------------------------------
 # Media
 --------------------------------------------------------------*/
-.page-content .wp-smiley,
-.entry-content .wp-smiley,
-.comment-content .wp-smiley {
-  border: none;
-  margin-bottom: 0;
-  margin-top: 0;
-  padding: 0;
-}
-
 /* Make sure embeds and iframes fit their containers. */
 embed,
 iframe,
@@ -1708,52 +1657,6 @@ object {
 
 .wp-caption-text {
   text-align: center;
-}
-
-/*--------------------------------------------------------------
-## Galleries
---------------------------------------------------------------*/
-.gallery-item {
-  display: inline-block;
-  text-align: center;
-  vertical-align: top;
-  width: 100%;
-}
-
-.gallery-columns-2 .gallery-item {
-  max-width: 50%;
-}
-
-.gallery-columns-3 .gallery-item {
-  max-width: 33.33%;
-}
-
-.gallery-columns-4 .gallery-item {
-  max-width: 25%;
-}
-
-.gallery-columns-5 .gallery-item {
-  max-width: 20%;
-}
-
-.gallery-columns-6 .gallery-item {
-  max-width: 16.66%;
-}
-
-.gallery-columns-7 .gallery-item {
-  max-width: 14.28%;
-}
-
-.gallery-columns-8 .gallery-item {
-  max-width: 12.5%;
-}
-
-.gallery-columns-9 .gallery-item {
-  max-width: 11.11%;
-}
-
-.gallery-caption {
-  display: block;
 }
 
 /*--------------------------------------------------------------
@@ -1816,7 +1719,6 @@ p {
 
 blockquote {
   margin: 1.5em 1em 1.5em 3em;
-  padding: 1.2em;
   font-size: 1.1em;
   line-height: inherit;
   position: relative;
@@ -1888,36 +1790,7 @@ input[type="submit"]:focus {
 
 .ast-search-menu-icon {
   position: relative;
-}
-
-.ast-header-break-point.ast-header-custom-item-outside .main-header-bar .ast-search-icon {
-  margin-right: 1em;
-}
-
-.ast-header-break-point.ast-header-custom-item-inside .main-header-bar .main-header-bar-navigation .ast-search-icon {
-  display: none;
-}
-
-.ast-header-break-point.ast-header-custom-item-inside .main-header-bar .ast-search-menu-icon .search-field,
-.ast-header-break-point.ast-header-custom-item-inside .main-header-bar .ast-search-menu-icon.ast-inline-search .search-field {
-  width: 100%;
-  padding-right: 5.5em;
-}
-
-.ast-header-break-point.ast-header-custom-item-inside .main-header-bar .ast-search-menu-icon .search-submit {
-  display: block;
-  position: absolute;
-  height: 100%;
-  top: 0;
-  right: 0;
-  padding: 0 1em;
-  border-radius: 0;
-}
-
-.ast-header-break-point.ast-header-custom-item-inside .main-header-bar .ast-search-menu-icon .search-form {
-  padding: 0;
-  display: block;
-  overflow: hidden;
+  z-index: 3;
 }
 
 /* must have higher specificity than alternative color schemes inline styles */
@@ -1944,82 +1817,12 @@ input[type="submit"]:focus {
   top: 7px;
   width: auto;
   z-index: 100000;
+  outline: thin dotted;
 }
 
 .logged-in .site .skip-link {
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
   font-family: "Open Sans", sans-serif;
-}
-
-/* Default Astra Icons CSS */
-.astra-icon-down_arrow::after {
-  content: "\e900";
-  font-family: Astra;
-}
-
-.astra-icon-close::after {
-  content: "\e5cd";
-  font-family: Astra;
-}
-
-.astra-icon-drag_handle::after {
-  content: "\e25d";
-  font-family: Astra;
-}
-
-.astra-icon-format_align_justify::after {
-  content: "\e235";
-  font-family: Astra;
-}
-
-.astra-icon-menu::after {
-  content: "\e5d2";
-  font-family: Astra;
-}
-
-.astra-icon-reorder::after {
-  content: "\e8fe";
-  font-family: Astra;
-}
-
-.astra-icon-search::after {
-  content: "\e8b6";
-  font-family: Astra;
-}
-
-.astra-icon-zoom_in::after {
-  content: "\e56b";
-  font-family: Astra;
-}
-
-.astra-icon-check-circle::after {
-  content: "\e901";
-  font-family: Astra;
-}
-
-.astra-icon-shopping-cart::after {
-  content: "\f07a";
-  font-family: Astra;
-}
-
-.astra-icon-shopping-bag::after {
-  content: "\f290";
-  font-family: Astra;
-}
-
-.astra-icon-shopping-basket::after {
-  content: "\f291";
-  font-family: Astra;
-}
-
-.astra-icon-circle-o::after {
-  content: "\e903";
-  font-family: Astra;
-}
-
-.astra-icon-certificate::after {
-  content: "\e902";
-  font-family: Astra;
 }
 
 select,
@@ -2053,41 +1856,6 @@ textarea,
 .entry-title,
 .entry-title a {
   font-weight: normal;
-}
-
-.single .entry-content .gallery {
-  margin-left: -10px;
-  margin-right: -10px;
-}
-
-.gallery-caption {
-  color: black;
-  padding: 10px;
-  border-radius: 0 0 2px 2px;
-  border: 1px solid #eaeaea;
-  border-top: none;
-  font-size: 0.9em;
-}
-
-.gallery-icon {
-  border-bottom: 0;
-  border-radius: 2px 2px 0 0;
-  border: 1px solid #eaeaea;
-  overflow: hidden;
-}
-
-.gallery-item {
-  margin: 0;
-  padding: 10px;
-  border-radius: 2px;
-}
-
-.gallery-item:last-child {
-  margin-bottom: 2em;
-}
-
-.elementor-image-gallery .gallery-icon {
-  border: none;
 }
 
 /* Astra Respnosive oEmbed Video container */

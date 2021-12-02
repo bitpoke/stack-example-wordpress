@@ -43,6 +43,7 @@ if ( ! class_exists( 'Astra_Ext_Transparent_Header' ) ) {
 		 */
 		public function __construct() {
 
+			// @codingStandardsIgnoreStart WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 			require_once ASTRA_THEME_TRANSPARENT_HEADER_DIR . 'classes/class-astra-ext-transparent-header-loader.php';
 			require_once ASTRA_THEME_TRANSPARENT_HEADER_DIR . 'classes/class-astra-ext-transparent-header-markup.php';
 
@@ -51,6 +52,7 @@ if ( ! class_exists( 'Astra_Ext_Transparent_Header' ) ) {
 				require_once ASTRA_THEME_TRANSPARENT_HEADER_DIR . 'classes/dynamic-css/dynamic.css.php';
 				require_once ASTRA_THEME_TRANSPARENT_HEADER_DIR . 'classes/dynamic-css/header-sections-dynamic.css.php';
 			}
+			// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 		}
 	}
 

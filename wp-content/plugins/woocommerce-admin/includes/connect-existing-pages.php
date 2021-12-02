@@ -2,10 +2,11 @@
 /**
  * Connect existing WooCommerce pages to WooCommerce Admin.
  *
- * @package Woocommerce Admin
+ * @package WooCommerce\Admin
  */
 
 use Automattic\WooCommerce\Admin\PageController;
+use Automattic\WooCommerce\Admin\Features\Features;
 
 /**
  * Returns core WC pages to connect to WC-Admin.
@@ -54,22 +55,32 @@ function wc_admin_get_core_pages_to_connect() {
  * @return array Filtered breadcrumb pieces.
  */
 function wc_admin_filter_core_page_breadcrumbs( $breadcrumbs ) {
-	$screen_id        = PageController::get_instance()->get_current_screen_id();
-	$pages_to_connect = wc_admin_get_core_pages_to_connect();
+	$screen_id              = PageController::get_instance()->get_current_screen_id();
+	$pages_to_connect       = wc_admin_get_core_pages_to_connect();
+	$woocommerce_breadcrumb = array(
+		'admin.php?page=wc-admin',
+		__( 'WooCommerce', 'woocommerce-admin' ),
+	);
 
 	foreach ( $pages_to_connect as $page_id => $page_data ) {
 		if ( preg_match( "/^woocommerce_page_{$page_id}\-/", $screen_id ) ) {
 			if ( empty( $page_data['tabs'] ) ) {
-				$new_breadcrumbs = array( $page_data['title'] );
+				$new_breadcrumbs = array(
+					$woocommerce_breadcrumb,
+					$page_data['title'],
+				);
 			} else {
 				$new_breadcrumbs = array(
+					$woocommerce_breadcrumb,
 					array(
 						add_query_arg( 'page', $page_id, 'admin.php' ),
 						$page_data['title'],
 					),
 				);
 
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if ( isset( $_GET['tab'] ) ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					$current_tab = wc_clean( wp_unslash( $_GET['tab'] ) );
 				} else {
 					$current_tab = key( $page_data['tabs'] );
@@ -147,6 +158,7 @@ wc_admin_connect_page(
 wc_admin_connect_page(
 	array(
 		'id'        => 'woocommerce-coupons',
+		'parent'    => Features::is_enabled( 'coupons' ) ? 'woocommerce-marketing' : null,
 		'screen_id' => 'edit-shop_coupon',
 		'title'     => __( 'Coupons', 'woocommerce-admin' ),
 		'path'      => add_query_arg( 'post_type', 'shop_coupon', $posttype_list_base ),

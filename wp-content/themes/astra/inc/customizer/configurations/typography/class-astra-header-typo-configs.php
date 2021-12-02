@@ -30,89 +30,195 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$_configs = array(
-
-				/**
-				 * Option: Site Title Font Size
-				 */
-				array(
-					'name'        => 'font-size-site-title',
-					'type'        => 'sub-control',
-					'parent'      => ASTRA_THEME_SETTINGS . '[site-title-typography]',
-					'section'     => 'title_tagline',
-					'control'     => 'ast-responsive',
-					'default'     => astra_get_option( 'font-size-site-title' ),
-					'transport'   => 'postMessage',
-					'priority'    => 9,
-					'title'       => __( 'Size', 'astra' ),
-					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
-					),
-				),
-
-				/**
-				 * Option: Site Tagline Font Size
-				 */
-				array(
-					'name'        => 'font-size-site-tagline',
-					'type'        => 'sub-control',
-					'parent'      => ASTRA_THEME_SETTINGS . '[site-tagline-typography]',
-					'section'     => 'title_tagline',
-					'control'     => 'ast-responsive',
-					'default'     => astra_get_option( 'font-size-site-tagline' ),
-					'transport'   => 'postMessage',
-					'priority'    => 15,
-					'title'       => __( 'Size', 'astra' ),
-					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
-					),
-				),
-			);
-
-			$configurations = array_merge( $configurations, $_configs );
-
-			// Learn More link if Astra Pro is not activated.
-			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+			if ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'typography' ) ) {
 
 				$_configs = array(
 
 					/**
-					 * Option: Divider
+					 * Option: Site Title Font Size
 					 */
 					array(
-						'name'     => ASTRA_THEME_SETTINGS . '[ast-header-typography-more-feature-divider]',
-						'type'     => 'control',
-						'control'  => 'ast-divider',
-						'section'  => 'section-header-typo',
-						'priority' => 999,
-						'settings' => array(),
+						'name'        => 'font-size-site-title',
+						'type'        => 'sub-control',
+						'parent'      => ASTRA_THEME_SETTINGS . '[site-title-typography]',
+						'section'     => 'title_tagline',
+						'control'     => 'ast-responsive',
+						'default'     => astra_get_option( 'font-size-site-title' ),
+						'transport'   => 'postMessage',
+						'priority'    => 9,
+						'title'       => __( 'Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
+						),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
 					),
 
 					/**
-					 * Option: Learn More about Typography
+					 * Option: Site Tagline Font Size
 					 */
 					array(
-						'name'     => ASTRA_THEME_SETTINGS . '[ast-header-typography-more-feature-description]',
-						'type'     => 'control',
-						'control'  => 'ast-description',
-						'section'  => 'section-header-typo',
-						'priority' => 999,
-						'title'    => '',
-						'help'     => '<p>' . __( 'More Options Available for Typography in Astra Pro!', 'astra' ) . '</p><a href="' . astra_get_pro_url( 'https://wpastra.com/docs/typography-module/', 'customizer', 'learn-more', 'upgrade-to-pro' ) . '" class="button button-primary"  target="_blank" rel="noopener">' . __( 'Learn More', 'astra' ) . '</a>',
-						'settings' => array(),
+						'name'        => 'font-size-site-tagline',
+						'type'        => 'sub-control',
+						'parent'      => ASTRA_THEME_SETTINGS . '[site-tagline-typography]',
+						'section'     => 'title_tagline',
+						'control'     => 'ast-responsive',
+						'default'     => astra_get_option( 'font-size-site-tagline' ),
+						'transport'   => 'postMessage',
+						'priority'    => 14,
+						'title'       => __( 'Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
+						),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
 					),
 				);
+			} else {
 
-				$configurations = array_merge( $configurations, $_configs );
+				$_configs = array(
+
+					/**
+					 * Option: Site Title Font Size
+					 */
+					array(
+						'name'        => ASTRA_THEME_SETTINGS . '[font-size-site-title]',
+						'type'        => 'control',
+						'section'     => 'title_tagline',
+						'control'     => 'ast-responsive',
+						'default'     => astra_get_option( 'font-size-site-title' ),
+						'transport'   => 'postMessage',
+						'priority'    => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? 16 : 8,
+						'title'       => __( 'Title Font Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
+						),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
+						'context'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array(
+							Astra_Builder_Helper::$design_tab_config,
+							array(
+								'relation' => 'OR',
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'desktop',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'tablet',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'mobile',
+									'operator'    => '==',
+									'value'       => true,
+								),
+							),
+						) : array(
+							array(
+								'relation' => 'OR',
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'desktop',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'tablet',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'mobile',
+									'operator'    => '==',
+									'value'       => true,
+								),
+							),
+						),
+					),
+
+					/**
+					 * Option: Site Tagline Font Size
+					 */
+					array(
+						'name'        => ASTRA_THEME_SETTINGS . '[font-size-site-tagline]',
+						'type'        => 'control',
+						'section'     => 'title_tagline',
+						'control'     => 'ast-responsive',
+						'default'     => astra_get_option( 'font-size-site-tagline' ),
+						'transport'   => 'postMessage',
+						'priority'    => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? 20 : 12,
+						'title'       => __( 'Tagline Font Size', 'astra' ),
+						'input_attrs' => array(
+							'min' => 0,
+						),
+						'units'       => array(
+							'px' => 'px',
+							'em' => 'em',
+						),
+						'context'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array(
+							Astra_Builder_Helper::$design_tab_config,
+							array(
+								'relation' => 'OR',
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+									'setting-key' => 'desktop',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+									'setting-key' => 'tablet',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+									'setting-key' => 'mobile',
+									'operator'    => '==',
+									'value'       => true,
+								),
+							),
+						) : array(
+							array(
+								'relation' => 'OR',
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+									'setting-key' => 'desktop',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+									'setting-key' => 'tablet',
+									'operator'    => '==',
+									'value'       => true,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+									'setting-key' => 'mobile',
+									'operator'    => '==',
+									'value'       => true,
+								),
+							),
+						),
+					),
+				);
 			}
+
+			$configurations = array_merge( $configurations, $_configs );
 
 			return $configurations;
 		}

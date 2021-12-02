@@ -35,24 +35,12 @@ if ( ! class_exists( 'Astra_Lifter_Container_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-content-divider]',
-					'section'  => 'section-container-layout',
-					'type'     => 'control',
-					'control'  => 'ast-divider',
-					'priority' => 66,
-					'settings' => array(),
-				),
-
-				/**
 				 * Option: Shop Page
 				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-content-layout]',
 					'type'     => 'control',
-					'control'  => 'select',
+					'control'  => 'ast-select',
 					'section'  => 'section-container-layout',
 					'default'  => astra_get_option( 'lifterlms-content-layout' ),
 					'priority' => 66,
@@ -64,6 +52,7 @@ if ( ! class_exists( 'Astra_Lifter_Container_Configs' ) ) {
 						'plain-container'         => __( 'Full Width / Contained', 'astra' ),
 						'page-builder'            => __( 'Full Width / Stretched', 'astra' ),
 					),
+					'divider'  => array( 'ast_class' => 'ast-top-divider' ),
 				),
 			);
 

@@ -3,12 +3,12 @@
  * MaxMind Geolocation Integration
  *
  * @version 3.9.0
- * @package WooCommerce/Integrations
+ * @package WooCommerce\Integrations
  */
 
 defined( 'ABSPATH' ) || exit;
 
-require_once 'class-wc-integration-maxmind-database-service.php';
+require_once __DIR__ . '/class-wc-integration-maxmind-database-service.php';
 
 /**
  * WC Integration MaxMind Geolocation
@@ -29,7 +29,7 @@ class WC_Integration_MaxMind_Geolocation extends WC_Integration {
 	 */
 	public function __construct() {
 		$this->id                 = 'maxmind_geolocation';
-		$this->method_title       = __( 'WooCommerce MaxMind Geolocation', 'woocommerce' );
+		$this->method_title       = __( 'MaxMind Geolocation', 'woocommerce' );
 		$this->method_description = __( 'An integration for utilizing MaxMind to do Geolocation lookups. Please note that this integration will only do country lookups.', 'woocommerce' );
 
 		/**

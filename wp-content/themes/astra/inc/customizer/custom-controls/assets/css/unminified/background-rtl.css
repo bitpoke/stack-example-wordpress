@@ -2,10 +2,6 @@
   margin: 0;
 }
 
-.customize-control-ast-background .wp-picker-clear {
-  margin-right: 2%;
-}
-
 .customize-control-ast-background .screen-reader-text {
   top: initial;
 }
@@ -52,11 +48,31 @@
   color: #565e67;
 }
 
+.customize-control-ast-background .ast-bg-img-remove.components-button.is-link {
+  width: 100%;
+  border: 1px dashed #b4b9be;
+  box-sizing: border-box;
+  box-shadow: unset;
+  padding: 9px 0;
+  line-height: 1.6;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.customize-control-ast-background .ast-bg-img-remove.components-button.is-destructive:hover:not(:disabled) {
+  color: #a02222;
+  box-shadow: unset;
+  border-color: #a02222;
+}
+
 .customize-control-ast-background .more-settings {
   margin-top: 12px;
-  display: inline-block;
+  display: flex;
+  justify-content: flex-end;
   padding: 5px 0 5px 0;
-  float: left;
+  cursor: pointer;
+  float: none;
+  text-decoration: none;
 }
 
 .customize-control-ast-background .more-settings:focus {
@@ -68,6 +84,30 @@
   margin-right: 5px;
 }
 
+.customize-control-ast-background .customize-control-title {
+  display: block;
+}
+
+.customize-control-ast-background .astra-color-picker-wrap {
+  margin-top: 18px;
+}
+
+.ast-field-settings-modal .customize-control-ast-background.customize-control:first-child, .ast-field-settings-modal .customize-control-ast-background.customize-control {
+  margin-top: 28px;
+}
+
 .ast-field-settings-modal .customize-control-ast-background .more-settings {
   margin-top: 6px;
+}
+
+.ast-field-settings-modal .customize-control-ast-background .customize-control-content .ast-color-btn-reset-wrap {
+  left: 59px;
+}
+
+.ast-field-settings-modal .customize-control-ast-background .customize-control-content .color-button-wrap {
+  left: 16px;
+}
+
+.ast-field-settings-modal .customize-control-ast-background .astra-popover-tabs .ast-clear-btn-inside-picker.components-button {
+  margin: 5px 10px 20px 20px;
 }

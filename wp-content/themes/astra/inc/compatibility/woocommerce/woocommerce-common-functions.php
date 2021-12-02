@@ -62,7 +62,7 @@ if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) :
 				}
 
 				?>
-			</span> 
+			</span>
 			<?php
 		endif;
 	}
@@ -130,12 +130,13 @@ if ( ! function_exists( 'astra_woo_product_in_stock' ) ) :
 			$product_avail  = $product->get_availability();
 			$stock_quantity = $product->get_stock_quantity();
 			$availability   = $product_avail['availability'];
+			$avail_class    = $product_avail['class'];
 			if ( ! empty( $availability ) && $stock_quantity ) {
 				ob_start();
 				?>
 				<p class="ast-stock-detail">
 					<span class="ast-stock-avail"><?php esc_html_e( 'Availability:', 'astra' ); ?></span>
-					<span class="stock in-stock"><?php echo esc_html( $availability ); ?></span>
+					<span class="stock <?php echo esc_html( $avail_class ); ?>"><?php echo esc_html( $availability ); ?></span>
 				</p>
 				<?php
 				$markup = ob_get_clean();
@@ -167,7 +168,6 @@ if ( ! function_exists( 'astra_woo_woocommerce_shop_product_content' ) ) {
 	function astra_woo_woocommerce_shop_product_content() {
 
 		$shop_structure = apply_filters( 'astra_woo_shop_product_structure', astra_get_option( 'shop-product-structure' ) );
-
 		if ( is_array( $shop_structure ) && ! empty( $shop_structure ) ) {
 
 			do_action( 'astra_woo_shop_before_summary_wrap' );

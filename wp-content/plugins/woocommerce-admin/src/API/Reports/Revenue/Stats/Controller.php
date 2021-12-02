@@ -3,8 +3,6 @@
  * REST API Reports revenue stats controller
  *
  * Handles requests to the /reports/revenue/stats endpoint.
- *
- * @package WooCommerce Admin/API
  */
 
 namespace Automattic\WooCommerce\Admin\API\Reports\Revenue\Stats;
@@ -19,7 +17,6 @@ use \Automattic\WooCommerce\Admin\API\Reports\ParameterException;
 /**
  * REST API Reports revenue stats controller class.
  *
- * @package WooCommerce/API
  * @extends WC_REST_Reports_Controller
  */
 class Controller extends \WC_REST_Reports_Controller implements ExportableInterface {
@@ -58,6 +55,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 		$args['orderby']   = $request['orderby'];
 		$args['order']     = $request['order'];
 		$args['segmentby'] = $request['segmentby'];
+		$args['fields']    = $request['fields'];
 
 		return $args;
 	}
@@ -166,7 +164,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 	public function get_item_schema() {
 		$data_values = array(
 			'total_sales'    => array(
-				'description' => __( 'Total Sales.', 'woocommerce-admin' ),
+				'description' => __( 'Total sales.', 'woocommerce-admin' ),
 				'type'        => 'number',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
@@ -174,7 +172,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 				'format'      => 'currency',
 			),
 			'net_revenue'    => array(
-				'description' => __( 'Net Sales.', 'woocommerce-admin' ),
+				'description' => __( 'Net sales.', 'woocommerce-admin' ),
 				'type'        => 'number',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
@@ -238,7 +236,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 				'readonly'    => true,
 			),
 			'gross_sales'    => array(
-				'description' => __( 'Gross Sales.', 'woocommerce-admin' ),
+				'description' => __( 'Gross sales.', 'woocommerce-admin' ),
 				'type'        => 'number',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
@@ -449,7 +447,8 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 		return array(
 			'date'         => __( 'Date', 'woocommerce-admin' ),
 			'orders_count' => __( 'Orders', 'woocommerce-admin' ),
-			'total_sales'  => __( 'Total Sales', 'woocommerce-admin' ),
+			'gross_sales'  => __( 'Gross sales', 'woocommerce-admin' ),
+			'total_sales'  => __( 'Total sales', 'woocommerce-admin' ),
 			'refunds'      => __( 'Returns', 'woocommerce-admin' ),
 			'coupons'      => __( 'Coupons', 'woocommerce-admin' ),
 			'taxes'        => __( 'Taxes', 'woocommerce-admin' ),
@@ -470,6 +469,7 @@ class Controller extends \WC_REST_Reports_Controller implements ExportableInterf
 		return array(
 			'date'         => $item['date_start'],
 			'orders_count' => $subtotals['orders_count'],
+			'gross_sales'  => self::csv_number_format( $subtotals['gross_sales'] ),
 			'total_sales'  => self::csv_number_format( $subtotals['total_sales'] ),
 			'refunds'      => self::csv_number_format( $subtotals['refunds'] ),
 			'coupons'      => self::csv_number_format( $subtotals['coupons'] ),

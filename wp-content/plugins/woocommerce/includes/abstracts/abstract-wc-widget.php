@@ -3,8 +3,10 @@
  * Abstract widget class
  *
  * @class WC_Widget
- * @package  WooCommerce/Abstracts
+ * @package  WooCommerce\Abstracts
  */
+
+use Automattic\Jetpack\Constants;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -13,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * WC_Widget
  *
- * @package  WooCommerce/Abstracts
+ * @package  WooCommerce\Abstracts
  * @version  2.5.0
  * @extends  WP_Widget
  */
@@ -62,6 +64,7 @@ abstract class WC_Widget extends WP_Widget {
 			'classname'                   => $this->widget_cssclass,
 			'description'                 => $this->widget_description,
 			'customize_selective_refresh' => true,
+			'show_instance_in_rest'       => true,
 		);
 
 		parent::__construct( $this->widget_id, $this->widget_name, $widget_ops );
@@ -319,7 +322,7 @@ abstract class WC_Widget extends WP_Widget {
 	 * @since  3.3.0
 	 */
 	protected function get_current_page_url() {
-		if ( defined( 'SHOP_IS_ON_FRONT' ) ) {
+		if ( Constants::is_defined( 'SHOP_IS_ON_FRONT' ) ) {
 			$link = home_url();
 		} elseif ( is_shop() ) {
 			$link = get_permalink( wc_get_page_id( 'shop' ) );
@@ -370,7 +373,7 @@ abstract class WC_Widget extends WP_Widget {
 		}
 
 		// All current filters.
-		if ( $_chosen_attributes = WC_Query::get_layered_nav_chosen_attributes() ) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found, WordPress.CodeAnalysis.AssignmentInCondition.Found
+		if ( $_chosen_attributes = WC_Query::get_layered_nav_chosen_attributes() ) { // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure, WordPress.CodeAnalysis.AssignmentInCondition.Found
 			foreach ( $_chosen_attributes as $name => $data ) {
 				$filter_name = wc_attribute_taxonomy_slug( $name );
 				if ( ! empty( $data['terms'] ) ) {

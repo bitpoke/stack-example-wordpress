@@ -4,15 +4,29 @@
  *
  * @since 7.1.0
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
-jetpack_register_block(
-	'jetpack/slideshow',
-	array(
-		'render_callback' => 'jetpack_slideshow_block_load_assets',
-	)
-);
+namespace Automattic\Jetpack\Extensions\Slideshow;
+
+use Automattic\Jetpack\Blocks;
+use Jetpack_Gutenberg;
+
+const FEATURE_NAME = 'slideshow';
+const BLOCK_NAME   = 'jetpack/' . FEATURE_NAME;
+
+/**
+ * Registers the block for use in Gutenberg
+ * This is done via an action so that we can disable
+ * registration if we need to.
+ */
+function register_block() {
+	Blocks::jetpack_register_block(
+		BLOCK_NAME,
+		array( 'render_callback' => __NAMESPACE__ . '\load_assets' )
+	);
+}
+add_action( 'init', __NAMESPACE__ . '\register_block' );
 
 /**
  * Slideshow block registration/dependency declaration.
@@ -22,10 +36,10 @@ jetpack_register_block(
  *
  * @return string
  */
-function jetpack_slideshow_block_load_assets( $attr, $content ) {
-	Jetpack_Gutenberg::load_assets_as_required( 'slideshow' );
-	if ( class_exists( 'Jetpack_AMP_Support' ) && Jetpack_AMP_Support::is_amp_request() ) {
-		return jetpack_slideshow_block_render_amp( $attr );
+function load_assets( $attr, $content ) {
+	Jetpack_Gutenberg::load_assets_as_required( FEATURE_NAME );
+	if ( Blocks::is_amp_request() ) {
+		return render_amp( $attr );
 	}
 	return $content;
 }
@@ -37,27 +51,30 @@ function jetpack_slideshow_block_load_assets( $attr, $content ) {
  *
  * @return string
  */
-function jetpack_slideshow_block_render_amp( $attr ) {
+function render_amp( $attr ) {
+	if ( empty( $attr['ids'] ) ) {
+		return '';
+	}
+
 	static $wp_block_jetpack_slideshow_id = 0;
 	$wp_block_jetpack_slideshow_id++;
 
-	$ids      = empty( $attr['ids'] ) ? array() : $attr['ids'];
-	$autoplay = empty( $attr['autoplay'] ) ? false : $attr['autoplay'];
-
-	$extras  = array(
+	$ids      = $attr['ids'];
+	$autoplay = empty( $attr['autoplay'] ) ? false : true;
+	$extras   = array(
 		'wp-amp-block',
 		$autoplay ? 'wp-block-jetpack-slideshow__autoplay' : null,
 		$autoplay ? 'wp-block-jetpack-slideshow__autoplay-playing' : null,
 	);
-	$classes = Jetpack_Gutenberg::block_classes( 'slideshow', $attr, $extras );
+	$classes  = Blocks::classes( FEATURE_NAME, $attr, $extras );
 
 	return sprintf(
 		'<div class="%1$s" id="wp-block-jetpack-slideshow__%2$d"><div class="wp-block-jetpack-slideshow_container swiper-container">%3$s%4$s%5$s</div></div>',
 		esc_attr( $classes ),
 		absint( $wp_block_jetpack_slideshow_id ),
-		jetpack_slideshow_block_amp_carousel( $attr, $wp_block_jetpack_slideshow_id ),
-		$autoplay ? jetpack_slideshow_block_autoplay_ui( $wp_block_jetpack_slideshow_id ) : '',
-		jetpack_slideshow_block_bullets( $ids, $wp_block_jetpack_slideshow_id )
+		amp_carousel( $attr, $wp_block_jetpack_slideshow_id ),
+		$autoplay ? autoplay_ui( $wp_block_jetpack_slideshow_id ) : '',
+		bullets( $ids, $wp_block_jetpack_slideshow_id )
 	);
 }
 
@@ -69,7 +86,7 @@ function jetpack_slideshow_block_render_amp( $attr ) {
  *
  * @return string amp-carousel markup.
  */
-function jetpack_slideshow_block_amp_carousel( $attr, $block_ordinal ) {
+function amp_carousel( $attr, $block_ordinal ) {
 	$ids         = empty( $attr['ids'] ) ? array() : $attr['ids'];
 	$first_image = wp_get_attachment_metadata( $ids[0] );
 	$delay       = empty( $attr['delay'] ) ? 3 : absint( $attr['delay'] );
@@ -84,7 +101,7 @@ function jetpack_slideshow_block_amp_carousel( $attr, $block_ordinal ) {
 		esc_attr__( 'Previous Slide', 'jetpack' ),
 		$autoplay ? 'autoplay delay=' . esc_attr( $delay * 1000 ) : '',
 		absint( $block_ordinal ),
-		implode( '', jetpack_slideshow_block_slides( $ids, $width, $height ) )
+		implode( '', slides( $ids, $width, $height ) )
 	);
 }
 
@@ -97,9 +114,9 @@ function jetpack_slideshow_block_amp_carousel( $attr, $block_ordinal ) {
  *
  * @return array Array of slides markup.
  */
-function jetpack_slideshow_block_slides( $ids = array(), $width = 400, $height = 300 ) {
+function slides( $ids = array(), $width = 400, $height = 300 ) {
 	return array_map(
-		function( $id ) use ( $width, $height ) {
+		function ( $id ) use ( $width, $height ) {
 			$caption    = wp_get_attachment_caption( $id );
 			$figcaption = $caption ? sprintf(
 				'<figcaption class="wp-block-jetpack-slideshow_caption gallery-caption">%s</figcaption>',
@@ -132,9 +149,9 @@ function jetpack_slideshow_block_slides( $ids = array(), $width = 400, $height =
  *
  * @return array Array of bullets markup.
  */
-function jetpack_slideshow_block_bullets( $ids = array(), $block_ordinal = 0 ) {
+function bullets( $ids = array(), $block_ordinal = 0 ) {
 	$buttons = array_map(
-		function( $index ) {
+		function ( $index ) {
 			$aria_label = sprintf(
 				/* translators: %d: Slide number. */
 				__( 'Go to slide %d', 'jetpack' ),
@@ -164,7 +181,7 @@ function jetpack_slideshow_block_bullets( $ids = array(), $block_ordinal = 0 ) {
  *
  * @return string Autoplay UI markup.
  */
-function jetpack_slideshow_block_autoplay_ui( $block_ordinal = 0 ) {
+function autoplay_ui( $block_ordinal = 0 ) {
 	$block_id        = sprintf(
 		'wp-block-jetpack-slideshow__%d',
 		absint( $block_ordinal )

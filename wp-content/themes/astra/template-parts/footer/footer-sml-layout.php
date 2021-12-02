@@ -9,8 +9,8 @@
  * @since       Astra 1.0.0
  */
 
-$section_1 = astra_get_small_footer( 'footer-sml-section-1' );
-$section_2 = astra_get_small_footer( 'footer-sml-section-2' );
+$astra_footer_section_1 = astra_get_small_footer( 'footer-sml-section-1' );
+$astra_footer_section_2 = astra_get_small_footer( 'footer-sml-section-2' );
 
 ?>
 
@@ -18,18 +18,18 @@ $section_2 = astra_get_small_footer( 'footer-sml-section-2' );
 	<div class="ast-footer-overlay">
 		<div class="ast-container">
 			<div class="ast-small-footer-wrap" >
-				<?php if ( $section_1 ) : ?>
+				<?php if ( $astra_footer_section_1 ) : ?>
 					<div class="ast-small-footer-section ast-small-footer-section-1" >
 						<?php
-							echo $section_1; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo $astra_footer_section_1; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</div>
 				<?php endif; ?>
 
-				<?php if ( $section_2 ) : ?>
+				<?php if ( $astra_footer_section_2 ) : ?>
 					<div class="ast-small-footer-section ast-small-footer-section-2" >
 						<?php
-							echo $section_2; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo $astra_footer_section_2; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</div>
 				<?php endif; ?>

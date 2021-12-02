@@ -733,6 +733,20 @@ body.activity-permalink #buddypress div.activity-comments div.acomment-content {
 	margin-bottom: -1em;
 }
 
+body.create-blog #buddypress .error {
+	background-color: #fdc;
+	border: 1px solid #a00;
+	color: #800;
+	padding: 10px 15px;
+}
+
+body.create-blog #buddypress .success {
+	background-color: #efc;
+	border: 1px solid #591;
+	color: #250;
+	padding: 10px 15px;
+}
+
 /*--------------------------------------------------------------
 3.5 - Forms
 --------------------------------------------------------------*/
@@ -1414,7 +1428,9 @@ fieldset.create-site label {
 }
 
 .bp-site-wide-message #message button,
-.admin-bar-on #message button {
+.bp-site-wide-message #message a.button,
+.admin-bar-on #message button,
+.admin-bar-on #message a.button {
 	font-size: 0.8em;
 	padding: 2px 4px;
 	position: absolute;
@@ -1422,7 +1438,8 @@ fieldset.create-site label {
 	top: 0;
 }
 
-.admin-bar-on #message button {
+.admin-bar-on #message button,
+.admin-bar-on #message a.button {
 	right: 10px;
 	top: 7px;
 }

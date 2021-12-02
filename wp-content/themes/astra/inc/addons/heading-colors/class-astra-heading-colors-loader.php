@@ -53,9 +53,29 @@ class Astra_Heading_Colors_Loader {
 		$font_weight_h3 = astra_get_option( 'font-weight-h3' );
 		Astra_Fonts::add_font( $font_family_h3, $font_weight_h3 );
 
+		if ( astra_has_gcp_typo_preset_compatibility() ) {
+
+			$font_family_h4 = astra_get_option( 'font-family-h4' );
+			$font_weight_h4 = astra_get_option( 'font-weight-h4' );
+			Astra_Fonts::add_font( $font_family_h4, $font_weight_h4 );
+
+			$font_family_h5 = astra_get_option( 'font-family-h5' );
+			$font_weight_h5 = astra_get_option( 'font-weight-h5' );
+			Astra_Fonts::add_font( $font_family_h5, $font_weight_h5 );
+
+			$font_family_h6 = astra_get_option( 'font-family-h6' );
+			$font_weight_h6 = astra_get_option( 'font-weight-h6' );
+			Astra_Fonts::add_font( $font_family_h6, $font_weight_h6 );
+
+		}
+
 		$theme_btn_font_family = astra_get_option( 'font-family-button' );
 		$theme_btn_font_weight = astra_get_option( 'font-weight-button' );
 		Astra_Fonts::add_font( $theme_btn_font_family, $theme_btn_font_weight );
+
+		$header_btn_font_family = astra_get_option( 'primary-header-button-font-family' );
+		$header_btn_font_weight = astra_get_option( 'primary-header-button-font-weight' );
+		Astra_Fonts::add_font( $header_btn_font_family, $header_btn_font_weight );
 	}
 
 	/**
@@ -96,6 +116,24 @@ class Astra_Heading_Colors_Loader {
 		$defaults['text-transform-h3'] = '';
 		$defaults['line-height-h3']    = '';
 
+		// Header <H4>.
+		$defaults['font-family-h4']    = 'inherit';
+		$defaults['font-weight-h4']    = 'inherit';
+		$defaults['text-transform-h4'] = '';
+		$defaults['line-height-h4']    = '';
+
+		// Header <H5>.
+		$defaults['font-family-h5']    = 'inherit';
+		$defaults['font-weight-h5']    = 'inherit';
+		$defaults['text-transform-h5'] = '';
+		$defaults['line-height-h5']    = '';
+
+		// Header <H6>.
+		$defaults['font-family-h6']    = 'inherit';
+		$defaults['font-weight-h6']    = 'inherit';
+		$defaults['text-transform-h6'] = '';
+		$defaults['line-height-h6']    = '';
+
 		/**
 		 * Theme button Font Defaults
 		 */
@@ -110,6 +148,7 @@ class Astra_Heading_Colors_Loader {
 			'mobile-unit'  => 'px',
 		);
 		$defaults['text-transform-button'] = '';
+
 		/**
 		 * Check backward compatibility for button line height.
 		 */
@@ -131,7 +170,7 @@ class Astra_Heading_Colors_Loader {
 		/**
 		 * Register Panel & Sections
 		 */
-		require_once ASTRA_THEME_HEADING_COLORS_DIR . 'customizer/class-astra-heading-colors-configs.php';
+		require_once ASTRA_THEME_HEADING_COLORS_DIR . 'customizer/class-astra-heading-colors-configs.php';// phpcs:ignore: WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 	}
 
 	/**
@@ -147,6 +186,15 @@ class Astra_Heading_Colors_Loader {
 		$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
 		$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_script( 'astra-heading-colors-customizer-preview-js', ASTRA_THEME_HEADING_COLORS_URI . 'assets/js/' . $dir_name . '/customizer-preview' . $file_prefix . '.js', array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_THEME_VERSION, true );
+
+		wp_localize_script(
+			'astra-heading-colors-customizer-preview-js',
+			'astraHeadingColorOptions',
+			array(
+				'maybeApplyHeadingColorForTitle' => astra_has_global_color_format_support(),
+			)
+		);
+
 	}
 }
 

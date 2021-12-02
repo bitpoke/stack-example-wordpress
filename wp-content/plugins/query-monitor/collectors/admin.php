@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Admin extends QM_Collector {
 
 	public $id = 'response';
@@ -42,7 +44,7 @@ class QM_Collector_Admin extends QM_Collector {
 
 		$current_screen = get_current_screen();
 
-		if ( isset( $_GET['page'] ) && null !== $current_screen ) { // @codingStandardsIgnoreLine
+		if ( isset( $_GET['page'] ) && null !== $current_screen ) { // phpcs:ignore
 			$this->data['base'] = $current_screen->base;
 		} else {
 			$this->data['base'] = $pagenow;

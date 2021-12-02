@@ -3,8 +3,10 @@
  * Twenty Nineteen support.
  *
  * @since   3.5.X
- * @package WooCommerce/Classes
+ * @package WooCommerce\Classes
  */
+
+use Automattic\Jetpack\Constants;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -35,15 +37,18 @@ class WC_Twenty_Nineteen {
 		add_theme_support( 'wc-product-gallery-zoom' );
 		add_theme_support( 'wc-product-gallery-lightbox' );
 		add_theme_support( 'wc-product-gallery-slider' );
-		add_theme_support( 'woocommerce', array(
-			'thumbnail_image_width' => 300,
-			'single_image_width'    => 450,
-		) );
+		add_theme_support(
+			'woocommerce',
+			array(
+				'thumbnail_image_width' => 300,
+				'single_image_width'    => 450,
+			)
+		);
 
 		// Tweak Twenty Nineteen features.
 		add_action( 'wp', array( __CLASS__, 'tweak_theme_features' ) );
 
-		// Color scheme CSS
+		// Color scheme CSS.
 		add_filter( 'twentynineteen_custom_colors_css', array( __CLASS__, 'custom_colors_css' ), 10, 3 );
 	}
 
@@ -75,7 +80,7 @@ class WC_Twenty_Nineteen {
 		$styles['woocommerce-general'] = array(
 			'src'     => str_replace( array( 'http:', 'https:' ), '', WC()->plugin_url() ) . '/assets/css/twenty-nineteen.css',
 			'deps'    => '',
-			'version' => WC_VERSION,
+			'version' => Constants::get_constant( 'WC_VERSION' ),
 			'media'   => 'all',
 			'has_rtl' => true,
 		);

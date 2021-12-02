@@ -2,7 +2,7 @@
 /**
  * Functions and template tags for using site logos.
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
 /**
@@ -15,18 +15,19 @@
  * @since 1.0
  */
 function jetpack_get_site_logo( $show = 'url' ) {
-	$logo = site_logo()->logo;
+	$logo_id = site_logo()->logo;
 
 	// Return false if no logo is set
-	if ( ! isset( $logo['id'] ) || 0 == $logo['id'] ) {
+	if ( ! $logo_id ) {
 		return false;
 	}
 
 	// Return the ID if specified, otherwise return the URL by default
-	if ( 'id' == $show ) {
-		return $logo['id'];
+	if ( 'id' === $show ) {
+		return $logo_id;
 	} else {
-		return esc_url_raw( set_url_scheme( $logo['url'] ) );
+		$logo_url = wp_get_attachment_url( $logo_id );
+		return esc_url_raw( set_url_scheme( $logo_url ) );
 	}
 }
 
@@ -101,26 +102,60 @@ function jetpack_has_site_logo() {
  * @since 1.0
  */
 function jetpack_the_site_logo() {
-	$logo    = site_logo()->logo;
-	$logo_id = get_theme_mod( 'custom_logo' ); // Check for WP 4.5 Site Logo
-	$logo_id = $logo_id ? $logo_id : $logo['id']; // Use WP Core logo if present, otherwise use Jetpack's.
-	$size    = site_logo()->theme_size();
-	$html    = '';
+	$size = site_logo()->theme_size();
 
 	// If no logo is set, but we're in the Customizer, leave a placeholder (needed for the live preview).
-	if ( ! jetpack_has_site_logo() ) {
-		if ( jetpack_is_customize_preview() ) {
-			$html = sprintf(
+	if (
+		! jetpack_has_site_logo()
+		&& jetpack_is_customize_preview()
+	) {
+		/*
+		 * Reason: the output is escaped in the sprintf.
+		 * phpcs:disable WordPress.Security.EscapeOutput
+		 */
+		/** This filter is documented in modules/theme-tools/site-logo/inc/functions.php */
+		echo apply_filters(
+			'jetpack_the_site_logo',
+			sprintf(
 				'<a href="%1$s" class="site-logo-link" style="display:none;"><img class="site-logo" data-size="%2$s" /></a>',
 				esc_url( home_url( '/' ) ),
 				esc_attr( $size )
-			);
-		}
+			),
+			array(),
+			$size
+		);
+		/* phpcs:enable WordPress.Security.EscapeOutput */
+		return;
 	}
 
-	// We have a logo. Logo is go.
-	else {
-		$html = sprintf(
+	// Check for WP 4.5 Site Logo and Jetpack logo.
+	$logo_id = get_theme_mod( 'custom_logo' );
+	// Get the option directly so the updated logo can be injected into customizer previews.
+	$jetpack_logo_id = get_option( 'site_logo' );
+
+	// Use WP Core logo if present and is an id (of an attachment), otherwise use Jetpack's.
+	if ( ! is_numeric( $logo_id ) && $jetpack_logo_id ) {
+		$logo_id = $jetpack_logo_id;
+	}
+
+	/*
+	 * Reason: the output is escaped in the sprintf.
+	 * phpcs:disable WordPress.Security.EscapeOutput
+	 */
+	/**
+	 * Filter the Site Logo output.
+	 *
+	 * @module theme-tools
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param string $html Site Logo HTML output.
+	 * @param array $jetpack_logo Array of Site Logo details.
+	 * @param string $size Size specified in add_theme_support declaration, or 'thumbnail' default.
+	 */
+	echo apply_filters(
+		'jetpack_the_site_logo',
+		sprintf(
 			'<a href="%1$s" class="site-logo-link" rel="home" itemprop="url">%2$s</a>',
 			esc_url( home_url( '/' ) ),
 			wp_get_attachment_image(
@@ -133,21 +168,16 @@ function jetpack_the_site_logo() {
 					'itemprop'  => 'logo',
 				)
 			)
-		);
-	}
-
-	/**
-	 * Filter the Site Logo output.
-	 *
-	 * @module theme-tools
-	 *
-	 * @since 3.2.0
-	 *
-	 * @param string $html Site Logo HTML output.
-	 * @param array $logo Array of Site Logo details.
-	 * @param string $size Size specified in add_theme_support declaration, or 'thumbnail' default.
-	 */
-	echo apply_filters( 'jetpack_the_site_logo', $html, $logo, $size );
+		),
+		// Return array format in filter for back compatibility.
+		array(
+			'id'    => $jetpack_logo_id,
+			'url'   => wp_get_attachment_url( $jetpack_logo_id ),
+			'sizes' => array(),
+		),
+		$size
+	);
+	/* phpcs:enable WordPress.Security.EscapeOutput */
 }
 
 /**

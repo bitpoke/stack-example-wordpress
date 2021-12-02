@@ -69,23 +69,47 @@ class QM_Util {
 
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
-			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
-			self::$file_dirs['mu-vendor']  = self::standard_dir( WPMU_PLUGIN_DIR . '/vendor' );
-			self::$file_dirs['go-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR . '/shared-plugins' );
-			self::$file_dirs['mu-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR );
-			self::$file_dirs['vip-plugin'] = self::standard_dir( get_theme_root() . '/vip/plugins' );
+
+			/**
+			 * Filters the absolute directory paths that correlate to components.
+			 *
+			 * Note that this filter is applied before QM adds its built-in list of components. This is
+			 * so custom registered components take precedence during component detection.
+			 *
+			 * See the corresponding `qm/component_name/{$type}` filter for specifying the component name.
+			 *
+			 * @since 3.6.0
+			 *
+			 * @param string[] $dirs Array of absolute directory paths keyed by component identifier.
+			 */
+			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
+
+			self::$file_dirs['plugin']     = WP_PLUGIN_DIR;
+			self::$file_dirs['mu-vendor']  = WPMU_PLUGIN_DIR . '/vendor';
+			self::$file_dirs['go-plugin']  = WPMU_PLUGIN_DIR . '/shared-plugins';
+			self::$file_dirs['mu-plugin']  = WPMU_PLUGIN_DIR;
+			self::$file_dirs['vip-plugin'] = get_theme_root() . '/vip/plugins';
 
 			if ( defined( 'WPCOM_VIP_CLIENT_MU_PLUGIN_DIR' ) ) {
-				self::$file_dirs['vip-client-mu-plugin'] = self::standard_dir( WPCOM_VIP_CLIENT_MU_PLUGIN_DIR );
+				self::$file_dirs['vip-client-mu-plugin'] = WPCOM_VIP_CLIENT_MU_PLUGIN_DIR;
+			}
+
+			if ( defined( '\Altis\ROOT_DIR' ) ) {
+				self::$file_dirs['altis-vendor'] = \Altis\ROOT_DIR . '/vendor';
 			}
 
 			self::$file_dirs['theme']      = null;
-			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
-			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
-			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
-			self::$file_dirs['core']       = self::standard_dir( ABSPATH );
+			self::$file_dirs['stylesheet'] = get_stylesheet_directory();
+			self::$file_dirs['template']   = get_template_directory();
+			self::$file_dirs['other']      = WP_CONTENT_DIR;
+			self::$file_dirs['core']       = ABSPATH;
 			self::$file_dirs['unknown']    = null;
+
+			foreach ( self::$file_dirs as $type => $dir ) {
+				self::$file_dirs[ $type ] = self::standard_dir( $dir );
+			}
 		}
+
 		return self::$file_dirs;
 	}
 
@@ -109,6 +133,13 @@ class QM_Util {
 		$context = $type;
 
 		switch ( $type ) {
+			case 'altis-vendor':
+				$plug = str_replace( \Altis\ROOT_DIR . '/vendor/', '', $file );
+				$plug = explode( '/', $plug, 3 );
+				$plug = $plug[0] . '/' . $plug[1];
+				/* translators: %s: Dependency name */
+				$name = sprintf( __( 'Dependency: %s', 'query-monitor' ), $plug );
+				break;
 			case 'plugin':
 			case 'mu-plugin':
 			case 'mu-vendor':
@@ -176,6 +207,20 @@ class QM_Util {
 			case 'unknown':
 			default:
 				$name = __( 'Unknown', 'query-monitor' );
+
+				/**
+				 * Filters the name of a custom or unknown component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See the corresponding `qm/component_dirs` filter for specifying the component directories.
+				 *
+				 * @since 3.6.0
+				 *
+				 * @param string $name The component name.
+				 * @param string $file The full file path for the file within the component.
+				 */
+				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
 				break;
 		}
 
@@ -188,6 +233,13 @@ class QM_Util {
 
 		if ( is_string( $callback['function'] ) && ( false !== strpos( $callback['function'], '::' ) ) ) {
 			$callback['function'] = explode( '::', $callback['function'] );
+		}
+
+		if ( isset( $callback['class'] ) ) {
+			$callback['function'] = array(
+				$callback['class'],
+				$callback['function'],
+			);
 		}
 
 		try {
@@ -274,7 +326,7 @@ class QM_Util {
 		if ( self::is_ajax() ) {
 			return true;
 		}
-		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) { // @codingStandardsIgnoreLine
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) { // phpcs:ignore
 			return true;
 		}
 		return false;
@@ -299,12 +351,12 @@ class QM_Util {
 			return false;
 		}
 
-		// @codingStandardsIgnoreStart
+		// phpcs:disable
 		$num_sites = $wpdb->get_var( "
 			SELECT COUNT(*)
 			FROM {$wpdb->site}
 		" );
-		// @codingStandardsIgnoreEnd
+		// phpcs:enable
 
 		return ( $num_sites > 1 );
 	}
@@ -324,16 +376,16 @@ class QM_Util {
 	}
 
 	public static function get_query_type( $sql ) {
-		$sql  = trim( $sql );
-		$type = $sql;
+		// Trim leading whitespace and brackets
+		$sql = ltrim( $sql, ' \t\n\r\0\x0B(' );
 
 		if ( 0 === strpos( $sql, '/*' ) ) {
 			// Strip out leading comments such as `/*NO_SELECT_FOUND_ROWS*/` before calculating the query type
-			$type = preg_replace( '|^/\*[^\*/]+\*/|', '', $sql );
+			$sql = preg_replace( '|^/\*[^\*/]+\*/|', '', $sql );
 		}
 
-		$type = preg_split( '/\b/', trim( $type ), 2, PREG_SPLIT_NO_EMPTY );
-		$type = strtoupper( $type[0] );
+		$words = preg_split( '/\b/', trim( $sql ), 2, PREG_SPLIT_NO_EMPTY );
+		$type = strtoupper( $words[0] );
 
 		return $type;
 	}

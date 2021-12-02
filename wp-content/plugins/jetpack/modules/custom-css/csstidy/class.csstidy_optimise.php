@@ -399,12 +399,15 @@ class csstidy_optimise {
 		$units = & $GLOBALS['csstidy']['units'];
 		$return = array(0, '');
 
-		$return[0] = floatval($string);
+		$return[0] = (float) $string;
 		if (abs($return[0]) > 0 && abs($return[0]) < 1) {
-			if ($return[0] < 0) {
-				$return[0] = '-' . ltrim(substr($return[0], 1), '0');
-			} else {
-				$return[0] = ltrim($return[0], '0');
+			// Removes the initial `0` from a decimal number, e.g., `0.7 => .7` or `-0.666 => -.666`.
+			if ( ! $this->parser->get_cfg( 'preserve_leading_zeros' ) ) {
+				if ( $return[0] < 0 ) {
+					$return[0] = '-' . ltrim( substr( $return[0], 1 ), '0' );
+				} else {
+					$return[0] = ltrim( $return[0], '0' );
+				}
 			}
 		}
 

@@ -75,15 +75,17 @@ add_action( 'bp_init', 'bp_setup_globals',           4  );
 add_action( 'bp_init', 'bp_setup_canonical_stack',   5  );
 add_action( 'bp_init', 'bp_setup_nav',               6  );
 add_action( 'bp_init', 'bp_setup_title',             8  );
+add_action( 'bp_init', 'bp_blocks_init',             10 );
 add_action( 'bp_init', 'bp_core_load_admin_bar_css', 12 );
 add_action( 'bp_init', 'bp_add_rewrite_tags',        20 );
 add_action( 'bp_init', 'bp_add_rewrite_rules',       30 );
 add_action( 'bp_init', 'bp_add_permastructs',        40 );
 
 /**
- * The bp_register_taxonomies hook - Attached to 'bp_init' @ priority 2 above.
+ * The bp_register_taxonomies hooks - Attached to 'bp_init' @ priority 2 above.
  */
 add_action( 'bp_register_taxonomies', 'bp_register_member_types' );
+add_action( 'bp_register_taxonomies', 'bp_register_type_metadata', 20 );
 
 /**
  * Late includes.

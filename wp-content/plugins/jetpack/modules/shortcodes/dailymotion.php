@@ -2,7 +2,7 @@
 /**
  * Dailymotion code
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
 /**
@@ -135,8 +135,8 @@ function dailymotion_shortcode( $atts ) {
 	}
 
 	/*set width and height using provided parameters if any */
-	$width  = isset( $atts['width'] ) ? intval( $atts['width'] ) : 0;
-	$height = isset( $atts['height'] ) ? intval( $atts['height'] ) : 0;
+	$width  = isset( $atts['width'] ) ? (int) $atts['width'] : 0;
+	$height = isset( $atts['height'] ) ? (int) $atts['height'] : 0;
 
 	if ( ! $width && ! $height ) {
 		if ( ! empty( $content_width ) ) {
@@ -180,7 +180,7 @@ function dailymotion_shortcode( $atts ) {
 		$player_params['sharing-enable'] = '0';
 	}
 	if ( isset( $atts['start'] ) && ! empty( $atts['start'] ) ) {
-		$player_params['start'] = abs( intval( $atts['start'] ) );
+		$player_params['start'] = abs( (int) $atts['start'] );
 	}
 	if ( isset( $atts['subtitles-default'] ) && ! empty( $atts['subtitles-default'] ) ) {
 		$player_params['subtitles-default'] = esc_attr( $atts['subtitles-default'] );
@@ -239,6 +239,25 @@ function dailymotion_shortcode( $atts ) {
 		}
 	}
 
+	/**
+	 * Calypso Helper
+	 *
+	 * Makes shortcode output responsive to the location it is loaded:
+	 * Notifications, Reader, Email
+	 */
+	if ( defined( 'IS_WPCOM' ) && IS_WPCOM ) {
+		require_once WP_CONTENT_DIR . '/lib/display-context.php';
+		$context = A8C\Display_Context\get_current_context();
+
+		// Notifications.
+		if ( A8C\Display_Context\NOTIFICATIONS === $context ) {
+			return sprintf(
+				'<a href="%1$s" target="_blank" rel="noopener noreferrer">%1$s</a>',
+				esc_url( 'https://www.dailymotion.com/video/' . $id )
+			);
+		}
+	}
+
 	return $output;
 }
 add_shortcode( 'dailymotion', 'dailymotion_shortcode' );
@@ -257,13 +276,13 @@ function dailymotion_channel_shortcode( $atts ) {
 
 	switch ( $atts['type'] ) {
 		case 'grid':
-			$channel_iframe = '<iframe width="300px" height="264px" scrolling="no" style="border:0;" src="' . esc_url( '//www.dailymotion.com/badge/user/' . $username . '?type=grid' ) . '"></iframe>';
+			$channel_iframe = '<iframe sandbox="allow-popups allow-scripts allow-same-origin allow-presentation" width="300px" height="264px" scrolling="no" style="border:0;" src="' . esc_url( '//www.dailymotion.com/badge/user/' . $username . '?type=grid' ) . '"></iframe>';
 			break;
 		case 'carousel':
-			$channel_iframe = '<iframe width="300px" height="360px" scrolling="no" style="border:0;" src="' . esc_url( '//www.dailymotion.com/badge/user/' . $username . '?type=carousel' ) . '"></iframe>';
+			$channel_iframe = '<iframe sandbox="allow-popups allow-scripts allow-same-origin allow-presentation" width="300px" height="360px" scrolling="no" style="border:0;" src="' . esc_url( '//www.dailymotion.com/badge/user/' . $username . '?type=carousel' ) . '"></iframe>';
 			break;
 		default:
-			$channel_iframe = '<iframe width="300px" height="78px" scrolling="no" style="border:0;" src="' . esc_url( '//www.dailymotion.com/badge/user/' . $username ) . '"></iframe>';
+			$channel_iframe = '<iframe sandbox="allow-popups allow-scripts allow-same-origin allow-presentation" width="300px" height="78px" scrolling="no" style="border:0;" src="' . esc_url( '//www.dailymotion.com/badge/user/' . $username ) . '"></iframe>';
 	}
 
 	return $channel_iframe;

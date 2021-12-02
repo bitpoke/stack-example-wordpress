@@ -1,1 +1,313 @@
-this.wc=this.wc||{},this.wc.onboardingTaxNotice=function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=751)}({1:function(e,t){!function(){e.exports=this.wp.i18n}()},12:function(e,t,n){"use strict";var r={};n.r(r),n.d(r,"ADMIN_URL",(function(){return l})),n.d(r,"COUNTRIES",(function(){return p})),n.d(r,"CURRENCY",(function(){return y})),n.d(r,"LOCALE",(function(){return b})),n.d(r,"ORDER_STATUSES",(function(){return S})),n.d(r,"SITE_TITLE",(function(){return m})),n.d(r,"WC_ASSET_URL",(function(){return O})),n.d(r,"DEFAULT_DATE_RANGE",(function(){return g})),n.d(r,"getSetting",(function(){return v})),n.d(r,"setSetting",(function(){return _})),n.d(r,"getAdminLink",(function(){return E}));var o=n(48),c=n(13),u=n.n(c),i=n(49);function a(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,r)}return n}function f(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?a(Object(n),!0).forEach((function(t){u()(e,t,n[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):a(Object(n)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t))}))}return e}var s={adminUrl:"",countries:[],currency:{code:"USD",precision:2,symbol:"$",symbolPosition:"left",decimalSeparator:".",priceFormat:"%1$s%2$s",thousandSeparator:","},defaultDateRange:"period=month&compare=previous_year",locale:{siteLocale:"en_US",userLocale:"en_US",weekdaysShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]},orderStatuses:[],siteTitle:"",wcAssetUrl:""},d=f({},s,{},"object"===("undefined"==typeof wcSettings?"undefined":n.n(i)()(wcSettings))?wcSettings:{});d.currency=f({},s.currency,{},d.currency),d.locale=f({},s.locale,{},d.locale);var l=d.adminUrl,p=d.countries,y=d.currency,b=d.locale,S=d.orderStatuses,m=d.siteTitle,O=d.wcAssetUrl,g=d.defaultDateRange;function v(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:function(e){return e},r=d.hasOwnProperty(e)?d[e]:t;return n(r,t)}function _(e,t){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:function(e){return e};d[e]=n(t)}function E(e){return(l||"")+e}n.d(t,"a",(function(){return T})),n.d(t,"b",(function(){return j})),n.d(t,"c",(function(){return h})),n.d(t,"d",(function(){return A})),n.d(t,"e",(function(){return L})),n.d(t,"g",(function(){return R})),n.d(t,"h",(function(){return U})),n.d(t,"f",(function(){return P}));var w=o&&void 0!==o.getSetting?o:r,T=w.ADMIN_URL,j=(w.COUNTRIES,w.CURRENCY),h=w.LOCALE,A=w.ORDER_STATUSES,L=(w.SITE_TITLE,w.WC_ASSET_URL),R=(w.DEFAULT_DATE_RANGE,w.getSetting),U=w.setSetting,P=w.getAdminLink||E},13:function(e,t){e.exports=function(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}},24:function(e,t){!function(){e.exports=this.wp.data}()},48:function(e,t){!function(){e.exports=this.wc.wcSettings}()},49:function(e,t){function n(t){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?e.exports=n=function(e){return typeof e}:e.exports=n=function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},n(t)}e.exports=n},59:function(e,t,n){"use strict";function r(e){"complete"!==document.readyState&&"interactive"!==document.readyState?document.addEventListener("DOMContentLoaded",e):e()}n.d(t,"a",(function(){return r}))},751:function(e,t,n){"use strict";n.r(t);var r=n(1),o=n(24),c=n(59),u=n(12),i=function(){var e=document.querySelector(".woocommerce-save-button");e.classList.contains("is-clicked")||(e.classList.add("is-clicked"),function e(){return null!==document.querySelector(".blockUI.blockOverlay")?new Promise((function(e){requestAnimationFrame(e)})).then((function(){return e()})):Promise.resolve(!0)}().then((function(){return Object(o.dispatch)("core/notices").createSuccessNotice(Object(r.__)("You've added your first tax rate!","woocommerce-admin"),{id:"WOOCOMMERCE_ONBOARDING_TAX_NOTICE",actions:[{url:Object(u.f)("admin.php?page=wc-admin"),label:Object(r.__)("Continue setup.","woocommerce-admin")}]})})))};Object(c.a)((function(){var e=document.querySelector(".woocommerce-save-button");e&&e.addEventListener("click",i)}))}});
+this["wc"] = this["wc"] || {}; this["wc"]["onboardingTaxNotice"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 460);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 13:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export ADMIN_URL */
+/* unused harmony export COUNTRIES */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CURRENCY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LOCALE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ORDER_STATUSES; });
+/* unused harmony export SITE_TITLE */
+/* unused harmony export WC_ASSET_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getSetting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return setSetting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getAdminLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return enqueueScript; });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/**
+ * External dependencies
+ */
+ // Remove mutable data from settings object to prevent access. Data stores should be used instead.
+
+const mutableSources = ['wcAdminSettings', 'preloadSettings'];
+const settings = typeof wcSettings === 'object' ? wcSettings : {};
+const SOURCE = Object.keys(settings).reduce((source, key) => {
+  if (!mutableSources.includes(key)) {
+    source[key] = settings[key];
+  }
+
+  return source;
+}, {});
+Object.keys(settings.admin || {}).forEach(key => {
+  if (!mutableSources.includes(key)) {
+    SOURCE[key] = settings.admin[key];
+  }
+});
+const ADMIN_URL = SOURCE.adminUrl;
+const COUNTRIES = SOURCE.countries;
+const CURRENCY = SOURCE.currency;
+const LOCALE = SOURCE.locale;
+const ORDER_STATUSES = SOURCE.orderStatuses;
+const SITE_TITLE = SOURCE.siteTitle;
+const WC_ASSET_URL = SOURCE.wcAssetUrl;
+/**
+ * Retrieves a setting value from the setting state.
+ *
+ * @param {string}   name                         The identifier for the setting.
+ * @param {*}    [fallback=false]             The value to use as a fallback
+ *                                                if the setting is not in the
+ *                                                state.
+ * @param {Function} [filter=( val ) => val]  	  A callback for filtering the
+ *                                                value before it's returned.
+ *                                                Receives both the found value
+ *                                                (if it exists for the key) and
+ *                                                the provided fallback arg.
+ *
+ * @return {*}  The value present in the settings state for the given
+ *                   name.
+ */
+
+function getSetting(name, fallback = false, filter = val => val) {
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be accessed via data store.'));
+  }
+
+  const value = SOURCE.hasOwnProperty(name) ? SOURCE[name] : fallback;
+  return filter(value, fallback);
+}
+/**
+ * Sets a value to a property on the settings state.
+ *
+ * NOTE: This feature is to be removed in favour of data stores when a full migration
+ * is complete.
+ *
+ * @deprecated
+ *
+ * @param {string}   name                        The setting property key for the
+ *                                               setting being mutated.
+ * @param {*}    value                       The value to set.
+ * @param {Function} [filter=( val ) => val]     Allows for providing a callback
+ *                                               to sanitize the setting (eg.
+ *                                               ensure it's a number)
+ */
+
+function setSetting(name, value, filter = val => val) {
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be mutated via data store.'));
+  }
+
+  SOURCE[name] = filter(value);
+}
+/**
+ * Returns a string with the site's wp-admin URL appended. JS version of `admin_url`.
+ *
+ * @param {string} path Relative path.
+ * @return {string} Full admin URL.
+ */
+
+function getAdminLink(path) {
+  return (ADMIN_URL || '') + path;
+}
+/**
+ * Adds a script to the page if it has not already been loaded. JS version of `wp_enqueue_script`.
+ *
+ * @param {Object} script WP_Script
+ * @param {string} script.handle Script handle.
+ * @param {string} script.src Script URL.
+ */
+
+function enqueueScript(script) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`#${script.handle}-js`)) {
+      resolve();
+    }
+
+    const domElement = document.createElement('script');
+    domElement.src = script.src;
+    domElement.id = `${script.handle}-js`;
+    domElement.async = true;
+    domElement.onload = resolve;
+    domElement.onerror = reject;
+    document.body.appendChild(domElement);
+  });
+}
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["i18n"]; }());
+
+/***/ }),
+
+/***/ 460:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
+/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
+/**
+ * External dependencies
+ */
+
+
+
+
+/**
+ * Returns a promise and resolves when the loader overlay no longer exists.
+ *
+ * @param {HTMLElement} saveButton Save button DOM element.
+ * @return {Promise} Promise for save status.
+ */
+
+const saveCompleted = saveButton => {
+  if (saveButton && !saveButton.disabled) {
+    const promise = new Promise(resolve => {
+      window.requestAnimationFrame(resolve);
+    });
+    return promise.then(() => saveCompleted(saveButton));
+  }
+
+  return Promise.resolve(true);
+};
+/**
+ * Displays a notice on tax settings save.
+ */
+
+
+const showTaxCompletionNotice = () => {
+  const saveButton = document.querySelector('.woocommerce-save-button');
+
+  if (saveButton.classList.contains('has-tax')) {
+    return;
+  }
+
+  saveCompleted(saveButton).then(() => {
+    // Check if a row was added successfully after WooCommerce removes invalid rows.
+    if (!document.querySelector('.wc_tax_rates .tips')) {
+      return;
+    }
+
+    saveButton.classList.add('has-tax');
+    Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["dispatch"])('core/notices').createSuccessNotice(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("You've added your first tax rate!", 'woocommerce-admin'), {
+      id: 'WOOCOMMERCE_ONBOARDING_TAX_NOTICE',
+      actions: [{
+        url: Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_3__[/* getAdminLink */ "e"])('admin.php?page=wc-admin'),
+        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Continue setup.', 'woocommerce-admin')
+      }]
+    });
+  });
+};
+
+_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_2___default()(() => {
+  const saveButton = document.querySelector('.woocommerce-save-button');
+
+  if (window.htmlSettingsTaxLocalizeScript && window.htmlSettingsTaxLocalizeScript.rates && !window.htmlSettingsTaxLocalizeScript.rates.length && saveButton) {
+    saveButton.addEventListener('click', showTaxCompletionNotice);
+  }
+});
+
+/***/ }),
+
+/***/ 51:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["domReady"]; }());
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["data"]; }());
+
+/***/ })
+
+/******/ });

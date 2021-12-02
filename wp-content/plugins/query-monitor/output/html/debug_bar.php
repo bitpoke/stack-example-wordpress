@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
 	/**
@@ -60,7 +62,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 			'</h2>',
 		), $panel );
 
-		echo $panel; // @codingStandardsIgnoreLine
+		echo $panel; // phpcs:ignore
 
 		echo '</div>';
 
