@@ -1,1 +1,1 @@
-FROM quay.io/presslabs/wordpress-runtime:5.3.2
+FROM quay.io/presslabs/wordpress-runtime:5.8.2
