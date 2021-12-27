@@ -2,7 +2,7 @@ stack-example-wordpress
 ===
 
 Example project for running a classic WordPress setup on
-[Presslabs Stack](https://www.presslabs.com/stack).
+the [Bitpoke Stack](https://www.bitpoke.io/stack/).
 
 ## Quickstart
 
@@ -15,11 +15,11 @@ $ wp core download --path=wp
 
 ## Building docker images
 
-Presslabs Stack provides a base image for building and developing classic
+The Bitpoke Stack provides a base image for building and developing classic
 WordPress sites. The `Dockerfile` is as simple as:
 
 ```Dockerfile
-FROM quay.io/presslabs/wordpress-runtime:5.2.4
+FROM docker.io/bitpoke/wordpress-runtime:5.8.2
 ```
 
 ## Development
@@ -49,4 +49,4 @@ $ docker-compose up -d
 _NOTE_: If you are using docker compose, remember that the image built from the
 above `Dockerfile` already includes nginx and it's accessible on port 8080. For
 customizing the environment also check
-[https://github.com/presslabs/stack-runtimes/blob/master/php/README.md](https://github.com/presslabs/stack-runtimes/blob/master/php/README.md).
+[https://github.com/bitpoke/stack-runtimes/tree/master/php#php-runtime](https://github.com/bitpoke/stack-runtimes/tree/master/php#php-runtime).
