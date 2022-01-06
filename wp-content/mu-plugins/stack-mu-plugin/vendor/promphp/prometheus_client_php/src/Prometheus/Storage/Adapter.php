@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Prometheus\Storage;
 
+use Prometheus\Exception\StorageException;
 use Prometheus\MetricFamilySamples;
 
 interface Adapter
@@ -16,6 +17,12 @@ interface Adapter
      * @return MetricFamilySamples[]
      */
     public function collect(): array;
+
+    /**
+     * @param mixed[] $data
+     * @return void
+     */
+    public function updateSummary(array $data): void;
 
     /**
      * @param mixed[] $data
@@ -34,4 +41,12 @@ interface Adapter
      * @return void
      */
     public function updateCounter(array $data): void;
+
+    /**
+     * Removes all previously stored metrics from underlying storage
+     *
+     * @throws StorageException
+     * @return void
+     */
+    public function wipeStorage(): void;
 }

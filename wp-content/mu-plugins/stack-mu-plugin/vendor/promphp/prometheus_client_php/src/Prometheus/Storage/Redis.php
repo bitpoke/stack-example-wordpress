@@ -9,7 +9,10 @@ use Prometheus\Counter;
 use Prometheus\Exception\StorageException;
 use Prometheus\Gauge;
 use Prometheus\Histogram;
+use Prometheus\Math;
 use Prometheus\MetricFamilySamples;
+use Prometheus\Summary;
+use RuntimeException;
 
 class Redis implements Adapter
 {
@@ -92,12 +95,74 @@ class Redis implements Adapter
     }
 
     /**
+     * @deprecated use replacement method wipeStorage from Adapter interface
      * @throws StorageException
      */
     public function flushRedis(): void
     {
+        $this->wipeStorage();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function wipeStorage(): void
+    {
         $this->ensureOpenConnection();
-        $this->redis->flushAll();
+
+        $searchPattern = "";
+
+        $globalPrefix = $this->redis->getOption(\Redis::OPT_PREFIX);
+        // @phpstan-ignore-next-line false positive, phpstan thinks getOptions returns int
+        if (is_string($globalPrefix)) {
+            $searchPattern .= $globalPrefix;
+        }
+
+        $searchPattern .= self::$prefix;
+        $searchPattern .= '*';
+
+        $this->redis->eval(
+            <<<LUA
+local cursor = "0"
+repeat 
+    local results = redis.call('SCAN', cursor, 'MATCH', ARGV[1])
+    cursor = results[1]
+    for _, key in ipairs(results[2]) do
+        redis.call('DEL', key)
+    end
+until cursor == "0"
+LUA
+            ,
+            [$searchPattern],
+            0
+        );
+    }
+
+    /**
+     * @param mixed[] $data
+     *
+     * @return string
+     */
+    private function metaKey(array $data): string
+    {
+        return implode(':', [
+            $data['name'],
+            'meta'
+        ]);
+    }
+
+    /**
+     * @param mixed[] $data
+     *
+     * @return string
+     */
+    private function valueKey(array $data): string
+    {
+        return implode(':', [
+            $data['name'],
+            $this->encodeLabelValues($data['labelValues']),
+            'value'
+        ]);
     }
 
     /**
@@ -110,6 +175,7 @@ class Redis implements Adapter
         $metrics = $this->collectHistograms();
         $metrics = array_merge($metrics, $this->collectGauges());
         $metrics = array_merge($metrics, $this->collectCounters());
+        $metrics = array_merge($metrics, $this->collectSummaries());
         return array_map(
             function (array $metric): MetricFamilySamples {
                 return new MetricFamilySamples($metric);
@@ -147,7 +213,7 @@ class Redis implements Adapter
     {
         try {
             $connection_successful = false;
-            if ($this->options['persistent_connections'] !== null) {
+            if ($this->options['persistent_connections'] !== false) {
                 $connection_successful = $this->redis->pconnect(
                     $this->options['host'],
                     (int) $this->options['port'],
@@ -183,12 +249,13 @@ class Redis implements Adapter
 
         $this->redis->eval(
             <<<LUA
-local increment = redis.call('hIncrByFloat', KEYS[1], ARGV[1], ARGV[3])
+local result = redis.call('hIncrByFloat', KEYS[1], ARGV[1], ARGV[3])
 redis.call('hIncrBy', KEYS[1], ARGV[2], 1)
-if increment == ARGV[3] then
+if tonumber(result) >= tonumber(ARGV[3]) then
     redis.call('hSet', KEYS[1], '__meta', ARGV[4])
     redis.call('sAdd', KEYS[2], KEYS[1])
 end
+return result
 LUA
             ,
             [
@@ -201,6 +268,39 @@ LUA
             ],
             2
         );
+    }
+
+    /**
+     * @param mixed[] $data
+     * @throws StorageException
+     */
+    public function updateSummary(array $data): void
+    {
+        $this->ensureOpenConnection();
+
+        // store meta
+        $summaryKey = self::$prefix . Summary::TYPE . self::PROMETHEUS_METRIC_KEYS_SUFFIX;
+        $metaKey = $summaryKey . ':' . $this->metaKey($data);
+        $json = json_encode($this->metaData($data));
+        if (false === $json) {
+            throw new RuntimeException(json_last_error_msg());
+        }
+        $this->redis->setNx($metaKey, $json);
+
+        // store value key
+        $valueKey = $summaryKey . ':' . $this->valueKey($data);
+        $json = json_encode($this->encodeLabelValues($data['labelValues']));
+        if (false === $json) {
+            throw new RuntimeException(json_last_error_msg());
+        }
+        $this->redis->setNx($valueKey, $json);
+
+        // trick to handle uniqid collision
+        $done = false;
+        while (!$done) {
+            $sampleKey = $valueKey . ':' . uniqid('', true);
+            $done = $this->redis->set($sampleKey, $data['value'], ['NX', 'EX' => $data['maxAgeSeconds']]);
+        }
     }
 
     /**
@@ -253,9 +353,9 @@ LUA
         $this->redis->eval(
             <<<LUA
 local result = redis.call(ARGV[1], KEYS[1], ARGV[3], ARGV[2])
-if result == tonumber(ARGV[2]) then
+local added = redis.call('sAdd', KEYS[2], KEYS[1])
+if added == 1 then
     redis.call('hMSet', KEYS[1], '__meta', ARGV[4])
-    redis.call('sAdd', KEYS[2], KEYS[1])
 end
 return result
 LUA
@@ -270,6 +370,18 @@ LUA
             ],
             2
         );
+    }
+
+
+    /**
+     * @param mixed[] $data
+     * @return mixed[]
+     */
+    private function metaData(array $data): array
+    {
+        $metricsMetaData = $data;
+        unset($metricsMetaData['value'], $metricsMetaData['command'], $metricsMetaData['labelValues']);
+        return $metricsMetaData;
     }
 
     /**
@@ -347,6 +459,109 @@ LUA
             $histograms[] = $histogram;
         }
         return $histograms;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    private function removePrefixFromKey(string $key): string
+    {
+        // @phpstan-ignore-next-line false positive, phpstan thinks getOptions returns int
+        if ($this->redis->getOption(\Redis::OPT_PREFIX) === null) {
+            return $key;
+        }
+        // @phpstan-ignore-next-line false positive, phpstan thinks getOptions returns int
+        return substr($key, strlen($this->redis->getOption(\Redis::OPT_PREFIX)));
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function collectSummaries(): array
+    {
+        $math = new Math();
+        $summaryKey = self::$prefix . Summary::TYPE . self::PROMETHEUS_METRIC_KEYS_SUFFIX;
+        $keys = $this->redis->keys($summaryKey . ':*:meta');
+
+        $summaries = [];
+        foreach ($keys as $metaKeyWithPrefix) {
+            $metaKey = $this->removePrefixFromKey($metaKeyWithPrefix);
+            $rawSummary = $this->redis->get($metaKey);
+            if ($rawSummary === false) {
+                continue;
+            }
+            $summary = json_decode($rawSummary, true);
+            $metaData = $summary;
+            $data = [
+                'name' => $metaData['name'],
+                'help' => $metaData['help'],
+                'type' => $metaData['type'],
+                'labelNames' => $metaData['labelNames'],
+                'maxAgeSeconds' => $metaData['maxAgeSeconds'],
+                'quantiles' => $metaData['quantiles'],
+                'samples' => [],
+            ];
+
+            $values = $this->redis->keys($summaryKey . ':' . $metaData['name'] . ':*:value');
+            foreach ($values as $valueKeyWithPrefix) {
+                $valueKey = $this->removePrefixFromKey($valueKeyWithPrefix);
+                $rawValue = $this->redis->get($valueKey);
+                if ($rawValue === false) {
+                    continue;
+                }
+                $value = json_decode($rawValue, true);
+                $encodedLabelValues = $value;
+                $decodedLabelValues = $this->decodeLabelValues($encodedLabelValues);
+
+                $samples = [];
+                $sampleValues = $this->redis->keys($summaryKey . ':' . $metaData['name'] . ':' . $encodedLabelValues . ':value:*');
+                foreach ($sampleValues as $sampleValueWithPrefix) {
+                    $sampleValue = $this->removePrefixFromKey($sampleValueWithPrefix);
+                    $samples[] = (float) $this->redis->get($sampleValue);
+                }
+
+                if (count($samples) === 0) {
+                    $this->redis->del($valueKey);
+                    continue;
+                }
+
+                // Compute quantiles
+                sort($samples);
+                foreach ($data['quantiles'] as $quantile) {
+                    $data['samples'][] = [
+                        'name' => $metaData['name'],
+                        'labelNames' => ['quantile'],
+                        'labelValues' => array_merge($decodedLabelValues, [$quantile]),
+                        'value' => $math->quantile($samples, $quantile),
+                    ];
+                }
+
+                // Add the count
+                $data['samples'][] = [
+                    'name' => $metaData['name'] . '_count',
+                    'labelNames' => [],
+                    'labelValues' => $decodedLabelValues,
+                    'value' => count($samples),
+                ];
+
+                // Add the sum
+                $data['samples'][] = [
+                    'name' => $metaData['name'] . '_sum',
+                    'labelNames' => [],
+                    'labelValues' => $decodedLabelValues,
+                    'value' => array_sum($samples),
+                ];
+            }
+
+            if (count($data['samples']) > 0) {
+                $summaries[] = $data;
+            } else {
+                $this->redis->del($metaKey);
+            }
+        }
+        return $summaries;
     }
 
     /**
@@ -432,5 +647,37 @@ LUA
     private function toMetricKey(array $data): string
     {
         return implode(':', [self::$prefix, $data['type'], $data['name']]);
+    }
+
+    /**
+     * @param mixed[] $values
+     * @return string
+     * @throws RuntimeException
+     */
+    private function encodeLabelValues(array $values): string
+    {
+        $json = json_encode($values);
+        if (false === $json) {
+            throw new RuntimeException(json_last_error_msg());
+        }
+        return base64_encode($json);
+    }
+
+    /**
+     * @param string $values
+     * @return mixed[]
+     * @throws RuntimeException
+     */
+    private function decodeLabelValues(string $values): array
+    {
+        $json = base64_decode($values, true);
+        if (false === $json) {
+            throw new RuntimeException('Cannot base64 decode label values');
+        }
+        $decodedValues = json_decode($json, true);
+        if (false === $decodedValues) {
+            throw new RuntimeException(json_last_error_msg());
+        }
+        return $decodedValues;
     }
 }

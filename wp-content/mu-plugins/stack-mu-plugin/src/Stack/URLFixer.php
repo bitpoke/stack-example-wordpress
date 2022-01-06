@@ -4,7 +4,7 @@ namespace Stack;
 
 /**
  * This code is a modified version of https://github.com/roots/multisite-url-fixer.
- * It is included here for convenience for running multi-site setups on Presslabs Stack.
+ * It is included here for convenience for running multi-site setups on Bitpoke Stack.
  */
 
 /**

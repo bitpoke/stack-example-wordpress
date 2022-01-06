@@ -1,9 +1,9 @@
 stack-mu-plugin
-[![Build Status](https://stack-ci.presslabs.net/api/badges/presslabs/stack-mu-plugin/status.svg)](https://stack-ci.presslabs.net/presslabs/stack-mu-plugin)
+[![Build Status](https://ci.bitpoke.io/api/badges/bitpoke/stack-mu-plugin/status.svg)](https://ci.bitpoke.io/bitpoke/stack-mu-plugin)
 ===
-Presslabs Stack must use plugin for WordPress.
+Bitpoke Stack must use plugin for WordPress.
 
-It provides integration for [Presslabs Stack](https://www.presslabs.com/stack)
+It provides integration for [Bitpoke Stack](https://www.bitpoke.io/stack)
 functionalities with WordPress, such as:
 * uploading and serving media files from object storage systems such as
   Google Cloud Storage or AWS S3
@@ -16,13 +16,13 @@ functionalities with WordPress, such as:
 When using bedrock, just run:
 
 ```console
-$ composer require presslabs/stack-mu-plugin
+$ composer require bitpoke/stack-mu-plugin
 ```
 
 ### WordPress plugin
 
 To run as WordPress classic mu-plugin, download the plugin archive from
-[https://github.com/presslabs/stack-mu-plugin/releases](https://github.com/presslabs/stack-mu-plugin/releases)
+[https://github.com/bitpoke/stack-mu-plugin/releases](https://github.com/bitpoke/stack-mu-plugin/releases)
 and extract it into your `wp-content/mu-plugins` folder.
 
 Then you need to activate the mu-plugin, by copying `stack-mu-plugin.php` from

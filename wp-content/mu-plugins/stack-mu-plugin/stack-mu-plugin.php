@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Presslabs Stack
- * Plugin URI: http://presslabs.com/stack/
+ * Plugin Name: Bitpoke Stack
+ * Plugin URI: https://www.bitpoke.io/stack/
  * Description: Must-Use plugin for Stack
- * Version: 0.5.3
- * Author: Presslabs
- * Author URI: http://presslabs.com/
+ * Version: 0.6.0
+ * Author: Bitpoke
+ * Author URI: https://www.bitpoke.io/
  */
 
 // we are copied into mu-plugins root
@@ -18,7 +18,7 @@ if ( file_exists( __DIR__ . '/stack-mu-plugin/' . basename( __FILE__ ) ) ) {
     }
 
     if ( ! class_exists( '\Stack\Config' ) ) {
-        trigger_error( 'Presslabs Stack WordPress mu-plugin is not fully installed! Please install with Composer or download full release archive.', E_USER_ERROR );
+        trigger_error( 'Bitpoke Stack WordPress mu-plugin is not fully installed! Please install with Composer or download full release archive.', E_USER_ERROR );
     }
 
     require __DIR__ . '/src/mu-plugin.php';

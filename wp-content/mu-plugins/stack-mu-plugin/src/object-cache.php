@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Presslabs Stack Object Cache
- * Plugin URI: http://presslabs.com/stack/
- * Description: WordPress object cache backend for Presslabs Stack. This backend is based on memcached.
- * Version: 0.1.9-72-g7f5d891
- * Author: Presslabs
- * Author URI: http://presslabs.com/
+ * Plugin Name: Bitpoke Stack Object Cache
+ * Plugin URI: https://www.bitpoke.io/stack/
+ * Description: WordPress object cache backend for Bitpoke Stack. This backend is based on memcached.
+ * Version: 0.6.0
+ * Author: Bitpoke
+ * Author URI: http://www.bitpoke.io/
  */
 
 if (!defined('MEMCACHED_HOST')) {
@@ -238,7 +238,7 @@ class WP_Object_Cache {
         }
 
         if ( ! class_exists( '\Stack\ObjectCache\Memcached' ) ) {
-            wp_die( 'Presslabs Stack WordPress mu-plugin is not fully installed! Please install with Composer or download full release archive.');
+            wp_die( 'Bitpoke Stack WordPress mu-plugin is not fully installed! Please install with Composer or download full release archive.');
         }
 
         $backend = new \Stack\ObjectCache\Memcached();

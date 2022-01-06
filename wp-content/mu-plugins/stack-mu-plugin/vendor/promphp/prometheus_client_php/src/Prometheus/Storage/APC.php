@@ -6,19 +6,26 @@ namespace Prometheus\Storage;
 
 use APCUIterator;
 use Prometheus\Exception\StorageException;
+use Prometheus\Math;
 use Prometheus\MetricFamilySamples;
 use RuntimeException;
 
 class APC implements Adapter
 {
+    /** @var string Default prefix to use for APC keys. */
     const PROMETHEUS_PREFIX = 'prom';
+
+    /** @var string Prefix to use for APC keys. */
+    private $prometheusPrefix;
 
     /**
      * APC constructor.
      *
+     * @param string $prometheusPrefix Prefix for APCu keys (defaults to {@see PROMETHEUS_PREFIX}).
+     *
      * @throws StorageException
      */
-    public function __construct()
+    public function __construct(string $prometheusPrefix = self::PROMETHEUS_PREFIX)
     {
         if (!extension_loaded('apcu')) {
             throw new StorageException('APCu extension is not loaded');
@@ -26,6 +33,8 @@ class APC implements Adapter
         if (!apcu_enabled()) {
             throw new StorageException('APCu is not enabled');
         }
+
+        $this->prometheusPrefix = $prometheusPrefix;
     }
 
     /**
@@ -36,6 +45,7 @@ class APC implements Adapter
         $metrics = $this->collectHistograms();
         $metrics = array_merge($metrics, $this->collectGauges());
         $metrics = array_merge($metrics, $this->collectCounters());
+        $metrics = array_merge($metrics, $this->collectSummaries());
         return $metrics;
     }
 
@@ -75,6 +85,27 @@ class APC implements Adapter
         // Initialize and increment the bucket
         apcu_add($this->histogramBucketValueKey($data, $bucketToIncrease), 0);
         apcu_inc($this->histogramBucketValueKey($data, $bucketToIncrease));
+    }
+
+    /**
+     * @param mixed[] $data
+     */
+    public function updateSummary(array $data): void
+    {
+        // store meta
+        $metaKey = $this->metaKey($data);
+        apcu_add($metaKey, $this->metaData($data));
+
+        // store value key
+        $valueKey = $this->valueKey($data);
+        apcu_add($valueKey, $this->encodeLabelValues($data['labelValues']));
+
+        // trick to handle uniqid collision
+        $done = false;
+        while (!$done) {
+            $sampleKey = $valueKey . ':' . uniqid('', true);
+            $done = apcu_add($sampleKey, $data['value'], $data['maxAgeSeconds']);
+        }
     }
 
     /**
@@ -125,17 +156,27 @@ class APC implements Adapter
     }
 
     /**
-     * Removes all previously stored data from apcu
+     * @deprecated use replacement method wipeStorage from Adapter interface
      *
      * @return void
      */
     public function flushAPC(): void
     {
+        $this->wipeStorage();
+    }
+
+    /**
+     * Removes all previously stored data from apcu
+     *
+     * @return void
+     */
+    public function wipeStorage(): void
+    {
         //                   /      / | PCRE expresion boundary
         //                    ^       | match from first character only
         //                     %s:    | common prefix substitute with colon suffix
         //                        .+  | at least one additional character
-        $matchAll = sprintf('/^%s:.+/', self::PROMETHEUS_PREFIX);
+        $matchAll = sprintf('/^%s:.+/', $this->prometheusPrefix);
 
         foreach (new APCUIterator($matchAll) as $key => $value) {
             apcu_delete($key);
@@ -148,7 +189,7 @@ class APC implements Adapter
      */
     private function metaKey(array $data): string
     {
-        return implode(':', [self::PROMETHEUS_PREFIX, $data['type'], $data['name'], 'meta']);
+        return implode(':', [$this->prometheusPrefix, $data['type'], $data['name'], 'meta']);
     }
 
     /**
@@ -158,7 +199,7 @@ class APC implements Adapter
     private function valueKey(array $data): string
     {
         return implode(':', [
-            self::PROMETHEUS_PREFIX,
+            $this->prometheusPrefix,
             $data['type'],
             $data['name'],
             $this->encodeLabelValues($data['labelValues']),
@@ -174,7 +215,7 @@ class APC implements Adapter
     private function histogramBucketValueKey(array $data, $bucket): string
     {
         return implode(':', [
-            self::PROMETHEUS_PREFIX,
+            $this->prometheusPrefix,
             $data['type'],
             $data['name'],
             $this->encodeLabelValues($data['labelValues']),
@@ -200,7 +241,7 @@ class APC implements Adapter
     private function collectCounters(): array
     {
         $counters = [];
-        foreach (new APCUIterator('/^prom:counter:.*:meta/') as $counter) {
+        foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':counter:.*:meta/') as $counter) {
             $metaData = json_decode($counter['value'], true);
             $data = [
                 'name' => $metaData['name'],
@@ -209,7 +250,7 @@ class APC implements Adapter
                 'labelNames' => $metaData['labelNames'],
                 'samples' => [],
             ];
-            foreach (new APCUIterator('/^prom:counter:' . $metaData['name'] . ':.*:value/') as $value) {
+            foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':counter:' . $metaData['name'] . ':.*:value/') as $value) {
                 $parts = explode(':', $value['key']);
                 $labelValues = $parts[3];
                 $data['samples'][] = [
@@ -231,7 +272,7 @@ class APC implements Adapter
     private function collectGauges(): array
     {
         $gauges = [];
-        foreach (new APCUIterator('/^prom:gauge:.*:meta/') as $gauge) {
+        foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':gauge:.*:meta/') as $gauge) {
             $metaData = json_decode($gauge['value'], true);
             $data = [
                 'name' => $metaData['name'],
@@ -240,7 +281,7 @@ class APC implements Adapter
                 'labelNames' => $metaData['labelNames'],
                 'samples' => [],
             ];
-            foreach (new APCUIterator('/^prom:gauge:' . $metaData['name'] . ':.*:value/') as $value) {
+            foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':gauge:' . $metaData['name'] . ':.*:value/') as $value) {
                 $parts = explode(':', $value['key']);
                 $labelValues = $parts[3];
                 $data['samples'][] = [
@@ -263,7 +304,7 @@ class APC implements Adapter
     private function collectHistograms(): array
     {
         $histograms = [];
-        foreach (new APCUIterator('/^prom:histogram:.*:meta/') as $histogram) {
+        foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':histogram:.*:meta/') as $histogram) {
             $metaData = json_decode($histogram['value'], true);
             $data = [
                 'name' => $metaData['name'],
@@ -277,7 +318,7 @@ class APC implements Adapter
             $data['buckets'][] = '+Inf';
 
             $histogramBuckets = [];
-            foreach (new APCUIterator('/^prom:histogram:' . $metaData['name'] . ':.*:value/') as $value) {
+            foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':histogram:' . $metaData['name'] . ':.*:value/') as $value) {
                 $parts = explode(':', $value['key']);
                 $labelValues = $parts[3];
                 $bucket = $parts[4];
@@ -333,21 +374,106 @@ class APC implements Adapter
     }
 
     /**
+     * @return MetricFamilySamples[]
+     */
+    private function collectSummaries(): array
+    {
+        $math = new Math();
+        $summaries = [];
+        foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':summary:.*:meta/') as $summary) {
+            $metaData = $summary['value'];
+            $data = [
+                'name' => $metaData['name'],
+                'help' => $metaData['help'],
+                'type' => $metaData['type'],
+                'labelNames' => $metaData['labelNames'],
+                'maxAgeSeconds' => $metaData['maxAgeSeconds'],
+                'quantiles' => $metaData['quantiles'],
+                'samples' => [],
+            ];
+
+            foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':summary:' . $metaData['name'] . ':.*:value$/') as $value) {
+                $encodedLabelValues = $value['value'];
+                $decodedLabelValues = $this->decodeLabelValues($encodedLabelValues);
+                $samples = [];
+                foreach (new APCUIterator('/^' . $this->prometheusPrefix . ':summary:' . $metaData['name'] . ':' . str_replace('/', '\\/', preg_quote($encodedLabelValues)) . ':value:.*/') as $sample) {
+                    $samples[] = $sample['value'];
+                }
+
+                if (count($samples) === 0) {
+                    apcu_delete($value['key']);
+                    continue;
+                }
+
+                // Compute quantiles
+                sort($samples);
+                foreach ($data['quantiles'] as $quantile) {
+                    $data['samples'][] = [
+                        'name' => $metaData['name'],
+                        'labelNames' => ['quantile'],
+                        'labelValues' => array_merge($decodedLabelValues, [$quantile]),
+                        'value' => $math->quantile($samples, $quantile),
+                    ];
+                }
+
+                // Add the count
+                $data['samples'][] = [
+                    'name' => $metaData['name'] . '_count',
+                    'labelNames' => [],
+                    'labelValues' => $decodedLabelValues,
+                    'value' => count($samples),
+                ];
+
+                // Add the sum
+                $data['samples'][] = [
+                    'name' => $metaData['name'] . '_sum',
+                    'labelNames' => [],
+                    'labelValues' => $decodedLabelValues,
+                    'value' => array_sum($samples),
+                ];
+            }
+
+            if (count($data['samples']) > 0) {
+                $summaries[] = new MetricFamilySamples($data);
+            } else {
+                apcu_delete($summary['key']);
+            }
+        }
+        return $summaries;
+    }
+
+    /**
      * @param mixed $val
      * @return int
+     * @throws RuntimeException
      */
     private function toBinaryRepresentationAsInteger($val): int
     {
-        return unpack('Q', pack('d', $val))[1];
+        $packedDouble = pack('d', $val);
+        if ((bool)$packedDouble !== false) {
+            $unpackedData = unpack("Q", $packedDouble);
+            if (is_array($unpackedData)) {
+                return $unpackedData[1];
+            }
+        }
+        throw new RuntimeException("Formatting from binary representation to integer did not work");
     }
 
     /**
      * @param mixed $val
      * @return float
+     * @throws RuntimeException
      */
     private function fromBinaryRepresentationAsInteger($val): float
     {
-        return unpack('d', pack('Q', $val))[1];
+        $packedBinary = pack('Q', $val);
+        if ((bool)$packedBinary !== false) {
+            $unpackedData = unpack("d", $packedBinary);
+            if (is_array($unpackedData)) {
+                return $unpackedData[1];
+            }
+        }
+        throw new RuntimeException("Formatting from integer to binary representation did not work");
     }
 
     /**
