@@ -236,13 +236,13 @@ if (false) { var throwOnDirectAccess, ReactIs; } else {
 (function() { module.exports = window["wp"]["compose"]; }());
 
 /***/ }),
-/* 15 */
+/* 15 */,
+/* 16 */
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
-/* 16 */,
 /* 17 */,
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -883,19 +883,19 @@ module.exports = function GetIntrinsic(name, allowMissing) {
 
 /***/ }),
 /* 28 */,
-/* 29 */,
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["htmlEntities"]; }());
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["ReactDOM"]; }());
 
 /***/ }),
+/* 31 */,
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3224,7 +3224,7 @@ var external_React_ = __webpack_require__(5);
 var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
 
 // EXTERNAL MODULE: external "ReactDOM"
-var external_ReactDOM_ = __webpack_require__(31);
+var external_ReactDOM_ = __webpack_require__(30);
 var external_ReactDOM_default = /*#__PURE__*/__webpack_require__.n(external_ReactDOM_);
 
 // CONCATENATED MODULE: ./node_modules/react-transition-group/esm/config.js
@@ -16946,7 +16946,7 @@ __webpack_require__.d(__webpack_exports__, "Portal", function() { return /* reex
 __webpack_require__.d(__webpack_exports__, "PortalWithState", function() { return /* reexport */ es_PortalWithState; });
 
 // EXTERNAL MODULE: external "ReactDOM"
-var external_ReactDOM_ = __webpack_require__(31);
+var external_ReactDOM_ = __webpack_require__(30);
 var external_ReactDOM_default = /*#__PURE__*/__webpack_require__.n(external_ReactDOM_);
 
 // EXTERNAL MODULE: external "React"
@@ -28145,7 +28145,7 @@ var cancelCircleFilled = Object(external_wp_element_["createElement"])(external_
 /* harmony default export */ var cancel_circle_filled = (cancelCircleFilled);
 //# sourceMappingURL=cancel-circle-filled.js.map
 // EXTERNAL MODULE: external ["wp","htmlEntities"]
-var external_wp_htmlEntities_ = __webpack_require__(30);
+var external_wp_htmlEntities_ = __webpack_require__(29);
 
 // CONCATENATED MODULE: ./packages/components/build-module/tag/index.js
 /**
@@ -29251,7 +29251,7 @@ select_control_SelectControl.defaultProps = {
 /* harmony default export */ var select_control = (Object(external_wp_compose_["compose"])([external_wp_components_["withSpokenMessages"], external_wp_compose_["withInstanceId"], external_wp_components_["withFocusOutside"] // this MUST be the innermost HOC as it calls handleFocusOutside
 ])(select_control_SelectControl));
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(15);
+var external_wp_url_ = __webpack_require__(16);
 
 // EXTERNAL MODULE: external ["wp","apiFetch"]
 var external_wp_apiFetch_ = __webpack_require__(19);
@@ -32700,6 +32700,8 @@ class date_picker_DatePicker extends external_wp_element_["Component"] {
       }, Object(external_wp_element_["createElement"])(external_wp_components_["DatePicker"], {
         currentDate: date,
         onChange: Object(external_lodash_["partial"])(this.onDateChange, onToggle),
+        // onMonthPreviewed is required to prevent a React error from happening.
+        onMonthPreviewed: external_lodash_["noop"],
         isInvalidDate: isInvalidDate
       })))
     });

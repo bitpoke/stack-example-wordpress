@@ -1388,7 +1388,7 @@ p.demo_store a,
 .woocommerce nav.woocommerce-pagination ul {
   flex-wrap: wrap;
   justify-content: center;
-  white-space: nowrap;
+  white-space: normal;
   padding: 0;
   border: 0;
   margin: 1px;

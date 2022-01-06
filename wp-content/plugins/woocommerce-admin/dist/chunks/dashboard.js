@@ -1,4 +1,4 @@
-(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[25],{
+(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[24],{
 
 /***/ 519:
 /***/ (function(module, exports, __webpack_require__) {
@@ -7,7 +7,7 @@
 
 /***/ }),
 
-/***/ 621:
+/***/ 619:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30,7 +30,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-const CustomizableDashboard = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => __webpack_require__.e(/* import() | customizable-dashboard */ 24).then(__webpack_require__.bind(null, 619)));
+const CustomizableDashboard = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => __webpack_require__.e(/* import() | customizable-dashboard */ 23).then(__webpack_require__.bind(null, 617)));
 
 class Dashboard extends _wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {

@@ -50,6 +50,8 @@ use \Automattic\WooCommerce\Admin\Notes\DrawAttention;
 use \Automattic\WooCommerce\Admin\Notes\GettingStartedInEcommerceWebinar;
 use \Automattic\WooCommerce\Admin\Notes\NavigationNudge;
 use Automattic\WooCommerce\Admin\Schedulers\MailchimpScheduler;
+use \Automattic\WooCommerce\Admin\Notes\CompleteStoreDetails;
+use \Automattic\WooCommerce\Admin\Notes\UpdateStoreDetails;
 
 /**
  * Events Class.
@@ -97,7 +99,7 @@ class Events {
 		$this->possibly_add_notes();
 
 		if ( $this->is_remote_inbox_notifications_enabled() ) {
-			DataSourcePoller::read_specs_from_data_sources();
+			DataSourcePoller::get_instance()->read_specs_from_data_sources();
 			RemoteInboxNotificationsEngine::run();
 		}
 
@@ -150,6 +152,8 @@ class Events {
 		GettingStartedInEcommerceWebinar::possibly_add_note();
 		FirstDownlaodableProduct::possibly_add_note();
 		NavigationNudge::possibly_add_note();
+		CompleteStoreDetails::possibly_add_note();
+		UpdateStoreDetails::possibly_add_note();
 	}
 
 	/**

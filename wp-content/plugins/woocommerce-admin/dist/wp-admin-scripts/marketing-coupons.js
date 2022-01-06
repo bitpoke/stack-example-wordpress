@@ -1004,14 +1004,14 @@ function enqueueScript(script) {
 /***/ 15:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["url"]; }());
+(function() { module.exports = window["wc"]["tracks"]; }());
 
 /***/ }),
 
 /***/ 16:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wc"]["tracks"]; }());
+(function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
 
@@ -1020,7 +1020,7 @@ function enqueueScript(script) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getInAppPurchaseUrl; });
-/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
 /**
@@ -1459,7 +1459,7 @@ var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 var style = __webpack_require__(122);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./client/marketing/components/index.js + 19 modules
 var components = __webpack_require__(102);
@@ -1692,7 +1692,7 @@ var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 var external_wc_components_ = __webpack_require__(21);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./client/marketing/components/knowledge-base/style.scss
 var style = __webpack_require__(163);
@@ -2912,7 +2912,7 @@ Object(external_wp_data_["registerStore"])(constants["b" /* STORE_KEY */], {
 
 /***/ }),
 
-/***/ 31:
+/***/ 30:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["ReactDOM"]; }());
@@ -3292,7 +3292,7 @@ var external_React_ = __webpack_require__(5);
 var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
 
 // EXTERNAL MODULE: external "ReactDOM"
-var external_ReactDOM_ = __webpack_require__(31);
+var external_ReactDOM_ = __webpack_require__(30);
 var external_ReactDOM_default = /*#__PURE__*/__webpack_require__.n(external_ReactDOM_);
 
 // CONCATENATED MODULE: ./node_modules/react-transition-group/esm/config.js

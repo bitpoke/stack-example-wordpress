@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useState, useEffect } from '@wordpress/element';
-import CheckboxControl from '@woocommerce/base-components/checkbox-control';
+import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
 import { withInstanceId } from '@wordpress/compose';
 import type { ValidationData } from '@woocommerce/type-defs/contexts';
@@ -19,11 +19,13 @@ const FrontendBlock = ( {
 	checkbox,
 	instanceId,
 	validation,
+	className,
 }: {
 	text: string;
 	checkbox: boolean;
 	instanceId: string;
 	validation: ValidationData;
+	className?: string;
 } ): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
 
@@ -70,9 +72,13 @@ const FrontendBlock = ( {
 
 	return (
 		<div
-			className={ classnames( 'wc-block-checkout__terms', {
-				'wc-block-checkout__terms--disabled': isDisabled,
-			} ) }
+			className={ classnames(
+				'wc-block-checkout__terms',
+				{
+					'wc-block-checkout__terms--disabled': isDisabled,
+				},
+				className
+			) }
 		>
 			{ checkbox ? (
 				<>

@@ -290,7 +290,10 @@ class ProductByCategoryBlock extends Component {
 						controls={ [
 							{
 								icon: 'edit',
-								title: __( 'Edit' ),
+								title: __(
+									'Edit selected categories',
+									'woocommerce'
+								),
 								onClick: () =>
 									isEditing
 										? this.stopEditing()

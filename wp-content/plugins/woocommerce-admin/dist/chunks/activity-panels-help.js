@@ -1,4 +1,4 @@
-(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[4],{
+(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[3],{
 
 /***/ 475:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -119,11 +119,11 @@ ActivityHeader.propTypes = {
 
 /***/ }),
 
-/***/ 601:
+/***/ 599:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(603);
+/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
 /* global window */
 
 
@@ -142,11 +142,11 @@ if (typeof self !== 'undefined') {
 var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
 /* harmony default export */ __webpack_exports__["a"] = (result);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(79), __webpack_require__(602)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(79), __webpack_require__(600)(module)))
 
 /***/ }),
 
-/***/ 602:
+/***/ 600:
 /***/ (function(module, exports) {
 
 module.exports = function(originalModule) {
@@ -177,7 +177,7 @@ module.exports = function(originalModule) {
 
 /***/ }),
 
-/***/ 603:
+/***/ 601:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -203,7 +203,7 @@ function symbolObservablePonyfill(root) {
 
 /***/ }),
 
-/***/ 635:
+/***/ 633:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -227,7 +227,7 @@ var external_wc_experimental_ = __webpack_require__(17);
 var external_wp_data_ = __webpack_require__(7);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(28);
+var external_wp_hooks_ = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js + 2 modules
 var icon = __webpack_require__(116);
@@ -248,7 +248,7 @@ var external_wc_components_ = __webpack_require__(21);
 var external_wc_data_ = __webpack_require__(11);
 
 // EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js
-var es = __webpack_require__(601);
+var es = __webpack_require__(599);
 
 // CONCATENATED MODULE: ./node_modules/redux/es/redux.js
 
@@ -902,7 +902,7 @@ if (false) {}
 
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./client/header/activity-panel/activity-header/index.js
 var activity_header = __webpack_require__(525);

@@ -1,4 +1,4 @@
-(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[13],{
+(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[12],{
 
 /***/ 483:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -18,7 +18,7 @@ var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: ./client/analytics/report/revenue/config.js
-var config = __webpack_require__(535);
+var config = __webpack_require__(534);
 
 // EXTERNAL MODULE: ./client/lib/get-selected-chart/index.js
 var get_selected_chart = __webpack_require__(512);
@@ -60,10 +60,10 @@ var external_wc_data_ = __webpack_require__(11);
 var external_wc_date_ = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(29);
+var lib = __webpack_require__(28);
 
 // EXTERNAL MODULE: ./client/analytics/components/report-table/index.js + 2 modules
-var report_table = __webpack_require__(508);
+var report_table = __webpack_require__(509);
 
 // EXTERNAL MODULE: ./client/lib/currency-context.js
 var currency_context = __webpack_require__(503);
@@ -364,7 +364,7 @@ const formatTableQuery = Object(external_lodash_["memoize"])( // @todo Support h
   return formatProps(isError, isRequesting, tableQuery, revenueData);
 }))(table_RevenueReportTable));
 // EXTERNAL MODULE: ./client/analytics/components/report-filters/index.js
-var report_filters = __webpack_require__(507);
+var report_filters = __webpack_require__(508);
 
 // CONCATENATED MODULE: ./client/analytics/report/revenue/index.js
 
@@ -426,7 +426,7 @@ revenue_RevenueReport.propTypes = {
 
 /***/ }),
 
-/***/ 535:
+/***/ 534:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -435,7 +435,7 @@ revenue_RevenueReport.propTypes = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return filters; });
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(31);
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__);
 /**
  * External dependencies

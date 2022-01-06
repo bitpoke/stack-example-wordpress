@@ -74,6 +74,10 @@ class Install {
 			'wc_admin_update_290_delete_default_homepage_layout_option',
 			'wc_admin_update_290_db_version',
 		),
+		'3.0.0'  => array(
+			'wc_admin_update_300_update_is_read_from_last_read',
+			'wc_admin_update_300_db_version',
+		),
 	);
 
 	/**
@@ -311,6 +315,7 @@ class Install {
 			layout varchar(20) DEFAULT '' NOT NULL,
 			image varchar(200) NULL DEFAULT NULL,
 			is_deleted boolean DEFAULT 0 NOT NULL,
+			is_read boolean DEFAULT 0 NOT NULL,
 			icon varchar(200) NOT NULL default 'info',
 			PRIMARY KEY (note_id)
 		) $collate;

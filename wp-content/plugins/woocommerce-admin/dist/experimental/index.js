@@ -957,7 +957,7 @@ function _inheritsLoose(subClass, superClass) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(5), __webpack_require__(31));
+		module.exports = factory(__webpack_require__(5), __webpack_require__(30));
 	else {}
 })(this, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__) {
 return /******/ (function(modules) { // webpackBootstrap
@@ -1612,7 +1612,7 @@ var chevronDown = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["create
 
 /***/ }),
 
-/***/ 31:
+/***/ 30:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["ReactDOM"]; }());
@@ -2354,7 +2354,8 @@ var external_moment_default = /*#__PURE__*/__webpack_require__.n(external_moment
 const InboxNoteActionButton = ({
   label,
   onClick,
-  href
+  href,
+  preventBusyState
 }) => {
   const [inAction, setInAction] = Object(external_wp_element_["useState"])(false);
 
@@ -2374,12 +2375,16 @@ const InboxNoteActionButton = ({
       window.open(targetHref, '_blank');
     }
 
+    if (preventBusyState) {
+      isActionable = false;
+    }
+
     setInAction(isActionable);
     onClick();
   };
 
   return Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
-    isSecondary: true,
+    isLink: true,
     isBusy: inAction,
     disabled: inAction,
     href: href,
@@ -2445,11 +2450,8 @@ const inbox_note_sanitizeHTML = html => {
   };
 };
 
-const DropdownWithPopoverProps = external_wp_components_["Dropdown"];
-
 const InboxNoteCard = ({
   note,
-  lastRead,
   onDismiss,
   onNoteActionClick,
   onBodyLinkClick,
@@ -2458,7 +2460,6 @@ const InboxNoteCard = ({
 }) => {
   const [clickedActionText, setClickedActionText] = Object(external_wp_element_["useState"])(false);
   const hasBeenSeen = Object(external_wp_element_["useRef"])(false);
-  const toggleButtonRef = Object(external_wp_element_["useRef"])(null);
   const linkCallbackRef = useCallbackOnLinkClick(innerLink => {
     if (onBodyLinkClick) {
       onBodyLinkClick(note, innerLink);
@@ -2475,74 +2476,15 @@ const InboxNoteCard = ({
     }
   };
 
-  const handleBlur = (event, onClose) => {
-    const dropdownClasses = ['woocommerce-admin-dismiss-notification', 'components-popover__content', 'components-dropdown__content']; // This line is for IE compatibility.
-
-    let relatedTarget = null;
-
-    if (event.relatedTarget) {
-      relatedTarget = event.relatedTarget;
-    } else if (toggleButtonRef.current) {
-      const ownerDoc = toggleButtonRef.current.ownerDocument;
-      relatedTarget = ownerDoc ? ownerDoc.activeElement : null;
-    }
-
-    let isClickOutsideDropdown = false;
-
-    if (relatedTarget && 'className' in relatedTarget) {
-      const classNames = relatedTarget.className;
-      isClickOutsideDropdown = dropdownClasses.some(cName => classNames.includes(cName));
-    }
-
-    if (isClickOutsideDropdown) {
-      event.preventDefault();
-    } else {
-      onClose();
-    }
-  };
-
-  const onDropdownDismiss = (type, onToggle) => {
-    if (onDismiss) {
-      onDismiss(note, type);
-    }
-
-    onToggle();
-  };
-
   const renderDismissButton = () => {
     if (clickedActionText) {
       return null;
     }
 
-    return Object(external_wp_element_["createElement"])(DropdownWithPopoverProps, {
-      contentClassName: "woocommerce-admin-dismiss-dropdown",
-      position: "bottom right",
-      renderToggle: ({
-        onClose,
-        onToggle
-      }) => Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
-        isTertiary: true,
-        onClick: event => {
-          event.target.focus();
-          onToggle();
-        },
-        ref: toggleButtonRef,
-        onBlur: event => handleBlur(event, onClose)
-      }, Object(external_wp_i18n_["__"])('Dismiss', 'woocommerce-admin')),
-      focusOnMount: false,
-      popoverProps: {
-        noArrow: true
-      },
-      renderContent: ({
-        onToggle
-      }) => Object(external_wp_element_["createElement"])("ul", null, Object(external_wp_element_["createElement"])("li", null, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
-        className: "woocommerce-admin-dismiss-notification",
-        onClick: () => onDropdownDismiss('note', onToggle)
-      }, Object(external_wp_i18n_["__"])('Dismiss this message', 'woocommerce-admin'))), Object(external_wp_element_["createElement"])("li", null, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
-        className: "woocommerce-admin-dismiss-notification",
-        onClick: () => onDropdownDismiss('all', onToggle)
-      }, Object(external_wp_i18n_["__"])('Dismiss all messages', 'woocommerce-admin'))))
-    });
+    return Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+      className: "woocommerce-admin-dismiss-notification",
+      onClick: () => onDismiss && onDismiss(note)
+    }, Object(external_wp_i18n_["__"])('Dismiss', 'woocommerce-admin'));
   };
 
   const onActionClicked = action => {
@@ -2586,18 +2528,22 @@ const InboxNoteCard = ({
     is_deleted: isDeleted,
     layout,
     status,
-    title
+    title,
+    is_read
   } = note;
 
   if (isDeleted) {
     return null;
   }
 
-  const unread = !lastRead || !dateCreatedGmt || new Date(dateCreatedGmt + 'Z').getTime() > lastRead;
+  const unread = is_read === false;
   const date = dateCreated;
-  const hasImage = layout !== 'plain' && layout !== '';
+  const hasImage = layout === 'thumbnail';
   const cardClassName = classnames_default()('woocommerce-inbox-message', className, layout, {
     'message-is-unread': unread && status === 'unactioned'
+  });
+  const actionWrapperClassName = classnames_default()('woocommerce-inbox-message__actions', {
+    'has-multiple-actions': note.actions.length > 1
   });
   return Object(external_wp_element_["createElement"])(visibility_sensor_default.a, {
     onChange: onVisible
@@ -2618,13 +2564,19 @@ const InboxNoteCard = ({
     className: "woocommerce-inbox-message__date"
   }, external_moment_default.a.utc(date).fromNow()), Object(external_wp_element_["createElement"])(external_wc_components_["H"], {
     className: "woocommerce-inbox-message__title"
-  }, title), Object(external_wp_element_["createElement"])(external_wc_components_["Section"], {
+  }, note.actions && note.actions.length === 1 && Object(external_wp_element_["createElement"])(InboxNoteActionButton, {
+    key: note.actions[0].id,
+    label: title,
+    preventBusyState: true,
+    href: note.actions[0].url && note.actions[0].url.length ? note.actions[0].url : undefined,
+    onClick: () => onActionClicked(note.actions[0])
+  }), note.actions && note.actions.length > 1 && title), Object(external_wp_element_["createElement"])(external_wc_components_["Section"], {
     className: "woocommerce-inbox-message__text"
   }, Object(external_wp_element_["createElement"])("span", {
     dangerouslySetInnerHTML: inbox_note_sanitizeHTML(content),
     ref: linkCallbackRef
   }))), Object(external_wp_element_["createElement"])("div", {
-    className: "woocommerce-inbox-message__actions"
+    className: actionWrapperClassName
   }, renderActions(), renderDismissButton()))));
 };
 
@@ -4317,7 +4269,7 @@ var external_React_ = __webpack_require__(5);
 var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
 
 // EXTERNAL MODULE: external "ReactDOM"
-var external_ReactDOM_ = __webpack_require__(31);
+var external_ReactDOM_ = __webpack_require__(30);
 var external_ReactDOM_default = /*#__PURE__*/__webpack_require__.n(external_ReactDOM_);
 
 // CONCATENATED MODULE: ./node_modules/react-transition-group/esm/config.js

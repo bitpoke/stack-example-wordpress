@@ -1,3 +1,15 @@
+v3.7.6
+- Improvement: Added a new filter 'astra_web_stories_position' to change the position of web stories. ( https://wpastra.com/docs/change-web-stories-position/ )
+- Improvement: Builder - Button - Added typography options from Astra Pro to free theme.
+- Fix: Mobile menu does not close when you click a one page navigation link inside them.
+- Fix: Responsive color options from 'color-group-control' are hiding when trying to set them in responsive devices.
+- Fix: Removed unwanted title and desc tag present for search icon.
+- Fix: WooCommerce Pagination markup misaligned on mobile devices.
+- Fix: Gutenberg separator dots not appearing properly on frontend.
+- Fix: JS console error when Custom Layout is added for header.
+- Fix: Accessibility - Tab navigation does not highlight menu with submenus.
+- Fix: Filter to disable all Meta Settings of Page/Post by default is not working in Gutenberg based metabox. ( https://wpastra.com/docs/disable-all-meta-settings-of-page-post-by-default/ )
+
 v3.7.5
 - Improvement: Added compatibility for Elementor Pro v3.5.0 WooCommerce widgets.
 - Fix: WPForms submit button not inheriting global button text color.

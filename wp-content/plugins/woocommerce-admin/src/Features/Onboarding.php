@@ -262,6 +262,7 @@ class Onboarding {
 			'product_types'       => array(),
 			'product_count'       => '0',
 			'selling_venues'      => 'no',
+			'number_employees'    => '1',
 			'revenue'             => 'none',
 			'other_platform'      => 'none',
 			'business_extensions' => array(),
@@ -879,7 +880,7 @@ class Onboarding {
 			return;
 		}
 		$show   = 1 === absint( $_GET['reset_task_list'] );
-		$update = $show ? $task_list->show() : $task_list->hide(); // phpcs:ignore CSRF ok.
+		$update = $show ? $task_list->unhide() : $task_list->hide(); // phpcs:ignore CSRF ok.
 
 		if ( $update ) {
 			wc_admin_record_tracks_event(
@@ -911,7 +912,7 @@ class Onboarding {
 			return;
 		}
 		$show   = 1 === absint( $_GET['reset_extended_task_list'] );
-		$update = $show ? $task_list->show() : $task_list->hide(); // phpcs:ignore CSRF ok.
+		$update = $show ? $task_list->unhide() : $task_list->hide(); // phpcs:ignore CSRF ok.
 
 		if ( $update ) {
 			wc_admin_record_tracks_event(

@@ -35,7 +35,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["app"] =
 /******/
 /******/ 	// object to store loaded CSS chunks
 /******/ 	var installedCssChunks = {
-/******/ 		18: 0
+/******/ 		17: 0
 /******/ 	}
 /******/ 	var isCssRtlEnabled = function() {
 /******/ 		return document.dir === 'rtl';
@@ -45,14 +45,14 @@ this["wc"] = this["wc"] || {}; this["wc"]["app"] =
 /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 	// Promise = chunk loading, 0 = chunk loaded
 /******/ 	var installedChunks = {
-/******/ 		18: 0
+/******/ 		17: 0
 /******/ 	};
 /******/
 /******/
 /******/
 /******/ 	// script path function
 /******/ 	function webpackJsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "chunks/" + ({"4":"activity-panels-help","5":"activity-panels-inbox","6":"analytics-report","7":"analytics-report-categories","8":"analytics-report-coupons","9":"analytics-report-customers","10":"analytics-report-downloads","11":"analytics-report-orders","12":"analytics-report-products","13":"analytics-report-revenue","14":"analytics-report-stock","15":"analytics-report-taxes","16":"analytics-report-variations","17":"analytics-settings","24":"customizable-dashboard","25":"dashboard","26":"dashboard-charts","31":"homescreen","32":"leaderboards","34":"marketing-overview","45":"payment-recommendations","47":"profile-wizard","48":"shipping-recommendations","49":"store-alerts","50":"store-performance","52":"two-column-tasks","53":"two-column-tasks-extended","54":"wcpay-usage-modal"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "chunks/" + ({"3":"activity-panels-help","4":"activity-panels-inbox","5":"analytics-report","6":"analytics-report-categories","7":"analytics-report-coupons","8":"analytics-report-customers","9":"analytics-report-downloads","10":"analytics-report-orders","11":"analytics-report-products","12":"analytics-report-revenue","13":"analytics-report-stock","14":"analytics-report-taxes","15":"analytics-report-variations","16":"analytics-settings","23":"customizable-dashboard","24":"dashboard","25":"dashboard-charts","30":"homescreen","31":"leaderboards","33":"marketing-overview","44":"payment-recommendations","46":"profile-wizard","47":"shipping-recommendations","48":"store-alerts","49":"store-performance","51":"two-column-tasks","52":"two-column-tasks-extended","53":"wcpay-usage-modal"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	function jsonpScriptSrc(chunkId) {
@@ -95,7 +95,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["app"] =
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"0":1,"4":1,"5":1,"6":1,"7":1,"9":1,"11":1,"12":1,"14":1,"17":1,"25":1,"26":1,"31":1,"32":1,"34":1,"45":1,"47":1,"48":1,"49":1,"50":1,"52":1};
+/******/ 		var cssChunks = {"0":1,"3":1,"4":1,"5":1,"6":1,"8":1,"10":1,"11":1,"13":1,"16":1,"24":1,"25":1,"30":1,"31":1,"33":1,"44":1,"46":1,"47":1,"48":1,"49":1,"51":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
@@ -460,7 +460,7 @@ function Icon(_ref) {
 "use strict";
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(31);
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
@@ -478,16 +478,16 @@ const REPORTS_FILTER = 'woocommerce_admin_reports_list';
  * Internal dependencies
  */
 
-const RevenueReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-revenue */[__webpack_require__.e(0), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, 483)));
-const ProductsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-products */[__webpack_require__.e(0), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, 479)));
-const VariationsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-variations */[__webpack_require__.e(0), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, 484)));
-const OrdersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-orders */[__webpack_require__.e(0), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, 485)));
-const CategoriesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-categories */[__webpack_require__.e(0), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, 481)));
-const CouponsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-coupons */[__webpack_require__.e(0), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, 486)));
-const TaxesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-taxes */[__webpack_require__.e(0), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, 487)));
-const DownloadsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-downloads */[__webpack_require__.e(0), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, 488)));
-const StockReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-stock */ 14).then(__webpack_require__.bind(null, 480)));
-const CustomersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-customers */ 9).then(__webpack_require__.bind(null, 482)));
+const RevenueReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-revenue */[__webpack_require__.e(0), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, 483)));
+const ProductsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-products */[__webpack_require__.e(0), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, 479)));
+const VariationsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-variations */[__webpack_require__.e(0), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, 484)));
+const OrdersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-orders */[__webpack_require__.e(0), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, 485)));
+const CategoriesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-categories */[__webpack_require__.e(0), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, 481)));
+const CouponsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-coupons */[__webpack_require__.e(0), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, 486)));
+const TaxesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-taxes */[__webpack_require__.e(0), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, 487)));
+const DownloadsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-downloads */[__webpack_require__.e(0), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, 488)));
+const StockReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-stock */ 13).then(__webpack_require__.bind(null, 480)));
+const CustomersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-customers */ 8).then(__webpack_require__.bind(null, 482)));
 /* harmony default export */ __webpack_exports__["a"] = (() => {
   const reports = [{
     report: 'revenue',
@@ -1400,7 +1400,7 @@ if (false) { var secondaryBuildName, initialBuildName, buildNames, react_router_
 var external_lodash_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(29);
+var lib = __webpack_require__(28);
 
 // EXTERNAL MODULE: external ["wc","navigation"]
 var external_wc_navigation_ = __webpack_require__(12);
@@ -1412,7 +1412,7 @@ var build_module = __webpack_require__(13);
 var external_wc_data_ = __webpack_require__(11);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: external ["wc","notices"]
 var external_wc_notices_ = __webpack_require__(284);
@@ -1424,7 +1424,7 @@ var external_wp_plugins_ = __webpack_require__(76);
 var layout_style = __webpack_require__(285);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(28);
+var external_wp_hooks_ = __webpack_require__(31);
 
 // EXTERNAL MODULE: external ["wp","i18n"]
 var external_wp_i18n_ = __webpack_require__(2);
@@ -1462,13 +1462,13 @@ var NoMatch = __webpack_require__(175);
 
 
 
-const AnalyticsReport = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-report */ 6).then(__webpack_require__.bind(null, 620)));
-const AnalyticsSettings = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-settings */ 17).then(__webpack_require__.bind(null, 630)));
-const Dashboard = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | dashboard */ 25).then(__webpack_require__.bind(null, 621)));
-const Homescreen = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | homescreen */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(31)]).then(__webpack_require__.bind(null, 627)));
-const MarketingOverview = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | marketing-overview */[__webpack_require__.e(2), __webpack_require__.e(34)]).then(__webpack_require__.bind(null, 631)));
-const ProfileWizard = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, 628)));
-const SettingsGroup = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, 622)));
+const AnalyticsReport = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-report */ 5).then(__webpack_require__.bind(null, 618)));
+const AnalyticsSettings = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-settings */ 16).then(__webpack_require__.bind(null, 628)));
+const Dashboard = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | dashboard */ 24).then(__webpack_require__.bind(null, 619)));
+const Homescreen = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | homescreen */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(30)]).then(__webpack_require__.bind(null, 625)));
+const MarketingOverview = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | marketing-overview */[__webpack_require__.e(2), __webpack_require__.e(33)]).then(__webpack_require__.bind(null, 629)));
+const ProfileWizard = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(46)]).then(__webpack_require__.bind(null, 626)));
+const SettingsGroup = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(46)]).then(__webpack_require__.bind(null, 620)));
 const PAGES_FILTER = 'woocommerce_admin_pages_list';
 const getPages = () => {
   const pages = [];
@@ -1706,7 +1706,7 @@ var classnames = __webpack_require__(6);
 var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
 
 // EXTERNAL MODULE: external ["wp","htmlEntities"]
-var external_wp_htmlEntities_ = __webpack_require__(30);
+var external_wp_htmlEntities_ = __webpack_require__(29);
 
 // EXTERNAL MODULE: external ["wc","experimental"]
 var external_wc_experimental_ = __webpack_require__(17);
@@ -1726,23 +1726,6 @@ var header_style = __webpack_require__(286);
 // EXTERNAL MODULE: external ["wp","primitives"]
 var external_wp_primitives_ = __webpack_require__(8);
 
-// CONCATENATED MODULE: ./node_modules/@wordpress/icons/build-module/library/inbox.js
-
-
-/**
- * WordPress dependencies
- */
-
-var inbox_inbox = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
-  xmlns: "http://www.w3.org/2000/svg",
-  viewBox: "0 0 24 24"
-}, Object(external_wp_element_["createElement"])(external_wp_primitives_["Path"], {
-  fillRule: "evenodd",
-  d: "M6 5.5h12a.5.5 0 01.5.5v7H14a2 2 0 11-4 0H5.5V6a.5.5 0 01.5-.5zm-.5 9V18a.5.5 0 00.5.5h12a.5.5 0 00.5-.5v-3.5h-3.337a3.5 3.5 0 01-6.326 0H5.5zM4 13V6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2v-5z",
-  clipRule: "evenodd"
-}));
-/* harmony default export */ var library_inbox = (inbox_inbox);
-//# sourceMappingURL=inbox.js.map
 // CONCATENATED MODULE: ./node_modules/@wordpress/icons/build-module/library/help.js
 
 
@@ -1946,6 +1929,33 @@ const SetupProgress = () => Object(external_wp_element_["createElement"])("svg",
   strokeWidth: "2",
   strokeLinecap: "round"
 }));
+// CONCATENATED MODULE: ./client/header/activity-panel/icon-flag.js
+
+const IconFlag = () => Object(external_wp_element_["createElement"])("svg", {
+  width: "24",
+  height: "24",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  xmlns: "http://www.w3.org/2000/svg"
+}, Object(external_wp_element_["createElement"])("mask", {
+  id: "mask0_2915:6733",
+  maskUnits: "userSpaceOnUse",
+  x: "4",
+  y: "3",
+  width: "16",
+  height: "18"
+}, Object(external_wp_element_["createElement"])("path", {
+  fillRule: "evenodd",
+  clipRule: "evenodd",
+  d: "M4.5 3.5H13.5L13.9 5.5H19.5V15.5H12.5L12.1 13.5H6.5V20.5H4.5V3.5ZM12.26 7.5L11.86 5.5H6.5V11.5H13.74L14.14 13.5H17.5V7.5H12.26Z",
+  fill: "white"
+})), Object(external_wp_element_["createElement"])("g", {
+  mask: "url(#mask0_2915:6733)"
+}, Object(external_wp_element_["createElement"])("rect", {
+  width: "24",
+  height: "24",
+  fill: "#50575E"
+})));
 // EXTERNAL MODULE: ./client/header/activity-panel/display-options/index.js + 3 modules
 var display_options = __webpack_require__(170);
 
@@ -2534,7 +2544,6 @@ var abbreviated_notifications_panel = __webpack_require__(255);
 
 
 
-
 /**
  * Internal dependencies
  */
@@ -2550,8 +2559,9 @@ var abbreviated_notifications_panel = __webpack_require__(255);
 
 
 
-const HelpPanel = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | activity-panels-help */ 4).then(__webpack_require__.bind(null, 635)));
-const InboxPanel = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | activity-panels-inbox */[__webpack_require__.e(2), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, 623)));
+
+const HelpPanel = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | activity-panels-help */ 3).then(__webpack_require__.bind(null, 633)));
+const InboxPanel = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | activity-panels-inbox */[__webpack_require__.e(2), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, 621)));
 const ActivityPanel = ({
   isEmbedded,
   query,
@@ -2589,12 +2599,12 @@ const ActivityPanel = ({
     return trackData;
   };
 
-  function getThingsToDoNextCount(tasks, dismissedTasks, isExtendedTaskListHidden) {
-    if (!tasks || isExtendedTaskListHidden) {
+  function getThingsToDoNextCount(extendedTaskList) {
+    if (!extendedTaskList || !extendedTaskList.tasks.length || extendedTaskList.isHidden) {
       return 0;
     }
 
-    return tasks.filter(task => task.visible && !task.completed && !dismissedTasks.includes(task.key)).length;
+    return extendedTaskList.tasks.filter(task => task.canView && !task.isComplete && !task.isDismissed).length;
   }
 
   function isAbbreviatedPanelVisible(select, setupTaskListHidden, thingsToDoNextCount) {
@@ -2608,36 +2618,40 @@ const ActivityPanel = ({
   const {
     hasUnreadNotes,
     hasAbbreviatedNotifications,
+    isCompletedTask,
     thingsToDoNextCount,
     requestingTaskListOptions,
     setupTaskListComplete,
     setupTaskListHidden,
-    trackedCompletedTasks,
     previewSiteBtnTrackData
   } = Object(external_wp_data_["useSelect"])(select => {
+    var _getTaskList, _getTaskList2, _getTask;
+
     const {
-      getOption,
-      isResolving
+      getOption
     } = select(external_wc_data_["OPTIONS_STORE_NAME"]);
-    const isSetupTaskListHidden = getOption('woocommerce_task_list_hidden') === 'yes';
-    const isExtendedTaskListHidden = getOption('woocommerce_extended_task_list_hidden') === 'yes';
-    const extendedTaskList = Object(external_wp_hooks_["applyFilters"])('woocommerce_admin_onboarding_task_list', [], query);
-    const dismissedTasks = getOption('woocommerce_task_list_dismissed_tasks') || [];
-    const thingsToDoCount = getThingsToDoNextCount(extendedTaskList, dismissedTasks, isExtendedTaskListHidden);
+    const {
+      getTask,
+      getTaskList,
+      hasFinishedResolution
+    } = select(external_wc_data_["ONBOARDING_STORE_NAME"]);
+    const isSetupTaskListHidden = (_getTaskList = getTaskList('setup')) === null || _getTaskList === void 0 ? void 0 : _getTaskList.isHidden;
+    const extendedTaskList = getTaskList('extended');
+    const thingsToDoCount = getThingsToDoNextCount(extendedTaskList);
     return {
       hasUnreadNotes: isNotesPanelVisible(select),
       hasAbbreviatedNotifications: isAbbreviatedPanelVisible(select, isSetupTaskListHidden, thingsToDoCount),
       thingsToDoNextCount: thingsToDoCount,
-      requestingTaskListOptions: isResolving('getOption', ['woocommerce_task_list_complete']) || isResolving('getOption', ['woocommerce_task_list_hidden']),
-      setupTaskListComplete: getOption('woocommerce_task_list_complete') === 'yes',
+      requestingTaskListOptions: !hasFinishedResolution('getTaskLists'),
+      setupTaskListComplete: (_getTaskList2 = getTaskList('setup')) === null || _getTaskList2 === void 0 ? void 0 : _getTaskList2.isComplete,
       setupTaskListHidden: isSetupTaskListHidden,
-      trackedCompletedTasks: getOption('woocommerce_task_list_tracked_completed_tasks') || [],
+      isCompletedTask: Boolean(query.task && ((_getTask = getTask(query.task)) === null || _getTask === void 0 ? void 0 : _getTask.isComplete)),
       previewSiteBtnTrackData: getPreviewSiteBtnTrackData(select, getOption)
     };
   });
   const {
-    updateOptions
-  } = Object(external_wp_data_["useDispatch"])(external_wc_data_["OPTIONS_STORE_NAME"]);
+    unhideTaskList
+  } = Object(external_wp_data_["useDispatch"])(external_wc_data_["ONBOARDING_STORE_NAME"]);
   const {
     currentUserCan
   } = Object(external_wc_data_["useUser"])();
@@ -2687,12 +2701,10 @@ const ActivityPanel = ({
 
 
   const getTabs = () => {
-    const inbox = {
-      name: 'inbox',
-      title: Object(external_wp_i18n_["__"])('Inbox', 'woocommerce-admin'),
-      icon: Object(external_wp_element_["createElement"])(build_module_icon["a" /* default */], {
-        icon: library_inbox
-      }),
+    const activity = {
+      name: 'activity',
+      title: Object(external_wp_i18n_["__"])('Activity', 'woocommerce-admin'),
+      icon: Object(external_wp_element_["createElement"])(IconFlag, null),
       unread: hasUnreadNotes || hasAbbreviatedNotifications,
       visible: (isEmbedded || !isHomescreen()) && !isPerformingSetupTask()
     };
@@ -2710,15 +2722,13 @@ const ActivityPanel = ({
           if (setupTaskListHidden === 'no') {
             redirectToHomeScreen();
           } else {
-            updateOptions({
-              woocommerce_task_list_hidden: 'no'
-            }).then(redirectToHomeScreen);
+            unhideTaskList('setup').then(redirectToHomeScreen);
           }
         }
 
         return null;
       },
-      visible: currentUserCan('manage_woocommerce') && !setupTaskListComplete && !setupTaskListHidden && !isPerformingSetupTask() && (!isHomescreen() || isEmbedded)
+      visible: currentUserCan('manage_woocommerce') && !requestingTaskListOptions && !setupTaskListComplete && !setupTaskListHidden && !isPerformingSetupTask() && (!isHomescreen() || isEmbedded)
     };
     const help = {
       name: 'help',
@@ -2745,7 +2755,7 @@ const ActivityPanel = ({
         return null;
       }
     };
-    return [inbox, setup, previewSite, displayOptions, help].filter(tab => tab.visible);
+    return [activity, setup, previewSite, displayOptions, help].filter(tab => tab.visible);
   };
 
   const getPanelContent = tab => {
@@ -2754,7 +2764,7 @@ const ActivityPanel = ({
     } = query;
 
     switch (tab) {
-      case 'inbox':
+      case 'activity':
         return Object(external_wp_element_["createElement"])(InboxPanel, {
           hasAbbreviatedNotifications: hasAbbreviatedNotifications,
           thingsToDoNextCount: thingsToDoNextCount
@@ -2787,7 +2797,7 @@ const ActivityPanel = ({
     const startedTasks = userPreferencesData && userPreferencesData.task_list_tracked_started_tasks;
     const highlightShown = userPreferencesData && userPreferencesData.help_panel_highlight_shown;
 
-    if (task && highlightShown !== 'yes' && (startedTasks || {})[task] > 1 && !trackedCompletedTasks.includes(task)) {
+    if (task && highlightShown !== 'yes' && (startedTasks || {})[task] > 1 && !isCompletedTask) {
       return true;
     }
 
@@ -4244,8 +4254,8 @@ Object(external_wp_plugins_["registerPlugin"])('wc-admin-navigation', {
 
 
 
-const StoreAlerts = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | store-alerts */[__webpack_require__.e(1), __webpack_require__.e(49)]).then(__webpack_require__.bind(null, 634)));
-const WCPayUsageModal = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | wcpay-usage-modal */ 54).then(__webpack_require__.bind(null, 524)));
+const StoreAlerts = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | store-alerts */[__webpack_require__.e(1), __webpack_require__.e(48)]).then(__webpack_require__.bind(null, 632)));
+const WCPayUsageModal = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | wcpay-usage-modal */ 53).then(__webpack_require__.bind(null, 524)));
 class layout_PrimaryLayout extends external_wp_element_["Component"] {
   render() {
     const {
@@ -4819,7 +4829,7 @@ function enqueueScript(script) {
 /***/ 15:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["url"]; }());
+(function() { module.exports = window["wc"]["tracks"]; }());
 
 /***/ }),
 
@@ -7157,7 +7167,7 @@ exports.useSprings = useSprings;
 /***/ 16:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wc"]["tracks"]; }());
+(function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
 
@@ -7788,6 +7798,7 @@ function pathToRegexp (path, keys, options) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getUnreadNotesCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return hasValidNotes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return truncateRenderableHTML; });
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /**
@@ -7833,6 +7844,66 @@ function hasValidNotes(notes) {
   });
   return validNotes.length > 0;
 }
+/**
+ * Truncates characters inside of an element.
+ * Currently does not count <br> as a character even though it should.
+ *
+ * @param {HTMLElement} element HTML element
+ * @param {number} limit number of characters to limit to
+ */
+
+const truncateElement = (element, limit) => {
+  const truncatedNode = document.createElement('div');
+  const childNodes = Array.from(element.childNodes);
+
+  for (let i = 0; i < childNodes.length; i++) {
+    // Deep clone.
+    let clone = childNodes[i].cloneNode(true);
+
+    if (truncatedNode.textContent.length + clone.textContent.length <= limit) {
+      // No problem including a whole child node, no need to consider truncating at all.
+      truncatedNode.appendChild(clone);
+    } else {
+      const charactersRemaining = limit - truncatedNode.textContent.length;
+
+      if (!clone.innerHTML || clone.textContent.slice(0, charactersRemaining) === clone.innerHTML.slice(0, charactersRemaining)) {
+        // If text until the limit doesn't contain any markup, we're all good to truncate.
+        clone.textContent = Object(lodash__WEBPACK_IMPORTED_MODULE_0__["truncate"])(clone.textContent, {
+          length: charactersRemaining,
+          separator: ' ',
+          omission: ''
+        });
+      } else {
+        // If it does, then we'd need to recursively run this with balance of characters remaining.
+        clone = truncateElement(clone, charactersRemaining);
+      }
+
+      truncatedNode.appendChild(clone); // Exceeded limit at this point, safe to exit loop.
+
+      break;
+    }
+  }
+
+  return truncatedNode;
+};
+/**
+ * Truncates characters from a HTML string excluding markup. Truncated strings will be appended with ellipsis.
+ *
+ * @param {string} originalHTML HTML string
+ * @param {number} limit number of characters to limit to
+ */
+
+
+const truncateRenderableHTML = (originalHTML, limit) => {
+  const tempNode = document.createElement('div');
+  tempNode.innerHTML = originalHTML;
+
+  if (tempNode.textContent.length > limit) {
+    return truncateElement(tempNode, limit).innerHTML + '...';
+  }
+
+  return originalHTML;
+};
 
 /***/ }),
 
@@ -7868,7 +7939,7 @@ var external_wp_i18n_ = __webpack_require__(2);
 var external_wc_data_ = __webpack_require__(11);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // CONCATENATED MODULE: ./client/header/activity-panel/display-options/icons/display.js
 
@@ -7983,10 +8054,14 @@ const DisplayOptions = () => {
     const {
       getOption
     } = select(external_wc_data_["OPTIONS_STORE_NAME"]);
+    const {
+      getTaskList
+    } = select(external_wc_data_["ONBOARDING_STORE_NAME"]);
+    const taskList = getTaskList('setup');
     return {
       defaultHomescreenLayout: getOption('woocommerce_default_homepage_layout') || 'single_column',
-      taskListComplete: getOption('woocommerce_task_list_complete') === 'yes',
-      isTaskListHidden: getOption('woocommerce_task_list_hidden') === 'yes'
+      taskListComplete: taskList === null || taskList === void 0 ? void 0 : taskList.isComplete,
+      isTaskListHidden: taskList === null || taskList === void 0 ? void 0 : taskList.isHidden
     };
   });
   const {
@@ -8356,7 +8431,7 @@ var external_wp_i18n_ = __webpack_require__(2);
 var external_wc_experimental_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: external ["wc","components"]
 var external_wc_components_ = __webpack_require__(21);
@@ -8453,16 +8528,18 @@ const AbbreviatedNotificationsPanel = ({
     isSetupTaskListHidden,
     isExtendedTaskListHidden
   } = Object(external_wp_data_["useSelect"])(select => {
+    var _getTaskList, _getTaskList2;
+
     const {
-      getOption
-    } = select(external_wc_data_["OPTIONS_STORE_NAME"]);
+      getTaskList
+    } = select(external_wc_data_["ONBOARDING_STORE_NAME"]);
     const orderStatuses = Object(utils["c" /* getOrderStatuses */])(select);
     return {
       ordersToProcessCount: Object(utils["d" /* getUnreadOrders */])(select, orderStatuses),
       reviewsToModerateCount: Object(reviews_utils["b" /* getUnapprovedReviews */])(select),
       stockNoticesCount: Object(utils["a" /* getLowStockCount */])(select),
-      isSetupTaskListHidden: getOption('woocommerce_task_list_hidden') === 'yes',
-      isExtendedTaskListHidden: getOption('woocommerce_extended_task_list_hidden') === 'yes'
+      isSetupTaskListHidden: (_getTaskList = getTaskList('setup')) === null || _getTaskList === void 0 ? void 0 : _getTaskList.isHidden,
+      isExtendedTaskListHidden: (_getTaskList2 = getTaskList('extended')) === null || _getTaskList2 === void 0 ? void 0 : _getTaskList2.isHidden
     };
   });
 
@@ -8542,7 +8619,7 @@ var external_wp_element_ = __webpack_require__(0);
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(28);
+var external_wp_hooks_ = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/interpolate-components/lib/index.js
 var lib = __webpack_require__(18);
@@ -8552,7 +8629,7 @@ var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 var build_module = __webpack_require__(13);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var qs_lib = __webpack_require__(29);
+var qs_lib = __webpack_require__(28);
 
 // EXTERNAL MODULE: external ["wc","components"]
 var external_wc_components_ = __webpack_require__(21);
@@ -8911,7 +8988,7 @@ var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: external ["wc","customerEffortScore"]
 var external_wc_customerEffortScore_ = __webpack_require__(260);
@@ -9435,10 +9512,10 @@ var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(28);
+var external_wp_hooks_ = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(29);
+var lib = __webpack_require__(28);
 
 // EXTERNAL MODULE: external ["wp","data"]
 var external_wp_data_ = __webpack_require__(7);
@@ -9496,7 +9573,7 @@ const RecommendationsEligibilityWrapper = ({
  */
 
 
-const PaymentRecommendationsChunk = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | payment-recommendations */[__webpack_require__.e(3), __webpack_require__.e(45)]).then(__webpack_require__.bind(null, 624)));
+const PaymentRecommendationsChunk = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | payment-recommendations */ 44).then(__webpack_require__.bind(null, 622)));
 const PaymentRecommendations = ({
   page,
   tab,
@@ -9524,7 +9601,7 @@ const PaymentRecommendations = ({
  */
 
 
-const ShippingRecommendationsLoader = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | shipping-recommendations */ 48).then(__webpack_require__.bind(null, 632)));
+const ShippingRecommendationsLoader = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | shipping-recommendations */ 47).then(__webpack_require__.bind(null, 630)));
 const ShippingRecommendations = ({
   page,
   tab,
@@ -9612,9 +9689,21 @@ const EmbeddedBodyLayout = () => {
 /***/ }),
 
 /***/ 28:
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-(function() { module.exports = window["wp"]["hooks"]; }());
+"use strict";
+
+
+var stringify = __webpack_require__(56);
+var parse = __webpack_require__(57);
+var formats = __webpack_require__(35);
+
+module.exports = {
+    formats: formats,
+    parse: parse,
+    stringify: stringify
+};
+
 
 /***/ }),
 
@@ -9760,21 +9849,9 @@ if (window.wcAdminFeatures && window.wcAdminFeatures['customer-effort-score-trac
 /***/ }),
 
 /***/ 29:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var stringify = __webpack_require__(56);
-var parse = __webpack_require__(57);
-var formats = __webpack_require__(35);
-
-module.exports = {
-    formats: formats,
-    parse: parse,
-    stringify: stringify
-};
-
+(function() { module.exports = window["wp"]["htmlEntities"]; }());
 
 /***/ }),
 
@@ -9924,7 +10001,7 @@ module.exports = Array.isArray || function (arr) {
 /***/ 30:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["htmlEntities"]; }());
+(function() { module.exports = window["ReactDOM"]; }());
 
 /***/ }),
 
@@ -9938,7 +10015,7 @@ module.exports = Array.isArray || function (arr) {
 /***/ 31:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["ReactDOM"]; }());
+(function() { module.exports = window["wp"]["hooks"]; }());
 
 /***/ }),
 
@@ -12251,7 +12328,7 @@ module.exports = function (str, opts) {
 /* unused harmony export getProductList */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getPriceValue; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return isWCAdmin; });
-/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
+/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
 /* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);

@@ -297,7 +297,7 @@ function tryDecode(str, decode) {
 
 /***/ }),
 
-/***/ 29:
+/***/ 28:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1476,7 +1476,7 @@ const logError = error => {
   }
 };
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(29);
+var lib = __webpack_require__(28);
 
 // CONCATENATED MODULE: ./packages/explat/build-module/assignment.js
 /**

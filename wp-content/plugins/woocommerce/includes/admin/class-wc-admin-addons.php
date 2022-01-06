@@ -26,7 +26,7 @@ class WC_Admin_Addons {
 	 * @return array of objects
 	 */
 	public static function get_featured() {
-		$featured = get_transient( 'wc_addons_featured' );
+		$featured = get_transient( 'wc_addons_featured_2' );
 		if ( false === $featured ) {
 			$headers = array();
 			$auth    = WC_Helper_Options::get( 'auth' );
@@ -46,7 +46,7 @@ class WC_Admin_Addons {
 			if ( ! is_wp_error( $raw_featured ) ) {
 				$featured = json_decode( wp_remote_retrieve_body( $raw_featured ) );
 				if ( $featured ) {
-					set_transient( 'wc_addons_featured', $featured, DAY_IN_SECONDS );
+					set_transient( 'wc_addons_featured_2', $featured, DAY_IN_SECONDS );
 				}
 			}
 		}
@@ -63,7 +63,7 @@ class WC_Admin_Addons {
 	 * @return void
 	 */
 	public static function render_featured() {
-		$featured = get_transient( 'wc_addons_featured_2' );
+		$featured = get_transient( 'wc_addons_featured' );
 		if ( false === $featured ) {
 			$headers = array();
 			$auth    = WC_Helper_Options::get( 'auth' );
@@ -90,7 +90,7 @@ class WC_Admin_Addons {
 			if ( ! is_wp_error( $raw_featured ) ) {
 				$featured = json_decode( wp_remote_retrieve_body( $raw_featured ) );
 				if ( $featured ) {
-					set_transient( 'wc_addons_featured_2', $featured, DAY_IN_SECONDS );
+					set_transient( 'wc_addons_featured', $featured, DAY_IN_SECONDS );
 				}
 			}
 		}
@@ -758,7 +758,7 @@ class WC_Admin_Addons {
 		$product_list_classes = 'products addons-products-' . $product_list_classes;
 		?>
 			<section class="addon-product-group">
-				<h1 class="addon-product-group-title"><?php echo esc_html( $block->title ); ?></h1>
+				<h2 class="addon-product-group-title"><?php echo esc_html( $block->title ); ?></h2>
 				<div class="addon-product-group-description-container">
 					<?php if ( ! empty( $block->description ) ) : ?>
 					<div class="addon-product-group-description">
@@ -1038,6 +1038,40 @@ class WC_Admin_Addons {
 	}
 
 	/**
+	 * Determine which class should be used for a rating star:
+	 * - golden
+	 * - half-filled (50/50 golden and gray)
+	 * - gray
+	 *
+	 * Consider ratings from 3.0 to 4.0 as an example
+	 * 3.0 will produce 3 stars
+	 * 3.1 to 3.5 will produce 3 stars and a half star
+	 * 3.6 to 4.0 will product 4 stars
+	 *
+	 * @param float $rating Rating of a product.
+	 * @param int   $index  Index of a star in a row.
+	 *
+	 * @return string CSS class to use.
+	 */
+	public static function get_star_class( $rating, $index ) {
+		if ( $rating >= $index ) {
+			// Rating more that current star to show.
+			return 'fill';
+		} elseif (
+			abs( $index - 1 - floor( $rating ) ) < 0.0000001 &&
+			0 < ( $rating - floor( $rating ) )
+		) {
+			// For rating more than x.0 and less than x.5 or equal it will show a half star.
+			return 50 >= floor( ( $rating - floor( $rating ) ) * 100 )
+				? 'half-fill'
+				: 'fill';
+		}
+
+		// Don't show a golden star otherwise.
+		return 'no-fill';
+	}
+
+	/**
 	 * Take an action object and return the URL based on properties of the action.
 	 *
 	 * @param object $action Action object.
@@ -1127,28 +1161,34 @@ class WC_Admin_Addons {
 			// For product-related banners icon is a product's image.
 			$mapped->icon = $data->image ?? null;
 		}
+
 		// URL.
 		$mapped->url = $data->link ?? null;
 		if ( empty( $mapped->url ) ) {
 			$mapped->url = $data->url ?? null;
 		}
+
 		// Title.
 		$mapped->title = $data->title ?? null;
+
 		// Vendor Name.
 		$mapped->vendor_name = $data->vendor_name ?? null;
 		if ( empty( $mapped->vendor_name ) ) {
 			$mapped->vendor_name = $data->vendorName ?? null; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		}
+
 		// Vendor URL.
 		$mapped->vendor_url = $data->vendor_url ?? null;
 		if ( empty( $mapped->vendor_url ) ) {
 			$mapped->vendor_url = $data->vendorUrl ?? null; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		}
+
 		// Description.
 		$mapped->description = $data->excerpt ?? null;
 		if ( empty( $mapped->description ) ) {
 			$mapped->description = $data->description ?? null;
 		}
+
 		$has_currency = ! empty( $data->currency ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 		// Is Free.
@@ -1157,17 +1197,23 @@ class WC_Admin_Addons {
 		} else {
 			$mapped->is_free = '&#36;0.00' === $data->price;
 		}
+
 		// Price.
 		if ( $has_currency ) {
 			$mapped->price = wc_price( $data->price, array( 'currency' => $data->currency ) );
 		} else {
 			$mapped->price = $data->price;
 		}
+
+		// Price suffix, e.g. "per month".
+		$mapped->price_suffix = $data->price_suffix ?? null;
+
 		// Rating.
 		$mapped->rating = $data->rating ?? null;
 		if ( null === $mapped->rating ) {
 			$mapped->rating = $data->averageRating ?? null; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		}
+
 		// Reviews Count.
 		$mapped->reviews_count = $data->reviews_count ?? null;
 		if ( null === $mapped->reviews_count ) {
@@ -1218,9 +1264,9 @@ class WC_Admin_Addons {
 		}
 
 		if ( 'promoted' === $mapped->label
-			 && ! empty( $mapped->primary_color )
-			 && ! empty( $mapped->text_color )
-			 && ! empty( $mapped->button ) ) {
+			&& ! empty( $mapped->primary_color )
+			&& ! empty( $mapped->text_color )
+			&& ! empty( $mapped->button ) ) {
 			// Promoted product card.
 			?>
 			<li class="product">
@@ -1304,7 +1350,15 @@ class WC_Admin_Addons {
 									);
 									?>
 								</span>
-								<span class="price-suffix"><?php esc_html_e( 'per year', 'woocommerce' ); ?></span>
+								<span class="price-suffix">
+									<?php
+									$price_suffix = __( 'per year', 'woocommerce' );
+									if ( ! empty( $mapped->price_suffix ) ) {
+										$price_suffix = $mapped->price_suffix;
+									}
+									echo esc_html( $price_suffix );
+									?>
+								</span>
 							<?php endif; ?>
 						</div>
 						<?php if ( ! empty( $mapped->reviews_count ) && ! empty( $mapped->rating ) ) : ?>
@@ -1325,39 +1379,5 @@ class WC_Admin_Addons {
 			</li>
 			<?php
 		}
-	}
-
-	/**
-	 * Determine which class should be used for a rating star:
-	 * - golden
-	 * - half-filled (50/50 golden and gray)
-	 * - gray
-	 *
-	 * Consider ratings from 3.0 to 4.0 as an example
-	 * 3.0 will produce 3 stars
-	 * 3.1 to 3.5 will produce 3 stars and a half star
-	 * 3.6 to 4.0 will product 4 stars
-	 *
-	 * @param float $rating Rating of a product.
-	 * @param int   $index  Index of a star in a row.
-	 *
-	 * @return string CSS class to use.
-	 */
-	public static function get_star_class( $rating, $index ) {
-		if ( $rating >= $index ) {
-			// Rating more that current star to show.
-			return 'fill';
-		} elseif (
-			abs( $index - 1 - floor( $rating ) ) < 0.0000001 &&
-			0 < ( $rating - floor( $rating ) )
-		) {
-			// For rating more than x.0 and less than x.5 or equal it will show a half star.
-			return 50 >= floor( ( $rating - floor( $rating ) ) * 100 )
-				? 'half-fill'
-				: 'fill';
-		}
-
-		// Don't show a golden star otherwise.
-		return 'no-fill';
 	}
 }

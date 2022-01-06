@@ -94,7 +94,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["onboarding"] =
 
 /***/ }),
 
-/***/ 16:
+/***/ 15:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["tracks"]; }());
@@ -1028,7 +1028,7 @@ WooPaymentGatewayConfigure.Slot = ({
 // CONCATENATED MODULE: ./packages/onboarding/build-module/components/WooPaymentGatewayConfigure/index.js
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // CONCATENATED MODULE: ./packages/onboarding/build-module/components/WooOnboardingTask/WooOnboardingTask.js
 /**

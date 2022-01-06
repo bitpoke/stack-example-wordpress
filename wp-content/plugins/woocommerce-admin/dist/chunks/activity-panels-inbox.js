@@ -1,4 +1,4 @@
-(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[5],{
+(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[4],{
 
 /***/ 515:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -285,35 +285,139 @@ const sift = (arr, partitioner) => arr.reduce((all, curr) => {
 /***/ }),
 
 /***/ 528:
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ 545:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _woocommerce_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21);
-/* harmony import */ var _woocommerce_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11);
-/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_data__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _woocommerce_tracks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
-/* harmony import */ var _woocommerce_tracks__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_tracks__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var react_transition_group__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(173);
-/* harmony import */ var react_transition_group__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(169);
-/* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(17);
-/* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_experimental__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _header_activity_panel_activity_card__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(515);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(164);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(520);
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(529);
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_12__);
+
+// EXTERNAL MODULE: external ["wp","element"]
+var external_wp_element_ = __webpack_require__(0);
+
+// EXTERNAL MODULE: external ["wp","i18n"]
+var external_wp_i18n_ = __webpack_require__(2);
+
+// EXTERNAL MODULE: external ["wc","components"]
+var external_wc_components_ = __webpack_require__(21);
+
+// EXTERNAL MODULE: external ["wp","components"]
+var external_wp_components_ = __webpack_require__(3);
+
+// EXTERNAL MODULE: external ["wc","data"]
+var external_wc_data_ = __webpack_require__(11);
+
+// EXTERNAL MODULE: external ["wp","data"]
+var external_wp_data_ = __webpack_require__(7);
+
+// EXTERNAL MODULE: external ["wc","tracks"]
+var external_wc_tracks_ = __webpack_require__(15);
+
+// EXTERNAL MODULE: ./node_modules/react-transition-group/esm/TransitionGroup.js + 2 modules
+var TransitionGroup = __webpack_require__(173);
+
+// EXTERNAL MODULE: ./node_modules/react-transition-group/esm/CSSTransition.js + 3 modules
+var CSSTransition = __webpack_require__(169);
+
+// EXTERNAL MODULE: external ["wc","experimental"]
+var external_wc_experimental_ = __webpack_require__(17);
+
+// EXTERNAL MODULE: external "moment"
+var external_moment_ = __webpack_require__(9);
+var external_moment_default = /*#__PURE__*/__webpack_require__.n(external_moment_);
+
+// EXTERNAL MODULE: ./client/header/activity-panel/activity-card/index.js + 1 modules
+var activity_card = __webpack_require__(515);
+
+// EXTERNAL MODULE: ./client/inbox-panel/utils.js
+var utils = __webpack_require__(164);
+
+// EXTERNAL MODULE: ./client/utils/index.js
+var client_utils = __webpack_require__(520);
+
+// CONCATENATED MODULE: ./client/inbox-panel/dissmiss-all-modal.js
 
 
 /**
  * External dependencies
  */
+
+
+
+
+
+
+const DissmissAllModal = ({
+  onClose
+}) => {
+  const {
+    createNotice
+  } = Object(external_wp_data_["useDispatch"])('core/notices');
+  const {
+    batchUpdateNotes,
+    removeAllNotes
+  } = Object(external_wp_data_["useDispatch"])(external_wc_data_["NOTES_STORE_NAME"]);
+
+  const dismissAllNotes = async () => {
+    Object(external_wc_tracks_["recordEvent"])('wcadmin_inbox_action_dismissall', {});
+
+    try {
+      const notesRemoved = await removeAllNotes({
+        status: 'unactioned'
+      });
+      createNotice('success', Object(external_wp_i18n_["__"])('All messages dismissed', 'woocommerce-admin'), {
+        actions: [{
+          label: Object(external_wp_i18n_["__"])('Undo', 'woocommerce-admin'),
+          onClick: () => {
+            batchUpdateNotes(notesRemoved.map(note => note.id), {
+              is_deleted: 0
+            });
+          }
+        }]
+      });
+    } catch (e) {
+      createNotice('error', Object(external_wp_i18n_["__"])('Messages could not be dismissed', 'woocommerce-admin'));
+      onClose();
+    }
+  };
+
+  return Object(external_wp_element_["createElement"])(external_wp_element_["Fragment"], null, Object(external_wp_element_["createElement"])(external_wp_components_["Modal"], {
+    title: Object(external_wp_i18n_["__"])('Dismiss all messages', 'woocommerce-admin'),
+    className: "woocommerce-inbox-dismiss-all-modal",
+    onRequestClose: onClose
+  }, Object(external_wp_element_["createElement"])("div", {
+    className: "woocommerce-inbox-dismiss-all-modal__wrapper"
+  }, Object(external_wp_element_["createElement"])("div", {
+    className: "woocommerce-usage-modal__message"
+  }, Object(external_wp_i18n_["__"])('Are you sure? Inbox messages will be dismissed forever.', 'woocommerce-admin')), Object(external_wp_element_["createElement"])("div", {
+    className: "woocommerce-usage-modal__actions"
+  }, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+    onClick: onClose
+  }, Object(external_wp_i18n_["__"])('Cancel', 'woocommerce-admin')), Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+    isPrimary: true,
+    onClick: () => {
+      dismissAllNotes();
+      onClose();
+    }
+  }, Object(external_wp_i18n_["__"])('Yes, dismiss all', 'woocommerce-admin'))))));
+};
+
+/* harmony default export */ var dissmiss_all_modal = (DissmissAllModal);
+// EXTERNAL MODULE: ./client/inbox-panel/index.scss
+var inbox_panel = __webpack_require__(528);
+
+// CONCATENATED MODULE: ./client/inbox-panel/index.js
+
+
+/**
+ * External dependencies
+ */
+
+
 
 
 
@@ -331,14 +435,15 @@ const sift = (arr, partitioner) => arr.reduce((all, curr) => {
 
 
 
-const renderEmptyCard = () => Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_header_activity_panel_activity_card__WEBPACK_IMPORTED_MODULE_9__[/* ActivityCard */ "a"], {
+
+const renderEmptyCard = () => Object(external_wp_element_["createElement"])(activity_card["a" /* ActivityCard */], {
   className: "woocommerce-empty-activity-card",
-  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Your inbox is empty', 'woocommerce-admin'),
+  title: Object(external_wp_i18n_["__"])('Your inbox is empty', 'woocommerce-admin'),
   icon: false
-}, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('As things begin to happen in your store your inbox will start to fill up. ' + "You'll see things like achievements, new feature announcements, extension recommendations and more!", 'woocommerce-admin'));
+}, Object(external_wp_i18n_["__"])('As things begin to happen in your store your inbox will start to fill up. ' + "You'll see things like achievements, new feature announcements, extension recommendations and more!", 'woocommerce-admin'));
 
 const onBodyLinkClick = (note, innerLink) => {
-  Object(_woocommerce_tracks__WEBPACK_IMPORTED_MODULE_5__["recordEvent"])('inbox_action_click', {
+  Object(external_wc_tracks_["recordEvent"])('inbox_action_click', {
     note_name: note.name,
     note_title: note.title,
     note_content_inner_link: innerLink
@@ -348,10 +453,11 @@ const onBodyLinkClick = (note, innerLink) => {
 const renderNotes = ({
   hasNotes,
   isBatchUpdating,
-  lastRead,
   notes,
   onDismiss,
-  onNoteActionClick
+  onNoteActionClick,
+  setShowDismissAllModal: onDismissAll,
+  showHeader = true
 }) => {
   if (isBatchUpdating) {
     return;
@@ -361,10 +467,13 @@ const renderNotes = ({
     return renderEmptyCard();
   }
 
-  const screen = Object(_utils__WEBPACK_IMPORTED_MODULE_11__[/* getScreenName */ "a"])();
+  Object(external_wc_tracks_["recordEvent"])('inbox_panel_view', {
+    total: notes.length
+  });
+  const screen = Object(client_utils["a" /* getScreenName */])();
 
   const onNoteVisible = note => {
-    Object(_woocommerce_tracks__WEBPACK_IMPORTED_MODULE_5__["recordEvent"])('inbox_note_view', {
+    Object(external_wc_tracks_["recordEvent"])('inbox_note_view', {
       note_content: note.content,
       note_name: note.name,
       note_title: note.title,
@@ -374,7 +483,31 @@ const renderNotes = ({
   };
 
   const notesArray = Object.keys(notes).map(key => notes[key]);
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_transition_group__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"], {
+  return Object(external_wp_element_["createElement"])(external_wp_components_["Card"], {
+    size: "large"
+  }, showHeader && Object(external_wp_element_["createElement"])(external_wp_components_["CardHeader"], {
+    size: "medium"
+  }, Object(external_wp_element_["createElement"])("div", {
+    className: "wooocommerce-inbox-card__header"
+  }, Object(external_wp_element_["createElement"])(external_wc_experimental_["Text"], {
+    size: "20",
+    lineHeight: "28px",
+    variant: "title.small"
+  }, Object(external_wp_i18n_["__"])('Inbox', 'woocommerce-admin')), Object(external_wp_element_["createElement"])(external_wc_components_["Badge"], {
+    count: notesArray.length
+  })), Object(external_wp_element_["createElement"])(external_wc_components_["EllipsisMenu"], {
+    label: Object(external_wp_i18n_["__"])('Inbox Notes Options', 'woocommerce-admin'),
+    renderContent: ({
+      onToggle
+    }) => Object(external_wp_element_["createElement"])("div", {
+      className: "woocommerce-inbox-card__section-controls"
+    }, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+      onClick: () => {
+        onDismissAll(true);
+        onToggle();
+      }
+    }, Object(external_wp_i18n_["__"])('Dismiss all', 'woocommerce-admin')))
+  })), Object(external_wp_element_["createElement"])(TransitionGroup["a" /* default */], {
     role: "menu"
   }, notesArray.map(note => {
     const {
@@ -386,134 +519,98 @@ const renderNotes = ({
       return null;
     }
 
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_transition_group__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"], {
+    return Object(external_wp_element_["createElement"])(CSSTransition["a" /* default */], {
       key: noteId,
       timeout: 500,
       classNames: "woocommerce-inbox-message"
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_woocommerce_experimental__WEBPACK_IMPORTED_MODULE_8__["InboxNoteCard"], {
+    }, Object(external_wp_element_["createElement"])(external_wc_experimental_["InboxNoteCard"], {
       key: noteId,
       note: note,
-      lastRead: lastRead,
       onDismiss: onDismiss,
       onNoteActionClick: onNoteActionClick,
       onBodyLinkClick: onBodyLinkClick,
       onNoteVisible: onNoteVisible
     }));
-  }));
+  })));
 };
 
 const INBOX_QUERY = {
   page: 1,
-  per_page: _woocommerce_data__WEBPACK_IMPORTED_MODULE_3__["QUERY_DEFAULTS"].pageSize,
-  status: 'unactioned',
-  type: _woocommerce_data__WEBPACK_IMPORTED_MODULE_3__["QUERY_DEFAULTS"].noteTypes,
+  per_page: external_wc_data_["QUERY_DEFAULTS"].pageSize,
+  status: 'unactioned,actioned',
+  type: external_wc_data_["QUERY_DEFAULTS"].noteTypes,
   orderby: 'date',
   order: 'desc',
-  _fields: ['id', 'name', 'title', 'content', 'type', 'status', 'actions', 'date_created', 'date_created_gmt', 'layout', 'image', 'is_deleted']
+  _fields: ['id', 'name', 'title', 'content', 'type', 'status', 'actions', 'date_created', 'date_created_gmt', 'layout', 'image', 'is_deleted', 'is_read', 'locale']
 };
 
-const InboxPanel = () => {
+const InboxPanel = ({
+  showHeader = true
+}) => {
   const {
     createNotice
-  } = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])('core/notices');
+  } = Object(external_wp_data_["useDispatch"])('core/notices');
   const {
-    batchUpdateNotes,
-    removeAllNotes,
     removeNote,
     updateNote,
     triggerNoteAction
-  } = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])(_woocommerce_data__WEBPACK_IMPORTED_MODULE_3__["NOTES_STORE_NAME"]);
+  } = Object(external_wp_data_["useDispatch"])(external_wc_data_["NOTES_STORE_NAME"]);
   const {
     isError,
     isResolvingNotes,
     isBatchUpdating,
     notes
-  } = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__["useSelect"])(select => {
+  } = Object(external_wp_data_["useSelect"])(select => {
     const {
       getNotes,
       getNotesError,
       isResolving,
       isNotesRequesting
-    } = select(_woocommerce_data__WEBPACK_IMPORTED_MODULE_3__["NOTES_STORE_NAME"]);
+    } = select(external_wc_data_["NOTES_STORE_NAME"]);
+    const WC_VERSION_61_RELEASE_DATE = external_moment_default()('2022-01-11', 'YYYY-MM-DD').valueOf();
+    const supportedLocales = ['en_US', 'en_AU', 'en_CA', 'en_GB', 'en_ZA'];
     return {
-      notes: getNotes(INBOX_QUERY),
+      notes: getNotes(INBOX_QUERY).map(note => {
+        const noteDate = external_moment_default()(note.date_created_gmt, 'YYYY-MM-DD').valueOf();
+
+        if (supportedLocales.includes(note.locale) && noteDate >= WC_VERSION_61_RELEASE_DATE) {
+          note.content = Object(utils["c" /* truncateRenderableHTML */])(note.content, 320);
+        }
+
+        return note;
+      }),
       isError: Boolean(getNotesError('getNotes', [INBOX_QUERY])),
       isResolvingNotes: isResolving('getNotes', [INBOX_QUERY]),
       isBatchUpdating: isNotesRequesting('batchUpdateNotes')
     };
   });
-  const {
-    updateUserPreferences,
-    ...userPrefs
-  } = Object(_woocommerce_data__WEBPACK_IMPORTED_MODULE_3__["useUserPreferences"])();
-  const [lastRead] = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useState"])(userPrefs.activity_panel_inbox_last_read);
-  const [dismiss, setDismiss] = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useState"])();
-  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    const mountTime = Date.now();
-    const userDataFields = {
-      activity_panel_inbox_last_read: mountTime
-    };
-    updateUserPreferences(userDataFields);
-  }, []);
+  const [showDismissAllModal, setShowDismissAllModal] = Object(external_wp_element_["useState"])(false);
 
-  const onDismiss = (note, type) => {
-    setDismiss({
-      note,
-      type
-    });
-  };
-
-  const closeDismissModal = async (confirmed = false) => {
-    const noteNameDismissAll = dismiss.type === 'all' ? true : false;
-    const screen = Object(_utils__WEBPACK_IMPORTED_MODULE_11__[/* getScreenName */ "a"])();
-    Object(_woocommerce_tracks__WEBPACK_IMPORTED_MODULE_5__["recordEvent"])('inbox_action_dismiss', {
-      note_name: dismiss.note.name,
-      note_title: dismiss.note.title,
-      note_name_dismiss_all: noteNameDismissAll,
-      note_name_dismiss_confirmation: confirmed,
+  const onDismiss = note => {
+    const screen = Object(client_utils["a" /* getScreenName */])();
+    Object(external_wc_tracks_["recordEvent"])('inbox_action_dismiss', {
+      note_name: note.name,
+      note_title: note.title,
+      note_name_dismiss_all: false,
+      note_name_dismiss_confirmation: true,
       screen
     });
+    const noteId = note.id;
 
-    if (confirmed) {
-      const noteId = dismiss.note.id;
-      const removeAll = !noteId || noteNameDismissAll;
-
-      try {
-        let notesRemoved = [];
-
-        if (removeAll) {
-          notesRemoved = await removeAllNotes({
-            status: INBOX_QUERY.status
-          });
-        } else {
-          const noteRemoved = await removeNote(noteId);
-          notesRemoved = [noteRemoved];
-        }
-
-        setDismiss(undefined);
-        createNotice('success', notesRemoved.length > 1 ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('All messages dismissed', 'woocommerce-admin') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Message dismissed', 'woocommerce-admin'), {
-          actions: [{
-            label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Undo', 'woocommerce-admin'),
-            onClick: () => {
-              if (notesRemoved.length > 1) {
-                batchUpdateNotes(notesRemoved.map(note => note.id), {
-                  is_deleted: 0
-                });
-              } else {
-                updateNote(noteId, {
-                  is_deleted: 0
-                });
-              }
-            }
-          }]
-        });
-      } catch (e) {
-        const numberOfNotes = removeAll ? notes.length : 1;
-        createNotice('error', Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["_n"])('Message could not be dismissed', 'Messages could not be dismissed', numberOfNotes, 'woocommerce-admin'));
-        setDismiss(undefined);
-      }
-    } else {
-      setDismiss(undefined);
+    try {
+      removeNote(noteId);
+      createNotice('success', Object(external_wp_i18n_["__"])('Message dismissed', 'woocommerce-admin'), {
+        actions: [{
+          label: Object(external_wp_i18n_["__"])('Undo', 'woocommerce-admin'),
+          onClick: () => {
+            updateNote(noteId, {
+              is_deleted: 0
+            });
+          }
+        }]
+      });
+    } catch (e) {
+      createNotice('error', Object(external_wp_i18n_["_n"])('Message could not be dismissed', 'Messages could not be dismissed', 1, 'woocommerce-admin'));
     }
   };
 
@@ -522,16 +619,16 @@ const InboxPanel = () => {
   };
 
   if (isError) {
-    const title = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('There was an error getting your inbox. Please try again.', 'woocommerce-admin');
+    const title = Object(external_wp_i18n_["__"])('There was an error getting your inbox. Please try again.', 'woocommerce-admin');
 
-    const actionLabel = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Reload', 'woocommerce-admin');
+    const actionLabel = Object(external_wp_i18n_["__"])('Reload', 'woocommerce-admin');
 
     const actionCallback = () => {
       // @todo Add tracking for how often an error is displayed, and the reload action is clicked.
       window.location.reload();
     };
 
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_woocommerce_components__WEBPACK_IMPORTED_MODULE_2__["EmptyContent"], {
+    return Object(external_wp_element_["createElement"])(external_wc_components_["EmptyContent"], {
       title: title,
       actionLabel: actionLabel,
       actionURL: null,
@@ -539,45 +636,40 @@ const InboxPanel = () => {
     });
   }
 
-  const hasNotes = Object(_utils__WEBPACK_IMPORTED_MODULE_10__[/* hasValidNotes */ "b"])(notes); // @todo After having a pagination implemented we should call the method "getNotes" with a different query since
+  const hasNotes = Object(utils["b" /* hasValidNotes */])(notes); // @todo After having a pagination implemented we should call the method "getNotes" with a different query since
   // the current one is only getting 25 notes and the count of unread notes only will refer to this 25 and not all the existing ones.
 
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+  return Object(external_wp_element_["createElement"])(external_wp_element_["Fragment"], null, showDismissAllModal && Object(external_wp_element_["createElement"])(dissmiss_all_modal, {
+    onClose: () => {
+      setShowDismissAllModal(false);
+    }
+  }), Object(external_wp_element_["createElement"])("div", {
     className: "woocommerce-homepage-notes-wrapper"
-  }, (isResolvingNotes || isBatchUpdating) && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_woocommerce_components__WEBPACK_IMPORTED_MODULE_2__["Section"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_woocommerce_experimental__WEBPACK_IMPORTED_MODULE_8__["InboxNotePlaceholder"], {
+  }, (isResolvingNotes || isBatchUpdating) && Object(external_wp_element_["createElement"])(external_wc_components_["Section"], null, Object(external_wp_element_["createElement"])(external_wc_experimental_["InboxNotePlaceholder"], {
     className: "banner message-is-unread"
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_woocommerce_components__WEBPACK_IMPORTED_MODULE_2__["Section"], null, !isResolvingNotes && !isBatchUpdating && renderNotes({
+  })), Object(external_wp_element_["createElement"])(external_wc_components_["Section"], null, !isResolvingNotes && !isBatchUpdating && renderNotes({
     hasNotes,
     isBatchUpdating,
-    lastRead,
     notes,
     onDismiss,
-    onNoteActionClick
-  })), dismiss && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_woocommerce_experimental__WEBPACK_IMPORTED_MODULE_8__["InboxDismissConfirmationModal"], {
-    onClose: closeDismissModal,
-    onDismiss: () => closeDismissModal(true)
-  })));
+    onNoteActionClick,
+    setShowDismissAllModal,
+    showHeader
+  }))));
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (InboxPanel);
+/* harmony default export */ var client_inbox_panel = __webpack_exports__["a"] = (InboxPanel);
 
 /***/ }),
 
-/***/ 529:
+/***/ 602:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 604:
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ 623:
+/***/ 621:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -585,9 +677,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InboxPanel", function() { return InboxPanel; });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _inbox_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(604);
+/* harmony import */ var _inbox_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(602);
 /* harmony import */ var _inbox_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_inbox_scss__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _inbox_panel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(528);
+/* harmony import */ var _inbox_panel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(545);
 /* harmony import */ var _abbreviated_notifications_panel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(255);
 
 
@@ -605,7 +697,9 @@ const InboxPanel = ({
     className: "woocommerce-notification-panels"
   }, hasAbbreviatedNotifications && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_abbreviated_notifications_panel__WEBPACK_IMPORTED_MODULE_3__[/* AbbreviatedNotificationsPanel */ "b"], {
     thingsToDoNextCount: thingsToDoNextCount
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_inbox_panel__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], null));
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_inbox_panel__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], {
+    showHeader: false
+  }));
 };
 /* harmony default export */ __webpack_exports__["default"] = (InboxPanel);
 

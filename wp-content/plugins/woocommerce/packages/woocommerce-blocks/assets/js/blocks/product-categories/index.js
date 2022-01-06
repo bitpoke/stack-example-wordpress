@@ -16,7 +16,7 @@ registerBlockType( 'woocommerce/product-categories', {
 	title: __( 'Product Categories List', 'woocommerce' ),
 	icon: {
 		src: <Icon srcElement={ list } />,
-		foreground: '#96588a',
+		foreground: '#7f54b3',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],

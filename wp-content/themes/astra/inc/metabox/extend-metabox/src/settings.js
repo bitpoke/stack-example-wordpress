@@ -3,7 +3,7 @@
  */
 import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
 import { compose } from '@wordpress/compose';
-import {  withSelect, withDispatch } from '@wordpress/data';
+import { withSelect, withDispatch } from '@wordpress/data';
 import AstCheckboxControl from './ast-checkbox.js';
 import svgIcons from '../../../../assets/svg/svgs.json';
 import { SelectControl } from '@wordpress/components';
@@ -35,10 +35,10 @@ const MetaSettings = props => {
 
 	// Checkbox control
 	const disableSections = Object.entries( astMetaParams.disable_sections ).map( ( [ key, value ] ) => {
-		let sectionValue = ( 'disabled' ===  props.meta[value['key']]  ) ? true : false;
+		let sectionValue = ( 'disabled' === props.meta[value['key']] ) ? true : false;
 		return (
 		<AstCheckboxControl
-			label = { value['label']}
+			label = { value['label'] }
 			value = { sectionValue }
 			key = { key }
 			name = { value['key'] }
@@ -50,10 +50,10 @@ const MetaSettings = props => {
 
 	// Checkbox control
 	const stickyHeadderOptions = Object.entries( astMetaParams.sticky_header_options ).map( ( [ key, value ] ) => {
-		let stickyValue =  ( 'disabled' ===  props.meta[value['key']]  ) ? true : false;
+		let stickyValue =  ( 'disabled' === props.meta[value['key']] ) ? true : false;
 		return (
 		<AstCheckboxControl
-			label = { value['label']}
+			label = { value['label'] }
 			value = { stickyValue }
 			key = { key }
 			name = { value['key'] }
@@ -80,10 +80,10 @@ const MetaSettings = props => {
 				name="theme-meta-panel"
 				title={ astMetaParams.title }
 			>
-			
+
 				<div className="ast-sidebar-container components-panel__body is-opened" id="astra_settings_meta_box">
 					{/* Sidebar Setting */}
-					<Title 
+					<Title
 						option={{
 							label: __( 'Site Layout', 'astra' ),
 							elementType:'ast-first'
@@ -93,7 +93,7 @@ const MetaSettings = props => {
 						<p className="ast-sidebar-control-title post-attributes-label-wrapper">
 							<strong className="customize-control-title">{ astMetaParams.sidebar_title }</strong>
 						</p>
-						
+
 						<SelectControl
 							value={ ( undefined !== props.meta['site-sidebar-layout'] && ''!== props.meta['site-sidebar-layout'] ? props.meta['site-sidebar-layout'] : 'default' ) }
 							options={ sidebarOptions }
@@ -117,22 +117,22 @@ const MetaSettings = props => {
 							id = "site-content-layout"
 						/>
 					</div>
-					
+
 					<Divider />
-					
+
 					{/* Disable Section Setting */}
 					<div className="ast-sidebar-layout-meta-wrap components-base-control__field">
-						<Title 
+						<Title
 							option={{
 								label: __( 'Page Elements', 'astra'),
 							}}
 						/>
 						{ disableSections }
 					</div>
-							
+
 					<Divider />
-					
-					<Title 
+
+					<Title
 						option={{
 							label: __( 'Header', 'astra' ),
 						}}

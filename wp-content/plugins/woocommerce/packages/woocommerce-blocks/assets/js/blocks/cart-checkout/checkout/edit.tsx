@@ -21,21 +21,21 @@ import {
 import {
 	PanelBody,
 	ToggleControl,
-	CheckboxControl,
 	Notice,
+	CheckboxControl,
 } from '@wordpress/components';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { createInterpolateElement } from '@wordpress/element';
 import { getAdminLink } from '@woocommerce/settings';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
+import type { TemplateArray } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import './styles/editor.scss';
-import { Columns } from './columns';
-import { addClassToBody, useBlockPropsWithLocking } from './hacks';
+import { addClassToBody, useBlockPropsWithLocking } from '../shared';
 import { CheckoutBlockContext, CheckoutBlockControlsContext } from './context';
 import type { Attributes } from './types';
 
@@ -130,47 +130,10 @@ export const Edit = ( {
 		cartPageId,
 	} = attributes;
 
-	const defaultInnerBlocksTemplate = [
-		[
-			'woocommerce/checkout-fields-block',
-			{},
-			[
-				[ 'woocommerce/checkout-express-payment-block', {}, [] ],
-				[ 'woocommerce/checkout-contact-information-block', {}, [] ],
-				[ 'woocommerce/checkout-shipping-address-block', {}, [] ],
-				[ 'woocommerce/checkout-billing-address-block', {}, [] ],
-				[ 'woocommerce/checkout-shipping-methods-block', {}, [] ],
-				[ 'woocommerce/checkout-payment-block', {}, [] ],
-				showOrderNotes
-					? [ 'woocommerce/checkout-order-note-block', {}, [] ]
-					: false,
-				showPolicyLinks
-					? [ 'woocommerce/checkout-terms-block', {}, [] ]
-					: false,
-				[
-					'woocommerce/checkout-actions-block',
-					{
-						showReturnToCart,
-						cartPageId,
-					},
-					[],
-				],
-			].filter( Boolean ),
-		],
-		[
-			'woocommerce/checkout-totals-block',
-			{},
-			[
-				[
-					'woocommerce/checkout-order-summary-block',
-					{
-						showRateAfterTaxName,
-					},
-					[],
-				],
-			],
-		],
-	];
+	const defaultTemplate = [
+		[ 'woocommerce/checkout-fields-block', {}, [] ],
+		[ 'woocommerce/checkout-totals-block', {}, [] ],
+	] as TemplateArray;
 
 	const toggleAttribute = ( key: keyof Attributes ): void => {
 		const newAttributes = {} as Partial< Attributes >;
@@ -271,37 +234,40 @@ export const Edit = ( {
 					setAttributes={ setAttributes }
 				/>
 				<CheckoutProvider>
-					<Columns>
-						<SidebarLayout
-							className={ classnames( 'wc-block-checkout', {
-								'has-dark-controls': attributes.hasDarkControls,
-							} ) }
+					<SidebarLayout
+						className={ classnames( 'wc-block-checkout', {
+							'has-dark-controls': attributes.hasDarkControls,
+						} ) }
+					>
+						<CheckoutBlockControlsContext.Provider
+							value={ {
+								addressFieldControls,
+								accountControls,
+							} }
 						>
-							<CheckoutBlockControlsContext.Provider
+							<CheckoutBlockContext.Provider
 								value={ {
-									addressFieldControls,
-									accountControls,
+									allowCreateAccount,
+									showCompanyField,
+									requireCompanyField,
+									showApartmentField,
+									showPhoneField,
+									requirePhoneField,
+									showOrderNotes,
+									showPolicyLinks,
+									showReturnToCart,
+									cartPageId,
+									showRateAfterTaxName,
 								} }
 							>
-								<CheckoutBlockContext.Provider
-									value={ {
-										allowCreateAccount,
-										showCompanyField,
-										requireCompanyField,
-										showApartmentField,
-										showPhoneField,
-										requirePhoneField,
-									} }
-								>
-									<InnerBlocks
-										allowedBlocks={ ALLOWED_BLOCKS }
-										template={ defaultInnerBlocksTemplate }
-										templateLock="insert"
-									/>
-								</CheckoutBlockContext.Provider>
-							</CheckoutBlockControlsContext.Provider>
-						</SidebarLayout>
-					</Columns>
+								<InnerBlocks
+									allowedBlocks={ ALLOWED_BLOCKS }
+									template={ defaultTemplate }
+									templateLock="insert"
+								/>
+							</CheckoutBlockContext.Provider>
+						</CheckoutBlockControlsContext.Provider>
+					</SidebarLayout>
 				</CheckoutProvider>
 			</EditorProvider>
 			<CartCheckoutCompatibilityNotice blockName="checkout" />

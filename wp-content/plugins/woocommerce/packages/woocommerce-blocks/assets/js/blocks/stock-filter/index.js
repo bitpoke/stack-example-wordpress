@@ -15,7 +15,7 @@ registerBlockType( 'woocommerce/stock-filter', {
 	title: __( 'Filter Products by Stock', 'woocommerce' ),
 	icon: {
 		src: <Icon srcElement={ server } />,
-		foreground: '#96588a',
+		foreground: '#7f54b3',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],

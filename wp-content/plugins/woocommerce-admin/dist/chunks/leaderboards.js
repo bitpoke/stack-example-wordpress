@@ -1,4 +1,4 @@
-(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[32],{
+(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[31],{
 
 /***/ 506:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -83,21 +83,21 @@ const ALLOWED_ATTR = ['target', 'href', 'rel', 'name', 'download'];
 
 /***/ }),
 
-/***/ 615:
+/***/ 613:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 616:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 636:
+/***/ 634:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -133,7 +133,7 @@ var external_wc_data_ = __webpack_require__(11);
 var build_module = __webpack_require__(13);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: external ["wc","navigation"]
 var external_wc_navigation_ = __webpack_require__(12);
@@ -148,7 +148,7 @@ var report_error = __webpack_require__(506);
 var sanitize_html = __webpack_require__(511);
 
 // EXTERNAL MODULE: ./client/analytics/components/leaderboard/style.scss
-var style = __webpack_require__(615);
+var style = __webpack_require__(613);
 
 // CONCATENATED MODULE: ./client/analytics/components/leaderboard/index.js
 
@@ -310,7 +310,7 @@ leaderboard_Leaderboard.defaultProps = {
   return leaderboardData;
 }))(leaderboard_Leaderboard));
 // EXTERNAL MODULE: ./client/dashboard/leaderboards/style.scss
-var leaderboards_style = __webpack_require__(616);
+var leaderboards_style = __webpack_require__(614);
 
 // CONCATENATED MODULE: ./client/dashboard/leaderboards/index.js
 

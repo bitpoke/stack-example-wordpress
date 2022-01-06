@@ -1,4 +1,4 @@
-(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[17],{
+(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[16],{
 
 /***/ 39:
 /***/ (function(module, exports) {
@@ -23,6 +23,20 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
+/***/ 550:
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ 551:
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ 552:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30,21 +44,7 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ 553:
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ 554:
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ 630:
+/***/ 628:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77,10 +77,10 @@ var external_wc_components_ = __webpack_require__(21);
 var external_wc_data_ = __webpack_require__(11);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./client/analytics/settings/index.scss
-var settings = __webpack_require__(552);
+var settings = __webpack_require__(550);
 
 // EXTERNAL MODULE: ./client/analytics/settings/config.js + 1 modules
 var config = __webpack_require__(256);
@@ -97,7 +97,7 @@ var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 var external_lodash_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./client/analytics/settings/setting.scss
-var settings_setting = __webpack_require__(553);
+var settings_setting = __webpack_require__(551);
 
 // CONCATENATED MODULE: ./client/analytics/settings/setting.js
 
@@ -405,7 +405,7 @@ const getStatus = ({
   return 'nothing';
 };
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(15);
+var external_wp_url_ = __webpack_require__(16);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/actions.js
 
@@ -714,7 +714,7 @@ function HistoricalDataProgress({
 
 /* harmony default export */ var historical_data_progress = (HistoricalDataProgress);
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(28);
+var external_wp_hooks_ = __webpack_require__(31);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/status.js
 
@@ -795,7 +795,7 @@ function HistoricalDataSkipCheckbox({
   };
 })(HistoricalDataSkipCheckbox));
 // EXTERNAL MODULE: ./client/analytics/settings/historical-data/style.scss
-var style = __webpack_require__(554);
+var style = __webpack_require__(552);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/layout.js
 

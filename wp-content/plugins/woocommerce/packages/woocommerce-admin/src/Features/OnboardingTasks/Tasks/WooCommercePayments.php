@@ -16,19 +16,24 @@ class WooCommercePayments {
 	 */
 	public static function get_task() {
 		return array(
-			'id'           => 'woocommerce-payments',
-			'title'        => __( 'Get paid with WooCommerce Payments', 'woocommerce' ),
-			'content'      => __(
+			'id'              => 'woocommerce-payments',
+			'title'           => __( 'Get paid with WooCommerce Payments', 'woocommerce' ),
+			'content'         => __(
 				"You're only one step away from getting paid. Verify your business details to start managing transactions with WooCommerce Payments.",
 				'woocommerce'
 			),
-			'action_label' => __( 'Finish setup', 'woocommerce' ),
-			'expanded'     => true,
-			'is_complete'  => self::is_connected(),
-			'can_view'     => self::is_requested() &&
+			'action_label'    => __( 'Finish setup', 'woocommerce' ),
+			'expanded'        => true,
+			'is_complete'     => self::is_connected(),
+			'can_view'        => self::is_requested() &&
 				self::is_installed() &&
-				self::is_supported(),
-			'time'         => __( '2 minutes', 'woocommerce' ),
+				self::is_supported() &&
+				! self::is_connected(),
+			'time'            => __( '2 minutes', 'woocommerce' ),
+			'additional_info' => __(
+				'By setting up, you are agreeing to the <a href="https://wordpress.com/tos/" target="_blank">Terms of Service</a>',
+				'woocommerce'
+			),
 		);
 	}
 

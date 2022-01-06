@@ -341,7 +341,7 @@ function enqueueScript(script) {
 
 /***/ }),
 
-/***/ 16:
+/***/ 15:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["tracks"]; }());
@@ -639,7 +639,7 @@ var external_lodash_ = __webpack_require__(4);
 var external_wp_data_ = __webpack_require__(7);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./client/wp-admin-scripts/print-shipping-label-banner/style.scss
 var style = __webpack_require__(253);

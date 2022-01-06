@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attributes';
+import classnames from 'classnames';
+import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutContext } from '@woocommerce/base-context';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
@@ -17,6 +18,7 @@ const FrontendBlock = ( {
 	description,
 	showStepNumber,
 	children,
+	className,
 }: {
 	title: string;
 	description: string;
@@ -27,6 +29,7 @@ const FrontendBlock = ( {
 	showPhoneField: boolean;
 	showStepNumber: boolean;
 	children: JSX.Element;
+	className?: string;
 } ) => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { showShippingFields } = useCheckoutAddress();
@@ -39,7 +42,10 @@ const FrontendBlock = ( {
 		<FormStep
 			id="shipping-option"
 			disabled={ checkoutIsProcessing }
-			className="wc-block-checkout__shipping-option"
+			className={ classnames(
+				'wc-block-checkout__shipping-option',
+				className
+			) }
 			title={ title }
 			description={ description }
 			showStepNumber={ showStepNumber }

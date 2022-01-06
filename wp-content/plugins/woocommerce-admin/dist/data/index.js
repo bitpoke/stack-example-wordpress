@@ -115,7 +115,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["data"] =
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["url"]; }());
@@ -1755,13 +1755,6 @@ module.exports = charenc;
 /***/ }),
 
 /***/ 28:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["hooks"]; }());
-
-/***/ }),
-
-/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1777,6 +1770,13 @@ module.exports = {
     stringify: stringify
 };
 
+
+/***/ }),
+
+/***/ 31:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["hooks"]; }());
 
 /***/ }),
 
@@ -2276,6 +2276,8 @@ __webpack_require__.d(__webpack_exports__, "IMPORT_STORE_NAME", function() { ret
 __webpack_require__.d(__webpack_exports__, "getFreeExtensions", function() { return /* reexport */ getFreeExtensions; });
 __webpack_require__.d(__webpack_exports__, "getProfileItems", function() { return /* reexport */ getProfileItems; });
 __webpack_require__.d(__webpack_exports__, "getTaskLists", function() { return /* reexport */ getTaskLists; });
+__webpack_require__.d(__webpack_exports__, "getTaskList", function() { return /* reexport */ getTaskList; });
+__webpack_require__.d(__webpack_exports__, "getTask", function() { return /* reexport */ getTask; });
 __webpack_require__.d(__webpack_exports__, "getPaymentGatewaySuggestions", function() { return /* reexport */ getPaymentGatewaySuggestions; });
 __webpack_require__.d(__webpack_exports__, "getOnboardingError", function() { return /* reexport */ getOnboardingError; });
 __webpack_require__.d(__webpack_exports__, "isOnboardingRequesting", function() { return /* reexport */ isOnboardingRequesting; });
@@ -2344,6 +2346,7 @@ __webpack_require__.d(plugins_actions_namespaceObject, "installJetpackAndConnect
 __webpack_require__.d(plugins_actions_namespaceObject, "connectToJetpackWithFailureRedirect", function() { return connectToJetpackWithFailureRedirect; });
 __webpack_require__.d(plugins_actions_namespaceObject, "setPaypalOnboardingStatus", function() { return setPaypalOnboardingStatus; });
 __webpack_require__.d(plugins_actions_namespaceObject, "setRecommendedPlugins", function() { return setRecommendedPlugins; });
+__webpack_require__.d(plugins_actions_namespaceObject, "dismissRecommendedPlugins", function() { return dismissRecommendedPlugins; });
 
 // NAMESPACE OBJECT: ./packages/data/build-module/options/selectors.js
 var options_selectors_namespaceObject = {};
@@ -2383,6 +2386,8 @@ __webpack_require__.r(onboarding_selectors_namespaceObject);
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getFreeExtensions", function() { return getFreeExtensions; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getProfileItems", function() { return getProfileItems; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getTaskLists", function() { return getTaskLists; });
+__webpack_require__.d(onboarding_selectors_namespaceObject, "getTaskList", function() { return getTaskList; });
+__webpack_require__.d(onboarding_selectors_namespaceObject, "getTask", function() { return getTask; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getPaymentGatewaySuggestions", function() { return getPaymentGatewaySuggestions; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getOnboardingError", function() { return getOnboardingError; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "isOnboardingRequesting", function() { return isOnboardingRequesting; });
@@ -2414,6 +2419,9 @@ __webpack_require__.d(onboarding_actions_namespaceObject, "undoDismissTaskSucces
 __webpack_require__.d(onboarding_actions_namespaceObject, "hideTaskListError", function() { return hideTaskListError; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "hideTaskListRequest", function() { return hideTaskListRequest; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "hideTaskListSuccess", function() { return hideTaskListSuccess; });
+__webpack_require__.d(onboarding_actions_namespaceObject, "unhideTaskListError", function() { return unhideTaskListError; });
+__webpack_require__.d(onboarding_actions_namespaceObject, "unhideTaskListRequest", function() { return unhideTaskListRequest; });
+__webpack_require__.d(onboarding_actions_namespaceObject, "unhideTaskListSuccess", function() { return unhideTaskListSuccess; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "optimisticallyCompleteTaskRequest", function() { return optimisticallyCompleteTaskRequest; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "setPaymentMethods", function() { return setPaymentMethods; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "setEmailPrefill", function() { return setEmailPrefill; });
@@ -2428,6 +2436,7 @@ __webpack_require__.d(onboarding_actions_namespaceObject, "undoSnoozeTask", func
 __webpack_require__.d(onboarding_actions_namespaceObject, "dismissTask", function() { return dismissTask; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "undoDismissTask", function() { return undoDismissTask; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "hideTaskList", function() { return hideTaskList; });
+__webpack_require__.d(onboarding_actions_namespaceObject, "unhideTaskList", function() { return unhideTaskList; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "optimisticallyCompleteTask", function() { return optimisticallyCompleteTask; });
 __webpack_require__.d(onboarding_actions_namespaceObject, "actionTask", function() { return actionTask; });
 
@@ -2437,6 +2446,8 @@ __webpack_require__.r(onboarding_resolvers_namespaceObject);
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getProfileItems", function() { return resolvers_getProfileItems; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getEmailPrefill", function() { return resolvers_getEmailPrefill; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getTaskLists", function() { return resolvers_getTaskLists; });
+__webpack_require__.d(onboarding_resolvers_namespaceObject, "getTaskList", function() { return resolvers_getTaskList; });
+__webpack_require__.d(onboarding_resolvers_namespaceObject, "getTask", function() { return resolvers_getTask; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getPaymentGatewaySuggestions", function() { return resolvers_getPaymentGatewaySuggestions; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getFreeExtensions", function() { return resolvers_getFreeExtensions; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getProductTypes", function() { return resolvers_getProductTypes; });
@@ -3462,8 +3473,35 @@ function setRecommendedPlugins(type, plugins) {
     plugins
   };
 }
+const SUPPORTED_TYPES = ['payments'];
+function* dismissRecommendedPlugins(type) {
+  if (!SUPPORTED_TYPES.includes(type)) {
+    return [];
+  }
+
+  const plugins = yield actions_resolveSelect(constants_STORE_NAME, 'getRecommendedPlugins', type);
+  yield setRecommendedPlugins(type, []);
+  let success;
+
+  try {
+    const url = WC_ADMIN_NAMESPACE + '/plugins/recommended-payment-plugins/dismiss';
+    success = yield Object(external_wp_dataControls_["apiFetch"])({
+      path: url,
+      method: 'POST'
+    });
+  } catch (error) {
+    success = false;
+  }
+
+  if (!success) {
+    // Reset recommended plugins
+    yield setRecommendedPlugins(type, plugins);
+  }
+
+  return success;
+}
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(15);
+var external_wp_url_ = __webpack_require__(16);
 
 // CONCATENATED MODULE: ./packages/data/build-module/options/constants.js
 const options_constants_STORE_NAME = 'wc/admin/options';
@@ -3837,9 +3875,9 @@ function* resolvers_getPaypalOnboardingStatus() {
 
   yield actions_setIsRequesting('getPaypalOnboardingStatus', false);
 }
-const SUPPORTED_TYPES = ['payments'];
+const resolvers_SUPPORTED_TYPES = ['payments'];
 function* resolvers_getRecommendedPlugins(type) {
-  if (!SUPPORTED_TYPES.includes(type)) {
+  if (!resolvers_SUPPORTED_TYPES.includes(type)) {
     return [];
   }
 
@@ -4045,6 +4083,14 @@ const EMPTY_ARRAY = [];
 const getTaskLists = state => {
   return state.taskLists || initialTaskLists;
 };
+const getTaskList = (state, selector) => {
+  return state.taskLists.find(list => list.id === selector);
+};
+const getTask = (state, selector) => {
+  return state.taskLists.reduce((value, list) => {
+    return value || list.tasks.find(task => task.id === selector);
+  }, undefined);
+};
 const getPaymentGatewaySuggestions = state => {
   return state.paymentMethods || [];
 };
@@ -4088,6 +4134,9 @@ const onboarding_action_types_TYPES = {
   HIDE_TASK_LIST_ERROR: 'HIDE_TASK_LIST_ERROR',
   HIDE_TASK_LIST_REQUEST: 'HIDE_TASK_LIST_REQUEST',
   HIDE_TASK_LIST_SUCCESS: 'HIDE_TASK_LIST_SUCCESS',
+  UNHIDE_TASK_LIST_ERROR: 'UNHIDE_TASK_LIST_ERROR',
+  UNHIDE_TASK_LIST_REQUEST: 'UNHIDE_TASK_LIST_REQUEST',
+  UNHIDE_TASK_LIST_SUCCESS: 'UNHIDE_TASK_LIST_SUCCESS',
   OPTIMISTICALLY_COMPLETE_TASK_REQUEST: 'OPTIMISTICALLY_COMPLETE_TASK_REQUEST',
   ACTION_TASK_ERROR: 'ACTION_TASK_ERROR',
   ACTION_TASK_REQUEST: 'ACTION_TASK_REQUEST',
@@ -4095,10 +4144,10 @@ const onboarding_action_types_TYPES = {
 };
 /* harmony default export */ var onboarding_action_types = (onboarding_action_types_TYPES);
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(28);
+var external_wp_hooks_ = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(29);
+var lib = __webpack_require__(28);
 
 // EXTERNAL MODULE: external ["wp","deprecated"]
 var external_wp_deprecated_ = __webpack_require__(40);
@@ -4159,7 +4208,7 @@ class deprecated_tasks_DeprecatedTasks {
         time: task.time,
         level: task.level ? parseInt(task.level, 10) : 3,
         list_id: task.type || 'extended',
-        is_visible: task.visible,
+        can_view: task.visible,
         id: task.key,
         is_snoozeable: task.allowRemindMeLater,
         is_dismissable: task.isDismissable,
@@ -4365,6 +4414,25 @@ function hideTaskListSuccess(taskList) {
     taskList
   };
 }
+function unhideTaskListError(taskListId, error) {
+  return {
+    type: onboarding_action_types.UNHIDE_TASK_LIST_ERROR,
+    taskListId,
+    error
+  };
+}
+function unhideTaskListRequest(taskListId) {
+  return {
+    type: onboarding_action_types.UNHIDE_TASK_LIST_REQUEST,
+    taskListId
+  };
+}
+function unhideTaskListSuccess(taskList) {
+  return {
+    type: onboarding_action_types.UNHIDE_TASK_LIST_SUCCESS,
+    taskList
+  };
+}
 function optimisticallyCompleteTaskRequest(taskId) {
   return {
     type: onboarding_action_types.OPTIMISTICALLY_COMPLETE_TASK_REQUEST,
@@ -4508,6 +4576,20 @@ function* hideTaskList(id) {
     throw new Error();
   }
 }
+function* unhideTaskList(id) {
+  yield unhideTaskListRequest(id);
+
+  try {
+    const taskList = yield Object(external_wp_dataControls_["apiFetch"])({
+      path: `${WC_ADMIN_NAMESPACE}/onboarding/tasks/${id}/unhide`,
+      method: 'POST'
+    });
+    yield unhideTaskListSuccess(taskList);
+  } catch (error) {
+    yield unhideTaskListError(id, error);
+    throw new Error();
+  }
+}
 function* optimisticallyCompleteTask(id) {
   yield optimisticallyCompleteTaskRequest(id);
 }
@@ -4530,6 +4612,7 @@ function* actionTask(id) {
  * External dependencies
  */
 
+
 /**
  * Internal dependencies
  */
@@ -4537,6 +4620,8 @@ function* actionTask(id) {
 
 
 
+
+const onboarding_resolvers_resolveSelect = external_wp_data_["controls"] && external_wp_data_["controls"].resolveSelect ? external_wp_data_["controls"].resolveSelect : external_wp_dataControls_["select"];
 function* resolvers_getProfileItems() {
   try {
     const results = yield Object(external_wp_dataControls_["apiFetch"])({
@@ -4573,6 +4658,12 @@ function* resolvers_getTaskLists() {
   } catch (error) {
     yield getTaskListsError(error);
   }
+}
+function* resolvers_getTaskList() {
+  yield onboarding_resolvers_resolveSelect(onboarding_constants_STORE_NAME, 'getTaskLists');
+}
+function* resolvers_getTask() {
+  yield onboarding_resolvers_resolveSelect(onboarding_constants_STORE_NAME, 'getTaskLists');
 }
 function* resolvers_getPaymentGatewaySuggestions() {
   try {
@@ -4619,6 +4710,7 @@ const defaultState = {
     business_extensions: null,
     completed: null,
     industry: null,
+    number_employees: null,
     other_platform: null,
     other_platform_name: null,
     product_count: null,
@@ -4868,6 +4960,7 @@ const onboarding = (state = defaultState, {
         taskLists: state.taskLists.map(list => {
           if (taskListId === list.id) {
             return { ...list,
+              isHidden: false,
               isVisible: true
             };
           }
@@ -4884,6 +4977,7 @@ const onboarding = (state = defaultState, {
         taskLists: state.taskLists.map(list => {
           if (taskListId === list.id) {
             return { ...list,
+              isHidden: true,
               isVisible: false
             };
           }
@@ -4896,6 +4990,50 @@ const onboarding = (state = defaultState, {
       return { ...state,
         requesting: { ...state.requesting,
           hideTaskList: false
+        },
+        taskLists: state.taskLists.map(list => {
+          return taskListId === list.id ? taskList : list;
+        })
+      };
+
+    case onboarding_action_types.UNHIDE_TASK_LIST_ERROR:
+      return { ...state,
+        errors: { ...state.errors,
+          unhideTaskList: error
+        },
+        taskLists: state.taskLists.map(list => {
+          if (taskListId === list.id) {
+            return { ...list,
+              isHidden: true,
+              isVisible: false
+            };
+          }
+
+          return list;
+        })
+      };
+
+    case onboarding_action_types.UNHIDE_TASK_LIST_REQUEST:
+      return { ...state,
+        requesting: { ...state.requesting,
+          unhideTaskList: true
+        },
+        taskLists: state.taskLists.map(list => {
+          if (taskListId === list.id) {
+            return { ...list,
+              isHidden: false,
+              isVisible: true
+            };
+          }
+
+          return list;
+        })
+      };
+
+    case onboarding_action_types.UNHIDE_TASK_LIST_SUCCESS:
+      return { ...state,
+        requesting: { ...state.requesting,
+          unhideTaskList: false
         },
         taskLists: state.taskLists.map(list => {
           return taskListId === list.id ? taskList : list;

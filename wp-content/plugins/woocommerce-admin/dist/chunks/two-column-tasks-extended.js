@@ -1,6 +1,6 @@
-(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[53],{
+(window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[52],{
 
-/***/ 545:
+/***/ 544:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@
 
 /***/ }),
 
-/***/ 625:
+/***/ 623:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24,15 +24,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(11);
 /* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_data__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _woocommerce_tracks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(16);
+/* harmony import */ var _woocommerce_tracks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(15);
 /* harmony import */ var _woocommerce_tracks__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_tracks__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _header_activity_panel_display_options__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(170);
-/* harmony import */ var _tasks_task__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(531);
-/* harmony import */ var _tasks_task_list__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(549);
+/* harmony import */ var _tasks_task__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(530);
+/* harmony import */ var _tasks_task_list__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(547);
 /* harmony import */ var _tasks_placeholder__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(522);
-/* harmony import */ var _tasks_tasks_scss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(532);
+/* harmony import */ var _tasks_tasks_scss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(531);
 /* harmony import */ var _tasks_tasks_scss__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_tasks_tasks_scss__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _allowed_tasks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(545);
+/* harmony import */ var _allowed_tasks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(544);
 
 
 /**

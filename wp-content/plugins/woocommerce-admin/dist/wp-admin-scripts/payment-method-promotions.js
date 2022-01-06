@@ -101,7 +101,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["paymentMethodPromotions"] =
 
 /***/ }),
 
-/***/ 16:
+/***/ 15:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["tracks"]; }());
@@ -146,17 +146,17 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: external ["wp","element"]
 var external_wp_element_ = __webpack_require__(0);
 
-// EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
-
 // EXTERNAL MODULE: external ["wp","components"]
 var external_wp_components_ = __webpack_require__(3);
+
+// EXTERNAL MODULE: external ["wc","components"]
+var external_wc_components_ = __webpack_require__(21);
 
 // EXTERNAL MODULE: external ["wc","data"]
 var external_wc_data_ = __webpack_require__(11);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: external ["wp","data"]
 var external_wp_data_ = __webpack_require__(7);
@@ -200,19 +200,27 @@ function sanitizeHTML(html) {
 }
 
 const PaymentPromotionRow = ({
-  pluginSlug,
+  paymentMethod,
   title,
-  titleLink,
   subTitleContent,
   columns
 }) => {
+  const {
+    gatewayId,
+    pluginSlug,
+    url
+  } = paymentMethod;
   const [installing, setInstalling] = Object(external_wp_element_["useState"])(false);
+  const [isVisible, setIsVisible] = Object(external_wp_element_["useState"])(true);
   const {
     installAndActivatePlugins
   } = Object(external_wp_data_["useDispatch"])(external_wc_data_["PLUGINS_STORE_NAME"]);
   const {
     createNotice
   } = Object(external_wp_data_["useDispatch"])('core/notices');
+  const {
+    updatePaymentGateway
+  } = Object(external_wp_data_["useDispatch"])(external_wc_data_["PAYMENT_GATEWAYS_STORE_NAME"]);
   const {
     gatewayIsActive,
     paymentGateway
@@ -257,38 +265,65 @@ const PaymentPromotionRow = ({
     });
   };
 
+  const onDismiss = () => {
+    setIsVisible(false);
+    Object(external_wc_tracks_["recordEvent"])('settings_payments_promotions_dismiss', {
+      id: gatewayId
+    });
+    updatePaymentGateway(gatewayId, {
+      settings: {
+        is_dismissed: 'yes'
+      }
+    });
+  };
+
+  if (!isVisible) {
+    return null;
+  }
+
   return Object(external_wp_element_["createElement"])(external_wp_element_["Fragment"], null, columns.map(column => {
     if (column.className.includes('name')) {
       return Object(external_wp_element_["createElement"])("td", {
         className: "name",
         key: column.className
       }, Object(external_wp_element_["createElement"])("div", {
-        className: "wc-payment-gateway-method_name"
+        className: "wc-payment-gateway-method__name"
       }, Object(external_wp_element_["createElement"])(external_wc_components_["Link"], {
         target: "_blank",
         type: "external",
         rel: "noreferrer",
-        href: titleLink
+        href: url
       }, title), subTitleContent ? Object(external_wp_element_["createElement"])("div", {
-        className: "pre-install-payment-gateway_subtitle",
+        className: "pre-install-payment-gateway__subtitle",
         dangerouslySetInnerHTML: sanitizeHTML(subTitleContent)
       }) : null));
     } else if (column.className.includes('status')) {
       return Object(external_wp_element_["createElement"])("td", {
-        className: "pre-install-payment-gateway_status",
+        className: "pre-install-payment-gateway__status",
         key: column.className
       });
     } else if (column.className.includes('action')) {
       return Object(external_wp_element_["createElement"])("td", {
         className: "action",
         key: column.className
-      }, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+      }, Object(external_wp_element_["createElement"])("div", {
+        className: "pre-install-payment-gateway__actions"
+      }, Object(external_wp_element_["createElement"])(external_wc_components_["EllipsisMenu"], {
+        label: Object(external_wp_i18n_["__"])('Payment Promotion Options', 'woocommerce-admin'),
+        className: "pre-install-payment-gateway__actions-menu",
+        onToggle: e => e.stopPropagation(),
+        renderContent: () => Object(external_wp_element_["createElement"])("div", {
+          className: "pre-install-payment-gateway__actions-menu-options"
+        }, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+          onClick: onDismiss
+        }, Object(external_wp_i18n_["__"])('Dismiss', 'woocommerce-admin')))
+      }), Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
         className: "button alignright",
         onClick: () => installPaymentGateway(),
         isSecondary: true,
         isBusy: installing,
         "aria-disabled": installing
-      }, Object(external_wp_i18n_["__"])('Install', 'woocommerce-admin')));
+      }, Object(external_wp_i18n_["__"])('Install', 'woocommerce-admin'))));
     }
 
     return Object(external_wp_element_["createElement"])("td", {
@@ -316,7 +351,7 @@ const PaymentPromotionRow = ({
 const PAYMENT_METHOD_PROMOTIONS = [{
   gatewayId: 'pre_install_woocommerce_payments_promotion',
   pluginSlug: 'woocommerce-payments',
-  link: 'https://woocommerce.com/payments/?utm_medium=product'
+  url: 'https://woocommerce.com/payments/?utm_medium=product'
 }];
 PAYMENT_METHOD_PROMOTIONS.forEach(paymentMethod => {
   const container = document.querySelector(`[data-gateway_id="${paymentMethod.gatewayId}"]`);
@@ -333,9 +368,8 @@ PAYMENT_METHOD_PROMOTIONS.forEach(paymentMethod => {
     const subTitle = container.getElementsByClassName('gateway-subtitle');
     Object(external_wp_element_["render"])(Object(external_wp_element_["createElement"])(PaymentPromotionRow, {
       columns: columns,
-      pluginSlug: paymentMethod.pluginSlug,
+      paymentMethod: paymentMethod,
       title: title.length === 1 ? title[0].innerHTML : undefined,
-      titleLink: paymentMethod.link,
       subTitleContent: subTitle.length === 1 ? subTitle[0].innerHTML : undefined
     }), container);
   }

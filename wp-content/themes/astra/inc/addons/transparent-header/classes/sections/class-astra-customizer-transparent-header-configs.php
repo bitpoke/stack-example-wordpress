@@ -690,7 +690,7 @@ if ( ! class_exists( 'Astra_Customizer_Transparent_Header_Configs' ) ) {
 						'context'   => Astra_Builder_Helper::$design_tab,
 						'divider'   => array(
 							'ast_class' => 'ast-top-divider',
-							'ast_title' => __( 'HTML Color', 'astra' ),
+							'ast_title' => __( 'Button Color', 'astra' ),
 						),
 					),
 					array(

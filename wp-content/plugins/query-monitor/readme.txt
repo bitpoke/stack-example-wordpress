@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.7
-Stable tag: 3.7.1
+Tested up to: 5.8
+Stable tag: 3.8.1
 License: GPLv2 or later
 Requires PHP: 5.3
 Donate link: https://johnblackbourn.com/donations/
@@ -88,6 +88,16 @@ Long answer: Query Monitor has a small impact on page generation time because it
 
 Query Monitor's memory usage typically accounts for around 10% of the total memory used to generate the page.
 
+### Can I prevent Query Monitor from collecting data during long-running requests?
+
+Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease operating for the remainder of the page generation. It detaches itself from further data collection, discards any data it's collected so far, and skips the output of its information.
+
+This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
+
+* Backuping up or restoring your site
+* Exporting a large amount of data
+* Running security scans
+
 ### Are there any add-on plugins for Query Monitor?
 
 [A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
@@ -130,6 +140,25 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
 ## Changelog ##
+
+### 3.8.1 ###
+
+* Fixes an incompatibility with PHP versions prior to 7.2
+* Fixes a warning that was being triggered within the PHP header dispatcher
+* Introduces the `qm/component_type/{$type}` filter
+* Introduces a `QM_VERSION` constant
+
+### 3.8.0 ###
+
+* Introduces the ability for a third party to cease all further data collection and output at any point by calling `do_action( 'qm/cease' )`, for example to prevent memory exhaustion during long-running operations
+* Reduces the width of the admin toolbar menu item by using lower decimal precision
+* Improves the Template panel information when a block theme is in use (for Full Site Editing)
+* Improves the performance and accuracy of stack traces and calling function information
+* Corrects some formatting of numbers and error messages in the REST API output
+* Adds more useful information when a persistent object cache or opcode cache isn't in use
+* Improves clarity in the Scripts and Styles panels when any of the URLs include a port number
+* Introduces the `qm/component_context/{$type}` filter to complement `qm/component_name/{$type}` and `qm/component_dirs`
+* Improves internal code quality, internationalisation, and further reduces overall memory usage
 
 ### 3.7.1 ###
 
@@ -431,34 +460,3 @@ New features! Read about them here: https://querymonitor.com/blog/2019/02/new-fe
 * Better handling of environments with unlimited execution time or memory limit. Adds a warning for both.
 * When an external cache isn't in use, provide some helpful info if an appropriate extension is installed.
 
-
-### 3.0.1 ###
-
-* Add even more hardening to the JS handling to prevent problems when jQuery is broken.
-* Remove the old `no-js` styles which don't work well with the new UI.
-* Correct the logic for showing the `Non-Core` component filter option.
-* Add another VIP function to the list of functions that call the HTTP API.
-* Add an inline warning highlight to capability checks that are empty or of a non-string type.
-* Add support for WordPress.com VIP Client MU plugins.
-* Add support for displaying laps as part of the timing information.
-* Add full support for namespaced Debug Bar add-on panels.
-* Switch back to depending on `jquery` instead of `jquery-core`.
-* Don't assume `php_uname()` is always callable. Add info about the host OS too.
-* Reset inline height attribute when the panel is closed.
-
-### 3.0.0 ###
-
-* Brand new UI that resembles familiar web developer tools. Lots of related improvements and fixes.
-* Introduce some basic timing functionality in a Timings panel. See #282 for usage.
-* Introduce a `QM_NO_JQUERY` constant for running QM without jQuery as a dependency.
-* Greater resilience to JavaScript errors.
-* Allow the Scripts and Styles panel to be filtered by host name.
-* Expose information about redirects that occurred in HTTP API requests.
-* Expose more debugging information for HTTP API requests.
-* Don't enable the Capability Checks panel by default as it's very memory intensive.
-* Allow PHP errors to be silenced according to their component. See `qm/collect/php_error_levels` and `qm/collect/hide_silenced_php_errors` filters.
-* Hide all file paths and stack traces behind toggles by default.
-* Remove support for the AMP for WordPress plugin.
-* Add associative keys to the array passed to the `qm/built-in-collectors` filter.
-* Drop support for PHP 5.2.
-* Generally improve performance and reduce memory usage.

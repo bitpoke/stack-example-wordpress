@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { sprintf, _n } from '@wordpress/i18n';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
@@ -108,8 +109,20 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		validation: productPriceValidation,
 	} );
 
+	const cartItemClassNameFilter = __experimentalApplyCheckoutFilter( {
+		filterName: 'cartItemClass',
+		defaultValue: '',
+		extensions,
+		arg,
+	} );
+
 	return (
-		<div className="wc-block-components-order-summary-item">
+		<div
+			className={ classnames(
+				'wc-block-components-order-summary-item',
+				cartItemClassNameFilter
+			) }
+		>
 			<div className="wc-block-components-order-summary-item__image">
 				<div className="wc-block-components-order-summary-item__quantity">
 					<Label
@@ -126,7 +139,10 @@ const OrderSummaryItem = ( { cartItem } ) => {
 						) }
 					/>
 				</div>
-				<ProductImage image={ images.length ? images[ 0 ] : {} } />
+				<ProductImage
+					image={ images.length ? images[ 0 ] : {} }
+					fallbackAlt={ name }
+				/>
 			</div>
 			<div className="wc-block-components-order-summary-item__description">
 				<ProductName

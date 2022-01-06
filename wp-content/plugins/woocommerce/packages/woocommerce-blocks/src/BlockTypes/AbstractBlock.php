@@ -176,16 +176,22 @@ abstract class AbstractBlock {
 	 * Registers the block type with WordPress.
 	 */
 	protected function register_block_type() {
+		$block_settings = [
+			'render_callback' => $this->get_block_type_render_callback(),
+			'editor_script'   => $this->get_block_type_editor_script( 'handle' ),
+			'editor_style'    => $this->get_block_type_editor_style(),
+			'style'           => $this->get_block_type_style(),
+			'attributes'      => $this->get_block_type_attributes(),
+			'supports'        => $this->get_block_type_supports(),
+		];
+
+		if ( isset( $this->api_version ) && '2' === $this->api_version ) {
+			$block_settings['api_version'] = 2;
+		}
+
 		register_block_type(
 			$this->get_block_type(),
-			array(
-				'render_callback' => $this->get_block_type_render_callback(),
-				'editor_script'   => $this->get_block_type_editor_script( 'handle' ),
-				'editor_style'    => $this->get_block_type_editor_style(),
-				'style'           => $this->get_block_type_style(),
-				'attributes'      => $this->get_block_type_attributes(),
-				'supports'        => $this->get_block_type_supports(),
-			)
+			$block_settings
 		);
 	}
 
@@ -317,39 +323,6 @@ abstract class AbstractBlock {
 		$this->enqueue_data( $attributes );
 		$this->enqueue_scripts( $attributes );
 		$this->enqueued_assets = true;
-	}
-
-	/**
-	 * Injects block attributes into the block.
-	 *
-	 * @param string $content HTML content to inject into.
-	 * @param array  $attributes Key value pairs of attributes.
-	 * @return string Rendered block with data attributes.
-	 */
-	protected function inject_html_data_attributes( $content, array $attributes ) {
-		return preg_replace( '/<div /', '<div ' . $this->get_html_data_attributes( $attributes ) . ' ', $content, 1 );
-	}
-
-	/**
-	 * Converts block attributes to HTML data attributes.
-	 *
-	 * @param array $attributes Key value pairs of attributes.
-	 * @return string Rendered HTML attributes.
-	 */
-	protected function get_html_data_attributes( array $attributes ) {
-		$data = [];
-
-		foreach ( $attributes as $key => $value ) {
-			if ( is_bool( $value ) ) {
-				$value = $value ? 'true' : 'false';
-			}
-			if ( ! is_scalar( $value ) ) {
-				$value = wp_json_encode( $value );
-			}
-			$data[] = 'data-' . esc_attr( strtolower( preg_replace( '/(?<!\ )[A-Z]/', '-$0', $key ) ) ) . '="' . esc_attr( $value ) . '"';
-		}
-
-		return implode( ' ', $data );
 	}
 
 	/**
