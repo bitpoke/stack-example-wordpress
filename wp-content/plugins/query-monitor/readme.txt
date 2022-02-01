@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.8
-Stable tag: 3.8.1
+Tested up to: 5.9
+Stable tag: 3.8.2
 License: GPLv2 or later
 Requires PHP: 5.3
 Donate link: https://johnblackbourn.com/donations/
@@ -140,6 +140,11 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
 ## Changelog ##
+
+### 3.8.2 ###
+
+* Fix some deprecated notices with PHP 8.1
+* Improve the handling of SQL queries that consist only of MySQL comments
 
 ### 3.8.1 ###
 
@@ -422,41 +427,3 @@ New features! Read about them here: https://querymonitor.com/blog/2019/02/new-fe
 * Add extended support for the Members and User Role Editor plugins.
 * Fix link hover and focus styles.
 * Reset some more CSS styles.
-
-### 3.1.0 ###
-
-**Main changes:**
-
-* Lots of accessibility improvements.
-* Switch to system default fonts to match the WordPress admin area fonts.
-* [Implement a PSR-3 compatible logger](https://querymonitor.com/blog/2018/07/profiling-and-logging/).
-* UI improvements for mobile/touch/narrow devices.
-* Various improvements to the layout of the Scripts and Styles panels.
-* Prevent the "overscroll" behaviour that causes the main page to scroll when scrolling to the end of a panel.
-* Remove the second table footer when filtering tables.
-* Add a settings panel with information about all of the available configuration constants.
-
-**All other changes:**
-
-* Show a warning message in the Overview panel when a PHP error is trigger during an Ajax request.
-* Display a warning when time or memory usage is above 75% of the respective limit.
-* Template Part file string normalization so template parts are correctly shown on Windows systems.
-* Don't output toggle links or a blank HTTP API transport if not necessary.
-* Add a human readable representation of transient timeouts, and prevent some wrapping.
-* Add a tear down for the capability checks collector so that cap checks performed between QM's processing and output don't break things.
-* Remove the ability to sort the HTTP API Calls table. This removes a column, increasing the available horizontal space.
-* Handle a bunch more known object types when displaying parameter values.
-* Allow PHP errors to be filtered by level.
-* Shorten the displayed names of long namespaced symbols by initialising the inner portions of the name.
-* Combine the Location and Caller columns for PHP Errors to save some horizontal space.
-* Don't wrap text in the PHP error type column.
-* Improve the authentication cookie toggle so it dynamically reflects the current state.
-* For now, force QM to use ltr text direction.
-* Clarify terminology around the number of enqueued assets.
-* Add fallback support for `wp_cache_get_stats()` to fetch cache stats.
-* Improve the message shown when no queries are performed.
-* Pluck stats from cache controllers that implement a `getStats()` method and return a nested array of stats for each server.
-* Rename the `QM_HIDE_CORE_HOOKS` configuration constant to `QM_HIDE_CORE_ACTIONS`.
-* Better handling of environments with unlimited execution time or memory limit. Adds a warning for both.
-* When an external cache isn't in use, provide some helpful info if an appropriate extension is installed.
-

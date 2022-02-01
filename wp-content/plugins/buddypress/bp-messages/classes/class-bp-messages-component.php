@@ -5,7 +5,7 @@
  * A private messages component, for users to send messages to each other.
  *
  * @package BuddyPress
- * @subpackage MessagesLoader
+ * @subpackage MessagesClasses
  * @since 1.5.0
  */
 
@@ -102,7 +102,7 @@ class BP_Messages_Component extends BP_Component {
 
 			// Authenticated action variables.
 			if ( is_user_logged_in() && bp_action_variable( 0 ) &&
-				in_array( bp_action_variable( 0 ), array( 'delete', 'read', 'unread', 'bulk-manage', 'bulk-delete' ), true )
+				in_array( bp_action_variable( 0 ), array( 'delete', 'read', 'unread', 'bulk-manage', 'bulk-delete', 'exit' ), true )
 			) {
 				require $this->path . 'bp-messages/actions/' . bp_action_variable( 0 ) . '.php';
 			}
@@ -346,7 +346,7 @@ class BP_Messages_Component extends BP_Component {
 				'parent'   => 'my-account-' . $this->id,
 				'id'       => 'my-account-' . $this->id . '-inbox',
 				'title'    => $inbox,
-				'href'     => $messages_link,
+				'href'     => trailingslashit( $messages_link . 'inbox' ),
 				'position' => 10
 			);
 
@@ -408,6 +408,7 @@ class BP_Messages_Component extends BP_Component {
 				$bp->bp_options_avatar = bp_core_fetch_avatar( array(
 					'item_id' => bp_displayed_user_id(),
 					'type'    => 'thumb',
+					/* translators: %s: member name */
 					'alt'     => sprintf( __( 'Profile picture of %s', 'buddypress' ), bp_get_displayed_user_fullname() )
 				) );
 				$bp->bp_options_title = bp_get_displayed_user_fullname();
@@ -468,8 +469,8 @@ class BP_Messages_Component extends BP_Component {
 						'wp-components',
 						'wp-i18n',
 						'wp-block-editor',
+						'wp-server-side-render',
 						'bp-block-data',
-						'bp-block-components',
 					),
 					'style'              => 'bp-sitewide-notices-block',
 					'style_url'          => plugins_url( 'css/blocks/sitewide-notices.css', dirname( __FILE__ ) ),

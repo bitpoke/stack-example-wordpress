@@ -115,14 +115,14 @@ this["wc"] = this["wc"] || {}; this["wc"]["data"] =
 
 /***/ }),
 
-/***/ 16:
+/***/ 15:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
 
-/***/ 19:
+/***/ 18:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["apiFetch"]; }());
@@ -143,7 +143,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["data"] =
 
 /***/ }),
 
-/***/ 252:
+/***/ 253:
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -183,7 +183,7 @@ module.exports = charenc;
 
 /***/ }),
 
-/***/ 268:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license DOMPurify 2.3.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.3.3/LICENSE */
@@ -1587,14 +1587,33 @@ module.exports = charenc;
 
 /***/ }),
 
-/***/ 269:
+/***/ 27:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var stringify = __webpack_require__(58);
+var parse = __webpack_require__(59);
+var formats = __webpack_require__(34);
+
+module.exports = {
+    formats: formats,
+    parse: parse,
+    stringify: stringify
+};
+
+
+/***/ }),
+
+/***/ 270:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
   var crypt = __webpack_require__(450),
-      utf8 = __webpack_require__(252).utf8,
+      utf8 = __webpack_require__(253).utf8,
       isBuffer = __webpack_require__(451),
-      bin = __webpack_require__(252).bin,
+      bin = __webpack_require__(253).bin,
 
   // The core
   md5 = function (message, options) {
@@ -1754,25 +1773,6 @@ module.exports = charenc;
 
 /***/ }),
 
-/***/ 28:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var stringify = __webpack_require__(56);
-var parse = __webpack_require__(57);
-var formats = __webpack_require__(35);
-
-module.exports = {
-    formats: formats,
-    parse: parse,
-    stringify: stringify
-};
-
-
-/***/ }),
-
 /***/ 31:
 /***/ (function(module, exports) {
 
@@ -1780,7 +1780,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 35:
+/***/ 34:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1831,7 +1831,7 @@ module.exports = {
 "use strict";
 
 
-var formats = __webpack_require__(35);
+var formats = __webpack_require__(34);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -3501,7 +3501,7 @@ function* dismissRecommendedPlugins(type) {
   return success;
 }
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(16);
+var external_wp_url_ = __webpack_require__(15);
 
 // CONCATENATED MODULE: ./packages/data/build-module/options/constants.js
 const options_constants_STORE_NAME = 'wc/admin/options';
@@ -3612,7 +3612,7 @@ function* updateOptions(data) {
   }
 }
 // EXTERNAL MODULE: external ["wp","apiFetch"]
-var external_wp_apiFetch_ = __webpack_require__(19);
+var external_wp_apiFetch_ = __webpack_require__(18);
 var external_wp_apiFetch_default = /*#__PURE__*/__webpack_require__.n(external_wp_apiFetch_);
 
 // CONCATENATED MODULE: ./packages/data/build-module/options/controls.js
@@ -4147,7 +4147,7 @@ const onboarding_action_types_TYPES = {
 var external_wp_hooks_ = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(28);
+var lib = __webpack_require__(27);
 
 // EXTERNAL MODULE: external ["wp","deprecated"]
 var external_wp_deprecated_ = __webpack_require__(40);
@@ -6158,7 +6158,7 @@ function notes_actions_setIsRequesting(selector, isRequesting) {
   };
 }
 // EXTERNAL MODULE: ./packages/data/node_modules/dompurify/dist/purify.js
-var purify = __webpack_require__(268);
+var purify = __webpack_require__(269);
 
 // CONCATENATED MODULE: ./packages/data/build-module/notes/resolvers.js
 /**
@@ -8229,7 +8229,7 @@ function getReportTableData(options) {
  */
 const export_constants_STORE_NAME = 'wc/admin/export';
 // EXTERNAL MODULE: ./node_modules/md5/md5.js
-var md5 = __webpack_require__(269);
+var md5 = __webpack_require__(270);
 var md5_default = /*#__PURE__*/__webpack_require__.n(md5);
 
 // CONCATENATED MODULE: ./packages/data/build-module/export/utils.js
@@ -8748,14 +8748,14 @@ const IMPORT_STORE_NAME = import_constants_STORE_NAME;
 
 /***/ }),
 
-/***/ 56:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(41);
-var formats = __webpack_require__(35);
+var formats = __webpack_require__(34);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -9034,7 +9034,7 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 57:
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

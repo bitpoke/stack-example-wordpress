@@ -1,31 +1,31 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'v0.6.0',
-        'version' => '0.6.0.0',
+        'pretty_version' => 'v0.7.0',
+        'version' => '0.7.0.0',
         'type' => 'wordpress-muplugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'b1f51f5d272ef8b2e4450fce4531581b0f80a297',
+        'reference' => 'cfad6818113854e9a2c3cca9c5cede913f94b31f',
         'name' => 'bitpoke/stack-mu-plugin',
         'dev' => false,
     ),
     'versions' => array(
         'bitpoke/stack-mu-plugin' => array(
-            'pretty_version' => 'v0.6.0',
-            'version' => '0.6.0.0',
+            'pretty_version' => 'v0.7.0',
+            'version' => '0.7.0.0',
             'type' => 'wordpress-muplugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'b1f51f5d272ef8b2e4450fce4531581b0f80a297',
+            'reference' => 'cfad6818113854e9a2c3cca9c5cede913f94b31f',
             'dev_requirement' => false,
         ),
         'composer/installers' => array(
-            'pretty_version' => 'v1.12.0',
-            'version' => '1.12.0.0',
+            'pretty_version' => 'v2.0.1',
+            'version' => '2.0.1.0',
             'type' => 'composer-plugin',
             'install_path' => __DIR__ . '/./installers',
             'aliases' => array(),
-            'reference' => 'd20a64ed3c94748397ff5973488761b22f6d3f19',
+            'reference' => 'a241e78aaeb09781f5f5b92ac01ffd13ab43e5e8',
             'dev_requirement' => false,
         ),
         'endclothing/prometheus_client_php' => array(
@@ -53,21 +53,21 @@
             'dev_requirement' => false,
         ),
         'google/cloud-core' => array(
-            'pretty_version' => 'v1.43.1',
-            'version' => '1.43.1.0',
+            'pretty_version' => 'v1.43.2',
+            'version' => '1.43.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../google/cloud-core',
             'aliases' => array(),
-            'reference' => '60b47793e0c83f0e02a8197ef11ab1f599c348da',
+            'reference' => '93fc44af3ebf60a35fbc70e13e6113b1122ba495',
             'dev_requirement' => false,
         ),
         'google/cloud-storage' => array(
-            'pretty_version' => 'v1.25.2',
-            'version' => '1.25.2.0',
+            'pretty_version' => 'v1.26.0',
+            'version' => '1.26.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../google/cloud-storage',
             'aliases' => array(),
-            'reference' => 'd040368605ce3b8c2e6f2f7c03eb4046e9e0b951',
+            'reference' => 'c84c8c08bfe6e02e9a611d27d3eca79eaefcaa92',
             'dev_requirement' => false,
         ),
         'google/crc32' => array(
@@ -249,18 +249,6 @@
             'aliases' => array(),
             'reference' => '2a874863c48d643b9e2e254ab288ec203060a0b8',
             'dev_requirement' => false,
-        ),
-        'roundcube/plugin-installer' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'shama/baton' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
         ),
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'v2.5.0',

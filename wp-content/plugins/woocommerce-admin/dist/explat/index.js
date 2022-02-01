@@ -87,7 +87,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["explat"] =
 /************************************************************************/
 /******/ ({
 
-/***/ 267:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -297,15 +297,15 @@ function tryDecode(str, decode) {
 
 /***/ }),
 
-/***/ 28:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var stringify = __webpack_require__(56);
-var parse = __webpack_require__(57);
-var formats = __webpack_require__(35);
+var stringify = __webpack_require__(58);
+var parse = __webpack_require__(59);
+var formats = __webpack_require__(34);
 
 module.exports = {
     formats: formats,
@@ -316,7 +316,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 35:
+/***/ 34:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -353,7 +353,7 @@ module.exports = {
 "use strict";
 
 
-var formats = __webpack_require__(35);
+var formats = __webpack_require__(34);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -1476,7 +1476,7 @@ const logError = error => {
   }
 };
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(28);
+var lib = __webpack_require__(27);
 
 // CONCATENATED MODULE: ./packages/explat/build-module/assignment.js
 /**
@@ -1503,7 +1503,7 @@ const assignment_fetchExperimentAssignment = async ({
   return await response.json();
 };
 // EXTERNAL MODULE: ./packages/explat/node_modules/cookie/index.js
-var cookie = __webpack_require__(267);
+var cookie = __webpack_require__(268);
 var cookie_default = /*#__PURE__*/__webpack_require__.n(cookie);
 
 // CONCATENATED MODULE: ./packages/explat/build-module/anon.js
@@ -1621,14 +1621,14 @@ const {
 
 /***/ }),
 
-/***/ 56:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(41);
-var formats = __webpack_require__(35);
+var formats = __webpack_require__(34);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -1907,7 +1907,7 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 57:
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

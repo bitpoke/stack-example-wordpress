@@ -60,12 +60,16 @@ function bp_xprofile_get_groups( $args = array() ) {
 function xprofile_insert_field_group( $args = '' ) {
 
 	// Parse the arguments.
-	$r = bp_parse_args( $args, array(
-		'field_group_id' => false,
-		'name'           => false,
-		'description'    => '',
-		'can_delete'     => true
-	), 'xprofile_insert_field_group' );
+	$r = bp_parse_args(
+		$args,
+		array(
+			'field_group_id' => false,
+			'name'           => false,
+			'description'    => '',
+			'can_delete'     => true,
+		),
+		'xprofile_insert_field_group'
+	);
 
 	// Bail if no group name.
 	if ( empty( $r['name'] ) ) {
@@ -230,20 +234,23 @@ function bp_xprofile_create_field_type( $type ) {
  */
 function xprofile_insert_field( $args = '' ) {
 
-	$r = wp_parse_args( $args, array(
-		'field_id'          => null,
-		'field_group_id'    => null,
-		'parent_id'         => null,
-		'type'              => '',
-		'name'              => '',
-		'description'       => '',
-		'is_required'       => false,
-		'can_delete'        => true,
-		'order_by'          => '',
-		'is_default_option' => false,
-		'option_order'      => null,
-		'field_order'       => null,
-	) );
+	$r = bp_parse_args(
+		$args,
+		array(
+			'field_id'          => null,
+			'field_group_id'    => null,
+			'parent_id'         => null,
+			'type'              => '',
+			'name'              => '',
+			'description'       => '',
+			'is_required'       => false,
+			'can_delete'        => true,
+			'order_by'          => '',
+			'is_default_option' => false,
+			'option_order'      => null,
+			'field_order'       => null,
+		)
+	);
 
 	// Field_group_id is required.
 	if ( empty( $r['field_group_id'] ) ) {
@@ -1019,7 +1026,12 @@ function bp_xprofile_delete_meta( $object_id, $object_type, $meta_key = false, $
  * @param bool   $single      Optional. If true, return only the first value of the
  *                            specified meta_key. This parameter has no effect if meta_key is not
  *                            specified. Default: true.
- * @return mixed Meta value if found. False on failure.
+ * @return mixed An array of values if `$single` is false.
+ *               The value of the meta field if `$single` is true.
+ *               False for an invalid `$object_type` (one of `group`, `field`, `data`).
+ *               False for an invalid `$object_id` (non-numeric, zero, or negative value),
+ *               or if `$meta_type` is not specified.
+ *               An empty string if a valid but non-existing object ID is passed.
  */
 function bp_xprofile_get_meta( $object_id, $object_type, $meta_key = '', $single = true ) {
 	// Sanitize object type.

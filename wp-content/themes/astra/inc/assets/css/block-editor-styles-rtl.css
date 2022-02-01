@@ -791,6 +791,10 @@ h6 {
   min-width: 290px;
 }
 
+.components-color-palette__custom-color-dropdown-content .components-popover__content {
+  min-width: auto;
+}
+
 .wp-block-buttons > .wp-block.wp-block-button {
   padding-left: 0;
 }
@@ -813,4 +817,13 @@ h6 {
 
 .wp-block-paragraph.has-background {
   padding: 1.25em 2.375em;
+}
+
+.ast-theme-block-color-name {
+  mix-blend-mode: difference;
+}
+
+.components-color-palette__custom-color {
+  text-align: right;
+  padding-right: 5px;
 }

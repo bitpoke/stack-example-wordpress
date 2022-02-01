@@ -87,7 +87,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["notices"] =
 /************************************************************************/
 /******/ ({
 
-/***/ 127:
+/***/ 128:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["notices"]; }());
@@ -124,7 +124,7 @@ __webpack_require__.r(selectors_namespaceObject);
 __webpack_require__.d(selectors_namespaceObject, "getNotices", function() { return getNotices; });
 
 // EXTERNAL MODULE: external ["wp","notices"]
-var external_wp_notices_ = __webpack_require__(127);
+var external_wp_notices_ = __webpack_require__(128);
 
 // EXTERNAL MODULE: external ["wp","data"]
 var external_wp_data_ = __webpack_require__(7);

@@ -851,7 +851,7 @@ return array(
 	),
 	array(
 		'Bevan' => array(
-			'variants' => array( 'regular' ), 
+			'variants' => array( 'regular', 'italic' ), 
 			'category' => 'display', 
 		),
 	),
@@ -2057,7 +2057,7 @@ return array(
 	),
 	array(
 		'Expletus Sans' => array(
-			'variants' => array( 'regular', 'italic', '500', '500italic', '600', '600italic', '700', '700italic' ), 
+			'variants' => array( 'regular', '500', '600', '700', 'italic', '500italic', '600italic', '700italic' ), 
 			'category' => 'display', 
 		),
 	),
@@ -2974,6 +2974,12 @@ return array(
 		),
 	),
 	array(
+		'Imperial Script' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Imprima' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'sans-serif', 
@@ -3022,6 +3028,12 @@ return array(
 		),
 	),
 	array(
+		'Inspiration' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Inter' => array(
 			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ), 
 			'category' => 'sans-serif', 
@@ -3031,6 +3043,12 @@ return array(
 		'Irish Grover' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'display', 
+		),
+	),
+	array(
+		'Island Moments' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
 		),
 	),
 	array(
@@ -3382,6 +3400,12 @@ return array(
 		),
 	),
 	array(
+		'Kolker Brush' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Kosugi' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'sans-serif', 
@@ -3676,6 +3700,12 @@ return array(
 		),
 	),
 	array(
+		'Licorice' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Life Savers' => array(
 			'variants' => array( 'regular', '700', '800' ), 
 			'category' => 'display', 
@@ -3772,6 +3802,12 @@ return array(
 		),
 	),
 	array(
+		'Love Light' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Love Ya Like A Sister' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'display', 
@@ -3805,6 +3841,12 @@ return array(
 		'Lustria' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'serif', 
+		),
+	),
+	array(
+		'Luxurious Roman' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'display', 
 		),
 	),
 	array(
@@ -4027,6 +4069,12 @@ return array(
 		'McLaren' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'display', 
+		),
+	),
+	array(
+		'Mea Culpa' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
 		),
 	),
 	array(
@@ -4277,7 +4325,7 @@ return array(
 	),
 	array(
 		'Montserrat' => array(
-			'variants' => array( '100', '100italic', '200', '200italic', '300', '300italic', 'regular', 'italic', '500', '500italic', '600', '600italic', '700', '700italic', '800', '800italic', '900', '900italic' ), 
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900', '100italic', '200italic', '300italic', 'italic', '500italic', '600italic', '700italic', '800italic', '900italic' ), 
 			'category' => 'sans-serif', 
 		),
 	),
@@ -4291,6 +4339,18 @@ return array(
 		'Montserrat Subrayada' => array(
 			'variants' => array( 'regular', '700' ), 
 			'category' => 'sans-serif', 
+		),
+	),
+	array(
+		'Moo Lah Lah' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'display', 
+		),
+	),
+	array(
+		'Moon Dance' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
 		),
 	),
 	array(
@@ -4427,6 +4487,12 @@ return array(
 	),
 	array(
 		'Nanum Pen Script' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
+		'Neonderthaw' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'handwriting', 
 		),
@@ -5734,6 +5800,12 @@ return array(
 		),
 	),
 	array(
+		'Ole' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Oleo Script' => array(
 			'variants' => array( 'regular', '700' ), 
 			'category' => 'display', 
@@ -5743,6 +5815,12 @@ return array(
 		'Oleo Script Swash Caps' => array(
 			'variants' => array( 'regular', '700' ), 
 			'category' => 'display', 
+		),
+	),
+	array(
+		'Oooh Baby' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
 		),
 	),
 	array(
@@ -6316,6 +6394,12 @@ return array(
 		),
 	),
 	array(
+		'Qwitcher Grypen' => array(
+			'variants' => array( 'regular', '700' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Racing Sans One' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'display', 
@@ -6559,6 +6643,12 @@ return array(
 		'Rochester' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'handwriting', 
+		),
+	),
+	array(
+		'Rock 3D' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'display', 
 		),
 	),
 	array(
@@ -6958,6 +7048,12 @@ return array(
 		),
 	),
 	array(
+		'Shizuru' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'display', 
+		),
+	),
+	array(
 		'Shojumaru' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'display', 
@@ -7150,6 +7246,12 @@ return array(
 		),
 	),
 	array(
+		'Source Serif 4' => array(
+			'variants' => array( '200', '300', 'regular', '500', '600', '700', '800', '900', '200italic', '300italic', 'italic', '500italic', '600italic', '700italic', '800italic', '900italic' ), 
+			'category' => 'sans-serif', 
+		),
+	),
+	array(
 		'Source Serif Pro' => array(
 			'variants' => array( '200', '200italic', '300', '300italic', 'regular', 'italic', '600', '600italic', '700', '700italic', '900', '900italic' ), 
 			'category' => 'serif', 
@@ -7207,6 +7309,12 @@ return array(
 		'Spirax' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'display', 
+		),
+	),
+	array(
+		'Spline Sans' => array(
+			'variants' => array( '300', 'regular', '500', '600', '700' ), 
+			'category' => 'sans-serif', 
 		),
 	),
 	array(
@@ -7480,6 +7588,12 @@ return array(
 		),
 	),
 	array(
+		'The Nautigal' => array(
+			'variants' => array( 'regular', '700' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Tienne' => array(
 			'variants' => array( 'regular', '700', '900' ), 
 			'category' => 'serif', 
@@ -7585,6 +7699,12 @@ return array(
 		'Turret Road' => array(
 			'variants' => array( '200', '300', 'regular', '500', '700', '800' ), 
 			'category' => 'display', 
+		),
+	),
+	array(
+		'Twinkle Star' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
 		),
 	),
 	array(
@@ -7774,6 +7894,12 @@ return array(
 		),
 	),
 	array(
+		'Vujahday Script' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
 		'Waiting for the Sunrise' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'handwriting', 
@@ -7795,6 +7921,12 @@ return array(
 		'Warnes' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'display', 
+		),
+	),
+	array(
+		'Waterfall' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
 		),
 	),
 	array(
@@ -7897,6 +8029,18 @@ return array(
 		'Yuji Boku' => array(
 			'variants' => array( 'regular' ), 
 			'category' => 'serif', 
+		),
+	),
+	array(
+		'Yuji Hentaigana Akari' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
+		),
+	),
+	array(
+		'Yuji Hentaigana Akebono' => array(
+			'variants' => array( 'regular' ), 
+			'category' => 'handwriting', 
 		),
 	),
 	array(

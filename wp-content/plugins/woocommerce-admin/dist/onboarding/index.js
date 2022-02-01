@@ -82,7 +82,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["onboarding"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 273);
+/******/ 	return __webpack_require__(__webpack_require__.s = 274);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -94,7 +94,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["onboarding"] =
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["tracks"]; }());
@@ -122,7 +122,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["onboarding"] =
 
 /***/ }),
 
-/***/ 273:
+/***/ 274:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -922,7 +922,7 @@ const RecommendedRibbon = ({
 // CONCATENATED MODULE: ./packages/onboarding/build-module/components/RecommendedRibbon/index.js
 
 // EXTERNAL MODULE: ./node_modules/gridicons/dist/notice-outline.js
-var notice_outline = __webpack_require__(63);
+var notice_outline = __webpack_require__(68);
 var notice_outline_default = /*#__PURE__*/__webpack_require__.n(notice_outline);
 
 // CONCATENATED MODULE: ./packages/onboarding/build-module/components/SetupRequired.js
@@ -1028,7 +1028,7 @@ WooPaymentGatewayConfigure.Slot = ({
 // CONCATENATED MODULE: ./packages/onboarding/build-module/components/WooPaymentGatewayConfigure/index.js
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(15);
+var external_wc_tracks_ = __webpack_require__(16);
 
 // CONCATENATED MODULE: ./packages/onboarding/build-module/components/WooOnboardingTask/WooOnboardingTask.js
 /**
@@ -1132,7 +1132,7 @@ WooOnboardingTaskListItem.Slot = ({
 
 /***/ }),
 
-/***/ 63:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

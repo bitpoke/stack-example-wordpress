@@ -10,7 +10,7 @@ namespace Automattic\WooCommerce\Admin\API;
 use Automattic\WooCommerce\Admin\Features\Onboarding;
 use Automattic\WooCommerce\Admin\Features\OnboardingTasks\Init as OnboardingTasksFeature;
 use Automattic\WooCommerce\Admin\Features\OnboardingTasks\TaskLists;
-use Automattic\WooCommerce\Admin\Features\OnboardingTasks\Task;
+use Automattic\WooCommerce\Admin\Features\OnboardingTasks\DeprecatedExtendedTask;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -124,6 +124,19 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 				array(
 					'methods'             => \WP_REST_Server::EDITABLE,
 					'callback'            => array( $this, 'hide_task_list' ),
+					'permission_callback' => array( $this, 'hide_task_list_permission_check' ),
+				),
+				'schema' => array( $this, 'get_public_item_schema' ),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>[a-z0-9_\-]+)/unhide',
+			array(
+				array(
+					'methods'             => \WP_REST_Server::EDITABLE,
+					'callback'            => array( $this, 'unhide_task_list' ),
 					'permission_callback' => array( $this, 'hide_task_list_permission_check' ),
 				),
 				'schema' => array( $this, 'get_public_item_schema' ),
@@ -681,7 +694,6 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	public function get_tasks( $request ) {
 		$extended_tasks = $request->get_param( 'extended_tasks' );
 
-		TaskLists::maybe_add_default_tasks();
 		TaskLists::maybe_add_extended_tasks( $extended_tasks );
 
 		$lists = TaskLists::get_lists();
@@ -703,21 +715,19 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	 * @return WP_REST_Request|WP_Error
 	 */
 	public function dismiss_task( $request ) {
-		TaskLists::maybe_add_default_tasks();
 		$id   = $request->get_param( 'id' );
 		$task = TaskLists::get_task( $id );
 
 		if ( ! $task && $id ) {
-			$task = new Task(
+			$task = new DeprecatedExtendedTask(
 				array(
 					'id'             => $id,
 					'is_dismissable' => true,
-					'parent_id'      => 'extended',
 				)
 			);
 		}
 
-		if ( ! $task || ! $task->is_dismissable ) {
+		if ( ! $task || ! $task->is_dismissable() ) {
 			return new \WP_Error(
 				'woocommerce_rest_invalid_task',
 				__( 'Sorry, no dismissable task with that ID was found.', 'woocommerce' ),
@@ -738,21 +748,19 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	 * @return WP_REST_Request|WP_Error
 	 */
 	public function undo_dismiss_task( $request ) {
-		TaskLists::maybe_add_default_tasks();
 		$id   = $request->get_param( 'id' );
 		$task = TaskLists::get_task( $id );
 
 		if ( ! $task && $id ) {
-			$task = new Task(
+			$task = new DeprecatedExtendedTask(
 				array(
 					'id'             => $id,
 					'is_dismissable' => true,
-					'parent_id'      => 'extended',
 				)
 			);
 		}
 
-		if ( ! $task || ! $task->is_dismissable ) {
+		if ( ! $task || ! $task->is_dismissable() ) {
 			return new \WP_Error(
 				'woocommerce_rest_invalid_task',
 				__( 'Sorry, no dismissable task with that ID was found.', 'woocommerce' ),
@@ -775,7 +783,6 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function snooze_task( $request ) {
-		TaskLists::maybe_add_default_tasks();
 		$task_id      = $request->get_param( 'id' );
 		$task_list_id = $request->get_param( 'task_list_id' );
 		$duration     = $request->get_param( 'duration' );
@@ -783,16 +790,15 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 		$task = TaskLists::get_task( $task_id, $task_list_id );
 
 		if ( ! $task && $task_id ) {
-			$task = new Task(
+			$task = new DeprecatedExtendedTask(
 				array(
 					'id'            => $task_id,
 					'is_snoozeable' => true,
-					'parent_id'     => 'extended',
 				)
 			);
 		}
 
-		if ( ! $task || ! $task->is_snoozeable ) {
+		if ( ! $task || ! $task->is_snoozeable() ) {
 			return new \WP_Error(
 				'woocommerce_rest_invalid_task',
 				__( 'Sorry, no snoozeable task with that ID was found.', 'woocommerce' ),
@@ -813,21 +819,19 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	 * @return WP_REST_Request|WP_Error
 	 */
 	public function undo_snooze_task( $request ) {
-		TaskLists::maybe_add_default_tasks();
 		$id   = $request->get_param( 'id' );
 		$task = TaskLists::get_task( $id );
 
 		if ( ! $task && $id ) {
-			$task = new Task(
+			$task = new DeprecatedExtendedTask(
 				array(
 					'id'            => $id,
 					'is_snoozeable' => true,
-					'parent_id'     => 'extended',
 				)
 			);
 		}
 
-		if ( ! $task || ! $task->is_snoozeable ) {
+		if ( ! $task || ! $task->is_snoozeable() ) {
 			return new \WP_Error(
 				'woocommerce_rest_invalid_task',
 				__( 'Sorry, no snoozeable task with that ID was found.', 'woocommerce' ),
@@ -849,7 +853,6 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function hide_task_list( $request ) {
-		TaskLists::maybe_add_default_tasks();
 		$id        = $request->get_param( 'id' );
 		$task_list = TaskLists::get_list( $id );
 
@@ -870,21 +873,46 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	}
 
 	/**
+	 * Unhide a task list.
+	 *
+	 * @param WP_REST_Request $request Request data.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function unhide_task_list( $request ) {
+		$id        = $request->get_param( 'id' );
+		$task_list = TaskLists::get_list( $id );
+
+		if ( ! $task_list ) {
+			return new \WP_Error(
+				'woocommerce_tasks_invalid_task_list',
+				__( 'Sorry, that task list was not found', 'woocommerce' ),
+				array(
+					'status' => 404,
+				)
+			);
+		}
+
+		$update = $task_list->unhide();
+		$json   = $task_list->get_json();
+
+		return rest_ensure_response( $json );
+	}
+
+	/**
 	 * Action a single task.
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 * @return WP_REST_Request|WP_Error
 	 */
 	public function action_task( $request ) {
-		TaskLists::maybe_add_default_tasks();
 		$id   = $request->get_param( 'id' );
 		$task = TaskLists::get_task( $id );
 
 		if ( ! $task && $id ) {
-			$task = new Task(
+			$task = new DeprecatedExtendedTask(
 				array(
-					'id'        => $id,
-					'parent_id' => 'extended',
+					'id' => $id,
 				)
 			);
 		}

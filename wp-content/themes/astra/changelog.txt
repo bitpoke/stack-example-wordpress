@@ -1,3 +1,12 @@
+v3.7.7
+- Improvement: Compatibility with WordPress 5.9.
+- Fix: var() colors code appearing in block editor theme palette picker.
+- Fix: There is no gap between the post edit title & first content block in the block editor.
+- Fix: Color picker's UI breaking in customizer & in block editor.
+- Fix: Gradient picker's UI breaking inside color picker.
+- Fix: Column figure blocks overlapping on one another in block editor.
+- Fix: WooCommerce - Variation product label is not align properly with WooCommerce 6.1 version.
+
 v3.7.6
 - Improvement: Added a new filter 'astra_web_stories_position' to change the position of web stories. ( https://wpastra.com/docs/change-web-stories-position/ )
 - Improvement: Builder - Button - Added typography options from Astra Pro to free theme.

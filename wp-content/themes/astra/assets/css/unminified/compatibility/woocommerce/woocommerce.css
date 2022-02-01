@@ -2685,6 +2685,10 @@ p.demo_store a,
   padding: 6px 0.75em;
 }
 
+.woocommerce .variations th {
+  text-align: left;
+}
+
 .woocommerce,
 .woocommerce-page {
   /**

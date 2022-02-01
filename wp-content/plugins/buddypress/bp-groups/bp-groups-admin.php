@@ -663,7 +663,7 @@ function bp_groups_admin_edit() {
 					<div id="post-body" class="metabox-holder columns-<?php echo 1 == get_current_screen()->get_columns() ? '1' : '2'; ?>">
 						<div id="post-body-content">
 							<div id="postdiv">
-								<div id="bp_groups_name" class="postbox">
+								<div id="bp_groups_name" class="groupbox">
 									<h2><?php _e( 'Name and Description', 'buddypress' ); ?></h2>
 									<div class="inside">
 										<label for="bp-groups-name" class="screen-reader-text"><?php
@@ -936,7 +936,8 @@ function bp_groups_admin_edit_metabox_members( $item ) {
 			bp_groups_get_group_manage_members_script_data( $item->id )
 		);
 
-		bp_get_template_part( 'common/js-templates/group-members/index' );
+		// Inject the Group Manage Members interface.
+		bp_groups_manage_group_members_interface( 'admin_footer' );
 
 		/**
 		 * Echo out the JavaScript variable.

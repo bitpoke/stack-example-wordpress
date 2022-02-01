@@ -1,1 +1,1 @@
-FROM docker.io/bitpoke/wordpress-runtime:5.8.3
+FROM docker.io/bitpoke/wordpress-runtime:5.9

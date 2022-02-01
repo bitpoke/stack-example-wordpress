@@ -261,6 +261,7 @@ if ( ! function_exists( 'is_ajax' ) ) {
 	/**
 	 * Is_ajax - Returns true when the page is loaded via ajax.
 	 *
+	 * @see wp_doing_ajax() for an equivalent function provided by WordPress since 4.7.0
 	 * @return bool
 	 */
 	function is_ajax() {
@@ -496,12 +497,15 @@ function wc_is_file_valid_csv( $file, $check_path = true ) {
 }
 
 /**
- * Check if the current theme is an FSE theme.
+ * Check if the current theme is a block theme.
  *
  * @since x.x.x
  * @return bool
  */
 function wc_current_theme_is_fse_theme() {
+	if ( function_exists( 'wp_is_block_theme' ) ) {
+		return (bool) wp_is_block_theme();
+	}
 	if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
 		return (bool) gutenberg_is_fse_theme();
 	}

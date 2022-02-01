@@ -94,7 +94,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["navigation"] =
 
 /***/ }),
 
-/***/ 16:
+/***/ 15:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["url"]; }());
@@ -126,15 +126,15 @@ function _extends() {
 
 /***/ }),
 
-/***/ 28:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var stringify = __webpack_require__(56);
-var parse = __webpack_require__(57);
-var formats = __webpack_require__(35);
+var stringify = __webpack_require__(58);
+var parse = __webpack_require__(59);
+var formats = __webpack_require__(34);
 
 module.exports = {
     formats: formats,
@@ -159,7 +159,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 35:
+/***/ 34:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -203,7 +203,7 @@ module.exports = {
 "use strict";
 
 
-var formats = __webpack_require__(35);
+var formats = __webpack_require__(34);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -510,10 +510,10 @@ __webpack_require__.d(__webpack_exports__, "WooNavigationItem", function() { ret
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(16);
+var external_wp_url_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(28);
+var lib = __webpack_require__(27);
 
 // EXTERNAL MODULE: external "lodash"
 var external_lodash_ = __webpack_require__(4);
@@ -525,7 +525,7 @@ var external_wp_hooks_ = __webpack_require__(31);
 var external_wp_components_ = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/history/esm/history.js + 2 modules
-var esm_history = __webpack_require__(52);
+var esm_history = __webpack_require__(53);
 
 // CONCATENATED MODULE: ./packages/navigation/build-module/history.js
 /**
@@ -1053,7 +1053,7 @@ WooNavigationItem.Slot = ({
 
 /***/ }),
 
-/***/ 52:
+/***/ 53:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2112,14 +2112,14 @@ function createMemoryHistory(props) {
 
 /***/ }),
 
-/***/ 56:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(41);
-var formats = __webpack_require__(35);
+var formats = __webpack_require__(34);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -2398,7 +2398,7 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 57:
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1023,6 +1023,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					'component_limit'         => Astra_Builder_Helper::$component_limit,
 					'is_site_rtl'             => is_rtl(),
 					'defaults'                => $this->get_control_defaults(),
+					'isWP_5_9'                => astra_wp_version_compare( '5.8.99', '>=' ),
 					'astraRegenerateFonts'    => wp_create_nonce( 'astra-regenerate-local-fonts' ),
 					'initialFlushText'        => __( 'Flush Local Font Files', 'astra' ),
 					'successFlushed'          => __( 'Successfully Flushed', 'astra' ),

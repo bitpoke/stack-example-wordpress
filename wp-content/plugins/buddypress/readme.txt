@@ -3,10 +3,10 @@ Contributors: johnjamesjacoby, DJPaul, boonebgorges, r-a-y, imath, mercime, tw21
 Tags: user profiles, activity streams, messaging, friends, user groups, notifications, community, social networking, intranet
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 4.9
+Requires at least: 5.4
 Requires PHP: 5.6
 Tested up to: 5.8
-Stable tag: 9.2.0
+Stable tag: 10.0.0
 
 BuddyPress helps site builders & developers add community features to their websites, with user profiles, activity streams, and more!
 
@@ -125,6 +125,9 @@ Try <a href="https://wordpress.org/plugins/bbpress/">bbPress</a>. It integrates 
 
 == Upgrade Notice ==
 
+= 10.0.0 =
+See: https://codex.buddypress.org/releases/version-10-0-0/
+
 = 9.2.0 =
 See: https://codex.buddypress.org/releases/version-9-2-0/
 
@@ -183,6 +186,9 @@ See: https://codex.buddypress.org/releases/version-5-1-0/
 See: https://codex.buddypress.org/releases/version-5-0-0/
 
 == Changelog ==
+
+= 10.0.0 =
+See: https://codex.buddypress.org/releases/version-10-0-0/
 
 = 9.2.0 =
 See: https://codex.buddypress.org/releases/version-9-2-0/
