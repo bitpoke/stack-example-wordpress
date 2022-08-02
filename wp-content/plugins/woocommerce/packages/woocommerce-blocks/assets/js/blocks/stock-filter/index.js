@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, server } from '@woocommerce/icons';
+import { Icon, box } from '@wordpress/icons';
 import classNames from 'classnames';
 
 /**
@@ -14,8 +14,12 @@ import edit from './edit.js';
 registerBlockType( 'woocommerce/stock-filter', {
 	title: __( 'Filter Products by Stock', 'woocommerce' ),
 	icon: {
-		src: <Icon srcElement={ server } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ box }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],

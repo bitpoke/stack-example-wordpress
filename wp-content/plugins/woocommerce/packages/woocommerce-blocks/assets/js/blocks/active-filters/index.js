@@ -2,9 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
-import { Icon, toggle } from '@woocommerce/icons';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
+import { toggle } from '@woocommerce/icons';
+import { Icon } from '@wordpress/icons';
 import classNames from 'classnames';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -12,10 +14,15 @@ import classNames from 'classnames';
 import edit from './edit.js';
 
 registerBlockType( 'woocommerce/active-filters', {
+	apiVersion: 2,
 	title: __( 'Active Product Filters', 'woocommerce' ),
 	icon: {
-		src: <Icon srcElement={ toggle } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ toggle }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],
@@ -26,6 +33,10 @@ registerBlockType( 'woocommerce/active-filters', {
 	supports: {
 		html: false,
 		multiple: false,
+		color: {
+			text: true,
+			background: false,
+		},
 	},
 	example: {
 		attributes: {},
@@ -44,6 +55,29 @@ registerBlockType( 'woocommerce/active-filters', {
 			default: 3,
 		},
 	},
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'core/legacy-widget' ],
+				// We can't transform if raw instance isn't shown in the REST API.
+				isMatch: ( { idBase, instance } ) =>
+					idBase === 'woocommerce_layered_nav_filters' &&
+					!! instance?.raw,
+				transform: ( { instance } ) =>
+					createBlock( 'woocommerce/active-filters', {
+						displayStyle: 'list',
+						heading:
+							instance?.raw?.title ||
+							__(
+								'Active filters',
+								'woocommerce'
+							),
+						headingLevel: 3,
+					} ),
+			},
+		],
+	},
 	edit,
 	// Save the props to post content.
 	save( { attributes } ) {
@@ -53,9 +87,12 @@ registerBlockType( 'woocommerce/active-filters', {
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
 		};
+
 		return (
 			<div
-				className={ classNames( 'is-loading', className ) }
+				{ ...useBlockProps.save( {
+					className: classNames( 'is-loading', className ),
+				} ) }
 				{ ...data }
 			>
 				<span

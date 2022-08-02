@@ -95,7 +95,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["app"] =
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"0":1,"3":1,"4":1,"5":1,"6":1,"7":1,"9":1,"11":1,"12":1,"14":1,"17":1,"25":1,"26":1,"31":1,"32":1,"34":1,"45":1,"47":1,"48":1,"49":1,"50":1,"52":1,"54":1};
+/******/ 		var cssChunks = {"0":1,"3":1,"4":1,"5":1,"6":1,"7":1,"9":1,"12":1,"14":1,"17":1,"25":1,"26":1,"31":1,"32":1,"34":1,"45":1,"47":1,"48":1,"49":1,"50":1,"52":1,"54":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
@@ -259,7 +259,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["app"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 282);
+/******/ 	return __webpack_require__(__webpack_require__.s = 291);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -284,7 +284,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["app"] =
 if (false) { var throwOnDirectAccess, ReactIs; } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(48)();
+  module.exports = __webpack_require__(60)();
 }
 
 
@@ -297,15 +297,6 @@ if (false) { var throwOnDirectAccess, ReactIs; } else {
 
 /***/ }),
 
-/***/ 102:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var _extends=Object.assign||function(a){for(var c,b=1;b<arguments.length;b++)for(var d in c=arguments[b],c)Object.prototype.hasOwnProperty.call(c,d)&&(a[d]=c[d]);return a};Object.defineProperty(exports,'__esModule',{value:!0});exports.default=function(a){var b=a.size,c=b===void 0?24:b,d=a.onClick,e=a.icon,f=a.className,g=_objectWithoutProperties(a,['size','onClick','icon','className']),j=['gridicon','gridicons-cross-small',f,!1,!1,!1].filter(Boolean).join(' ');return _react2.default.createElement('svg',_extends({className:j,height:c,width:c,onClick:d},g,{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24'}),_react2.default.createElement('g',null,_react2.default.createElement('path',{d:'M17.705 7.705l-1.41-1.41L12 10.59 7.705 6.295l-1.41 1.41L10.59 12l-4.295 4.295 1.41 1.41L12 13.41l4.295 4.295 1.41-1.41L13.41 12l4.295-4.295z'})))};var _react=__webpack_require__(5),_react2=_interopRequireDefault(_react);function _interopRequireDefault(a){return a&&a.__esModule?a:{default:a}}function _objectWithoutProperties(a,b){var d={};for(var c in a)0<=b.indexOf(c)||Object.prototype.hasOwnProperty.call(a,c)&&(d[c]=a[c]);return d}module.exports=exports['default'];
-
-
-/***/ }),
-
 /***/ 104:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -313,7 +304,7 @@ var _extends=Object.assign||function(a){for(var c,b=1;b<arguments.length;b++)for
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return REVIEW_PAGE_LIMIT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return unapprovedReviewsQuery; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getUnapprovedReviews; });
-/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
+/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
 /* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_data__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * External dependencies
@@ -348,79 +339,11 @@ function getUnapprovedReviews(select) {
 /***/ }),
 
 /***/ 105:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-if (true) {
-  module.exports = __webpack_require__(130);
-} else {}
-
-
-/***/ }),
-
-/***/ 11:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wc"]["data"]; }());
-
-/***/ }),
-
-/***/ 117:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-var objectWithoutPropertiesLoose = __webpack_require__(22);
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = Object(objectWithoutPropertiesLoose["a" /* default */])(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-// EXTERNAL MODULE: external ["wp","element"]
-var external_wp_element_ = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js
-
-
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * WordPress dependencies
  */
@@ -438,19 +361,40 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  */
 
 function Icon(_ref) {
-  var icon = _ref.icon,
-      _ref$size = _ref.size,
-      size = _ref$size === void 0 ? 24 : _ref$size,
-      props = _objectWithoutProperties(_ref, ["icon", "size"]);
-
-  return Object(external_wp_element_["cloneElement"])(icon, _objectSpread({
+  let {
+    icon,
+    size = 24,
+    ...props
+  } = _ref;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["cloneElement"])(icon, {
     width: size,
-    height: size
-  }, props));
+    height: size,
+    ...props
+  });
 }
 
-/* harmony default export */ var build_module_icon = __webpack_exports__["a"] = (Icon);
+/* harmony default export */ __webpack_exports__["a"] = (Icon);
 //# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 106:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (true) {
+  module.exports = __webpack_require__(131);
+} else {}
+
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["moment"]; }());
 
 /***/ }),
 
@@ -460,34 +404,34 @@ function Icon(_ref) {
 "use strict";
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(31);
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_admin_settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(23);
 /**
  * External dependencies
  */
 
 
 
-
-const manageStock = Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__[/* getSetting */ "f"])('manageStock', 'no');
-const REPORTS_FILTER = 'woocommerce_admin_reports_list';
 /**
  * Internal dependencies
  */
 
-const RevenueReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-revenue */[__webpack_require__.e(0), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, 484)));
-const ProductsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-products */[__webpack_require__.e(0), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, 480)));
-const VariationsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-variations */[__webpack_require__.e(0), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, 485)));
-const OrdersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-orders */[__webpack_require__.e(0), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, 486)));
-const CategoriesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-categories */[__webpack_require__.e(0), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, 482)));
-const CouponsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-coupons */[__webpack_require__.e(0), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, 487)));
-const TaxesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-taxes */[__webpack_require__.e(0), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, 488)));
-const DownloadsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => Promise.all(/* import() | analytics-report-downloads */[__webpack_require__.e(0), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, 489)));
-const StockReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-stock */ 14).then(__webpack_require__.bind(null, 481)));
-const CustomersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-customers */ 9).then(__webpack_require__.bind(null, 483)));
+
+const RevenueReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-revenue */[__webpack_require__.e(0), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, 505)));
+const ProductsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-products */[__webpack_require__.e(0), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, 501)));
+const VariationsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-variations */[__webpack_require__.e(0), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, 506)));
+const OrdersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-orders */[__webpack_require__.e(0), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, 507)));
+const CategoriesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-categories */[__webpack_require__.e(0), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, 503)));
+const CouponsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-coupons */[__webpack_require__.e(0), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, 508)));
+const TaxesReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-taxes */[__webpack_require__.e(0), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, 509)));
+const DownloadsReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => Promise.all(/* import() | analytics-report-downloads */[__webpack_require__.e(0), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, 510)));
+const StockReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-stock */ 14).then(__webpack_require__.bind(null, 502)));
+const CustomersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["lazy"])(() => __webpack_require__.e(/* import() | analytics-report-customers */ 9).then(__webpack_require__.bind(null, 504)));
+const manageStock = Object(_utils_admin_settings__WEBPACK_IMPORTED_MODULE_3__[/* getAdminSetting */ "d"])('manageStock', 'no');
+const REPORTS_FILTER = 'woocommerce_admin_reports_list';
 /* harmony default export */ __webpack_exports__["a"] = (() => {
   const reports = [{
     report: 'revenue',
@@ -557,18 +501,2661 @@ const CustomersReport = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__["
       id: 'woocommerce-analytics-downloads'
     }
   }].filter(Boolean);
+  /**
+   * An object defining a report page.
+   *
+   * @typedef {Object} report
+   * @property {string} report Report slug.
+   * @property {string} title Report title.
+   * @property {Node} component React Component to render.
+   * @property {Object} navArgs Arguments supplied to WooCommerce Navigation.
+   */
+
+  /**
+   * Filter Report pages list.
+   *
+   * @filter woocommerce_admin_reports_list
+   * @param {Array.<report>} reports Report pages list.
+   */
+
   return Object(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__["applyFilters"])(REPORTS_FILTER, reports);
 });
 
 /***/ }),
 
 /***/ 119:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export BailSignal */
+/* unused harmony export Controller */
+/* unused harmony export FrameValue */
+/* unused harmony export Interpolation */
+/* unused harmony export Spring */
+/* unused harmony export SpringContext */
+/* unused harmony export SpringRef */
+/* unused harmony export SpringValue */
+/* unused harmony export Trail */
+/* unused harmony export Transition */
+/* unused harmony export config */
+/* unused harmony export easings */
+/* unused harmony export inferTo */
+/* unused harmony export interpolate */
+/* unused harmony export to */
+/* unused harmony export update */
+/* unused harmony export useChain */
+/* unused harmony export useSpring */
+/* unused harmony export useSpringRef */
+/* unused harmony export useSprings */
+/* unused harmony export useTrail */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useTransition", function() { return useTransition; });
+/* harmony import */ var _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Globals", function() { return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__["b"]; });
+
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _react_spring_animated__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
+/* harmony import */ var _react_spring_types_animated__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(174);
+/* harmony import */ var _react_spring_types_animated__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_react_spring_types_animated__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _react_spring_types_interpolation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(175);
+/* harmony import */ var _react_spring_types_interpolation__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_react_spring_types_interpolation__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+
+
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+function callProp(value, ...args) {
+  return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(value) ? value(...args) : value;
+}
+const matchProp = (value, key) => value === true || !!(key && value && (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(value) ? value(key) : Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(value).includes(key)));
+const resolveProp = (prop, key) => _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(prop) ? key && prop[key] : prop;
+const getDefaultProp = (props, key) => props.default === true ? props[key] : props.default ? props.default[key] : undefined;
+
+const noopTransform = value => value;
+
+const getDefaultProps = (props, transform = noopTransform) => {
+  let keys = DEFAULT_PROPS;
+
+  if (props.default && props.default !== true) {
+    props = props.default;
+    keys = Object.keys(props);
+  }
+
+  const defaults = {};
+
+  for (const key of keys) {
+    const value = transform(props[key], key);
+
+    if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(value)) {
+      defaults[key] = value;
+    }
+  }
+
+  return defaults;
+};
+const DEFAULT_PROPS = ['config', 'onProps', 'onStart', 'onChange', 'onPause', 'onResume', 'onRest'];
+const RESERVED_PROPS = {
+  config: 1,
+  from: 1,
+  to: 1,
+  ref: 1,
+  loop: 1,
+  reset: 1,
+  pause: 1,
+  cancel: 1,
+  reverse: 1,
+  immediate: 1,
+  default: 1,
+  delay: 1,
+  onProps: 1,
+  onStart: 1,
+  onChange: 1,
+  onPause: 1,
+  onResume: 1,
+  onRest: 1,
+  onResolve: 1,
+  items: 1,
+  trail: 1,
+  sort: 1,
+  expires: 1,
+  initial: 1,
+  enter: 1,
+  update: 1,
+  leave: 1,
+  children: 1,
+  onDestroyed: 1,
+  keys: 1,
+  callId: 1,
+  parentId: 1
+};
+
+function getForwardProps(props) {
+  const forward = {};
+  let count = 0;
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(props, (value, prop) => {
+    if (!RESERVED_PROPS[prop]) {
+      forward[prop] = value;
+      count++;
+    }
+  });
+
+  if (count) {
+    return forward;
+  }
+}
+
+function inferTo(props) {
+  const to = getForwardProps(props);
+
+  if (to) {
+    const out = {
+      to
+    };
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(props, (val, key) => key in to || (out[key] = val));
+    return out;
+  }
+
+  return _extends({}, props);
+}
+function computeGoal(value) {
+  value = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(value);
+  return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(value) ? value.map(computeGoal) : Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isAnimatedString */ "t"])(value) ? _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].createStringInterpolator({
+    range: [0, 1],
+    output: [value, value]
+  })(1) : value;
+}
+function hasProps(props) {
+  for (const _ in props) return true;
+
+  return false;
+}
+function isAsyncTo(to) {
+  return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(to) || _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(to) && _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(to[0]);
+}
+function detachRefs(ctrl, ref) {
+  var _ctrl$ref;
+
+  (_ctrl$ref = ctrl.ref) == null ? void 0 : _ctrl$ref.delete(ctrl);
+  ref == null ? void 0 : ref.delete(ctrl);
+}
+function replaceRef(ctrl, ref) {
+  if (ref && ctrl.ref !== ref) {
+    var _ctrl$ref2;
+
+    (_ctrl$ref2 = ctrl.ref) == null ? void 0 : _ctrl$ref2.delete(ctrl);
+    ref.add(ctrl);
+    ctrl.ref = ref;
+  }
+}
+
+function useChain(refs, timeSteps, timeFrame = 1000) {
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => {
+    if (timeSteps) {
+      let prevDelay = 0;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(refs, (ref, i) => {
+        const controllers = ref.current;
+
+        if (controllers.length) {
+          let delay = timeFrame * timeSteps[i];
+          if (isNaN(delay)) delay = prevDelay;else prevDelay = delay;
+          Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(controllers, ctrl => {
+            Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(ctrl.queue, props => {
+              const memoizedDelayProp = props.delay;
+
+              props.delay = key => delay + callProp(memoizedDelayProp || 0, key);
+            });
+          });
+          ref.start();
+        }
+      });
+    } else {
+      let p = Promise.resolve();
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(refs, ref => {
+        const controllers = ref.current;
+
+        if (controllers.length) {
+          const queues = controllers.map(ctrl => {
+            const q = ctrl.queue;
+            ctrl.queue = [];
+            return q;
+          });
+          p = p.then(() => {
+            Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(controllers, (ctrl, i) => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(queues[i] || [], update => ctrl.queue.push(update)));
+            return Promise.all(ref.start());
+          });
+        }
+      });
+    }
+  });
+}
+
+const config = {
+  default: {
+    tension: 170,
+    friction: 26
+  },
+  gentle: {
+    tension: 120,
+    friction: 14
+  },
+  wobbly: {
+    tension: 180,
+    friction: 12
+  },
+  stiff: {
+    tension: 210,
+    friction: 20
+  },
+  slow: {
+    tension: 280,
+    friction: 60
+  },
+  molasses: {
+    tension: 280,
+    friction: 120
+  }
+};
+const c1 = 1.70158;
+const c2 = c1 * 1.525;
+const c3 = c1 + 1;
+const c4 = 2 * Math.PI / 3;
+const c5 = 2 * Math.PI / 4.5;
+
+const bounceOut = x => {
+  const n1 = 7.5625;
+  const d1 = 2.75;
+
+  if (x < 1 / d1) {
+    return n1 * x * x;
+  } else if (x < 2 / d1) {
+    return n1 * (x -= 1.5 / d1) * x + 0.75;
+  } else if (x < 2.5 / d1) {
+    return n1 * (x -= 2.25 / d1) * x + 0.9375;
+  } else {
+    return n1 * (x -= 2.625 / d1) * x + 0.984375;
+  }
+};
+
+const easings = {
+  linear: x => x,
+  easeInQuad: x => x * x,
+  easeOutQuad: x => 1 - (1 - x) * (1 - x),
+  easeInOutQuad: x => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2,
+  easeInCubic: x => x * x * x,
+  easeOutCubic: x => 1 - Math.pow(1 - x, 3),
+  easeInOutCubic: x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  easeInQuart: x => x * x * x * x,
+  easeOutQuart: x => 1 - Math.pow(1 - x, 4),
+  easeInOutQuart: x => x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2,
+  easeInQuint: x => x * x * x * x * x,
+  easeOutQuint: x => 1 - Math.pow(1 - x, 5),
+  easeInOutQuint: x => x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2,
+  easeInSine: x => 1 - Math.cos(x * Math.PI / 2),
+  easeOutSine: x => Math.sin(x * Math.PI / 2),
+  easeInOutSine: x => -(Math.cos(Math.PI * x) - 1) / 2,
+  easeInExpo: x => x === 0 ? 0 : Math.pow(2, 10 * x - 10),
+  easeOutExpo: x => x === 1 ? 1 : 1 - Math.pow(2, -10 * x),
+  easeInOutExpo: x => x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2,
+  easeInCirc: x => 1 - Math.sqrt(1 - Math.pow(x, 2)),
+  easeOutCirc: x => Math.sqrt(1 - Math.pow(x - 1, 2)),
+  easeInOutCirc: x => x < 0.5 ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2 : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2,
+  easeInBack: x => c3 * x * x * x - c1 * x * x,
+  easeOutBack: x => 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2),
+  easeInOutBack: x => x < 0.5 ? Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2) / 2 : (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2,
+  easeInElastic: x => x === 0 ? 0 : x === 1 ? 1 : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c4),
+  easeOutElastic: x => x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1,
+  easeInOutElastic: x => x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 : Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * c5) / 2 + 1,
+  easeInBounce: x => 1 - bounceOut(1 - x),
+  easeOutBounce: bounceOut,
+  easeInOutBounce: x => x < 0.5 ? (1 - bounceOut(1 - 2 * x)) / 2 : (1 + bounceOut(2 * x - 1)) / 2
+};
+
+const defaults = _extends({}, config.default, {
+  mass: 1,
+  damping: 1,
+  easing: easings.linear,
+  clamp: false
+});
+
+class AnimationConfig {
+  constructor() {
+    this.tension = void 0;
+    this.friction = void 0;
+    this.frequency = void 0;
+    this.damping = void 0;
+    this.mass = void 0;
+    this.velocity = 0;
+    this.restVelocity = void 0;
+    this.precision = void 0;
+    this.progress = void 0;
+    this.duration = void 0;
+    this.easing = void 0;
+    this.clamp = void 0;
+    this.bounce = void 0;
+    this.decay = void 0;
+    this.round = void 0;
+    Object.assign(this, defaults);
+  }
+
+}
+function mergeConfig(config, newConfig, defaultConfig) {
+  if (defaultConfig) {
+    defaultConfig = _extends({}, defaultConfig);
+    sanitizeConfig(defaultConfig, newConfig);
+    newConfig = _extends({}, defaultConfig, newConfig);
+  }
+
+  sanitizeConfig(config, newConfig);
+  Object.assign(config, newConfig);
+
+  for (const key in defaults) {
+    if (config[key] == null) {
+      config[key] = defaults[key];
+    }
+  }
+
+  let {
+    mass,
+    frequency,
+    damping
+  } = config;
+
+  if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(frequency)) {
+    if (frequency < 0.01) frequency = 0.01;
+    if (damping < 0) damping = 0;
+    config.tension = Math.pow(2 * Math.PI / frequency, 2) * mass;
+    config.friction = 4 * Math.PI * damping * mass / frequency;
+  }
+
+  return config;
+}
+
+function sanitizeConfig(config, props) {
+  if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.decay)) {
+    config.duration = undefined;
+  } else {
+    const isTensionConfig = !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.tension) || !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.friction);
+
+    if (isTensionConfig || !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.frequency) || !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.damping) || !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.mass)) {
+      config.duration = undefined;
+      config.decay = undefined;
+    }
+
+    if (isTensionConfig) {
+      config.frequency = undefined;
+    }
+  }
+}
+
+const emptyArray = [];
+class Animation {
+  constructor() {
+    this.changed = false;
+    this.values = emptyArray;
+    this.toValues = null;
+    this.fromValues = emptyArray;
+    this.to = void 0;
+    this.from = void 0;
+    this.config = new AnimationConfig();
+    this.immediate = false;
+  }
+
+}
+
+function scheduleProps(callId, {
+  key,
+  props,
+  defaultProps,
+  state,
+  actions
+}) {
+  return new Promise((resolve, reject) => {
+    var _props$cancel;
+
+    let delay;
+    let timeout;
+    let cancel = matchProp((_props$cancel = props.cancel) != null ? _props$cancel : defaultProps == null ? void 0 : defaultProps.cancel, key);
+
+    if (cancel) {
+      onStart();
+    } else {
+      if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.pause)) {
+        state.paused = matchProp(props.pause, key);
+      }
+
+      let pause = defaultProps == null ? void 0 : defaultProps.pause;
+
+      if (pause !== true) {
+        pause = state.paused || matchProp(pause, key);
+      }
+
+      delay = callProp(props.delay || 0, key);
+
+      if (pause) {
+        state.resumeQueue.add(onResume);
+        actions.pause();
+      } else {
+        actions.resume();
+        onResume();
+      }
+    }
+
+    function onPause() {
+      state.resumeQueue.add(onResume);
+      state.timeouts.delete(timeout);
+      timeout.cancel();
+      delay = timeout.time - _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].now();
+    }
+
+    function onResume() {
+      if (delay > 0 && !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].skipAnimation) {
+        state.delayed = true;
+        timeout = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].setTimeout(onStart, delay);
+        state.pauseQueue.add(onPause);
+        state.timeouts.add(timeout);
+      } else {
+        onStart();
+      }
+    }
+
+    function onStart() {
+      if (state.delayed) {
+        state.delayed = false;
+      }
+
+      state.pauseQueue.delete(onPause);
+      state.timeouts.delete(timeout);
+
+      if (callId <= (state.cancelId || 0)) {
+        cancel = true;
+      }
+
+      try {
+        actions.start(_extends({}, props, {
+          callId,
+          cancel
+        }), resolve);
+      } catch (err) {
+        reject(err);
+      }
+    }
+  });
+}
+
+const getCombinedResult = (target, results) => results.length == 1 ? results[0] : results.some(result => result.cancelled) ? getCancelledResult(target.get()) : results.every(result => result.noop) ? getNoopResult(target.get()) : getFinishedResult(target.get(), results.every(result => result.finished));
+const getNoopResult = value => ({
+  value,
+  noop: true,
+  finished: true,
+  cancelled: false
+});
+const getFinishedResult = (value, finished, cancelled = false) => ({
+  value,
+  finished,
+  cancelled
+});
+const getCancelledResult = value => ({
+  value,
+  cancelled: true,
+  finished: false
+});
+
+function runAsync(to, props, state, target) {
+  const {
+    callId,
+    parentId,
+    onRest
+  } = props;
+  const {
+    asyncTo: prevTo,
+    promise: prevPromise
+  } = state;
+
+  if (!parentId && to === prevTo && !props.reset) {
+    return prevPromise;
+  }
+
+  return state.promise = (async () => {
+    state.asyncId = callId;
+    state.asyncTo = to;
+    const defaultProps = getDefaultProps(props, (value, key) => key === 'onRest' ? undefined : value);
+    let preventBail;
+    let bail;
+    const bailPromise = new Promise((resolve, reject) => (preventBail = resolve, bail = reject));
+
+    const bailIfEnded = bailSignal => {
+      const bailResult = callId <= (state.cancelId || 0) && getCancelledResult(target) || callId !== state.asyncId && getFinishedResult(target, false);
+
+      if (bailResult) {
+        bailSignal.result = bailResult;
+        bail(bailSignal);
+        throw bailSignal;
+      }
+    };
+
+    const animate = (arg1, arg2) => {
+      const bailSignal = new BailSignal();
+      const skipAnimationSignal = new SkipAniamtionSignal();
+      return (async () => {
+        if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].skipAnimation) {
+          stopAsync(state);
+          skipAnimationSignal.result = getFinishedResult(target, false);
+          bail(skipAnimationSignal);
+          throw skipAnimationSignal;
+        }
+
+        bailIfEnded(bailSignal);
+        const props = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(arg1) ? _extends({}, arg1) : _extends({}, arg2, {
+          to: arg1
+        });
+        props.parentId = callId;
+        Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(defaultProps, (value, key) => {
+          if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props[key])) {
+            props[key] = value;
+          }
+        });
+        const result = await target.start(props);
+        bailIfEnded(bailSignal);
+
+        if (state.paused) {
+          await new Promise(resume => {
+            state.resumeQueue.add(resume);
+          });
+        }
+
+        return result;
+      })();
+    };
+
+    let result;
+
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].skipAnimation) {
+      stopAsync(state);
+      return getFinishedResult(target, false);
+    }
+
+    try {
+      let animating;
+
+      if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(to)) {
+        animating = (async queue => {
+          for (const props of queue) {
+            await animate(props);
+          }
+        })(to);
+      } else {
+          animating = Promise.resolve(to(animate, target.stop.bind(target)));
+        }
+
+      await Promise.all([animating.then(preventBail), bailPromise]);
+      result = getFinishedResult(target.get(), true, false);
+    } catch (err) {
+      if (err instanceof BailSignal) {
+        result = err.result;
+      } else if (err instanceof SkipAniamtionSignal) {
+        result = err.result;
+      } else {
+        throw err;
+      }
+    } finally {
+      if (callId == state.asyncId) {
+        state.asyncId = parentId;
+        state.asyncTo = parentId ? prevTo : undefined;
+        state.promise = parentId ? prevPromise : undefined;
+      }
+    }
+
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(onRest)) {
+      _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => {
+        onRest(result, target, target.item);
+      });
+    }
+
+    return result;
+  })();
+}
+function stopAsync(state, cancelId) {
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flush */ "m"])(state.timeouts, t => t.cancel());
+  state.pauseQueue.clear();
+  state.resumeQueue.clear();
+  state.asyncId = state.asyncTo = state.promise = undefined;
+  if (cancelId) state.cancelId = cancelId;
+}
+class BailSignal extends Error {
+  constructor() {
+    super('An async animation has been interrupted. You see this error because you ' + 'forgot to use `await` or `.catch(...)` on its returned promise.');
+    this.result = void 0;
+  }
+
+}
+class SkipAniamtionSignal extends Error {
+  constructor() {
+    super('SkipAnimationSignal');
+    this.result = void 0;
+  }
+
+}
+
+const isFrameValue = value => value instanceof FrameValue;
+let nextId$1 = 1;
+class FrameValue extends _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* FluidValue */ "a"] {
+  constructor(...args) {
+    super(...args);
+    this.id = nextId$1++;
+    this.key = void 0;
+    this._priority = 0;
+  }
+
+  get priority() {
+    return this._priority;
+  }
+
+  set priority(priority) {
+    if (this._priority != priority) {
+      this._priority = priority;
+
+      this._onPriorityChange(priority);
+    }
+  }
+
+  get() {
+    const node = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this);
+    return node && node.getValue();
+  }
+
+  to(...args) {
+    return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].to(this, args);
+  }
+
+  interpolate(...args) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* deprecateInterpolate */ "j"])();
+    return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].to(this, args);
+  }
+
+  toJSON() {
+    return this.get();
+  }
+
+  observerAdded(count) {
+    if (count == 1) this._attach();
+  }
+
+  observerRemoved(count) {
+    if (count == 0) this._detach();
+  }
+
+  _attach() {}
+
+  _detach() {}
+
+  _onChange(value, idle = false) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* callFluidObservers */ "d"])(this, {
+      type: 'change',
+      parent: this,
+      value,
+      idle
+    });
+  }
+
+  _onPriorityChange(priority) {
+    if (!this.idle) {
+      _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* frameLoop */ "o"].sort(this);
+    }
+
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* callFluidObservers */ "d"])(this, {
+      type: 'priority',
+      parent: this,
+      priority
+    });
+  }
+
+}
+
+const $P = Symbol.for('SpringPhase');
+const HAS_ANIMATED = 1;
+const IS_ANIMATING = 2;
+const IS_PAUSED = 4;
+const hasAnimated = target => (target[$P] & HAS_ANIMATED) > 0;
+const isAnimating = target => (target[$P] & IS_ANIMATING) > 0;
+const isPaused = target => (target[$P] & IS_PAUSED) > 0;
+const setActiveBit = (target, active) => active ? target[$P] |= IS_ANIMATING | HAS_ANIMATED : target[$P] &= ~IS_ANIMATING;
+const setPausedBit = (target, paused) => paused ? target[$P] |= IS_PAUSED : target[$P] &= ~IS_PAUSED;
+
+class SpringValue extends FrameValue {
+  constructor(arg1, arg2) {
+    super();
+    this.key = void 0;
+    this.animation = new Animation();
+    this.queue = void 0;
+    this.defaultProps = {};
+    this._state = {
+      paused: false,
+      delayed: false,
+      pauseQueue: new Set(),
+      resumeQueue: new Set(),
+      timeouts: new Set()
+    };
+    this._pendingCalls = new Set();
+    this._lastCallId = 0;
+    this._lastToId = 0;
+    this._memoizedDuration = 0;
+
+    if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(arg1) || !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(arg2)) {
+      const props = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(arg1) ? _extends({}, arg1) : _extends({}, arg2, {
+        from: arg1
+      });
+
+      if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.default)) {
+        props.default = true;
+      }
+
+      this.start(props);
+    }
+  }
+
+  get idle() {
+    return !(isAnimating(this) || this._state.asyncTo) || isPaused(this);
+  }
+
+  get goal() {
+    return Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(this.animation.to);
+  }
+
+  get velocity() {
+    const node = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this);
+    return node instanceof _react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* AnimatedValue */ "c"] ? node.lastVelocity || 0 : node.getPayload().map(node => node.lastVelocity || 0);
+  }
+
+  get hasAnimated() {
+    return hasAnimated(this);
+  }
+
+  get isAnimating() {
+    return isAnimating(this);
+  }
+
+  get isPaused() {
+    return isPaused(this);
+  }
+
+  get isDelayed() {
+    return this._state.delayed;
+  }
+
+  advance(dt) {
+    let idle = true;
+    let changed = false;
+    const anim = this.animation;
+    let {
+      config,
+      toValues
+    } = anim;
+    const payload = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getPayload */ "g"])(anim.to);
+
+    if (!payload && Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(anim.to)) {
+      toValues = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(anim.to));
+    }
+
+    anim.values.forEach((node, i) => {
+      if (node.done) return;
+      const to = node.constructor == _react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* AnimatedString */ "b"] ? 1 : payload ? payload[i].lastPosition : toValues[i];
+      let finished = anim.immediate;
+      let position = to;
+
+      if (!finished) {
+        position = node.lastPosition;
+
+        if (config.tension <= 0) {
+          node.done = true;
+          return;
+        }
+
+        let elapsed = node.elapsedTime += dt;
+        const from = anim.fromValues[i];
+        const v0 = node.v0 != null ? node.v0 : node.v0 = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(config.velocity) ? config.velocity[i] : config.velocity;
+        let velocity;
+
+        if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(config.duration)) {
+          let p = 1;
+
+          if (config.duration > 0) {
+            if (this._memoizedDuration !== config.duration) {
+              this._memoizedDuration = config.duration;
+
+              if (node.durationProgress > 0) {
+                node.elapsedTime = config.duration * node.durationProgress;
+                elapsed = node.elapsedTime += dt;
+              }
+            }
+
+            p = (config.progress || 0) + elapsed / this._memoizedDuration;
+            p = p > 1 ? 1 : p < 0 ? 0 : p;
+            node.durationProgress = p;
+          }
+
+          position = from + config.easing(p) * (to - from);
+          velocity = (position - node.lastPosition) / dt;
+          finished = p == 1;
+        } else if (config.decay) {
+            const decay = config.decay === true ? 0.998 : config.decay;
+            const e = Math.exp(-(1 - decay) * elapsed);
+            position = from + v0 / (1 - decay) * (1 - e);
+            finished = Math.abs(node.lastPosition - position) < 0.1;
+            velocity = v0 * e;
+          } else {
+              velocity = node.lastVelocity == null ? v0 : node.lastVelocity;
+              const precision = config.precision || (from == to ? 0.005 : Math.min(1, Math.abs(to - from) * 0.001));
+              const restVelocity = config.restVelocity || precision / 10;
+              const bounceFactor = config.clamp ? 0 : config.bounce;
+              const canBounce = !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(bounceFactor);
+              const isGrowing = from == to ? node.v0 > 0 : from < to;
+              let isMoving;
+              let isBouncing = false;
+              const step = 1;
+              const numSteps = Math.ceil(dt / step);
+
+              for (let n = 0; n < numSteps; ++n) {
+                isMoving = Math.abs(velocity) > restVelocity;
+
+                if (!isMoving) {
+                  finished = Math.abs(to - position) <= precision;
+
+                  if (finished) {
+                    break;
+                  }
+                }
+
+                if (canBounce) {
+                  isBouncing = position == to || position > to == isGrowing;
+
+                  if (isBouncing) {
+                    velocity = -velocity * bounceFactor;
+                    position = to;
+                  }
+                }
+
+                const springForce = -config.tension * 0.000001 * (position - to);
+                const dampingForce = -config.friction * 0.001 * velocity;
+                const acceleration = (springForce + dampingForce) / config.mass;
+                velocity = velocity + acceleration * step;
+                position = position + velocity * step;
+              }
+            }
+
+        node.lastVelocity = velocity;
+
+        if (Number.isNaN(position)) {
+          console.warn(`Got NaN while animating:`, this);
+          finished = true;
+        }
+      }
+
+      if (payload && !payload[i].done) {
+        finished = false;
+      }
+
+      if (finished) {
+        node.done = true;
+      } else {
+        idle = false;
+      }
+
+      if (node.setValue(position, config.round)) {
+        changed = true;
+      }
+    });
+    const node = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this);
+    const currVal = node.getValue();
+
+    if (idle) {
+      const finalVal = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(anim.to);
+
+      if ((currVal !== finalVal || changed) && !config.decay) {
+        node.setValue(finalVal);
+
+        this._onChange(finalVal);
+      } else if (changed && config.decay) {
+        this._onChange(currVal);
+      }
+
+      this._stop();
+    } else if (changed) {
+      this._onChange(currVal);
+    }
+  }
+
+  set(value) {
+    _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => {
+      this._stop();
+
+      this._focus(value);
+
+      this._set(value);
+    });
+    return this;
+  }
+
+  pause() {
+    this._update({
+      pause: true
+    });
+  }
+
+  resume() {
+    this._update({
+      pause: false
+    });
+  }
+
+  finish() {
+    if (isAnimating(this)) {
+      const {
+        to,
+        config
+      } = this.animation;
+      _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => {
+        this._onStart();
+
+        if (!config.decay) {
+          this._set(to, false);
+        }
+
+        this._stop();
+      });
+    }
+
+    return this;
+  }
+
+  update(props) {
+    const queue = this.queue || (this.queue = []);
+    queue.push(props);
+    return this;
+  }
+
+  start(to, arg2) {
+    let queue;
+
+    if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(to)) {
+      queue = [_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(to) ? to : _extends({}, arg2, {
+        to
+      })];
+    } else {
+      queue = this.queue || [];
+      this.queue = [];
+    }
+
+    return Promise.all(queue.map(props => {
+      const up = this._update(props);
+
+      return up;
+    })).then(results => getCombinedResult(this, results));
+  }
+
+  stop(cancel) {
+    const {
+      to
+    } = this.animation;
+
+    this._focus(this.get());
+
+    stopAsync(this._state, cancel && this._lastCallId);
+    _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => this._stop(to, cancel));
+    return this;
+  }
+
+  reset() {
+    this._update({
+      reset: true
+    });
+  }
+
+  eventObserved(event) {
+    if (event.type == 'change') {
+      this._start();
+    } else if (event.type == 'priority') {
+      this.priority = event.priority + 1;
+    }
+  }
+
+  _prepareNode(props) {
+    const key = this.key || '';
+    let {
+      to,
+      from
+    } = props;
+    to = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(to) ? to[key] : to;
+
+    if (to == null || isAsyncTo(to)) {
+      to = undefined;
+    }
+
+    from = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(from) ? from[key] : from;
+
+    if (from == null) {
+      from = undefined;
+    }
+
+    const range = {
+      to,
+      from
+    };
+
+    if (!hasAnimated(this)) {
+      if (props.reverse) [to, from] = [from, to];
+      from = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(from);
+
+      if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(from)) {
+        this._set(from);
+      } else if (!Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this)) {
+          this._set(to);
+        }
+    }
+
+    return range;
+  }
+
+  _update(_ref, isLoop) {
+    let props = _extends({}, _ref);
+
+    const {
+      key,
+      defaultProps
+    } = this;
+    if (props.default) Object.assign(defaultProps, getDefaultProps(props, (value, prop) => /^on/.test(prop) ? resolveProp(value, key) : value));
+    mergeActiveFn(this, props, 'onProps');
+    sendEvent(this, 'onProps', props, this);
+
+    const range = this._prepareNode(props);
+
+    if (Object.isFrozen(this)) {
+      throw Error('Cannot animate a `SpringValue` object that is frozen. ' + 'Did you forget to pass your component to `animated(...)` before animating its props?');
+    }
+
+    const state = this._state;
+    return scheduleProps(++this._lastCallId, {
+      key,
+      props,
+      defaultProps,
+      state,
+      actions: {
+        pause: () => {
+          if (!isPaused(this)) {
+            setPausedBit(this, true);
+            Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flushCalls */ "n"])(state.pauseQueue);
+            sendEvent(this, 'onPause', getFinishedResult(this, checkFinished(this, this.animation.to)), this);
+          }
+        },
+        resume: () => {
+          if (isPaused(this)) {
+            setPausedBit(this, false);
+
+            if (isAnimating(this)) {
+              this._resume();
+            }
+
+            Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flushCalls */ "n"])(state.resumeQueue);
+            sendEvent(this, 'onResume', getFinishedResult(this, checkFinished(this, this.animation.to)), this);
+          }
+        },
+        start: this._merge.bind(this, range)
+      }
+    }).then(result => {
+      if (props.loop && result.finished && !(isLoop && result.noop)) {
+        const nextProps = createLoopUpdate(props);
+
+        if (nextProps) {
+          return this._update(nextProps, true);
+        }
+      }
+
+      return result;
+    });
+  }
+
+  _merge(range, props, resolve) {
+    if (props.cancel) {
+      this.stop(true);
+      return resolve(getCancelledResult(this));
+    }
+
+    const hasToProp = !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(range.to);
+    const hasFromProp = !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(range.from);
+
+    if (hasToProp || hasFromProp) {
+      if (props.callId > this._lastToId) {
+        this._lastToId = props.callId;
+      } else {
+        return resolve(getCancelledResult(this));
+      }
+    }
+
+    const {
+      key,
+      defaultProps,
+      animation: anim
+    } = this;
+    const {
+      to: prevTo,
+      from: prevFrom
+    } = anim;
+    let {
+      to = prevTo,
+      from = prevFrom
+    } = range;
+
+    if (hasFromProp && !hasToProp && (!props.default || _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(to))) {
+      to = from;
+    }
+
+    if (props.reverse) [to, from] = [from, to];
+    const hasFromChanged = !Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(from, prevFrom);
+
+    if (hasFromChanged) {
+      anim.from = from;
+    }
+
+    from = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(from);
+    const hasToChanged = !Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(to, prevTo);
+
+    if (hasToChanged) {
+      this._focus(to);
+    }
+
+    const hasAsyncTo = isAsyncTo(props.to);
+    const {
+      config
+    } = anim;
+    const {
+      decay,
+      velocity
+    } = config;
+
+    if (hasToProp || hasFromProp) {
+      config.velocity = 0;
+    }
+
+    if (props.config && !hasAsyncTo) {
+      mergeConfig(config, callProp(props.config, key), props.config !== defaultProps.config ? callProp(defaultProps.config, key) : void 0);
+    }
+
+    let node = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this);
+
+    if (!node || _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(to)) {
+      return resolve(getFinishedResult(this, true));
+    }
+
+    const reset = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.reset) ? hasFromProp && !props.default : !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(from) && matchProp(props.reset, key);
+    const value = reset ? from : this.get();
+    const goal = computeGoal(to);
+    const isAnimatable = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].num(goal) || _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(goal) || Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isAnimatedString */ "t"])(goal);
+    const immediate = !hasAsyncTo && (!isAnimatable || matchProp(defaultProps.immediate || props.immediate, key));
+
+    if (hasToChanged) {
+      const nodeType = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimatedType */ "f"])(to);
+
+      if (nodeType !== node.constructor) {
+        if (immediate) {
+          node = this._set(goal);
+        } else throw Error(`Cannot animate between ${node.constructor.name} and ${nodeType.name}, as the "to" prop suggests`);
+      }
+    }
+
+    const goalType = node.constructor;
+    let started = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(to);
+    let finished = false;
+
+    if (!started) {
+      const hasValueChanged = reset || !hasAnimated(this) && hasFromChanged;
+
+      if (hasToChanged || hasValueChanged) {
+        finished = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(computeGoal(value), goal);
+        started = !finished;
+      }
+
+      if (!Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(anim.immediate, immediate) && !immediate || !Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(config.decay, decay) || !Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(config.velocity, velocity)) {
+        started = true;
+      }
+    }
+
+    if (finished && isAnimating(this)) {
+      if (anim.changed && !reset) {
+        started = true;
+      } else if (!started) {
+          this._stop(prevTo);
+        }
+    }
+
+    if (!hasAsyncTo) {
+      if (started || Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(prevTo)) {
+        anim.values = node.getPayload();
+        anim.toValues = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(to) ? null : goalType == _react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* AnimatedString */ "b"] ? [1] : Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(goal);
+      }
+
+      if (anim.immediate != immediate) {
+        anim.immediate = immediate;
+
+        if (!immediate && !reset) {
+          this._set(prevTo);
+        }
+      }
+
+      if (started) {
+        const {
+          onRest
+        } = anim;
+        Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(ACTIVE_EVENTS, type => mergeActiveFn(this, props, type));
+        const result = getFinishedResult(this, checkFinished(this, prevTo));
+        Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flushCalls */ "n"])(this._pendingCalls, result);
+
+        this._pendingCalls.add(resolve);
+
+        if (anim.changed) _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => {
+          anim.changed = !reset;
+          onRest == null ? void 0 : onRest(result, this);
+
+          if (reset) {
+            callProp(defaultProps.onRest, result);
+          } else {
+              anim.onStart == null ? void 0 : anim.onStart(result, this);
+            }
+        });
+      }
+    }
+
+    if (reset) {
+      this._set(value);
+    }
+
+    if (hasAsyncTo) {
+      resolve(runAsync(props.to, props, this._state, this));
+    } else if (started) {
+        this._start();
+      } else if (isAnimating(this) && !hasToChanged) {
+          this._pendingCalls.add(resolve);
+        } else {
+            resolve(getNoopResult(value));
+          }
+  }
+
+  _focus(value) {
+    const anim = this.animation;
+
+    if (value !== anim.to) {
+      if (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidObservers */ "p"])(this)) {
+        this._detach();
+      }
+
+      anim.to = value;
+
+      if (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidObservers */ "p"])(this)) {
+        this._attach();
+      }
+    }
+  }
+
+  _attach() {
+    let priority = 0;
+    const {
+      to
+    } = this.animation;
+
+    if (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(to)) {
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* addFluidObserver */ "c"])(to, this);
+
+      if (isFrameValue(to)) {
+        priority = to.priority + 1;
+      }
+    }
+
+    this.priority = priority;
+  }
+
+  _detach() {
+    const {
+      to
+    } = this.animation;
+
+    if (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(to)) {
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* removeFluidObserver */ "x"])(to, this);
+    }
+  }
+
+  _set(arg, idle = true) {
+    const value = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(arg);
+
+    if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(value)) {
+      const oldNode = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this);
+
+      if (!oldNode || !Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(value, oldNode.getValue())) {
+        const nodeType = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimatedType */ "f"])(value);
+
+        if (!oldNode || oldNode.constructor != nodeType) {
+          Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* setAnimated */ "h"])(this, nodeType.create(value));
+        } else {
+          oldNode.setValue(value);
+        }
+
+        if (oldNode) {
+          _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => {
+            this._onChange(value, idle);
+          });
+        }
+      }
+    }
+
+    return Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this);
+  }
+
+  _onStart() {
+    const anim = this.animation;
+
+    if (!anim.changed) {
+      anim.changed = true;
+      sendEvent(this, 'onStart', getFinishedResult(this, checkFinished(this, anim.to)), this);
+    }
+  }
+
+  _onChange(value, idle) {
+    if (!idle) {
+      this._onStart();
+
+      callProp(this.animation.onChange, value, this);
+    }
+
+    callProp(this.defaultProps.onChange, value, this);
+
+    super._onChange(value, idle);
+  }
+
+  _start() {
+    const anim = this.animation;
+    Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this).reset(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(anim.to));
+
+    if (!anim.immediate) {
+      anim.fromValues = anim.values.map(node => node.lastPosition);
+    }
+
+    if (!isAnimating(this)) {
+      setActiveBit(this, true);
+
+      if (!isPaused(this)) {
+        this._resume();
+      }
+    }
+  }
+
+  _resume() {
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].skipAnimation) {
+      this.finish();
+    } else {
+      _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* frameLoop */ "o"].start(this);
+    }
+  }
+
+  _stop(goal, cancel) {
+    if (isAnimating(this)) {
+      setActiveBit(this, false);
+      const anim = this.animation;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(anim.values, node => {
+        node.done = true;
+      });
+
+      if (anim.toValues) {
+        anim.onChange = anim.onPause = anim.onResume = undefined;
+      }
+
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* callFluidObservers */ "d"])(this, {
+        type: 'idle',
+        parent: this
+      });
+      const result = cancel ? getCancelledResult(this.get()) : getFinishedResult(this.get(), checkFinished(this, goal != null ? goal : anim.to));
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flushCalls */ "n"])(this._pendingCalls, result);
+
+      if (anim.changed) {
+        anim.changed = false;
+        sendEvent(this, 'onRest', result, this);
+      }
+    }
+  }
+
+}
+
+function checkFinished(target, to) {
+  const goal = computeGoal(to);
+  const value = computeGoal(target.get());
+  return Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(value, goal);
+}
+
+function createLoopUpdate(props, loop = props.loop, to = props.to) {
+  let loopRet = callProp(loop);
+
+  if (loopRet) {
+    const overrides = loopRet !== true && inferTo(loopRet);
+    const reverse = (overrides || props).reverse;
+    const reset = !overrides || overrides.reset;
+    return createUpdate(_extends({}, props, {
+      loop,
+      default: false,
+      pause: undefined,
+      to: !reverse || isAsyncTo(to) ? to : undefined,
+      from: reset ? props.from : undefined,
+      reset
+    }, overrides));
+  }
+}
+function createUpdate(props) {
+  const {
+    to,
+    from
+  } = props = inferTo(props);
+  const keys = new Set();
+  if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(to)) findDefined(to, keys);
+  if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(from)) findDefined(from, keys);
+  props.keys = keys.size ? Array.from(keys) : null;
+  return props;
+}
+function declareUpdate(props) {
+  const update = createUpdate(props);
+
+  if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(update.default)) {
+    update.default = getDefaultProps(update);
+  }
+
+  return update;
+}
+
+function findDefined(values, keys) {
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(values, (value, key) => value != null && keys.add(key));
+}
+
+const ACTIVE_EVENTS = ['onStart', 'onRest', 'onChange', 'onPause', 'onResume'];
+
+function mergeActiveFn(target, props, type) {
+  target.animation[type] = props[type] !== getDefaultProp(props, type) ? resolveProp(props[type], target.key) : undefined;
+}
+
+function sendEvent(target, type, ...args) {
+  var _target$animation$typ, _target$animation, _target$defaultProps$, _target$defaultProps;
+
+  (_target$animation$typ = (_target$animation = target.animation)[type]) == null ? void 0 : _target$animation$typ.call(_target$animation, ...args);
+  (_target$defaultProps$ = (_target$defaultProps = target.defaultProps)[type]) == null ? void 0 : _target$defaultProps$.call(_target$defaultProps, ...args);
+}
+
+const BATCHED_EVENTS = ['onStart', 'onChange', 'onRest'];
+let nextId = 1;
+class Controller {
+  constructor(props, flush) {
+    this.id = nextId++;
+    this.springs = {};
+    this.queue = [];
+    this.ref = void 0;
+    this._flush = void 0;
+    this._initialProps = void 0;
+    this._lastAsyncId = 0;
+    this._active = new Set();
+    this._changed = new Set();
+    this._started = false;
+    this._item = void 0;
+    this._state = {
+      paused: false,
+      pauseQueue: new Set(),
+      resumeQueue: new Set(),
+      timeouts: new Set()
+    };
+    this._events = {
+      onStart: new Map(),
+      onChange: new Map(),
+      onRest: new Map()
+    };
+    this._onFrame = this._onFrame.bind(this);
+
+    if (flush) {
+      this._flush = flush;
+    }
+
+    if (props) {
+      this.start(_extends({
+        default: true
+      }, props));
+    }
+  }
+
+  get idle() {
+    return !this._state.asyncTo && Object.values(this.springs).every(spring => {
+      return spring.idle && !spring.isDelayed && !spring.isPaused;
+    });
+  }
+
+  get item() {
+    return this._item;
+  }
+
+  set item(item) {
+    this._item = item;
+  }
+
+  get() {
+    const values = {};
+    this.each((spring, key) => values[key] = spring.get());
+    return values;
+  }
+
+  set(values) {
+    for (const key in values) {
+      const value = values[key];
+
+      if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(value)) {
+        this.springs[key].set(value);
+      }
+    }
+  }
+
+  update(props) {
+    if (props) {
+      this.queue.push(createUpdate(props));
+    }
+
+    return this;
+  }
+
+  start(props) {
+    let {
+      queue
+    } = this;
+
+    if (props) {
+      queue = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(props).map(createUpdate);
+    } else {
+      this.queue = [];
+    }
+
+    if (this._flush) {
+      return this._flush(this, queue);
+    }
+
+    prepareKeys(this, queue);
+    return flushUpdateQueue(this, queue);
+  }
+
+  stop(arg, keys) {
+    if (arg !== !!arg) {
+      keys = arg;
+    }
+
+    if (keys) {
+      const springs = this.springs;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(keys), key => springs[key].stop(!!arg));
+    } else {
+      stopAsync(this._state, this._lastAsyncId);
+      this.each(spring => spring.stop(!!arg));
+    }
+
+    return this;
+  }
+
+  pause(keys) {
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(keys)) {
+      this.start({
+        pause: true
+      });
+    } else {
+      const springs = this.springs;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(keys), key => springs[key].pause());
+    }
+
+    return this;
+  }
+
+  resume(keys) {
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(keys)) {
+      this.start({
+        pause: false
+      });
+    } else {
+      const springs = this.springs;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(keys), key => springs[key].resume());
+    }
+
+    return this;
+  }
+
+  each(iterator) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(this.springs, iterator);
+  }
+
+  _onFrame() {
+    const {
+      onStart,
+      onChange,
+      onRest
+    } = this._events;
+    const active = this._active.size > 0;
+    const changed = this._changed.size > 0;
+
+    if (active && !this._started || changed && !this._started) {
+      this._started = true;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flush */ "m"])(onStart, ([onStart, result]) => {
+        result.value = this.get();
+        onStart(result, this, this._item);
+      });
+    }
+
+    const idle = !active && this._started;
+    const values = changed || idle && onRest.size ? this.get() : null;
+
+    if (changed && onChange.size) {
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flush */ "m"])(onChange, ([onChange, result]) => {
+        result.value = values;
+        onChange(result, this, this._item);
+      });
+    }
+
+    if (idle) {
+      this._started = false;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flush */ "m"])(onRest, ([onRest, result]) => {
+        result.value = values;
+        onRest(result, this, this._item);
+      });
+    }
+  }
+
+  eventObserved(event) {
+    if (event.type == 'change') {
+      this._changed.add(event.parent);
+
+      if (!event.idle) {
+        this._active.add(event.parent);
+      }
+    } else if (event.type == 'idle') {
+      this._active.delete(event.parent);
+    } else return;
+
+    _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].onFrame(this._onFrame);
+  }
+
+}
+function flushUpdateQueue(ctrl, queue) {
+  return Promise.all(queue.map(props => flushUpdate(ctrl, props))).then(results => getCombinedResult(ctrl, results));
+}
+async function flushUpdate(ctrl, props, isLoop) {
+  const {
+    keys,
+    to,
+    from,
+    loop,
+    onRest,
+    onResolve
+  } = props;
+  const defaults = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(props.default) && props.default;
+
+  if (loop) {
+    props.loop = false;
+  }
+
+  if (to === false) props.to = null;
+  if (from === false) props.from = null;
+  const asyncTo = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(to) || _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(to) ? to : undefined;
+
+  if (asyncTo) {
+    props.to = undefined;
+    props.onRest = undefined;
+
+    if (defaults) {
+      defaults.onRest = undefined;
+    }
+  } else {
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(BATCHED_EVENTS, key => {
+        const handler = props[key];
+
+        if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(handler)) {
+          const queue = ctrl['_events'][key];
+
+          props[key] = ({
+            finished,
+            cancelled
+          }) => {
+            const result = queue.get(handler);
+
+            if (result) {
+              if (!finished) result.finished = false;
+              if (cancelled) result.cancelled = true;
+            } else {
+              queue.set(handler, {
+                value: null,
+                finished: finished || false,
+                cancelled: cancelled || false
+              });
+            }
+          };
+
+          if (defaults) {
+            defaults[key] = props[key];
+          }
+        }
+      });
+    }
+
+  const state = ctrl['_state'];
+
+  if (props.pause === !state.paused) {
+    state.paused = props.pause;
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* flushCalls */ "n"])(props.pause ? state.pauseQueue : state.resumeQueue);
+  } else if (state.paused) {
+      props.pause = true;
+    }
+
+  const promises = (keys || Object.keys(ctrl.springs)).map(key => ctrl.springs[key].start(props));
+  const cancel = props.cancel === true || getDefaultProp(props, 'cancel') === true;
+
+  if (asyncTo || cancel && state.asyncId) {
+    promises.push(scheduleProps(++ctrl['_lastAsyncId'], {
+      props,
+      state,
+      actions: {
+        pause: _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "v"],
+        resume: _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "v"],
+
+        start(props, resolve) {
+          if (cancel) {
+            stopAsync(state, ctrl['_lastAsyncId']);
+            resolve(getCancelledResult(ctrl));
+          } else {
+            props.onRest = onRest;
+            resolve(runAsync(asyncTo, props, state, ctrl));
+          }
+        }
+
+      }
+    }));
+  }
+
+  if (state.paused) {
+    await new Promise(resume => {
+      state.resumeQueue.add(resume);
+    });
+  }
+
+  const result = getCombinedResult(ctrl, await Promise.all(promises));
+
+  if (loop && result.finished && !(isLoop && result.noop)) {
+    const nextProps = createLoopUpdate(props, loop, to);
+
+    if (nextProps) {
+      prepareKeys(ctrl, [nextProps]);
+      return flushUpdate(ctrl, nextProps, true);
+    }
+  }
+
+  if (onResolve) {
+    _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => onResolve(result, ctrl, ctrl.item));
+  }
+
+  return result;
+}
+function getSprings(ctrl, props) {
+  const springs = _extends({}, ctrl.springs);
+
+  if (props) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(props), props => {
+      if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props.keys)) {
+        props = createUpdate(props);
+      }
+
+      if (!_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(props.to)) {
+        props = _extends({}, props, {
+          to: undefined
+        });
+      }
+
+      prepareSprings(springs, props, key => {
+        return createSpring(key);
+      });
+    });
+  }
+
+  setSprings(ctrl, springs);
+  return springs;
+}
+function setSprings(ctrl, springs) {
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(springs, (spring, key) => {
+    if (!ctrl.springs[key]) {
+      ctrl.springs[key] = spring;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* addFluidObserver */ "c"])(spring, ctrl);
+    }
+  });
+}
+
+function createSpring(key, observer) {
+  const spring = new SpringValue();
+  spring.key = key;
+
+  if (observer) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* addFluidObserver */ "c"])(spring, observer);
+  }
+
+  return spring;
+}
+
+function prepareSprings(springs, props, create) {
+  if (props.keys) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(props.keys, key => {
+      const spring = springs[key] || (springs[key] = create(key));
+      spring['_prepareNode'](props);
+    });
+  }
+}
+
+function prepareKeys(ctrl, queue) {
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(queue, props => {
+    prepareSprings(ctrl.springs, props, key => {
+      return createSpring(key, ctrl);
+    });
+  });
+}
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+const _excluded$3 = ["children"];
+const SpringContext = _ref => {
+  let {
+    children
+  } = _ref,
+      props = _objectWithoutPropertiesLoose(_ref, _excluded$3);
+
+  const inherited = Object(react__WEBPACK_IMPORTED_MODULE_1__["useContext"])(ctx);
+  const pause = props.pause || !!inherited.pause,
+        immediate = props.immediate || !!inherited.immediate;
+  props = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useMemoOne */ "B"])(() => ({
+    pause,
+    immediate
+  }), [pause, immediate]);
+  const {
+    Provider
+  } = ctx;
+  return react__WEBPACK_IMPORTED_MODULE_1__["createElement"](Provider, {
+    value: props
+  }, children);
+};
+const ctx = makeContext(SpringContext, {});
+SpringContext.Provider = ctx.Provider;
+SpringContext.Consumer = ctx.Consumer;
+
+function makeContext(target, init) {
+  Object.assign(target, react__WEBPACK_IMPORTED_MODULE_1__["createContext"](init));
+  target.Provider._context = target;
+  target.Consumer._context = target;
+  return target;
+}
+
+const SpringRef = () => {
+  const current = [];
+
+  const SpringRef = function SpringRef(props) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* deprecateDirectCall */ "i"])();
+    const results = [];
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(current, (ctrl, i) => {
+      if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props)) {
+        results.push(ctrl.start());
+      } else {
+        const update = _getProps(props, ctrl, i);
+
+        if (update) {
+          results.push(ctrl.start(update));
+        }
+      }
+    });
+    return results;
+  };
+
+  SpringRef.current = current;
+
+  SpringRef.add = function (ctrl) {
+    if (!current.includes(ctrl)) {
+      current.push(ctrl);
+    }
+  };
+
+  SpringRef.delete = function (ctrl) {
+    const i = current.indexOf(ctrl);
+    if (~i) current.splice(i, 1);
+  };
+
+  SpringRef.pause = function () {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(current, ctrl => ctrl.pause(...arguments));
+    return this;
+  };
+
+  SpringRef.resume = function () {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(current, ctrl => ctrl.resume(...arguments));
+    return this;
+  };
+
+  SpringRef.set = function (values) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(current, ctrl => ctrl.set(values));
+  };
+
+  SpringRef.start = function (props) {
+    const results = [];
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(current, (ctrl, i) => {
+      if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(props)) {
+        results.push(ctrl.start());
+      } else {
+        const update = this._getProps(props, ctrl, i);
+
+        if (update) {
+          results.push(ctrl.start(update));
+        }
+      }
+    });
+    return results;
+  };
+
+  SpringRef.stop = function () {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(current, ctrl => ctrl.stop(...arguments));
+    return this;
+  };
+
+  SpringRef.update = function (props) {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(current, (ctrl, i) => ctrl.update(this._getProps(props, ctrl, i)));
+    return this;
+  };
+
+  const _getProps = function _getProps(arg, ctrl, index) {
+    return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(arg) ? arg(index, ctrl) : arg;
+  };
+
+  SpringRef._getProps = _getProps;
+  return SpringRef;
+};
+
+function useSprings(length, props, deps) {
+  const propsFn = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(props) && props;
+  if (propsFn && !deps) deps = [];
+  const ref = Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(() => propsFn || arguments.length == 3 ? SpringRef() : void 0, []);
+  const layoutId = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(0);
+  const forceUpdate = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useForceUpdate */ "z"])();
+  const state = Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(() => ({
+    ctrls: [],
+    queue: [],
+
+    flush(ctrl, updates) {
+      const springs = getSprings(ctrl, updates);
+      const canFlushSync = layoutId.current > 0 && !state.queue.length && !Object.keys(springs).some(key => !ctrl.springs[key]);
+      return canFlushSync ? flushUpdateQueue(ctrl, updates) : new Promise(resolve => {
+        setSprings(ctrl, springs);
+        state.queue.push(() => {
+          resolve(flushUpdateQueue(ctrl, updates));
+        });
+        forceUpdate();
+      });
+    }
+
+  }), []);
+  const ctrls = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])([...state.ctrls]);
+  const updates = [];
+  const prevLength = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* usePrev */ "D"])(length) || 0;
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(() => {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(ctrls.current.slice(length, prevLength), ctrl => {
+      detachRefs(ctrl, ref);
+      ctrl.stop(true);
+    });
+    ctrls.current.length = length;
+    declareUpdates(prevLength, length);
+  }, [length]);
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(() => {
+    declareUpdates(0, Math.min(prevLength, length));
+  }, deps);
+
+  function declareUpdates(startIndex, endIndex) {
+    for (let i = startIndex; i < endIndex; i++) {
+      const ctrl = ctrls.current[i] || (ctrls.current[i] = new Controller(null, state.flush));
+      const update = propsFn ? propsFn(i, ctrl) : props[i];
+
+      if (update) {
+        updates[i] = declareUpdate(update);
+      }
+    }
+  }
+
+  const springs = ctrls.current.map((ctrl, i) => getSprings(ctrl, updates[i]));
+  const context = Object(react__WEBPACK_IMPORTED_MODULE_1__["useContext"])(SpringContext);
+  const prevContext = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* usePrev */ "D"])(context);
+  const hasContext = context !== prevContext && hasProps(context);
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => {
+    layoutId.current++;
+    state.ctrls = ctrls.current;
+    const {
+      queue
+    } = state;
+
+    if (queue.length) {
+      state.queue = [];
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(queue, cb => cb());
+    }
+
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(ctrls.current, (ctrl, i) => {
+      ref == null ? void 0 : ref.add(ctrl);
+
+      if (hasContext) {
+        ctrl.start({
+          default: context
+        });
+      }
+
+      const update = updates[i];
+
+      if (update) {
+        replaceRef(ctrl, update.ref);
+
+        if (ctrl.ref) {
+          ctrl.queue.push(update);
+        } else {
+          ctrl.start(update);
+        }
+      }
+    });
+  });
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useOnce */ "C"])(() => () => {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(state.ctrls, ctrl => ctrl.stop(true));
+  });
+  const values = springs.map(x => _extends({}, x));
+  return ref ? [values, ref] : values;
+}
+
+function useSpring(props, deps) {
+  const isFn = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(props);
+  const [[values], ref] = useSprings(1, isFn ? props : [props], isFn ? deps || [] : deps);
+  return isFn || arguments.length == 2 ? [values, ref] : values;
+}
+
+const initSpringRef = () => SpringRef();
+
+const useSpringRef = () => Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(initSpringRef)[0];
+
+function useTrail(length, propsArg, deps) {
+  var _passedRef;
+
+  const propsFn = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(propsArg) && propsArg;
+  if (propsFn && !deps) deps = [];
+  let reverse = true;
+  let passedRef = undefined;
+  const result = useSprings(length, (i, ctrl) => {
+    const props = propsFn ? propsFn(i, ctrl) : propsArg;
+    passedRef = props.ref;
+    reverse = reverse && props.reverse;
+    return props;
+  }, deps || [{}]);
+  const ref = (_passedRef = passedRef) != null ? _passedRef : result[1];
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(ref.current, (ctrl, i) => {
+      const parent = ref.current[i + (reverse ? 1 : -1)];
+
+      if (parent) {
+        ctrl.start({
+          to: parent.springs
+        });
+      } else {
+        ctrl.start();
+      }
+    });
+  }, deps);
+
+  if (propsFn || arguments.length == 3) {
+    ref['_getProps'] = (propsArg, ctrl, i) => {
+      const props = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(propsArg) ? propsArg(i, ctrl) : propsArg;
+
+      if (props) {
+        const parent = ref.current[i + (props.reverse ? 1 : -1)];
+        if (parent) props.to = parent.springs;
+        return props;
+      }
+    };
+
+    return result;
+  }
+
+  ref['start'] = propsArg => {
+    const results = [];
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(ref.current, (ctrl, i) => {
+      const props = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(propsArg) ? propsArg(i, ctrl) : propsArg;
+      const parent = ref.current[i + (reverse ? 1 : -1)];
+
+      if (parent) {
+        results.push(ctrl.start(_extends({}, props, {
+          to: parent.springs
+        })));
+      } else {
+        results.push(ctrl.start(_extends({}, props)));
+      }
+    });
+    return results;
+  };
+
+  return result[0];
+}
+
+let TransitionPhase;
+
+(function (TransitionPhase) {
+  TransitionPhase["MOUNT"] = "mount";
+  TransitionPhase["ENTER"] = "enter";
+  TransitionPhase["UPDATE"] = "update";
+  TransitionPhase["LEAVE"] = "leave";
+})(TransitionPhase || (TransitionPhase = {}));
+
+function useTransition(data, props, deps) {
+  const propsFn = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(props) && props;
+  const {
+    reset,
+    sort,
+    trail = 0,
+    expires = true,
+    exitBeforeEnter = false,
+    onDestroyed,
+    ref: propsRef,
+    config: propsConfig
+  } = propsFn ? propsFn() : props;
+  const ref = Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(() => propsFn || arguments.length == 3 ? SpringRef() : void 0, []);
+  const items = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(data);
+  const transitions = [];
+  const usedTransitions = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(null);
+  const prevTransitions = reset ? null : usedTransitions.current;
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => {
+    usedTransitions.current = transitions;
+  });
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useOnce */ "C"])(() => () => {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(usedTransitions.current, t => {
+      if (t.expired) {
+        clearTimeout(t.expirationId);
+      }
+
+      detachRefs(t.ctrl, ref);
+      t.ctrl.stop(true);
+    });
+  });
+  const keys = getKeys(items, propsFn ? propsFn() : props, prevTransitions);
+  const expired = reset && usedTransitions.current || [];
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(expired, ({
+    ctrl,
+    item,
+    key
+  }) => {
+    detachRefs(ctrl, ref);
+    callProp(onDestroyed, item, key);
+  }));
+  const reused = [];
+  if (prevTransitions) Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(prevTransitions, (t, i) => {
+    if (t.expired) {
+      clearTimeout(t.expirationId);
+      expired.push(t);
+    } else {
+      i = reused[i] = keys.indexOf(t.key);
+      if (~i) transitions[i] = t;
+    }
+  });
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(items, (item, i) => {
+    if (!transitions[i]) {
+      transitions[i] = {
+        key: keys[i],
+        item,
+        phase: TransitionPhase.MOUNT,
+        ctrl: new Controller()
+      };
+      transitions[i].ctrl.item = item;
+    }
+  });
+
+  if (reused.length) {
+    let i = -1;
+    const {
+      leave
+    } = propsFn ? propsFn() : props;
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(reused, (keyIndex, prevIndex) => {
+      const t = prevTransitions[prevIndex];
+
+      if (~keyIndex) {
+        i = transitions.indexOf(t);
+        transitions[i] = _extends({}, t, {
+          item: items[keyIndex]
+        });
+      } else if (leave) {
+        transitions.splice(++i, 0, t);
+      }
+    });
+  }
+
+  if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(sort)) {
+    transitions.sort((a, b) => sort(a.item, b.item));
+  }
+
+  let delay = -trail;
+  const forceUpdate = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useForceUpdate */ "z"])();
+  const defaultProps = getDefaultProps(props);
+  const changes = new Map();
+  const exitingTransitions = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(new Map());
+  const forceChange = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(false);
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(transitions, (t, i) => {
+    const key = t.key;
+    const prevPhase = t.phase;
+    const p = propsFn ? propsFn() : props;
+    let to;
+    let phase;
+    let propsDelay = callProp(p.delay || 0, key);
+
+    if (prevPhase == TransitionPhase.MOUNT) {
+      to = p.enter;
+      phase = TransitionPhase.ENTER;
+    } else {
+      const isLeave = keys.indexOf(key) < 0;
+
+      if (prevPhase != TransitionPhase.LEAVE) {
+        if (isLeave) {
+          to = p.leave;
+          phase = TransitionPhase.LEAVE;
+        } else if (to = p.update) {
+          phase = TransitionPhase.UPDATE;
+        } else return;
+      } else if (!isLeave) {
+        to = p.enter;
+        phase = TransitionPhase.ENTER;
+      } else return;
+    }
+
+    to = callProp(to, t.item, i);
+    to = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].obj(to) ? inferTo(to) : {
+      to
+    };
+
+    if (!to.config) {
+      const config = propsConfig || defaultProps.config;
+      to.config = callProp(config, t.item, i, phase);
+    }
+
+    delay += trail;
+
+    const payload = _extends({}, defaultProps, {
+      delay: propsDelay + delay,
+      ref: propsRef,
+      immediate: p.immediate,
+      reset: false
+    }, to);
+
+    if (phase == TransitionPhase.ENTER && _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(payload.from)) {
+      const _p = propsFn ? propsFn() : props;
+
+      const from = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(_p.initial) || prevTransitions ? _p.from : _p.initial;
+      payload.from = callProp(from, t.item, i);
+    }
+
+    const {
+      onResolve
+    } = payload;
+
+    payload.onResolve = result => {
+      callProp(onResolve, result);
+      const transitions = usedTransitions.current;
+      const t = transitions.find(t => t.key === key);
+      if (!t) return;
+
+      if (result.cancelled && t.phase != TransitionPhase.UPDATE) {
+        return;
+      }
+
+      if (t.ctrl.idle) {
+        const idle = transitions.every(t => t.ctrl.idle);
+
+        if (t.phase == TransitionPhase.LEAVE) {
+          const expiry = callProp(expires, t.item);
+
+          if (expiry !== false) {
+            const expiryMs = expiry === true ? 0 : expiry;
+            t.expired = true;
+
+            if (!idle && expiryMs > 0) {
+              if (expiryMs <= 0x7fffffff) t.expirationId = setTimeout(forceUpdate, expiryMs);
+              return;
+            }
+          }
+        }
+
+        if (idle && transitions.some(t => t.expired)) {
+          exitingTransitions.current.delete(t);
+
+          if (exitBeforeEnter) {
+            forceChange.current = true;
+          }
+
+          forceUpdate();
+        }
+      }
+    };
+
+    const springs = getSprings(t.ctrl, payload);
+
+    if (phase === TransitionPhase.LEAVE && exitBeforeEnter) {
+      exitingTransitions.current.set(t, {
+        phase,
+        springs,
+        payload
+      });
+    } else {
+      changes.set(t, {
+        phase,
+        springs,
+        payload
+      });
+    }
+  });
+  const context = Object(react__WEBPACK_IMPORTED_MODULE_1__["useContext"])(SpringContext);
+  const prevContext = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* usePrev */ "D"])(context);
+  const hasContext = context !== prevContext && hasProps(context);
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => {
+    if (hasContext) {
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(transitions, t => {
+        t.ctrl.start({
+          default: context
+        });
+      });
+    }
+  }, [context]);
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(changes, (_, t) => {
+    if (exitingTransitions.current.size) {
+      const ind = transitions.findIndex(state => state.key === t.key);
+      transitions.splice(ind, 1);
+    }
+  });
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(exitingTransitions.current.size ? exitingTransitions.current : changes, ({
+      phase,
+      payload
+    }, t) => {
+      const {
+        ctrl
+      } = t;
+      t.phase = phase;
+      ref == null ? void 0 : ref.add(ctrl);
+
+      if (hasContext && phase == TransitionPhase.ENTER) {
+        ctrl.start({
+          default: context
+        });
+      }
+
+      if (payload) {
+        replaceRef(ctrl, payload.ref);
+
+        if (ctrl.ref && !forceChange.current) {
+          ctrl.update(payload);
+        } else {
+          ctrl.start(payload);
+
+          if (forceChange.current) {
+            forceChange.current = false;
+          }
+        }
+      }
+    });
+  }, reset ? void 0 : deps);
+
+  const renderTransitions = render => react__WEBPACK_IMPORTED_MODULE_1__["createElement"](react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, transitions.map((t, i) => {
+    const {
+      springs
+    } = changes.get(t) || t.ctrl;
+    const elem = render(_extends({}, springs), t.item, t, i);
+    return elem && elem.type ? react__WEBPACK_IMPORTED_MODULE_1__["createElement"](elem.type, _extends({}, elem.props, {
+      key: _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].str(t.key) || _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].num(t.key) ? t.key : t.ctrl.id,
+      ref: elem.ref
+    })) : elem;
+  }));
+
+  return ref ? [renderTransitions, ref] : renderTransitions;
+}
+let nextKey = 1;
+
+function getKeys(items, {
+  key,
+  keys = key
+}, prevTransitions) {
+  if (keys === null) {
+    const reused = new Set();
+    return items.map(item => {
+      const t = prevTransitions && prevTransitions.find(t => t.item === item && t.phase !== TransitionPhase.LEAVE && !reused.has(t));
+
+      if (t) {
+        reused.add(t);
+        return t.key;
+      }
+
+      return nextKey++;
+    });
+  }
+
+  return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].und(keys) ? items : _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(keys) ? items.map(keys) : Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(keys);
+}
+
+const _excluded$2 = ["children"];
+function Spring(_ref) {
+  let {
+    children
+  } = _ref,
+      props = _objectWithoutPropertiesLoose(_ref, _excluded$2);
+
+  return children(useSpring(props));
+}
+
+const _excluded$1 = ["items", "children"];
+function Trail(_ref) {
+  let {
+    items,
+    children
+  } = _ref,
+      props = _objectWithoutPropertiesLoose(_ref, _excluded$1);
+
+  const trails = useTrail(items.length, props);
+  return items.map((item, index) => {
+    const result = children(item, index);
+    return _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(result) ? result(trails[index]) : result;
+  });
+}
+
+const _excluded = ["items", "children"];
+function Transition(_ref) {
+  let {
+    items,
+    children
+  } = _ref,
+      props = _objectWithoutPropertiesLoose(_ref, _excluded);
+
+  return useTransition(items, props)(children);
+}
+
+class Interpolation extends FrameValue {
+  constructor(source, args) {
+    super();
+    this.key = void 0;
+    this.idle = true;
+    this.calc = void 0;
+    this._active = new Set();
+    this.source = source;
+    this.calc = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* createInterpolator */ "f"])(...args);
+
+    const value = this._get();
+
+    const nodeType = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimatedType */ "f"])(value);
+    Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* setAnimated */ "h"])(this, nodeType.create(value));
+  }
+
+  advance(_dt) {
+    const value = this._get();
+
+    const oldValue = this.get();
+
+    if (!Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isEqual */ "u"])(value, oldValue)) {
+      Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getAnimated */ "e"])(this).setValue(value);
+
+      this._onChange(value, this.idle);
+    }
+
+    if (!this.idle && checkIdle(this._active)) {
+      becomeIdle(this);
+    }
+  }
+
+  _get() {
+    const inputs = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(this.source) ? this.source.map(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"]) : Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(this.source));
+    return this.calc(...inputs);
+  }
+
+  _start() {
+    if (this.idle && !checkIdle(this._active)) {
+      this.idle = false;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getPayload */ "g"])(this), node => {
+        node.done = false;
+      });
+
+      if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].skipAnimation) {
+        _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].batchedUpdates(() => this.advance());
+        becomeIdle(this);
+      } else {
+        _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* frameLoop */ "o"].start(this);
+      }
+    }
+  }
+
+  _attach() {
+    let priority = 1;
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(this.source), source => {
+      if (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(source)) {
+        Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* addFluidObserver */ "c"])(source, this);
+      }
+
+      if (isFrameValue(source)) {
+        if (!source.idle) {
+          this._active.add(source);
+        }
+
+        priority = Math.max(priority, source.priority + 1);
+      }
+    });
+    this.priority = priority;
+
+    this._start();
+  }
+
+  _detach() {
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(this.source), source => {
+      if (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(source)) {
+        Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* removeFluidObserver */ "x"])(source, this);
+      }
+    });
+
+    this._active.clear();
+
+    becomeIdle(this);
+  }
+
+  eventObserved(event) {
+    if (event.type == 'change') {
+      if (event.idle) {
+        this.advance();
+      } else {
+        this._active.add(event.parent);
+
+        this._start();
+      }
+    } else if (event.type == 'idle') {
+        this._active.delete(event.parent);
+      } else if (event.type == 'priority') {
+          this.priority = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* toArray */ "y"])(this.source).reduce((highest, parent) => Math.max(highest, (isFrameValue(parent) ? parent.priority : 0) + 1), 0);
+        }
+  }
+
+}
+
+function isIdle(source) {
+  return source.idle !== false;
+}
+
+function checkIdle(active) {
+  return !active.size || Array.from(active).every(isIdle);
+}
+
+function becomeIdle(self) {
+  if (!self.idle) {
+    self.idle = true;
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_2__[/* getPayload */ "g"])(self), node => {
+      node.done = true;
+    });
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* callFluidObservers */ "d"])(self, {
+      type: 'idle',
+      parent: self
+    });
+  }
+}
+
+const to = (source, ...args) => new Interpolation(source, args);
+const interpolate = (source, ...args) => (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* deprecateInterpolate */ "j"])(), new Interpolation(source, args));
+
+_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* Globals */ "b"].assign({
+  createStringInterpolator: _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* createStringInterpolator */ "g"],
+  to: (source, args) => new Interpolation(source, args)
+});
+const update = _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* frameLoop */ "o"].advance;
+
+
+
+
+/***/ }),
+
+/***/ 12:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wc"]["data"]; }());
+
+/***/ }),
+
+/***/ 120:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var reactIs = __webpack_require__(105);
+var reactIs = __webpack_require__(106);
 
 /**
  * Copyright 2015, Yahoo! Inc.
@@ -673,14 +3260,7 @@ module.exports = hoistNonReactStatics;
 
 /***/ }),
 
-/***/ 12:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wc"]["navigation"]; }());
-
-/***/ }),
-
-/***/ 120:
+/***/ 121:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -691,56 +3271,52 @@ __webpack_require__.d(__webpack_exports__, "b", function() { return /* binding *
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ EmbedLayout; });
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/extends.js
-var helpers_extends = __webpack_require__(36);
+var helpers_extends = __webpack_require__(40);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
 // EXTERNAL MODULE: external ["wp","element"]
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: external ["wp","compose"]
 var external_wp_compose_ = __webpack_require__(14);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js + 1 modules
-var inheritsLoose = __webpack_require__(25);
+var inheritsLoose = __webpack_require__(27);
 
 // EXTERNAL MODULE: external "React"
-var external_React_ = __webpack_require__(5);
+var external_React_ = __webpack_require__(6);
 var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
 
-// EXTERNAL MODULE: ./node_modules/prop-types/index.js
-var prop_types = __webpack_require__(1);
-var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
-
 // EXTERNAL MODULE: ./node_modules/history/esm/history.js + 2 modules
-var esm_history = __webpack_require__(53);
+var esm_history = __webpack_require__(55);
 
 // EXTERNAL MODULE: ./node_modules/mini-create-react-context/dist/esm/index.js
-var esm = __webpack_require__(161);
+var esm = __webpack_require__(162);
 
 // EXTERNAL MODULE: ./node_modules/tiny-invariant/dist/tiny-invariant.esm.js
-var tiny_invariant_esm = __webpack_require__(43);
+var tiny_invariant_esm = __webpack_require__(47);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(23);
+var esm_extends = __webpack_require__(24);
 
 // EXTERNAL MODULE: ./node_modules/path-to-regexp/index.js
-var path_to_regexp = __webpack_require__(162);
+var path_to_regexp = __webpack_require__(163);
 var path_to_regexp_default = /*#__PURE__*/__webpack_require__.n(path_to_regexp);
 
 // EXTERNAL MODULE: ./node_modules/react-is/index.js
-var react_is = __webpack_require__(105);
+var react_is = __webpack_require__(106);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-var objectWithoutPropertiesLoose = __webpack_require__(22);
+var objectWithoutPropertiesLoose = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js
-var hoist_non_react_statics_cjs = __webpack_require__(119);
+var hoist_non_react_statics_cjs = __webpack_require__(120);
 var hoist_non_react_statics_cjs_default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics_cjs);
 
 // CONCATENATED MODULE: ./node_modules/react-router/esm/react-router.js
@@ -1398,55 +3974,59 @@ function useRouteMatch(path) {
   return path ? matchPath(location.pathname, path) : match;
 }
 
-if (false) { var secondaryBuildName, initialBuildName, buildNames, react_router_key, global; }
+if (false) { var secondaryBuildName, initialBuildName, buildNames, key, global; }
 
 
 //# sourceMappingURL=react-router.js.map
 
+// EXTERNAL MODULE: ./node_modules/prop-types/index.js
+var prop_types = __webpack_require__(1);
+var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
+
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
+var external_lodash_ = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(27);
+var lib = __webpack_require__(32);
 
 // EXTERNAL MODULE: external ["wc","navigation"]
-var external_wc_navigation_ = __webpack_require__(12);
-
-// EXTERNAL MODULE: ./packages/wc-admin-settings/build-module/index.js
-var build_module = __webpack_require__(13);
+var external_wc_navigation_ = __webpack_require__(13);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: external ["wc","notices"]
-var external_wc_notices_ = __webpack_require__(285);
+var external_wc_notices_ = __webpack_require__(294);
 
 // EXTERNAL MODULE: external ["wp","plugins"]
-var external_wp_plugins_ = __webpack_require__(54);
+var external_wp_plugins_ = __webpack_require__(56);
 
 // EXTERNAL MODULE: ./client/layout/style.scss
-var layout_style = __webpack_require__(286);
+var layout_style = __webpack_require__(295);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(31);
+var external_wp_hooks_ = __webpack_require__(28);
 
 // EXTERNAL MODULE: external ["wp","i18n"]
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: ./client/analytics/report/get-reports.js
 var get_reports = __webpack_require__(118);
 
 // EXTERNAL MODULE: ./client/dashboard/utils.js
-var utils = __webpack_require__(64);
+var utils = __webpack_require__(69);
+
+// EXTERNAL MODULE: ./client/utils/admin-settings.js
+var admin_settings = __webpack_require__(23);
 
 // EXTERNAL MODULE: ./client/layout/NoMatch.tsx
-var NoMatch = __webpack_require__(175);
+var NoMatch = __webpack_require__(173);
 
 // CONCATENATED MODULE: ./client/layout/controller.js
 
@@ -1461,7 +4041,6 @@ var NoMatch = __webpack_require__(175);
 
 
 
-
 /**
  * Internal dependencies
  */
@@ -1469,18 +4048,19 @@ var NoMatch = __webpack_require__(175);
 
 
 
-const AnalyticsReport = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-report */ 6).then(__webpack_require__.bind(null, 622)));
-const AnalyticsSettings = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-settings */ 17).then(__webpack_require__.bind(null, 633)));
-const Dashboard = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | dashboard */ 25).then(__webpack_require__.bind(null, 623)));
-const Homescreen = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | homescreen */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(31)]).then(__webpack_require__.bind(null, 629)));
-const MarketingOverview = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | marketing-overview */[__webpack_require__.e(2), __webpack_require__.e(34)]).then(__webpack_require__.bind(null, 634)));
-const ProfileWizard = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, 630)));
-const SettingsGroup = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, 624)));
-const WCPaymentsWelcomePage = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | wcpay-payment-welcome-page */ 54).then(__webpack_require__.bind(null, 632)));
+
+const AnalyticsReport = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-report */ 6).then(__webpack_require__.bind(null, 643)));
+const AnalyticsSettings = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | analytics-settings */ 17).then(__webpack_require__.bind(null, 654)));
+const Dashboard = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | dashboard */ 25).then(__webpack_require__.bind(null, 644)));
+const Homescreen = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | homescreen */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(31)]).then(__webpack_require__.bind(null, 650)));
+const MarketingOverview = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | marketing-overview */[__webpack_require__.e(2), __webpack_require__.e(34)]).then(__webpack_require__.bind(null, 655)));
+const ProfileWizard = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, 651)));
+const SettingsGroup = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | profile-wizard */[__webpack_require__.e(1), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, 645)));
+const WCPaymentsWelcomePage = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | wcpay-payment-welcome-page */ 54).then(__webpack_require__.bind(null, 653)));
 const PAGES_FILTER = 'woocommerce_admin_pages_list';
 const getPages = () => {
   const pages = [];
-  const initialBreadcrumbs = [['', Object(build_module["f" /* getSetting */])('woocommerceTranslation')]];
+  const initialBreadcrumbs = [['', Object(admin_settings["d" /* getAdminSetting */])('woocommerceTranslation')]];
   pages.push({
     container: Homescreen,
     path: '/',
@@ -1526,9 +4106,10 @@ const getPages = () => {
     pages.push({
       container: AnalyticsReport,
       path: '/analytics/:report',
-      breadcrumbs: ({
-        match
-      }) => {
+      breadcrumbs: _ref => {
+        let {
+          match
+        } = _ref;
         const report = Object(external_lodash_["find"])(Object(get_reports["a" /* default */])(), {
           report: match.params.report
         });
@@ -1561,7 +4142,7 @@ const getPages = () => {
     pages.push({
       container: ProfileWizard,
       path: '/setup-wizard',
-      breadcrumbs: [...initialBreadcrumbs, ['/setup-wizard', Object(external_wp_i18n_["__"])('Setup Wizard', 'woocommerce-admin')]],
+      breadcrumbs: [...initialBreadcrumbs, Object(external_wp_i18n_["__"])('Setup Wizard', 'woocommerce-admin')],
       capability: 'manage_woocommerce'
     });
   }
@@ -1570,11 +4151,12 @@ const getPages = () => {
     pages.push({
       container: SettingsGroup,
       path: '/settings/:page',
-      breadcrumbs: ({
-        match
-      }) => {
+      breadcrumbs: _ref2 => {
+        let {
+          match
+        } = _ref2;
         // @todo This might need to be refactored to retreive groups via data store.
-        const settingsPages = Object(build_module["f" /* getSetting */])('settingsPages');
+        const settingsPages = Object(admin_settings["d" /* getAdminSetting */])('settingsPages');
         const page = settingsPages[match.params.page];
 
         if (!page) {
@@ -1600,6 +4182,13 @@ const getPages = () => {
       capability: 'manage_woocommerce'
     });
   }
+  /**
+   * List of WooCommerce Admin pages.
+   *
+   * @filter woocommerce_admin_pages_list
+   * @param {Array.<Object>} pages Array page objects.
+   */
+
 
   const filteredPages = Object(external_wp_hooks_["applyFilters"])(PAGES_FILTER, pages);
   filteredPages.push({
@@ -1723,17 +4312,20 @@ window.wpNavMenuClassChange = function (page, url) {
   wpWrap.classList.remove('wp-responsive-open');
 };
 // EXTERNAL MODULE: ./node_modules/classnames/index.js
-var classnames = __webpack_require__(6);
+var classnames = __webpack_require__(7);
 var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
 
 // EXTERNAL MODULE: external ["wp","htmlEntities"]
-var external_wp_htmlEntities_ = __webpack_require__(28);
+var external_wp_htmlEntities_ = __webpack_require__(34);
+
+// EXTERNAL MODULE: external ["wc","wcSettings"]
+var external_wc_wcSettings_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: external ["wc","experimental"]
-var external_wc_experimental_ = __webpack_require__(17);
+var external_wc_experimental_ = __webpack_require__(18);
 
 // EXTERNAL MODULE: ./client/header/style.scss
-var header_style = __webpack_require__(287);
+var header_style = __webpack_require__(296);
 
 // CONCATENATED MODULE: ./client/hooks/useIsScrolled.js
 /**
@@ -1761,7 +4353,7 @@ function useIsScrolled() {
   return isScrolled;
 }
 // EXTERNAL MODULE: ./client/header/utils.js
-var header_utils = __webpack_require__(52);
+var header_utils = __webpack_require__(54);
 
 // CONCATENATED MODULE: ./client/header/index.js
 
@@ -1783,15 +4375,16 @@ var header_utils = __webpack_require__(52);
 
 
 const PAGE_TITLE_FILTER = 'woocommerce_admin_header_page_title';
-const Header = ({
-  sections,
-  isEmbedded = false,
-  query
-}) => {
+const Header = _ref => {
   var _pageTitleSlot$fills;
 
+  let {
+    sections,
+    isEmbedded = false,
+    query
+  } = _ref;
   const headerElement = Object(external_wp_element_["useRef"])(null);
-  const siteTitle = Object(build_module["f" /* getSetting */])('siteTitle', '');
+  const siteTitle = Object(external_wc_wcSettings_["getSetting"])('siteTitle', '');
   const pageTitle = sections.slice(-1)[0];
   const isScrolled = useIsScrolled();
   let debounceTimer = null;
@@ -1888,11 +4481,11 @@ class notices_Notices extends external_wp_element_["Component"] {
 }
 
 /* harmony default export */ var layout_notices = (notices_Notices);
-// EXTERNAL MODULE: ./node_modules/react-spring/web.cjs.js
-var web_cjs = __webpack_require__(160);
+// EXTERNAL MODULE: ./node_modules/@react-spring/web/dist/react-spring-web.esm.js
+var react_spring_web_esm = __webpack_require__(161);
 
 // EXTERNAL MODULE: ./client/layout/transient-notices/snackbar/index.js
-var snackbar = __webpack_require__(258);
+var snackbar = __webpack_require__(259);
 
 // CONCATENATED MODULE: ./client/layout/transient-notices/snackbar/list.js
 
@@ -1923,16 +4516,18 @@ var snackbar = __webpack_require__(258);
  * @return {Object}                The rendered notices list.
  */
 
-function SnackbarList({
-  notices,
-  className,
-  children,
-  onRemove = external_lodash_["noop"],
-  onRemove2 = external_lodash_["noop"]
-}) {
+function SnackbarList(_ref) {
+  let {
+    notices,
+    className,
+    children,
+    onRemove = external_lodash_["noop"],
+    onRemove2 = external_lodash_["noop"]
+  } = _ref;
   const isReducedMotion = Object(external_wp_compose_["useReducedMotion"])();
   const [refMap] = Object(external_wp_element_["useState"])(() => new WeakMap());
-  const transitions = Object(web_cjs["useTransition"])(notices, notice => notice.id, {
+  const transitions = Object(react_spring_web_esm["useTransition"])(notices, {
+    keys: notice => notice.id,
     from: {
       opacity: 0,
       height: 0
@@ -1961,12 +4556,7 @@ function SnackbarList({
 
   return Object(external_wp_element_["createElement"])("div", {
     className: className
-  }, children, transitions.map(({
-    item: notice,
-    key,
-    props: style
-  }) => Object(external_wp_element_["createElement"])(web_cjs["animated"].div, {
-    key: key,
+  }, children, transitions((style, notice) => Object(external_wp_element_["createElement"])(react_spring_web_esm["animated"].div, {
     style: style
   }, Object(external_wp_element_["createElement"])("div", {
     className: "components-snackbar-list__notice-container",
@@ -1978,7 +4568,7 @@ function SnackbarList({
 
 /* harmony default export */ var list = (SnackbarList);
 // EXTERNAL MODULE: ./client/layout/transient-notices/style.scss
-var transient_notices_style = __webpack_require__(292);
+var transient_notices_style = __webpack_require__(297);
 
 // CONCATENATED MODULE: ./client/layout/transient-notices/index.js
 
@@ -2043,6 +4633,12 @@ function TransientNotices(props) {
 
   Object(external_wp_element_["useEffect"])(() => {
     getCurrentUserNotices().forEach(queuedNotice => {
+      /**
+       * Filter each transient notice.
+       *
+       * @filter woocommerce_admin_queued_notice_filter
+       * @param {Object} notice A transient notice.
+       */
       const notice = Object(external_wp_hooks_["applyFilters"])(QUEUED_NOTICE_FILTER, queuedNotice);
       createNotice2(notice.status, notice.content, {
         onDismiss: () => {
@@ -2086,17 +4682,17 @@ TransientNotices.propTypes = {
   notices: prop_types_default.a.array
 };
 /* harmony default export */ var transient_notices = (TransientNotices);
-// EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js + 2 modules
-var build_module_icon = __webpack_require__(117);
+// EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js
+var build_module_icon = __webpack_require__(105);
 
 // EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/library/help.js
-var library_help = __webpack_require__(503);
+var library_help = __webpack_require__(525);
 
 // EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/library/external.js
-var external = __webpack_require__(504);
+var external = __webpack_require__(526);
 
 // EXTERNAL MODULE: ./client/activity-panel/style.scss
-var activity_panel_style = __webpack_require__(293);
+var activity_panel_style = __webpack_require__(298);
 
 // CONCATENATED MODULE: ./client/activity-panel/icon-flag.js
 
@@ -2133,10 +4729,10 @@ var inbox_panel_utils = __webpack_require__(176);
  * External dependencies
  */
 
-
 /**
  * Internal dependencies
  */
+
 
 
 const UNREAD_NOTES_QUERY = {
@@ -2176,7 +4772,7 @@ function isNotesPanelVisible(select) {
   return unreadNotesCount > 0;
 }
 function getLowStockCount() {
-  return Object(build_module["f" /* getSetting */])('lowStockCount', 0);
+  return Object(admin_settings["d" /* getAdminSetting */])('lowStockCount', 0);
 }
 // CONCATENATED MODULE: ./client/activity-panel/tab/index.js
 
@@ -2187,15 +4783,16 @@ function getLowStockCount() {
 
 
 
-const Tab = ({
-  icon,
-  title,
-  name,
-  unread,
-  selected,
-  isPanelOpen,
-  onTabClick
-}) => {
+const Tab = _ref => {
+  let {
+    icon,
+    title,
+    name,
+    unread,
+    selected,
+    isPanelOpen,
+    onTabClick
+  } = _ref;
   const className = classnames_default()('woocommerce-layout__activity-panel-tab', {
     'is-active': isPanelOpen && selected,
     'has-unread': unread
@@ -2230,12 +4827,13 @@ const Tab = ({
  */
 
 
-const Tabs = ({
-  tabs,
-  onTabClick,
-  selectedTab: selectedTabName,
-  tabOpen = false
-}) => {
+const Tabs = _ref => {
+  let {
+    tabs,
+    onTabClick,
+    selectedTab: selectedTabName,
+    tabOpen = false
+  } = _ref;
   const [{
     tabOpen: tabIsOpenState,
     currentTab
@@ -2308,13 +4906,13 @@ const SetupProgress = () => Object(external_wp_element_["createElement"])("svg",
   strokeLinecap: "round"
 }));
 // EXTERNAL MODULE: ./client/activity-panel/display-options/index.js + 3 modules
-var display_options = __webpack_require__(170);
+var display_options = __webpack_require__(168);
 
 // EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/library/close.js
-var library_close = __webpack_require__(500);
+var library_close = __webpack_require__(522);
 
 // EXTERNAL MODULE: ./client/activity-panel/highlight-tooltip/style.scss
-var highlight_tooltip_style = __webpack_require__(294);
+var highlight_tooltip_style = __webpack_require__(299);
 
 // CONCATENATED MODULE: ./client/activity-panel/highlight-tooltip/index.js
 
@@ -2335,17 +4933,18 @@ var highlight_tooltip_style = __webpack_require__(294);
 
 const SHOW_CLASS = 'highlight-tooltip__show';
 
-function HighlightTooltip({
-  title,
-  closeButtonText,
-  content,
-  show = true,
-  id,
-  onClose,
-  delay,
-  onShow = external_lodash_["noop"],
-  useAnchor = false
-}) {
+function HighlightTooltip(_ref) {
+  let {
+    title,
+    closeButtonText,
+    content,
+    show = true,
+    id,
+    onClose,
+    delay,
+    onShow = external_lodash_["noop"],
+    useAnchor = false
+  } = _ref;
   const [showHighlight, setShowHighlight] = Object(external_wp_element_["useState"])(delay > 0 ? null : show);
   const [node, setNode] = Object(external_wp_element_["useState"])(null);
   const [anchorRect, setAnchorRect] = Object(external_wp_element_["useState"])(null);
@@ -2527,7 +5126,7 @@ HighlightTooltip.propTypes = {
 };
 
 // EXTERNAL MODULE: external ["wp","dom"]
-var external_wp_dom_ = __webpack_require__(92);
+var external_wp_dom_ = __webpack_require__(93);
 
 // CONCATENATED MODULE: ./client/hooks/useFocusOnMount.js
 /**
@@ -2564,7 +5163,8 @@ var external_wp_dom_ = __webpack_require__(92);
  * ```
  */
 
-function useFocusOnMount(focusOnMount = 'firstElement') {
+function useFocusOnMount() {
+  let focusOnMount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'firstElement';
   const focusOnMountRef = Object(external_wp_element_["useRef"])(focusOnMount);
   Object(external_wp_element_["useEffect"])(() => {
     focusOnMountRef.current = focusOnMount;
@@ -2796,15 +5396,16 @@ function useFocusOutside(onFocusOutside) {
 
 
 
-const Panel = ({
-  content,
-  isPanelOpen,
-  isPanelSwitching,
-  currentTab,
-  tab,
-  closePanel,
-  clearPanel
-}) => {
+const Panel = _ref => {
+  let {
+    content,
+    isPanelOpen,
+    isPanelSwitching,
+    currentTab,
+    tab,
+    closePanel,
+    clearPanel
+  } = _ref;
   const panelClass = 'woocommerce-layout__activity-panel-wrapper';
 
   const handleFocusOutside = event => {
@@ -2870,13 +5471,13 @@ const Panel = ({
 };
 /* harmony default export */ var panel = (Panel);
 // EXTERNAL MODULE: ./client/homescreen/activity-panel/orders/utils.js
-var orders_utils = __webpack_require__(70);
+var orders_utils = __webpack_require__(74);
 
 // EXTERNAL MODULE: ./client/homescreen/activity-panel/reviews/utils.js
 var reviews_utils = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./client/activity-panel/panels/inbox/abbreviated-notifications-panel.js + 2 modules
-var abbreviated_notifications_panel = __webpack_require__(256);
+var abbreviated_notifications_panel = __webpack_require__(257);
 
 // CONCATENATED MODULE: ./client/activity-panel/activity-panel.js
 
@@ -2911,12 +5512,13 @@ var abbreviated_notifications_panel = __webpack_require__(256);
 
 
 
-const HelpPanel = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | activity-panels-help */ 4).then(__webpack_require__.bind(null, 638)));
-const InboxPanel = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | activity-panels-inbox */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, 625)));
-const ActivityPanel = ({
-  isEmbedded,
-  query
-}) => {
+const HelpPanel = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | activity-panels-help */ 4).then(__webpack_require__.bind(null, 656)));
+const InboxPanel = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | activity-panels-inbox */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, 646)));
+const ActivityPanel = _ref => {
+  let {
+    isEmbedded,
+    query
+  } = _ref;
   const [currentTab, setCurrentTab] = Object(external_wp_element_["useState"])('');
   const [isPanelClosing, setIsPanelClosing] = Object(external_wp_element_["useState"])(false);
   const [isPanelOpen, setIsPanelOpen] = Object(external_wp_element_["useState"])(false);
@@ -3010,9 +5612,10 @@ const ActivityPanel = ({
     currentUserCan
   } = Object(external_wc_data_["useUser"])();
 
-  const togglePanel = ({
-    name: tabName
-  }, isTabOpen) => {
+  const togglePanel = (_ref2, isTabOpen) => {
+    let {
+      name: tabName
+    } = _ref2;
     const panelSwitching = tabName !== currentTab && currentTab !== '' && isTabOpen && isPanelOpen;
 
     if (isPanelClosing) {
@@ -3049,7 +5652,7 @@ const ActivityPanel = ({
     if (Object(utils["f" /* isWCAdmin */])(window.location.href)) {
       Object(external_wc_navigation_["getHistory"])().push(Object(external_wc_navigation_["getNewPath"])({}, '/', {}));
     } else {
-      window.location.href = Object(build_module["e" /* getAdminLink */])('admin.php?page=wc-admin');
+      window.location.href = Object(external_wc_wcSettings_["getAdminLink"])('admin.php?page=wc-admin');
     }
   }; // @todo Pull in dynamic unread status/count
 
@@ -3068,7 +5671,7 @@ const ActivityPanel = ({
       icon: Object(external_wp_element_["createElement"])(SetupProgress, null),
       onClick: () => {
         const currentLocation = window.location.href;
-        const homescreenLocation = Object(build_module["e" /* getAdminLink */])('admin.php?page=wc-admin'); // Don't navigate if we're already on the homescreen, this will cause an infinite loop
+        const homescreenLocation = Object(external_wc_wcSettings_["getAdminLink"])('admin.php?page=wc-admin'); // Don't navigate if we're already on the homescreen, this will cause an infinite loop
 
         if (currentLocation !== homescreenLocation) {
           // Ensure that if the user is trying to get to the task list they can see it even if
@@ -3104,7 +5707,7 @@ const ActivityPanel = ({
       }),
       visible: query.page === 'wc-admin' && query.task === 'appearance',
       onClick: () => {
-        window.open(Object(build_module["f" /* getSetting */])('siteUrl'));
+        window.open(Object(external_wc_wcSettings_["getSetting"])('siteUrl'));
         Object(external_wc_tracks_["recordEvent"])('wcadmin_tasklist_previewsite', previewSiteBtnTrackData);
         return null;
       }
@@ -3222,10 +5825,12 @@ ActivityPanel.defaultProps = {
 
 const ActivityPanelHeaderItem = () => Object(external_wp_element_["createElement"])(header_utils["a" /* WooHeaderItem */], {
   order: 20
-}, ({
-  isEmbedded,
-  query
-}) => {
+}, _ref => {
+  let {
+    isEmbedded,
+    query
+  } = _ref;
+
   if (!window.wcAdminFeatures['activity-panels']) {
     return null;
   }
@@ -3241,7 +5846,7 @@ Object(external_wp_plugins_["registerPlugin"])('activity-panel-header-item', {
   scope: 'woocommerce-admin'
 });
 // EXTERNAL MODULE: ./node_modules/gridicons/dist/cross-small.js
-var cross_small = __webpack_require__(102);
+var cross_small = __webpack_require__(262);
 var cross_small_default = /*#__PURE__*/__webpack_require__.n(cross_small);
 
 // CONCATENATED MODULE: ./client/lib/platform/index.js
@@ -3291,7 +5896,7 @@ const AppIcon = () => {
 const PLAY_STORE_LINK = 'https://play.google.com/store/apps/details?id=com.woocommerce.android';
 const TRACKING_EVENT_NAME = 'wcadmin_mobile_android_banner_click';
 // EXTERNAL MODULE: ./client/mobile-banner/banner.scss
-var banner = __webpack_require__(295);
+var banner = __webpack_require__(300);
 
 // CONCATENATED MODULE: ./client/mobile-banner/banner.js
 
@@ -3314,10 +5919,11 @@ var banner = __webpack_require__(295);
 
 
 const SHOW_APP_BANNER_MODIFIER_CLASS = 'woocommerce-layout__show-app-banner';
-const Banner = ({
-  onInstall,
-  onDismiss
-}) => {
+const Banner = _ref => {
+  let {
+    onInstall,
+    onDismiss
+  } = _ref;
   const [isActioned, setIsActioned] = Object(external_wp_element_["useState"])(false);
   const isVisible = platform() === ANDROID_PLATFORM && !isActioned;
   Object(external_wp_element_["useEffect"])(() => {
@@ -3413,7 +6019,7 @@ Object(external_wp_plugins_["registerPlugin"])('mobile-banner-header-item', {
   scope: 'woocommerce-admin'
 });
 // EXTERNAL MODULE: ./client/navigation/style.scss
-var navigation_style = __webpack_require__(296);
+var navigation_style = __webpack_require__(301);
 
 // CONCATENATED MODULE: ./client/navigation/utils.ts
 /**
@@ -3429,7 +6035,7 @@ const getFullUrl = url => {
     return url;
   }
 
-  return Object(build_module["e" /* getAdminLink */])(url);
+  return Object(external_wc_wcSettings_["getAdminLink"])(url);
 };
 /**
  * Get a default regex expression to match the path and provided params.
@@ -3448,7 +6054,9 @@ const getDefaultMatchExpression = url => {
  * Get a match score for a menu item given a location.
  */
 
-const getMatchScore = (location, itemUrl, itemExpression = null) => {
+const getMatchScore = function (location, itemUrl) {
+  let itemExpression = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
   if (!itemUrl) {
     return 0;
   }
@@ -3570,7 +6178,7 @@ const getMappedItemsCategories = (menuItems, currentUserCan) => {
   };
 };
 // EXTERNAL MODULE: external ["wp","primitives"]
-var external_wp_primitives_ = __webpack_require__(8);
+var external_wp_primitives_ = __webpack_require__(9);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/icons/build-module/library/wordpress.js
 
@@ -3579,7 +6187,7 @@ var external_wp_primitives_ = __webpack_require__(8);
  * WordPress dependencies
  */
 
-var wordpress = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
+const wordpress = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "-2 -2 24 24"
 }, Object(external_wp_element_["createElement"])(external_wp_primitives_["Path"], {
@@ -3610,8 +6218,8 @@ var wordpress = Object(external_wp_element_["createElement"])(external_wp_primit
 
 
 const header_Header = () => {
-  const siteTitle = Object(build_module["f" /* getSetting */])('siteTitle', '');
-  const homeUrl = Object(build_module["f" /* getSetting */])('homeUrl', '');
+  const siteTitle = Object(external_wc_wcSettings_["getSetting"])('siteTitle', '');
+  const homeUrl = Object(external_wc_wcSettings_["getSetting"])('homeUrl', '');
   const isScrolled = useIsScrolled();
   const [isFolded, setIsFolded] = Object(external_wp_element_["useState"])(document.body.classList.contains(false));
   const navClasses = {
@@ -3639,7 +6247,9 @@ const header_Header = () => {
     }
   };
 
-  const foldOnMobile = (screenWidth = document.body.clientWidth) => {
+  const foldOnMobile = function () {
+    let screenWidth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.body.clientWidth;
+
     if (screenWidth <= 960) {
       foldNav();
     } else {
@@ -3708,6 +6318,7 @@ const header_Header = () => {
     role: "switch",
     "aria-checked": isFolded ? 'true' : 'false'
   }, buttonIcon), Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+    title: siteTitle,
     href: homeUrl,
     className: "woocommerce-navigation-header__site-title",
     as: "span"
@@ -3716,7 +6327,7 @@ const header_Header = () => {
 
 /* harmony default export */ var header = (header_Header);
 // EXTERNAL MODULE: ./client/navigation/components/category-title/style.scss
-var category_title_style = __webpack_require__(297);
+var category_title_style = __webpack_require__(302);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/icons/build-module/library/star-filled.js
 
@@ -3725,7 +6336,7 @@ var category_title_style = __webpack_require__(297);
  * WordPress dependencies
  */
 
-var starFilled = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
+const starFilled = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24"
 }, Object(external_wp_element_["createElement"])(external_wp_primitives_["Path"], {
@@ -3740,7 +6351,7 @@ var starFilled = Object(external_wp_element_["createElement"])(external_wp_primi
  * WordPress dependencies
  */
 
-var starEmpty = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
+const starEmpty = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24"
 }, Object(external_wp_element_["createElement"])(external_wp_primitives_["Path"], {
@@ -3751,7 +6362,7 @@ var starEmpty = Object(external_wp_element_["createElement"])(external_wp_primit
 /* harmony default export */ var star_empty = (starEmpty);
 //# sourceMappingURL=star-empty.js.map
 // EXTERNAL MODULE: ./client/navigation/components/favorite-button/style.scss
-var favorite_button_style = __webpack_require__(298);
+var favorite_button_style = __webpack_require__(303);
 
 // CONCATENATED MODULE: ./client/navigation/components/favorite-button/index.js
 
@@ -3770,9 +6381,10 @@ var favorite_button_style = __webpack_require__(298);
  */
 
 
-const FavoriteButton = ({
-  id
-}) => {
+const FavoriteButton = _ref => {
+  let {
+    id
+  } = _ref;
   const {
     favorites,
     isResolving
@@ -3878,9 +6490,10 @@ const FavoritesTooltip = () => {
 
 
 
-const CategoryTitle = ({
-  category
-}) => {
+const CategoryTitle = _ref => {
+  let {
+    category
+  } = _ref;
   const {
     id,
     menuId,
@@ -3913,11 +6526,12 @@ const CategoryTitle = ({
 
 
 
-const Item = ({
-  item
-}) => {
+const Item = _ref => {
   var _slot$fills;
 
+  let {
+    item
+  } = _ref;
   const slot = Object(external_wc_experimental_["useSlot"])('woocommerce_navigation_' + item.id);
   const hasFills = Boolean(slot === null || slot === void 0 ? void 0 : (_slot$fills = slot.fills) === null || _slot$fills === void 0 ? void 0 : _slot$fills.length);
 
@@ -3972,17 +6586,33 @@ const Item = ({
 
 
 
-const PrimaryMenu = ({
-  category,
-  onBackClick,
-  pluginItems,
-  primaryItems
-}) => {
+const PrimaryMenu = _ref => {
+  let {
+    category,
+    onBackClick,
+    pluginItems,
+    primaryItems
+  } = _ref;
+
   if (!primaryItems.length && !pluginItems.length) {
     return null;
   }
+  /**
+   * Navigation's exit button WooCommerce label.
+   *
+   * @filter woocommerce_navigation_root_back_label
+   * @param {string} label Back button label.
+   */
+
 
   const rootBackLabel = Object(external_wp_hooks_["applyFilters"])('woocommerce_navigation_root_back_label', Object(external_wp_i18n_["__"])('WordPress Dashboard', 'woocommerce-admin'));
+  /**
+   * Navigation's exit button url.
+   *
+   * @filter woocommerce_navigation_root_back_url
+   * @param {string} url Back button url.
+   */
+
   const rootBackUrl = Object(external_wp_hooks_["applyFilters"])('woocommerce_navigation_root_back_url', window.wcNavigation.rootBackUrl);
   const isRootBackVisible = category.id === 'woocommerce' && rootBackUrl;
   return Object(external_wp_element_["createElement"])(external_wc_experimental_["NavigationMenu"], {
@@ -4019,11 +6649,13 @@ const PrimaryMenu = ({
 
 
 
-const SecondaryMenu = ({
-  category,
-  items,
-  onBackClick
-}) => {
+const SecondaryMenu = _ref => {
+  let {
+    category,
+    items,
+    onBackClick
+  } = _ref;
+
   if (!items.length) {
     return null;
   }
@@ -4136,12 +6768,12 @@ const Container = () => {
   }, Object(external_wp_element_["createElement"])(external_wc_experimental_["Navigation"], {
     activeItem: activeItem ? activeItem.id : null,
     activeMenu: activeLevel,
-    onActivateMenu: (...args) => {
+    onActivateMenu: function () {
       if (navDomRef && navDomRef.current) {
         navDomRef.current.scrollTop = 0;
       }
 
-      setActiveLevel(...args);
+      setActiveLevel(...arguments);
     }
   }, Object.values(categories).map(category => {
     const categoryItems = items[category.id];
@@ -4274,7 +6906,6 @@ Object(external_wp_plugins_["registerPlugin"])('wc-admin-navigation', {
 
 
 
-
 /**
  * Internal dependencies
  */
@@ -4287,8 +6918,9 @@ Object(external_wp_plugins_["registerPlugin"])('wc-admin-navigation', {
 
 
 
-const StoreAlerts = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | store-alerts */[__webpack_require__.e(1), __webpack_require__.e(49)]).then(__webpack_require__.bind(null, 637)));
-const WCPayUsageModal = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | wcpay-usage-modal */ 55).then(__webpack_require__.bind(null, 525)));
+
+const StoreAlerts = Object(external_wp_element_["lazy"])(() => Promise.all(/* import() | store-alerts */[__webpack_require__.e(1), __webpack_require__.e(49)]).then(__webpack_require__.bind(null, 659)));
+const WCPayUsageModal = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | wcpay-usage-modal */ 55).then(__webpack_require__.bind(null, 548)));
 class layout_PrimaryLayout extends external_wp_element_["Component"] {
   render() {
     const {
@@ -4427,12 +7059,14 @@ layout_Layout.propTypes = {
     wpOpenMenu: prop_types_default.a.string
   }).isRequired
 };
-const dataEndpoints = Object(build_module["f" /* getSetting */])('dataEndpoints');
-const Layout = Object(external_wp_compose_["compose"])(Object(external_wc_data_["withPluginsHydration"])({ ...Object(build_module["f" /* getSetting */])('plugins', {}),
+const dataEndpoints = Object(admin_settings["d" /* getAdminSetting */])('dataEndpoints');
+const Layout = Object(external_wp_compose_["compose"])(Object(external_wc_data_["withPluginsHydration"])({ ...Object(admin_settings["d" /* getAdminSetting */])('plugins', {}),
   jetpackStatus: dataEndpoints && dataEndpoints.jetpackStatus || false
-}), Object(external_wp_data_["withSelect"])((select, {
-  isEmbedded
-}) => {
+}), Object(external_wp_data_["withSelect"])((select, _ref) => {
+  let {
+    isEmbedded
+  } = _ref;
+
   // Embedded pages don't send plugin info to Tracks.
   if (isEmbedded) {
     return;
@@ -4468,43 +7102,50 @@ const _PageLayout = () => {
   })));
 };
 
-const PageLayout = Object(external_wp_compose_["compose"])(window.wcSettings.admin ? Object(external_wc_data_["withOptionsHydration"])({ ...Object(build_module["f" /* getSetting */])('preloadOptions', {})
+const PageLayout = Object(external_wp_compose_["compose"])(window.wcSettings.admin ? Object(external_wc_data_["withOptionsHydration"])({ ...Object(admin_settings["d" /* getAdminSetting */])('preloadOptions', {})
 }) : external_lodash_["identity"])(_PageLayout);
 
 const _EmbedLayout = () => Object(external_wp_element_["createElement"])(Layout, {
   page: {
-    breadcrumbs: Object(build_module["f" /* getSetting */])('embedBreadcrumbs', [])
+    breadcrumbs: Object(admin_settings["d" /* getAdminSetting */])('embedBreadcrumbs', [])
   },
   isEmbedded: true
 });
 
-const EmbedLayout = Object(external_wp_compose_["compose"])(Object(build_module["f" /* getSetting */])('preloadOptions') ? Object(external_wc_data_["withOptionsHydration"])({ ...Object(build_module["f" /* getSetting */])('preloadOptions')
+const EmbedLayout = Object(external_wp_compose_["compose"])(Object(admin_settings["d" /* getAdminSetting */])('preloadOptions') ? Object(external_wc_data_["withOptionsHydration"])({ ...Object(admin_settings["d" /* getAdminSetting */])('preloadOptions')
 }) : external_lodash_["identity"])(_EmbedLayout);
-
-/***/ }),
-
-/***/ 121:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wc"]["number"]; }());
 
 /***/ }),
 
 /***/ 122:
 /***/ (function(module, exports) {
 
+(function() { module.exports = window["wc"]["number"]; }());
+
+/***/ }),
+
+/***/ 123:
+/***/ (function(module, exports) {
+
 (function() { module.exports = window["wc"]["explat"]; }());
 
 /***/ }),
 
-/***/ 128:
+/***/ 129:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["notices"]; }());
 
 /***/ }),
 
-/***/ 129:
+/***/ 13:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wc"]["navigation"]; }());
+
+/***/ }),
+
+/***/ 130:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -4695,134 +7336,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 13:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export ADMIN_URL */
-/* unused harmony export COUNTRIES */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CURRENCY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LOCALE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ORDER_STATUSES; });
-/* unused harmony export SITE_TITLE */
-/* unused harmony export WC_ASSET_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getSetting; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return setSetting; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getAdminLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return enqueueScript; });
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-/**
- * External dependencies
- */
- // Remove mutable data from settings object to prevent access. Data stores should be used instead.
-
-const mutableSources = ['wcAdminSettings', 'preloadSettings'];
-const settings = typeof wcSettings === 'object' ? wcSettings : {};
-const SOURCE = Object.keys(settings).reduce((source, key) => {
-  if (!mutableSources.includes(key)) {
-    source[key] = settings[key];
-  }
-
-  return source;
-}, {});
-Object.keys(settings.admin || {}).forEach(key => {
-  if (!mutableSources.includes(key)) {
-    SOURCE[key] = settings.admin[key];
-  }
-});
-const ADMIN_URL = SOURCE.adminUrl;
-const COUNTRIES = SOURCE.countries;
-const CURRENCY = SOURCE.currency;
-const LOCALE = SOURCE.locale;
-const ORDER_STATUSES = SOURCE.orderStatuses;
-const SITE_TITLE = SOURCE.siteTitle;
-const WC_ASSET_URL = SOURCE.wcAssetUrl;
-/**
- * Retrieves a setting value from the setting state.
- *
- * @param {string}   name                         The identifier for the setting.
- * @param {*}    [fallback=false]             The value to use as a fallback
- *                                                if the setting is not in the
- *                                                state.
- * @param {Function} [filter=( val ) => val]  	  A callback for filtering the
- *                                                value before it's returned.
- *                                                Receives both the found value
- *                                                (if it exists for the key) and
- *                                                the provided fallback arg.
- *
- * @return {*}  The value present in the settings state for the given
- *                   name.
- */
-
-function getSetting(name, fallback = false, filter = val => val) {
-  if (mutableSources.includes(name)) {
-    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be accessed via data store.'));
-  }
-
-  const value = SOURCE.hasOwnProperty(name) ? SOURCE[name] : fallback;
-  return filter(value, fallback);
-}
-/**
- * Sets a value to a property on the settings state.
- *
- * NOTE: This feature is to be removed in favour of data stores when a full migration
- * is complete.
- *
- * @deprecated
- *
- * @param {string}   name                        The setting property key for the
- *                                               setting being mutated.
- * @param {*}    value                       The value to set.
- * @param {Function} [filter=( val ) => val]     Allows for providing a callback
- *                                               to sanitize the setting (eg.
- *                                               ensure it's a number)
- */
-
-function setSetting(name, value, filter = val => val) {
-  if (mutableSources.includes(name)) {
-    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be mutated via data store.'));
-  }
-
-  SOURCE[name] = filter(value);
-}
-/**
- * Returns a string with the site's wp-admin URL appended. JS version of `admin_url`.
- *
- * @param {string} path Relative path.
- * @return {string} Full admin URL.
- */
-
-function getAdminLink(path) {
-  return (ADMIN_URL || '') + path;
-}
-/**
- * Adds a script to the page if it has not already been loaded. JS version of `wp_enqueue_script`.
- *
- * @param {Object} script WP_Script
- * @param {string} script.handle Script handle.
- * @param {string} script.src Script URL.
- */
-
-function enqueueScript(script) {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`#${script.handle}-js`)) {
-      resolve();
-    }
-
-    const domElement = document.createElement('script');
-    domElement.src = script.src;
-    domElement.id = `${script.handle}-js`;
-    domElement.async = true;
-    domElement.onload = resolve;
-    domElement.onerror = reject;
-    document.body.appendChild(domElement);
-  });
-}
-
-/***/ }),
-
-/***/ 130:
+/***/ 131:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4855,2219 +7369,109 @@ exports.isValidElementType=function(a){return"string"===typeof a||"function"===t
 /***/ 15:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["url"]; }());
+(function() { module.exports = window["wc"]["wcSettings"]; }());
 
 /***/ }),
 
 /***/ 16:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wc"]["tracks"]; }());
+(function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
 
-/***/ 160:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 161:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export a */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animated", function() { return animated; });
+/* harmony import */ var _react_spring_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(119);
+/* harmony reexport (checked) */ if(__webpack_require__.o(_react_spring_core__WEBPACK_IMPORTED_MODULE_0__, "useTransition")) __webpack_require__.d(__webpack_exports__, "useTransition", function() { return _react_spring_core__WEBPACK_IMPORTED_MODULE_0__["useTransition"]; });
+
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _react_spring_shared__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _react_spring_animated__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(33);
 
 
-Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var _extends = _interopDefault(__webpack_require__(36));
-var _objectWithoutPropertiesLoose = _interopDefault(__webpack_require__(288));
-var React = __webpack_require__(5);
-var React__default = _interopDefault(React);
-var _inheritsLoose = _interopDefault(__webpack_require__(289));
-var _assertThisInitialized = _interopDefault(__webpack_require__(291));
 
-var is = {
-  arr: Array.isArray,
-  obj: function obj(a) {
-    return Object.prototype.toString.call(a) === '[object Object]';
-  },
-  fun: function fun(a) {
-    return typeof a === 'function';
-  },
-  str: function str(a) {
-    return typeof a === 'string';
-  },
-  num: function num(a) {
-    return typeof a === 'number';
-  },
-  und: function und(a) {
-    return a === void 0;
-  },
-  nul: function nul(a) {
-    return a === null;
-  },
-  set: function set(a) {
-    return a instanceof Set;
-  },
-  map: function map(a) {
-    return a instanceof Map;
-  },
-  equ: function equ(a, b) {
-    if (typeof a !== typeof b) return false;
-    if (is.str(a) || is.num(a)) return a === b;
-    if (is.obj(a) && is.obj(b) && Object.keys(a).length + Object.keys(b).length === 0) return true;
-    var i;
 
-    for (i in a) {
-      if (!(i in b)) return false;
-    }
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
 
-    for (i in b) {
-      if (a[i] !== b[i]) return false;
-    }
-
-    return is.und(i) ? a === b : true;
-  }
-};
-function merge(target, lowercase) {
-  if (lowercase === void 0) {
-    lowercase = true;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
   }
 
-  return function (object) {
-    return (is.arr(object) ? object : Object.keys(object)).reduce(function (acc, element) {
-      var key = lowercase ? element[0].toLowerCase() + element.substring(1) : element;
-      acc[key] = target(key);
-      return acc;
-    }, target);
-  };
-}
-function useForceUpdate() {
-  var _useState = React.useState(false),
-      f = _useState[1];
-
-  var forceUpdate = React.useCallback(function () {
-    return f(function (v) {
-      return !v;
-    });
-  }, []);
-  return forceUpdate;
-}
-function withDefault(value, defaultValue) {
-  return is.und(value) || is.nul(value) ? defaultValue : value;
-}
-function toArray(a) {
-  return !is.und(a) ? is.arr(a) ? a : [a] : [];
-}
-function callProp(obj) {
-  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    args[_key - 1] = arguments[_key];
-  }
-
-  return is.fun(obj) ? obj.apply(void 0, args) : obj;
+  return target;
 }
 
-function getForwardProps(props) {
-  var to = props.to,
-      from = props.from,
-      config = props.config,
-      onStart = props.onStart,
-      onRest = props.onRest,
-      onFrame = props.onFrame,
-      children = props.children,
-      reset = props.reset,
-      reverse = props.reverse,
-      force = props.force,
-      immediate = props.immediate,
-      delay = props.delay,
-      attach = props.attach,
-      destroyed = props.destroyed,
-      interpolateTo = props.interpolateTo,
-      ref = props.ref,
-      lazy = props.lazy,
-      forward = _objectWithoutPropertiesLoose(props, ["to", "from", "config", "onStart", "onRest", "onFrame", "children", "reset", "reverse", "force", "immediate", "delay", "attach", "destroyed", "interpolateTo", "ref", "lazy"]);
+const _excluded$2 = ["style", "children", "scrollTop", "scrollLeft"];
+const isCustomPropRE = /^--/;
 
-  return forward;
+function dangerousStyleValue(name, value) {
+  if (value == null || typeof value === 'boolean' || value === '') return '';
+  if (typeof value === 'number' && value !== 0 && !isCustomPropRE.test(name) && !(isUnitlessNumber.hasOwnProperty(name) && isUnitlessNumber[name])) return value + 'px';
+  return ('' + value).trim();
 }
 
-function interpolateTo(props) {
-  var forward = getForwardProps(props);
-  if (is.und(forward)) return _extends({
-    to: forward
-  }, props);
-  var rest = Object.keys(props).reduce(function (a, k) {
-    var _extends2;
-
-    return !is.und(forward[k]) ? a : _extends({}, a, (_extends2 = {}, _extends2[k] = props[k], _extends2));
-  }, {});
-  return _extends({
-    to: forward
-  }, rest);
-}
-function handleRef(ref, forward) {
-  if (forward) {
-    // If it's a function, assume it's a ref callback
-    if (is.fun(forward)) forward(ref);else if (is.obj(forward)) {
-      forward.current = ref;
-    }
+const attributeCache = {};
+function applyAnimatedValues(instance, props) {
+  if (!instance.nodeType || !instance.setAttribute) {
+    return false;
   }
 
-  return ref;
-}
+  const isFilterElement = instance.nodeName === 'filter' || instance.parentNode && instance.parentNode.nodeName === 'filter';
 
-var Animated =
-/*#__PURE__*/
-function () {
-  function Animated() {
-    this.payload = void 0;
-    this.children = [];
+  const _ref = props,
+        {
+    style,
+    children,
+    scrollTop,
+    scrollLeft
+  } = _ref,
+        attributes = _objectWithoutPropertiesLoose(_ref, _excluded$2);
+
+  const values = Object.values(attributes);
+  const names = Object.keys(attributes).map(name => isFilterElement || instance.hasAttribute(name) ? name : attributeCache[name] || (attributeCache[name] = name.replace(/([A-Z])/g, n => '-' + n.toLowerCase())));
+
+  if (children !== void 0) {
+    instance.textContent = children;
   }
 
-  var _proto = Animated.prototype;
-
-  _proto.getAnimatedValue = function getAnimatedValue() {
-    return this.getValue();
-  };
-
-  _proto.getPayload = function getPayload() {
-    return this.payload || this;
-  };
-
-  _proto.attach = function attach() {};
-
-  _proto.detach = function detach() {};
-
-  _proto.getChildren = function getChildren() {
-    return this.children;
-  };
-
-  _proto.addChild = function addChild(child) {
-    if (this.children.length === 0) this.attach();
-    this.children.push(child);
-  };
-
-  _proto.removeChild = function removeChild(child) {
-    var index = this.children.indexOf(child);
-    this.children.splice(index, 1);
-    if (this.children.length === 0) this.detach();
-  };
-
-  return Animated;
-}();
-var AnimatedArray =
-/*#__PURE__*/
-function (_Animated) {
-  _inheritsLoose(AnimatedArray, _Animated);
-
-  function AnimatedArray() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _Animated.call.apply(_Animated, [this].concat(args)) || this;
-    _this.payload = [];
-
-    _this.attach = function () {
-      return _this.payload.forEach(function (p) {
-        return p instanceof Animated && p.addChild(_assertThisInitialized(_this));
-      });
-    };
-
-    _this.detach = function () {
-      return _this.payload.forEach(function (p) {
-        return p instanceof Animated && p.removeChild(_assertThisInitialized(_this));
-      });
-    };
-
-    return _this;
-  }
-
-  return AnimatedArray;
-}(Animated);
-var AnimatedObject =
-/*#__PURE__*/
-function (_Animated2) {
-  _inheritsLoose(AnimatedObject, _Animated2);
-
-  function AnimatedObject() {
-    var _this2;
-
-    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
-    }
-
-    _this2 = _Animated2.call.apply(_Animated2, [this].concat(args)) || this;
-    _this2.payload = {};
-
-    _this2.attach = function () {
-      return Object.values(_this2.payload).forEach(function (s) {
-        return s instanceof Animated && s.addChild(_assertThisInitialized(_this2));
-      });
-    };
-
-    _this2.detach = function () {
-      return Object.values(_this2.payload).forEach(function (s) {
-        return s instanceof Animated && s.removeChild(_assertThisInitialized(_this2));
-      });
-    };
-
-    return _this2;
-  }
-
-  var _proto2 = AnimatedObject.prototype;
-
-  _proto2.getValue = function getValue(animated) {
-    if (animated === void 0) {
-      animated = false;
-    }
-
-    var payload = {};
-
-    for (var _key4 in this.payload) {
-      var value = this.payload[_key4];
-      if (animated && !(value instanceof Animated)) continue;
-      payload[_key4] = value instanceof Animated ? value[animated ? 'getAnimatedValue' : 'getValue']() : value;
-    }
-
-    return payload;
-  };
-
-  _proto2.getAnimatedValue = function getAnimatedValue() {
-    return this.getValue(true);
-  };
-
-  return AnimatedObject;
-}(Animated);
-
-var applyAnimatedValues;
-function injectApplyAnimatedValues(fn, transform) {
-  applyAnimatedValues = {
-    fn: fn,
-    transform: transform
-  };
-}
-var colorNames;
-function injectColorNames(names) {
-  colorNames = names;
-}
-var requestFrame = function requestFrame(cb) {
-  return typeof window !== 'undefined' ? window.requestAnimationFrame(cb) : -1;
-};
-var cancelFrame = function cancelFrame(id) {
-  typeof window !== 'undefined' && window.cancelAnimationFrame(id);
-};
-function injectFrame(raf, caf) {
-  requestFrame = raf;
-  cancelFrame = caf;
-}
-var interpolation;
-function injectStringInterpolator(fn) {
-  interpolation = fn;
-}
-var now = function now() {
-  return Date.now();
-};
-function injectNow(nowFn) {
-  now = nowFn;
-}
-var defaultElement;
-function injectDefaultElement(el) {
-  defaultElement = el;
-}
-var animatedApi = function animatedApi(node) {
-  return node.current;
-};
-function injectAnimatedApi(fn) {
-  animatedApi = fn;
-}
-var createAnimatedStyle;
-function injectCreateAnimatedStyle(factory) {
-  createAnimatedStyle = factory;
-}
-var manualFrameloop;
-function injectManualFrameloop(callback) {
-  manualFrameloop = callback;
-}
-
-var Globals = /*#__PURE__*/Object.freeze({
-  get applyAnimatedValues () { return applyAnimatedValues; },
-  injectApplyAnimatedValues: injectApplyAnimatedValues,
-  get colorNames () { return colorNames; },
-  injectColorNames: injectColorNames,
-  get requestFrame () { return requestFrame; },
-  get cancelFrame () { return cancelFrame; },
-  injectFrame: injectFrame,
-  get interpolation () { return interpolation; },
-  injectStringInterpolator: injectStringInterpolator,
-  get now () { return now; },
-  injectNow: injectNow,
-  get defaultElement () { return defaultElement; },
-  injectDefaultElement: injectDefaultElement,
-  get animatedApi () { return animatedApi; },
-  injectAnimatedApi: injectAnimatedApi,
-  get createAnimatedStyle () { return createAnimatedStyle; },
-  injectCreateAnimatedStyle: injectCreateAnimatedStyle,
-  get manualFrameloop () { return manualFrameloop; },
-  injectManualFrameloop: injectManualFrameloop
-});
-
-/**
- * Wraps the `style` property with `AnimatedStyle`.
- */
-
-var AnimatedProps =
-/*#__PURE__*/
-function (_AnimatedObject) {
-  _inheritsLoose(AnimatedProps, _AnimatedObject);
-
-  function AnimatedProps(props, callback) {
-    var _this;
-
-    _this = _AnimatedObject.call(this) || this;
-    _this.update = void 0;
-    _this.payload = !props.style ? props : _extends({}, props, {
-      style: createAnimatedStyle(props.style)
-    });
-    _this.update = callback;
-
-    _this.attach();
-
-    return _this;
-  }
-
-  return AnimatedProps;
-}(AnimatedObject);
-
-var isFunctionComponent = function isFunctionComponent(val) {
-  return is.fun(val) && !(val.prototype instanceof React__default.Component);
-};
-
-var createAnimatedComponent = function createAnimatedComponent(Component) {
-  var AnimatedComponent = React.forwardRef(function (props, ref) {
-    var forceUpdate = useForceUpdate();
-    var mounted = React.useRef(true);
-    var propsAnimated = React.useRef(null);
-    var node = React.useRef(null);
-    var attachProps = React.useCallback(function (props) {
-      var oldPropsAnimated = propsAnimated.current;
-
-      var callback = function callback() {
-        var didUpdate = false;
-
-        if (node.current) {
-          didUpdate = applyAnimatedValues.fn(node.current, propsAnimated.current.getAnimatedValue());
-        }
-
-        if (!node.current || didUpdate === false) {
-          // If no referenced node has been found, or the update target didn't have a
-          // native-responder, then forceUpdate the animation ...
-          forceUpdate();
-        }
-      };
-
-      propsAnimated.current = new AnimatedProps(props, callback);
-      oldPropsAnimated && oldPropsAnimated.detach();
-    }, []);
-    React.useEffect(function () {
-      return function () {
-        mounted.current = false;
-        propsAnimated.current && propsAnimated.current.detach();
-      };
-    }, []);
-    React.useImperativeHandle(ref, function () {
-      return animatedApi(node, mounted, forceUpdate);
-    });
-    attachProps(props);
-
-    var _getValue = propsAnimated.current.getValue(),
-        scrollTop = _getValue.scrollTop,
-        scrollLeft = _getValue.scrollLeft,
-        animatedProps = _objectWithoutPropertiesLoose(_getValue, ["scrollTop", "scrollLeft"]); // Functions cannot have refs, see:
-    // See: https://github.com/react-spring/react-spring/issues/569
-
-
-    var refFn = isFunctionComponent(Component) ? undefined : function (childRef) {
-      return node.current = handleRef(childRef, ref);
-    };
-    return React__default.createElement(Component, _extends({}, animatedProps, {
-      ref: refFn
-    }));
-  });
-  return AnimatedComponent;
-};
-
-var active = false;
-var controllers = new Set();
-
-var update = function update() {
-  if (!active) return false;
-  var time = now();
-
-  for (var _iterator = controllers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-    var _ref;
-
-    if (_isArray) {
-      if (_i >= _iterator.length) break;
-      _ref = _iterator[_i++];
-    } else {
-      _i = _iterator.next();
-      if (_i.done) break;
-      _ref = _i.value;
-    }
-
-    var controller = _ref;
-    var isActive = false;
-
-    for (var configIdx = 0; configIdx < controller.configs.length; configIdx++) {
-      var config = controller.configs[configIdx];
-      var endOfAnimation = void 0,
-          lastTime = void 0;
-
-      for (var valIdx = 0; valIdx < config.animatedValues.length; valIdx++) {
-        var animation = config.animatedValues[valIdx]; // If an animation is done, skip, until all of them conclude
-
-        if (animation.done) continue;
-        var from = config.fromValues[valIdx];
-        var to = config.toValues[valIdx];
-        var position = animation.lastPosition;
-        var isAnimated = to instanceof Animated;
-        var velocity = Array.isArray(config.initialVelocity) ? config.initialVelocity[valIdx] : config.initialVelocity;
-        if (isAnimated) to = to.getValue(); // Conclude animation if it's either immediate, or from-values match end-state
-
-        if (config.immediate) {
-          animation.setValue(to);
-          animation.done = true;
-          continue;
-        } // Break animation when string values are involved
-
-
-        if (typeof from === 'string' || typeof to === 'string') {
-          animation.setValue(to);
-          animation.done = true;
-          continue;
-        }
-
-        if (config.duration !== void 0) {
-          /** Duration easing */
-          position = from + config.easing((time - animation.startTime) / config.duration) * (to - from);
-          endOfAnimation = time >= animation.startTime + config.duration;
-        } else if (config.decay) {
-          /** Decay easing */
-          position = from + velocity / (1 - 0.998) * (1 - Math.exp(-(1 - 0.998) * (time - animation.startTime)));
-          endOfAnimation = Math.abs(animation.lastPosition - position) < 0.1;
-          if (endOfAnimation) to = position;
-        } else {
-          /** Spring easing */
-          lastTime = animation.lastTime !== void 0 ? animation.lastTime : time;
-          velocity = animation.lastVelocity !== void 0 ? animation.lastVelocity : config.initialVelocity; // If we lost a lot of frames just jump to the end.
-
-          if (time > lastTime + 64) lastTime = time; // http://gafferongames.com/game-physics/fix-your-timestep/
-
-          var numSteps = Math.floor(time - lastTime);
-
-          for (var i = 0; i < numSteps; ++i) {
-            var force = -config.tension * (position - to);
-            var damping = -config.friction * velocity;
-            var acceleration = (force + damping) / config.mass;
-            velocity = velocity + acceleration * 1 / 1000;
-            position = position + velocity * 1 / 1000;
-          } // Conditions for stopping the spring animation
-
-
-          var isOvershooting = config.clamp && config.tension !== 0 ? from < to ? position > to : position < to : false;
-          var isVelocity = Math.abs(velocity) <= config.precision;
-          var isDisplacement = config.tension !== 0 ? Math.abs(to - position) <= config.precision : true;
-          endOfAnimation = isOvershooting || isVelocity && isDisplacement;
-          animation.lastVelocity = velocity;
-          animation.lastTime = time;
-        } // Trails aren't done until their parents conclude
-
-
-        if (isAnimated && !config.toValues[valIdx].done) endOfAnimation = false;
-
-        if (endOfAnimation) {
-          // Ensure that we end up with a round value
-          if (animation.value !== to) position = to;
-          animation.done = true;
-        } else isActive = true;
-
-        animation.setValue(position);
-        animation.lastPosition = position;
-      } // Keep track of updated values only when necessary
-
-
-      if (controller.props.onFrame) controller.values[config.name] = config.interpolation.getValue();
-    } // Update callbacks in the end of the frame
-
-
-    if (controller.props.onFrame) controller.props.onFrame(controller.values); // Either call onEnd or next frame
-
-    if (!isActive) {
-      controllers.delete(controller);
-      controller.stop(true);
-    }
-  } // Loop over as long as there are controllers ...
-
-
-  if (controllers.size) {
-    if (manualFrameloop) manualFrameloop();else requestFrame(update);
-  } else {
-    active = false;
-  }
-
-  return active;
-};
-
-var start = function start(controller) {
-  if (!controllers.has(controller)) controllers.add(controller);
-
-  if (!active) {
-    active = true;
-    if (manualFrameloop) requestFrame(manualFrameloop);else requestFrame(update);
-  }
-};
-
-var stop = function stop(controller) {
-  if (controllers.has(controller)) controllers.delete(controller);
-};
-
-function createInterpolator(range, output, extrapolate) {
-  if (typeof range === 'function') {
-    return range;
-  }
-
-  if (Array.isArray(range)) {
-    return createInterpolator({
-      range: range,
-      output: output,
-      extrapolate: extrapolate
-    });
-  }
-
-  if (interpolation && typeof range.output[0] === 'string') {
-    return interpolation(range);
-  }
-
-  var config = range;
-  var outputRange = config.output;
-  var inputRange = config.range || [0, 1];
-  var extrapolateLeft = config.extrapolateLeft || config.extrapolate || 'extend';
-  var extrapolateRight = config.extrapolateRight || config.extrapolate || 'extend';
-
-  var easing = config.easing || function (t) {
-    return t;
-  };
-
-  return function (input) {
-    var range = findRange(input, inputRange);
-    return interpolate(input, inputRange[range], inputRange[range + 1], outputRange[range], outputRange[range + 1], easing, extrapolateLeft, extrapolateRight, config.map);
-  };
-}
-
-function interpolate(input, inputMin, inputMax, outputMin, outputMax, easing, extrapolateLeft, extrapolateRight, map) {
-  var result = map ? map(input) : input; // Extrapolate
-
-  if (result < inputMin) {
-    if (extrapolateLeft === 'identity') return result;else if (extrapolateLeft === 'clamp') result = inputMin;
-  }
-
-  if (result > inputMax) {
-    if (extrapolateRight === 'identity') return result;else if (extrapolateRight === 'clamp') result = inputMax;
-  }
-
-  if (outputMin === outputMax) return outputMin;
-  if (inputMin === inputMax) return input <= inputMin ? outputMin : outputMax; // Input Range
-
-  if (inputMin === -Infinity) result = -result;else if (inputMax === Infinity) result = result - inputMin;else result = (result - inputMin) / (inputMax - inputMin); // Easing
-
-  result = easing(result); // Output Range
-
-  if (outputMin === -Infinity) result = -result;else if (outputMax === Infinity) result = result + outputMin;else result = result * (outputMax - outputMin) + outputMin;
-  return result;
-}
-
-function findRange(input, inputRange) {
-  for (var i = 1; i < inputRange.length - 1; ++i) {
-    if (inputRange[i] >= input) break;
-  }
-
-  return i - 1;
-}
-
-var AnimatedInterpolation =
-/*#__PURE__*/
-function (_AnimatedArray) {
-  _inheritsLoose(AnimatedInterpolation, _AnimatedArray);
-
-  function AnimatedInterpolation(parents, range, output, extrapolate) {
-    var _this;
-
-    _this = _AnimatedArray.call(this) || this;
-    _this.calc = void 0;
-    _this.payload = parents instanceof AnimatedArray && !(parents instanceof AnimatedInterpolation) ? parents.getPayload() : Array.isArray(parents) ? parents : [parents];
-    _this.calc = createInterpolator(range, output, extrapolate);
-    return _this;
-  }
-
-  var _proto = AnimatedInterpolation.prototype;
-
-  _proto.getValue = function getValue() {
-    return this.calc.apply(this, this.payload.map(function (value) {
-      return value.getValue();
-    }));
-  };
-
-  _proto.updateConfig = function updateConfig(range, output, extrapolate) {
-    this.calc = createInterpolator(range, output, extrapolate);
-  };
-
-  _proto.interpolate = function interpolate(range, output, extrapolate) {
-    return new AnimatedInterpolation(this, range, output, extrapolate);
-  };
-
-  return AnimatedInterpolation;
-}(AnimatedArray);
-
-var interpolate$1 = function interpolate(parents, range, output) {
-  return parents && new AnimatedInterpolation(parents, range, output);
-};
-
-var config = {
-  default: {
-    tension: 170,
-    friction: 26
-  },
-  gentle: {
-    tension: 120,
-    friction: 14
-  },
-  wobbly: {
-    tension: 180,
-    friction: 12
-  },
-  stiff: {
-    tension: 210,
-    friction: 20
-  },
-  slow: {
-    tension: 280,
-    friction: 60
-  },
-  molasses: {
-    tension: 280,
-    friction: 120
-  }
-};
-
-/** API
- *  useChain(references, timeSteps, timeFrame)
- */
-
-function useChain(refs, timeSteps, timeFrame) {
-  if (timeFrame === void 0) {
-    timeFrame = 1000;
-  }
-
-  var previous = React.useRef();
-  React.useEffect(function () {
-    if (is.equ(refs, previous.current)) refs.forEach(function (_ref) {
-      var current = _ref.current;
-      return current && current.start();
-    });else if (timeSteps) {
-      refs.forEach(function (_ref2, index) {
-        var current = _ref2.current;
-
-        if (current) {
-          var ctrls = current.controllers;
-
-          if (ctrls.length) {
-            var t = timeFrame * timeSteps[index];
-            ctrls.forEach(function (ctrl) {
-              ctrl.queue = ctrl.queue.map(function (e) {
-                return _extends({}, e, {
-                  delay: e.delay + t
-                });
-              });
-              ctrl.start();
-            });
-          }
-        }
-      });
-    } else refs.reduce(function (q, _ref3, rI) {
-      var current = _ref3.current;
-      return q = q.then(function () {
-        return current.start();
-      });
-    }, Promise.resolve());
-    previous.current = refs;
-  });
-}
-
-/**
- * Animated works by building a directed acyclic graph of dependencies
- * transparently when you render your Animated components.
- *
- *               new Animated.Value(0)
- *     .interpolate()        .interpolate()    new Animated.Value(1)
- *         opacity               translateY      scale
- *          style                         transform
- *         View#234                         style
- *                                         View#123
- *
- * A) Top Down phase
- * When an AnimatedValue is updated, we recursively go down through this
- * graph in order to find leaf nodes: the views that we flag as needing
- * an update.
- *
- * B) Bottom Up phase
- * When a view is flagged as needing an update, we recursively go back up
- * in order to build the new value that it needs. The reason why we need
- * this two-phases process is to deal with composite props such as
- * transform which can receive values from multiple parents.
- */
-function addAnimatedStyles(node, styles) {
-  if ('update' in node) {
-    styles.add(node);
-  } else {
-    node.getChildren().forEach(function (child) {
-      return addAnimatedStyles(child, styles);
-    });
-  }
-}
-
-var AnimatedValue =
-/*#__PURE__*/
-function (_Animated) {
-  _inheritsLoose(AnimatedValue, _Animated);
-
-  function AnimatedValue(_value) {
-    var _this;
-
-    _this = _Animated.call(this) || this;
-    _this.animatedStyles = new Set();
-    _this.value = void 0;
-    _this.startPosition = void 0;
-    _this.lastPosition = void 0;
-    _this.lastVelocity = void 0;
-    _this.startTime = void 0;
-    _this.lastTime = void 0;
-    _this.done = false;
-
-    _this.setValue = function (value, flush) {
-      if (flush === void 0) {
-        flush = true;
-      }
-
-      _this.value = value;
-      if (flush) _this.flush();
-    };
-
-    _this.value = _value;
-    _this.startPosition = _value;
-    _this.lastPosition = _value;
-    return _this;
-  }
-
-  var _proto = AnimatedValue.prototype;
-
-  _proto.flush = function flush() {
-    if (this.animatedStyles.size === 0) {
-      addAnimatedStyles(this, this.animatedStyles);
-    }
-
-    this.animatedStyles.forEach(function (animatedStyle) {
-      return animatedStyle.update();
-    });
-  };
-
-  _proto.clearStyles = function clearStyles() {
-    this.animatedStyles.clear();
-  };
-
-  _proto.getValue = function getValue() {
-    return this.value;
-  };
-
-  _proto.interpolate = function interpolate(range, output, extrapolate) {
-    return new AnimatedInterpolation(this, range, output, extrapolate);
-  };
-
-  return AnimatedValue;
-}(Animated);
-
-var AnimatedValueArray =
-/*#__PURE__*/
-function (_AnimatedArray) {
-  _inheritsLoose(AnimatedValueArray, _AnimatedArray);
-
-  function AnimatedValueArray(values) {
-    var _this;
-
-    _this = _AnimatedArray.call(this) || this;
-    _this.payload = values.map(function (n) {
-      return new AnimatedValue(n);
-    });
-    return _this;
-  }
-
-  var _proto = AnimatedValueArray.prototype;
-
-  _proto.setValue = function setValue(value, flush) {
-    var _this2 = this;
-
-    if (flush === void 0) {
-      flush = true;
-    }
-
-    if (Array.isArray(value)) {
-      if (value.length === this.payload.length) {
-        value.forEach(function (v, i) {
-          return _this2.payload[i].setValue(v, flush);
-        });
-      }
-    } else {
-      this.payload.forEach(function (p) {
-        return p.setValue(value, flush);
-      });
-    }
-  };
-
-  _proto.getValue = function getValue() {
-    return this.payload.map(function (v) {
-      return v.getValue();
-    });
-  };
-
-  _proto.interpolate = function interpolate(range, output) {
-    return new AnimatedInterpolation(this, range, output);
-  };
-
-  return AnimatedValueArray;
-}(AnimatedArray);
-
-var G = 0;
-
-var Controller =
-/*#__PURE__*/
-function () {
-  function Controller() {
-    var _this = this;
-
-    this.id = void 0;
-    this.idle = true;
-    this.hasChanged = false;
-    this.guid = 0;
-    this.local = 0;
-    this.props = {};
-    this.merged = {};
-    this.animations = {};
-    this.interpolations = {};
-    this.values = {};
-    this.configs = [];
-    this.listeners = [];
-    this.queue = [];
-    this.localQueue = void 0;
-
-    this.getValues = function () {
-      return _this.interpolations;
-    };
-
-    this.id = G++;
-  }
-  /** update(props)
-   *  This function filters input props and creates an array of tasks which are executed in .start()
-   *  Each task is allowed to carry a delay, which means it can execute asnychroneously */
-
-
-  var _proto = Controller.prototype;
-
-  _proto.update = function update$$1(args) {
-    //this._id = n + this.id
-    if (!args) return this; // Extract delay and the to-prop from props
-
-    var _ref = interpolateTo(args),
-        _ref$delay = _ref.delay,
-        delay = _ref$delay === void 0 ? 0 : _ref$delay,
-        to = _ref.to,
-        props = _objectWithoutPropertiesLoose(_ref, ["delay", "to"]);
-
-    if (is.arr(to) || is.fun(to)) {
-      // If config is either a function or an array queue it up as is
-      this.queue.push(_extends({}, props, {
-        delay: delay,
-        to: to
-      }));
-    } else if (to) {
-      // Otherwise go through each key since it could be delayed individually
-      var ops = {};
-      Object.entries(to).forEach(function (_ref2) {
-        var _to;
-
-        var k = _ref2[0],
-            v = _ref2[1];
-
-        // Fetch delay and create an entry, consisting of the to-props, the delay, and basic props
-        var entry = _extends({
-          to: (_to = {}, _to[k] = v, _to),
-          delay: callProp(delay, k)
-        }, props);
-
-        var previous = ops[entry.delay] && ops[entry.delay].to;
-        ops[entry.delay] = _extends({}, ops[entry.delay], entry, {
-          to: _extends({}, previous, entry.to)
-        });
-      });
-      this.queue = Object.values(ops);
-    } // Sort queue, so that async calls go last
-
-
-    this.queue = this.queue.sort(function (a, b) {
-      return a.delay - b.delay;
-    }); // Diff the reduced props immediately (they'll contain the from-prop and some config)
-
-    this.diff(props);
-    return this;
-  }
-  /** start(onEnd)
-   *  This function either executes a queue, if present, or starts the frameloop, which animates */
-  ;
-
-  _proto.start = function start$$1(onEnd) {
-    var _this2 = this;
-
-    // If a queue is present we must excecute it
-    if (this.queue.length) {
-      this.idle = false; // Updates can interrupt trailing queues, in that case we just merge values
-
-      if (this.localQueue) {
-        this.localQueue.forEach(function (_ref3) {
-          var _ref3$from = _ref3.from,
-              from = _ref3$from === void 0 ? {} : _ref3$from,
-              _ref3$to = _ref3.to,
-              to = _ref3$to === void 0 ? {} : _ref3$to;
-          if (is.obj(from)) _this2.merged = _extends({}, from, _this2.merged);
-          if (is.obj(to)) _this2.merged = _extends({}, _this2.merged, to);
-        });
-      } // The guid helps us tracking frames, a new queue over an old one means an override
-      // We discard async calls in that caseÍ
-
-
-      var local = this.local = ++this.guid;
-      var queue = this.localQueue = this.queue;
-      this.queue = []; // Go through each entry and execute it
-
-      queue.forEach(function (_ref4, index) {
-        var delay = _ref4.delay,
-            props = _objectWithoutPropertiesLoose(_ref4, ["delay"]);
-
-        var cb = function cb(finished) {
-          if (index === queue.length - 1 && local === _this2.guid && finished) {
-            _this2.idle = true;
-            if (_this2.props.onRest) _this2.props.onRest(_this2.merged);
-          }
-
-          if (onEnd) onEnd();
-        }; // Entries can be delayed, ansyc or immediate
-
-
-        var async = is.arr(props.to) || is.fun(props.to);
-
-        if (delay) {
-          setTimeout(function () {
-            if (local === _this2.guid) {
-              if (async) _this2.runAsync(props, cb);else _this2.diff(props).start(cb);
-            }
-          }, delay);
-        } else if (async) _this2.runAsync(props, cb);else _this2.diff(props).start(cb);
-      });
-    } // Otherwise we kick of the frameloop
-    else {
-        if (is.fun(onEnd)) this.listeners.push(onEnd);
-        if (this.props.onStart) this.props.onStart();
-
-        start(this);
-      }
-
-    return this;
-  };
-
-  _proto.stop = function stop$$1(finished) {
-    this.listeners.forEach(function (onEnd) {
-      return onEnd(finished);
-    });
-    this.listeners = [];
-    return this;
-  }
-  /** Pause sets onEnd listeners free, but also removes the controller from the frameloop */
-  ;
-
-  _proto.pause = function pause(finished) {
-    this.stop(true);
-    if (finished) stop(this);
-    return this;
-  };
-
-  _proto.runAsync = function runAsync(_ref5, onEnd) {
-    var _this3 = this;
-
-    var delay = _ref5.delay,
-        props = _objectWithoutPropertiesLoose(_ref5, ["delay"]);
-
-    var local = this.local; // If "to" is either a function or an array it will be processed async, therefor "to" should be empty right now
-    // If the view relies on certain values "from" has to be present
-
-    var queue = Promise.resolve(undefined);
-
-    if (is.arr(props.to)) {
-      var _loop = function _loop(i) {
-        var index = i;
-
-        var fresh = _extends({}, props, interpolateTo(props.to[index]));
-
-        if (is.arr(fresh.config)) fresh.config = fresh.config[index];
-        queue = queue.then(function () {
-          //this.stop()
-          if (local === _this3.guid) return new Promise(function (r) {
-            return _this3.diff(fresh).start(r);
-          });
-        });
-      };
-
-      for (var i = 0; i < props.to.length; i++) {
-        _loop(i);
-      }
-    } else if (is.fun(props.to)) {
-      var index = 0;
-      var last;
-      queue = queue.then(function () {
-        return props.to( // next(props)
-        function (p) {
-          var fresh = _extends({}, props, interpolateTo(p));
-
-          if (is.arr(fresh.config)) fresh.config = fresh.config[index];
-          index++; //this.stop()
-
-          if (local === _this3.guid) return last = new Promise(function (r) {
-            return _this3.diff(fresh).start(r);
-          });
-          return;
-        }, // cancel()
-        function (finished) {
-          if (finished === void 0) {
-            finished = true;
-          }
-
-          return _this3.stop(finished);
-        }).then(function () {
-          return last;
-        });
-      });
-    }
-
-    queue.then(onEnd);
-  };
-
-  _proto.diff = function diff(props) {
-    var _this4 = this;
-
-    this.props = _extends({}, this.props, props);
-    var _this$props = this.props,
-        _this$props$from = _this$props.from,
-        from = _this$props$from === void 0 ? {} : _this$props$from,
-        _this$props$to = _this$props.to,
-        to = _this$props$to === void 0 ? {} : _this$props$to,
-        _this$props$config = _this$props.config,
-        config = _this$props$config === void 0 ? {} : _this$props$config,
-        reverse = _this$props.reverse,
-        attach = _this$props.attach,
-        reset = _this$props.reset,
-        immediate = _this$props.immediate; // Reverse values when requested
-
-    if (reverse) {
-      var _ref6 = [to, from];
-      from = _ref6[0];
-      to = _ref6[1];
-    } // This will collect all props that were ever set, reset merged props when necessary
-
-
-    this.merged = _extends({}, from, this.merged, to);
-    this.hasChanged = false; // Attachment handling, trailed springs can "attach" themselves to a previous spring
-
-    var target = attach && attach(this); // Reduces input { name: value } pairs into animated values
-
-    this.animations = Object.entries(this.merged).reduce(function (acc, _ref7) {
-      var name = _ref7[0],
-          value = _ref7[1];
-      // Issue cached entries, except on reset
-      var entry = acc[name] || {}; // Figure out what the value is supposed to be
-
-      var isNumber = is.num(value);
-      var isString = is.str(value) && !value.startsWith('#') && !/\d/.test(value) && !colorNames[value];
-      var isArray = is.arr(value);
-      var isInterpolation = !isNumber && !isArray && !isString;
-      var fromValue = !is.und(from[name]) ? from[name] : value;
-      var toValue = isNumber || isArray ? value : isString ? value : 1;
-      var toConfig = callProp(config, name);
-      if (target) toValue = target.animations[name].parent;
-      var parent = entry.parent,
-          interpolation$$1 = entry.interpolation,
-          toValues = toArray(target ? toValue.getPayload() : toValue),
-          animatedValues;
-      var newValue = value;
-      if (isInterpolation) newValue = interpolation({
-        range: [0, 1],
-        output: [value, value]
-      })(1);
-      var currentValue = interpolation$$1 && interpolation$$1.getValue(); // Change detection flags
-
-      var isFirst = is.und(parent);
-      var isActive = !isFirst && entry.animatedValues.some(function (v) {
-        return !v.done;
-      });
-      var currentValueDiffersFromGoal = !is.equ(newValue, currentValue);
-      var hasNewGoal = !is.equ(newValue, entry.previous);
-      var hasNewConfig = !is.equ(toConfig, entry.config); // Change animation props when props indicate a new goal (new value differs from previous one)
-      // and current values differ from it. Config changes trigger a new update as well (though probably shouldn't?)
-
-      if (reset || hasNewGoal && currentValueDiffersFromGoal || hasNewConfig) {
-        var _extends2;
-
-        // Convert regular values into animated values, ALWAYS re-use if possible
-        if (isNumber || isString) parent = interpolation$$1 = entry.parent || new AnimatedValue(fromValue);else if (isArray) parent = interpolation$$1 = entry.parent || new AnimatedValueArray(fromValue);else if (isInterpolation) {
-          var prev = entry.interpolation && entry.interpolation.calc(entry.parent.value);
-          prev = prev !== void 0 && !reset ? prev : fromValue;
-
-          if (entry.parent) {
-            parent = entry.parent;
-            parent.setValue(0, false);
-          } else parent = new AnimatedValue(0);
-
-          var range = {
-            output: [prev, value]
-          };
-
-          if (entry.interpolation) {
-            interpolation$$1 = entry.interpolation;
-            entry.interpolation.updateConfig(range);
-          } else interpolation$$1 = parent.interpolate(range);
-        }
-        toValues = toArray(target ? toValue.getPayload() : toValue);
-        animatedValues = toArray(parent.getPayload());
-        if (reset && !isInterpolation) parent.setValue(fromValue, false);
-        _this4.hasChanged = true; // Reset animated values
-
-        animatedValues.forEach(function (value) {
-          value.startPosition = value.value;
-          value.lastPosition = value.value;
-          value.lastVelocity = isActive ? value.lastVelocity : undefined;
-          value.lastTime = isActive ? value.lastTime : undefined;
-          value.startTime = now();
-          value.done = false;
-          value.animatedStyles.clear();
-        }); // Set immediate values
-
-        if (callProp(immediate, name)) {
-          parent.setValue(isInterpolation ? toValue : value, false);
-        }
-
-        return _extends({}, acc, (_extends2 = {}, _extends2[name] = _extends({}, entry, {
-          name: name,
-          parent: parent,
-          interpolation: interpolation$$1,
-          animatedValues: animatedValues,
-          toValues: toValues,
-          previous: newValue,
-          config: toConfig,
-          fromValues: toArray(parent.getValue()),
-          immediate: callProp(immediate, name),
-          initialVelocity: withDefault(toConfig.velocity, 0),
-          clamp: withDefault(toConfig.clamp, false),
-          precision: withDefault(toConfig.precision, 0.01),
-          tension: withDefault(toConfig.tension, 170),
-          friction: withDefault(toConfig.friction, 26),
-          mass: withDefault(toConfig.mass, 1),
-          duration: toConfig.duration,
-          easing: withDefault(toConfig.easing, function (t) {
-            return t;
-          }),
-          decay: toConfig.decay
-        }), _extends2));
+  for (let name in style) {
+    if (style.hasOwnProperty(name)) {
+      const value = dangerousStyleValue(name, style[name]);
+
+      if (isCustomPropRE.test(name)) {
+        instance.style.setProperty(name, value);
       } else {
-        if (!currentValueDiffersFromGoal) {
-          var _extends3;
-
-          // So ... the current target value (newValue) appears to be different from the previous value,
-          // which normally constitutes an update, but the actual value (currentValue) matches the target!
-          // In order to resolve this without causing an animation update we silently flag the animation as done,
-          // which it technically is. Interpolations also needs a config update with their target set to 1.
-          if (isInterpolation) {
-            parent.setValue(1, false);
-            interpolation$$1.updateConfig({
-              output: [newValue, newValue]
-            });
-          }
-
-          parent.done = true;
-          _this4.hasChanged = true;
-          return _extends({}, acc, (_extends3 = {}, _extends3[name] = _extends({}, acc[name], {
-            previous: newValue
-          }), _extends3));
-        }
-
-        return acc;
-      }
-    }, this.animations);
-
-    if (this.hasChanged) {
-      // Make animations available to frameloop
-      this.configs = Object.values(this.animations);
-      this.values = {};
-      this.interpolations = {};
-
-      for (var key in this.animations) {
-        this.interpolations[key] = this.animations[key].interpolation;
-        this.values[key] = this.animations[key].interpolation.getValue();
+        instance.style[name] = value;
       }
     }
-
-    return this;
-  };
-
-  _proto.destroy = function destroy() {
-    this.stop();
-    this.props = {};
-    this.merged = {};
-    this.animations = {};
-    this.interpolations = {};
-    this.values = {};
-    this.configs = [];
-    this.local = 0;
-  };
-
-  return Controller;
-}();
-
-/** API
- * const props = useSprings(number, [{ ... }, { ... }, ...])
- * const [props, set] = useSprings(number, (i, controller) => ({ ... }))
- */
-
-var useSprings = function useSprings(length, props) {
-  var mounted = React.useRef(false);
-  var ctrl = React.useRef();
-  var isFn = is.fun(props); // The controller maintains the animation values, starts and stops animations
-
-  var _useMemo = React.useMemo(function () {
-    // Remove old controllers
-    if (ctrl.current) {
-      ctrl.current.map(function (c) {
-        return c.destroy();
-      });
-      ctrl.current = undefined;
-    }
-
-    var ref;
-    return [new Array(length).fill().map(function (_, i) {
-      var ctrl = new Controller();
-      var newProps = isFn ? callProp(props, i, ctrl) : props[i];
-      if (i === 0) ref = newProps.ref;
-      ctrl.update(newProps);
-      if (!ref) ctrl.start();
-      return ctrl;
-    }), ref];
-  }, [length]),
-      controllers = _useMemo[0],
-      ref = _useMemo[1];
-
-  ctrl.current = controllers; // The hooks reference api gets defined here ...
-
-  var api = React.useImperativeHandle(ref, function () {
-    return {
-      start: function start() {
-        return Promise.all(ctrl.current.map(function (c) {
-          return new Promise(function (r) {
-            return c.start(r);
-          });
-        }));
-      },
-      stop: function stop(finished) {
-        return ctrl.current.forEach(function (c) {
-          return c.stop(finished);
-        });
-      },
-
-      get controllers() {
-        return ctrl.current;
-      }
-
-    };
-  }); // This function updates the controllers
-
-  var updateCtrl = React.useMemo(function () {
-    return function (updateProps) {
-      return ctrl.current.map(function (c, i) {
-        c.update(isFn ? callProp(updateProps, i, c) : updateProps[i]);
-        if (!ref) c.start();
-      });
-    };
-  }, [length]); // Update controller if props aren't functional
-
-  React.useEffect(function () {
-    if (mounted.current) {
-      if (!isFn) updateCtrl(props);
-    } else if (!ref) ctrl.current.forEach(function (c) {
-      return c.start();
-    });
-  }); // Update mounted flag and destroy controller on unmount
-
-  React.useEffect(function () {
-    return mounted.current = true, function () {
-      return ctrl.current.forEach(function (c) {
-        return c.destroy();
-      });
-    };
-  }, []); // Return animated props, or, anim-props + the update-setter above
-
-  var propValues = ctrl.current.map(function (c) {
-    return c.getValues();
-  });
-  return isFn ? [propValues, updateCtrl, function (finished) {
-    return ctrl.current.forEach(function (c) {
-      return c.pause(finished);
-    });
-  }] : propValues;
-};
-
-/** API
- * const props = useSpring({ ... })
- * const [props, set] = useSpring(() => ({ ... }))
- */
-
-var useSpring = function useSpring(props) {
-  var isFn = is.fun(props);
-
-  var _useSprings = useSprings(1, isFn ? props : [props]),
-      result = _useSprings[0],
-      set = _useSprings[1],
-      pause = _useSprings[2];
-
-  return isFn ? [result[0], set, pause] : result;
-};
-
-/** API
- * const trails = useTrail(number, { ... })
- * const [trails, set] = useTrail(number, () => ({ ... }))
- */
-
-var useTrail = function useTrail(length, props) {
-  var mounted = React.useRef(false);
-  var isFn = is.fun(props);
-  var updateProps = callProp(props);
-  var instances = React.useRef();
-
-  var _useSprings = useSprings(length, function (i, ctrl) {
-    if (i === 0) instances.current = [];
-    instances.current.push(ctrl);
-    return _extends({}, updateProps, {
-      config: callProp(updateProps.config, i),
-      attach: i > 0 && function () {
-        return instances.current[i - 1];
-      }
-    });
-  }),
-      result = _useSprings[0],
-      set = _useSprings[1],
-      pause = _useSprings[2]; // Set up function to update controller
-
-
-  var updateCtrl = React.useMemo(function () {
-    return function (props) {
-      return set(function (i, ctrl) {
-        var last = props.reverse ? i === 0 : length - 1 === i;
-        var attachIdx = props.reverse ? i + 1 : i - 1;
-        var attachController = instances.current[attachIdx];
-        return _extends({}, props, {
-          config: callProp(props.config || updateProps.config, i),
-          attach: attachController && function () {
-            return attachController;
-          }
-        });
-      });
-    };
-  }, [length, updateProps.reverse]); // Update controller if props aren't functional
-
-  React.useEffect(function () {
-    return void (mounted.current && !isFn && updateCtrl(props));
-  }); // Update mounted flag and destroy controller on unmount
-
-  React.useEffect(function () {
-    return void (mounted.current = true);
-  }, []);
-  return isFn ? [result, updateCtrl, pause] : result;
-};
-
-/** API
- * const transitions = useTransition(items, itemKeys, { ... })
- * const [transitions, update] = useTransition(items, itemKeys, () => ({ ... }))
- */
-
-var guid = 0;
-var ENTER = 'enter';
-var LEAVE = 'leave';
-var UPDATE = 'update';
-
-var mapKeys = function mapKeys(items, keys) {
-  return (typeof keys === 'function' ? items.map(keys) : toArray(keys)).map(String);
-};
-
-var get = function get(props) {
-  var items = props.items,
-      _props$keys = props.keys,
-      keys = _props$keys === void 0 ? function (item) {
-    return item;
-  } : _props$keys,
-      rest = _objectWithoutPropertiesLoose(props, ["items", "keys"]);
-
-  items = toArray(items !== void 0 ? items : null);
-  return _extends({
-    items: items,
-    keys: mapKeys(items, keys)
-  }, rest);
-};
-
-function useTransition(input, keyTransform, config) {
-  var props = _extends({
-    items: input,
-    keys: keyTransform || function (i) {
-      return i;
-    }
-  }, config);
-
-  var _get = get(props),
-      _get$lazy = _get.lazy,
-      lazy = _get$lazy === void 0 ? false : _get$lazy,
-      _get$unique = _get.unique,
-      _get$reset = _get.reset,
-      reset = _get$reset === void 0 ? false : _get$reset,
-      enter = _get.enter,
-      leave = _get.leave,
-      update = _get.update,
-      onDestroyed = _get.onDestroyed,
-      keys = _get.keys,
-      items = _get.items,
-      onFrame = _get.onFrame,
-      _onRest = _get.onRest,
-      onStart = _get.onStart,
-      ref = _get.ref,
-      extra = _objectWithoutPropertiesLoose(_get, ["lazy", "unique", "reset", "enter", "leave", "update", "onDestroyed", "keys", "items", "onFrame", "onRest", "onStart", "ref"]);
-
-  var forceUpdate = useForceUpdate();
-  var mounted = React.useRef(false);
-  var state = React.useRef({
-    mounted: false,
-    first: true,
-    deleted: [],
-    current: {},
-    transitions: [],
-    prevProps: {},
-    paused: !!props.ref,
-    instances: !mounted.current && new Map(),
-    forceUpdate: forceUpdate
-  });
-  React.useImperativeHandle(props.ref, function () {
-    return {
-      start: function start() {
-        return Promise.all(Array.from(state.current.instances).map(function (_ref) {
-          var c = _ref[1];
-          return new Promise(function (r) {
-            return c.start(r);
-          });
-        }));
-      },
-      stop: function stop(finished) {
-        return Array.from(state.current.instances).forEach(function (_ref2) {
-          var c = _ref2[1];
-          return c.stop(finished);
-        });
-      },
-
-      get controllers() {
-        return Array.from(state.current.instances).map(function (_ref3) {
-          var c = _ref3[1];
-          return c;
-        });
-      }
-
-    };
-  }); // Update state
-
-  state.current = diffItems(state.current, props);
-
-  if (state.current.changed) {
-    // Update state
-    state.current.transitions.forEach(function (transition) {
-      var slot = transition.slot,
-          from = transition.from,
-          to = transition.to,
-          config = transition.config,
-          trail = transition.trail,
-          key = transition.key,
-          item = transition.item;
-      if (!state.current.instances.has(key)) state.current.instances.set(key, new Controller()); // update the map object
-
-      var ctrl = state.current.instances.get(key);
-
-      var newProps = _extends({}, extra, {
-        to: to,
-        from: from,
-        config: config,
-        ref: ref,
-        onRest: function onRest(values) {
-          if (state.current.mounted) {
-            if (transition.destroyed) {
-              // If no ref is given delete destroyed items immediately
-              if (!ref && !lazy) cleanUp(state, key);
-              if (onDestroyed) onDestroyed(item);
-            } // A transition comes to rest once all its springs conclude
-
-
-            var curInstances = Array.from(state.current.instances);
-            var active = curInstances.some(function (_ref4) {
-              var c = _ref4[1];
-              return !c.idle;
-            });
-            if (!active && (ref || lazy) && state.current.deleted.length > 0) cleanUp(state);
-            if (_onRest) _onRest(item, slot, values);
-          }
-        },
-        onStart: onStart && function () {
-          return onStart(item, slot);
-        },
-        onFrame: onFrame && function (values) {
-          return onFrame(item, slot, values);
-        },
-        delay: trail,
-        reset: reset && slot === ENTER // Update controller
-
-      });
-
-      ctrl.update(newProps);
-      if (!state.current.paused) ctrl.start();
-    });
   }
 
-  React.useEffect(function () {
-    state.current.mounted = mounted.current = true;
-    return function () {
-      state.current.mounted = mounted.current = false;
-      Array.from(state.current.instances).map(function (_ref5) {
-        var c = _ref5[1];
-        return c.destroy();
-      });
-      state.current.instances.clear();
-    };
-  }, []);
-  return state.current.transitions.map(function (_ref6) {
-    var item = _ref6.item,
-        slot = _ref6.slot,
-        key = _ref6.key;
-    return {
-      item: item,
-      key: key,
-      state: slot,
-      props: state.current.instances.get(key).getValues()
-    };
+  names.forEach((name, i) => {
+    instance.setAttribute(name, values[i]);
   });
-}
 
-function cleanUp(state, filterKey) {
-  var deleted = state.current.deleted;
-
-  var _loop = function _loop() {
-    if (_isArray) {
-      if (_i >= _iterator.length) return "break";
-      _ref8 = _iterator[_i++];
-    } else {
-      _i = _iterator.next();
-      if (_i.done) return "break";
-      _ref8 = _i.value;
-    }
-
-    var _ref7 = _ref8;
-    var key = _ref7.key;
-
-    var filter = function filter(t) {
-      return t.key !== key;
-    };
-
-    if (is.und(filterKey) || filterKey === key) {
-      state.current.instances.delete(key);
-      state.current.transitions = state.current.transitions.filter(filter);
-      state.current.deleted = state.current.deleted.filter(filter);
-    }
-  };
-
-  for (var _iterator = deleted, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-    var _ref8;
-
-    var _ret = _loop();
-
-    if (_ret === "break") break;
+  if (scrollTop !== void 0) {
+    instance.scrollTop = scrollTop;
   }
 
-  state.current.forceUpdate();
-}
-
-function diffItems(_ref9, props) {
-  var first = _ref9.first,
-      prevProps = _ref9.prevProps,
-      state = _objectWithoutPropertiesLoose(_ref9, ["first", "prevProps"]);
-
-  var _get2 = get(props),
-      items = _get2.items,
-      keys = _get2.keys,
-      initial = _get2.initial,
-      from = _get2.from,
-      enter = _get2.enter,
-      leave = _get2.leave,
-      update = _get2.update,
-      _get2$trail = _get2.trail,
-      trail = _get2$trail === void 0 ? 0 : _get2$trail,
-      unique = _get2.unique,
-      config = _get2.config,
-      _get2$order = _get2.order,
-      order = _get2$order === void 0 ? [ENTER, LEAVE, UPDATE] : _get2$order;
-
-  var _get3 = get(prevProps),
-      _keys = _get3.keys,
-      _items = _get3.items;
-
-  var current = _extends({}, state.current);
-
-  var deleted = [].concat(state.deleted); // Compare next keys with current keys
-
-  var currentKeys = Object.keys(current);
-  var currentSet = new Set(currentKeys);
-  var nextSet = new Set(keys);
-  var added = keys.filter(function (item) {
-    return !currentSet.has(item);
-  });
-  var removed = state.transitions.filter(function (item) {
-    return !item.destroyed && !nextSet.has(item.originalKey);
-  }).map(function (i) {
-    return i.originalKey;
-  });
-  var updated = keys.filter(function (item) {
-    return currentSet.has(item);
-  });
-  var delay = -trail;
-
-  while (order.length) {
-    var changeType = order.shift();
-
-    switch (changeType) {
-      case ENTER:
-        {
-          added.forEach(function (key, index) {
-            // In unique mode, remove fading out transitions if their key comes in again
-            if (unique && deleted.find(function (d) {
-              return d.originalKey === key;
-            })) deleted = deleted.filter(function (t) {
-              return t.originalKey !== key;
-            });
-            var keyIndex = keys.indexOf(key);
-            var item = items[keyIndex];
-            var slot = first && initial !== void 0 ? 'initial' : ENTER;
-            current[key] = {
-              slot: slot,
-              originalKey: key,
-              key: unique ? String(key) : guid++,
-              item: item,
-              trail: delay = delay + trail,
-              config: callProp(config, item, slot),
-              from: callProp(first ? initial !== void 0 ? initial || {} : from : from, item),
-              to: callProp(enter, item)
-            };
-          });
-          break;
-        }
-
-      case LEAVE:
-        {
-          removed.forEach(function (key) {
-            var keyIndex = _keys.indexOf(key);
-
-            var item = _items[keyIndex];
-            var slot = LEAVE;
-            deleted.unshift(_extends({}, current[key], {
-              slot: slot,
-              destroyed: true,
-              left: _keys[Math.max(0, keyIndex - 1)],
-              right: _keys[Math.min(_keys.length, keyIndex + 1)],
-              trail: delay = delay + trail,
-              config: callProp(config, item, slot),
-              to: callProp(leave, item)
-            }));
-            delete current[key];
-          });
-          break;
-        }
-
-      case UPDATE:
-        {
-          updated.forEach(function (key) {
-            var keyIndex = keys.indexOf(key);
-            var item = items[keyIndex];
-            var slot = UPDATE;
-            current[key] = _extends({}, current[key], {
-              item: item,
-              slot: slot,
-              trail: delay = delay + trail,
-              config: callProp(config, item, slot),
-              to: callProp(update, item)
-            });
-          });
-          break;
-        }
-    }
+  if (scrollLeft !== void 0) {
+    instance.scrollLeft = scrollLeft;
   }
-
-  var out = keys.map(function (key) {
-    return current[key];
-  }); // This tries to restore order for deleted items by finding their last known siblings
-  // only using the left sibling to keep order placement consistent for all deleted items
-
-  deleted.forEach(function (_ref10) {
-    var left = _ref10.left,
-        right = _ref10.right,
-        item = _objectWithoutPropertiesLoose(_ref10, ["left", "right"]);
-
-    var pos; // Was it the element on the left, if yes, move there ...
-
-    if ((pos = out.findIndex(function (t) {
-      return t.originalKey === left;
-    })) !== -1) pos += 1; // And if nothing else helps, move it to the start ¯\_(ツ)_/¯
-
-    pos = Math.max(0, pos);
-    out = [].concat(out.slice(0, pos), [item], out.slice(pos));
-  });
-  return _extends({}, state, {
-    changed: added.length || removed.length || updated.length,
-    first: first && added.length === 0,
-    transitions: out,
-    current: current,
-    deleted: deleted,
-    prevProps: props
-  });
 }
-
-var AnimatedStyle =
-/*#__PURE__*/
-function (_AnimatedObject) {
-  _inheritsLoose(AnimatedStyle, _AnimatedObject);
-
-  function AnimatedStyle(style) {
-    var _this;
-
-    if (style === void 0) {
-      style = {};
-    }
-
-    _this = _AnimatedObject.call(this) || this;
-
-    if (style.transform && !(style.transform instanceof Animated)) {
-      style = applyAnimatedValues.transform(style);
-    }
-
-    _this.payload = style;
-    return _this;
-  }
-
-  return AnimatedStyle;
-}(AnimatedObject);
-
-// http://www.w3.org/TR/css3-color/#svg-color
-var colors = {
-  transparent: 0x00000000,
-  aliceblue: 0xf0f8ffff,
-  antiquewhite: 0xfaebd7ff,
-  aqua: 0x00ffffff,
-  aquamarine: 0x7fffd4ff,
-  azure: 0xf0ffffff,
-  beige: 0xf5f5dcff,
-  bisque: 0xffe4c4ff,
-  black: 0x000000ff,
-  blanchedalmond: 0xffebcdff,
-  blue: 0x0000ffff,
-  blueviolet: 0x8a2be2ff,
-  brown: 0xa52a2aff,
-  burlywood: 0xdeb887ff,
-  burntsienna: 0xea7e5dff,
-  cadetblue: 0x5f9ea0ff,
-  chartreuse: 0x7fff00ff,
-  chocolate: 0xd2691eff,
-  coral: 0xff7f50ff,
-  cornflowerblue: 0x6495edff,
-  cornsilk: 0xfff8dcff,
-  crimson: 0xdc143cff,
-  cyan: 0x00ffffff,
-  darkblue: 0x00008bff,
-  darkcyan: 0x008b8bff,
-  darkgoldenrod: 0xb8860bff,
-  darkgray: 0xa9a9a9ff,
-  darkgreen: 0x006400ff,
-  darkgrey: 0xa9a9a9ff,
-  darkkhaki: 0xbdb76bff,
-  darkmagenta: 0x8b008bff,
-  darkolivegreen: 0x556b2fff,
-  darkorange: 0xff8c00ff,
-  darkorchid: 0x9932ccff,
-  darkred: 0x8b0000ff,
-  darksalmon: 0xe9967aff,
-  darkseagreen: 0x8fbc8fff,
-  darkslateblue: 0x483d8bff,
-  darkslategray: 0x2f4f4fff,
-  darkslategrey: 0x2f4f4fff,
-  darkturquoise: 0x00ced1ff,
-  darkviolet: 0x9400d3ff,
-  deeppink: 0xff1493ff,
-  deepskyblue: 0x00bfffff,
-  dimgray: 0x696969ff,
-  dimgrey: 0x696969ff,
-  dodgerblue: 0x1e90ffff,
-  firebrick: 0xb22222ff,
-  floralwhite: 0xfffaf0ff,
-  forestgreen: 0x228b22ff,
-  fuchsia: 0xff00ffff,
-  gainsboro: 0xdcdcdcff,
-  ghostwhite: 0xf8f8ffff,
-  gold: 0xffd700ff,
-  goldenrod: 0xdaa520ff,
-  gray: 0x808080ff,
-  green: 0x008000ff,
-  greenyellow: 0xadff2fff,
-  grey: 0x808080ff,
-  honeydew: 0xf0fff0ff,
-  hotpink: 0xff69b4ff,
-  indianred: 0xcd5c5cff,
-  indigo: 0x4b0082ff,
-  ivory: 0xfffff0ff,
-  khaki: 0xf0e68cff,
-  lavender: 0xe6e6faff,
-  lavenderblush: 0xfff0f5ff,
-  lawngreen: 0x7cfc00ff,
-  lemonchiffon: 0xfffacdff,
-  lightblue: 0xadd8e6ff,
-  lightcoral: 0xf08080ff,
-  lightcyan: 0xe0ffffff,
-  lightgoldenrodyellow: 0xfafad2ff,
-  lightgray: 0xd3d3d3ff,
-  lightgreen: 0x90ee90ff,
-  lightgrey: 0xd3d3d3ff,
-  lightpink: 0xffb6c1ff,
-  lightsalmon: 0xffa07aff,
-  lightseagreen: 0x20b2aaff,
-  lightskyblue: 0x87cefaff,
-  lightslategray: 0x778899ff,
-  lightslategrey: 0x778899ff,
-  lightsteelblue: 0xb0c4deff,
-  lightyellow: 0xffffe0ff,
-  lime: 0x00ff00ff,
-  limegreen: 0x32cd32ff,
-  linen: 0xfaf0e6ff,
-  magenta: 0xff00ffff,
-  maroon: 0x800000ff,
-  mediumaquamarine: 0x66cdaaff,
-  mediumblue: 0x0000cdff,
-  mediumorchid: 0xba55d3ff,
-  mediumpurple: 0x9370dbff,
-  mediumseagreen: 0x3cb371ff,
-  mediumslateblue: 0x7b68eeff,
-  mediumspringgreen: 0x00fa9aff,
-  mediumturquoise: 0x48d1ccff,
-  mediumvioletred: 0xc71585ff,
-  midnightblue: 0x191970ff,
-  mintcream: 0xf5fffaff,
-  mistyrose: 0xffe4e1ff,
-  moccasin: 0xffe4b5ff,
-  navajowhite: 0xffdeadff,
-  navy: 0x000080ff,
-  oldlace: 0xfdf5e6ff,
-  olive: 0x808000ff,
-  olivedrab: 0x6b8e23ff,
-  orange: 0xffa500ff,
-  orangered: 0xff4500ff,
-  orchid: 0xda70d6ff,
-  palegoldenrod: 0xeee8aaff,
-  palegreen: 0x98fb98ff,
-  paleturquoise: 0xafeeeeff,
-  palevioletred: 0xdb7093ff,
-  papayawhip: 0xffefd5ff,
-  peachpuff: 0xffdab9ff,
-  peru: 0xcd853fff,
-  pink: 0xffc0cbff,
-  plum: 0xdda0ddff,
-  powderblue: 0xb0e0e6ff,
-  purple: 0x800080ff,
-  rebeccapurple: 0x663399ff,
-  red: 0xff0000ff,
-  rosybrown: 0xbc8f8fff,
-  royalblue: 0x4169e1ff,
-  saddlebrown: 0x8b4513ff,
-  salmon: 0xfa8072ff,
-  sandybrown: 0xf4a460ff,
-  seagreen: 0x2e8b57ff,
-  seashell: 0xfff5eeff,
-  sienna: 0xa0522dff,
-  silver: 0xc0c0c0ff,
-  skyblue: 0x87ceebff,
-  slateblue: 0x6a5acdff,
-  slategray: 0x708090ff,
-  slategrey: 0x708090ff,
-  snow: 0xfffafaff,
-  springgreen: 0x00ff7fff,
-  steelblue: 0x4682b4ff,
-  tan: 0xd2b48cff,
-  teal: 0x008080ff,
-  thistle: 0xd8bfd8ff,
-  tomato: 0xff6347ff,
-  turquoise: 0x40e0d0ff,
-  violet: 0xee82eeff,
-  wheat: 0xf5deb3ff,
-  white: 0xffffffff,
-  whitesmoke: 0xf5f5f5ff,
-  yellow: 0xffff00ff,
-  yellowgreen: 0x9acd32ff
-};
-
-// const INTEGER = '[-+]?\\d+';
-var NUMBER = '[-+]?\\d*\\.?\\d+';
-var PERCENTAGE = NUMBER + '%';
-
-function call() {
-  for (var _len = arguments.length, parts = new Array(_len), _key = 0; _key < _len; _key++) {
-    parts[_key] = arguments[_key];
-  }
-
-  return '\\(\\s*(' + parts.join(')\\s*,\\s*(') + ')\\s*\\)';
-}
-
-var rgb = new RegExp('rgb' + call(NUMBER, NUMBER, NUMBER));
-var rgba = new RegExp('rgba' + call(NUMBER, NUMBER, NUMBER, NUMBER));
-var hsl = new RegExp('hsl' + call(NUMBER, PERCENTAGE, PERCENTAGE));
-var hsla = new RegExp('hsla' + call(NUMBER, PERCENTAGE, PERCENTAGE, NUMBER));
-var hex3 = /^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/;
-var hex4 = /^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/;
-var hex6 = /^#([0-9a-fA-F]{6})$/;
-var hex8 = /^#([0-9a-fA-F]{8})$/;
-
-/*
-https://github.com/react-community/normalize-css-color
-
-BSD 3-Clause License
-
-Copyright (c) 2016, React Community
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of the copyright holder nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-function normalizeColor(color) {
-  var match;
-
-  if (typeof color === 'number') {
-    return color >>> 0 === color && color >= 0 && color <= 0xffffffff ? color : null;
-  } // Ordered based on occurrences on Facebook codebase
-
-
-  if (match = hex6.exec(color)) return parseInt(match[1] + 'ff', 16) >>> 0;
-  if (colors.hasOwnProperty(color)) return colors[color];
-
-  if (match = rgb.exec(color)) {
-    return (parse255(match[1]) << 24 | // r
-    parse255(match[2]) << 16 | // g
-    parse255(match[3]) << 8 | // b
-    0x000000ff) >>> // a
-    0;
-  }
-
-  if (match = rgba.exec(color)) {
-    return (parse255(match[1]) << 24 | // r
-    parse255(match[2]) << 16 | // g
-    parse255(match[3]) << 8 | // b
-    parse1(match[4])) >>> // a
-    0;
-  }
-
-  if (match = hex3.exec(color)) {
-    return parseInt(match[1] + match[1] + // r
-    match[2] + match[2] + // g
-    match[3] + match[3] + // b
-    'ff', // a
-    16) >>> 0;
-  } // https://drafts.csswg.org/css-color-4/#hex-notation
-
-
-  if (match = hex8.exec(color)) return parseInt(match[1], 16) >>> 0;
-
-  if (match = hex4.exec(color)) {
-    return parseInt(match[1] + match[1] + // r
-    match[2] + match[2] + // g
-    match[3] + match[3] + // b
-    match[4] + match[4], // a
-    16) >>> 0;
-  }
-
-  if (match = hsl.exec(color)) {
-    return (hslToRgb(parse360(match[1]), // h
-    parsePercentage(match[2]), // s
-    parsePercentage(match[3]) // l
-    ) | 0x000000ff) >>> // a
-    0;
-  }
-
-  if (match = hsla.exec(color)) {
-    return (hslToRgb(parse360(match[1]), // h
-    parsePercentage(match[2]), // s
-    parsePercentage(match[3]) // l
-    ) | parse1(match[4])) >>> // a
-    0;
-  }
-
-  return null;
-}
-
-function hue2rgb(p, q, t) {
-  if (t < 0) t += 1;
-  if (t > 1) t -= 1;
-  if (t < 1 / 6) return p + (q - p) * 6 * t;
-  if (t < 1 / 2) return q;
-  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-  return p;
-}
-
-function hslToRgb(h, s, l) {
-  var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-  var p = 2 * l - q;
-  var r = hue2rgb(p, q, h + 1 / 3);
-  var g = hue2rgb(p, q, h);
-  var b = hue2rgb(p, q, h - 1 / 3);
-  return Math.round(r * 255) << 24 | Math.round(g * 255) << 16 | Math.round(b * 255) << 8;
-}
-
-function parse255(str) {
-  var int = parseInt(str, 10);
-  if (int < 0) return 0;
-  if (int > 255) return 255;
-  return int;
-}
-
-function parse360(str) {
-  var int = parseFloat(str);
-  return (int % 360 + 360) % 360 / 360;
-}
-
-function parse1(str) {
-  var num = parseFloat(str);
-  if (num < 0) return 0;
-  if (num > 1) return 255;
-  return Math.round(num * 255);
-}
-
-function parsePercentage(str) {
-  // parseFloat conveniently ignores the final %
-  var int = parseFloat(str);
-  if (int < 0) return 0;
-  if (int > 100) return 1;
-  return int / 100;
-}
-
-function colorToRgba(input) {
-  var int32Color = normalizeColor(input);
-  if (int32Color === null) return input;
-  int32Color = int32Color || 0;
-  var r = (int32Color & 0xff000000) >>> 24;
-  var g = (int32Color & 0x00ff0000) >>> 16;
-  var b = (int32Color & 0x0000ff00) >>> 8;
-  var a = (int32Color & 0x000000ff) / 255;
-  return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
-} // Problem: https://github.com/animatedjs/animated/pull/102
-// Solution: https://stackoverflow.com/questions/638565/parsing-scientific-notation-sensibly/658662
-
-
-var stringShapeRegex = /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/g; // Covers rgb, rgba, hsl, hsla
-// Taken from https://gist.github.com/olmokramer/82ccce673f86db7cda5e
-
-var colorRegex = /(#(?:[0-9a-f]{2}){2,4}|(#[0-9a-f]{3})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\))/gi; // Covers color names (transparent, blue, etc.)
-
-var colorNamesRegex = new RegExp("(" + Object.keys(colors).join('|') + ")", 'g');
-/**
- * Supports string shapes by extracting numbers so new values can be computed,
- * and recombines those values into new strings of the same shape.  Supports
- * things like:
- *
- *   rgba(123, 42, 99, 0.36)           // colors
- *   -45deg                            // values with units
- *   0 2px 2px 0px rgba(0, 0, 0, 0.12) // box shadows
- */
-
-var createStringInterpolator = function createStringInterpolator(config) {
-  // Replace colors with rgba
-  var outputRange = config.output.map(function (rangeValue) {
-    return rangeValue.replace(colorRegex, colorToRgba);
-  }).map(function (rangeValue) {
-    return rangeValue.replace(colorNamesRegex, colorToRgba);
-  });
-  var outputRanges = outputRange[0].match(stringShapeRegex).map(function () {
-    return [];
-  });
-  outputRange.forEach(function (value) {
-    value.match(stringShapeRegex).forEach(function (number, i) {
-      return outputRanges[i].push(+number);
-    });
-  });
-  var interpolations = outputRange[0].match(stringShapeRegex).map(function (_value, i) {
-    return createInterpolator(_extends({}, config, {
-      output: outputRanges[i]
-    }));
-  });
-  return function (input) {
-    var i = 0;
-    return outputRange[0] // 'rgba(0, 100, 200, 0)'
-    // ->
-    // 'rgba(${interpolations[0](input)}, ${interpolations[1](input)}, ...'
-    .replace(stringShapeRegex, function () {
-      return interpolations[i++](input);
-    }) // rgba requires that the r,g,b are integers.... so we want to round them, but we *dont* want to
-    // round the opacity (4th column).
-    .replace(/rgba\(([0-9\.-]+), ([0-9\.-]+), ([0-9\.-]+), ([0-9\.-]+)\)/gi, function (_, p1, p2, p3, p4) {
-      return "rgba(" + Math.round(p1) + ", " + Math.round(p2) + ", " + Math.round(p3) + ", " + p4 + ")";
-    });
-  };
-};
-
-var isUnitlessNumber = {
+let isUnitlessNumber = {
   animationIterationCount: true,
   borderImageOutset: true,
   borderImageSlice: true,
@@ -7101,7 +7505,6 @@ var isUnitlessNumber = {
   widows: true,
   zIndex: true,
   zoom: true,
-  // SVG-related properties
   fillOpacity: true,
   floodOpacity: true,
   stopOpacity: true,
@@ -7112,98 +7515,135 @@ var isUnitlessNumber = {
   strokeWidth: true
 };
 
-var prefixKey = function prefixKey(prefix, key) {
-  return prefix + key.charAt(0).toUpperCase() + key.substring(1);
-};
+const prefixKey = (prefix, key) => prefix + key.charAt(0).toUpperCase() + key.substring(1);
 
-var prefixes = ['Webkit', 'Ms', 'Moz', 'O'];
-isUnitlessNumber = Object.keys(isUnitlessNumber).reduce(function (acc, prop) {
-  prefixes.forEach(function (prefix) {
-    return acc[prefixKey(prefix, prop)] = acc[prop];
-  });
+const prefixes = ['Webkit', 'Ms', 'Moz', 'O'];
+isUnitlessNumber = Object.keys(isUnitlessNumber).reduce((acc, prop) => {
+  prefixes.forEach(prefix => acc[prefixKey(prefix, prop)] = acc[prop]);
   return acc;
 }, isUnitlessNumber);
 
-function dangerousStyleValue(name, value, isCustomProperty) {
-  if (value == null || typeof value === 'boolean' || value === '') return '';
-  if (!isCustomProperty && typeof value === 'number' && value !== 0 && !(isUnitlessNumber.hasOwnProperty(name) && isUnitlessNumber[name])) return value + 'px'; // Presumes implicit 'px' suffix for unitless numbers
+const _excluded$1 = ["x", "y", "z"];
+const domTransforms = /^(matrix|translate|scale|rotate|skew)/;
+const pxTransforms = /^(translate)/;
+const degTransforms = /^(rotate|skew)/;
 
-  return ('' + value).trim();
-}
+const addUnit = (value, unit) => _react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* is */ "s"].num(value) && value !== 0 ? value + unit : value;
 
-var attributeCache = {};
-injectCreateAnimatedStyle(function (style) {
-  return new AnimatedStyle(style);
-});
-injectDefaultElement('div');
-injectStringInterpolator(createStringInterpolator);
-injectColorNames(colors);
-injectApplyAnimatedValues(function (instance, props) {
-  if (instance.nodeType && instance.setAttribute !== undefined) {
-    var style = props.style,
-        children = props.children,
-        scrollTop = props.scrollTop,
-        scrollLeft = props.scrollLeft,
-        attributes = _objectWithoutPropertiesLoose(props, ["style", "children", "scrollTop", "scrollLeft"]);
+const isValueIdentity = (value, id) => _react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* is */ "s"].arr(value) ? value.every(v => isValueIdentity(v, id)) : _react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* is */ "s"].num(value) ? value === id : parseFloat(value) === id;
 
-    var filter = instance.nodeName === 'filter' || instance.parentNode && instance.parentNode.nodeName === 'filter';
-    if (scrollTop !== void 0) instance.scrollTop = scrollTop;
-    if (scrollLeft !== void 0) instance.scrollLeft = scrollLeft; // Set textContent, if children is an animatable value
+class AnimatedStyle extends _react_spring_animated__WEBPACK_IMPORTED_MODULE_3__[/* AnimatedObject */ "a"] {
+  constructor(_ref) {
+    let {
+      x,
+      y,
+      z
+    } = _ref,
+        style = _objectWithoutPropertiesLoose(_ref, _excluded$1);
 
-    if (children !== void 0) instance.textContent = children; // Set styles ...
+    const inputs = [];
+    const transforms = [];
 
-    for (var styleName in style) {
-      if (!style.hasOwnProperty(styleName)) continue;
-      var isCustomProperty = styleName.indexOf('--') === 0;
-      var styleValue = dangerousStyleValue(styleName, style[styleName], isCustomProperty);
-      if (styleName === 'float') styleName = 'cssFloat';
-      if (isCustomProperty) instance.style.setProperty(styleName, styleValue);else instance.style[styleName] = styleValue;
-    } // Set attributes ...
-
-
-    for (var name in attributes) {
-      // Attributes are written in dash case
-      var dashCase = filter ? name : attributeCache[name] || (attributeCache[name] = name.replace(/([A-Z])/g, function (n) {
-        return '-' + n.toLowerCase();
-      }));
-      if (typeof instance.getAttribute(dashCase) !== 'undefined') instance.setAttribute(dashCase, attributes[name]);
+    if (x || y || z) {
+      inputs.push([x || 0, y || 0, z || 0]);
+      transforms.push(xyz => [`translate3d(${xyz.map(v => addUnit(v, 'px')).join(',')})`, isValueIdentity(xyz, 0)]);
     }
 
-    return;
-  } else return false;
-}, function (style) {
-  return style;
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* eachProp */ "l"])(style, (value, key) => {
+      if (key === 'transform') {
+        inputs.push([value || '']);
+        transforms.push(transform => [transform, transform === '']);
+      } else if (domTransforms.test(key)) {
+        delete style[key];
+        if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* is */ "s"].und(value)) return;
+        const unit = pxTransforms.test(key) ? 'px' : degTransforms.test(key) ? 'deg' : '';
+        inputs.push(Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* toArray */ "y"])(value));
+        transforms.push(key === 'rotate3d' ? ([x, y, z, deg]) => [`rotate3d(${x},${y},${z},${addUnit(deg, unit)})`, isValueIdentity(deg, 0)] : input => [`${key}(${input.map(v => addUnit(v, unit)).join(',')})`, isValueIdentity(input, key.startsWith('scale') ? 1 : 0)]);
+      }
+    });
+
+    if (inputs.length) {
+      style.transform = new FluidTransform(inputs, transforms);
+    }
+
+    super(style);
+  }
+
+}
+
+class FluidTransform extends _react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* FluidValue */ "a"] {
+  constructor(inputs, transforms) {
+    super();
+    this._value = null;
+    this.inputs = inputs;
+    this.transforms = transforms;
+  }
+
+  get() {
+    return this._value || (this._value = this._get());
+  }
+
+  _get() {
+    let transform = '';
+    let identity = true;
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* each */ "k"])(this.inputs, (input, i) => {
+      const arg1 = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* getFluidValue */ "q"])(input[0]);
+      const [t, id] = this.transforms[i](_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* is */ "s"].arr(arg1) ? arg1 : input.map(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* getFluidValue */ "q"]));
+      transform += ' ' + t;
+      identity = identity && id;
+    });
+    return identity ? 'none' : transform;
+  }
+
+  observerAdded(count) {
+    if (count == 1) Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* each */ "k"])(this.inputs, input => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* each */ "k"])(input, value => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* hasFluidValue */ "r"])(value) && Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* addFluidObserver */ "c"])(value, this)));
+  }
+
+  observerRemoved(count) {
+    if (count == 0) Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* each */ "k"])(this.inputs, input => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* each */ "k"])(input, value => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* hasFluidValue */ "r"])(value) && Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* removeFluidObserver */ "x"])(value, this)));
+  }
+
+  eventObserved(event) {
+    if (event.type == 'change') {
+      this._value = null;
+    }
+
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* callFluidObservers */ "d"])(this, event);
+  }
+
+}
+
+const primitives = ['a', 'abbr', 'address', 'area', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'big', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'data', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'keygen', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark', 'menu', 'menuitem', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'source', 'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'u', 'ul', 'var', 'video', 'wbr', 'circle', 'clipPath', 'defs', 'ellipse', 'foreignObject', 'g', 'image', 'line', 'linearGradient', 'mask', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'stop', 'svg', 'text', 'tspan'];
+
+const _excluded = ["scrollTop", "scrollLeft"];
+_react_spring_core__WEBPACK_IMPORTED_MODULE_0__["Globals"].assign({
+  batchedUpdates: react_dom__WEBPACK_IMPORTED_MODULE_1__["unstable_batchedUpdates"],
+  createStringInterpolator: _react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* createStringInterpolator */ "g"],
+  colors: _react_spring_shared__WEBPACK_IMPORTED_MODULE_2__[/* colors */ "e"]
 });
+const host = Object(_react_spring_animated__WEBPACK_IMPORTED_MODULE_3__[/* createHost */ "d"])(primitives, {
+  applyAnimatedValues,
+  createAnimatedStyle: style => new AnimatedStyle(style),
+  getComponentProps: _ref => {
+    let props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
-var domElements = ['a', 'abbr', 'address', 'area', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'big', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'data', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'keygen', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark', 'menu', 'menuitem', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'source', 'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'u', 'ul', 'var', 'video', 'wbr', // SVG
-'circle', 'clipPath', 'defs', 'ellipse', 'foreignObject', 'g', 'image', 'line', 'linearGradient', 'mask', 'path', 'pattern', 'polygon', 'polyline', 'radialGradient', 'rect', 'stop', 'svg', 'text', 'tspan'];
-// Extend animated with all the available THREE elements
-var apply = merge(createAnimatedComponent, false);
-var extendedAnimated = apply(domElements);
+    return props;
+  }
+});
+const animated = host.animated;
 
-exports.apply = apply;
-exports.config = config;
-exports.update = update;
-exports.animated = extendedAnimated;
-exports.a = extendedAnimated;
-exports.interpolate = interpolate$1;
-exports.Globals = Globals;
-exports.useSpring = useSpring;
-exports.useTrail = useTrail;
-exports.useTransition = useTransition;
-exports.useChain = useChain;
-exports.useSprings = useSprings;
+
 
 
 /***/ }),
 
-/***/ 161:
+/***/ 162:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
 
@@ -7381,14 +7821,14 @@ var index = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext || create
 
 /* harmony default export */ __webpack_exports__["a"] = (index);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(80)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(81)))
 
 /***/ }),
 
-/***/ 162:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
-var isarray = __webpack_require__(299)
+var isarray = __webpack_require__(304)
 
 /**
  * Expose `pathToRegexp`.
@@ -7818,14 +8258,7 @@ function pathToRegexp (path, keys, options) {
 
 /***/ }),
 
-/***/ 17:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wc"]["experimental"]; }());
-
-/***/ }),
-
-/***/ 170:
+/***/ 168:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7838,19 +8271,19 @@ __webpack_require__.d(__webpack_exports__, "b", function() { return /* binding *
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wp","i18n"]
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // CONCATENATED MODULE: ./client/activity-panel/display-options/icons/display.js
 
@@ -7999,30 +8432,40 @@ const DisplayOptions = () => {
       popoverProps: {
         className: 'woocommerce-layout__activity-panel-popover'
       }
-    }, ({
-      onClose
-    }) => Object(external_wp_element_["createElement"])(external_wp_element_["Fragment"], null, fills, hasTwoColumnContent ? Object(external_wp_element_["createElement"])(external_wp_components_["MenuGroup"], {
-      className: "woocommerce-layout__homescreen-display-options",
-      label: Object(external_wp_i18n_["__"])('Layout', 'woocommerce-admin')
-    }, Object(external_wp_element_["createElement"])(external_wp_components_["MenuItemsChoice"], {
-      choices: LAYOUTS,
-      onSelect: newLayout => {
-        updateUserPreferences({
-          homepage_layout: newLayout
-        });
-        onClose();
-        Object(external_wc_tracks_["recordEvent"])('homescreen_display_option', {
-          display_option: newLayout
-        });
-      },
-      value: layout || defaultHomescreenLayout
-    })) : null));
+    }, _ref => {
+      let {
+        onClose
+      } = _ref;
+      return Object(external_wp_element_["createElement"])(external_wp_element_["Fragment"], null, fills, hasTwoColumnContent ? Object(external_wp_element_["createElement"])(external_wp_components_["MenuGroup"], {
+        className: "woocommerce-layout__homescreen-display-options",
+        label: Object(external_wp_i18n_["__"])('Layout', 'woocommerce-admin')
+      }, Object(external_wp_element_["createElement"])(external_wp_components_["MenuItemsChoice"], {
+        choices: LAYOUTS,
+        onSelect: newLayout => {
+          updateUserPreferences({
+            homepage_layout: newLayout
+          });
+          onClose();
+          Object(external_wc_tracks_["recordEvent"])('homescreen_display_option', {
+            display_option: newLayout
+          });
+        },
+        value: layout || defaultHomescreenLayout
+      })) : null);
+    });
   });
 };
 
 /***/ }),
 
-/***/ 175:
+/***/ 17:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wc"]["tracks"]; }());
+
+/***/ }),
+
+/***/ 173:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8031,9 +8474,9 @@ const DisplayOptions = () => {
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(17);
+/* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(18);
 /* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_experimental__WEBPACK_IMPORTED_MODULE_3__);
 
 
@@ -8054,6 +8497,20 @@ const NoMatch = () => {
 
 /***/ }),
 
+/***/ 174:
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ 175:
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
 /***/ 176:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8061,7 +8518,7 @@ const NoMatch = () => {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getUnreadNotesCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return hasValidNotes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return truncateRenderableHTML; });
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * External dependencies
@@ -8172,174 +8629,14 @@ const truncateRenderableHTML = (originalHTML, limit) => {
 /***/ 18:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["apiFetch"]; }());
+(function() { module.exports = window["wc"]["experimental"]; }());
 
 /***/ }),
 
 /***/ 19:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                               * External Dependencies
-                                                                                                                                                                                                                                                                               */
-
-
-/**
- * Internal Dependencies
- */
-
-
-var _react = __webpack_require__(5);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsCreateFragment = __webpack_require__(71);
-
-var _reactAddonsCreateFragment2 = _interopRequireDefault(_reactAddonsCreateFragment);
-
-var _tokenize = __webpack_require__(74);
-
-var _tokenize2 = _interopRequireDefault(_tokenize);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var currentMixedString = void 0;
-
-function getCloseIndex(openIndex, tokens) {
-	var openToken = tokens[openIndex],
-	    nestLevel = 0,
-	    token,
-	    i;
-	for (i = openIndex + 1; i < tokens.length; i++) {
-		token = tokens[i];
-		if (token.value === openToken.value) {
-			if (token.type === 'componentOpen') {
-				nestLevel++;
-				continue;
-			}
-			if (token.type === 'componentClose') {
-				if (nestLevel === 0) {
-					return i;
-				}
-				nestLevel--;
-			}
-		}
-	}
-	// if we get this far, there was no matching close token
-	throw new Error('Missing closing component token `' + openToken.value + '`');
-}
-
-function buildChildren(tokens, components) {
-	var children = [],
-	    childrenObject = {},
-	    openComponent,
-	    clonedOpenComponent,
-	    openIndex,
-	    closeIndex,
-	    token,
-	    i,
-	    grandChildTokens,
-	    grandChildren,
-	    siblingTokens,
-	    siblings;
-
-	for (i = 0; i < tokens.length; i++) {
-		token = tokens[i];
-		if (token.type === 'string') {
-			children.push(token.value);
-			continue;
-		}
-		// component node should at least be set
-		if (!components.hasOwnProperty(token.value) || typeof components[token.value] === 'undefined') {
-			throw new Error('Invalid interpolation, missing component node: `' + token.value + '`');
-		}
-		// should be either ReactElement or null (both type "object"), all other types deprecated
-		if (_typeof(components[token.value]) !== 'object') {
-			throw new Error('Invalid interpolation, component node must be a ReactElement or null: `' + token.value + '`', '\n> ' + currentMixedString);
-		}
-		// we should never see a componentClose token in this loop
-		if (token.type === 'componentClose') {
-			throw new Error('Missing opening component token: `' + token.value + '`');
-		}
-		if (token.type === 'componentOpen') {
-			openComponent = components[token.value];
-			openIndex = i;
-			break;
-		}
-		// componentSelfClosing token
-		children.push(components[token.value]);
-		continue;
-	}
-
-	if (openComponent) {
-		closeIndex = getCloseIndex(openIndex, tokens);
-		grandChildTokens = tokens.slice(openIndex + 1, closeIndex);
-		grandChildren = buildChildren(grandChildTokens, components);
-		clonedOpenComponent = _react2.default.cloneElement(openComponent, {}, grandChildren);
-		children.push(clonedOpenComponent);
-
-		if (closeIndex < tokens.length - 1) {
-			siblingTokens = tokens.slice(closeIndex + 1);
-			siblings = buildChildren(siblingTokens, components);
-			children = children.concat(siblings);
-		}
-	}
-
-	if (children.length === 1) {
-		return children[0];
-	}
-
-	children.forEach(function (child, index) {
-		if (child) {
-			childrenObject['interpolation-child-' + index] = child;
-		}
-	});
-
-	return (0, _reactAddonsCreateFragment2.default)(childrenObject);
-}
-
-function interpolate(options) {
-	var mixedString = options.mixedString,
-	    components = options.components,
-	    throwErrors = options.throwErrors;
-
-
-	currentMixedString = mixedString;
-
-	if (!components) {
-		return mixedString;
-	}
-
-	if ((typeof components === 'undefined' ? 'undefined' : _typeof(components)) !== 'object') {
-		if (throwErrors) {
-			throw new Error('Interpolation Error: unable to process `' + mixedString + '` because components is not an object');
-		}
-
-		return mixedString;
-	}
-
-	var tokens = (0, _tokenize2.default)(mixedString);
-
-	try {
-		return buildChildren(tokens, components);
-	} catch (error) {
-		if (throwErrors) {
-			throw new Error('Interpolation Error: unable to process `' + mixedString + '` because of error `' + error.message + '`');
-		}
-
-		return mixedString;
-	}
-};
-
-exports.default = interpolate;
-//# sourceMappingURL=index.js.map
+(function() { module.exports = window["wp"]["apiFetch"]; }());
 
 /***/ }),
 
@@ -8351,42 +8648,294 @@ exports.default = interpolate;
 /***/ }),
 
 /***/ 20:
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-(function() { module.exports = window["wc"]["date"]; }());
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ interpolate; });
+
+// EXTERNAL MODULE: external "React"
+var external_React_ = __webpack_require__(6);
+
+// CONCATENATED MODULE: ./node_modules/@automattic/interpolate-components/dist/esm/tokenize.js
+function identifyToken(item) {
+  // {{/example}}
+  if (item.startsWith('{{/')) {
+    return {
+      type: 'componentClose',
+      value: item.replace(/\W/g, '')
+    };
+  } // {{example /}}
+
+
+  if (item.endsWith('/}}')) {
+    return {
+      type: 'componentSelfClosing',
+      value: item.replace(/\W/g, '')
+    };
+  } // {{example}}
+
+
+  if (item.startsWith('{{')) {
+    return {
+      type: 'componentOpen',
+      value: item.replace(/\W/g, '')
+    };
+  }
+
+  return {
+    type: 'string',
+    value: item
+  };
+}
+
+function tokenize(mixedString) {
+  const tokenStrings = mixedString.split(/(\{\{\/?\s*\w+\s*\/?\}\})/g); // split to components and strings
+
+  return tokenStrings.map(identifyToken);
+}
+// CONCATENATED MODULE: ./node_modules/@automattic/interpolate-components/dist/esm/index.js
+
+
+
+function getCloseIndex(openIndex, tokens) {
+  const openToken = tokens[openIndex];
+  let nestLevel = 0;
+
+  for (let i = openIndex + 1; i < tokens.length; i++) {
+    const token = tokens[i];
+
+    if (token.value === openToken.value) {
+      if (token.type === 'componentOpen') {
+        nestLevel++;
+        continue;
+      }
+
+      if (token.type === 'componentClose') {
+        if (nestLevel === 0) {
+          return i;
+        }
+
+        nestLevel--;
+      }
+    }
+  } // if we get this far, there was no matching close token
+
+
+  throw new Error('Missing closing component token `' + openToken.value + '`');
+}
+
+function buildChildren(tokens, components) {
+  let children = [];
+  let openComponent;
+  let openIndex;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+
+    if (token.type === 'string') {
+      children.push(token.value);
+      continue;
+    } // component node should at least be set
+
+
+    if (components[token.value] === undefined) {
+      throw new Error(`Invalid interpolation, missing component node: \`${token.value}\``);
+    } // should be either ReactElement or null (both type "object"), all other types deprecated
+
+
+    if (typeof components[token.value] !== 'object') {
+      throw new Error(`Invalid interpolation, component node must be a ReactElement or null: \`${token.value}\``);
+    } // we should never see a componentClose token in this loop
+
+
+    if (token.type === 'componentClose') {
+      throw new Error(`Missing opening component token: \`${token.value}\``);
+    }
+
+    if (token.type === 'componentOpen') {
+      openComponent = components[token.value];
+      openIndex = i;
+      break;
+    } // componentSelfClosing token
+
+
+    children.push(components[token.value]);
+    continue;
+  }
+
+  if (openComponent) {
+    const closeIndex = getCloseIndex(openIndex, tokens);
+    const grandChildTokens = tokens.slice(openIndex + 1, closeIndex);
+    const grandChildren = buildChildren(grandChildTokens, components);
+    const clonedOpenComponent = /*#__PURE__*/Object(external_React_["cloneElement"])(openComponent, {}, grandChildren);
+    children.push(clonedOpenComponent);
+
+    if (closeIndex < tokens.length - 1) {
+      const siblingTokens = tokens.slice(closeIndex + 1);
+      const siblings = buildChildren(siblingTokens, components);
+      children = children.concat(siblings);
+    }
+  }
+
+  children = children.filter(Boolean);
+
+  if (children.length === 0) {
+    return null;
+  }
+
+  if (children.length === 1) {
+    return children[0];
+  }
+
+  return /*#__PURE__*/Object(external_React_["createElement"])(external_React_["Fragment"], null, ...children);
+}
+
+function interpolate(options) {
+  const {
+    mixedString,
+    components,
+    throwErrors
+  } = options;
+
+  if (!components) {
+    return mixedString;
+  }
+
+  if (typeof components !== 'object') {
+    if (throwErrors) {
+      throw new Error(`Interpolation Error: unable to process \`${mixedString}\` because components is not an object`);
+    }
+
+    return mixedString;
+  }
+
+  const tokens = tokenize(mixedString);
+
+  try {
+    return buildChildren(tokens, components);
+  } catch (error) {
+    if (throwErrors) {
+      throw new Error(`Interpolation Error: unable to process \`${mixedString}\` because of error \`${error.message}\``);
+    }
+
+    return mixedString;
+  }
+}
 
 /***/ }),
 
 /***/ 21:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wc"]["components"]; }());
+(function() { module.exports = window["wc"]["date"]; }());
 
 /***/ }),
 
 /***/ 22:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _objectWithoutPropertiesLoose; });
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
+(function() { module.exports = window["wc"]["components"]; }());
 
 /***/ }),
 
 /***/ 23:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getAdminSetting; });
+/* unused harmony export ADMIN_URL */
+/* unused harmony export COUNTRIES */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CURRENCY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LOCALE; });
+/* unused harmony export SITE_TITLE */
+/* unused harmony export WC_ASSET_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ORDER_STATUSES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return setAdminSetting; });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
+/* harmony import */ var _woocommerce_settings__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__);
+/**
+ * External dependencies
+ */
+
+ // Remove mutable data from settings object to prevent access. Data stores should be used instead.
+
+const mutableSources = ['wcAdminSettings', 'preloadSettings'];
+const adminSettings = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('admin', {});
+const ADMIN_SETTINGS_SOURCE = Object.keys(adminSettings).reduce((source, key) => {
+  if (!mutableSources.includes(key)) {
+    source[key] = adminSettings[key];
+  }
+
+  return source;
+}, {});
+/**
+ * Retrieves a setting value from the setting state.
+ *
+ * @param {string}   name                         The identifier for the setting.
+ * @param {*}    [fallback=false]             The value to use as a fallback
+ *                                                if the setting is not in the
+ *                                                state.
+ * @param {Function} [filter=( val ) => val]  	  A callback for filtering the
+ *                                                value before it's returned.
+ *                                                Receives both the found value
+ *                                                (if it exists for the key) and
+ *                                                the provided fallback arg.
+ *
+ * @return {*}  The value present in the settings state for the given
+ *                   name.
+ */
+
+function getAdminSetting(name) {
+  let fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  let filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : val => val;
+
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be accessed via data store.'));
+  }
+
+  const value = ADMIN_SETTINGS_SOURCE.hasOwnProperty(name) ? ADMIN_SETTINGS_SOURCE[name] : fallback;
+  return filter(value, fallback);
+}
+const ADMIN_URL = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('adminUrl');
+const COUNTRIES = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('countries');
+const CURRENCY = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('currency');
+const LOCALE = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('locale');
+const SITE_TITLE = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('siteTitle');
+const WC_ASSET_URL = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('wcAssetUrl');
+const ORDER_STATUSES = getAdminSetting('orderStatuses');
+/**
+ * Sets a value to a property on the settings state.
+ *
+ * NOTE: This feature is to be removed in favour of data stores when a full migration
+ * is complete.
+ *
+ * @deprecated
+ *
+ * @param {string}   name                        The setting property key for the
+ *                                               setting being mutated.
+ * @param {*}    value                       The value to set.
+ * @param {Function} [filter=( val ) => val]     Allows for providing a callback
+ *                                               to sanitize the setting (eg.
+ *                                               ensure it's a number)
+ */
+
+function setAdminSetting(name, value) {
+  let filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : val => val;
+
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be mutated via data store.'));
+  }
+
+  ADMIN_SETTINGS_SOURCE[name] = filter(value);
+}
+
+/***/ }),
+
+/***/ 24:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8411,34 +8960,7 @@ function _extends() {
 
 /***/ }),
 
-/***/ 25:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ _inheritsLoose; });
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  _setPrototypeOf(subClass, superClass);
-}
-
-/***/ }),
-
-/***/ 256:
+/***/ 257:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8454,25 +8976,25 @@ var external_wp_element_ = __webpack_require__(0);
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external ["wc","experimental"]
-var external_wc_experimental_ = __webpack_require__(17);
+var external_wc_experimental_ = __webpack_require__(18);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/library/page.js
-var page = __webpack_require__(501);
+var page = __webpack_require__(523);
 
 // EXTERNAL MODULE: external ["wp","primitives"]
-var external_wp_primitives_ = __webpack_require__(8);
+var external_wp_primitives_ = __webpack_require__(9);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/icons/build-module/library/comment.js
 
@@ -8481,7 +9003,7 @@ var external_wp_primitives_ = __webpack_require__(8);
  * WordPress dependencies
  */
 
-var comment = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
+const comment = Object(external_wp_element_["createElement"])(external_wp_primitives_["SVG"], {
   viewBox: "0 0 24 24",
   xmlns: "http://www.w3.org/2000/svg"
 }, Object(external_wp_element_["createElement"])(external_wp_primitives_["Path"], {
@@ -8490,19 +9012,19 @@ var comment = Object(external_wp_element_["createElement"])(external_wp_primitiv
 /* harmony default export */ var library_comment = (comment);
 //# sourceMappingURL=comment.js.map
 // EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/library/box.js
-var box = __webpack_require__(502);
+var box = __webpack_require__(524);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./client/homescreen/activity-panel/orders/utils.js
-var utils = __webpack_require__(70);
+var utils = __webpack_require__(74);
 
 // EXTERNAL MODULE: ./client/homescreen/activity-panel/reviews/utils.js
 var reviews_utils = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./client/dashboard/utils.js
-var dashboard_utils = __webpack_require__(64);
+var dashboard_utils = __webpack_require__(69);
 
 // CONCATENATED MODULE: ./client/activity-panel/panels/inbox/icons/bell.js
 
@@ -8544,9 +9066,10 @@ const ORDER_PANEL_ID = 'orders-panel';
 const REVIEWS_PANEL_ID = 'reviews-panel';
 const STOCK_PANEL_ID = 'stock-panel';
 const ABBREVIATED_NOTIFICATION_SLOT_NAME = 'AbbreviatedNotification';
-const AbbreviatedNotificationsPanel = ({
-  thingsToDoNextCount
-}) => {
+const AbbreviatedNotificationsPanel = _ref => {
+  let {
+    thingsToDoNextCount
+  } = _ref;
   const {
     ordersToProcessCount,
     reviewsToModerateCount,
@@ -8627,7 +9150,7 @@ const AbbreviatedNotificationsPanel = ({
 
 /***/ }),
 
-/***/ 257:
+/***/ 258:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8645,26 +9168,22 @@ var external_wp_element_ = __webpack_require__(0);
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(31);
+var external_wp_hooks_ = __webpack_require__(28);
 
-// EXTERNAL MODULE: ./node_modules/interpolate-components/lib/index.js
-var lib = __webpack_require__(19);
-var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
-
-// EXTERNAL MODULE: ./packages/wc-admin-settings/build-module/index.js
-var build_module = __webpack_require__(13);
+// EXTERNAL MODULE: ./node_modules/@automattic/interpolate-components/dist/esm/index.js + 1 modules
+var esm = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var qs_lib = __webpack_require__(27);
+var lib = __webpack_require__(32);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: external ["wc","date"]
-var external_wc_date_ = __webpack_require__(20);
+var external_wc_date_ = __webpack_require__(21);
 
 // CONCATENATED MODULE: ./client/analytics/settings/default-date.js
 
@@ -8677,10 +9196,11 @@ var external_wc_date_ = __webpack_require__(20);
 
 
 
-const DefaultDate = ({
-  value,
-  onChange
-}) => {
+const DefaultDate = _ref => {
+  let {
+    value,
+    onChange
+  } = _ref;
   const {
     wcAdminSettings
   } = Object(external_wc_data_["useSettings"])('wc_admin', ['wcAdminSettings']);
@@ -8692,12 +9212,12 @@ const DefaultDate = ({
     onChange({
       target: {
         name: 'woocommerce_default_date_range',
-        value: Object(qs_lib["stringify"])(query)
+        value: Object(lib["stringify"])(query)
       }
     });
   };
 
-  const query = Object(qs_lib["parse"])(value.replace(/&amp;/g, '&'));
+  const query = Object(lib["parse"])(value.replace(/&amp;/g, '&'));
   const {
     period,
     compare,
@@ -8725,6 +9245,9 @@ const DefaultDate = ({
 };
 
 /* harmony default export */ var default_date = (DefaultDate);
+// EXTERNAL MODULE: ./client/utils/admin-settings.js
+var admin_settings = __webpack_require__(23);
+
 // CONCATENATED MODULE: ./client/analytics/settings/config.js
 
 
@@ -8734,24 +9257,24 @@ const DefaultDate = ({
 
 
 
-
 /**
  * Internal dependencies
  */
+
 
 
 const SETTINGS_FILTER = 'woocommerce_admin_analytics_settings';
 const DEFAULT_ACTIONABLE_STATUSES = ['processing', 'on-hold'];
 const DEFAULT_ORDER_STATUSES = ['completed', 'processing', 'refunded', 'cancelled', 'failed', 'pending', 'on-hold'];
 const DEFAULT_DATE_RANGE = 'period=month&compare=previous_year';
-const filteredOrderStatuses = Object.keys(build_module["c" /* ORDER_STATUSES */]).filter(status => status !== 'refunded').map(key => {
+const filteredOrderStatuses = Object.keys(admin_settings["c" /* ORDER_STATUSES */]).filter(status => status !== 'refunded').map(key => {
   return {
     value: key,
-    label: build_module["c" /* ORDER_STATUSES */][key],
-    description: Object(external_wp_i18n_["sprintf"])(Object(external_wp_i18n_["__"])('Exclude the %s status from reports', 'woocommerce-admin'), build_module["c" /* ORDER_STATUSES */][key])
+    label: admin_settings["c" /* ORDER_STATUSES */][key],
+    description: Object(external_wp_i18n_["sprintf"])(Object(external_wp_i18n_["__"])('Exclude the %s status from reports', 'woocommerce-admin'), admin_settings["c" /* ORDER_STATUSES */][key])
   };
 });
-const unregisteredOrderStatuses = Object(build_module["f" /* getSetting */])('unregisteredOrderStatuses', {});
+const unregisteredOrderStatuses = Object(admin_settings["d" /* getAdminSetting */])('unregisteredOrderStatuses', {});
 const orderStatusOptions = [{
   key: 'defaultStatuses',
   options: filteredOrderStatuses.filter(status => DEFAULT_ORDER_STATUSES.includes(status.value))
@@ -8770,12 +9293,19 @@ const orderStatusOptions = [{
     };
   })
 }];
+/**
+ * Filter Analytics Report settings. Add a UI element to the Analytics Settings page.
+ *
+ * @filter woocommerce_admin_analytics_settings
+ * @param {Object} reportSettings Report settings.
+ */
+
 const config = Object(external_wp_hooks_["applyFilters"])(SETTINGS_FILTER, {
   woocommerce_excluded_report_order_statuses: {
     label: Object(external_wp_i18n_["__"])('Excluded statuses:', 'woocommerce-admin'),
     inputType: 'checkboxGroup',
     options: orderStatusOptions,
-    helpText: lib_default()({
+    helpText: Object(esm["a" /* default */])({
       mixedString: Object(external_wp_i18n_["__"])('Orders with these statuses are excluded from the totals in your reports. ' + 'The {{strong}}Refunded{{/strong}} status can not be excluded.', 'woocommerce-admin'),
       components: {
         strong: Object(external_wp_element_["createElement"])("strong", null)
@@ -8802,23 +9332,23 @@ const config = Object(external_wp_hooks_["applyFilters"])(SETTINGS_FILTER, {
 
 /***/ }),
 
-/***/ 258:
+/***/ 259:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(259);
+/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(260);
 /* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_a11y__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_warning__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(260);
+/* harmony import */ var _wordpress_warning__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(261);
 /* harmony import */ var _wordpress_warning__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_warning__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(3);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__);
 
 
@@ -8852,20 +9382,22 @@ function useSpokenMessage(message, politeness) {
   }, [spokenMessage, politeness]);
 }
 
-function Snackbar({
-  className,
-  children,
-  spokenMessage = children,
-  politeness = 'polite',
-  actions = [],
-  onRemove = lodash__WEBPACK_IMPORTED_MODULE_1__["noop"],
-  icon = null,
-  explicitDismiss = false,
-  // onDismiss is a callback executed when the snackbar is dismissed.
-  // It is distinct from onRemove, which _looks_ like a callback but is
-  // actually the function to call to remove the snackbar from the UI.
-  onDismiss = null
-}, ref) {
+function Snackbar(_ref, ref) {
+  let {
+    className,
+    children,
+    spokenMessage = children,
+    politeness = 'polite',
+    actions = [],
+    onRemove = lodash__WEBPACK_IMPORTED_MODULE_1__["noop"],
+    icon = null,
+    explicitDismiss = false,
+    // onDismiss is a callback executed when the snackbar is dismissed.
+    // It is distinct from onRemove, which _looks_ like a callback but is
+    // actually the function to call to remove the snackbar from the UI.
+    onDismiss = null,
+    __unstableHTML = false
+  } = _ref;
   onDismiss = onDismiss || lodash__WEBPACK_IMPORTED_MODULE_1__["noop"];
 
   function dismissMe(event) {
@@ -8911,6 +9443,11 @@ function Snackbar({
   const snackbarContentClassnames = classnames__WEBPACK_IMPORTED_MODULE_2___default()('components-snackbar__content', {
     'components-snackbar__content-with-icon': !!icon
   });
+
+  if (__unstableHTML === true) {
+    children = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["RawHTML"], null, children);
+  }
+
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     ref: ref,
     className: classes,
@@ -8923,11 +9460,12 @@ function Snackbar({
     className: snackbarContentClassnames
   }, icon && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: "components-snackbar__icon"
-  }, icon), children, actions.map(({
-    label,
-    onClick,
-    url
-  }, index) => {
+  }, icon), children, actions.map((_ref2, index) => {
+    let {
+      label,
+      onClick,
+      url
+    } = _ref2;
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__["Button"], {
       key: index,
       href: url,
@@ -8946,25 +9484,34 @@ function Snackbar({
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(Snackbar));
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(129)))
-
-/***/ }),
-
-/***/ 259:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["a11y"]; }());
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(130)))
 
 /***/ }),
 
 /***/ 260:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["warning"]; }());
+(function() { module.exports = window["wp"]["a11y"]; }());
 
 /***/ }),
 
 /***/ 261:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["warning"]; }());
+
+/***/ }),
+
+/***/ 262:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=_default;var _react=_interopRequireDefault(__webpack_require__(6)),_excluded=["size","onClick","icon","className"];function _interopRequireDefault(a){return a&&a.__esModule?a:{default:a}}function _extends(){return _extends=Object.assign||function(a){for(var b,c=1;c<arguments.length;c++)for(var d in b=arguments[c],b)Object.prototype.hasOwnProperty.call(b,d)&&(a[d]=b[d]);return a},_extends.apply(this,arguments)}function _objectWithoutProperties(a,b){if(null==a)return{};var c,d,e=_objectWithoutPropertiesLoose(a,b);if(Object.getOwnPropertySymbols){var f=Object.getOwnPropertySymbols(a);for(d=0;d<f.length;d++)c=f[d],0<=b.indexOf(c)||Object.prototype.propertyIsEnumerable.call(a,c)&&(e[c]=a[c])}return e}function _objectWithoutPropertiesLoose(a,b){if(null==a)return{};var c,d,e={},f=Object.keys(a);for(d=0;d<f.length;d++)c=f[d],0<=b.indexOf(c)||(e[c]=a[c]);return e}function _default(a){var b=a.size,c=void 0===b?24:b,d=a.onClick,e=a.icon,f=a.className,g=_objectWithoutProperties(a,_excluded),h=["gridicon","gridicons-cross-small",f,!1,!1,!1].filter(Boolean).join(" ");return _react["default"].createElement("svg",_extends({className:h,height:c,width:c,onClick:d},g,{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 24 24"}),_react["default"].createElement("g",null,_react["default"].createElement("path",{d:"M17.705 7.705l-1.41-1.41L12 10.59 7.705 6.295l-1.41 1.41L10.59 12l-4.295 4.295 1.41 1.41L12 13.41l4.295 4.295 1.41-1.41L13.41 12l4.295-4.295z"})))}
+
+
+/***/ }),
+
+/***/ 263:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["customerEffortScore"]; }());
@@ -8972,25 +9519,40 @@ function Snackbar({
 /***/ }),
 
 /***/ 27:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ _inheritsLoose; });
 
-var stringify = __webpack_require__(58);
-var parse = __webpack_require__(59);
-var formats = __webpack_require__(34);
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
 
-module.exports = {
-    formats: formats,
-    parse: parse,
-    stringify: stringify
-};
+  return _setPrototypeOf(o, p);
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
 
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  _setPrototypeOf(subClass, superClass);
+}
 
 /***/ }),
 
-/***/ 272:
+/***/ 28:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["hooks"]; }());
+
+/***/ }),
+
+/***/ 281:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9026,20 +9588,20 @@ var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: external ["wc","customerEffortScore"]
-var external_wc_customerEffortScore_ = __webpack_require__(261);
+var external_wc_customerEffortScore_ = __webpack_require__(263);
 var external_wc_customerEffortScore_default = /*#__PURE__*/__webpack_require__.n(external_wc_customerEffortScore_);
 
 // EXTERNAL MODULE: external ["wp","compose"]
 var external_wp_compose_ = __webpack_require__(14);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: external ["wp","i18n"]
 var external_wp_i18n_ = __webpack_require__(2);
@@ -9078,18 +9640,19 @@ const ALLOW_TRACKING_OPTION_NAME = 'woocommerce_allow_tracking';
  * @param {Function} props.createNotice       Function to create a snackbar.
  */
 
-function CustomerEffortScoreTracks({
-  action,
-  trackProps,
-  label,
-  onSubmitLabel = Object(external_wp_i18n_["__"])('Thank you for your feedback!', 'woocommerce-admin'),
-  cesShownForActions,
-  allowTracking,
-  resolving,
-  storeAgeInWeeks,
-  updateOptions,
-  createNotice
-}) {
+function CustomerEffortScoreTracks(_ref) {
+  let {
+    action,
+    trackProps,
+    label,
+    onSubmitLabel = Object(external_wp_i18n_["__"])('Thank you for your feedback!', 'woocommerce-admin'),
+    cesShownForActions,
+    allowTracking,
+    resolving,
+    storeAgeInWeeks,
+    updateOptions,
+    createNotice
+  } = _ref;
   const [modalShown, setModalShown] = Object(external_wp_element_["useState"])(false);
 
   if (resolving) {
@@ -9267,7 +9830,7 @@ function getStoreAgeInWeeks(adminInstallTimestamp) {
   };
 }))(CustomerEffortScoreTracks));
 // EXTERNAL MODULE: ./client/customer-effort-score-tracks/data/constants.js
-var constants = __webpack_require__(57);
+var constants = __webpack_require__(59);
 
 // EXTERNAL MODULE: external ["wp","dataControls"]
 var external_wp_dataControls_ = __webpack_require__(10);
@@ -9311,7 +9874,11 @@ function setCesSurveyQueue(queue) {
  * @param {Object} props object for optional props
  */
 
-function addCesSurvey(action, label, pageNow = window.pagenow, adminPage = window.adminpage, onsubmit_label = undefined, props = {}) {
+function addCesSurvey(action, label) {
+  let pageNow = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : window.pagenow;
+  let adminPage = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : window.adminpage;
+  let onsubmit_label = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+  let props = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
   return {
     type: action_types.ADD_CES_SURVEY,
     action,
@@ -9373,7 +9940,10 @@ const DEFAULT_STATE = {
   queue: []
 };
 
-const reducer = (state = DEFAULT_STATE, action) => {
+const reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+  let action = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (action.type) {
     case action_types.SET_CES_SURVEY_QUEUE:
       return { ...state,
@@ -9457,11 +10027,13 @@ const reducer = (state = DEFAULT_STATE, action) => {
  * @param {Function} props.clearQueue Sets up clearing of the queue on the next page load.
  */
 
-function CustomerEffortScoreTracksContainer({
-  queue,
-  resolving,
-  clearQueue
-}) {
+function CustomerEffortScoreTracksContainer(_ref) {
+  let {
+    queue,
+    resolving,
+    clearQueue
+  } = _ref;
+
   if (resolving) {
     return null;
   }
@@ -9534,7 +10106,7 @@ CustomerEffortScoreTracksContainer.propTypes = {
 
 /***/ }),
 
-/***/ 273:
+/***/ 282:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9543,23 +10115,23 @@ CustomerEffortScoreTracksContainer.propTypes = {
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ EmbeddedBodyLayout; });
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/extends.js
-var helpers_extends = __webpack_require__(36);
+var helpers_extends = __webpack_require__(40);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
 // EXTERNAL MODULE: external ["wp","element"]
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(31);
+var external_wp_hooks_ = __webpack_require__(28);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(27);
+var lib = __webpack_require__(32);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // CONCATENATED MODULE: ./client/settings-recommendations/recommendations-eligibility-wrapper.tsx
 
@@ -9571,9 +10143,10 @@ var external_wc_data_ = __webpack_require__(11);
 
 const SHOW_MARKETPLACE_SUGGESTION_OPTION = 'woocommerce_show_marketplace_suggestions';
 
-const RecommendationsEligibilityWrapper = ({
-  children
-}) => {
+const RecommendationsEligibilityWrapper = _ref => {
+  let {
+    children
+  } = _ref;
   const {
     currentUserCan
   } = Object(external_wc_data_["useUser"])();
@@ -9611,12 +10184,14 @@ const RecommendationsEligibilityWrapper = ({
  */
 
 
-const PaymentRecommendationsChunk = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | payment-recommendations */ 45).then(__webpack_require__.bind(null, 626)));
-const PaymentRecommendations = ({
-  page,
-  tab,
-  section
-}) => {
+const PaymentRecommendationsChunk = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | payment-recommendations */ 45).then(__webpack_require__.bind(null, 647)));
+const PaymentRecommendations = _ref => {
+  let {
+    page,
+    tab,
+    section
+  } = _ref;
+
   if (page === 'wc-settings' && tab === 'checkout' && !section) {
     return Object(external_wp_element_["createElement"])(recommendations_eligibility_wrapper, null, Object(external_wp_element_["createElement"])(external_wp_element_["Suspense"], {
       fallback: null
@@ -9639,13 +10214,15 @@ const PaymentRecommendations = ({
  */
 
 
-const ShippingRecommendationsLoader = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | shipping-recommendations */ 48).then(__webpack_require__.bind(null, 635)));
-const ShippingRecommendations = ({
-  page,
-  tab,
-  section,
-  zone_id
-}) => {
+const ShippingRecommendationsLoader = Object(external_wp_element_["lazy"])(() => __webpack_require__.e(/* import() | shipping-recommendations */ 48).then(__webpack_require__.bind(null, 657)));
+const ShippingRecommendations = _ref => {
+  let {
+    page,
+    tab,
+    section,
+    zone_id
+  } = _ref;
+
   if (page !== 'wc-settings') {
     return null;
   }
@@ -9669,7 +10246,7 @@ const ShippingRecommendations = ({
 // CONCATENATED MODULE: ./client/shipping/index.ts
 
 // EXTERNAL MODULE: ./client/embedded-body-layout/style.scss
-var style = __webpack_require__(300);
+var style = __webpack_require__(305);
 
 // CONCATENATED MODULE: ./client/embedded-body-layout/embedded-body-layout.tsx
 
@@ -9710,6 +10287,14 @@ const EmbeddedBodyLayout = () => {
   if (isWPPage(query)) {
     queryParams = query;
   }
+  /**
+   * Filter an array of body components for WooCommerce non-react pages.
+   *
+   * @filter woocommerce_admin_embedded_layout_components
+   * @param {Array.<Node>} embeddedBodyComponentList Array of body components.
+   * @param {Object} query url query parameters.
+   */
+
 
   const componentList = Object(external_wp_hooks_["applyFilters"])('woocommerce_admin_embedded_layout_components', EMBEDDED_BODY_COMPONENT_LIST, queryParams);
   return Object(external_wp_element_["createElement"])("div", {
@@ -9726,30 +10311,23 @@ const EmbeddedBodyLayout = () => {
 
 /***/ }),
 
-/***/ 28:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["htmlEntities"]; }());
-
-/***/ }),
-
-/***/ 282:
+/***/ 291:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(128);
+/* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(129);
 /* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_notices__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
+/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
 /* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
-/* harmony import */ var _stylesheets_index_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(284);
-/* harmony import */ var _stylesheets_index_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_stylesheets_index_scss__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(120);
-/* harmony import */ var _customer_effort_score_tracks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(272);
-/* harmony import */ var _embedded_body_layout__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(273);
+/* harmony import */ var _stylesheets_index_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(293);
+/* harmony import */ var _stylesheets_index_scss__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_stylesheets_index_scss__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils_admin_settings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(23);
+/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(121);
+/* harmony import */ var _customer_effort_score_tracks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(281);
+/* harmony import */ var _embedded_body_layout__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(282);
 
 
 /**
@@ -9758,10 +10336,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 /**
  * Internal dependencies
  */
+
 
 
 
@@ -9773,7 +10351,7 @@ __webpack_require__.p = global.wcAdminAssets.path;
 const appRoot = document.getElementById('root');
 const embeddedRoot = document.getElementById('woocommerce-embedded-root');
 const settingsGroup = 'wc_admin';
-const hydrateUser = Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_3__[/* getSetting */ "f"])('currentUserData');
+const hydrateUser = Object(_utils_admin_settings__WEBPACK_IMPORTED_MODULE_4__[/* getAdminSetting */ "d"])('currentUserData');
 
 if (appRoot) {
   let HydratedPageLayout = Object(_woocommerce_data__WEBPACK_IMPORTED_MODULE_2__["withSettingsHydration"])(settingsGroup, window.wcSettings.admin)(_layout__WEBPACK_IMPORTED_MODULE_5__[/* PageLayout */ "b"]);
@@ -9821,122 +10399,7 @@ if (window.wcAdminFeatures && window.wcAdminFeatures['customer-effort-score-trac
     Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["render"])(Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_customer_effort_score_tracks__WEBPACK_IMPORTED_MODULE_6__[/* CustomerEffortScoreTracksContainer */ "a"], null), root.insertBefore(document.createElement('div'), null));
   })();
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(80)))
-
-/***/ }),
-
-/***/ 284:
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ 285:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wc"]["notices"]; }());
-
-/***/ }),
-
-/***/ 286:
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ 287:
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ 288:
-/***/ (function(module, exports) {
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-module.exports = _objectWithoutPropertiesLoose;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-
-/***/ }),
-
-/***/ 289:
-/***/ (function(module, exports, __webpack_require__) {
-
-var setPrototypeOf = __webpack_require__(290);
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  setPrototypeOf(subClass, superClass);
-}
-
-module.exports = _inheritsLoose;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-
-/***/ }),
-
-/***/ 29:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["ReactDOM"]; }());
-
-/***/ }),
-
-/***/ 290:
-/***/ (function(module, exports) {
-
-function _setPrototypeOf(o, p) {
-  module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
-  return _setPrototypeOf(o, p);
-}
-
-module.exports = _setPrototypeOf;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-
-/***/ }),
-
-/***/ 291:
-/***/ (function(module, exports) {
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-module.exports = _assertThisInitialized;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-
-/***/ }),
-
-/***/ 292:
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(81)))
 
 /***/ }),
 
@@ -9948,9 +10411,9 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 /***/ }),
 
 /***/ 294:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-// extracted by mini-css-extract-plugin
+(function() { module.exports = window["wc"]["notices"]; }());
 
 /***/ }),
 
@@ -9983,26 +10446,1061 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 /***/ }),
 
 /***/ 299:
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
 /***/ 3:
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-(function() { module.exports = window["wp"]["components"]; }());
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "w", function() { return /* reexport */ raf; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ FluidValue; });
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ react_spring_shared_esm_globals; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* binding */ addFluidObserver; });
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* binding */ callFluidObservers; });
+__webpack_require__.d(__webpack_exports__, "e", function() { return /* binding */ colors; });
+__webpack_require__.d(__webpack_exports__, "f", function() { return /* binding */ createInterpolator; });
+__webpack_require__.d(__webpack_exports__, "g", function() { return /* binding */ createStringInterpolator; });
+__webpack_require__.d(__webpack_exports__, "h", function() { return /* binding */ defineHidden; });
+__webpack_require__.d(__webpack_exports__, "i", function() { return /* binding */ deprecateDirectCall; });
+__webpack_require__.d(__webpack_exports__, "j", function() { return /* binding */ deprecateInterpolate; });
+__webpack_require__.d(__webpack_exports__, "k", function() { return /* binding */ each; });
+__webpack_require__.d(__webpack_exports__, "l", function() { return /* binding */ eachProp; });
+__webpack_require__.d(__webpack_exports__, "m", function() { return /* binding */ flush; });
+__webpack_require__.d(__webpack_exports__, "n", function() { return /* binding */ flushCalls; });
+__webpack_require__.d(__webpack_exports__, "o", function() { return /* binding */ frameLoop; });
+__webpack_require__.d(__webpack_exports__, "p", function() { return /* binding */ getFluidObservers; });
+__webpack_require__.d(__webpack_exports__, "q", function() { return /* binding */ getFluidValue; });
+__webpack_require__.d(__webpack_exports__, "r", function() { return /* binding */ hasFluidValue; });
+__webpack_require__.d(__webpack_exports__, "s", function() { return /* binding */ is; });
+__webpack_require__.d(__webpack_exports__, "t", function() { return /* binding */ isAnimatedString; });
+__webpack_require__.d(__webpack_exports__, "u", function() { return /* binding */ isEqual; });
+__webpack_require__.d(__webpack_exports__, "v", function() { return /* binding */ noop; });
+__webpack_require__.d(__webpack_exports__, "x", function() { return /* binding */ removeFluidObserver; });
+__webpack_require__.d(__webpack_exports__, "y", function() { return /* binding */ toArray; });
+__webpack_require__.d(__webpack_exports__, "z", function() { return /* binding */ useForceUpdate; });
+__webpack_require__.d(__webpack_exports__, "A", function() { return /* binding */ useLayoutEffect; });
+__webpack_require__.d(__webpack_exports__, "B", function() { return /* binding */ useMemoOne; });
+__webpack_require__.d(__webpack_exports__, "C", function() { return /* binding */ useOnce; });
+__webpack_require__.d(__webpack_exports__, "D", function() { return /* binding */ usePrev; });
+
+// UNUSED EXPORTS: callFluidObserver, colorToRgba, hex3, hex4, hex6, hex8, hsl, hsla, isSSR, rgb, rgba, setFluidGetter
+
+// CONCATENATED MODULE: ./node_modules/@react-spring/rafz/dist/react-spring-rafz.esm.js
+let updateQueue = makeQueue();
+const raf = fn => schedule(fn, updateQueue);
+let writeQueue = makeQueue();
+
+raf.write = fn => schedule(fn, writeQueue);
+
+let onStartQueue = makeQueue();
+
+raf.onStart = fn => schedule(fn, onStartQueue);
+
+let onFrameQueue = makeQueue();
+
+raf.onFrame = fn => schedule(fn, onFrameQueue);
+
+let onFinishQueue = makeQueue();
+
+raf.onFinish = fn => schedule(fn, onFinishQueue);
+
+let timeouts = [];
+
+raf.setTimeout = (handler, ms) => {
+  let time = raf.now() + ms;
+
+  let cancel = () => {
+    let i = timeouts.findIndex(t => t.cancel == cancel);
+    if (~i) timeouts.splice(i, 1);
+    pendingCount -= ~i ? 1 : 0;
+  };
+
+  let timeout = {
+    time,
+    handler,
+    cancel
+  };
+  timeouts.splice(findTimeout(time), 0, timeout);
+  pendingCount += 1;
+  start();
+  return timeout;
+};
+
+let findTimeout = time => ~(~timeouts.findIndex(t => t.time > time) || ~timeouts.length);
+
+raf.cancel = fn => {
+  onStartQueue.delete(fn);
+  onFrameQueue.delete(fn);
+  updateQueue.delete(fn);
+  writeQueue.delete(fn);
+  onFinishQueue.delete(fn);
+};
+
+raf.sync = fn => {
+  sync = true;
+  raf.batchedUpdates(fn);
+  sync = false;
+};
+
+raf.throttle = fn => {
+  let lastArgs;
+
+  function queuedFn() {
+    try {
+      fn(...lastArgs);
+    } finally {
+      lastArgs = null;
+    }
+  }
+
+  function throttled(...args) {
+    lastArgs = args;
+    raf.onStart(queuedFn);
+  }
+
+  throttled.handler = fn;
+
+  throttled.cancel = () => {
+    onStartQueue.delete(queuedFn);
+    lastArgs = null;
+  };
+
+  return throttled;
+};
+
+let nativeRaf = typeof window != 'undefined' ? window.requestAnimationFrame : () => {};
+
+raf.use = impl => nativeRaf = impl;
+
+raf.now = typeof performance != 'undefined' ? () => performance.now() : Date.now;
+
+raf.batchedUpdates = fn => fn();
+
+raf.catch = console.error;
+raf.frameLoop = 'always';
+
+raf.advance = () => {
+  if (raf.frameLoop !== 'demand') {
+    console.warn('Cannot call the manual advancement of rafz whilst frameLoop is not set as demand');
+  } else {
+    react_spring_rafz_esm_update();
+  }
+};
+
+let ts = -1;
+let pendingCount = 0;
+let sync = false;
+
+function schedule(fn, queue) {
+  if (sync) {
+    queue.delete(fn);
+    fn(0);
+  } else {
+    queue.add(fn);
+    start();
+  }
+}
+
+function start() {
+  if (ts < 0) {
+    ts = 0;
+
+    if (raf.frameLoop !== 'demand') {
+      nativeRaf(loop);
+    }
+  }
+}
+
+function stop() {
+  ts = -1;
+}
+
+function loop() {
+  if (~ts) {
+    nativeRaf(loop);
+    raf.batchedUpdates(react_spring_rafz_esm_update);
+  }
+}
+
+function react_spring_rafz_esm_update() {
+  let prevTs = ts;
+  ts = raf.now();
+  let count = findTimeout(ts);
+
+  if (count) {
+    eachSafely(timeouts.splice(0, count), t => t.handler());
+    pendingCount -= count;
+  }
+
+  onStartQueue.flush();
+  updateQueue.flush(prevTs ? Math.min(64, ts - prevTs) : 16.667);
+  onFrameQueue.flush();
+  writeQueue.flush();
+  onFinishQueue.flush();
+
+  if (!pendingCount) {
+    stop();
+  }
+}
+
+function makeQueue() {
+  let next = new Set();
+  let current = next;
+  return {
+    add(fn) {
+      pendingCount += current == next && !next.has(fn) ? 1 : 0;
+      next.add(fn);
+    },
+
+    delete(fn) {
+      pendingCount -= current == next && next.has(fn) ? 1 : 0;
+      return next.delete(fn);
+    },
+
+    flush(arg) {
+      if (current.size) {
+        next = new Set();
+        pendingCount -= current.size;
+        eachSafely(current, fn => fn(arg) && next.add(fn));
+        pendingCount += next.size;
+        current = next;
+      }
+    }
+
+  };
+}
+
+function eachSafely(values, each) {
+  values.forEach(value => {
+    try {
+      each(value);
+    } catch (e) {
+      raf.catch(e);
+    }
+  });
+}
+
+const __raf = {
+  count() {
+    return pendingCount;
+  },
+
+  isRunning() {
+    return ts >= 0;
+  },
+
+  clear() {
+    ts = -1;
+    timeouts = [];
+    onStartQueue = makeQueue();
+    updateQueue = makeQueue();
+    onFrameQueue = makeQueue();
+    writeQueue = makeQueue();
+    onFinishQueue = makeQueue();
+    pendingCount = 0;
+  }
+
+};
+
+
+
+// EXTERNAL MODULE: external "React"
+var external_React_ = __webpack_require__(6);
+
+// CONCATENATED MODULE: ./node_modules/@react-spring/shared/dist/react-spring-shared.esm.js
+
+
+
+
+
+function noop() {}
+const defineHidden = (obj, key, value) => Object.defineProperty(obj, key, {
+  value,
+  writable: true,
+  configurable: true
+});
+const is = {
+  arr: Array.isArray,
+  obj: a => !!a && a.constructor.name === 'Object',
+  fun: a => typeof a === 'function',
+  str: a => typeof a === 'string',
+  num: a => typeof a === 'number',
+  und: a => a === undefined
+};
+function isEqual(a, b) {
+  if (is.arr(a)) {
+    if (!is.arr(b) || a.length !== b.length) return false;
+
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+
+    return true;
+  }
+
+  return a === b;
+}
+const each = (obj, fn) => obj.forEach(fn);
+function eachProp(obj, fn, ctx) {
+  if (is.arr(obj)) {
+    for (let i = 0; i < obj.length; i++) {
+      fn.call(ctx, obj[i], `${i}`);
+    }
+
+    return;
+  }
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      fn.call(ctx, obj[key], key);
+    }
+  }
+}
+const toArray = a => is.und(a) ? [] : is.arr(a) ? a : [a];
+function flush(queue, iterator) {
+  if (queue.size) {
+    const items = Array.from(queue);
+    queue.clear();
+    each(items, iterator);
+  }
+}
+const flushCalls = (queue, ...args) => flush(queue, fn => fn(...args));
+const isSSR = () => typeof window === 'undefined' || !window.navigator || /ServerSideRendering|^Deno\//.test(window.navigator.userAgent);
+
+let createStringInterpolator$1;
+let to;
+let colors$1 = null;
+let skipAnimation = false;
+let willAdvance = noop;
+const react_spring_shared_esm_assign = globals => {
+  if (globals.to) to = globals.to;
+  if (globals.now) raf.now = globals.now;
+  if (globals.colors !== undefined) colors$1 = globals.colors;
+  if (globals.skipAnimation != null) skipAnimation = globals.skipAnimation;
+  if (globals.createStringInterpolator) createStringInterpolator$1 = globals.createStringInterpolator;
+  if (globals.requestAnimationFrame) raf.use(globals.requestAnimationFrame);
+  if (globals.batchedUpdates) raf.batchedUpdates = globals.batchedUpdates;
+  if (globals.willAdvance) willAdvance = globals.willAdvance;
+  if (globals.frameLoop) raf.frameLoop = globals.frameLoop;
+};
+
+var react_spring_shared_esm_globals = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  get createStringInterpolator () { return createStringInterpolator$1; },
+  get to () { return to; },
+  get colors () { return colors$1; },
+  get skipAnimation () { return skipAnimation; },
+  get willAdvance () { return willAdvance; },
+  assign: react_spring_shared_esm_assign
+});
+
+const startQueue = new Set();
+let currentFrame = [];
+let prevFrame = [];
+let priority = 0;
+const frameLoop = {
+  get idle() {
+    return !startQueue.size && !currentFrame.length;
+  },
+
+  start(animation) {
+    if (priority > animation.priority) {
+      startQueue.add(animation);
+      raf.onStart(flushStartQueue);
+    } else {
+      startSafely(animation);
+      raf(advance);
+    }
+  },
+
+  advance,
+
+  sort(animation) {
+    if (priority) {
+      raf.onFrame(() => frameLoop.sort(animation));
+    } else {
+      const prevIndex = currentFrame.indexOf(animation);
+
+      if (~prevIndex) {
+        currentFrame.splice(prevIndex, 1);
+        startUnsafely(animation);
+      }
+    }
+  },
+
+  clear() {
+    currentFrame = [];
+    startQueue.clear();
+  }
+
+};
+
+function flushStartQueue() {
+  startQueue.forEach(startSafely);
+  startQueue.clear();
+  raf(advance);
+}
+
+function startSafely(animation) {
+  if (!currentFrame.includes(animation)) startUnsafely(animation);
+}
+
+function startUnsafely(animation) {
+  currentFrame.splice(findIndex(currentFrame, other => other.priority > animation.priority), 0, animation);
+}
+
+function advance(dt) {
+  const nextFrame = prevFrame;
+
+  for (let i = 0; i < currentFrame.length; i++) {
+    const animation = currentFrame[i];
+    priority = animation.priority;
+
+    if (!animation.idle) {
+      willAdvance(animation);
+      animation.advance(dt);
+
+      if (!animation.idle) {
+        nextFrame.push(animation);
+      }
+    }
+  }
+
+  priority = 0;
+  prevFrame = currentFrame;
+  prevFrame.length = 0;
+  currentFrame = nextFrame;
+  return currentFrame.length > 0;
+}
+
+function findIndex(arr, test) {
+  const index = arr.findIndex(test);
+  return index < 0 ? arr.length : index;
+}
+
+const colors = {
+  transparent: 0x00000000,
+  aliceblue: 0xf0f8ffff,
+  antiquewhite: 0xfaebd7ff,
+  aqua: 0x00ffffff,
+  aquamarine: 0x7fffd4ff,
+  azure: 0xf0ffffff,
+  beige: 0xf5f5dcff,
+  bisque: 0xffe4c4ff,
+  black: 0x000000ff,
+  blanchedalmond: 0xffebcdff,
+  blue: 0x0000ffff,
+  blueviolet: 0x8a2be2ff,
+  brown: 0xa52a2aff,
+  burlywood: 0xdeb887ff,
+  burntsienna: 0xea7e5dff,
+  cadetblue: 0x5f9ea0ff,
+  chartreuse: 0x7fff00ff,
+  chocolate: 0xd2691eff,
+  coral: 0xff7f50ff,
+  cornflowerblue: 0x6495edff,
+  cornsilk: 0xfff8dcff,
+  crimson: 0xdc143cff,
+  cyan: 0x00ffffff,
+  darkblue: 0x00008bff,
+  darkcyan: 0x008b8bff,
+  darkgoldenrod: 0xb8860bff,
+  darkgray: 0xa9a9a9ff,
+  darkgreen: 0x006400ff,
+  darkgrey: 0xa9a9a9ff,
+  darkkhaki: 0xbdb76bff,
+  darkmagenta: 0x8b008bff,
+  darkolivegreen: 0x556b2fff,
+  darkorange: 0xff8c00ff,
+  darkorchid: 0x9932ccff,
+  darkred: 0x8b0000ff,
+  darksalmon: 0xe9967aff,
+  darkseagreen: 0x8fbc8fff,
+  darkslateblue: 0x483d8bff,
+  darkslategray: 0x2f4f4fff,
+  darkslategrey: 0x2f4f4fff,
+  darkturquoise: 0x00ced1ff,
+  darkviolet: 0x9400d3ff,
+  deeppink: 0xff1493ff,
+  deepskyblue: 0x00bfffff,
+  dimgray: 0x696969ff,
+  dimgrey: 0x696969ff,
+  dodgerblue: 0x1e90ffff,
+  firebrick: 0xb22222ff,
+  floralwhite: 0xfffaf0ff,
+  forestgreen: 0x228b22ff,
+  fuchsia: 0xff00ffff,
+  gainsboro: 0xdcdcdcff,
+  ghostwhite: 0xf8f8ffff,
+  gold: 0xffd700ff,
+  goldenrod: 0xdaa520ff,
+  gray: 0x808080ff,
+  green: 0x008000ff,
+  greenyellow: 0xadff2fff,
+  grey: 0x808080ff,
+  honeydew: 0xf0fff0ff,
+  hotpink: 0xff69b4ff,
+  indianred: 0xcd5c5cff,
+  indigo: 0x4b0082ff,
+  ivory: 0xfffff0ff,
+  khaki: 0xf0e68cff,
+  lavender: 0xe6e6faff,
+  lavenderblush: 0xfff0f5ff,
+  lawngreen: 0x7cfc00ff,
+  lemonchiffon: 0xfffacdff,
+  lightblue: 0xadd8e6ff,
+  lightcoral: 0xf08080ff,
+  lightcyan: 0xe0ffffff,
+  lightgoldenrodyellow: 0xfafad2ff,
+  lightgray: 0xd3d3d3ff,
+  lightgreen: 0x90ee90ff,
+  lightgrey: 0xd3d3d3ff,
+  lightpink: 0xffb6c1ff,
+  lightsalmon: 0xffa07aff,
+  lightseagreen: 0x20b2aaff,
+  lightskyblue: 0x87cefaff,
+  lightslategray: 0x778899ff,
+  lightslategrey: 0x778899ff,
+  lightsteelblue: 0xb0c4deff,
+  lightyellow: 0xffffe0ff,
+  lime: 0x00ff00ff,
+  limegreen: 0x32cd32ff,
+  linen: 0xfaf0e6ff,
+  magenta: 0xff00ffff,
+  maroon: 0x800000ff,
+  mediumaquamarine: 0x66cdaaff,
+  mediumblue: 0x0000cdff,
+  mediumorchid: 0xba55d3ff,
+  mediumpurple: 0x9370dbff,
+  mediumseagreen: 0x3cb371ff,
+  mediumslateblue: 0x7b68eeff,
+  mediumspringgreen: 0x00fa9aff,
+  mediumturquoise: 0x48d1ccff,
+  mediumvioletred: 0xc71585ff,
+  midnightblue: 0x191970ff,
+  mintcream: 0xf5fffaff,
+  mistyrose: 0xffe4e1ff,
+  moccasin: 0xffe4b5ff,
+  navajowhite: 0xffdeadff,
+  navy: 0x000080ff,
+  oldlace: 0xfdf5e6ff,
+  olive: 0x808000ff,
+  olivedrab: 0x6b8e23ff,
+  orange: 0xffa500ff,
+  orangered: 0xff4500ff,
+  orchid: 0xda70d6ff,
+  palegoldenrod: 0xeee8aaff,
+  palegreen: 0x98fb98ff,
+  paleturquoise: 0xafeeeeff,
+  palevioletred: 0xdb7093ff,
+  papayawhip: 0xffefd5ff,
+  peachpuff: 0xffdab9ff,
+  peru: 0xcd853fff,
+  pink: 0xffc0cbff,
+  plum: 0xdda0ddff,
+  powderblue: 0xb0e0e6ff,
+  purple: 0x800080ff,
+  rebeccapurple: 0x663399ff,
+  red: 0xff0000ff,
+  rosybrown: 0xbc8f8fff,
+  royalblue: 0x4169e1ff,
+  saddlebrown: 0x8b4513ff,
+  salmon: 0xfa8072ff,
+  sandybrown: 0xf4a460ff,
+  seagreen: 0x2e8b57ff,
+  seashell: 0xfff5eeff,
+  sienna: 0xa0522dff,
+  silver: 0xc0c0c0ff,
+  skyblue: 0x87ceebff,
+  slateblue: 0x6a5acdff,
+  slategray: 0x708090ff,
+  slategrey: 0x708090ff,
+  snow: 0xfffafaff,
+  springgreen: 0x00ff7fff,
+  steelblue: 0x4682b4ff,
+  tan: 0xd2b48cff,
+  teal: 0x008080ff,
+  thistle: 0xd8bfd8ff,
+  tomato: 0xff6347ff,
+  turquoise: 0x40e0d0ff,
+  violet: 0xee82eeff,
+  wheat: 0xf5deb3ff,
+  white: 0xffffffff,
+  whitesmoke: 0xf5f5f5ff,
+  yellow: 0xffff00ff,
+  yellowgreen: 0x9acd32ff
+};
+
+const NUMBER = '[-+]?\\d*\\.?\\d+';
+const PERCENTAGE = NUMBER + '%';
+
+function call(...parts) {
+  return '\\(\\s*(' + parts.join(')\\s*,\\s*(') + ')\\s*\\)';
+}
+
+const rgb = new RegExp('rgb' + call(NUMBER, NUMBER, NUMBER));
+const rgba = new RegExp('rgba' + call(NUMBER, NUMBER, NUMBER, NUMBER));
+const hsl = new RegExp('hsl' + call(NUMBER, PERCENTAGE, PERCENTAGE));
+const hsla = new RegExp('hsla' + call(NUMBER, PERCENTAGE, PERCENTAGE, NUMBER));
+const hex3 = /^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/;
+const hex4 = /^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/;
+const hex6 = /^#([0-9a-fA-F]{6})$/;
+const hex8 = /^#([0-9a-fA-F]{8})$/;
+
+function normalizeColor(color) {
+  let match;
+
+  if (typeof color === 'number') {
+    return color >>> 0 === color && color >= 0 && color <= 0xffffffff ? color : null;
+  }
+
+  if (match = hex6.exec(color)) return parseInt(match[1] + 'ff', 16) >>> 0;
+
+  if (colors$1 && colors$1[color] !== undefined) {
+    return colors$1[color];
+  }
+
+  if (match = rgb.exec(color)) {
+    return (parse255(match[1]) << 24 | parse255(match[2]) << 16 | parse255(match[3]) << 8 | 0x000000ff) >>> 0;
+  }
+
+  if (match = rgba.exec(color)) {
+    return (parse255(match[1]) << 24 | parse255(match[2]) << 16 | parse255(match[3]) << 8 | parse1(match[4])) >>> 0;
+  }
+
+  if (match = hex3.exec(color)) {
+    return parseInt(match[1] + match[1] + match[2] + match[2] + match[3] + match[3] + 'ff', 16) >>> 0;
+  }
+
+  if (match = hex8.exec(color)) return parseInt(match[1], 16) >>> 0;
+
+  if (match = hex4.exec(color)) {
+    return parseInt(match[1] + match[1] + match[2] + match[2] + match[3] + match[3] + match[4] + match[4], 16) >>> 0;
+  }
+
+  if (match = hsl.exec(color)) {
+    return (hslToRgb(parse360(match[1]), parsePercentage(match[2]), parsePercentage(match[3])) | 0x000000ff) >>> 0;
+  }
+
+  if (match = hsla.exec(color)) {
+    return (hslToRgb(parse360(match[1]), parsePercentage(match[2]), parsePercentage(match[3])) | parse1(match[4])) >>> 0;
+  }
+
+  return null;
+}
+
+function hue2rgb(p, q, t) {
+  if (t < 0) t += 1;
+  if (t > 1) t -= 1;
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+  return p;
+}
+
+function hslToRgb(h, s, l) {
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const r = hue2rgb(p, q, h + 1 / 3);
+  const g = hue2rgb(p, q, h);
+  const b = hue2rgb(p, q, h - 1 / 3);
+  return Math.round(r * 255) << 24 | Math.round(g * 255) << 16 | Math.round(b * 255) << 8;
+}
+
+function parse255(str) {
+  const int = parseInt(str, 10);
+  if (int < 0) return 0;
+  if (int > 255) return 255;
+  return int;
+}
+
+function parse360(str) {
+  const int = parseFloat(str);
+  return (int % 360 + 360) % 360 / 360;
+}
+
+function parse1(str) {
+  const num = parseFloat(str);
+  if (num < 0) return 0;
+  if (num > 1) return 255;
+  return Math.round(num * 255);
+}
+
+function parsePercentage(str) {
+  const int = parseFloat(str);
+  if (int < 0) return 0;
+  if (int > 100) return 1;
+  return int / 100;
+}
+
+function colorToRgba(input) {
+  let int32Color = normalizeColor(input);
+  if (int32Color === null) return input;
+  int32Color = int32Color || 0;
+  let r = (int32Color & 0xff000000) >>> 24;
+  let g = (int32Color & 0x00ff0000) >>> 16;
+  let b = (int32Color & 0x0000ff00) >>> 8;
+  let a = (int32Color & 0x000000ff) / 255;
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
+const createInterpolator = (range, output, extrapolate) => {
+  if (is.fun(range)) {
+    return range;
+  }
+
+  if (is.arr(range)) {
+    return createInterpolator({
+      range,
+      output: output,
+      extrapolate
+    });
+  }
+
+  if (is.str(range.output[0])) {
+    return createStringInterpolator$1(range);
+  }
+
+  const config = range;
+  const outputRange = config.output;
+  const inputRange = config.range || [0, 1];
+  const extrapolateLeft = config.extrapolateLeft || config.extrapolate || 'extend';
+  const extrapolateRight = config.extrapolateRight || config.extrapolate || 'extend';
+
+  const easing = config.easing || (t => t);
+
+  return input => {
+    const range = findRange(input, inputRange);
+    return interpolate(input, inputRange[range], inputRange[range + 1], outputRange[range], outputRange[range + 1], easing, extrapolateLeft, extrapolateRight, config.map);
+  };
+};
+
+function interpolate(input, inputMin, inputMax, outputMin, outputMax, easing, extrapolateLeft, extrapolateRight, map) {
+  let result = map ? map(input) : input;
+
+  if (result < inputMin) {
+    if (extrapolateLeft === 'identity') return result;else if (extrapolateLeft === 'clamp') result = inputMin;
+  }
+
+  if (result > inputMax) {
+    if (extrapolateRight === 'identity') return result;else if (extrapolateRight === 'clamp') result = inputMax;
+  }
+
+  if (outputMin === outputMax) return outputMin;
+  if (inputMin === inputMax) return input <= inputMin ? outputMin : outputMax;
+  if (inputMin === -Infinity) result = -result;else if (inputMax === Infinity) result = result - inputMin;else result = (result - inputMin) / (inputMax - inputMin);
+  result = easing(result);
+  if (outputMin === -Infinity) result = -result;else if (outputMax === Infinity) result = result + outputMin;else result = result * (outputMax - outputMin) + outputMin;
+  return result;
+}
+
+function findRange(input, inputRange) {
+  for (var i = 1; i < inputRange.length - 1; ++i) if (inputRange[i] >= input) break;
+
+  return i - 1;
+}
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+const $get = Symbol.for('FluidValue.get');
+const $observers = Symbol.for('FluidValue.observers');
+
+const hasFluidValue = arg => Boolean(arg && arg[$get]);
+
+const getFluidValue = arg => arg && arg[$get] ? arg[$get]() : arg;
+
+const getFluidObservers = target => target[$observers] || null;
+
+function callFluidObserver(observer, event) {
+  if (observer.eventObserved) {
+    observer.eventObserved(event);
+  } else {
+    observer(event);
+  }
+}
+
+function callFluidObservers(target, event) {
+  let observers = target[$observers];
+
+  if (observers) {
+    observers.forEach(observer => {
+      callFluidObserver(observer, event);
+    });
+  }
+}
+
+class FluidValue {
+  constructor(get) {
+    this[$get] = void 0;
+    this[$observers] = void 0;
+
+    if (!get && !(get = this.get)) {
+      throw Error('Unknown getter');
+    }
+
+    setFluidGetter(this, get);
+  }
+
+}
+
+const setFluidGetter = (target, get) => setHidden(target, $get, get);
+
+function addFluidObserver(target, observer) {
+  if (target[$get]) {
+    let observers = target[$observers];
+
+    if (!observers) {
+      setHidden(target, $observers, observers = new Set());
+    }
+
+    if (!observers.has(observer)) {
+      observers.add(observer);
+
+      if (target.observerAdded) {
+        target.observerAdded(observers.size, observer);
+      }
+    }
+  }
+
+  return observer;
+}
+
+function removeFluidObserver(target, observer) {
+  let observers = target[$observers];
+
+  if (observers && observers.has(observer)) {
+    const count = observers.size - 1;
+
+    if (count) {
+      observers.delete(observer);
+    } else {
+      target[$observers] = null;
+    }
+
+    if (target.observerRemoved) {
+      target.observerRemoved(count, observer);
+    }
+  }
+}
+
+const setHidden = (target, key, value) => Object.defineProperty(target, key, {
+  value,
+  writable: true,
+  configurable: true
+});
+
+const numberRegex = /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+const colorRegex = /(#(?:[0-9a-f]{2}){2,4}|(#[0-9a-f]{3})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\))/gi;
+const unitRegex = new RegExp(`(${numberRegex.source})(%|[a-z]+)`, 'i');
+const rgbaRegex = /rgba\(([0-9\.-]+), ([0-9\.-]+), ([0-9\.-]+), ([0-9\.-]+)\)/gi;
+const cssVariableRegex = /var\((--[a-zA-Z0-9-_]+),? ?([a-zA-Z0-9 ()%#.,-]+)?\)/;
+
+const variableToRgba = input => {
+  const [token, fallback] = parseCSSVariable(input);
+
+  if (!token || isSSR()) {
+    return input;
+  }
+
+  const value = window.getComputedStyle(document.documentElement).getPropertyValue(token);
+
+  if (value) {
+    return value.trim();
+  } else if (fallback && fallback.startsWith('--')) {
+    const _value = window.getComputedStyle(document.documentElement).getPropertyValue(fallback);
+
+    if (_value) {
+      return _value;
+    } else {
+      return input;
+    }
+  } else if (fallback && cssVariableRegex.test(fallback)) {
+    return variableToRgba(fallback);
+  } else if (fallback) {
+    return fallback;
+  }
+
+  return input;
+};
+
+const parseCSSVariable = current => {
+  const match = cssVariableRegex.exec(current);
+  if (!match) return [,];
+  const [, token, fallback] = match;
+  return [token, fallback];
+};
+
+let namedColorRegex;
+
+const rgbaRound = (_, p1, p2, p3, p4) => `rgba(${Math.round(p1)}, ${Math.round(p2)}, ${Math.round(p3)}, ${p4})`;
+
+const createStringInterpolator = config => {
+  if (!namedColorRegex) namedColorRegex = colors$1 ? new RegExp(`(${Object.keys(colors$1).join('|')})(?!\\w)`, 'g') : /^\b$/;
+  const output = config.output.map(value => {
+    return getFluidValue(value).replace(cssVariableRegex, variableToRgba).replace(colorRegex, colorToRgba).replace(namedColorRegex, colorToRgba);
+  });
+  const keyframes = output.map(value => value.match(numberRegex).map(Number));
+  const outputRanges = keyframes[0].map((_, i) => keyframes.map(values => {
+    if (!(i in values)) {
+      throw Error('The arity of each "output" value must be equal');
+    }
+
+    return values[i];
+  }));
+  const interpolators = outputRanges.map(output => createInterpolator(_extends({}, config, {
+    output
+  })));
+  return input => {
+    var _output$find;
+
+    const missingUnit = !unitRegex.test(output[0]) && ((_output$find = output.find(value => unitRegex.test(value))) == null ? void 0 : _output$find.replace(numberRegex, ''));
+    let i = 0;
+    return output[0].replace(numberRegex, () => `${interpolators[i++](input)}${missingUnit || ''}`).replace(rgbaRegex, rgbaRound);
+  };
+};
+
+const prefix = 'react-spring: ';
+
+const once = fn => {
+  const func = fn;
+  let called = false;
+
+  if (typeof func != 'function') {
+    throw new TypeError(`${prefix}once requires a function parameter`);
+  }
+
+  return (...args) => {
+    if (!called) {
+      func(...args);
+      called = true;
+    }
+  };
+};
+
+const warnInterpolate = once(console.warn);
+function deprecateInterpolate() {
+  warnInterpolate(`${prefix}The "interpolate" function is deprecated in v9 (use "to" instead)`);
+}
+const warnDirectCall = once(console.warn);
+function deprecateDirectCall() {
+  warnDirectCall(`${prefix}Directly calling start instead of using the api object is deprecated in v9 (use ".start" instead), this will be removed in later 0.X.0 versions`);
+}
+
+function isAnimatedString(value) {
+  return is.str(value) && (value[0] == '#' || /\d/.test(value) || !isSSR() && cssVariableRegex.test(value) || value in (colors$1 || {}));
+}
+
+const useOnce = effect => Object(external_React_["useEffect"])(effect, emptyDeps);
+const emptyDeps = [];
+
+function useForceUpdate() {
+  const update = Object(external_React_["useState"])()[1];
+  const mounted = Object(external_React_["useState"])(makeMountedRef)[0];
+  useOnce(mounted.unmount);
+  return () => {
+    if (mounted.current) {
+      update({});
+    }
+  };
+}
+
+function makeMountedRef() {
+  const mounted = {
+    current: true,
+    unmount: () => () => {
+      mounted.current = false;
+    }
+  };
+  return mounted;
+}
+
+function useMemoOne(getResult, inputs) {
+  const [initial] = Object(external_React_["useState"])(() => ({
+    inputs,
+    result: getResult()
+  }));
+  const committed = Object(external_React_["useRef"])();
+  const prevCache = committed.current;
+  let cache = prevCache;
+
+  if (cache) {
+    const useCache = Boolean(inputs && cache.inputs && areInputsEqual(inputs, cache.inputs));
+
+    if (!useCache) {
+      cache = {
+        inputs,
+        result: getResult()
+      };
+    }
+  } else {
+    cache = initial;
+  }
+
+  Object(external_React_["useEffect"])(() => {
+    committed.current = cache;
+
+    if (prevCache == initial) {
+      initial.inputs = initial.result = undefined;
+    }
+  }, [cache]);
+  return cache.result;
+}
+
+function areInputsEqual(next, prev) {
+  if (next.length !== prev.length) {
+    return false;
+  }
+
+  for (let i = 0; i < next.length; i++) {
+    if (next[i] !== prev[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function usePrev(value) {
+  const prevRef = Object(external_React_["useRef"])();
+  Object(external_React_["useEffect"])(() => {
+    prevRef.current = value;
+  });
+  return prevRef.current;
+}
+
+const useLayoutEffect = typeof window !== 'undefined' && window.document && window.document.createElement ? external_React_["useLayoutEffect"] : external_React_["useEffect"];
+
+
+
 
 /***/ }),
 
 /***/ 30:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["keycodes"]; }());
+(function() { module.exports = window["ReactDOM"]; }());
 
 /***/ }),
 
@@ -10013,14 +11511,491 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ }),
 
-/***/ 31:
+/***/ 301:
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ 302:
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ 303:
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ 304:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["hooks"]; }());
+module.exports = Array.isArray || function (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+};
+
+
+/***/ }),
+
+/***/ 305:
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ 31:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _objectWithoutPropertiesLoose; });
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+/***/ }),
+
+/***/ 32:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var stringify = __webpack_require__(62);
+var parse = __webpack_require__(63);
+var formats = __webpack_require__(39);
+
+module.exports = {
+    formats: formats,
+    parse: parse,
+    stringify: stringify
+};
+
+
+/***/ }),
+
+/***/ 33:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export Animated */
+/* unused harmony export AnimatedArray */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AnimatedObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return AnimatedString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return AnimatedValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return createHost; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getAnimated; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getAnimatedType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return getPayload; });
+/* unused harmony export isAnimated */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return setAnimated; });
+/* harmony import */ var _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+
+const $node = Symbol.for('Animated:node');
+const isAnimated = value => !!value && value[$node] === value;
+const getAnimated = owner => owner && owner[$node];
+const setAnimated = (owner, node) => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* defineHidden */ "h"])(owner, $node, node);
+const getPayload = owner => owner && owner[$node] && owner[$node].getPayload();
+class Animated {
+  constructor() {
+    this.payload = void 0;
+    setAnimated(this, this);
+  }
+
+  getPayload() {
+    return this.payload || [];
+  }
+
+}
+
+class AnimatedValue extends Animated {
+  constructor(_value) {
+    super();
+    this.done = true;
+    this.elapsedTime = void 0;
+    this.lastPosition = void 0;
+    this.lastVelocity = void 0;
+    this.v0 = void 0;
+    this.durationProgress = 0;
+    this._value = _value;
+
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].num(this._value)) {
+      this.lastPosition = this._value;
+    }
+  }
+
+  static create(value) {
+    return new AnimatedValue(value);
+  }
+
+  getPayload() {
+    return [this];
+  }
+
+  getValue() {
+    return this._value;
+  }
+
+  setValue(value, step) {
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].num(value)) {
+      this.lastPosition = value;
+
+      if (step) {
+        value = Math.round(value / step) * step;
+
+        if (this.done) {
+          this.lastPosition = value;
+        }
+      }
+    }
+
+    if (this._value === value) {
+      return false;
+    }
+
+    this._value = value;
+    return true;
+  }
+
+  reset() {
+    const {
+      done
+    } = this;
+    this.done = false;
+
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].num(this._value)) {
+      this.elapsedTime = 0;
+      this.durationProgress = 0;
+      this.lastPosition = this._value;
+      if (done) this.lastVelocity = null;
+      this.v0 = null;
+    }
+  }
+
+}
+
+class AnimatedString extends AnimatedValue {
+  constructor(value) {
+    super(0);
+    this._string = null;
+    this._toString = void 0;
+    this._toString = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* createInterpolator */ "f"])({
+      output: [value, value]
+    });
+  }
+
+  static create(value) {
+    return new AnimatedString(value);
+  }
+
+  getValue() {
+    let value = this._string;
+    return value == null ? this._string = this._toString(this._value) : value;
+  }
+
+  setValue(value) {
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].str(value)) {
+      if (value == this._string) {
+        return false;
+      }
+
+      this._string = value;
+      this._value = 1;
+    } else if (super.setValue(value)) {
+      this._string = null;
+    } else {
+      return false;
+    }
+
+    return true;
+  }
+
+  reset(goal) {
+    if (goal) {
+      this._toString = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* createInterpolator */ "f"])({
+        output: [this.getValue(), goal]
+      });
+    }
+
+    this._value = 0;
+    super.reset();
+  }
+
+}
+
+const TreeContext = {
+  dependencies: null
+};
+
+class AnimatedObject extends Animated {
+  constructor(source) {
+    super();
+    this.source = source;
+    this.setValue(source);
+  }
+
+  getValue(animated) {
+    const values = {};
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(this.source, (source, key) => {
+      if (isAnimated(source)) {
+        values[key] = source.getValue(animated);
+      } else if (Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(source)) {
+        values[key] = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* getFluidValue */ "q"])(source);
+      } else if (!animated) {
+        values[key] = source;
+      }
+    });
+    return values;
+  }
+
+  setValue(source) {
+    this.source = source;
+    this.payload = this._makePayload(source);
+  }
+
+  reset() {
+    if (this.payload) {
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(this.payload, node => node.reset());
+    }
+  }
+
+  _makePayload(source) {
+    if (source) {
+      const payload = new Set();
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(source, this._addToPayload, payload);
+      return Array.from(payload);
+    }
+  }
+
+  _addToPayload(source) {
+    if (TreeContext.dependencies && Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* hasFluidValue */ "r"])(source)) {
+      TreeContext.dependencies.add(source);
+    }
+
+    const payload = getPayload(source);
+
+    if (payload) {
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(payload, node => this.add(node));
+    }
+  }
+
+}
+
+class AnimatedArray extends AnimatedObject {
+  constructor(source) {
+    super(source);
+  }
+
+  static create(source) {
+    return new AnimatedArray(source);
+  }
+
+  getValue() {
+    return this.source.map(node => node.getValue());
+  }
+
+  setValue(source) {
+    const payload = this.getPayload();
+
+    if (source.length == payload.length) {
+      return payload.map((node, i) => node.setValue(source[i])).some(Boolean);
+    }
+
+    super.setValue(source.map(makeAnimated));
+    return true;
+  }
+
+}
+
+function makeAnimated(value) {
+  const nodeType = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isAnimatedString */ "t"])(value) ? AnimatedString : AnimatedValue;
+  return nodeType.create(value);
+}
+
+function getAnimatedType(value) {
+  const parentNode = getAnimated(value);
+  return parentNode ? parentNode.constructor : _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(value) ? AnimatedArray : Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* isAnimatedString */ "t"])(value) ? AnimatedString : AnimatedValue;
+}
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+const withAnimated = (Component, host) => {
+  const hasInstance = !_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(Component) || Component.prototype && Component.prototype.isReactComponent;
+  return Object(react__WEBPACK_IMPORTED_MODULE_1__["forwardRef"])((givenProps, givenRef) => {
+    const instanceRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(null);
+    const ref = hasInstance && Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(value => {
+      instanceRef.current = updateRef(givenRef, value);
+    }, [givenRef]);
+    const [props, deps] = getAnimatedState(givenProps, host);
+    const forceUpdate = Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useForceUpdate */ "z"])();
+
+    const callback = () => {
+      const instance = instanceRef.current;
+
+      if (hasInstance && !instance) {
+        return;
+      }
+
+      const didUpdate = instance ? host.applyAnimatedValues(instance, props.getValue(true)) : false;
+
+      if (didUpdate === false) {
+        forceUpdate();
+      }
+    };
+
+    const observer = new PropsObserver(callback, deps);
+    const observerRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])();
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useLayoutEffect */ "A"])(() => {
+      const lastObserver = observerRef.current;
+      observerRef.current = observer;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(deps, dep => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* addFluidObserver */ "c"])(dep, observer));
+
+      if (lastObserver) {
+        Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(lastObserver.deps, dep => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* removeFluidObserver */ "x"])(dep, lastObserver));
+        _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].cancel(lastObserver.update);
+      }
+    });
+    Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(callback, []);
+    Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* useOnce */ "C"])(() => () => {
+      const observer = observerRef.current;
+      Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* each */ "k"])(observer.deps, dep => Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* removeFluidObserver */ "x"])(dep, observer));
+    });
+    const usedProps = host.getComponentProps(props.getValue());
+    return react__WEBPACK_IMPORTED_MODULE_1__["createElement"](Component, _extends({}, usedProps, {
+      ref: ref
+    }));
+  });
+};
+
+class PropsObserver {
+  constructor(update, deps) {
+    this.update = update;
+    this.deps = deps;
+  }
+
+  eventObserved(event) {
+    if (event.type == 'change') {
+      _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* raf */ "w"].write(this.update);
+    }
+  }
+
+}
+
+function getAnimatedState(props, host) {
+  const dependencies = new Set();
+  TreeContext.dependencies = dependencies;
+  if (props.style) props = _extends({}, props, {
+    style: host.createAnimatedStyle(props.style)
+  });
+  props = new AnimatedObject(props);
+  TreeContext.dependencies = null;
+  return [props, dependencies];
+}
+
+function updateRef(ref, value) {
+  if (ref) {
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(ref)) ref(value);else ref.current = value;
+  }
+
+  return value;
+}
+
+const cacheKey = Symbol.for('AnimatedComponent');
+const createHost = (components, {
+  applyAnimatedValues: _applyAnimatedValues = () => false,
+  createAnimatedStyle: _createAnimatedStyle = style => new AnimatedObject(style),
+  getComponentProps: _getComponentProps = props => props
+} = {}) => {
+  const hostConfig = {
+    applyAnimatedValues: _applyAnimatedValues,
+    createAnimatedStyle: _createAnimatedStyle,
+    getComponentProps: _getComponentProps
+  };
+
+  const animated = Component => {
+    const displayName = getDisplayName(Component) || 'Anonymous';
+
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].str(Component)) {
+      Component = animated[Component] || (animated[Component] = withAnimated(Component, hostConfig));
+    } else {
+      Component = Component[cacheKey] || (Component[cacheKey] = withAnimated(Component, hostConfig));
+    }
+
+    Component.displayName = `Animated(${displayName})`;
+    return Component;
+  };
+
+  Object(_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* eachProp */ "l"])(components, (Component, key) => {
+    if (_react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].arr(components)) {
+      key = getDisplayName(Component);
+    }
+
+    animated[key] = animated(Component);
+  });
+  return {
+    animated
+  };
+};
+
+const getDisplayName = arg => _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].str(arg) ? arg : arg && _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].str(arg.displayName) ? arg.displayName : _react_spring_shared__WEBPACK_IMPORTED_MODULE_0__[/* is */ "s"].fun(arg) && arg.name || null;
+
+
+
 
 /***/ }),
 
 /***/ 34:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["htmlEntities"]; }());
+
+/***/ }),
+
+/***/ 35:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["keycodes"]; }());
+
+/***/ }),
+
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10051,7 +12026,14 @@ module.exports = {
 
 /***/ }),
 
-/***/ 36:
+/***/ 4:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["components"]; }());
+
+/***/ }),
+
+/***/ 40:
 /***/ (function(module, exports) {
 
 function _extends() {
@@ -10067,31 +12049,21 @@ function _extends() {
     }
 
     return target;
-  };
-
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports;
   return _extends.apply(this, arguments);
 }
 
-module.exports = _extends;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
+module.exports = _extends, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
-/***/ 4:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["lodash"]; }());
-
-/***/ }),
-
-/***/ 41:
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var formats = __webpack_require__(34);
+var formats = __webpack_require__(39);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -10344,10 +12316,11 @@ module.exports = {
 
 /***/ }),
 
-/***/ 43:
+/***/ 47:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return invariant; });
 var isProduction = "production" === 'production';
 var prefix = 'Invariant failed';
 function invariant(condition, message) {
@@ -10357,177 +12330,37 @@ function invariant(condition, message) {
     if (isProduction) {
         throw new Error(prefix);
     }
-    throw new Error(prefix + ": " + (message || ''));
+    var provided = typeof message === 'function' ? message() : message;
+    var value = provided ? prefix + ": " + provided : prefix;
+    throw new Error(value);
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (invariant);
+
 
 
 /***/ }),
 
-/***/ 476:
+/***/ 497:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["csvExport"]; }());
 
 /***/ }),
 
-/***/ 479:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wc"]["wcSettings"]; }());
-
-/***/ }),
-
-/***/ 48:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactPropTypesSecret = __webpack_require__(49);
-
-function emptyFunction() {}
-function emptyFunctionWithReset() {}
-emptyFunctionWithReset.resetWarningCache = emptyFunction;
-
-module.exports = function() {
-  function shim(props, propName, componentName, location, propFullName, secret) {
-    if (secret === ReactPropTypesSecret) {
-      // It is still safe when called from React.
-      return;
-    }
-    var err = new Error(
-      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-      'Use PropTypes.checkPropTypes() to call them. ' +
-      'Read more at http://fb.me/use-check-prop-types'
-    );
-    err.name = 'Invariant Violation';
-    throw err;
-  };
-  shim.isRequired = shim;
-  function getShim() {
-    return shim;
-  };
-  // Important!
-  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
-  var ReactPropTypes = {
-    array: shim,
-    bool: shim,
-    func: shim,
-    number: shim,
-    object: shim,
-    string: shim,
-    symbol: shim,
-
-    any: shim,
-    arrayOf: getShim,
-    element: shim,
-    elementType: shim,
-    instanceOf: getShim,
-    node: shim,
-    objectOf: getShim,
-    oneOf: getShim,
-    oneOfType: getShim,
-    shape: getShim,
-    exact: getShim,
-
-    checkPropTypes: emptyFunctionWithReset,
-    resetWarningCache: emptyFunction
-  };
-
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-
-/***/ }),
-
-/***/ 49:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
-
-
-/***/ }),
-
 /***/ 5:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["React"]; }());
+(function() { module.exports = window["lodash"]; }());
 
 /***/ }),
 
-/***/ 50:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-module.exports = emptyFunction;
-
-/***/ }),
-
-/***/ 500:
+/***/ 522:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
 
 
@@ -10535,7 +12368,7 @@ module.exports = emptyFunction;
  * WordPress dependencies
  */
 
-var close = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
+const close = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24"
 }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["Path"], {
@@ -10546,13 +12379,13 @@ var close = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElemen
 
 /***/ }),
 
-/***/ 501:
+/***/ 523:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
 
 
@@ -10560,7 +12393,7 @@ var close = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElemen
  * WordPress dependencies
  */
 
-var page = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
+const page = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24"
 }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["Path"], {
@@ -10571,13 +12404,13 @@ var page = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement
 
 /***/ }),
 
-/***/ 502:
+/***/ 524:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
 
 
@@ -10585,7 +12418,7 @@ var page = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement
  * WordPress dependencies
  */
 
-var box = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
+const box = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24"
 }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["Path"], {
@@ -10598,13 +12431,13 @@ var box = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"
 
 /***/ }),
 
-/***/ 503:
+/***/ 525:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
 
 
@@ -10612,7 +12445,7 @@ var box = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"
  * WordPress dependencies
  */
 
-var help = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
+const help = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24"
 }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["Path"], {
@@ -10623,13 +12456,13 @@ var help = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement
 
 /***/ }),
 
-/***/ 504:
+/***/ 526:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
 
 
@@ -10637,7 +12470,7 @@ var help = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement
  * WordPress dependencies
  */
 
-var external = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
+const external = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["SVG"], {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24"
 }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__["Path"], {
@@ -10648,7 +12481,7 @@ var external = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createEle
 
 /***/ }),
 
-/***/ 52:
+/***/ 54:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10657,7 +12490,7 @@ var external = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createEle
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return WooHeaderPageTitle; });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
 
 
@@ -10686,6 +12519,7 @@ const createOrderedChildren = (children, order, props) => {
  * Create a Fill for extensions to add items to the WooCommerce Admin header.
  *
  * @slotFill WooHeaderItem
+ * @scope woocommerce-admin
  * @example
  * const MyHeaderItem = () => (
  * <WooHeaderItem>My header item</WooHeaderItem>
@@ -10701,10 +12535,11 @@ const createOrderedChildren = (children, order, props) => {
  */
 
 
-const WooHeaderItem = ({
-  children,
-  order = 1
-}) => {
+const WooHeaderItem = _ref => {
+  let {
+    children,
+    order = 1
+  } = _ref;
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Fill"], {
     name: 'woocommerce_header_item'
   }, fillProps => {
@@ -10712,21 +12547,25 @@ const WooHeaderItem = ({
   });
 };
 
-WooHeaderItem.Slot = ({
-  fillProps
-}) => Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Slot"], {
-  name: 'woocommerce_header_item',
-  fillProps: fillProps
-}, fills => {
-  return fills.sort((a, b) => {
-    return a[0].props.order - b[0].props.order;
+WooHeaderItem.Slot = _ref2 => {
+  let {
+    fillProps
+  } = _ref2;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Slot"], {
+    name: 'woocommerce_header_item',
+    fillProps: fillProps
+  }, fills => {
+    return fills.sort((a, b) => {
+      return a[0].props.order - b[0].props.order;
+    });
   });
-});
+};
 /**
  * Create a Fill for extensions to add items to the WooCommerce Admin
  * navigation area left of the page title.
  *
  * @slotFill WooHeaderNavigationItem
+ * @scope woocommerce-admin
  * @example
  * const MyNavigationItem = () => (
  * <WooHeaderNavigationItem>My nav item</WooHeaderNavigationItem>
@@ -10742,10 +12581,11 @@ WooHeaderItem.Slot = ({
  */
 
 
-const WooHeaderNavigationItem = ({
-  children,
-  order = 1
-}) => {
+const WooHeaderNavigationItem = _ref3 => {
+  let {
+    children,
+    order = 1
+  } = _ref3;
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Fill"], {
     name: 'woocommerce_header_navigation_item'
   }, fillProps => {
@@ -10753,20 +12593,24 @@ const WooHeaderNavigationItem = ({
   });
 };
 
-WooHeaderNavigationItem.Slot = ({
-  fillProps
-}) => Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Slot"], {
-  name: 'woocommerce_header_navigation_item',
-  fillProps: fillProps
-}, fills => {
-  return fills.sort((a, b) => {
-    return a[0].props.order - b[0].props.order;
+WooHeaderNavigationItem.Slot = _ref4 => {
+  let {
+    fillProps
+  } = _ref4;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Slot"], {
+    name: 'woocommerce_header_navigation_item',
+    fillProps: fillProps
+  }, fills => {
+    return fills.sort((a, b) => {
+      return a[0].props.order - b[0].props.order;
+    });
   });
-});
+};
 /**
  * Create a Fill for extensions to add custom page titles.
  *
  * @slotFill WooHeaderPageTitle
+ * @scope woocommerce-admin
  * @example
  * const MyPageTitle = () => (
  * 	<WooHeaderPageTitle>My page title</WooHeaderPageTitle>
@@ -10781,27 +12625,31 @@ WooHeaderNavigationItem.Slot = ({
  */
 
 
-const WooHeaderPageTitle = ({
-  children
-}) => {
+const WooHeaderPageTitle = _ref5 => {
+  let {
+    children
+  } = _ref5;
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Fill"], {
     name: 'woocommerce_header_page_title'
   }, children);
 };
 
-WooHeaderPageTitle.Slot = ({
-  fillProps
-}) => Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Slot"], {
-  name: 'woocommerce_header_page_title',
-  fillProps: fillProps
-}, fills => {
-  const last = fills.pop();
-  return [last];
-});
+WooHeaderPageTitle.Slot = _ref6 => {
+  let {
+    fillProps
+  } = _ref6;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["Slot"], {
+    name: 'woocommerce_header_page_title',
+    fillProps: fillProps
+  }, fills => {
+    const last = fills.pop();
+    return [last];
+  });
+};
 
 /***/ }),
 
-/***/ 53:
+/***/ 55:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10816,7 +12664,7 @@ __webpack_require__.d(__webpack_exports__, "d", function() { return /* binding *
 // UNUSED EXPORTS: createHashHistory, parsePath
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(23);
+var esm_extends = __webpack_require__(24);
 
 // CONCATENATED MODULE: ./node_modules/resolve-pathname/esm/resolve-pathname.js
 function isAbsolute(pathname) {
@@ -10934,7 +12782,7 @@ function valueEqual(a, b) {
 /* harmony default export */ var value_equal = (valueEqual);
 
 // EXTERNAL MODULE: ./node_modules/tiny-invariant/dist/tiny-invariant.esm.js
-var tiny_invariant_esm = __webpack_require__(43);
+var tiny_invariant_esm = __webpack_require__(47);
 
 // CONCATENATED MODULE: ./node_modules/history/esm/history.js
 
@@ -11860,14 +13708,14 @@ function createMemoryHistory(props) {
 
 /***/ }),
 
-/***/ 54:
+/***/ 56:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["plugins"]; }());
 
 /***/ }),
 
-/***/ 57:
+/***/ 59:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11880,14 +13728,113 @@ const QUEUE_OPTION_NAME = 'woocommerce_ces_tracks_queue';
 
 /***/ }),
 
-/***/ 58:
+/***/ 6:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["React"]; }());
+
+/***/ }),
+
+/***/ 60:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = __webpack_require__(61);
+
+function emptyFunction() {}
+function emptyFunctionWithReset() {}
+emptyFunctionWithReset.resetWarningCache = emptyFunction;
+
+module.exports = function() {
+  function shim(props, propName, componentName, location, propFullName, secret) {
+    if (secret === ReactPropTypesSecret) {
+      // It is still safe when called from React.
+      return;
+    }
+    var err = new Error(
+      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+      'Use PropTypes.checkPropTypes() to call them. ' +
+      'Read more at http://fb.me/use-check-prop-types'
+    );
+    err.name = 'Invariant Violation';
+    throw err;
+  };
+  shim.isRequired = shim;
+  function getShim() {
+    return shim;
+  };
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+  var ReactPropTypes = {
+    array: shim,
+    bool: shim,
+    func: shim,
+    number: shim,
+    object: shim,
+    string: shim,
+    symbol: shim,
+
+    any: shim,
+    arrayOf: getShim,
+    element: shim,
+    elementType: shim,
+    instanceOf: getShim,
+    node: shim,
+    objectOf: getShim,
+    oneOf: getShim,
+    oneOfType: getShim,
+    shape: getShim,
+    exact: getShim,
+
+    checkPropTypes: emptyFunctionWithReset,
+    resetWarningCache: emptyFunction
+  };
+
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+
+/***/ }),
+
+/***/ 61:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
-var formats = __webpack_require__(34);
+var utils = __webpack_require__(45);
+var formats = __webpack_require__(39);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -12166,13 +14113,13 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
+var utils = __webpack_require__(45);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -12431,7 +14378,178 @@ module.exports = function (str, opts) {
 
 /***/ }),
 
-/***/ 6:
+/***/ 65:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["date"]; }());
+
+/***/ }),
+
+/***/ 69:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getCountryCode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCurrencyRegion; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getProductIdsForCart; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getCategorizedOnboardingProducts; });
+/* unused harmony export getProductList */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getPriceValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return isWCAdmin; });
+/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(34);
+/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_admin_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
+/**
+ * External dependencies
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+/**
+ * Gets the country code from a country:state value string.
+ *
+ * @param {string} countryState Country state string, e.g. US:GA.
+ * @return {string} Country string.
+ */
+
+function getCountryCode(countryState) {
+  if (!countryState) {
+    return null;
+  }
+
+  return countryState.split(':')[0];
+}
+function getCurrencyRegion(countryState) {
+  let region = getCountryCode(countryState);
+  const euCountries = Object(lodash__WEBPACK_IMPORTED_MODULE_1__["without"])(Object(_utils_admin_settings__WEBPACK_IMPORTED_MODULE_2__[/* getAdminSetting */ "d"])('onboarding', {
+    euCountries: []
+  }).euCountries, 'GB');
+
+  if (euCountries.includes(region)) {
+    region = 'EU';
+  }
+
+  return region;
+}
+/**
+ * Gets the product IDs for items based on the product types and theme selected in the onboarding profiler.
+ *
+ * @param {Object} productTypes Product Types.
+ * @param {Object} profileItems Onboarding profile.
+ * @param {boolean} includeInstalledItems Include installed items in returned product IDs.
+ * @param {Array} installedPlugins Installed plugins.
+ * @return {Array} Product Ids.
+ */
+
+function getProductIdsForCart(productTypes, profileItems) {
+  let includeInstalledItems = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  let installedPlugins = arguments.length > 3 ? arguments[3] : undefined;
+  const productList = getProductList(profileItems, includeInstalledItems, installedPlugins, productTypes);
+  const productIds = productList.map(product => product.id || product.product);
+  return productIds;
+}
+/**
+ * Gets the labeled/categorized product names and types for items based on the product types and theme selected in the onboarding profiler.
+ *
+ * @param {Object} productTypes Product Types.
+ * @param {Object} profileItems Onboarding profile.
+ * @param {Array} installedPlugins Installed plugins.
+ * @return {Array} Objects with labeled/categorized product names and types.
+ */
+
+function getCategorizedOnboardingProducts(productTypes, profileItems, installedPlugins) {
+  const productList = {};
+  productList.products = getProductList(profileItems, true, installedPlugins, productTypes);
+  productList.remainingProducts = getProductList(profileItems, false, installedPlugins, productTypes);
+  const uniqueItemsList = [...new Set([...productList.products, ...productList.remainingProducts])];
+  productList.uniqueItemsList = uniqueItemsList.map(product => {
+    let cleanedProduct;
+
+    if (product.label) {
+      cleanedProduct = {
+        type: 'extension',
+        name: product.label
+      };
+    } else {
+      cleanedProduct = {
+        type: 'theme',
+        name: product.title
+      };
+    }
+
+    return cleanedProduct;
+  });
+  return productList;
+}
+/**
+ * Gets a product list for items based on the product types and theme selected in the onboarding profiler.
+ *
+ * @param {Object} profileItems Onboarding profile.
+ * @param {boolean} includeInstalledItems Include installed items in returned product list.
+ * @param {Array} installedPlugins Installed plugins.
+ * @param {Object} productTypes Product Types.
+ * @return {Array} Products.
+ */
+
+function getProductList(profileItems) {
+  let includeInstalledItems = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  let installedPlugins = arguments.length > 2 ? arguments[2] : undefined;
+  let productTypes = arguments.length > 3 ? arguments[3] : undefined;
+  const productList = [];
+
+  if (!productTypes) {
+    return productList;
+  }
+
+  const profileItemsProductTypes = profileItems.product_types || [];
+  profileItemsProductTypes.forEach(productType => {
+    if (productTypes[productType] && productTypes[productType].product && (includeInstalledItems || !installedPlugins.includes(productTypes[productType].slug))) {
+      productList.push(productTypes[productType]);
+    }
+  });
+  const onboarding = Object(_utils_admin_settings__WEBPACK_IMPORTED_MODULE_2__[/* getAdminSetting */ "d"])('onboarding', {});
+  let theme = null;
+
+  if (onboarding && onboarding.themes) {
+    theme = onboarding.themes.find(themeData => themeData.slug === profileItems.theme);
+  }
+
+  if (theme && theme.id && getPriceValue(theme.price) > 0 && (includeInstalledItems || !theme.is_installed)) {
+    productList.push(theme);
+  }
+
+  return productList;
+}
+/**
+ * Get the value of a price from a string, removing any non-numeric characters.
+ *
+ * @param {string} string Price string.
+ * @return {number} Number value.
+ */
+
+function getPriceValue(string) {
+  return Number(Object(_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__["decodeEntities"])(string).replace(/[^0-9.-]+/g, ''));
+}
+/**
+ * Determines if a URL is a WC admin url.
+ *
+ * @param {*} url - the url to test
+ * @return {boolean} true if the url is a wc-admin URL
+ */
+
+function isWCAdmin(url) {
+  return /admin.php\?page=wc-admin/.test(url);
+}
+
+/***/ }),
+
+/***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -12496,176 +14614,7 @@ module.exports = function (str, opts) {
 
 /***/ }),
 
-/***/ 63:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["date"]; }());
-
-/***/ }),
-
-/***/ 64:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getCountryCode; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCurrencyRegion; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getProductIdsForCart; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getCategorizedOnboardingProducts; });
-/* unused harmony export getProductList */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getPriceValue; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return isWCAdmin; });
-/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
-/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
-/**
- * External dependencies
- */
-
-
-
-/**
- * Gets the country code from a country:state value string.
- *
- * @param {string} countryState Country state string, e.g. US:GA.
- * @return {string} Country string.
- */
-
-function getCountryCode(countryState) {
-  if (!countryState) {
-    return null;
-  }
-
-  return countryState.split(':')[0];
-}
-function getCurrencyRegion(countryState) {
-  let region = getCountryCode(countryState);
-  const euCountries = Object(lodash__WEBPACK_IMPORTED_MODULE_1__["without"])(Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__[/* getSetting */ "f"])('onboarding', {
-    euCountries: []
-  }).euCountries, 'GB');
-
-  if (euCountries.includes(region)) {
-    region = 'EU';
-  }
-
-  return region;
-}
-/**
- * Gets the product IDs for items based on the product types and theme selected in the onboarding profiler.
- *
- * @param {Object} productTypes Product Types.
- * @param {Object} profileItems Onboarding profile.
- * @param {boolean} includeInstalledItems Include installed items in returned product IDs.
- * @param {Array} installedPlugins Installed plugins.
- * @return {Array} Product Ids.
- */
-
-function getProductIdsForCart(productTypes, profileItems, includeInstalledItems = false, installedPlugins) {
-  const productList = getProductList(profileItems, includeInstalledItems, installedPlugins, productTypes);
-  const productIds = productList.map(product => product.id || product.product);
-  return productIds;
-}
-/**
- * Gets the labeled/categorized product names and types for items based on the product types and theme selected in the onboarding profiler.
- *
- * @param {Object} productTypes Product Types.
- * @param {Object} profileItems Onboarding profile.
- * @param {Array} installedPlugins Installed plugins.
- * @return {Array} Objects with labeled/categorized product names and types.
- */
-
-function getCategorizedOnboardingProducts(productTypes, profileItems, installedPlugins) {
-  const productList = {};
-  productList.products = getProductList(profileItems, true, installedPlugins, productTypes);
-  productList.remainingProducts = getProductList(profileItems, false, installedPlugins, productTypes);
-  const uniqueItemsList = [...new Set([...productList.products, ...productList.remainingProducts])];
-  productList.uniqueItemsList = uniqueItemsList.map(product => {
-    let cleanedProduct;
-
-    if (product.label) {
-      cleanedProduct = {
-        type: 'extension',
-        name: product.label
-      };
-    } else {
-      cleanedProduct = {
-        type: 'theme',
-        name: product.title
-      };
-    }
-
-    return cleanedProduct;
-  });
-  return productList;
-}
-/**
- * Gets a product list for items based on the product types and theme selected in the onboarding profiler.
- *
- * @param {Object} profileItems Onboarding profile.
- * @param {boolean} includeInstalledItems Include installed items in returned product list.
- * @param {Array} installedPlugins Installed plugins.
- * @param {Object} productTypes Product Types.
- * @return {Array} Products.
- */
-
-function getProductList(profileItems, includeInstalledItems = false, installedPlugins, productTypes) {
-  const productList = [];
-
-  if (!productTypes) {
-    return productList;
-  }
-
-  const profileItemsProductTypes = profileItems.product_types || [];
-  profileItemsProductTypes.forEach(productType => {
-    if (productTypes[productType] && productTypes[productType].product && (includeInstalledItems || !installedPlugins.includes(productTypes[productType].slug))) {
-      productList.push(productTypes[productType]);
-    }
-  });
-  const onboarding = Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_2__[/* getSetting */ "f"])('onboarding', {});
-  let theme = null;
-
-  if (onboarding && onboarding.themes) {
-    theme = onboarding.themes.find(themeData => themeData.slug === profileItems.theme);
-  }
-
-  if (theme && theme.id && getPriceValue(theme.price) > 0 && (includeInstalledItems || !theme.is_installed)) {
-    productList.push(theme);
-  }
-
-  return productList;
-}
-/**
- * Get the value of a price from a string, removing any non-numeric characters.
- *
- * @param {string} string Price string.
- * @return {number} Number value.
- */
-
-function getPriceValue(string) {
-  return Number(Object(_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__["decodeEntities"])(string).replace(/[^0-9.-]+/g, ''));
-}
-/**
- * Determines if a URL is a WC admin url.
- *
- * @param {*} url - the url to test
- * @return {boolean} true if the url is a wc-admin URL
- */
-
-function isWCAdmin(url) {
-  return /admin.php\?page=wc-admin/.test(url);
-}
-
-/***/ }),
-
-/***/ 7:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["data"]; }());
-
-/***/ }),
-
-/***/ 70:
+/***/ 74:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12673,9 +14622,9 @@ function isWCAdmin(url) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOrderStatuses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getLowStockCountQuery; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getLowStockCount; });
-/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
+/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
 /* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_data__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _analytics_settings_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(257);
+/* harmony import */ var _analytics_settings_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(258);
 /**
  * External dependencies
  */
@@ -12756,470 +14705,14 @@ function getLowStockCount(select) {
 
 /***/ }),
 
-/***/ 71:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var React = __webpack_require__(5);
-
-var REACT_ELEMENT_TYPE =
-  (typeof Symbol === 'function' && Symbol.for && Symbol.for('react.element')) ||
-  0xeac7;
-
-var emptyFunction = __webpack_require__(50);
-var invariant = __webpack_require__(72);
-var warning = __webpack_require__(73);
-
-var SEPARATOR = '.';
-var SUBSEPARATOR = ':';
-
-var didWarnAboutMaps = false;
-
-var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-function getIteratorFn(maybeIterable) {
-  var iteratorFn =
-    maybeIterable &&
-    ((ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL]) ||
-      maybeIterable[FAUX_ITERATOR_SYMBOL]);
-  if (typeof iteratorFn === 'function') {
-    return iteratorFn;
-  }
-}
-
-function escape(key) {
-  var escapeRegex = /[=:]/g;
-  var escaperLookup = {
-    '=': '=0',
-    ':': '=2'
-  };
-  var escapedString = ('' + key).replace(escapeRegex, function(match) {
-    return escaperLookup[match];
-  });
-
-  return '$' + escapedString;
-}
-
-function getComponentKey(component, index) {
-  // Do some typechecking here since we call this blindly. We want to ensure
-  // that we don't block potential future ES APIs.
-  if (component && typeof component === 'object' && component.key != null) {
-    // Explicit key
-    return escape(component.key);
-  }
-  // Implicit key determined by the index in the set
-  return index.toString(36);
-}
-
-function traverseAllChildrenImpl(
-  children,
-  nameSoFar,
-  callback,
-  traverseContext
-) {
-  var type = typeof children;
-
-  if (type === 'undefined' || type === 'boolean') {
-    // All of the above are perceived as null.
-    children = null;
-  }
-
-  if (
-    children === null ||
-    type === 'string' ||
-    type === 'number' ||
-    // The following is inlined from ReactElement. This means we can optimize
-    // some checks. React Fiber also inlines this logic for similar purposes.
-    (type === 'object' && children.$$typeof === REACT_ELEMENT_TYPE)
-  ) {
-    callback(
-      traverseContext,
-      children,
-      // If it's the only child, treat the name as if it was wrapped in an array
-      // so that it's consistent if the number of children grows.
-      nameSoFar === '' ? SEPARATOR + getComponentKey(children, 0) : nameSoFar
-    );
-    return 1;
-  }
-
-  var child;
-  var nextName;
-  var subtreeCount = 0; // Count of children found in the current subtree.
-  var nextNamePrefix = nameSoFar === '' ? SEPARATOR : nameSoFar + SUBSEPARATOR;
-
-  if (Array.isArray(children)) {
-    for (var i = 0; i < children.length; i++) {
-      child = children[i];
-      nextName = nextNamePrefix + getComponentKey(child, i);
-      subtreeCount += traverseAllChildrenImpl(
-        child,
-        nextName,
-        callback,
-        traverseContext
-      );
-    }
-  } else {
-    var iteratorFn = getIteratorFn(children);
-    if (iteratorFn) {
-      if (false) {}
-
-      var iterator = iteratorFn.call(children);
-      var step;
-      var ii = 0;
-      while (!(step = iterator.next()).done) {
-        child = step.value;
-        nextName = nextNamePrefix + getComponentKey(child, ii++);
-        subtreeCount += traverseAllChildrenImpl(
-          child,
-          nextName,
-          callback,
-          traverseContext
-        );
-      }
-    } else if (type === 'object') {
-      var addendum = '';
-      if (false) {}
-      var childrenString = '' + children;
-      invariant(
-        false,
-        'Objects are not valid as a React child (found: %s).%s',
-        childrenString === '[object Object]'
-          ? 'object with keys {' + Object.keys(children).join(', ') + '}'
-          : childrenString,
-        addendum
-      );
-    }
-  }
-
-  return subtreeCount;
-}
-
-function traverseAllChildren(children, callback, traverseContext) {
-  if (children == null) {
-    return 0;
-  }
-
-  return traverseAllChildrenImpl(children, '', callback, traverseContext);
-}
-
-var userProvidedKeyEscapeRegex = /\/+/g;
-function escapeUserProvidedKey(text) {
-  return ('' + text).replace(userProvidedKeyEscapeRegex, '$&/');
-}
-
-function cloneAndReplaceKey(oldElement, newKey) {
-  return React.cloneElement(
-    oldElement,
-    {key: newKey},
-    oldElement.props !== undefined ? oldElement.props.children : undefined
-  );
-}
-
-var DEFAULT_POOL_SIZE = 10;
-var DEFAULT_POOLER = oneArgumentPooler;
-
-var oneArgumentPooler = function(copyFieldsFrom) {
-  var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, copyFieldsFrom);
-    return instance;
-  } else {
-    return new Klass(copyFieldsFrom);
-  }
-};
-
-var addPoolingTo = function addPoolingTo(CopyConstructor, pooler) {
-  // Casting as any so that flow ignores the actual implementation and trusts
-  // it to match the type we declared
-  var NewKlass = CopyConstructor;
-  NewKlass.instancePool = [];
-  NewKlass.getPooled = pooler || DEFAULT_POOLER;
-  if (!NewKlass.poolSize) {
-    NewKlass.poolSize = DEFAULT_POOL_SIZE;
-  }
-  NewKlass.release = standardReleaser;
-  return NewKlass;
-};
-
-var standardReleaser = function standardReleaser(instance) {
-  var Klass = this;
-  invariant(
-    instance instanceof Klass,
-    'Trying to release an instance into a pool of a different type.'
-  );
-  instance.destructor();
-  if (Klass.instancePool.length < Klass.poolSize) {
-    Klass.instancePool.push(instance);
-  }
-};
-
-var fourArgumentPooler = function fourArgumentPooler(a1, a2, a3, a4) {
-  var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, a1, a2, a3, a4);
-    return instance;
-  } else {
-    return new Klass(a1, a2, a3, a4);
-  }
-};
-
-function MapBookKeeping(mapResult, keyPrefix, mapFunction, mapContext) {
-  this.result = mapResult;
-  this.keyPrefix = keyPrefix;
-  this.func = mapFunction;
-  this.context = mapContext;
-  this.count = 0;
-}
-MapBookKeeping.prototype.destructor = function() {
-  this.result = null;
-  this.keyPrefix = null;
-  this.func = null;
-  this.context = null;
-  this.count = 0;
-};
-addPoolingTo(MapBookKeeping, fourArgumentPooler);
-
-function mapSingleChildIntoContext(bookKeeping, child, childKey) {
-  var result = bookKeeping.result;
-  var keyPrefix = bookKeeping.keyPrefix;
-  var func = bookKeeping.func;
-  var context = bookKeeping.context;
-
-  var mappedChild = func.call(context, child, bookKeeping.count++);
-  if (Array.isArray(mappedChild)) {
-    mapIntoWithKeyPrefixInternal(
-      mappedChild,
-      result,
-      childKey,
-      emptyFunction.thatReturnsArgument
-    );
-  } else if (mappedChild != null) {
-    if (React.isValidElement(mappedChild)) {
-      mappedChild = cloneAndReplaceKey(
-        mappedChild,
-        // Keep both the (mapped) and old keys if they differ, just as
-        // traverseAllChildren used to do for objects as children
-        keyPrefix +
-          (mappedChild.key && (!child || child.key !== mappedChild.key)
-            ? escapeUserProvidedKey(mappedChild.key) + '/'
-            : '') +
-          childKey
-      );
-    }
-    result.push(mappedChild);
-  }
-}
-
-function mapIntoWithKeyPrefixInternal(children, array, prefix, func, context) {
-  var escapedPrefix = '';
-  if (prefix != null) {
-    escapedPrefix = escapeUserProvidedKey(prefix) + '/';
-  }
-  var traverseContext = MapBookKeeping.getPooled(
-    array,
-    escapedPrefix,
-    func,
-    context
-  );
-  traverseAllChildren(children, mapSingleChildIntoContext, traverseContext);
-  MapBookKeeping.release(traverseContext);
-}
-
-var numericPropertyRegex = /^\d+$/;
-
-var warnedAboutNumeric = false;
-
-function createReactFragment(object) {
-  if (typeof object !== 'object' || !object || Array.isArray(object)) {
-    warning(
-      false,
-      'React.addons.createFragment only accepts a single object. Got: %s',
-      object
-    );
-    return object;
-  }
-  if (React.isValidElement(object)) {
-    warning(
-      false,
-      'React.addons.createFragment does not accept a ReactElement ' +
-        'without a wrapper object.'
-    );
-    return object;
-  }
-
-  invariant(
-    object.nodeType !== 1,
-    'React.addons.createFragment(...): Encountered an invalid child; DOM ' +
-      'elements are not valid children of React components.'
-  );
-
-  var result = [];
-
-  for (var key in object) {
-    if (false) {}
-    mapIntoWithKeyPrefixInternal(
-      object[key],
-      result,
-      key,
-      emptyFunction.thatReturnsArgument
-    );
-  }
-
-  return result;
-}
-
-module.exports = createReactFragment;
-
-
-/***/ }),
-
-/***/ 72:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (false) {}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-
-/***/ }),
-
-/***/ 73:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var emptyFunction = __webpack_require__(50);
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = emptyFunction;
-
-if (false) { var printWarning; }
-
-module.exports = warning;
-
-/***/ }),
-
-/***/ 74:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function identifyToken(item) {
-	// {{/example}}
-	if (item.match(/^\{\{\//)) {
-		return {
-			type: 'componentClose',
-			value: item.replace(/\W/g, '')
-		};
-	}
-	// {{example /}}
-	if (item.match(/\/\}\}$/)) {
-		return {
-			type: 'componentSelfClosing',
-			value: item.replace(/\W/g, '')
-		};
-	}
-	// {{example}}
-	if (item.match(/^\{\{/)) {
-		return {
-			type: 'componentOpen',
-			value: item.replace(/\W/g, '')
-		};
-	}
-	return {
-		type: 'string',
-		value: item
-	};
-}
-
-module.exports = function (mixedString) {
-	var tokenStrings = mixedString.split(/(\{\{\/?\s*\w+\s*\/?\}\})/g); // split to components and strings
-	return tokenStrings.map(identifyToken);
-};
-//# sourceMappingURL=tokenize.js.map
-
-/***/ }),
-
 /***/ 8:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["primitives"]; }());
+(function() { module.exports = window["wp"]["data"]; }());
 
 /***/ }),
 
-/***/ 80:
+/***/ 81:
 /***/ (function(module, exports) {
 
 var g;
@@ -13249,18 +14742,18 @@ module.exports = g;
 /***/ 9:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["moment"]; }());
+(function() { module.exports = window["wp"]["primitives"]; }());
 
 /***/ }),
 
-/***/ 90:
+/***/ 91:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["currency"]; }());
 
 /***/ }),
 
-/***/ 92:
+/***/ 93:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["dom"]; }());

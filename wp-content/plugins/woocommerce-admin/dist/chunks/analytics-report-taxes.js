@@ -1,6 +1,6 @@
 (window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[15],{
 
-/***/ 488:
+/***/ 509:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18,37 +18,37 @@ var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./client/analytics/report/taxes/config.js
-var config = __webpack_require__(539);
+var config = __webpack_require__(562);
 
 // EXTERNAL MODULE: ./client/lib/get-selected-chart/index.js
-var get_selected_chart = __webpack_require__(514);
+var get_selected_chart = __webpack_require__(536);
 
 // EXTERNAL MODULE: ./client/analytics/components/report-chart/index.js + 1 modules
-var report_chart = __webpack_require__(512);
+var report_chart = __webpack_require__(534);
 
 // EXTERNAL MODULE: ./client/analytics/components/report-summary/index.js
-var report_summary = __webpack_require__(515);
+var report_summary = __webpack_require__(537);
 
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
+var external_lodash_ = __webpack_require__(5);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: external ["wc","navigation"]
-var external_wc_navigation_ = __webpack_require__(12);
+var external_wc_navigation_ = __webpack_require__(13);
 
 // EXTERNAL MODULE: external ["wc","number"]
-var external_wc_number_ = __webpack_require__(121);
+var external_wc_number_ = __webpack_require__(122);
 
 // EXTERNAL MODULE: ./client/analytics/report/taxes/utils.js
-var utils = __webpack_require__(507);
+var utils = __webpack_require__(529);
 
 // EXTERNAL MODULE: ./client/analytics/components/report-table/index.js + 2 modules
-var report_table = __webpack_require__(511);
+var report_table = __webpack_require__(533);
 
 // EXTERNAL MODULE: ./client/lib/currency-context.js
-var currency_context = __webpack_require__(505);
+var currency_context = __webpack_require__(527);
 
 // CONCATENATED MODULE: ./client/analytics/report/taxes/table.js
 
@@ -226,7 +226,7 @@ class table_TaxesReportTable extends external_wp_element_["Component"] {
 table_TaxesReportTable.contextType = currency_context["a" /* CurrencyContext */];
 /* harmony default export */ var table = (table_TaxesReportTable);
 // EXTERNAL MODULE: ./client/analytics/components/report-filters/index.js
-var report_filters = __webpack_require__(510);
+var report_filters = __webpack_require__(532);
 
 // CONCATENATED MODULE: ./client/analytics/report/taxes/index.js
 
@@ -323,7 +323,7 @@ taxes_TaxesReport.propTypes = {
 
 /***/ }),
 
-/***/ 506:
+/***/ 528:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -336,18 +336,18 @@ taxes_TaxesReport.propTypes = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getTaxRateLabels; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return getVariationName; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return getVariationLabels; });
-/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _woocommerce_navigation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
+/* harmony import */ var _woocommerce_navigation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
 /* harmony import */ var _woocommerce_navigation__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_navigation__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
+/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
 /* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_data__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
-/* harmony import */ var _analytics_report_taxes_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(507);
+/* harmony import */ var _analytics_report_taxes_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(529);
+/* harmony import */ var _utils_admin_settings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(23);
 /**
  * External dependencies
  */
@@ -356,10 +356,10 @@ taxes_TaxesReport.propTypes = {
 
 
 
-
 /**
  * Internal dependencies
  */
+
 
 
 /**
@@ -371,8 +371,11 @@ taxes_TaxesReport.propTypes = {
  * @return {Function} - a function of ids returning a promise
  */
 
-function getRequestByIdString(path, handleData = lodash__WEBPACK_IMPORTED_MODULE_2__["identity"]) {
-  return function (queryString = '', query) {
+function getRequestByIdString(path) {
+  let handleData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : lodash__WEBPACK_IMPORTED_MODULE_2__["identity"];
+  return function () {
+    let queryString = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    let query = arguments.length > 1 ? arguments[1] : undefined;
     const pathString = typeof path === 'function' ? path(query) : path;
     const idList = Object(_woocommerce_navigation__WEBPACK_IMPORTED_MODULE_3__["getIdsFromQuery"])(queryString);
 
@@ -411,7 +414,7 @@ const getProductLabels = getRequestByIdString(_woocommerce_data__WEBPACK_IMPORTE
 }));
 const getTaxRateLabels = getRequestByIdString(_woocommerce_data__WEBPACK_IMPORTED_MODULE_4__["NAMESPACE"] + '/taxes', taxRate => ({
   key: taxRate.id,
-  label: Object(_analytics_report_taxes_utils__WEBPACK_IMPORTED_MODULE_6__[/* getTaxCode */ "a"])(taxRate)
+  label: Object(_analytics_report_taxes_utils__WEBPACK_IMPORTED_MODULE_5__[/* getTaxCode */ "a"])(taxRate)
 }));
 /**
  * Create a variation name by concatenating each of the variation's
@@ -423,24 +426,30 @@ const getTaxRateLabels = getRequestByIdString(_woocommerce_data__WEBPACK_IMPORTE
  * @return {string} - formatted variation name
  */
 
-function getVariationName({
-  attributes,
-  name
-}) {
-  const separator = Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_5__[/* getSetting */ "f"])('variationTitleAttributesSeparator', ' - ');
+function getVariationName(_ref) {
+  let {
+    attributes,
+    name
+  } = _ref;
+  const separator = Object(_utils_admin_settings__WEBPACK_IMPORTED_MODULE_6__[/* getAdminSetting */ "d"])('variationTitleAttributesSeparator', ' - ');
 
   if (name && name.indexOf(separator) > -1) {
     return name;
   }
 
-  const attributeList = (attributes || []).map(({
-    option
-  }) => option).join(', ');
+  const attributeList = (attributes || []).map(_ref2 => {
+    let {
+      option
+    } = _ref2;
+    return option;
+  }).join(', ');
   return attributeList ? name + separator + attributeList : name;
 }
-const getVariationLabels = getRequestByIdString(({
-  products
-}) => {
+const getVariationLabels = getRequestByIdString(_ref3 => {
+  let {
+    products
+  } = _ref3;
+
   // If a product was specified, get just its variations.
   if (products) {
     return _woocommerce_data__WEBPACK_IMPORTED_MODULE_4__["NAMESPACE"] + `/products/${products}/variations`;
@@ -456,7 +465,7 @@ const getVariationLabels = getRequestByIdString(({
 
 /***/ }),
 
-/***/ 507:
+/***/ 529:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -473,7 +482,7 @@ function getTaxCode(tax) {
 
 /***/ }),
 
-/***/ 539:
+/***/ 562:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -482,15 +491,15 @@ function getTaxCode(tax) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return filters; });
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(31);
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
+/* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
 /* harmony import */ var _woocommerce_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _lib_async_requests__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(506);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(507);
-/* harmony import */ var _customer_effort_score_tracks_data_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(57);
+/* harmony import */ var _lib_async_requests__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(528);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(529);
+/* harmony import */ var _customer_effort_score_tracks_data_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(59);
 /**
  * External dependencies
  */
@@ -511,6 +520,17 @@ const TAXES_REPORT_ADVANCED_FILTERS_FILTER = 'woocommerce_admin_taxes_report_adv
 const {
   addCesSurveyForAnalytics
 } = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__["dispatch"])(_customer_effort_score_tracks_data_constants__WEBPACK_IMPORTED_MODULE_6__[/* STORE_KEY */ "c"]);
+/**
+ * @typedef {import('../index.js').chart} chart
+ */
+
+/**
+ * Taxes Report charts filter.
+ *
+ * @filter woocommerce_admin_taxes_report_charts
+ * @param {Array.<chart>} charts Report charts.
+ */
+
 const charts = Object(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__["applyFilters"])(TAXES_REPORT_CHARTS_FILTER, [{
   key: 'total_tax',
   label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Total tax', 'woocommerce-admin'),
@@ -536,6 +556,15 @@ const charts = Object(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__["applyFilter
   orderby: 'orders_count',
   type: 'number'
 }]);
+/**
+ * Taxes Report Advanced Filters.
+ *
+ * @filter woocommerce_admin_taxes_report_advanced_filters
+ * @param {Object} advancedFilters Report Advanced Filters.
+ * @param {string} advancedFilters.title Interpolated component string for Advanced Filters title.
+ * @param {Object} advancedFilters.filters An object specifying a report's Advanced Filters.
+ */
+
 const advancedFilters = Object(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__["applyFilters"])(TAXES_REPORT_ADVANCED_FILTERS_FILTER, {
   filters: {},
   title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["_x"])('Taxes match {{select /}} filters', 'A sentence describing filters for Taxes. See screen shot for context: https://cloudup.com/cSsUY9VeCVJ', 'woocommerce-admin')
@@ -571,6 +600,17 @@ if (Object.keys(advancedFilters.filters).length) {
     value: 'advanced'
   });
 }
+/**
+ * @typedef {import('../index.js').filter} filter
+ */
+
+/**
+ * Coupons Report Filters.
+ *
+ * @filter woocommerce_admin_taxes_report_filters
+ * @param {Array.<filter>} filters Report filters.
+ */
+
 
 const filters = Object(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__["applyFilters"])(TAXES_REPORT_FILTERS_FILTER, [{
   label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Show', 'woocommerce-admin'),

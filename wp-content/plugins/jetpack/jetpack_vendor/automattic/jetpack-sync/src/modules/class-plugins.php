@@ -205,7 +205,7 @@ class Plugins extends Module {
 		$plugins = get_plugins(); // Get the most up to date info.
 		if ( isset( $plugins[ $slug ] ) ) {
 			return array_merge( array( 'slug' => $slug ), $plugins[ $slug ] );
-		};
+		}
 		// Try grabbing the info from before the update.
 		return isset( $this->plugins[ $slug ] ) ? array_merge( array( 'slug' => $slug ), $this->plugins[ $slug ] ) : array( 'slug' => $slug );
 	}
@@ -263,8 +263,8 @@ class Plugins extends Module {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$plugin  = $_POST['plugin'];
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validated manually just after.
+		$plugin  = wp_unslash( $_POST['plugin'] );
 		$plugins = get_plugins();
 		if ( ! isset( $plugins[ $plugin ] ) ) {
 			return;

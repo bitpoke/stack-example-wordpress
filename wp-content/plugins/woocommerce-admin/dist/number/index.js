@@ -82,12 +82,12 @@ this["wc"] = this["wc"] || {}; this["wc"]["number"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 447);
+/******/ 	return __webpack_require__(__webpack_require__.s = 468);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 447:
+/***/ 468:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -95,7 +95,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numberFormat", function() { return numberFormat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatValue", function() { return formatValue; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "calculateDelta", function() { return calculateDelta; });
-const numberFormatter = __webpack_require__(448);
+const numberFormatter = __webpack_require__(469);
 /**
  * Formats a number using site's current locale
  *
@@ -109,11 +109,13 @@ const numberFormatter = __webpack_require__(448);
  */
 
 
-function numberFormat({
-  precision = null,
-  decimalSeparator = '.',
-  thousandSeparator = ','
-}, number) {
+function numberFormat(_ref, number) {
+  let {
+    precision = null,
+    decimalSeparator = '.',
+    thousandSeparator = ','
+  } = _ref;
+
   if (typeof number !== 'number') {
     number = parseFloat(number);
   }
@@ -177,7 +179,7 @@ function calculateDelta(primaryValue, secondaryValue) {
 
 /***/ }),
 
-/***/ 448:
+/***/ 469:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

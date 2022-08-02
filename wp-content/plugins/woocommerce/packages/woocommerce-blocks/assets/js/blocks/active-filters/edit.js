@@ -2,11 +2,18 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
-import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
-import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
+import {
+	Disabled,
+	PanelBody,
+	withSpokenMessages,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,6 +22,10 @@ import Block from './block.js';
 
 const Edit = ( { attributes, setAttributes } ) => {
 	const { className, displayStyle, heading, headingLevel } = attributes;
+
+	const blockProps = useBlockProps( {
+		className,
+	} );
 
 	const getInspectorControls = () => {
 		return (
@@ -25,35 +36,33 @@ const Edit = ( { attributes, setAttributes } ) => {
 						'woocommerce'
 					) }
 				>
-					<ToggleButtonControl
+					<ToggleGroupControl
 						label={ __(
 							'Display Style',
 							'woocommerce'
 						) }
 						value={ displayStyle }
-						options={ [
-							{
-								label: __(
-									'List',
-									'woocommerce'
-								),
-								value: 'list',
-							},
-							{
-								/* translators: "Chips" is a tag-like display style for chosen attributes. */
-								label: __(
-									'Chips',
-									'woocommerce'
-								),
-								value: 'chips',
-							},
-						] }
 						onChange={ ( value ) =>
 							setAttributes( {
 								displayStyle: value,
 							} )
 						}
-					/>
+					>
+						<ToggleGroupControlOption
+							value="list"
+							label={ __(
+								'List',
+								'woocommerce'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="chips"
+							label={ __(
+								'Chips',
+								'woocommerce'
+							) }
+						/>
+					</ToggleGroupControl>
 					<p>
 						{ __(
 							'Heading Level',
@@ -75,7 +84,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 	};
 
 	return (
-		<div className={ className }>
+		<div { ...blockProps }>
 			{ getInspectorControls() }
 			<BlockTitle
 				className="wc-block-active-filters__title"

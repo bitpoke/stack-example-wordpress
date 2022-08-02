@@ -3,14 +3,14 @@
  */
 import classNames from 'classnames';
 import { __, sprintf } from '@wordpress/i18n';
-import { Icon, noAlt } from '@woocommerce/icons';
+import { Icon, closeSmall } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
 import Chip, { ChipProps } from './chip';
 
-interface RemovableChipProps extends ChipProps {
+export interface RemovableChipProps extends ChipProps {
 	/**
 	 * Aria label content.
 	 */
@@ -37,17 +37,17 @@ interface RemovableChipProps extends ChipProps {
  * Component used to render a "chip" -- an item containing some text with
  * an X button to remove/dismiss each chip.
  *
- * @param {Object} props Incoming props for the component.
- * @param {string} props.ariaLabel Aria label content.
- * @param {string} props.className CSS class used.
- * @param {boolean} props.disabled Whether action is disabled or not.
- * @param {function():any} props.onRemove Function to call when remove event is fired.
- * @param {boolean} props.removeOnAnyClick Whether to expand click area for remove event.
- * @param {string} props.text The text for the chip.
- * @param {string} props.screenReaderText The screen reader text for the chip.
- * @param {Object} props.props Rest of props passed into component.
+ * @param {Object}         props                  Incoming props for the component.
+ * @param {string}         props.ariaLabel        Aria label content.
+ * @param {string}         props.className        CSS class used.
+ * @param {boolean}        props.disabled         Whether action is disabled or not.
+ * @param {function():any} props.onRemove         Function to call when remove event is fired.
+ * @param {boolean}        props.removeOnAnyClick Whether to expand click area for remove event.
+ * @param {string}         props.text             The text for the chip.
+ * @param {string}         props.screenReaderText The screen reader text for the chip.
+ * @param {Object}         props.props            Rest of props passed into component.
  */
-const RemovableChip: React.FC< RemovableChipProps > = ( {
+export const RemovableChip = ( {
 	ariaLabel = '',
 	className = '',
 	disabled = false,
@@ -56,7 +56,7 @@ const RemovableChip: React.FC< RemovableChipProps > = ( {
 	text,
 	screenReaderText = '',
 	...props
-} ) => {
+}: RemovableChipProps ): JSX.Element => {
 	const RemoveElement = removeOnAnyClick ? 'span' : 'button';
 
 	if ( ! ariaLabel ) {
@@ -106,7 +106,7 @@ const RemovableChip: React.FC< RemovableChipProps > = ( {
 			>
 				<Icon
 					className="wc-block-components-chip__remove-icon"
-					srcElement={ noAlt }
+					icon={ closeSmall }
 					size={ 16 }
 				/>
 			</RemoveElement>

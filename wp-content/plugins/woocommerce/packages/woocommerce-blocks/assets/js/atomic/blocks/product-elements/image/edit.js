@@ -2,11 +2,18 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { createInterpolateElement } from '@wordpress/element';
-import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 import { getAdminLink } from '@woocommerce/settings';
+import {
+	Disabled,
+	PanelBody,
+	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -23,8 +30,10 @@ const Edit = ( { attributes, setAttributes } ) => {
 		saleBadgeAlign,
 	} = attributes;
 
+	const blockProps = useBlockProps();
+
 	return (
-		<>
+		<div { ...blockProps }>
 			<InspectorControls>
 				<PanelBody
 					title={ __( 'Content', 'woocommerce' ) }
@@ -62,41 +71,40 @@ const Edit = ( { attributes, setAttributes } ) => {
 						}
 					/>
 					{ showSaleBadge && (
-						<ToggleButtonControl
+						<ToggleGroupControl
 							label={ __(
 								'Sale Badge Alignment',
 								'woocommerce'
 							) }
 							value={ saleBadgeAlign }
-							options={ [
-								{
-									label: __(
-										'Left',
-										'woocommerce'
-									),
-									value: 'left',
-								},
-								{
-									label: __(
-										'Center',
-										'woocommerce'
-									),
-									value: 'center',
-								},
-								{
-									label: __(
-										'Right',
-										'woocommerce'
-									),
-									value: 'right',
-								},
-							] }
 							onChange={ ( value ) =>
 								setAttributes( { saleBadgeAlign: value } )
 							}
-						/>
+						>
+							<ToggleGroupControlOption
+								value="left"
+								label={ __(
+									'Left',
+									'woocommerce'
+								) }
+							/>
+							<ToggleGroupControlOption
+								value="center"
+								label={ __(
+									'Center',
+									'woocommerce'
+								) }
+							/>
+							<ToggleGroupControlOption
+								value="right"
+								label={ __(
+									'Right',
+									'woocommerce'
+								) }
+							/>
+						</ToggleGroupControl>
 					) }
-					<ToggleButtonControl
+					<ToggleGroupControl
 						label={ __(
 							'Image Sizing',
 							'woocommerce'
@@ -120,32 +128,31 @@ const Edit = ( { attributes, setAttributes } ) => {
 							}
 						) }
 						value={ imageSizing }
-						options={ [
-							{
-								label: __(
-									'Full Size',
-									'woocommerce'
-								),
-								value: 'full-size',
-							},
-							{
-								label: __(
-									'Cropped',
-									'woocommerce'
-								),
-								value: 'cropped',
-							},
-						] }
 						onChange={ ( value ) =>
 							setAttributes( { imageSizing: value } )
 						}
-					/>
+					>
+						<ToggleGroupControlOption
+							value="full-size"
+							label={ __(
+								'Full Size',
+								'woocommerce'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="cropped"
+							label={ __(
+								'Cropped',
+								'woocommerce'
+							) }
+						/>
+					</ToggleGroupControl>
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>
 				<Block { ...attributes } />
 			</Disabled>
-		</>
+		</div>
 	);
 };
 

@@ -5,6 +5,8 @@ import { __ } from '@wordpress/i18n';
 import triggerFetch from '@wordpress/api-fetch';
 import { useEffect, useCallback, useState } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
+import { triggerAddedToCartEvent } from '@woocommerce/base-utils';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -12,7 +14,6 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { useAddToCartFormContext } from '../../form-state';
 import { useValidationContext } from '../../../validation';
 import { useStoreCart } from '../../../../hooks/cart/use-store-cart';
-import { useStoreNotices } from '../../../../hooks/use-store-notices';
 
 /**
  * FormSubmit.
@@ -33,7 +34,7 @@ const FormSubmit = () => {
 		hasValidationErrors,
 		showAllValidationErrors,
 	} = useValidationContext();
-	const { addErrorNotice, removeNotice } = useStoreNotices();
+	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const { receiveCart } = useStoreCart();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
 	const doSubmit = ! hasError && isProcessing;
@@ -62,7 +63,10 @@ const FormSubmit = () => {
 	// Triggers form submission to the API.
 	const submitFormCallback = useCallback( () => {
 		setIsSubmitting( true );
-		removeNotice( 'add-to-cart' );
+		removeNotice(
+			'add-to-cart',
+			`woocommerce/single-product/${ product?.id || 0 }`
+		);
 
 		const fetchData = {
 			id: product.id || 0,
@@ -71,7 +75,7 @@ const FormSubmit = () => {
 		};
 
 		triggerFetch( {
-			path: '/wc/store/cart/add-item',
+			path: '/wc/store/v1/cart/add-item',
 			method: 'POST',
 			data: fetchData,
 			cache: 'no-store',
@@ -86,20 +90,26 @@ const FormSubmit = () => {
 					if ( ! fetchResponse.ok ) {
 						// We received an error response.
 						if ( response.body && response.body.message ) {
-							addErrorNotice(
+							createErrorNotice(
 								decodeEntities( response.body.message ),
 								{
 									id: 'add-to-cart',
+									context: `woocommerce/single-product/${
+										product?.id || 0
+									}`,
 								}
 							);
 						} else {
-							addErrorNotice(
+							createErrorNotice(
 								__(
 									'Something went wrong. Please contact us to get assistance.',
 									'woocommerce'
 								),
 								{
 									id: 'add-to-cart',
+									context: `woocommerce/single-product/${
+										product?.id || 0
+									}`,
 								}
 							);
 						}
@@ -107,6 +117,7 @@ const FormSubmit = () => {
 					} else {
 						receiveCart( response );
 					}
+					triggerAddedToCartEvent( { preserveCartData: true } );
 					dispatchActions.setAfterProcessing( response );
 					setIsSubmitting( false );
 				} );
@@ -124,7 +135,7 @@ const FormSubmit = () => {
 			} );
 	}, [
 		product,
-		addErrorNotice,
+		createErrorNotice,
 		removeNotice,
 		receiveCart,
 		dispatchActions,

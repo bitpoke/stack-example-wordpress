@@ -1,11 +1,11 @@
 (window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[48],{
 
-/***/ 509:
+/***/ 531:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return createNoticesFromResponse; });
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * External dependencies
@@ -29,44 +29,44 @@ function createNoticesFromResponse(response) {
 
 /***/ }),
 
-/***/ 541:
+/***/ 564:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var _extends=Object.assign||function(a){for(var c,b=1;b<arguments.length;b++)for(var d in c=arguments[b],c)Object.prototype.hasOwnProperty.call(c,d)&&(a[d]=c[d]);return a};Object.defineProperty(exports,'__esModule',{value:!0});exports.default=function(a){var b=a.size,c=b===void 0?24:b,d=a.onClick,e=a.icon,f=a.className,g=_objectWithoutProperties(a,['size','onClick','icon','className']),j=['gridicon','gridicons-external',f,!!function h(k){return 0==k%18}(c)&&'needs-offset',!1,!1].filter(Boolean).join(' ');return _react2.default.createElement('svg',_extends({className:j,height:c,width:c,onClick:d},g,{xmlns:'http://www.w3.org/2000/svg',viewBox:'0 0 24 24'}),_react2.default.createElement('g',null,_react2.default.createElement('path',{d:'M19 13v6c0 1.105-.895 2-2 2H5c-1.105 0-2-.895-2-2V7c0-1.105.895-2 2-2h6v2H5v12h12v-6h2zM13 3v2h4.586l-7.793 7.793 1.414 1.414L19 6.414V11h2V3h-8z'})))};var _react=__webpack_require__(5),_react2=_interopRequireDefault(_react);function _interopRequireDefault(a){return a&&a.__esModule?a:{default:a}}function _objectWithoutProperties(a,b){var d={};for(var c in a)0<=b.indexOf(c)||Object.prototype.hasOwnProperty.call(a,c)&&(d[c]=a[c]);return d}module.exports=exports['default'];
+Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=_default;var _react=_interopRequireDefault(__webpack_require__(6)),_excluded=["size","onClick","icon","className"];function _interopRequireDefault(a){return a&&a.__esModule?a:{default:a}}function _extends(){return _extends=Object.assign||function(a){for(var b,c=1;c<arguments.length;c++)for(var d in b=arguments[c],b)Object.prototype.hasOwnProperty.call(b,d)&&(a[d]=b[d]);return a},_extends.apply(this,arguments)}function _objectWithoutProperties(a,b){if(null==a)return{};var c,d,e=_objectWithoutPropertiesLoose(a,b);if(Object.getOwnPropertySymbols){var f=Object.getOwnPropertySymbols(a);for(d=0;d<f.length;d++)c=f[d],0<=b.indexOf(c)||Object.prototype.propertyIsEnumerable.call(a,c)&&(e[c]=a[c])}return e}function _objectWithoutPropertiesLoose(a,b){if(null==a)return{};var c,d,e={},f=Object.keys(a);for(d=0;d<f.length;d++)c=f[d],0<=b.indexOf(c)||(e[c]=a[c]);return e}function _default(a){var b=a.size,c=void 0===b?24:b,d=a.onClick,e=a.icon,f=a.className,g=_objectWithoutProperties(a,_excluded),h=["gridicon","gridicons-external",f,!!function isModulo18(a){return 0==a%18}(c)&&"needs-offset",!1,!1].filter(Boolean).join(" ");return _react["default"].createElement("svg",_extends({className:h,height:c,width:c,onClick:d},g,{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 24 24"}),_react["default"].createElement("g",null,_react["default"].createElement("path",{d:"M19 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6v2H5v12h12v-6h2zM13 3v2h4.586l-7.793 7.793 1.414 1.414L19 6.414V11h2V3h-8z"})))}
 
 
 /***/ }),
 
-/***/ 608:
+/***/ 626:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 609:
+/***/ 627:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 610:
+/***/ 628:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIj48cGF0aCBmaWxsPSIjN2Q1N2E0IiBkPSJNMCAwaDEyMHYxMjBIMHoiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNNjcuNDggNTMuNTVjLTEuMTktLjI2LTIuMzMuNDItMy40MyAyLjAzLS44NyAxLjI2LTEuNDUgMi41Ni0xLjc0IDMuOTEtLjE2Ljc3LS4yNCAxLjU4LS4yNCAyLjQxIDAgLjk3LjE5IDEuOTYuNTggMi45OS40OCAxLjI2IDEuMTMgMS45NiAxLjkzIDIuMTIuOC4xNiAxLjY5LS4xOSAyLjY2LTEuMDYgMS4yMi0xLjA5IDIuMDYtMi43MiAyLjUxLTQuODguMTYtLjc3LjI0LTEuNTguMjQtMi40MSAwLS45Ny0uMTktMS45Ni0uNTgtMi45OS0uNDgtMS4yNS0xLjEyLTEuOTYtMS45My0yLjEyem0yMC42MiAwYy0xLjE5LS4yNi0yLjMzLjQyLTMuNDMgMi4wMy0uODcgMS4yNi0xLjQ1IDIuNTYtMS43NCAzLjkxLS4xNi43Ny0uMjQgMS41OC0uMjQgMi40MSAwIC45Ny4xOSAxLjk2LjU4IDIuOTkuNDggMS4yNiAxLjEzIDEuOTYgMS45MyAyLjEyLjguMTYgMS42OS0uMTkgMi42Ni0xLjA2IDEuMjItMS4wOSAyLjA2LTIuNzIgMi41MS00Ljg4LjE2LS43Ny4yNC0xLjU4LjI0LTIuNDEgMC0uOTctLjE5LTEuOTYtLjU4LTIuOTktLjQ4LTEuMjUtMS4xMi0xLjk2LTEuOTMtMi4xMnoiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNOTIuNzYgNDBIMjcuMjRjLTQuMTQgMC03LjUgMy4zNi03LjUgNy41djI0Ljk4YzAgNC4xNCAzLjM2IDcuNSA3LjUgNy41aDMxLjA0bDE0LjE5IDcuOS0zLjIyLTcuOWgyMy41YzQuMTQgMCA3LjUtMy4zNiA3LjUtNy41VjQ3LjVjLjAxLTQuMTQtMy4zNS03LjUtNy40OS03LjV6TTUyLjc0IDcyLjkxYy4wNi44NC0uMDcgMS41NS0uMzggMi4xNi0uNC43NC0uOTggMS4xMy0xLjc1IDEuMTktLjg3LjA2LTEuNzMtLjM1LTIuNi0xLjIyLTMuMDYtMy4xNC01LjQ5LTcuODEtNy4yOC0xNC0yLjEyIDQuMjEtMy43MSA3LjM3LTQuNzUgOS40OC0xLjkzIDMuNzItMy41OSA1LjYyLTQuOTcgNS43Mi0uOS4wNi0xLjY2LS42OS0yLjI5LTIuMjYtMS42OS00LjMtMy41LTEyLjYzLTUuNDQtMjQuOTctLjEzLS44Ni4wNS0xLjYuNTItMi4yMS40Ny0uNjEgMS4xNi0uOTUgMi4wNi0xLjAyIDEuNjctLjEyIDIuNjMuNjcgMi44OCAyLjM2IDEuMDMgNi44NiAyLjE0IDEyLjY5IDMuMzEgMTcuNDhsNy4yMS0xMy43MmMuNjYtMS4yNCAxLjQ4LTEuOSAyLjQ3LTEuOTcgMS40NC0uMSAyLjM1LjgyIDIuNzEgMi43Ni44MiA0LjM2IDEuODYgOC4xMSAzLjEyIDExLjI1Ljg2LTguMzUgMi4zMS0xNC4zOSA0LjM0LTE4LjExLjQ4LS45IDEuMjEtMS4zOSAyLjE3LTEuNDYuNzctLjA1IDEuNDYuMTYgMi4wOC42NS42Mi40OS45NSAxLjEyIDEgMS44OS4wNC41OC0uMDcgMS4xLS4zMiAxLjU3LTEuMjggMi4zOC0yLjM0IDYuMzQtMy4xOCAxMS44OS0uODIgNS4zNC0xLjEzIDkuNTMtLjkxIDEyLjU0em0yMC4yLTUuMTZjLTEuOTYgMy4yOC00LjU0IDQuOTItNy43MiA0LjkyLS41OCAwLTEuMTgtLjA3LTEuNzktLjE5LTIuMzItLjQ4LTQuMDctMS43NS01LjI2LTMuODEtMS4wNi0xLjgtMS41OS0zLjk3LTEuNTktNi41MiAwLTMuMzguODUtNi40NyAyLjU2LTkuMjcgMi0zLjI4IDQuNTctNC45MiA3LjcyLTQuOTIuNTggMCAxLjE3LjA3IDEuNzkuMTkgMi4zMi40OCA0LjA3IDEuNzUgNS4yNiAzLjgxIDEuMDYgMS43NyAxLjU5IDMuOTMgMS41OSA2LjQ3LS4wMSAzLjM4LS44NiA2LjQ4LTIuNTYgOS4zMnptMjAuNjIgMGMtMS45NiAzLjI4LTQuNTQgNC45Mi03LjcyIDQuOTItLjU4IDAtMS4xNy0uMDctMS43OC0uMTktMi4zMi0uNDgtNC4wNy0xLjc1LTUuMjYtMy44MS0xLjA2LTEuOC0xLjU5LTMuOTctMS41OS02LjUyIDAtMy4zOC44NS02LjQ3IDIuNTYtOS4yNyAyLTMuMjggNC41Ny00LjkyIDcuNzItNC45Mi41OCAwIDEuMTcuMDcgMS43OC4xOSAyLjMyLjQ4IDQuMDcgMS43NSA1LjI2IDMuODEgMS4wNiAxLjc3IDEuNTkgMy45MyAxLjU5IDYuNDcgMCAzLjM4LS44NiA2LjQ4LTIuNTYgOS4zMnoiLz48L3N2Zz4K"
 
 /***/ }),
 
-/***/ 611:
+/***/ 629:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 635:
+/***/ 657:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -80,33 +80,33 @@ var external_wp_element_ = __webpack_require__(0);
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wc","experimental"]
-var external_wc_experimental_ = __webpack_require__(17);
+var external_wc_experimental_ = __webpack_require__(18);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./node_modules/gridicons/dist/external.js
-var external = __webpack_require__(541);
+var external = __webpack_require__(564);
 var external_default = /*#__PURE__*/__webpack_require__.n(external);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./client/lib/notices/index.js
-var notices = __webpack_require__(509);
+var notices = __webpack_require__(531);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: ./node_modules/classnames/index.js
-var classnames = __webpack_require__(6);
+var classnames = __webpack_require__(7);
 var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
 
 // EXTERNAL MODULE: ./client/settings-recommendations/dismissable-list.scss
-var dismissable_list = __webpack_require__(608);
+var dismissable_list = __webpack_require__(626);
 
 // CONCATENATED MODULE: ./client/settings-recommendations/dismissable-list.tsx
 
@@ -128,10 +128,11 @@ var dismissable_list = __webpack_require__(608);
  // using a context provider for the option name so that the option name prop doesn't need to be passed to the `DismissableListHeading` too
 
 const OptionNameContext = Object(external_wp_element_["createContext"])('');
-const DismissableListHeading = ({
-  children,
-  onDismiss = () => null
-}) => {
+const DismissableListHeading = _ref => {
+  let {
+    children,
+    onDismiss = () => null
+  } = _ref;
   const {
     updateOptions
   } = Object(external_wp_data_["useDispatch"])(external_wc_data_["OPTIONS_STORE_NAME"]);
@@ -155,11 +156,12 @@ const DismissableListHeading = ({
     }, Object(external_wp_i18n_["__"])('Hide this', 'woocommerce-admin')))
   })));
 };
-const DismissableList = ({
-  children,
-  className,
-  dismissOptionName
-}) => {
+const DismissableList = _ref2 => {
+  let {
+    children,
+    className,
+    dismissOptionName
+  } = _ref2;
   const isVisible = Object(external_wp_data_["useSelect"])(select => {
     const {
       getOption,
@@ -181,15 +183,18 @@ const DismissableList = ({
     value: dismissOptionName
   }, children));
 };
-// EXTERNAL MODULE: ./packages/wc-admin-settings/build-module/index.js
-var build_module = __webpack_require__(13);
+// EXTERNAL MODULE: external ["wc","wcSettings"]
+var external_wc_wcSettings_ = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./client/shipping/woocommerce-services-item.scss
-var woocommerce_services_item = __webpack_require__(609);
+var woocommerce_services_item = __webpack_require__(627);
 
 // EXTERNAL MODULE: ./client/shipping/woo-icon.svg
-var woo_icon = __webpack_require__(610);
+var woo_icon = __webpack_require__(628);
 var woo_icon_default = /*#__PURE__*/__webpack_require__.n(woo_icon);
+
+// EXTERNAL MODULE: ./client/utils/admin-settings.js
+var admin_settings = __webpack_require__(23);
 
 // CONCATENATED MODULE: ./client/shipping/woocommerce-services-item.tsx
 
@@ -210,11 +215,13 @@ var woo_icon_default = /*#__PURE__*/__webpack_require__.n(woo_icon);
 
 
 
-const WooCommerceServicesItem = ({
-  onSetupClick,
-  pluginsBeingSetup
-}) => {
-  const wcAdminAssetUrl = Object(build_module["f" /* getSetting */])('wcAdminAssetUrl', '');
+
+const WooCommerceServicesItem = _ref => {
+  let {
+    onSetupClick,
+    pluginsBeingSetup
+  } = _ref;
+  const wcAdminAssetUrl = Object(admin_settings["d" /* getAdminSetting */])('wcAdminAssetUrl', '');
   const {
     createSuccessNotice
   } = Object(external_wp_data_["useDispatch"])('core/notices');
@@ -226,7 +233,7 @@ const WooCommerceServicesItem = ({
 
       if (!isSiteConnectedToJetpack) {
         actions.push({
-          url: Object(build_module["e" /* getAdminLink */])('plugins.php'),
+          url: Object(external_wc_wcSettings_["getAdminLink"])('plugins.php'),
           label: Object(external_wp_i18n_["__"])('Finish the setup by connecting your store to Jetpack.', 'woocommerce-admin')
         });
       }
@@ -265,7 +272,7 @@ const WooCommerceServicesItem = ({
 
 /* harmony default export */ var shipping_woocommerce_services_item = (WooCommerceServicesItem);
 // EXTERNAL MODULE: ./client/shipping/shipping-recommendations.scss
-var shipping_recommendations = __webpack_require__(611);
+var shipping_recommendations = __webpack_require__(629);
 
 // CONCATENATED MODULE: ./client/shipping/shipping-recommendations.tsx
 
@@ -316,34 +323,37 @@ const useInstallPlugin = () => {
   return [pluginsBeingSetup, handleSetup];
 };
 
-const ShippingRecommendationsList = ({
-  children
-}) => Object(external_wp_element_["createElement"])(DismissableList, {
-  className: "woocommerce-recommended-shipping-extensions",
-  dismissOptionName: "woocommerce_settings_shipping_recommendations_hidden"
-}, Object(external_wp_element_["createElement"])(DismissableListHeading, null, Object(external_wp_element_["createElement"])(external_wc_experimental_["Text"], {
-  variant: "title.small",
-  as: "p",
-  size: "20",
-  lineHeight: "28px"
-}, Object(external_wp_i18n_["__"])('Recommended shipping solutions', 'woocommerce-admin')), Object(external_wp_element_["createElement"])(external_wc_experimental_["Text"], {
-  className: "woocommerce-recommended-shipping__header-heading",
-  variant: "caption",
-  as: "p",
-  size: "12",
-  lineHeight: "16px"
-}, Object(external_wp_i18n_["__"])('We recommend adding one of the following shipping extensions to your store. The extension will be installed and activated for you when you click "Get started".', 'woocommerce-admin'))), Object(external_wp_element_["createElement"])("ul", {
-  className: "woocommerce-list"
-}, external_wp_element_["Children"].map(children, item => Object(external_wp_element_["createElement"])("li", {
-  className: "woocommerce-list__item"
-}, item))), Object(external_wp_element_["createElement"])(external_wp_components_["CardFooter"], null, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
-  className: "woocommerce-recommended-shipping-extensions__more_options_cta",
-  href: "https://woocommerce.com/product-category/woocommerce-extensions/shipping-methods/?utm_source=shipping_recommendations",
-  target: "_blank",
-  isTertiary: true
-}, Object(external_wp_i18n_["__"])('See more options', 'woocommerce-admin'), Object(external_wp_element_["createElement"])(external_wp_components_["VisuallyHidden"], null, Object(external_wp_i18n_["__"])('(opens in a new tab)', 'woocommerce-admin')), Object(external_wp_element_["createElement"])(external_default.a, {
-  size: 18
-}))));
+const ShippingRecommendationsList = _ref => {
+  let {
+    children
+  } = _ref;
+  return Object(external_wp_element_["createElement"])(DismissableList, {
+    className: "woocommerce-recommended-shipping-extensions",
+    dismissOptionName: "woocommerce_settings_shipping_recommendations_hidden"
+  }, Object(external_wp_element_["createElement"])(DismissableListHeading, null, Object(external_wp_element_["createElement"])(external_wc_experimental_["Text"], {
+    variant: "title.small",
+    as: "p",
+    size: "20",
+    lineHeight: "28px"
+  }, Object(external_wp_i18n_["__"])('Recommended shipping solutions', 'woocommerce-admin')), Object(external_wp_element_["createElement"])(external_wc_experimental_["Text"], {
+    className: "woocommerce-recommended-shipping__header-heading",
+    variant: "caption",
+    as: "p",
+    size: "12",
+    lineHeight: "16px"
+  }, Object(external_wp_i18n_["__"])('We recommend adding one of the following shipping extensions to your store. The extension will be installed and activated for you when you click "Get started".', 'woocommerce-admin'))), Object(external_wp_element_["createElement"])("ul", {
+    className: "woocommerce-list"
+  }, external_wp_element_["Children"].map(children, item => Object(external_wp_element_["createElement"])("li", {
+    className: "woocommerce-list__item"
+  }, item))), Object(external_wp_element_["createElement"])(external_wp_components_["CardFooter"], null, Object(external_wp_element_["createElement"])(external_wp_components_["Button"], {
+    className: "woocommerce-recommended-shipping-extensions__more_options_cta",
+    href: "https://woocommerce.com/product-category/woocommerce-extensions/shipping-methods/?utm_source=shipping_recommendations",
+    target: "_blank",
+    isTertiary: true
+  }, Object(external_wp_i18n_["__"])('See more options', 'woocommerce-admin'), Object(external_wp_element_["createElement"])(external_wp_components_["VisuallyHidden"], null, Object(external_wp_i18n_["__"])('(opens in a new tab)', 'woocommerce-admin')), Object(external_wp_element_["createElement"])(external_default.a, {
+    size: 18
+  }))));
+};
 
 const ShippingRecommendations = () => {
   const [pluginsBeingSetup, setupPlugin] = useInstallPlugin();

@@ -2,9 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
 import classNames from 'classnames';
-import { Icon, bill } from '@woocommerce/icons';
+import { Icon, currencyDollar } from '@wordpress/icons';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -12,10 +14,15 @@ import { Icon, bill } from '@woocommerce/icons';
 import edit from './edit.js';
 
 registerBlockType( 'woocommerce/price-filter', {
+	apiVersion: 2,
 	title: __( 'Filter Products by Price', 'woocommerce' ),
 	icon: {
-		src: <Icon srcElement={ bill } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ currencyDollar }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],
@@ -26,6 +33,17 @@ registerBlockType( 'woocommerce/price-filter', {
 	supports: {
 		html: false,
 		multiple: false,
+		color: {
+			text: true,
+			background: false,
+		},
+		...( isFeaturePluginBuild() && {
+			__experimentalBorder: {
+				radius: true,
+				color: true,
+				width: false,
+			},
+		} ),
 	},
 	example: {},
 	attributes: {
@@ -46,10 +64,30 @@ registerBlockType( 'woocommerce/price-filter', {
 			default: 3,
 		},
 	},
-
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'core/legacy-widget' ],
+				// We can't transform if raw instance isn't shown in the REST API.
+				isMatch: ( { idBase, instance } ) =>
+					idBase === 'woocommerce_price_filter' && !! instance?.raw,
+				transform: ( { instance } ) =>
+					createBlock( 'woocommerce/price-filter', {
+						showInputFields: false,
+						showFilterButton: true,
+						heading:
+							instance?.raw?.title ||
+							__(
+								'Filter by price',
+								'woocommerce'
+							),
+						headingLevel: 3,
+					} ),
+			},
+		],
+	},
 	edit,
-
-	// Save the props to post content.
 	save( { attributes } ) {
 		const {
 			className,
@@ -66,7 +104,9 @@ registerBlockType( 'woocommerce/price-filter', {
 		};
 		return (
 			<div
-				className={ classNames( 'is-loading', className ) }
+				{ ...useBlockProps.save( {
+					className: classNames( 'is-loading', className ),
+				} ) }
 				{ ...data }
 			>
 				<span

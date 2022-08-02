@@ -1,7 +1,7 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '3.1.0',
-        'version' => '3.1.0.0',
+        'pretty_version' => '3.3.2',
+        'version' => '3.3.2.0',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -41,8 +41,8 @@
             ),
         ),
         'woocommerce/woocommerce-admin' => array(
-            'pretty_version' => '3.1.0',
-            'version' => '3.1.0.0',
+            'pretty_version' => '3.3.2',
+            'version' => '3.3.2.0',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

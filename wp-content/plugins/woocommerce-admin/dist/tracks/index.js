@@ -82,12 +82,12 @@ this["wc"] = this["wc"] || {}; this["wc"]["tracks"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 452);
+/******/ 	return __webpack_require__(__webpack_require__.s = 473);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 129:
+/***/ 130:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -278,7 +278,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 271:
+/***/ 280:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/* eslint-env browser */
@@ -331,7 +331,11 @@ function useColors() {
   // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
 
 
-  return typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || typeof window !== 'undefined' && window.console && (window.console.firebug || window.console.exception && window.console.table) || typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
+  return typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // Is firebug? http://stackoverflow.com/a/398120/376773
+  typeof window !== 'undefined' && window.console && (window.console.firebug || window.console.exception && window.console.table) || // Is firefox >= v31?
+  // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+  typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // Double check webkit in userAgent just in case we are in a worker
+  typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
 }
 /**
  * Colorize log arguments if enabled.
@@ -445,7 +449,7 @@ function localstorage() {
   }
 }
 
-module.exports = __webpack_require__(453)(exports);
+module.exports = __webpack_require__(474)(exports);
 const {
   formatters
 } = module.exports;
@@ -460,11 +464,11 @@ formatters.j = function (v) {
     return '[UnexpectedJSONParseError]: ' + error.message;
   }
 };
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(129)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(130)))
 
 /***/ }),
 
-/***/ 452:
+/***/ 473:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -472,7 +476,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recordEvent", function() { return recordEvent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "queueRecordEvent", function() { return queueRecordEvent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recordPageView", function() { return recordPageView; });
-/* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(271);
+/* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(280);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(debug__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * External dependencies
@@ -526,7 +530,11 @@ const tracksQueue = {
     return items;
   },
 
-  add(...args) {
+  add() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
     if (!window.localStorage) {
       // If unable to queue, run it now.
       tracksDebug('Unable to queue, running now', {
@@ -601,7 +609,7 @@ function recordPageView(path, extraProperties) {
 
 /***/ }),
 
-/***/ 453:
+/***/ 474:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -615,7 +623,7 @@ function setup(env) {
   createDebug.disable = disable;
   createDebug.enable = enable;
   createDebug.enabled = enabled;
-  createDebug.humanize = __webpack_require__(454);
+  createDebug.humanize = __webpack_require__(475);
   createDebug.destroy = destroy;
   Object.keys(env).forEach(key => {
     createDebug[key] = env[key];
@@ -664,7 +672,11 @@ function setup(env) {
     let prevTime;
     let enableOverride = null;
 
-    function debug(...args) {
+    function debug() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
       // Disabled?
       if (!debug.enabled) {
         return;
@@ -861,7 +873,7 @@ module.exports = setup;
 
 /***/ }),
 
-/***/ 454:
+/***/ 475:
 /***/ (function(module, exports) {
 
 /**

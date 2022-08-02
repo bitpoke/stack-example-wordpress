@@ -1,6 +1,6 @@
 (window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[17],{
 
-/***/ 39:
+/***/ 43:
 /***/ (function(module, exports) {
 
 function _defineProperty(obj, key, value) {
@@ -18,33 +18,32 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-module.exports = _defineProperty;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
+module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
-/***/ 550:
+/***/ 571:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 551:
+/***/ 572:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 552:
+/***/ 573:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 633:
+/***/ 654:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52,7 +51,7 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/extends.js
-var helpers_extends = __webpack_require__(36);
+var helpers_extends = __webpack_require__(40);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
 // EXTERNAL MODULE: external ["wp","element"]
@@ -62,31 +61,31 @@ var external_wp_element_ = __webpack_require__(0);
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: external ["wp","compose"]
 var external_wp_compose_ = __webpack_require__(14);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: ./client/analytics/settings/index.scss
-var settings = __webpack_require__(550);
+var settings = __webpack_require__(571);
 
 // EXTERNAL MODULE: ./client/analytics/settings/config.js + 1 modules
-var config = __webpack_require__(257);
+var config = __webpack_require__(258);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
-var defineProperty = __webpack_require__(39);
+var defineProperty = __webpack_require__(43);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
@@ -94,10 +93,10 @@ var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
+var external_lodash_ = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./client/analytics/settings/setting.scss
-var settings_setting = __webpack_require__(551);
+var settings_setting = __webpack_require__(572);
 
 // CONCATENATED MODULE: ./client/analytics/settings/setting.js
 
@@ -338,7 +337,7 @@ setting_Setting.propTypes = {
   };
 }))(setting_Setting));
 // EXTERNAL MODULE: external "moment"
-var external_moment_ = __webpack_require__(9);
+var external_moment_ = __webpack_require__(11);
 var external_moment_default = /*#__PURE__*/__webpack_require__.n(external_moment_);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/utils.js
@@ -365,15 +364,17 @@ const formatParams = (dateFormat, period, skipChecked) => {
 
   return params;
 };
-const getStatus = ({
-  cacheNeedsClearing,
-  customersProgress,
-  customersTotal,
-  isError,
-  inProgress,
-  ordersProgress,
-  ordersTotal
-}) => {
+const getStatus = _ref => {
+  let {
+    cacheNeedsClearing,
+    customersProgress,
+    customersTotal,
+    isError,
+    inProgress,
+    ordersProgress,
+    ordersTotal
+  } = _ref;
+
   if (isError) {
     return 'error';
   }
@@ -405,7 +406,7 @@ const getStatus = ({
   return 'nothing';
 };
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(15);
+var external_wp_url_ = __webpack_require__(16);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/actions.js
 
@@ -427,19 +428,21 @@ var external_wp_url_ = __webpack_require__(15);
 
 
 
-function HistoricalDataActions({
-  clearStatusAndTotalsCache,
-  createNotice,
-  dateFormat,
-  importDate,
-  onImportStarted,
-  selectedPeriod,
-  stopImport,
-  skipChecked,
-  status,
-  setImportStarted,
-  updateImportation
-}) {
+function HistoricalDataActions(_ref) {
+  let {
+    clearStatusAndTotalsCache,
+    createNotice,
+    dateFormat,
+    importDate,
+    onImportStarted,
+    selectedPeriod,
+    stopImport,
+    skipChecked,
+    status,
+    setImportStarted,
+    updateImportation
+  } = _ref;
+
   const onStartImport = () => {
     const path = Object(external_wp_url_["addQueryArgs"])('/wc-analytics/reports/import', formatParams(dateFormat, selectedPeriod, skipChecked));
 
@@ -459,7 +462,8 @@ function HistoricalDataActions({
     makeQuery(path, errorMessage);
   };
 
-  const makeQuery = (path, errorMessage, importStarted = false) => {
+  const makeQuery = function (path, errorMessage) {
+    let importStarted = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     updateImportation(path, importStarted).then(response => {
       if (response.status === 'success') {
         createNotice('success', response.message);
@@ -571,7 +575,7 @@ function HistoricalDataActions({
   };
 })])(HistoricalDataActions));
 // EXTERNAL MODULE: external ["wc","date"]
-var external_wc_date_ = __webpack_require__(20);
+var external_wc_date_ = __webpack_require__(21);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/period-selector.js
 
@@ -587,12 +591,14 @@ var external_wc_date_ = __webpack_require__(20);
 
 
 
-function HistoricalDataPeriodSelector({
-  dateFormat,
-  disabled,
-  setImportPeriod,
-  value
-}) {
+function HistoricalDataPeriodSelector(_ref) {
+  let {
+    dateFormat,
+    disabled,
+    setImportPeriod,
+    value
+  } = _ref;
+
   const onSelectChange = val => {
     setImportPeriod(val);
   };
@@ -687,11 +693,12 @@ function HistoricalDataPeriodSelector({
 
 
 
-function HistoricalDataProgress({
-  label,
-  progress,
-  total
-}) {
+function HistoricalDataProgress(_ref) {
+  let {
+    label,
+    progress,
+    total
+  } = _ref;
   const labelText = Object(external_wp_i18n_["sprintf"])(Object(external_wp_i18n_["__"])('Imported %(label)s', 'woocommerce-admin'), {
     label
   });
@@ -714,7 +721,7 @@ function HistoricalDataProgress({
 
 /* harmony default export */ var historical_data_progress = (HistoricalDataProgress);
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(31);
+var external_wp_hooks_ = __webpack_require__(28);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/status.js
 
@@ -728,10 +735,26 @@ var external_wp_hooks_ = __webpack_require__(31);
 
 const HISTORICAL_DATA_STATUS_FILTER = 'woocommerce_admin_import_status';
 
-function HistoricalDataStatus({
-  importDate,
-  status
-}) {
+function HistoricalDataStatus(_ref) {
+  let {
+    importDate,
+    status
+  } = _ref;
+
+  /**
+   * Historical data import statuses.
+   *
+   * @filter woocommerce_admin_import_status
+   *
+   * @param {Object} statuses Import statuses.
+   * @param {string} statuses.nothing Nothing to import.
+   * @param {string} statuses.ready Ready to import.
+   * @param {Array} statuses.initializing Initializing string and spinner.
+   * @param {Array} statuses.customers Importing customers string and spinner.
+   * @param {Array} statuses.orders Importing orders string and spinner.
+   * @param {Array} statuses.finalizing Finalizing string and spinner.
+   * @param {string} statuses.finished Message displayed after import.
+   */
   const statusLabels = Object(external_wp_hooks_["applyFilters"])(HISTORICAL_DATA_STATUS_FILTER, {
     nothing: Object(external_wp_i18n_["__"])('Nothing To Import', 'woocommerce-admin'),
     ready: Object(external_wp_i18n_["__"])('Ready To Import', 'woocommerce-admin'),
@@ -768,11 +791,13 @@ function HistoricalDataStatus({
 
 
 
-function HistoricalDataSkipCheckbox({
-  checked,
-  disabled,
-  setSkipPrevious
-}) {
+function HistoricalDataSkipCheckbox(_ref) {
+  let {
+    checked,
+    disabled,
+    setSkipPrevious
+  } = _ref;
+
   const skipChange = value => {
     setSkipPrevious(value);
   };
@@ -795,7 +820,7 @@ function HistoricalDataSkipCheckbox({
   };
 })(HistoricalDataSkipCheckbox));
 // EXTERNAL MODULE: ./client/analytics/settings/historical-data/style.scss
-var style = __webpack_require__(552);
+var style = __webpack_require__(573);
 
 // CONCATENATED MODULE: ./client/analytics/settings/historical-data/layout.js
 
@@ -1162,10 +1187,11 @@ class historical_data_HistoricalData extends external_wp_element_["Component"] {
 
 
 
-const Settings = ({
-  createNotice,
-  query
-}) => {
+const Settings = _ref => {
+  let {
+    createNotice,
+    query
+  } = _ref;
   const {
     settingsError,
     isRequesting,

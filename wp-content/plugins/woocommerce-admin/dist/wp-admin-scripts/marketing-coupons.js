@@ -82,7 +82,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["marketingCoupons"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 471);
+/******/ 	return __webpack_require__(__webpack_require__.s = 492);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -107,7 +107,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["marketingCoupons"] =
 if (false) { var throwOnDirectAccess, ReactIs; } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(48)();
+  module.exports = __webpack_require__(60)();
 }
 
 
@@ -156,21 +156,21 @@ __webpack_require__.d(icons_namespaceObject, "woocommerceGroupCoupons", function
 __webpack_require__.d(icons_namespaceObject, "woocommerceSmartCoupons", function() { return library_tip; });
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/extends.js
-var helpers_extends = __webpack_require__(36);
+var helpers_extends = __webpack_require__(40);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
 // EXTERNAL MODULE: external ["wp","element"]
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./node_modules/classnames/index.js
-var classnames = __webpack_require__(6);
+var classnames = __webpack_require__(7);
 var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
 
 // EXTERNAL MODULE: ./client/marketing/components/button/style.scss
-var button_style = __webpack_require__(275);
+var button_style = __webpack_require__(284);
 
 // CONCATENATED MODULE: ./client/marketing/components/button/index.js
 
@@ -192,23 +192,23 @@ var button_style = __webpack_require__(275);
   }));
 });
 // EXTERNAL MODULE: ./client/marketing/components/card/index.js
-var card = __webpack_require__(78);
+var card = __webpack_require__(79);
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
 var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
-// EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js + 2 modules
-var icon = __webpack_require__(117);
+// EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js
+var icon = __webpack_require__(105);
 
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
+var external_lodash_ = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./client/marketing/components/product-icon/style.scss
-var product_icon_style = __webpack_require__(277);
+var product_icon_style = __webpack_require__(286);
 
 // EXTERNAL MODULE: external ["wp","primitives"]
-var external_wp_primitives_ = __webpack_require__(8);
+var external_wp_primitives_ = __webpack_require__(9);
 
 // CONCATENATED MODULE: ./client/marketing/components/product-icon/icons/library/blank.js
 
@@ -675,13 +675,13 @@ product_icon_ProductIcon.propTypes = {
 };
 /* harmony default export */ var product_icon = (product_icon_ProductIcon);
 // EXTERNAL MODULE: ./node_modules/react-transition-group/esm/TransitionGroup.js + 2 modules
-var TransitionGroup = __webpack_require__(173);
+var TransitionGroup = __webpack_require__(171);
 
 // EXTERNAL MODULE: ./node_modules/react-transition-group/esm/CSSTransition.js + 3 modules
-var CSSTransition = __webpack_require__(169);
+var CSSTransition = __webpack_require__(167);
 
 // EXTERNAL MODULE: ./client/marketing/components/slider/style.scss
-var slider_style = __webpack_require__(278);
+var slider_style = __webpack_require__(287);
 
 // CONCATENATED MODULE: ./client/marketing/components/slider/index.js
 
@@ -700,11 +700,12 @@ var slider_style = __webpack_require__(278);
 
 
 
-const Slider = ({
-  children,
-  animationKey,
-  animate
-}) => {
+const Slider = _ref => {
+  let {
+    children,
+    animationKey,
+    animate
+  } = _ref;
   const [height, updateHeight] = Object(external_wp_element_["useState"])(null);
   const container = Object(external_wp_element_["useRef"])();
   const containerClasses = classnames_default()('woocommerce-marketing-slider', animate && `animate-${animate}`);
@@ -773,60 +774,12 @@ Slider.propTypes = {
 
 /***/ }),
 
-/***/ 117:
+/***/ 105:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-var objectWithoutPropertiesLoose = __webpack_require__(22);
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = Object(objectWithoutPropertiesLoose["a" /* default */])(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-// EXTERNAL MODULE: external ["wp","element"]
-var external_wp_element_ = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js
-
-
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * WordPress dependencies
  */
@@ -844,153 +797,34 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  */
 
 function Icon(_ref) {
-  var icon = _ref.icon,
-      _ref$size = _ref.size,
-      size = _ref$size === void 0 ? 24 : _ref$size,
-      props = _objectWithoutProperties(_ref, ["icon", "size"]);
-
-  return Object(external_wp_element_["cloneElement"])(icon, _objectSpread({
+  let {
+    icon,
+    size = 24,
+    ...props
+  } = _ref;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["cloneElement"])(icon, {
     width: size,
-    height: size
-  }, props));
+    height: size,
+    ...props
+  });
 }
 
-/* harmony default export */ var build_module_icon = __webpack_exports__["a"] = (Icon);
+/* harmony default export */ __webpack_exports__["a"] = (Icon);
 //# sourceMappingURL=index.js.map
 
 /***/ }),
 
-/***/ 123:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 12:
+/***/ (function(module, exports) {
 
-// extracted by mini-css-extract-plugin
+(function() { module.exports = window["wc"]["data"]; }());
 
 /***/ }),
 
-/***/ 13:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 124:
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* unused harmony export ADMIN_URL */
-/* unused harmony export COUNTRIES */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CURRENCY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LOCALE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ORDER_STATUSES; });
-/* unused harmony export SITE_TITLE */
-/* unused harmony export WC_ASSET_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getSetting; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return setSetting; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getAdminLink; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return enqueueScript; });
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-/**
- * External dependencies
- */
- // Remove mutable data from settings object to prevent access. Data stores should be used instead.
-
-const mutableSources = ['wcAdminSettings', 'preloadSettings'];
-const settings = typeof wcSettings === 'object' ? wcSettings : {};
-const SOURCE = Object.keys(settings).reduce((source, key) => {
-  if (!mutableSources.includes(key)) {
-    source[key] = settings[key];
-  }
-
-  return source;
-}, {});
-Object.keys(settings.admin || {}).forEach(key => {
-  if (!mutableSources.includes(key)) {
-    SOURCE[key] = settings.admin[key];
-  }
-});
-const ADMIN_URL = SOURCE.adminUrl;
-const COUNTRIES = SOURCE.countries;
-const CURRENCY = SOURCE.currency;
-const LOCALE = SOURCE.locale;
-const ORDER_STATUSES = SOURCE.orderStatuses;
-const SITE_TITLE = SOURCE.siteTitle;
-const WC_ASSET_URL = SOURCE.wcAssetUrl;
-/**
- * Retrieves a setting value from the setting state.
- *
- * @param {string}   name                         The identifier for the setting.
- * @param {*}    [fallback=false]             The value to use as a fallback
- *                                                if the setting is not in the
- *                                                state.
- * @param {Function} [filter=( val ) => val]  	  A callback for filtering the
- *                                                value before it's returned.
- *                                                Receives both the found value
- *                                                (if it exists for the key) and
- *                                                the provided fallback arg.
- *
- * @return {*}  The value present in the settings state for the given
- *                   name.
- */
-
-function getSetting(name, fallback = false, filter = val => val) {
-  if (mutableSources.includes(name)) {
-    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be accessed via data store.'));
-  }
-
-  const value = SOURCE.hasOwnProperty(name) ? SOURCE[name] : fallback;
-  return filter(value, fallback);
-}
-/**
- * Sets a value to a property on the settings state.
- *
- * NOTE: This feature is to be removed in favour of data stores when a full migration
- * is complete.
- *
- * @deprecated
- *
- * @param {string}   name                        The setting property key for the
- *                                               setting being mutated.
- * @param {*}    value                       The value to set.
- * @param {Function} [filter=( val ) => val]     Allows for providing a callback
- *                                               to sanitize the setting (eg.
- *                                               ensure it's a number)
- */
-
-function setSetting(name, value, filter = val => val) {
-  if (mutableSources.includes(name)) {
-    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be mutated via data store.'));
-  }
-
-  SOURCE[name] = filter(value);
-}
-/**
- * Returns a string with the site's wp-admin URL appended. JS version of `admin_url`.
- *
- * @param {string} path Relative path.
- * @return {string} Full admin URL.
- */
-
-function getAdminLink(path) {
-  return (ADMIN_URL || '') + path;
-}
-/**
- * Adds a script to the page if it has not already been loaded. JS version of `wp_enqueue_script`.
- *
- * @param {Object} script WP_Script
- * @param {string} script.handle Script handle.
- * @param {string} script.src Script URL.
- */
-
-function enqueueScript(script) {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`#${script.handle}-js`)) {
-      resolve();
-    }
-
-    const domElement = document.createElement('script');
-    domElement.src = script.src;
-    domElement.id = `${script.handle}-js`;
-    domElement.async = true;
-    domElement.onload = resolve;
-    domElement.onerror = reject;
-    document.body.appendChild(domElement);
-  });
-}
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -1004,25 +838,26 @@ function enqueueScript(script) {
 /***/ 15:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wp"]["url"]; }());
+(function() { module.exports = window["wc"]["wcSettings"]; }());
 
 /***/ }),
 
 /***/ 16:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["wc"]["tracks"]; }());
+(function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
 
-/***/ 163:
+/***/ 164:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getInAppPurchaseUrl; });
-/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var _woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
+/* harmony import */ var _woocommerce_settings__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__);
 /**
  * External dependencies
  */
@@ -1036,17 +871,18 @@ function enqueueScript(script) {
  * @return {string} url with in-app-purchase query parameters
  */
 
-const getInAppPurchaseUrl = (url, queryArgs = {}) => {
+const getInAppPurchaseUrl = function (url) {
+  let queryArgs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   const {
     pathname,
     search
   } = window.location;
-  const connectNonce = Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_1__[/* getSetting */ "f"])('connectNonce', '');
+  const connectNonce = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('connectNonce', '');
   queryArgs = {
-    'wccom-site': Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_1__[/* getSetting */ "f"])('siteUrl'),
+    'wccom-site': Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('siteUrl'),
     // If the site is installed in a directory the directory must be included in the back param path.
     'wccom-back': pathname + search,
-    'wccom-woo-version': Object(_woocommerce_wc_admin_settings__WEBPACK_IMPORTED_MODULE_1__[/* getSetting */ "f"])('wcVersion'),
+    'wccom-woo-version': Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('wcVersion'),
     'wccom-connect-nonce': connectNonce,
     ...queryArgs
   };
@@ -1055,29 +891,26 @@ const getInAppPurchaseUrl = (url, queryArgs = {}) => {
 
 /***/ }),
 
-/***/ 164:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 169:
+/***/ 167:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(23);
+var esm_extends = __webpack_require__(24);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-var objectWithoutPropertiesLoose = __webpack_require__(22);
+var objectWithoutPropertiesLoose = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js + 1 modules
-var inheritsLoose = __webpack_require__(25);
-
-// EXTERNAL MODULE: ./node_modules/prop-types/index.js
-var prop_types = __webpack_require__(1);
+var inheritsLoose = __webpack_require__(27);
 
 // CONCATENATED MODULE: ./node_modules/dom-helpers/esm/hasClass.js
 /**
@@ -1124,11 +957,11 @@ function removeClass_removeClass(element, className) {
   }
 }
 // EXTERNAL MODULE: external "React"
-var external_React_ = __webpack_require__(5);
+var external_React_ = __webpack_require__(6);
 var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
 
 // EXTERNAL MODULE: ./node_modules/react-transition-group/esm/Transition.js + 1 modules
-var Transition = __webpack_require__(69);
+var Transition = __webpack_require__(73);
 
 // CONCATENATED MODULE: ./node_modules/react-transition-group/esm/CSSTransition.js
 
@@ -1417,14 +1250,7 @@ CSSTransition_CSSTransition.propTypes =  false ? undefined : {};
 
 /***/ }),
 
-/***/ 17:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wc"]["experimental"]; }());
-
-/***/ }),
-
-/***/ 171:
+/***/ 169:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1432,7 +1258,7 @@ CSSTransition_CSSTransition.propTypes =  false ? undefined : {};
 // UNUSED EXPORTS: RecommendedExtensions, RecommendedExtensionsPlaceholder
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/extends.js
-var helpers_extends = __webpack_require__(36);
+var helpers_extends = __webpack_require__(40);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
 // EXTERNAL MODULE: external ["wp","element"]
@@ -1445,27 +1271,27 @@ var external_wp_i18n_ = __webpack_require__(2);
 var external_wp_compose_ = __webpack_require__(14);
 
 // EXTERNAL MODULE: ./node_modules/classnames/index.js
-var classnames = __webpack_require__(6);
+var classnames = __webpack_require__(7);
 var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
 var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: ./client/marketing/components/recommended-extensions/style.scss
-var style = __webpack_require__(123);
+var style = __webpack_require__(124);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: ./client/marketing/components/index.js + 19 modules
 var components = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./client/lib/in-app-purchase.js
-var in_app_purchase = __webpack_require__(163);
+var in_app_purchase = __webpack_require__(164);
 
 // CONCATENATED MODULE: ./client/marketing/components/recommended-extensions/item.js
 
@@ -1483,13 +1309,15 @@ var in_app_purchase = __webpack_require__(163);
 
 
 
-const RecommendedExtensionsItem = ({
-  title,
-  description,
-  url,
-  product,
-  category
-}) => {
+const RecommendedExtensionsItem = _ref => {
+  let {
+    title,
+    description,
+    url,
+    product,
+    category
+  } = _ref;
+
   const onProductClick = () => {
     Object(external_wc_tracks_["recordEvent"])('marketing_recommended_extension', {
       name: title
@@ -1553,10 +1381,10 @@ const RecommendedExtensionsPlaceholder = () => {
 
 /* harmony default export */ var placeholder = (RecommendedExtensionsPlaceholder);
 // EXTERNAL MODULE: ./client/marketing/data/constants.js
-var constants = __webpack_require__(47);
+var constants = __webpack_require__(52);
 
 // EXTERNAL MODULE: ./client/marketing/components/card/index.js
-var card = __webpack_require__(78);
+var card = __webpack_require__(79);
 
 // CONCATENATED MODULE: ./client/marketing/components/recommended-extensions/index.js
 
@@ -1580,13 +1408,15 @@ var card = __webpack_require__(78);
 
 
 
-const RecommendedExtensions = ({
-  extensions,
-  isLoading,
-  title,
-  description,
-  category
-}) => {
+const RecommendedExtensions = _ref => {
+  let {
+    extensions,
+    isLoading,
+    title,
+    description,
+    category
+  } = _ref;
+
   if (extensions.length === 0 && !isLoading) {
     return null;
   }
@@ -1661,7 +1491,14 @@ RecommendedExtensions.defaultProps = {
 
 /***/ }),
 
-/***/ 172:
+/***/ 17:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wc"]["tracks"]; }());
+
+/***/ }),
+
+/***/ 170:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1678,37 +1515,36 @@ var external_wp_compose_ = __webpack_require__(14);
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./node_modules/classnames/index.js
-var classnames = __webpack_require__(6);
+var classnames = __webpack_require__(7);
 var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
 var prop_types = __webpack_require__(1);
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: ./client/marketing/components/knowledge-base/style.scss
-var style = __webpack_require__(164);
+var style = __webpack_require__(165);
 
 // EXTERNAL MODULE: ./client/marketing/components/index.js + 19 modules
 var components = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./client/marketing/data/constants.js
-var constants = __webpack_require__(47);
+var constants = __webpack_require__(52);
 
 // EXTERNAL MODULE: ./client/marketing/components/card/index.js
-var card = __webpack_require__(78);
+var card = __webpack_require__(79);
 
-// EXTERNAL MODULE: ./node_modules/interpolate-components/lib/index.js
-var lib = __webpack_require__(19);
-var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
+// EXTERNAL MODULE: ./node_modules/@automattic/interpolate-components/dist/esm/index.js + 1 modules
+var esm = __webpack_require__(20);
 
 // CONCATENATED MODULE: ./client/marketing/components/knowledge-base/ReadBlogMessage.js
 
@@ -1721,7 +1557,7 @@ var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 
 
 const ReadBlogMessage = () => {
-  return lib_default()({
+  return Object(esm["a" /* default */])({
     mixedString: Object(external_wp_i18n_["__"])('Read {{link}}the WooCommerce blog{{/link}} for more tips on marketing your store', 'woocommerce-admin'),
     components: {
       link: Object(external_wp_element_["createElement"])(external_wc_components_["Link"], {
@@ -1786,14 +1622,15 @@ const KnowledgebaseCardPostPlaceholder = index => {
 
 
 
-const KnowledgeBase = ({
-  posts,
-  isLoading,
-  error,
-  title,
-  description,
-  category
-}) => {
+const KnowledgeBase = _ref => {
+  let {
+    posts,
+    isLoading,
+    error,
+    title,
+    description,
+    category
+  } = _ref;
   const [page, updatePage] = Object(external_wp_element_["useState"])(1);
   const [animate, updateAnimate] = Object(external_wp_element_["useState"])(null);
 
@@ -1989,16 +1826,16 @@ KnowledgeBase.defaultProps = {
 
 /***/ }),
 
-/***/ 173:
+/***/ 171:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-var objectWithoutPropertiesLoose = __webpack_require__(22);
+var objectWithoutPropertiesLoose = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(23);
+var esm_extends = __webpack_require__(24);
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
 function _assertThisInitialized(self) {
@@ -2009,17 +1846,14 @@ function _assertThisInitialized(self) {
   return self;
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js + 1 modules
-var inheritsLoose = __webpack_require__(25);
-
-// EXTERNAL MODULE: ./node_modules/prop-types/index.js
-var prop_types = __webpack_require__(1);
+var inheritsLoose = __webpack_require__(27);
 
 // EXTERNAL MODULE: external "React"
-var external_React_ = __webpack_require__(5);
+var external_React_ = __webpack_require__(6);
 var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
 
 // EXTERNAL MODULE: ./node_modules/react-transition-group/esm/TransitionGroupContext.js
-var TransitionGroupContext = __webpack_require__(33);
+var TransitionGroupContext = __webpack_require__(37);
 
 // CONCATENATED MODULE: ./node_modules/react-transition-group/esm/utils/ChildMapping.js
 
@@ -2298,170 +2132,10 @@ TransitionGroup_TransitionGroup.defaultProps = defaultProps;
 
 /***/ }),
 
-/***/ 19:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 18:
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                                               * External Dependencies
-                                                                                                                                                                                                                                                                               */
-
-
-/**
- * Internal Dependencies
- */
-
-
-var _react = __webpack_require__(5);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactAddonsCreateFragment = __webpack_require__(71);
-
-var _reactAddonsCreateFragment2 = _interopRequireDefault(_reactAddonsCreateFragment);
-
-var _tokenize = __webpack_require__(74);
-
-var _tokenize2 = _interopRequireDefault(_tokenize);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var currentMixedString = void 0;
-
-function getCloseIndex(openIndex, tokens) {
-	var openToken = tokens[openIndex],
-	    nestLevel = 0,
-	    token,
-	    i;
-	for (i = openIndex + 1; i < tokens.length; i++) {
-		token = tokens[i];
-		if (token.value === openToken.value) {
-			if (token.type === 'componentOpen') {
-				nestLevel++;
-				continue;
-			}
-			if (token.type === 'componentClose') {
-				if (nestLevel === 0) {
-					return i;
-				}
-				nestLevel--;
-			}
-		}
-	}
-	// if we get this far, there was no matching close token
-	throw new Error('Missing closing component token `' + openToken.value + '`');
-}
-
-function buildChildren(tokens, components) {
-	var children = [],
-	    childrenObject = {},
-	    openComponent,
-	    clonedOpenComponent,
-	    openIndex,
-	    closeIndex,
-	    token,
-	    i,
-	    grandChildTokens,
-	    grandChildren,
-	    siblingTokens,
-	    siblings;
-
-	for (i = 0; i < tokens.length; i++) {
-		token = tokens[i];
-		if (token.type === 'string') {
-			children.push(token.value);
-			continue;
-		}
-		// component node should at least be set
-		if (!components.hasOwnProperty(token.value) || typeof components[token.value] === 'undefined') {
-			throw new Error('Invalid interpolation, missing component node: `' + token.value + '`');
-		}
-		// should be either ReactElement or null (both type "object"), all other types deprecated
-		if (_typeof(components[token.value]) !== 'object') {
-			throw new Error('Invalid interpolation, component node must be a ReactElement or null: `' + token.value + '`', '\n> ' + currentMixedString);
-		}
-		// we should never see a componentClose token in this loop
-		if (token.type === 'componentClose') {
-			throw new Error('Missing opening component token: `' + token.value + '`');
-		}
-		if (token.type === 'componentOpen') {
-			openComponent = components[token.value];
-			openIndex = i;
-			break;
-		}
-		// componentSelfClosing token
-		children.push(components[token.value]);
-		continue;
-	}
-
-	if (openComponent) {
-		closeIndex = getCloseIndex(openIndex, tokens);
-		grandChildTokens = tokens.slice(openIndex + 1, closeIndex);
-		grandChildren = buildChildren(grandChildTokens, components);
-		clonedOpenComponent = _react2.default.cloneElement(openComponent, {}, grandChildren);
-		children.push(clonedOpenComponent);
-
-		if (closeIndex < tokens.length - 1) {
-			siblingTokens = tokens.slice(closeIndex + 1);
-			siblings = buildChildren(siblingTokens, components);
-			children = children.concat(siblings);
-		}
-	}
-
-	if (children.length === 1) {
-		return children[0];
-	}
-
-	children.forEach(function (child, index) {
-		if (child) {
-			childrenObject['interpolation-child-' + index] = child;
-		}
-	});
-
-	return (0, _reactAddonsCreateFragment2.default)(childrenObject);
-}
-
-function interpolate(options) {
-	var mixedString = options.mixedString,
-	    components = options.components,
-	    throwErrors = options.throwErrors;
-
-
-	currentMixedString = mixedString;
-
-	if (!components) {
-		return mixedString;
-	}
-
-	if ((typeof components === 'undefined' ? 'undefined' : _typeof(components)) !== 'object') {
-		if (throwErrors) {
-			throw new Error('Interpolation Error: unable to process `' + mixedString + '` because components is not an object');
-		}
-
-		return mixedString;
-	}
-
-	var tokens = (0, _tokenize2.default)(mixedString);
-
-	try {
-		return buildChildren(tokens, components);
-	} catch (error) {
-		if (throwErrors) {
-			throw new Error('Interpolation Error: unable to process `' + mixedString + '` because of error `' + error.message + '`');
-		}
-
-		return mixedString;
-	}
-};
-
-exports.default = interpolate;
-//# sourceMappingURL=index.js.map
+(function() { module.exports = window["wc"]["experimental"]; }());
 
 /***/ }),
 
@@ -2472,36 +2146,288 @@ exports.default = interpolate;
 
 /***/ }),
 
-/***/ 21:
+/***/ 20:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ interpolate; });
+
+// EXTERNAL MODULE: external "React"
+var external_React_ = __webpack_require__(6);
+
+// CONCATENATED MODULE: ./node_modules/@automattic/interpolate-components/dist/esm/tokenize.js
+function identifyToken(item) {
+  // {{/example}}
+  if (item.startsWith('{{/')) {
+    return {
+      type: 'componentClose',
+      value: item.replace(/\W/g, '')
+    };
+  } // {{example /}}
+
+
+  if (item.endsWith('/}}')) {
+    return {
+      type: 'componentSelfClosing',
+      value: item.replace(/\W/g, '')
+    };
+  } // {{example}}
+
+
+  if (item.startsWith('{{')) {
+    return {
+      type: 'componentOpen',
+      value: item.replace(/\W/g, '')
+    };
+  }
+
+  return {
+    type: 'string',
+    value: item
+  };
+}
+
+function tokenize(mixedString) {
+  const tokenStrings = mixedString.split(/(\{\{\/?\s*\w+\s*\/?\}\})/g); // split to components and strings
+
+  return tokenStrings.map(identifyToken);
+}
+// CONCATENATED MODULE: ./node_modules/@automattic/interpolate-components/dist/esm/index.js
+
+
+
+function getCloseIndex(openIndex, tokens) {
+  const openToken = tokens[openIndex];
+  let nestLevel = 0;
+
+  for (let i = openIndex + 1; i < tokens.length; i++) {
+    const token = tokens[i];
+
+    if (token.value === openToken.value) {
+      if (token.type === 'componentOpen') {
+        nestLevel++;
+        continue;
+      }
+
+      if (token.type === 'componentClose') {
+        if (nestLevel === 0) {
+          return i;
+        }
+
+        nestLevel--;
+      }
+    }
+  } // if we get this far, there was no matching close token
+
+
+  throw new Error('Missing closing component token `' + openToken.value + '`');
+}
+
+function buildChildren(tokens, components) {
+  let children = [];
+  let openComponent;
+  let openIndex;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+
+    if (token.type === 'string') {
+      children.push(token.value);
+      continue;
+    } // component node should at least be set
+
+
+    if (components[token.value] === undefined) {
+      throw new Error(`Invalid interpolation, missing component node: \`${token.value}\``);
+    } // should be either ReactElement or null (both type "object"), all other types deprecated
+
+
+    if (typeof components[token.value] !== 'object') {
+      throw new Error(`Invalid interpolation, component node must be a ReactElement or null: \`${token.value}\``);
+    } // we should never see a componentClose token in this loop
+
+
+    if (token.type === 'componentClose') {
+      throw new Error(`Missing opening component token: \`${token.value}\``);
+    }
+
+    if (token.type === 'componentOpen') {
+      openComponent = components[token.value];
+      openIndex = i;
+      break;
+    } // componentSelfClosing token
+
+
+    children.push(components[token.value]);
+    continue;
+  }
+
+  if (openComponent) {
+    const closeIndex = getCloseIndex(openIndex, tokens);
+    const grandChildTokens = tokens.slice(openIndex + 1, closeIndex);
+    const grandChildren = buildChildren(grandChildTokens, components);
+    const clonedOpenComponent = /*#__PURE__*/Object(external_React_["cloneElement"])(openComponent, {}, grandChildren);
+    children.push(clonedOpenComponent);
+
+    if (closeIndex < tokens.length - 1) {
+      const siblingTokens = tokens.slice(closeIndex + 1);
+      const siblings = buildChildren(siblingTokens, components);
+      children = children.concat(siblings);
+    }
+  }
+
+  children = children.filter(Boolean);
+
+  if (children.length === 0) {
+    return null;
+  }
+
+  if (children.length === 1) {
+    return children[0];
+  }
+
+  return /*#__PURE__*/Object(external_React_["createElement"])(external_React_["Fragment"], null, ...children);
+}
+
+function interpolate(options) {
+  const {
+    mixedString,
+    components,
+    throwErrors
+  } = options;
+
+  if (!components) {
+    return mixedString;
+  }
+
+  if (typeof components !== 'object') {
+    if (throwErrors) {
+      throw new Error(`Interpolation Error: unable to process \`${mixedString}\` because components is not an object`);
+    }
+
+    return mixedString;
+  }
+
+  const tokens = tokenize(mixedString);
+
+  try {
+    return buildChildren(tokens, components);
+  } catch (error) {
+    if (throwErrors) {
+      throw new Error(`Interpolation Error: unable to process \`${mixedString}\` because of error \`${error.message}\``);
+    }
+
+    return mixedString;
+  }
+}
+
+/***/ }),
+
+/***/ 22:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["components"]; }());
 
 /***/ }),
 
-/***/ 22:
+/***/ 23:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _objectWithoutPropertiesLoose; });
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getAdminSetting; });
+/* unused harmony export ADMIN_URL */
+/* unused harmony export COUNTRIES */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CURRENCY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LOCALE; });
+/* unused harmony export SITE_TITLE */
+/* unused harmony export WC_ASSET_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ORDER_STATUSES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return setAdminSetting; });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
+/* harmony import */ var _woocommerce_settings__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__);
+/**
+ * External dependencies
+ */
 
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
+ // Remove mutable data from settings object to prevent access. Data stores should be used instead.
+
+const mutableSources = ['wcAdminSettings', 'preloadSettings'];
+const adminSettings = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('admin', {});
+const ADMIN_SETTINGS_SOURCE = Object.keys(adminSettings).reduce((source, key) => {
+  if (!mutableSources.includes(key)) {
+    source[key] = adminSettings[key];
   }
 
-  return target;
+  return source;
+}, {});
+/**
+ * Retrieves a setting value from the setting state.
+ *
+ * @param {string}   name                         The identifier for the setting.
+ * @param {*}    [fallback=false]             The value to use as a fallback
+ *                                                if the setting is not in the
+ *                                                state.
+ * @param {Function} [filter=( val ) => val]  	  A callback for filtering the
+ *                                                value before it's returned.
+ *                                                Receives both the found value
+ *                                                (if it exists for the key) and
+ *                                                the provided fallback arg.
+ *
+ * @return {*}  The value present in the settings state for the given
+ *                   name.
+ */
+
+function getAdminSetting(name) {
+  let fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  let filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : val => val;
+
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be accessed via data store.'));
+  }
+
+  const value = ADMIN_SETTINGS_SOURCE.hasOwnProperty(name) ? ADMIN_SETTINGS_SOURCE[name] : fallback;
+  return filter(value, fallback);
+}
+const ADMIN_URL = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('adminUrl');
+const COUNTRIES = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('countries');
+const CURRENCY = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('currency');
+const LOCALE = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('locale');
+const SITE_TITLE = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('siteTitle');
+const WC_ASSET_URL = Object(_woocommerce_settings__WEBPACK_IMPORTED_MODULE_1__["getSetting"])('wcAssetUrl');
+const ORDER_STATUSES = getAdminSetting('orderStatuses');
+/**
+ * Sets a value to a property on the settings state.
+ *
+ * NOTE: This feature is to be removed in favour of data stores when a full migration
+ * is complete.
+ *
+ * @deprecated
+ *
+ * @param {string}   name                        The setting property key for the
+ *                                               setting being mutated.
+ * @param {*}    value                       The value to set.
+ * @param {Function} [filter=( val ) => val]     Allows for providing a callback
+ *                                               to sanitize the setting (eg.
+ *                                               ensure it's a number)
+ */
+
+function setAdminSetting(name, value) {
+  let filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : val => val;
+
+  if (mutableSources.includes(name)) {
+    throw new Error(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Mutable settings should be mutated via data store.'));
+  }
+
+  ADMIN_SETTINGS_SOURCE[name] = filter(value);
 }
 
 /***/ }),
 
-/***/ 23:
+/***/ 24:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2526,7 +2452,7 @@ function _extends() {
 
 /***/ }),
 
-/***/ 25:
+/***/ 27:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2553,35 +2479,35 @@ function _inheritsLoose(subClass, superClass) {
 
 /***/ }),
 
-/***/ 275:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 276:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 277:
+/***/ 286:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 278:
+/***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 279:
+/***/ 288:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2618,10 +2544,10 @@ __webpack_require__.d(resolvers_namespaceObject, "getBlogPosts", function() { re
 var external_wp_dataControls_ = __webpack_require__(10);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: ./client/marketing/data/constants.js
-var constants = __webpack_require__(47);
+var constants = __webpack_require__(52);
 
 // EXTERNAL MODULE: external ["wp","i18n"]
 var external_wp_i18n_ = __webpack_require__(2);
@@ -2806,26 +2732,26 @@ function* resolvers_getBlogPosts(category) {
     yield setError(category, error);
   }
 }
-// EXTERNAL MODULE: ./packages/wc-admin-settings/build-module/index.js
-var build_module = __webpack_require__(13);
-
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
+var external_lodash_ = __webpack_require__(5);
+
+// EXTERNAL MODULE: ./client/utils/admin-settings.js
+var admin_settings = __webpack_require__(23);
 
 // CONCATENATED MODULE: ./client/marketing/data/reducer.js
 /**
  * External dependencies
  */
 
-
 /**
  * Internal dependencies
  */
 
 
+
 const {
   installedExtensions
-} = Object(build_module["f" /* getSetting */])('marketing', {});
+} = Object(admin_settings["d" /* getAdminSetting */])('marketing', {});
 const DEFAULT_STATE = {
   installedPlugins: installedExtensions,
   activatingPlugins: [],
@@ -2834,7 +2760,10 @@ const DEFAULT_STATE = {
   errors: {}
 };
 
-const reducer = (state = DEFAULT_STATE, action) => {
+const reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+  let action = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (action.type) {
     case action_types.SET_INSTALLED_PLUGINS:
       return { ...state,
@@ -2905,32 +2834,54 @@ Object(external_wp_data_["registerStore"])(constants["b" /* STORE_KEY */], {
 
 /***/ }),
 
-/***/ 29:
+/***/ 30:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["ReactDOM"]; }());
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["components"]; }());
-
-/***/ }),
-
-/***/ 33:
+/***/ 31:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _objectWithoutPropertiesLoose; });
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+/***/ }),
+
+/***/ 37:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 /* harmony default export */ __webpack_exports__["a"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext(null));
 
 /***/ }),
 
-/***/ 36:
+/***/ 4:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["components"]; }());
+
+/***/ }),
+
+/***/ 40:
 /***/ (function(module, exports) {
 
 function _extends() {
@@ -2946,43 +2897,22 @@ function _extends() {
     }
 
     return target;
-  };
-
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports;
   return _extends.apply(this, arguments);
 }
 
-module.exports = _extends;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
+module.exports = _extends, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
-/***/ 4:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["lodash"]; }());
-
-/***/ }),
-
-/***/ 455:
+/***/ 476:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 47:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return STORE_KEY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return API_NAMESPACE; });
-const STORE_KEY = 'wc/marketing';
-const API_NAMESPACE = '/wc-admin/marketing';
-
-/***/ }),
-
-/***/ 471:
+/***/ 492:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2995,20 +2925,23 @@ var external_wp_element_ = __webpack_require__(0);
 // EXTERNAL MODULE: external ["wp","i18n"]
 var external_wp_i18n_ = __webpack_require__(2);
 
-// EXTERNAL MODULE: ./packages/wc-admin-settings/build-module/index.js
-var build_module = __webpack_require__(13);
+// EXTERNAL MODULE: external ["wc","data"]
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./client/marketing/coupons/style.scss
-var style = __webpack_require__(455);
+var style = __webpack_require__(476);
 
 // EXTERNAL MODULE: ./client/marketing/components/recommended-extensions/index.js + 2 modules
-var recommended_extensions = __webpack_require__(171);
+var recommended_extensions = __webpack_require__(169);
 
 // EXTERNAL MODULE: ./client/marketing/components/knowledge-base/index.js + 2 modules
-var knowledge_base = __webpack_require__(172);
+var knowledge_base = __webpack_require__(170);
+
+// EXTERNAL MODULE: ./client/utils/admin-settings.js
+var admin_settings = __webpack_require__(23);
 
 // EXTERNAL MODULE: ./client/marketing/data/index.js + 5 modules
-var data = __webpack_require__(279);
+var data = __webpack_require__(288);
 
 // CONCATENATED MODULE: ./client/marketing/coupons/index.js
 
@@ -3027,11 +2960,15 @@ var data = __webpack_require__(279);
 
 
 
+
 const CouponsOverview = () => {
-  const allowMarketplaceSuggestions = Object(build_module["f" /* getSetting */])('allowMarketplaceSuggestions', false);
+  const {
+    currentUserCan
+  } = Object(external_wc_data_["useUser"])();
+  const shouldShowExtensions = Object(admin_settings["d" /* getAdminSetting */])('allowMarketplaceSuggestions', false) && currentUserCan('install_plugins');
   return Object(external_wp_element_["createElement"])("div", {
     className: "woocommerce-marketing-coupons"
-  }, allowMarketplaceSuggestions && Object(external_wp_element_["createElement"])(recommended_extensions["a" /* default */], {
+  }, shouldShowExtensions && Object(external_wp_element_["createElement"])(recommended_extensions["a" /* default */], {
     title: Object(external_wp_i18n_["__"])('Recommended coupon extensions', 'woocommerce-admin'),
     description: Object(external_wp_i18n_["__"])('Take your coupon marketing to the next level with our recommended coupon extensions.', 'woocommerce-admin'),
     category: "coupons"
@@ -3064,7 +3001,32 @@ if (postForm) {
 
 /***/ }),
 
-/***/ 48:
+/***/ 5:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
+
+/***/ }),
+
+/***/ 52:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return STORE_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return API_NAMESPACE; });
+const STORE_KEY = 'wc/marketing';
+const API_NAMESPACE = '/wc-admin/marketing';
+
+/***/ }),
+
+/***/ 6:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["React"]; }());
+
+/***/ }),
+
+/***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3077,7 +3039,7 @@ if (postForm) {
 
 
 
-var ReactPropTypesSecret = __webpack_require__(49);
+var ReactPropTypesSecret = __webpack_require__(61);
 
 function emptyFunction() {}
 function emptyFunctionWithReset() {}
@@ -3136,7 +3098,7 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ 49:
+/***/ 61:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3156,57 +3118,7 @@ module.exports = ReactPropTypesSecret;
 
 /***/ }),
 
-/***/ 5:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["React"]; }());
-
-/***/ }),
-
-/***/ 50:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-module.exports = emptyFunction;
-
-/***/ }),
-
-/***/ 6:
+/***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -3271,7 +3183,7 @@ module.exports = emptyFunction;
 
 /***/ }),
 
-/***/ 69:
+/***/ 73:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3279,20 +3191,17 @@ module.exports = emptyFunction;
 // UNUSED EXPORTS: UNMOUNTED, EXITED, ENTERING, ENTERED, EXITING
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-var objectWithoutPropertiesLoose = __webpack_require__(22);
+var objectWithoutPropertiesLoose = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js + 1 modules
-var inheritsLoose = __webpack_require__(25);
-
-// EXTERNAL MODULE: ./node_modules/prop-types/index.js
-var prop_types = __webpack_require__(1);
+var inheritsLoose = __webpack_require__(27);
 
 // EXTERNAL MODULE: external "React"
-var external_React_ = __webpack_require__(5);
+var external_React_ = __webpack_require__(6);
 var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
 
 // EXTERNAL MODULE: external "ReactDOM"
-var external_ReactDOM_ = __webpack_require__(29);
+var external_ReactDOM_ = __webpack_require__(30);
 var external_ReactDOM_default = /*#__PURE__*/__webpack_require__.n(external_ReactDOM_);
 
 // CONCATENATED MODULE: ./node_modules/react-transition-group/esm/config.js
@@ -3300,7 +3209,7 @@ var external_ReactDOM_default = /*#__PURE__*/__webpack_require__.n(external_Reac
   disabled: false
 });
 // EXTERNAL MODULE: ./node_modules/react-transition-group/esm/TransitionGroupContext.js
-var TransitionGroupContext = __webpack_require__(33);
+var TransitionGroupContext = __webpack_require__(37);
 
 // CONCATENATED MODULE: ./node_modules/react-transition-group/esm/Transition.js
 
@@ -3736,484 +3645,21 @@ Transition_Transition.EXITING = EXITING;
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["data"]; }());
-
-/***/ }),
-
-/***/ 71:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var React = __webpack_require__(5);
-
-var REACT_ELEMENT_TYPE =
-  (typeof Symbol === 'function' && Symbol.for && Symbol.for('react.element')) ||
-  0xeac7;
-
-var emptyFunction = __webpack_require__(50);
-var invariant = __webpack_require__(72);
-var warning = __webpack_require__(73);
-
-var SEPARATOR = '.';
-var SUBSEPARATOR = ':';
-
-var didWarnAboutMaps = false;
-
-var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-function getIteratorFn(maybeIterable) {
-  var iteratorFn =
-    maybeIterable &&
-    ((ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL]) ||
-      maybeIterable[FAUX_ITERATOR_SYMBOL]);
-  if (typeof iteratorFn === 'function') {
-    return iteratorFn;
-  }
-}
-
-function escape(key) {
-  var escapeRegex = /[=:]/g;
-  var escaperLookup = {
-    '=': '=0',
-    ':': '=2'
-  };
-  var escapedString = ('' + key).replace(escapeRegex, function(match) {
-    return escaperLookup[match];
-  });
-
-  return '$' + escapedString;
-}
-
-function getComponentKey(component, index) {
-  // Do some typechecking here since we call this blindly. We want to ensure
-  // that we don't block potential future ES APIs.
-  if (component && typeof component === 'object' && component.key != null) {
-    // Explicit key
-    return escape(component.key);
-  }
-  // Implicit key determined by the index in the set
-  return index.toString(36);
-}
-
-function traverseAllChildrenImpl(
-  children,
-  nameSoFar,
-  callback,
-  traverseContext
-) {
-  var type = typeof children;
-
-  if (type === 'undefined' || type === 'boolean') {
-    // All of the above are perceived as null.
-    children = null;
-  }
-
-  if (
-    children === null ||
-    type === 'string' ||
-    type === 'number' ||
-    // The following is inlined from ReactElement. This means we can optimize
-    // some checks. React Fiber also inlines this logic for similar purposes.
-    (type === 'object' && children.$$typeof === REACT_ELEMENT_TYPE)
-  ) {
-    callback(
-      traverseContext,
-      children,
-      // If it's the only child, treat the name as if it was wrapped in an array
-      // so that it's consistent if the number of children grows.
-      nameSoFar === '' ? SEPARATOR + getComponentKey(children, 0) : nameSoFar
-    );
-    return 1;
-  }
-
-  var child;
-  var nextName;
-  var subtreeCount = 0; // Count of children found in the current subtree.
-  var nextNamePrefix = nameSoFar === '' ? SEPARATOR : nameSoFar + SUBSEPARATOR;
-
-  if (Array.isArray(children)) {
-    for (var i = 0; i < children.length; i++) {
-      child = children[i];
-      nextName = nextNamePrefix + getComponentKey(child, i);
-      subtreeCount += traverseAllChildrenImpl(
-        child,
-        nextName,
-        callback,
-        traverseContext
-      );
-    }
-  } else {
-    var iteratorFn = getIteratorFn(children);
-    if (iteratorFn) {
-      if (false) {}
-
-      var iterator = iteratorFn.call(children);
-      var step;
-      var ii = 0;
-      while (!(step = iterator.next()).done) {
-        child = step.value;
-        nextName = nextNamePrefix + getComponentKey(child, ii++);
-        subtreeCount += traverseAllChildrenImpl(
-          child,
-          nextName,
-          callback,
-          traverseContext
-        );
-      }
-    } else if (type === 'object') {
-      var addendum = '';
-      if (false) {}
-      var childrenString = '' + children;
-      invariant(
-        false,
-        'Objects are not valid as a React child (found: %s).%s',
-        childrenString === '[object Object]'
-          ? 'object with keys {' + Object.keys(children).join(', ') + '}'
-          : childrenString,
-        addendum
-      );
-    }
-  }
-
-  return subtreeCount;
-}
-
-function traverseAllChildren(children, callback, traverseContext) {
-  if (children == null) {
-    return 0;
-  }
-
-  return traverseAllChildrenImpl(children, '', callback, traverseContext);
-}
-
-var userProvidedKeyEscapeRegex = /\/+/g;
-function escapeUserProvidedKey(text) {
-  return ('' + text).replace(userProvidedKeyEscapeRegex, '$&/');
-}
-
-function cloneAndReplaceKey(oldElement, newKey) {
-  return React.cloneElement(
-    oldElement,
-    {key: newKey},
-    oldElement.props !== undefined ? oldElement.props.children : undefined
-  );
-}
-
-var DEFAULT_POOL_SIZE = 10;
-var DEFAULT_POOLER = oneArgumentPooler;
-
-var oneArgumentPooler = function(copyFieldsFrom) {
-  var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, copyFieldsFrom);
-    return instance;
-  } else {
-    return new Klass(copyFieldsFrom);
-  }
-};
-
-var addPoolingTo = function addPoolingTo(CopyConstructor, pooler) {
-  // Casting as any so that flow ignores the actual implementation and trusts
-  // it to match the type we declared
-  var NewKlass = CopyConstructor;
-  NewKlass.instancePool = [];
-  NewKlass.getPooled = pooler || DEFAULT_POOLER;
-  if (!NewKlass.poolSize) {
-    NewKlass.poolSize = DEFAULT_POOL_SIZE;
-  }
-  NewKlass.release = standardReleaser;
-  return NewKlass;
-};
-
-var standardReleaser = function standardReleaser(instance) {
-  var Klass = this;
-  invariant(
-    instance instanceof Klass,
-    'Trying to release an instance into a pool of a different type.'
-  );
-  instance.destructor();
-  if (Klass.instancePool.length < Klass.poolSize) {
-    Klass.instancePool.push(instance);
-  }
-};
-
-var fourArgumentPooler = function fourArgumentPooler(a1, a2, a3, a4) {
-  var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, a1, a2, a3, a4);
-    return instance;
-  } else {
-    return new Klass(a1, a2, a3, a4);
-  }
-};
-
-function MapBookKeeping(mapResult, keyPrefix, mapFunction, mapContext) {
-  this.result = mapResult;
-  this.keyPrefix = keyPrefix;
-  this.func = mapFunction;
-  this.context = mapContext;
-  this.count = 0;
-}
-MapBookKeeping.prototype.destructor = function() {
-  this.result = null;
-  this.keyPrefix = null;
-  this.func = null;
-  this.context = null;
-  this.count = 0;
-};
-addPoolingTo(MapBookKeeping, fourArgumentPooler);
-
-function mapSingleChildIntoContext(bookKeeping, child, childKey) {
-  var result = bookKeeping.result;
-  var keyPrefix = bookKeeping.keyPrefix;
-  var func = bookKeeping.func;
-  var context = bookKeeping.context;
-
-  var mappedChild = func.call(context, child, bookKeeping.count++);
-  if (Array.isArray(mappedChild)) {
-    mapIntoWithKeyPrefixInternal(
-      mappedChild,
-      result,
-      childKey,
-      emptyFunction.thatReturnsArgument
-    );
-  } else if (mappedChild != null) {
-    if (React.isValidElement(mappedChild)) {
-      mappedChild = cloneAndReplaceKey(
-        mappedChild,
-        // Keep both the (mapped) and old keys if they differ, just as
-        // traverseAllChildren used to do for objects as children
-        keyPrefix +
-          (mappedChild.key && (!child || child.key !== mappedChild.key)
-            ? escapeUserProvidedKey(mappedChild.key) + '/'
-            : '') +
-          childKey
-      );
-    }
-    result.push(mappedChild);
-  }
-}
-
-function mapIntoWithKeyPrefixInternal(children, array, prefix, func, context) {
-  var escapedPrefix = '';
-  if (prefix != null) {
-    escapedPrefix = escapeUserProvidedKey(prefix) + '/';
-  }
-  var traverseContext = MapBookKeeping.getPooled(
-    array,
-    escapedPrefix,
-    func,
-    context
-  );
-  traverseAllChildren(children, mapSingleChildIntoContext, traverseContext);
-  MapBookKeeping.release(traverseContext);
-}
-
-var numericPropertyRegex = /^\d+$/;
-
-var warnedAboutNumeric = false;
-
-function createReactFragment(object) {
-  if (typeof object !== 'object' || !object || Array.isArray(object)) {
-    warning(
-      false,
-      'React.addons.createFragment only accepts a single object. Got: %s',
-      object
-    );
-    return object;
-  }
-  if (React.isValidElement(object)) {
-    warning(
-      false,
-      'React.addons.createFragment does not accept a ReactElement ' +
-        'without a wrapper object.'
-    );
-    return object;
-  }
-
-  invariant(
-    object.nodeType !== 1,
-    'React.addons.createFragment(...): Encountered an invalid child; DOM ' +
-      'elements are not valid children of React components.'
-  );
-
-  var result = [];
-
-  for (var key in object) {
-    if (false) {}
-    mapIntoWithKeyPrefixInternal(
-      object[key],
-      result,
-      key,
-      emptyFunction.thatReturnsArgument
-    );
-  }
-
-  return result;
-}
-
-module.exports = createReactFragment;
-
-
-/***/ }),
-
-/***/ 72:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (false) {}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-
-/***/ }),
-
-/***/ 73:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var emptyFunction = __webpack_require__(50);
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = emptyFunction;
-
-if (false) { var printWarning; }
-
-module.exports = warning;
-
-/***/ }),
-
-/***/ 74:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function identifyToken(item) {
-	// {{/example}}
-	if (item.match(/^\{\{\//)) {
-		return {
-			type: 'componentClose',
-			value: item.replace(/\W/g, '')
-		};
-	}
-	// {{example /}}
-	if (item.match(/\/\}\}$/)) {
-		return {
-			type: 'componentSelfClosing',
-			value: item.replace(/\W/g, '')
-		};
-	}
-	// {{example}}
-	if (item.match(/^\{\{/)) {
-		return {
-			type: 'componentOpen',
-			value: item.replace(/\W/g, '')
-		};
-	}
-	return {
-		type: 'string',
-		value: item
-	};
-}
-
-module.exports = function (mixedString) {
-	var tokenStrings = mixedString.split(/(\{\{\/?\s*\w+\s*\/?\}\})/g); // split to components and strings
-	return tokenStrings.map(identifyToken);
-};
-//# sourceMappingURL=tokenize.js.map
-
-/***/ }),
-
-/***/ 78:
+/***/ 79:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(17);
+/* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(18);
 /* harmony import */ var _woocommerce_experimental__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_woocommerce_experimental__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(276);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(285);
 /* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_5__);
 
 
@@ -4279,6 +3725,13 @@ Card.propTypes = {
 /***/ }),
 
 /***/ 8:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["data"]; }());
+
+/***/ }),
+
+/***/ 9:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["primitives"]; }());

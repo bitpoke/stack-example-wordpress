@@ -82,7 +82,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["data"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 464);
+/******/ 	return __webpack_require__(__webpack_require__.s = 485);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -101,7 +101,14 @@ this["wc"] = this["wc"] || {}; this["wc"]["data"] =
 
 /***/ }),
 
-/***/ 12:
+/***/ 11:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["moment"]; }());
+
+/***/ }),
+
+/***/ 13:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["navigation"]; }());
@@ -115,14 +122,14 @@ this["wc"] = this["wc"] || {}; this["wc"]["data"] =
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
 
-/***/ 18:
+/***/ 19:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["apiFetch"]; }());
@@ -136,14 +143,14 @@ this["wc"] = this["wc"] || {}; this["wc"]["data"] =
 
 /***/ }),
 
-/***/ 20:
+/***/ 21:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["date"]; }());
 
 /***/ }),
 
-/***/ 253:
+/***/ 254:
 /***/ (function(module, exports) {
 
 var charenc = {
@@ -183,10 +190,10 @@ module.exports = charenc;
 
 /***/ }),
 
-/***/ 269:
+/***/ 278:
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! @license DOMPurify 2.3.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.3.3/LICENSE */
+/*! @license DOMPurify 2.3.5 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.3.5/LICENSE */
 
 (function (global, factory) {
    true ? module.exports = factory() :
@@ -343,13 +350,13 @@ module.exports = charenc;
   // SVG
   var svg = freeze(['svg', 'a', 'altglyph', 'altglyphdef', 'altglyphitem', 'animatecolor', 'animatemotion', 'animatetransform', 'circle', 'clippath', 'defs', 'desc', 'ellipse', 'filter', 'font', 'g', 'glyph', 'glyphref', 'hkern', 'image', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'style', 'switch', 'symbol', 'text', 'textpath', 'title', 'tref', 'tspan', 'view', 'vkern']);
 
-  var svgFilters = freeze(['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence']);
+  var svgFilters = freeze(['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence']);
 
   // List of SVG elements that are disallowed by default.
   // We still need to know them so that we can do namespace
   // checks properly in case one wants to add them to
   // allow-list.
-  var svgDisallowed = freeze(['animate', 'color-profile', 'cursor', 'discard', 'fedropshadow', 'feimage', 'font-face', 'font-face-format', 'font-face-name', 'font-face-src', 'font-face-uri', 'foreignobject', 'hatch', 'hatchpath', 'mesh', 'meshgradient', 'meshpatch', 'meshrow', 'missing-glyph', 'script', 'set', 'solidcolor', 'unknown', 'use']);
+  var svgDisallowed = freeze(['animate', 'color-profile', 'cursor', 'discard', 'fedropshadow', 'font-face', 'font-face-format', 'font-face-name', 'font-face-src', 'font-face-uri', 'foreignobject', 'hatch', 'hatchpath', 'mesh', 'meshgradient', 'meshpatch', 'meshrow', 'missing-glyph', 'script', 'set', 'solidcolor', 'unknown', 'use']);
 
   var mathMl = freeze(['math', 'menclose', 'merror', 'mfenced', 'mfrac', 'mglyph', 'mi', 'mlabeledtr', 'mmultiscripts', 'mn', 'mo', 'mover', 'mpadded', 'mphantom', 'mroot', 'mrow', 'ms', 'mspace', 'msqrt', 'mstyle', 'msub', 'msup', 'msubsup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder', 'munderover']);
 
@@ -359,9 +366,9 @@ module.exports = charenc;
 
   var text = freeze(['#text']);
 
-  var html$1 = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'pattern', 'placeholder', 'playsinline', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'xmlns', 'slot']);
+  var html$1 = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'pattern', 'placeholder', 'playsinline', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'xmlns', 'slot']);
 
-  var svg$1 = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'targetx', 'targety', 'transform', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
+  var svg$1 = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
 
   var mathMl$1 = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnsalign', 'columnlines', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lspace', 'lquote', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
 
@@ -436,7 +443,7 @@ module.exports = charenc;
      * Version label, exposed for easier checks
      * if DOMPurify is up to date or not
      */
-    DOMPurify.version = '2.3.3';
+    DOMPurify.version = '2.3.5';
 
     /**
      * Array of elements that DOMPurify removed during sanitation.
@@ -462,8 +469,7 @@ module.exports = charenc;
         NodeFilter = window.NodeFilter,
         _window$NamedNodeMap = window.NamedNodeMap,
         NamedNodeMap = _window$NamedNodeMap === undefined ? window.NamedNodeMap || window.MozNamedAttrMap : _window$NamedNodeMap,
-        Text = window.Text,
-        Comment = window.Comment,
+        HTMLFormElement = window.HTMLFormElement,
         DOMParser = window.DOMParser,
         trustedTypes = window.trustedTypes;
 
@@ -489,7 +495,7 @@ module.exports = charenc;
     }
 
     var trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, originalDocument);
-    var emptyHTML = trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML('') : '';
+    var emptyHTML = trustedTypesPolicy ? trustedTypesPolicy.createHTML('') : '';
 
     var _document = document,
         implementation = _document.implementation,
@@ -533,6 +539,33 @@ module.exports = charenc;
     var ALLOWED_ATTR = null;
     var DEFAULT_ALLOWED_ATTR = addToSet({}, [].concat(_toConsumableArray$1(html$1), _toConsumableArray$1(svg$1), _toConsumableArray$1(mathMl$1), _toConsumableArray$1(xml)));
 
+    /*
+     * Configure how DOMPUrify should handle custom elements and their attributes as well as customized built-in elements.
+     * @property {RegExp|Function|null} tagNameCheck one of [null, regexPattern, predicate]. Default: `null` (disallow any custom elements)
+     * @property {RegExp|Function|null} attributeNameCheck one of [null, regexPattern, predicate]. Default: `null` (disallow any attributes not on the allow list)
+     * @property {boolean} allowCustomizedBuiltInElements allow custom elements derived from built-ins if they pass CUSTOM_ELEMENT_HANDLING.tagNameCheck. Default: `false`.
+     */
+    var CUSTOM_ELEMENT_HANDLING = Object.seal(Object.create(null, {
+      tagNameCheck: {
+        writable: true,
+        configurable: false,
+        enumerable: true,
+        value: null
+      },
+      attributeNameCheck: {
+        writable: true,
+        configurable: false,
+        enumerable: true,
+        value: null
+      },
+      allowCustomizedBuiltInElements: {
+        writable: true,
+        configurable: false,
+        enumerable: true,
+        value: false
+      }
+    }));
+
     /* Explicitly forbidden tags (overrides ALLOWED_TAGS/ADD_TAGS) */
     var FORBID_TAGS = null;
 
@@ -572,17 +605,6 @@ module.exports = charenc;
     /* Decide if a DOM `DocumentFragment` should be returned, instead of a html
      * string  (or a TrustedHTML object if Trusted Types are supported) */
     var RETURN_DOM_FRAGMENT = false;
-
-    /* If `RETURN_DOM` or `RETURN_DOM_FRAGMENT` is enabled, decide if the returned DOM
-     * `Node` is imported into the current `Document`. If this flag is not enabled the
-     * `Node` will belong (its ownerDocument) to a fresh `HTMLDocument`, created by
-     * DOMPurify.
-     *
-     * This defaults to `true` starting DOMPurify 2.2.0. Note that setting it to `false`
-     * might cause XSS from attacks hidden in closed shadowroots in case the browser
-     * supports Declarative Shadow: DOM https://web.dev/declarative-shadow-dom/
-     */
-    var RETURN_DOM_IMPORT = true;
 
     /* Try to return a Trusted Type object instead of a string, return a string in
      * case Trusted Types are not supported  */
@@ -634,6 +656,10 @@ module.exports = charenc;
 
     var formElement = document.createElement('form');
 
+    var isRegexOrFunction = function isRegexOrFunction(testValue) {
+      return testValue instanceof RegExp || testValue instanceof Function;
+    };
+
     /**
      * _parseConfig
      *
@@ -669,7 +695,6 @@ module.exports = charenc;
       WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false; // Default false
       RETURN_DOM = cfg.RETURN_DOM || false; // Default false
       RETURN_DOM_FRAGMENT = cfg.RETURN_DOM_FRAGMENT || false; // Default false
-      RETURN_DOM_IMPORT = cfg.RETURN_DOM_IMPORT !== false; // Default true
       RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false; // Default false
       FORCE_BODY = cfg.FORCE_BODY || false; // Default false
       SANITIZE_DOM = cfg.SANITIZE_DOM !== false; // Default true
@@ -677,6 +702,17 @@ module.exports = charenc;
       IN_PLACE = cfg.IN_PLACE || false; // Default false
       IS_ALLOWED_URI$$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI$$1;
       NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
+      if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
+        CUSTOM_ELEMENT_HANDLING.tagNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck;
+      }
+
+      if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck)) {
+        CUSTOM_ELEMENT_HANDLING.attributeNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck;
+      }
+
+      if (cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements === 'boolean') {
+        CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements;
+      }
 
       PARSER_MEDIA_TYPE =
       // eslint-disable-next-line unicorn/prefer-includes
@@ -1012,15 +1048,7 @@ module.exports = charenc;
      * @return {Boolean} true if clobbered, false if safe
      */
     var _isClobbered = function _isClobbered(elm) {
-      if (elm instanceof Text || elm instanceof Comment) {
-        return false;
-      }
-
-      if (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function') {
-        return true;
-      }
-
-      return false;
+      return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function');
     };
 
     /**
@@ -1116,6 +1144,11 @@ module.exports = charenc;
           }
         }
 
+        if (!FORBID_TAGS[tagName] && _basicCustomElementTest(tagName)) {
+          if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) return false;
+          if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName)) return false;
+        }
+
         _forceRemove(currentNode);
         return true;
       }
@@ -1169,14 +1202,32 @@ module.exports = charenc;
           XML-compatible (https://html.spec.whatwg.org/multipage/infrastructure.html#xml-compatible and http://www.w3.org/TR/xml/#d0e804)
           We don't need to check the value; it's always URI safe. */
       if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR$$1, lcName)) ; else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$$1, lcName)) ; else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
-        return false;
-
+        if (
+        // First condition does a very basic check if a) it's basically a valid custom element tagname AND
+        // b) if the tagName passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
+        // and c) if the attribute name passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.attributeNameCheck
+        _basicCustomElementTest(lcTag) && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, lcTag) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(lcTag)) && (CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.attributeNameCheck, lcName) || CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.attributeNameCheck(lcName)) ||
+        // Alternative, second condition checks if it's an `is`-attribute, AND
+        // the value passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
+        lcName === 'is' && CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, value) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(value))) ; else {
+          return false;
+        }
         /* Check value is safe. First, is attr inert? If so, is safe */
       } else if (URI_SAFE_ATTRIBUTES[lcName]) ; else if (regExpTest(IS_ALLOWED_URI$$1, stringReplace(value, ATTR_WHITESPACE$$1, ''))) ; else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ; else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$$1, stringReplace(value, ATTR_WHITESPACE$$1, ''))) ; else if (!value) ; else {
         return false;
       }
 
       return true;
+    };
+
+    /**
+     * _basicCustomElementCheck
+     * checks if at least one dash is included in tagName, and it's not the first char
+     * for more sophisticated checking see https://github.com/sindresorhus/validate-element-name
+     * @param {string} tagName name of the tag of the node to sanitize
+     */
+    var _basicCustomElementTest = function _basicCustomElementTest(tagName) {
+      return tagName.indexOf('-') > 0;
     };
 
     /**
@@ -1375,7 +1426,15 @@ module.exports = charenc;
         IN_PLACE = false;
       }
 
-      if (IN_PLACE) ; else if (dirty instanceof Node) {
+      if (IN_PLACE) {
+        /* Do some early pre-sanitization to avoid unsafe root nodes */
+        if (dirty.nodeName) {
+          var tagName = transformCaseFunc(dirty.nodeName);
+          if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+            throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
+          }
+        }
+      } else if (dirty instanceof Node) {
         /* If dirty is a DOM element, append to an empty document to avoid
            elements being stripped by the parser */
         body = _initDocument('<!---->');
@@ -1402,7 +1461,7 @@ module.exports = charenc;
 
         /* Check we have a DOM node from the data */
         if (!body) {
-          return RETURN_DOM ? null : emptyHTML;
+          return RETURN_DOM ? null : RETURN_TRUSTED_TYPE ? emptyHTML : '';
         }
       }
 
@@ -1457,7 +1516,7 @@ module.exports = charenc;
           returnNode = body;
         }
 
-        if (RETURN_DOM_IMPORT) {
+        if (ALLOWED_ATTR.shadowroot) {
           /*
             AdoptNode() is not used because internal state is not reset
             (e.g. the past names map of a HTMLFormElement), this is safe
@@ -1587,33 +1646,14 @@ module.exports = charenc;
 
 /***/ }),
 
-/***/ 27:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var stringify = __webpack_require__(58);
-var parse = __webpack_require__(59);
-var formats = __webpack_require__(34);
-
-module.exports = {
-    formats: formats,
-    parse: parse,
-    stringify: stringify
-};
-
-
-/***/ }),
-
-/***/ 270:
+/***/ 279:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(){
-  var crypt = __webpack_require__(450),
-      utf8 = __webpack_require__(253).utf8,
-      isBuffer = __webpack_require__(451),
-      bin = __webpack_require__(253).bin,
+  var crypt = __webpack_require__(471),
+      utf8 = __webpack_require__(254).utf8,
+      isBuffer = __webpack_require__(472),
+      bin = __webpack_require__(254).bin,
 
   // The core
   md5 = function (message, options) {
@@ -1773,14 +1813,33 @@ module.exports = {
 
 /***/ }),
 
-/***/ 31:
+/***/ 28:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["hooks"]; }());
 
 /***/ }),
 
-/***/ 34:
+/***/ 32:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var stringify = __webpack_require__(62);
+var parse = __webpack_require__(63);
+var formats = __webpack_require__(39);
+
+module.exports = {
+    formats: formats,
+    parse: parse,
+    stringify: stringify
+};
+
+
+/***/ }),
+
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1811,27 +1870,20 @@ module.exports = {
 
 /***/ }),
 
-/***/ 4:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["lodash"]; }());
-
-/***/ }),
-
-/***/ 40:
+/***/ 44:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["deprecated"]; }());
 
 /***/ }),
 
-/***/ 41:
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var formats = __webpack_require__(34);
+var formats = __webpack_require__(39);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -2084,14 +2136,14 @@ module.exports = {
 
 /***/ }),
 
-/***/ 449:
+/***/ 470:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["coreData"]; }());
 
 /***/ }),
 
-/***/ 450:
+/***/ 471:
 /***/ (function(module, exports) {
 
 (function() {
@@ -2194,7 +2246,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 451:
+/***/ 472:
 /***/ (function(module, exports) {
 
 /*!
@@ -2222,7 +2274,7 @@ function isSlowBuffer (obj) {
 
 /***/ }),
 
-/***/ 464:
+/***/ 485:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2251,6 +2303,7 @@ __webpack_require__.d(__webpack_exports__, "REPORTS_STORE_NAME", function() { re
 __webpack_require__.d(__webpack_exports__, "ITEMS_STORE_NAME", function() { return /* reexport */ ITEMS_STORE_NAME; });
 __webpack_require__.d(__webpack_exports__, "getLeaderboard", function() { return /* reexport */ getLeaderboard; });
 __webpack_require__.d(__webpack_exports__, "searchItemsByString", function() { return /* reexport */ searchItemsByString; });
+__webpack_require__.d(__webpack_exports__, "COUNTRIES_STORE_NAME", function() { return /* reexport */ COUNTRIES_STORE_NAME; });
 __webpack_require__.d(__webpack_exports__, "NAVIGATION_STORE_NAME", function() { return /* reexport */ NAVIGATION_STORE_NAME; });
 __webpack_require__.d(__webpack_exports__, "withNavigationHydration", function() { return /* reexport */ withNavigationHydration; });
 __webpack_require__.d(__webpack_exports__, "PAYMENT_GATEWAYS_STORE_NAME", function() { return /* reexport */ PAYMENT_GATEWAYS_STORE_NAME; });
@@ -2276,6 +2329,7 @@ __webpack_require__.d(__webpack_exports__, "IMPORT_STORE_NAME", function() { ret
 __webpack_require__.d(__webpack_exports__, "getFreeExtensions", function() { return /* reexport */ getFreeExtensions; });
 __webpack_require__.d(__webpack_exports__, "getProfileItems", function() { return /* reexport */ getProfileItems; });
 __webpack_require__.d(__webpack_exports__, "getTaskLists", function() { return /* reexport */ getTaskLists; });
+__webpack_require__.d(__webpack_exports__, "getTaskListsByIds", function() { return /* reexport */ getTaskListsByIds; });
 __webpack_require__.d(__webpack_exports__, "getTaskList", function() { return /* reexport */ getTaskList; });
 __webpack_require__.d(__webpack_exports__, "getTask", function() { return /* reexport */ getTask; });
 __webpack_require__.d(__webpack_exports__, "getPaymentGatewaySuggestions", function() { return /* reexport */ getPaymentGatewaySuggestions; });
@@ -2386,6 +2440,7 @@ __webpack_require__.r(onboarding_selectors_namespaceObject);
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getFreeExtensions", function() { return getFreeExtensions; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getProfileItems", function() { return getProfileItems; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getTaskLists", function() { return getTaskLists; });
+__webpack_require__.d(onboarding_selectors_namespaceObject, "getTaskListsByIds", function() { return getTaskListsByIds; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getTaskList", function() { return getTaskList; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getTask", function() { return getTask; });
 __webpack_require__.d(onboarding_selectors_namespaceObject, "getPaymentGatewaySuggestions", function() { return getPaymentGatewaySuggestions; });
@@ -2446,6 +2501,7 @@ __webpack_require__.r(onboarding_resolvers_namespaceObject);
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getProfileItems", function() { return resolvers_getProfileItems; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getEmailPrefill", function() { return resolvers_getEmailPrefill; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getTaskLists", function() { return resolvers_getTaskLists; });
+__webpack_require__.d(onboarding_resolvers_namespaceObject, "getTaskListsByIds", function() { return resolvers_getTaskListsByIds; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getTaskList", function() { return resolvers_getTaskList; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getTask", function() { return resolvers_getTask; });
 __webpack_require__.d(onboarding_resolvers_namespaceObject, "getPaymentGatewaySuggestions", function() { return resolvers_getPaymentGatewaySuggestions; });
@@ -2547,6 +2603,30 @@ __webpack_require__.r(items_resolvers_namespaceObject);
 __webpack_require__.d(items_resolvers_namespaceObject, "getItems", function() { return resolvers_getItems; });
 __webpack_require__.d(items_resolvers_namespaceObject, "getReviewsTotalCount", function() { return items_resolvers_getReviewsTotalCount; });
 __webpack_require__.d(items_resolvers_namespaceObject, "getItemsTotalCount", function() { return resolvers_getItemsTotalCount; });
+
+// NAMESPACE OBJECT: ./packages/data/build-module/countries/selectors.js
+var countries_selectors_namespaceObject = {};
+__webpack_require__.r(countries_selectors_namespaceObject);
+__webpack_require__.d(countries_selectors_namespaceObject, "getLocales", function() { return getLocales; });
+__webpack_require__.d(countries_selectors_namespaceObject, "getLocale", function() { return getLocale; });
+__webpack_require__.d(countries_selectors_namespaceObject, "getCountries", function() { return getCountries; });
+__webpack_require__.d(countries_selectors_namespaceObject, "getCountry", function() { return getCountry; });
+
+// NAMESPACE OBJECT: ./packages/data/build-module/countries/actions.js
+var countries_actions_namespaceObject = {};
+__webpack_require__.r(countries_actions_namespaceObject);
+__webpack_require__.d(countries_actions_namespaceObject, "getLocalesSuccess", function() { return getLocalesSuccess; });
+__webpack_require__.d(countries_actions_namespaceObject, "getLocalesError", function() { return getLocalesError; });
+__webpack_require__.d(countries_actions_namespaceObject, "getCountriesSuccess", function() { return getCountriesSuccess; });
+__webpack_require__.d(countries_actions_namespaceObject, "getCountriesError", function() { return getCountriesError; });
+
+// NAMESPACE OBJECT: ./packages/data/build-module/countries/resolvers.js
+var countries_resolvers_namespaceObject = {};
+__webpack_require__.r(countries_resolvers_namespaceObject);
+__webpack_require__.d(countries_resolvers_namespaceObject, "getLocale", function() { return resolvers_getLocale; });
+__webpack_require__.d(countries_resolvers_namespaceObject, "getLocales", function() { return resolvers_getLocales; });
+__webpack_require__.d(countries_resolvers_namespaceObject, "getCountry", function() { return resolvers_getCountry; });
+__webpack_require__.d(countries_resolvers_namespaceObject, "getCountries", function() { return resolvers_getCountries; });
 
 // NAMESPACE OBJECT: ./packages/data/build-module/navigation/selectors.js
 var navigation_selectors_namespaceObject = {};
@@ -2650,7 +2730,7 @@ __webpack_require__.d(import_resolvers_namespaceObject, "getImportStatus", funct
 __webpack_require__.d(import_resolvers_namespaceObject, "getImportTotals", function() { return resolvers_getImportTotals; });
 
 // EXTERNAL MODULE: external ["wp","coreData"]
-var external_wp_coreData_ = __webpack_require__(449);
+var external_wp_coreData_ = __webpack_require__(470);
 
 // CONCATENATED MODULE: ./packages/data/build-module/types/wp-data.js
 
@@ -2660,7 +2740,7 @@ var external_wp_coreData_ = __webpack_require__(449);
 
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wp","dataControls"]
 var external_wp_dataControls_ = __webpack_require__(10);
@@ -2711,7 +2791,8 @@ const getSettings = (state, group) => {
 const getDirtyKeys = (state, group) => {
   return state[group].dirty || [];
 };
-const selectors_getIsDirty = (state, group, keys = []) => {
+const selectors_getIsDirty = function (state, group) {
+  let keys = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
   const dirtyMap = getDirtyKeys(state, group); // if empty array bail
 
   if (dirtyMap.length === 0) {
@@ -2751,7 +2832,9 @@ const selectors_isUpdateSettingsRequesting = (state, group) => {
  *                   name.
  */
 
-function getSetting(state, group, name, fallback = false, filter = val => val) {
+function getSetting(state, group, name) {
+  let fallback = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  let filter = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : val => val;
   const resourceName = getResourceName(group, name);
   const value = state[resourceName] && state[resourceName].data || fallback;
   return filter(value, fallback);
@@ -2776,7 +2859,7 @@ const getSettingsError = (state, group, id) => {
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
+var external_lodash_ = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./packages/data/build-module/constants.js
 const JETPACK_NAMESPACE = '/jetpack/v4';
@@ -2829,7 +2912,8 @@ const TYPES = {
  // Can be removed in WP 5.9, wp.data is supported in >5.7.
 
 const resolveSelect = external_wp_data_["controls"] && external_wp_data_["controls"].resolveSelect ? external_wp_data_["controls"].resolveSelect : external_wp_dataControls_["select"];
-function actions_updateSettingsForGroup(group, data, time = new Date()) {
+function actions_updateSettingsForGroup(group, data) {
+  let time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Date();
   return {
     type: action_types.UPDATE_SETTINGS_FOR_GROUP,
     group,
@@ -2837,7 +2921,8 @@ function actions_updateSettingsForGroup(group, data, time = new Date()) {
     time
   };
 }
-function updateErrorForGroup(group, data, error, time = new Date()) {
+function updateErrorForGroup(group, data, error) {
+  let time = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Date();
   return {
     type: action_types.UPDATE_ERROR_FOR_GROUP,
     group,
@@ -2971,13 +3056,14 @@ function* resolvers_getSettingsForGroup(group) {
 
 
 
-const updateGroupDataInNewState = (newState, {
-  group,
-  groupIds,
-  data,
-  time,
-  error
-}) => {
+const updateGroupDataInNewState = (newState, _ref) => {
+  let {
+    group,
+    groupIds,
+    data,
+    time,
+    error
+  } = _ref;
   groupIds.forEach(id => {
     newState[getResourceName(group, id)] = {
       data: data[id],
@@ -2988,14 +3074,16 @@ const updateGroupDataInNewState = (newState, {
   return newState;
 };
 
-const receiveSettings = (state = {}, {
-  type,
-  group,
-  data,
-  error,
-  time,
-  isRequesting
-}) => {
+const receiveSettings = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  let {
+    type,
+    group,
+    data,
+    error,
+    time,
+    isRequesting
+  } = arguments.length > 1 ? arguments[1] : undefined;
   const newState = {};
 
   switch (type) {
@@ -3135,7 +3223,8 @@ const withSettingsHydration = (group, settings) => Object(external_wp_compose_["
  */
 
 
-const useSettings = (group, settingsKeys = []) => {
+const useSettings = function (group) {
+  let settingsKeys = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   const {
     requestedSettings,
     settingsError,
@@ -3281,6 +3370,14 @@ function isWPError(error) {
   return error.errors !== undefined;
 }
 
+class PluginError extends Error {
+  constructor(message, data) {
+    super(message);
+    this.data = data;
+  }
+
+}
+
 function formatErrors(response) {
   if (isWPError(response)) {
     // Replace the slug with a plugin name if a constant exists.
@@ -3298,7 +3395,8 @@ function formatErrors(response) {
   return '';
 }
 
-const formatErrorMessage = (pluginErrors, actionType = 'install') => {
+const formatErrorMessage = function (pluginErrors) {
+  let actionType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'install';
   return Object(external_wp_i18n_["sprintf"])(
   /* translators: %(actionType): install or activate (the plugin). %(pluginName): a plugin slug (e.g. woocommerce-services). %(error): a single error message or in plural a comma separated error message list.*/
   Object(external_wp_i18n_["_n"])('Could not %(actionType)s %(pluginName)s plugin, %(error)s', 'Could not %(actionType)s the following plugins: %(pluginName)s with these Errors: %(error)s', Object.keys(pluginErrors).length || 1, 'woocommerce-admin'), {
@@ -3308,14 +3406,16 @@ const formatErrorMessage = (pluginErrors, actionType = 'install') => {
   });
 };
 
-function actions_updateActivePlugins(active, replace = false) {
+function actions_updateActivePlugins(active) {
+  let replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return {
     type: ACTION_TYPES.UPDATE_ACTIVE_PLUGINS,
     active,
     replace
   };
 }
-function actions_updateInstalledPlugins(installed, replace = false) {
+function actions_updateInstalledPlugins(installed) {
+  let replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return {
     type: ACTION_TYPES.UPDATE_INSTALLED_PLUGINS,
     installed,
@@ -3380,7 +3480,7 @@ function* installPlugins(plugins) {
     }
 
     yield setError('installPlugins', error);
-    throw new Error(formatErrorMessage(error));
+    throw new PluginError(formatErrorMessage(error), error);
   }
 }
 function* activatePlugins(plugins) {
@@ -3414,14 +3514,18 @@ function* activatePlugins(plugins) {
     }
 
     yield setError('activatePlugins', error);
-    throw new Error(formatErrorMessage(error, 'activate'));
+    throw new PluginError(formatErrorMessage(error, 'activate'), error);
   }
 }
 function* installAndActivatePlugins(plugins) {
   try {
-    yield actions_dispatch(constants_STORE_NAME, 'installPlugins', plugins);
+    const installations = yield actions_dispatch(constants_STORE_NAME, 'installPlugins', plugins);
     const activations = yield actions_dispatch(constants_STORE_NAME, 'activatePlugins', plugins);
-    return activations;
+    return { ...activations,
+      data: { ...activations.data,
+        ...installations.data
+      }
+    };
   } catch (error) {
     throw error;
   }
@@ -3501,7 +3605,7 @@ function* dismissRecommendedPlugins(type) {
   return success;
 }
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(15);
+var external_wp_url_ = __webpack_require__(16);
 
 // CONCATENATED MODULE: ./packages/data/build-module/options/constants.js
 const options_constants_STORE_NAME = 'wc/admin/options';
@@ -3612,7 +3716,7 @@ function* updateOptions(data) {
   }
 }
 // EXTERNAL MODULE: external ["wp","apiFetch"]
-var external_wp_apiFetch_ = __webpack_require__(18);
+var external_wp_apiFetch_ = __webpack_require__(19);
 var external_wp_apiFetch_default = /*#__PURE__*/__webpack_require__.n(external_wp_apiFetch_);
 
 // CONCATENATED MODULE: ./packages/data/build-module/options/controls.js
@@ -3636,9 +3740,10 @@ const batchFetch = optionName => {
 };
 const controls = { ...external_wp_dataControls_["controls"],
 
-  BATCH_FETCH({
-    optionName
-  }) {
+  BATCH_FETCH(_ref) {
+    let {
+      optionName
+    } = _ref;
     optionNames.push(optionName);
     return new Promise(resolve => {
       setTimeout(function () {
@@ -3696,16 +3801,19 @@ function* resolvers_getOption(name) {
  */
 
 
-const optionsReducer = (state = {
-  isUpdating: false,
-  requestingErrors: {}
-}, {
-  type,
-  options,
-  error,
-  isUpdating,
-  name
-}) => {
+const optionsReducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    isUpdating: false,
+    requestingErrors: {}
+  };
+  let {
+    type,
+    options,
+    error,
+    isUpdating,
+    name
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case options_action_types.RECEIVE_OPTIONS:
       state = { ...state,
@@ -3907,14 +4015,17 @@ function* resolvers_getRecommendedPlugins(type) {
 
 
 
-const reducer_plugins = (state = {
-  active: [],
-  installed: [],
-  requesting: {},
-  errors: {},
-  jetpackConnectUrls: {},
-  recommended: {}
-}, payload) => {
+const reducer_plugins = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    active: [],
+    installed: [],
+    requesting: {},
+    errors: {},
+    jetpackConnectUrls: {},
+    recommended: {}
+  };
+  let payload = arguments.length > 1 ? arguments[1] : undefined;
+
   if (payload && 'type' in payload) {
     switch (payload.type) {
       case ACTION_TYPES.UPDATE_ACTIVE_PLUGINS:
@@ -4071,24 +4182,328 @@ const withPluginsHydration = data => Object(external_wp_compose_["createHigherOr
  * Internal dependencies
  */
 const onboarding_constants_STORE_NAME = 'wc/admin/onboarding';
+// CONCATENATED MODULE: ./packages/data/node_modules/rememo/es/rememo.js
+
+
+/** @typedef {(...args: any[]) => *[]} GetDependants */
+
+/** @typedef {() => void} Clear */
+
+/**
+ * @typedef {{
+ *   getDependants: GetDependants,
+ *   clear: Clear
+ * }} EnhancedSelector
+ */
+
+/**
+ * Internal cache entry.
+ *
+ * @typedef CacheNode
+ *
+ * @property {?CacheNode|undefined} [prev] Previous node.
+ * @property {?CacheNode|undefined} [next] Next node.
+ * @property {*[]} args Function arguments for cache entry.
+ * @property {*} val Function result.
+ */
+
+/**
+ * @typedef Cache
+ *
+ * @property {Clear} clear Function to clear cache.
+ * @property {boolean} [isUniqueByDependants] Whether dependants are valid in
+ * considering cache uniqueness. A cache is unique if dependents are all arrays
+ * or objects.
+ * @property {CacheNode?} [head] Cache head.
+ * @property {*[]} [lastDependants] Dependants from previous invocation.
+ */
+
+/**
+ * Arbitrary value used as key for referencing cache object in WeakMap tree.
+ *
+ * @type {{}}
+ */
+var LEAF_KEY = {};
+
+/**
+ * Returns the first argument as the sole entry in an array.
+ *
+ * @template T
+ *
+ * @param {T} value Value to return.
+ *
+ * @return {[T]} Value returned as entry in array.
+ */
+function arrayOf(value) {
+	return [value];
+}
+
+/**
+ * Returns true if the value passed is object-like, or false otherwise. A value
+ * is object-like if it can support property assignment, e.g. object or array.
+ *
+ * @param {*} value Value to test.
+ *
+ * @return {boolean} Whether value is object-like.
+ */
+function isObjectLike(value) {
+	return !!value && 'object' === typeof value;
+}
+
+/**
+ * Creates and returns a new cache object.
+ *
+ * @return {Cache} Cache object.
+ */
+function createCache() {
+	/** @type {Cache} */
+	var cache = {
+		clear: function () {
+			cache.head = null;
+		},
+	};
+
+	return cache;
+}
+
+/**
+ * Returns true if entries within the two arrays are strictly equal by
+ * reference from a starting index.
+ *
+ * @param {*[]} a First array.
+ * @param {*[]} b Second array.
+ * @param {number} fromIndex Index from which to start comparison.
+ *
+ * @return {boolean} Whether arrays are shallowly equal.
+ */
+function isShallowEqual(a, b, fromIndex) {
+	var i;
+
+	if (a.length !== b.length) {
+		return false;
+	}
+
+	for (i = fromIndex; i < a.length; i++) {
+		if (a[i] !== b[i]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Returns a memoized selector function. The getDependants function argument is
+ * called before the memoized selector and is expected to return an immutable
+ * reference or array of references on which the selector depends for computing
+ * its own return value. The memoize cache is preserved only as long as those
+ * dependant references remain the same. If getDependants returns a different
+ * reference(s), the cache is cleared and the selector value regenerated.
+ *
+ * @template {(...args: *[]) => *} S
+ *
+ * @param {S} selector Selector function.
+ * @param {GetDependants=} getDependants Dependant getter returning an array of
+ * references used in cache bust consideration.
+ */
+/* harmony default export */ var rememo = (function (selector, getDependants) {
+	/** @type {WeakMap<*,*>} */
+	var rootCache;
+
+	/** @type {GetDependants} */
+	var normalizedGetDependants = getDependants ? getDependants : arrayOf;
+
+	/**
+	 * Returns the cache for a given dependants array. When possible, a WeakMap
+	 * will be used to create a unique cache for each set of dependants. This
+	 * is feasible due to the nature of WeakMap in allowing garbage collection
+	 * to occur on entries where the key object is no longer referenced. Since
+	 * WeakMap requires the key to be an object, this is only possible when the
+	 * dependant is object-like. The root cache is created as a hierarchy where
+	 * each top-level key is the first entry in a dependants set, the value a
+	 * WeakMap where each key is the next dependant, and so on. This continues
+	 * so long as the dependants are object-like. If no dependants are object-
+	 * like, then the cache is shared across all invocations.
+	 *
+	 * @see isObjectLike
+	 *
+	 * @param {*[]} dependants Selector dependants.
+	 *
+	 * @return {Cache} Cache object.
+	 */
+	function getCache(dependants) {
+		var caches = rootCache,
+			isUniqueByDependants = true,
+			i,
+			dependant,
+			map,
+			cache;
+
+		for (i = 0; i < dependants.length; i++) {
+			dependant = dependants[i];
+
+			// Can only compose WeakMap from object-like key.
+			if (!isObjectLike(dependant)) {
+				isUniqueByDependants = false;
+				break;
+			}
+
+			// Does current segment of cache already have a WeakMap?
+			if (caches.has(dependant)) {
+				// Traverse into nested WeakMap.
+				caches = caches.get(dependant);
+			} else {
+				// Create, set, and traverse into a new one.
+				map = new WeakMap();
+				caches.set(dependant, map);
+				caches = map;
+			}
+		}
+
+		// We use an arbitrary (but consistent) object as key for the last item
+		// in the WeakMap to serve as our running cache.
+		if (!caches.has(LEAF_KEY)) {
+			cache = createCache();
+			cache.isUniqueByDependants = isUniqueByDependants;
+			caches.set(LEAF_KEY, cache);
+		}
+
+		return caches.get(LEAF_KEY);
+	}
+
+	/**
+	 * Resets root memoization cache.
+	 */
+	function clear() {
+		rootCache = new WeakMap();
+	}
+
+	/* eslint-disable jsdoc/check-param-names */
+	/**
+	 * The augmented selector call, considering first whether dependants have
+	 * changed before passing it to underlying memoize function.
+	 *
+	 * @param {*}    source    Source object for derivation.
+	 * @param {...*} extraArgs Additional arguments to pass to selector.
+	 *
+	 * @return {*} Selector result.
+	 */
+	/* eslint-enable jsdoc/check-param-names */
+	function callSelector(/* source, ...extraArgs */) {
+		var len = arguments.length,
+			cache,
+			node,
+			i,
+			args,
+			dependants;
+
+		// Create copy of arguments (avoid leaking deoptimization).
+		args = new Array(len);
+		for (i = 0; i < len; i++) {
+			args[i] = arguments[i];
+		}
+
+		dependants = normalizedGetDependants.apply(null, args);
+		cache = getCache(dependants);
+
+		// If not guaranteed uniqueness by dependants (primitive type), shallow
+		// compare against last dependants and, if references have changed,
+		// destroy cache to recalculate result.
+		if (!cache.isUniqueByDependants) {
+			if (
+				cache.lastDependants &&
+				!isShallowEqual(dependants, cache.lastDependants, 0)
+			) {
+				cache.clear();
+			}
+
+			cache.lastDependants = dependants;
+		}
+
+		node = cache.head;
+		while (node) {
+			// Check whether node arguments match arguments
+			if (!isShallowEqual(node.args, args, 1)) {
+				node = node.next;
+				continue;
+			}
+
+			// At this point we can assume we've found a match
+
+			// Surface matched node to head if not already
+			if (node !== cache.head) {
+				// Adjust siblings to point to each other.
+				/** @type {CacheNode} */ (node.prev).next = node.next;
+				if (node.next) {
+					node.next.prev = node.prev;
+				}
+
+				node.next = cache.head;
+				node.prev = null;
+				/** @type {CacheNode} */ (cache.head).prev = node;
+				cache.head = node;
+			}
+
+			// Return immediately
+			return node.val;
+		}
+
+		// No cached value found. Continue to insertion phase:
+
+		node = /** @type {CacheNode} */ ({
+			// Generate the result from original function
+			val: selector.apply(null, args),
+		});
+
+		// Avoid including the source object in the cache.
+		args[0] = null;
+		node.args = args;
+
+		// Don't need to check whether node is already head, since it would
+		// have been returned above already if it was
+
+		// Shift existing head down list
+		if (cache.head) {
+			cache.head.prev = node;
+			node.next = cache.head;
+		}
+
+		cache.head = node;
+
+		return node.val;
+	}
+
+	callSelector.getDependants = normalizedGetDependants;
+	callSelector.clear = clear;
+	clear();
+
+	return /** @type {S & EnhancedSelector} */ (callSelector);
+});
+
 // CONCATENATED MODULE: ./packages/data/build-module/onboarding/selectors.js
+/**
+ * External dependencies
+ */
+
 const getFreeExtensions = state => {
   return state.freeExtensions || [];
 };
 const getProfileItems = state => {
   return state.profileItems || {};
 };
-const initialTaskLists = [];
 const EMPTY_ARRAY = [];
-const getTaskLists = state => {
-  return state.taskLists || initialTaskLists;
-};
+const getTaskLists = rememo(state => {
+  return Object.values(state.taskLists);
+}, state => [state.taskLists]);
+const getTaskListsByIds = rememo((state, ids) => {
+  return ids.map(id => state.taskLists[id]);
+}, (state, ids) => ids.map(id => state.taskLists[id]));
 const getTaskList = (state, selector) => {
-  return state.taskLists.find(list => list.id === selector);
+  return state.taskLists[selector];
 };
 const getTask = (state, selector) => {
-  return state.taskLists.reduce((value, list) => {
-    return value || list.tasks.find(task => task.id === selector);
+  return Object.keys(state.taskLists).reduce((value, listId) => {
+    return value || state.taskLists[listId].tasks.find(task => task.id === selector);
   }, undefined);
 };
 const getPaymentGatewaySuggestions = state => {
@@ -4144,13 +4559,13 @@ const onboarding_action_types_TYPES = {
 };
 /* harmony default export */ var onboarding_action_types = (onboarding_action_types_TYPES);
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(31);
+var external_wp_hooks_ = __webpack_require__(28);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(27);
+var lib = __webpack_require__(32);
 
 // EXTERNAL MODULE: external ["wp","deprecated"]
-var external_wp_deprecated_ = __webpack_require__(40);
+var external_wp_deprecated_ = __webpack_require__(44);
 var external_wp_deprecated_default = /*#__PURE__*/__webpack_require__.n(external_wp_deprecated_);
 
 // CONCATENATED MODULE: ./packages/data/build-module/onboarding/deprecated-tasks.js
@@ -4178,6 +4593,14 @@ function getQuery() {
 
 class deprecated_tasks_DeprecatedTasks {
   constructor() {
+    /**
+     * **Deprecated** Filter Onboarding tasks.
+     *
+     * @filter woocommerce_admin_onboarding_task_list
+     * @deprecated
+     * @param {Array} tasks Array of tasks.
+     * @param {Array} query Url query parameters.
+     */
     this.filteredTasks = Object(external_wp_hooks_["applyFilters"])('woocommerce_admin_onboarding_task_list', [], getQuery());
 
     if (this.filteredTasks && this.filteredTasks.length > 0) {
@@ -4300,7 +4723,8 @@ function onboarding_actions_setIsRequesting(selector, isRequesting) {
     isRequesting
   };
 }
-function actions_setProfileItems(profileItems, replace = false) {
+function actions_setProfileItems(profileItems) {
+  let replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   return {
     type: onboarding_action_types.SET_PROFILE_ITEMS,
     profileItems,
@@ -4659,6 +5083,9 @@ function* resolvers_getTaskLists() {
     yield getTaskListsError(error);
   }
 }
+function* resolvers_getTaskListsByIds() {
+  yield onboarding_resolvers_resolveSelect(onboarding_constants_STORE_NAME, 'getTaskLists');
+}
 function* resolvers_getTaskList() {
   yield onboarding_resolvers_resolveSelect(onboarding_constants_STORE_NAME, 'getTaskLists');
 }
@@ -4728,42 +5155,48 @@ const defaultState = {
   paymentMethods: [],
   productTypes: [],
   requesting: {},
-  taskLists: []
+  taskLists: {}
 };
 
 const getUpdatedTaskLists = (taskLists, args) => {
-  return taskLists.map(taskList => {
-    return { ...taskList,
-      tasks: taskList.tasks.map(task => {
-        if (args.id === task.id) {
-          return { ...task,
-            ...args
-          };
-        }
+  return Object.keys(taskLists).reduce((lists, taskListId) => {
+    return { ...lists,
+      [taskListId]: { ...taskLists[taskListId],
+        tasks: taskLists[taskListId].tasks.map(task => {
+          if (args.id === task.id) {
+            return { ...task,
+              ...args
+            };
+          }
 
-        return task;
-      })
+          return task;
+        })
+      }
     };
+  }, { ...taskLists
   });
 };
 
-const onboarding = (state = defaultState, {
-  freeExtensions,
-  type,
-  profileItems,
-  emailPrefill,
-  paymentMethods,
-  productTypes,
-  replace,
-  error,
-  isRequesting,
-  selector,
-  task,
-  taskId,
-  taskListId,
-  taskList,
-  taskLists
-}) => {
+const onboarding = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+  let {
+    freeExtensions,
+    type,
+    profileItems,
+    emailPrefill,
+    paymentMethods,
+    productTypes,
+    replace,
+    error,
+    isRequesting,
+    selector,
+    task,
+    taskId,
+    taskListId,
+    taskList,
+    taskLists
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case onboarding_action_types.SET_PROFILE_ITEMS:
       return { ...state,
@@ -4829,7 +5262,11 @@ const onboarding = (state = defaultState, {
 
     case onboarding_action_types.GET_TASK_LISTS_SUCCESS:
       return { ...state,
-        taskLists
+        taskLists: taskLists.reduce((lists, list) => {
+          return { ...lists,
+            [list.id]: list
+          };
+        }, state.taskLists || {})
       };
 
     case onboarding_action_types.DISMISS_TASK_ERROR:
@@ -4957,16 +5394,12 @@ const onboarding = (state = defaultState, {
         errors: { ...state.errors,
           hideTaskList: error
         },
-        taskLists: state.taskLists.map(list => {
-          if (taskListId === list.id) {
-            return { ...list,
-              isHidden: false,
-              isVisible: true
-            };
+        taskLists: { ...state.taskLists,
+          [taskListId]: { ...state.taskLists[taskListId],
+            isHidden: false,
+            isVisible: true
           }
-
-          return list;
-        })
+        }
       };
 
     case onboarding_action_types.HIDE_TASK_LIST_REQUEST:
@@ -4974,16 +5407,12 @@ const onboarding = (state = defaultState, {
         requesting: { ...state.requesting,
           hideTaskList: true
         },
-        taskLists: state.taskLists.map(list => {
-          if (taskListId === list.id) {
-            return { ...list,
-              isHidden: true,
-              isVisible: false
-            };
+        taskLists: { ...state.taskLists,
+          [taskListId]: { ...state.taskLists[taskListId],
+            isHidden: true,
+            isVisible: false
           }
-
-          return list;
-        })
+        }
       };
 
     case onboarding_action_types.HIDE_TASK_LIST_SUCCESS:
@@ -4991,9 +5420,9 @@ const onboarding = (state = defaultState, {
         requesting: { ...state.requesting,
           hideTaskList: false
         },
-        taskLists: state.taskLists.map(list => {
-          return taskListId === list.id ? taskList : list;
-        })
+        taskLists: { ...state.taskLists,
+          [taskListId]: taskList
+        }
       };
 
     case onboarding_action_types.UNHIDE_TASK_LIST_ERROR:
@@ -5001,16 +5430,12 @@ const onboarding = (state = defaultState, {
         errors: { ...state.errors,
           unhideTaskList: error
         },
-        taskLists: state.taskLists.map(list => {
-          if (taskListId === list.id) {
-            return { ...list,
-              isHidden: true,
-              isVisible: false
-            };
+        taskLists: { ...state.taskLists,
+          [taskListId]: { ...state.taskLists[taskListId],
+            isHidden: true,
+            isVisible: false
           }
-
-          return list;
-        })
+        }
       };
 
     case onboarding_action_types.UNHIDE_TASK_LIST_REQUEST:
@@ -5018,16 +5443,12 @@ const onboarding = (state = defaultState, {
         requesting: { ...state.requesting,
           unhideTaskList: true
         },
-        taskLists: state.taskLists.map(list => {
-          if (taskListId === list.id) {
-            return { ...list,
-              isHidden: false,
-              isVisible: true
-            };
+        taskLists: { ...state.taskLists,
+          [taskListId]: { ...state.taskLists[taskListId],
+            isHidden: false,
+            isVisible: true
           }
-
-          return list;
-        })
+        }
       };
 
     case onboarding_action_types.UNHIDE_TASK_LIST_SUCCESS:
@@ -5035,9 +5456,9 @@ const onboarding = (state = defaultState, {
         requesting: { ...state.requesting,
           unhideTaskList: false
         },
-        taskLists: state.taskLists.map(list => {
-          return taskListId === list.id ? taskList : list;
-        })
+        taskLists: { ...state.taskLists,
+          [taskListId]: taskList
+        }
       };
 
     case onboarding_action_types.OPTIMISTICALLY_COMPLETE_TASK_REQUEST:
@@ -5563,18 +5984,22 @@ const fetchWithHeaders = options => {
 };
 const controls_controls = { ...external_wp_dataControls_["controls"],
 
-  FETCH_WITH_HEADERS({
-    options
-  }) {
+  FETCH_WITH_HEADERS(_ref) {
+    let {
+      options
+    } = _ref;
     return external_wp_apiFetch_default()({ ...options,
       parse: false
     }).then(response => {
       return Promise.all([response.headers, response.status, response.json()]);
-    }).then(([headers, status, data]) => ({
-      headers,
-      status,
-      data
-    }));
+    }).then(_ref2 => {
+      let [headers, status, data] = _ref2;
+      return {
+        headers,
+        status,
+        data
+      };
+    });
   }
 
 };
@@ -5613,20 +6038,23 @@ function* resolvers_getReviewsTotalCount(query) {
  */
 
 
-const reducer_reducer = (state = {
-  reviews: {},
-  errors: {},
-  data: {}
-}, {
-  type,
-  query,
-  reviews,
-  reviewId,
-  reviewData,
-  totalCount,
-  error,
-  isUpdating
-}) => {
+const reducer_reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    reviews: {},
+    errors: {},
+    data: {}
+  };
+  let {
+    type,
+    query,
+    reviews,
+    reviewId,
+    reviewData,
+    totalCount,
+    error,
+    isUpdating
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case reviews_action_types.UPDATE_REVIEWS:
       const ids = [];
@@ -5706,282 +6134,6 @@ const REVIEWS_STORE_NAME = reviews_constants_STORE_NAME;
  * Internal dependencies
  */
 const notes_constants_STORE_NAME = 'wc/admin/notes';
-// CONCATENATED MODULE: ./node_modules/rememo/es/rememo.js
-
-
-var LEAF_KEY, hasWeakMap;
-
-/**
- * Arbitrary value used as key for referencing cache object in WeakMap tree.
- *
- * @type {Object}
- */
-LEAF_KEY = {};
-
-/**
- * Whether environment supports WeakMap.
- *
- * @type {boolean}
- */
-hasWeakMap = typeof WeakMap !== 'undefined';
-
-/**
- * Returns the first argument as the sole entry in an array.
- *
- * @param {*} value Value to return.
- *
- * @return {Array} Value returned as entry in array.
- */
-function arrayOf( value ) {
-	return [ value ];
-}
-
-/**
- * Returns true if the value passed is object-like, or false otherwise. A value
- * is object-like if it can support property assignment, e.g. object or array.
- *
- * @param {*} value Value to test.
- *
- * @return {boolean} Whether value is object-like.
- */
-function isObjectLike( value ) {
-	return !! value && 'object' === typeof value;
-}
-
-/**
- * Creates and returns a new cache object.
- *
- * @return {Object} Cache object.
- */
-function createCache() {
-	var cache = {
-		clear: function() {
-			cache.head = null;
-		},
-	};
-
-	return cache;
-}
-
-/**
- * Returns true if entries within the two arrays are strictly equal by
- * reference from a starting index.
- *
- * @param {Array}  a         First array.
- * @param {Array}  b         Second array.
- * @param {number} fromIndex Index from which to start comparison.
- *
- * @return {boolean} Whether arrays are shallowly equal.
- */
-function isShallowEqual( a, b, fromIndex ) {
-	var i;
-
-	if ( a.length !== b.length ) {
-		return false;
-	}
-
-	for ( i = fromIndex; i < a.length; i++ ) {
-		if ( a[ i ] !== b[ i ] ) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-/**
- * Returns a memoized selector function. The getDependants function argument is
- * called before the memoized selector and is expected to return an immutable
- * reference or array of references on which the selector depends for computing
- * its own return value. The memoize cache is preserved only as long as those
- * dependant references remain the same. If getDependants returns a different
- * reference(s), the cache is cleared and the selector value regenerated.
- *
- * @param {Function} selector      Selector function.
- * @param {Function} getDependants Dependant getter returning an immutable
- *                                 reference or array of reference used in
- *                                 cache bust consideration.
- *
- * @return {Function} Memoized selector.
- */
-/* harmony default export */ var rememo = (function( selector, getDependants ) {
-	var rootCache, getCache;
-
-	// Use object source as dependant if getter not provided
-	if ( ! getDependants ) {
-		getDependants = arrayOf;
-	}
-
-	/**
-	 * Returns the root cache. If WeakMap is supported, this is assigned to the
-	 * root WeakMap cache set, otherwise it is a shared instance of the default
-	 * cache object.
-	 *
-	 * @return {(WeakMap|Object)} Root cache object.
-	 */
-	function getRootCache() {
-		return rootCache;
-	}
-
-	/**
-	 * Returns the cache for a given dependants array. When possible, a WeakMap
-	 * will be used to create a unique cache for each set of dependants. This
-	 * is feasible due to the nature of WeakMap in allowing garbage collection
-	 * to occur on entries where the key object is no longer referenced. Since
-	 * WeakMap requires the key to be an object, this is only possible when the
-	 * dependant is object-like. The root cache is created as a hierarchy where
-	 * each top-level key is the first entry in a dependants set, the value a
-	 * WeakMap where each key is the next dependant, and so on. This continues
-	 * so long as the dependants are object-like. If no dependants are object-
-	 * like, then the cache is shared across all invocations.
-	 *
-	 * @see isObjectLike
-	 *
-	 * @param {Array} dependants Selector dependants.
-	 *
-	 * @return {Object} Cache object.
-	 */
-	function getWeakMapCache( dependants ) {
-		var caches = rootCache,
-			isUniqueByDependants = true,
-			i, dependant, map, cache;
-
-		for ( i = 0; i < dependants.length; i++ ) {
-			dependant = dependants[ i ];
-
-			// Can only compose WeakMap from object-like key.
-			if ( ! isObjectLike( dependant ) ) {
-				isUniqueByDependants = false;
-				break;
-			}
-
-			// Does current segment of cache already have a WeakMap?
-			if ( caches.has( dependant ) ) {
-				// Traverse into nested WeakMap.
-				caches = caches.get( dependant );
-			} else {
-				// Create, set, and traverse into a new one.
-				map = new WeakMap();
-				caches.set( dependant, map );
-				caches = map;
-			}
-		}
-
-		// We use an arbitrary (but consistent) object as key for the last item
-		// in the WeakMap to serve as our running cache.
-		if ( ! caches.has( LEAF_KEY ) ) {
-			cache = createCache();
-			cache.isUniqueByDependants = isUniqueByDependants;
-			caches.set( LEAF_KEY, cache );
-		}
-
-		return caches.get( LEAF_KEY );
-	}
-
-	// Assign cache handler by availability of WeakMap
-	getCache = hasWeakMap ? getWeakMapCache : getRootCache;
-
-	/**
-	 * Resets root memoization cache.
-	 */
-	function clear() {
-		rootCache = hasWeakMap ? new WeakMap() : createCache();
-	}
-
-	// eslint-disable-next-line jsdoc/check-param-names
-	/**
-	 * The augmented selector call, considering first whether dependants have
-	 * changed before passing it to underlying memoize function.
-	 *
-	 * @param {Object} source    Source object for derivation.
-	 * @param {...*}   extraArgs Additional arguments to pass to selector.
-	 *
-	 * @return {*} Selector result.
-	 */
-	function callSelector( /* source, ...extraArgs */ ) {
-		var len = arguments.length,
-			cache, node, i, args, dependants;
-
-		// Create copy of arguments (avoid leaking deoptimization).
-		args = new Array( len );
-		for ( i = 0; i < len; i++ ) {
-			args[ i ] = arguments[ i ];
-		}
-
-		dependants = getDependants.apply( null, args );
-		cache = getCache( dependants );
-
-		// If not guaranteed uniqueness by dependants (primitive type or lack
-		// of WeakMap support), shallow compare against last dependants and, if
-		// references have changed, destroy cache to recalculate result.
-		if ( ! cache.isUniqueByDependants ) {
-			if ( cache.lastDependants && ! isShallowEqual( dependants, cache.lastDependants, 0 ) ) {
-				cache.clear();
-			}
-
-			cache.lastDependants = dependants;
-		}
-
-		node = cache.head;
-		while ( node ) {
-			// Check whether node arguments match arguments
-			if ( ! isShallowEqual( node.args, args, 1 ) ) {
-				node = node.next;
-				continue;
-			}
-
-			// At this point we can assume we've found a match
-
-			// Surface matched node to head if not already
-			if ( node !== cache.head ) {
-				// Adjust siblings to point to each other.
-				node.prev.next = node.next;
-				if ( node.next ) {
-					node.next.prev = node.prev;
-				}
-
-				node.next = cache.head;
-				node.prev = null;
-				cache.head.prev = node;
-				cache.head = node;
-			}
-
-			// Return immediately
-			return node.val;
-		}
-
-		// No cached value found. Continue to insertion phase:
-
-		node = {
-			// Generate the result from original function
-			val: selector.apply( null, args ),
-		};
-
-		// Avoid including the source object in the cache.
-		args[ 0 ] = null;
-		node.args = args;
-
-		// Don't need to check whether node is already head, since it would
-		// have been returned above already if it was
-
-		// Shift existing head down list
-		if ( cache.head ) {
-			cache.head.prev = node;
-			node.next = cache.head;
-		}
-
-		cache.head = node;
-
-		return node.val;
-	}
-
-	callSelector.getDependants = getDependants;
-	callSelector.clear = clear;
-	clear();
-
-	return callSelector;
-});
-
 // CONCATENATED MODULE: ./packages/data/build-module/notes/selectors.js
 /**
  * External dependencies
@@ -6056,7 +6208,8 @@ function* removeNote(noteId) {
     throw new Error();
   }
 }
-function* removeAllNotes(query = {}) {
+function* removeAllNotes() {
+  let query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   yield notes_actions_setIsRequesting('removeAllNotes', true);
 
   try {
@@ -6158,7 +6311,7 @@ function notes_actions_setIsRequesting(selector, isRequesting) {
   };
 }
 // EXTERNAL MODULE: ./packages/data/node_modules/dompurify/dist/purify.js
-var purify = __webpack_require__(269);
+var purify = __webpack_require__(278);
 
 // CONCATENATED MODULE: ./packages/data/build-module/notes/resolvers.js
 /**
@@ -6175,7 +6328,8 @@ var purify = __webpack_require__(269);
 
 
 let notesExceededWarningShown = false;
-function* resolvers_getNotes(query = {}) {
+function* resolvers_getNotes() {
+  let query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   const url = Object(external_wp_url_["addQueryArgs"])(`${NAMESPACE}/admin/notes`, query);
 
   try {
@@ -6221,23 +6375,26 @@ function* resolvers_getNotes(query = {}) {
  */
 
 
-const notesReducer = (state = {
-  errors: {},
-  noteQueries: {},
-  notes: {},
-  requesting: {}
-}, {
-  error,
-  isRequesting,
-  isUpdating,
-  noteFields,
-  noteId,
-  noteIds,
-  notes,
-  query,
-  selector,
-  type
-}) => {
+const notesReducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    errors: {},
+    noteQueries: {},
+    notes: {},
+    requesting: {}
+  };
+  let {
+    error,
+    isRequesting,
+    isUpdating,
+    noteFields,
+    noteId,
+    noteIds,
+    notes,
+    query,
+    selector,
+    type
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case notes_action_types.SET_NOTES:
       state = { ...state,
@@ -6451,18 +6608,21 @@ function* resolvers_getReportStats(endpoint, query) {
  */
 
 
-const reports = (state = {
-  itemErrors: {},
-  items: {},
-  statErrors: {},
-  stats: {}
-}, {
-  type,
-  items,
-  stats,
-  error,
-  resourceName
-}) => {
+const reports = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    itemErrors: {},
+    items: {},
+    statErrors: {},
+    stats: {}
+  };
+  let {
+    type,
+    items,
+    stats,
+    error,
+    resourceName
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case reports_action_types.SET_REPORT_ITEMS:
       return { ...state,
@@ -6524,7 +6684,7 @@ const REPORTS_STORE_NAME = reports_constants_STORE_NAME;
 // CONCATENATED MODULE: ./packages/data/build-module/items/constants.js
 const items_constants_STORE_NAME = 'wc/admin/items';
 // EXTERNAL MODULE: external ["wc","date"]
-var external_wc_date_ = __webpack_require__(20);
+var external_wc_date_ = __webpack_require__(21);
 
 // CONCATENATED MODULE: ./packages/data/build-module/items/utils.js
 /**
@@ -6606,7 +6766,8 @@ function getLeaderboard(options) {
  * @return {Object}   Object containing API request information and the matching items.
  */
 
-function searchItemsByString(selector, endpoint, search, options = {}) {
+function searchItemsByString(selector, endpoint, search) {
+  let options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
   const {
     getItems,
     getItemsError,
@@ -6674,7 +6835,8 @@ function getTotalCountResourceName(itemType, query) {
 
 
 
-const selectors_getItems = rememo((state, itemType, query, defaultValue = new Map()) => {
+const selectors_getItems = rememo(function (state, itemType, query) {
+  let defaultValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Map();
   const resourceName = getResourceName(itemType, query);
   const ids = state.items[resourceName] && state.items[resourceName].data;
 
@@ -6690,7 +6852,8 @@ const selectors_getItems = rememo((state, itemType, query, defaultValue = new Ma
   const resourceName = getResourceName(itemType, query);
   return [state.items[resourceName]];
 });
-const getItemsTotalCount = (state, itemType, query, defaultValue = 0) => {
+const getItemsTotalCount = function (state, itemType, query) {
+  let defaultValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
   const resourceName = getTotalCountResourceName(itemType, query);
   const totalCount = state.items.hasOwnProperty(resourceName) ? state.items[resourceName] : defaultValue;
   return totalCount;
@@ -6880,20 +7043,23 @@ function* resolvers_getItemsTotalCount(itemType, query) {
 
 
 
-const items_reducer_reducer = (state = {
-  items: {},
-  errors: {},
-  data: {}
-}, {
-  type,
-  id,
-  itemType,
-  query,
-  item,
-  items,
-  totalCount,
-  error
-}) => {
+const items_reducer_reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    items: {},
+    errors: {},
+    data: {}
+  };
+  let {
+    type,
+    id,
+    itemType,
+    query,
+    item,
+    items,
+    totalCount,
+    error
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case items_action_types.SET_ITEM:
       const itemData = state.data[itemType] || {};
@@ -6972,6 +7138,182 @@ Object(external_wp_data_["registerStore"])(items_constants_STORE_NAME, {
   resolvers: items_resolvers_namespaceObject
 });
 const ITEMS_STORE_NAME = items_constants_STORE_NAME;
+// CONCATENATED MODULE: ./packages/data/build-module/countries/constants.js
+const countries_constants_STORE_NAME = 'wc/admin/countries';
+// CONCATENATED MODULE: ./packages/data/build-module/countries/selectors.js
+const getLocales = state => {
+  return state.locales;
+};
+const getLocale = (state, id) => {
+  const country = id.split(':')[0];
+  return state.locales[country];
+};
+const getCountries = state => {
+  return state.countries;
+};
+const getCountry = (state, code) => {
+  return state.countries.find(country => country.code === code);
+};
+// CONCATENATED MODULE: ./packages/data/build-module/countries/action-types.js
+var countries_action_types_TYPES;
+
+(function (TYPES) {
+  TYPES["GET_LOCALES_ERROR"] = "GET_LOCALES_ERROR";
+  TYPES["GET_LOCALES_SUCCESS"] = "GET_LOCALES_SUCCESS";
+  TYPES["GET_COUNTRIES_ERROR"] = "GET_COUNTRIES_ERROR";
+  TYPES["GET_COUNTRIES_SUCCESS"] = "GET_COUNTRIES_SUCCESS";
+})(countries_action_types_TYPES || (countries_action_types_TYPES = {}));
+
+/* harmony default export */ var countries_action_types = (countries_action_types_TYPES);
+// CONCATENATED MODULE: ./packages/data/build-module/countries/actions.js
+/**
+ * Internal dependencies
+ */
+
+function getLocalesSuccess(locales) {
+  return {
+    type: countries_action_types.GET_LOCALES_SUCCESS,
+    locales
+  };
+}
+function getLocalesError(error) {
+  return {
+    type: countries_action_types.GET_LOCALES_ERROR,
+    error
+  };
+}
+function getCountriesSuccess(countries) {
+  return {
+    type: countries_action_types.GET_COUNTRIES_SUCCESS,
+    countries
+  };
+}
+function getCountriesError(error) {
+  return {
+    type: countries_action_types.GET_COUNTRIES_ERROR,
+    error
+  };
+}
+// CONCATENATED MODULE: ./packages/data/build-module/countries/resolvers.js
+/**
+ * External dependencies
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+const countries_resolvers_resolveSelect = external_wp_data_["controls"] && external_wp_data_["controls"].resolveSelect ? external_wp_data_["controls"].resolveSelect : external_wp_dataControls_["select"];
+function* resolvers_getLocale() {
+  yield countries_resolvers_resolveSelect(countries_constants_STORE_NAME, 'getLocales');
+}
+function* resolvers_getLocales() {
+  try {
+    const url = NAMESPACE + '/data/countries/locales';
+    const results = yield Object(external_wp_dataControls_["apiFetch"])({
+      path: url,
+      method: 'GET'
+    });
+    return getLocalesSuccess(results);
+  } catch (error) {
+    return getLocalesError(error);
+  }
+}
+function* resolvers_getCountry() {
+  yield countries_resolvers_resolveSelect(countries_constants_STORE_NAME, 'getCountries');
+}
+function* resolvers_getCountries() {
+  try {
+    const url = NAMESPACE + '/data/countries';
+    const results = yield Object(external_wp_dataControls_["apiFetch"])({
+      path: url,
+      method: 'GET'
+    });
+    return getCountriesSuccess(results);
+  } catch (error) {
+    return getCountriesError(error);
+  }
+}
+// CONCATENATED MODULE: ./packages/data/build-module/countries/reducer.js
+/**
+ * Internal dependencies
+ */
+
+
+const countries_reducer_reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    errors: {},
+    locales: {},
+    countries: []
+  };
+  let {
+    type,
+    error,
+    locales,
+    countries
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (type) {
+    case countries_action_types.GET_LOCALES_SUCCESS:
+      state = { ...state,
+        locales
+      };
+      break;
+
+    case countries_action_types.GET_LOCALES_ERROR:
+      state = { ...state,
+        errors: { ...state.errors,
+          locales: error
+        }
+      };
+      break;
+
+    case countries_action_types.GET_COUNTRIES_SUCCESS:
+      state = { ...state,
+        countries
+      };
+      break;
+
+    case countries_action_types.GET_COUNTRIES_ERROR:
+      state = { ...state,
+        errors: { ...state.errors,
+          countries: error
+        }
+      };
+      break;
+  }
+
+  return state;
+};
+
+/* harmony default export */ var countries_reducer = (countries_reducer_reducer);
+// CONCATENATED MODULE: ./packages/data/build-module/countries/index.js
+/**
+ * External dependencies
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+
+
+Object(external_wp_data_["registerStore"])(countries_constants_STORE_NAME, {
+  reducer: countries_reducer,
+  actions: countries_actions_namespaceObject,
+  controls: external_wp_dataControls_["controls"],
+  selectors: countries_selectors_namespaceObject,
+  resolvers: countries_resolvers_namespaceObject
+});
+const COUNTRIES_STORE_NAME = countries_constants_STORE_NAME;
 // CONCATENATED MODULE: ./packages/data/build-module/navigation/constants.js
 const navigation_constants_STORE_NAME = 'woocommerce-navigation';
 // CONCATENATED MODULE: ./packages/data/build-module/navigation/selectors.js
@@ -6981,6 +7323,12 @@ const navigation_constants_STORE_NAME = 'woocommerce-navigation';
 
 const MENU_ITEMS_HOOK = 'woocommerce_navigation_menu_items';
 const getMenuItems = state => {
+  /**
+   * Navigation Menu Items.
+   *
+   * @filter woocommerce_navigation_menu_items
+   * @param {Array.<Object>} menuItems Array of Navigation menu items.
+   */
   return Object(external_wp_hooks_["applyFilters"])(MENU_ITEMS_HOOK, state.menuItems);
 };
 const getFavorites = state => {
@@ -6993,7 +7341,7 @@ const getPersistedQuery = state => {
   return state.persistedQuery || {};
 };
 // EXTERNAL MODULE: external ["wc","navigation"]
-var external_wc_navigation_ = __webpack_require__(12);
+var external_wc_navigation_ = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./packages/data/build-module/navigation/action-types.js
 const navigation_action_types_TYPES = {
@@ -7159,20 +7507,23 @@ function* removeFavorite(favorite) {
  */
 
 
-const navigation_reducer_reducer = (state = {
-  error: null,
-  menuItems: [],
-  favorites: [],
-  requesting: {},
-  persistedQuery: {}
-}, {
-  type,
-  error,
-  favorite,
-  favorites,
-  menuItems,
-  persistedQuery
-}) => {
+const navigation_reducer_reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    error: null,
+    menuItems: [],
+    favorites: [],
+    requesting: {},
+    persistedQuery: {}
+  };
+  let {
+    type,
+    error,
+    favorite,
+    favorites,
+    menuItems,
+    persistedQuery
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case navigation_action_types.SET_MENU_ITEMS:
       state = { ...state,
@@ -7594,11 +7945,14 @@ function updatePaymentGatewayList(state, paymentGateway) {
   };
 }
 
-const payment_gateways_reducer_reducer = (state = {
-  paymentGateways: [],
-  isUpdating: false,
-  errors: {}
-}, payload) => {
+const payment_gateways_reducer_reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    paymentGateways: [],
+    isUpdating: false,
+    errors: {}
+  };
+  let payload = arguments.length > 1 ? arguments[1] : undefined;
+
   if (payload && 'type' in payload) {
     switch (payload.type) {
       case action_types_ACTION_TYPES.GET_PAYMENT_GATEWAYS_REQUEST:
@@ -7673,7 +8027,7 @@ Object(external_wp_data_["registerStore"])(STORE_KEY, {
   reducer: payment_gateways_reducer
 });
 // EXTERNAL MODULE: external "moment"
-var external_moment_ = __webpack_require__(9);
+var external_moment_ = __webpack_require__(11);
 var external_moment_default = /*#__PURE__*/__webpack_require__.n(external_moment_);
 
 // CONCATENATED MODULE: ./packages/data/build-module/reports/utils.js
@@ -7856,10 +8210,11 @@ function getRequestQuery(options) {
     endpoint,
     dataType,
     query,
-    fields
+    fields,
+    defaultDateRange
   } = options;
-  const datesFromQuery = Object(external_wc_date_["getCurrentDates"])(query, options.defaultDateRange);
-  const interval = Object(external_wc_date_["getIntervalForQuery"])(query);
+  const datesFromQuery = Object(external_wc_date_["getCurrentDates"])(query, defaultDateRange);
+  const interval = Object(external_wc_date_["getIntervalForQuery"])(query, defaultDateRange);
   const filterQuery = getFilterQuery(options);
   const end = datesFromQuery[dataType].before;
   const noIntervals = Object(external_lodash_["includes"])(noIntervalEndpoints, endpoint);
@@ -8229,7 +8584,7 @@ function getReportTableData(options) {
  */
 const export_constants_STORE_NAME = 'wc/admin/export';
 // EXTERNAL MODULE: ./node_modules/md5/md5.js
-var md5 = __webpack_require__(270);
+var md5 = __webpack_require__(279);
 var md5_default = /*#__PURE__*/__webpack_require__.n(md5);
 
 // CONCATENATED MODULE: ./packages/data/build-module/export/utils.js
@@ -8348,21 +8703,24 @@ function* startExport(type, args) {
 
 
 
-const exportReducer = (state = {
-  errors: {},
-  requesting: {},
-  exportMeta: {},
-  exportIds: {}
-}, {
-  error,
-  exportArgs,
-  exportId,
-  exportType,
-  isRequesting,
-  selector,
-  selectorArgs,
-  type
-}) => {
+const exportReducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    errors: {},
+    requesting: {},
+    exportMeta: {},
+    exportIds: {}
+  };
+  let {
+    error,
+    exportArgs,
+    exportId,
+    exportType,
+    isRequesting,
+    selector,
+    selectorArgs,
+    type
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case export_action_types.SET_IS_REQUESTING:
       return { ...state,
@@ -8538,7 +8896,8 @@ function setImportError(query, error) {
     query
   };
 }
-function* updateImportation(path, importStarted = false) {
+function* updateImportation(path) {
+  let importStarted = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   yield setImportStarted(importStarted);
 
   try {
@@ -8599,27 +8958,30 @@ function* resolvers_getImportTotals(query) {
 
 
 
-const import_reducer_reducer = (state = {
-  activeImport: false,
-  importStatus: {},
-  importTotals: {},
-  errors: {},
-  lastImportStartTimestamp: 0,
-  period: {
-    date: external_moment_default()().format(Object(external_wp_i18n_["__"])('MM/DD/YYYY', 'woocommerce-admin')),
-    label: 'all'
-  },
-  skipPrevious: true
-}, {
-  type,
-  query,
-  importStatus,
-  importTotals,
-  activeImport,
-  date,
-  error,
-  skipPrevious
-}) => {
+const import_reducer_reducer = function () {
+  let state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    activeImport: false,
+    importStatus: {},
+    importTotals: {},
+    errors: {},
+    lastImportStartTimestamp: 0,
+    period: {
+      date: external_moment_default()().format(Object(external_wp_i18n_["__"])('MM/DD/YYYY', 'woocommerce-admin')),
+      label: 'all'
+    },
+    skipPrevious: true
+  };
+  let {
+    type,
+    query,
+    importStatus,
+    importTotals,
+    activeImport,
+    date,
+    error,
+    skipPrevious
+  } = arguments.length > 1 ? arguments[1] : undefined;
+
   switch (type) {
     case import_action_types.SET_IMPORT_STARTED:
       state = { ...state,
@@ -8711,6 +9073,8 @@ Object(external_wp_data_["registerStore"])(import_constants_STORE_NAME, {
 const IMPORT_STORE_NAME = import_constants_STORE_NAME;
 // CONCATENATED MODULE: ./packages/data/build-module/onboarding/types.js
 
+// CONCATENATED MODULE: ./packages/data/build-module/countries/types.js
+
 // CONCATENATED MODULE: ./packages/data/build-module/index.js
 /**
  * External dependencies
@@ -8746,16 +9110,25 @@ const IMPORT_STORE_NAME = import_constants_STORE_NAME;
 
 
 
+
+
 /***/ }),
 
-/***/ 58:
+/***/ 5:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
+
+/***/ }),
+
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
-var formats = __webpack_require__(34);
+var utils = __webpack_require__(45);
+var formats = __webpack_require__(39);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -9034,13 +9407,13 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
+var utils = __webpack_require__(45);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -9299,17 +9672,10 @@ module.exports = function (str, opts) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["data"]; }());
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["moment"]; }());
 
 /***/ })
 

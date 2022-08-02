@@ -11,46 +11,72 @@ namespace Automattic\Jetpack\My_Jetpack;
  * A class for everything related to product handling in My Jetpack
  */
 class Products {
+
+	/**
+	 * Get the list of Products classes
+	 *
+	 * Here's where all the existing Products are registered
+	 *
+	 * @return array List of class names
+	 */
+	public static function get_products_classes() {
+		return array(
+			Products\Anti_Spam::class,
+			Products\Backup::class,
+			Products\Boost::class,
+			Products\Crm::class,
+			Products\Extras::class,
+			Products\Scan::class,
+			Products\Search::class,
+			Products\Social::class,
+			Products\Security::class,
+			Products\Protect::class,
+			Products\Videopress::class,
+		);
+	}
+
 	/**
 	 * Product data
 	 *
 	 * @return array Jetpack products on the site and their availability.
 	 */
 	public static function get_products() {
-		return array(
-			'anti-spam'  => self::get_anti_spam_data(),
-			'backup'     => self::get_backup_data(),
-			'boost'      => self::get_boost_data(),
-			'scan'       => self::get_scan_data(),
-			'search'     => self::get_search_data(),
-			'videopress' => self::get_videopress_data(),
-			'crm'        => self::get_crm_data(),
-			'extras'     => self::get_extras_data(),
-		);
+		$products = array();
+		foreach ( self::get_products_classes() as $class ) {
+			$product_slug              = $class::$slug;
+			$products[ $product_slug ] = $class::get_info();
+		}
+		return $products;
 	}
 
 	/**
 	 * Get one product data by its slug
 	 *
-	 * @param string $slug The product slug.
+	 * @param string $product_slug The product slug.
 	 *
 	 * @return ?array
 	 */
-	public static function get_product( $slug ) {
-		$products = self::get_products();
-		if ( array_key_exists( $slug, $products ) ) {
-			return $products[ $slug ];
+	public static function get_product( $product_slug ) {
+		foreach ( self::get_products_classes() as $class ) {
+			$p_slug = $class::$slug;
+			if ( $p_slug === $product_slug ) {
+				return $class::get_info();
+			}
 		}
 		return null;
 	}
 
 	/**
-	 * Return product names list.
+	 * Return product slugs list.
 	 *
-	 * @return array Product names array.
+	 * @return array Product slugs array.
 	 */
-	public static function get_product_names() {
-		return array_keys( self::get_products() );
+	public static function get_products_slugs() {
+		$slugs = array();
+		foreach ( self::get_products_classes() as $class ) {
+			$slugs[] = $class::$slug;
+		}
+		return $slugs;
 	}
 
 	/**
@@ -66,7 +92,7 @@ class Products {
 				'product'     => array(
 					'description'       => __( 'Product slug', 'jetpack-my-jetpack' ),
 					'type'              => 'string',
-					'enum'              => __CLASS__ . '::get_product_names',
+					'enum'              => __CLASS__ . '::get_product_slugs',
 					'required'          => false,
 					'validate_callback' => __CLASS__ . '::check_product_argument',
 				),
@@ -92,7 +118,7 @@ class Products {
 				'status'      => array(
 					'title' => 'The product status',
 					'type'  => 'string',
-					'enum'  => array( 'active', 'inactive', 'plugin_absent' ),
+					'enum'  => array( 'active', 'inactive', 'plugin_absent', 'needs_purchase', 'error' ),
 				),
 				'class'       => array(
 					'title' => 'The product class handler',
@@ -103,136 +129,16 @@ class Products {
 	}
 
 	/**
-	 * Returns information about the Anti-spam product
-	 *
-	 * @return array Object with infromation about the product.
+	 * Extend actions links for plugins
+	 * tied to the Products.
 	 */
-	public static function get_anti_spam_data() {
-		return array(
-			'slug'        => 'anti-spam',
-			'description' => __( 'Stop comment and form spam', 'jetpack-my-jetpack' ),
-			'name'        => __( 'Anti-spam', 'jetpack-my-jetpack' ),
-			'status'      => 'inactive',
-		);
+	public static function extend_plugins_action_links() {
+		Products\Backup::extend_plugin_action_links();
+		Products\Boost::extend_plugin_action_links();
+		Products\Crm::extend_plugin_action_links();
+
+		// Extend Jetpack plugin using Videopress instance.
+		Products\Videopress::extend_plugin_action_links();
 	}
 
-	/**
-	 * Activate Backup product
-	 */
-	public static function activate_backup_product() {
-		/*
-		 * @todo: implement
-		 * suggestion: when it enables, return an success array:
-		 * array( 'status' => 'activated' );
-		 * Otherwise, an WP_Error instance will be nice.
-		 */
-		return array(
-			'status' => 'active',
-		);
-	}
-
-	/**
-	 * Deactivate Backup product
-	 */
-	public static function deactivate_backup_product() {
-		/*
-		 * @todo: implement
-		 */
-		return array(
-			'status' => 'inactive',
-		);
-	}
-
-	/**
-	 * Returns information about the Backup product
-	 *
-	 * @return array Object with infromation about the product.
-	 */
-	public static function get_backup_data() {
-		return array(
-			'slug'        => 'backup',
-			'description' => __( 'Save every change', 'jetpack-my-jetpack' ),
-			'name'        => __( 'Backup', 'jetpack-my-jetpack' ),
-			'status'      => 'active',
-		);
-	}
-
-	/**
-	 * Returns information about the Boost product
-	 *
-	 * @return array Object with infromation about the product.
-	 */
-	public static function get_boost_data() {
-		return Products\Boost::get_info();
-	}
-
-	/**
-	 * Returns information about the CRM product
-	 *
-	 * @return array Object with infromation about the product.
-	 */
-	public static function get_crm_data() {
-		return array(
-			'slug'        => 'crm',
-			'description' => __( 'Connect with your people', 'jetpack-my-jetpack' ),
-			'name'        => __( 'CRM', 'jetpack-my-jetpack' ),
-			'status'      => 'plugin_absent',
-		);
-	}
-
-	/**
-	 * Returns information about  Extras
-	 *
-	 * @return array Object with infromation about the product.
-	 */
-	public static function get_extras_data() {
-		return array(
-			'slug'        => 'extras',
-			'description' => __( 'Basic tools for a successful site', 'jetpack-my-jetpack' ),
-			'name'        => __( 'Extras', 'jetpack-my-jetpack' ),
-			'status'      => 'active',
-		);
-	}
-
-	/**
-	 * Returns information about the Scan product
-	 *
-	 * @return array Object with infromation about the product.
-	 */
-	public static function get_scan_data() {
-		return array(
-			'slug'        => 'scan',
-			'description' => __( 'Stay one step ahead of threats', 'jetpack-my-jetpack' ),
-			'name'        => __( 'Scan', 'jetpack-my-jetpack' ),
-			'status'      => 'plugin_absent',
-		);
-	}
-
-	/**
-	 * Returns information about the Search product
-	 *
-	 * @return array Object with infromation about the product.
-	 */
-	public static function get_search_data() {
-		return array(
-			'slug'        => 'search',
-			'description' => __( 'Help them find what they need', 'jetpack-my-jetpack' ),
-			'name'        => __( 'Search', 'jetpack-my-jetpack' ),
-			'status'      => 'plugin_absent',
-		);
-	}
-
-	/**
-	 * Returns information about the VideoPress product
-	 *
-	 * @return array Object with infromation about the product.
-	 */
-	public static function get_videopress_data() {
-		return array(
-			'slug'        => 'videopress',
-			'description' => __( 'High quality, ad-free video', 'jetpack-my-jetpack' ),
-			'name'        => __( 'VideoPress', 'jetpack-my-jetpack' ),
-			'status'      => 'active',
-		);
-	}
 }

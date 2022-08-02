@@ -82,10 +82,17 @@ this["wc"] = this["wc"] || {}; this["wc"]["date"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 446);
+/******/ 	return __webpack_require__(__webpack_require__.s = 465);
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ 11:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["moment"]; }());
+
+/***/ }),
 
 /***/ 2:
 /***/ (function(module, exports) {
@@ -94,15 +101,15 @@ this["wc"] = this["wc"] || {}; this["wc"]["date"] =
 
 /***/ }),
 
-/***/ 27:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var stringify = __webpack_require__(58);
-var parse = __webpack_require__(59);
-var formats = __webpack_require__(34);
+var stringify = __webpack_require__(62);
+var parse = __webpack_require__(63);
+var formats = __webpack_require__(39);
 
 module.exports = {
     formats: formats,
@@ -113,7 +120,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 34:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -144,20 +151,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ 4:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["lodash"]; }());
-
-/***/ }),
-
-/***/ 41:
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var formats = __webpack_require__(34);
+var formats = __webpack_require__(39);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -410,7 +410,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 446:
+/***/ 465:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -436,16 +436,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "weekTicksThreshold", function() { return weekTicksThreshold; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultTableDateFormat", function() { return defaultTableDateFormat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDateFormatsForInterval", function() { return getDateFormatsForInterval; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDateFormatsForIntervalD3", function() { return getDateFormatsForIntervalD3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDateFormatsForIntervalPhp", function() { return getDateFormatsForIntervalPhp; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadLocaleData", function() { return loadLocaleData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dateValidationMessages", function() { return dateValidationMessages; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateDateInputForRange", function() { return validateDateInputForRange; });
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(32);
 /* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_3__);
 /**
  * External dependencies
@@ -791,7 +793,8 @@ const getDateParamsFromQueryMemoized = Object(lodash__WEBPACK_IMPORTED_MODULE_1_
  * @return {DateParams} - date parameters derived from query parameters with added defaults
  */
 
-const getDateParamsFromQuery = (query, defaultDateRange = 'period=month&compare=previous_year') => {
+const getDateParamsFromQuery = function (query) {
+  let defaultDateRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'period=month&compare=previous_year';
   const {
     period,
     compare,
@@ -838,7 +841,8 @@ const getCurrentDatesMemoized = Object(lodash__WEBPACK_IMPORTED_MODULE_1__["memo
  * @return {{primary: DateValue, secondary: DateValue}} - Primary and secondary DateValue objects
  */
 
-const getCurrentDates = (query, defaultDateRange = 'period=month&compare=previous_year') => {
+const getCurrentDates = function (query) {
+  let defaultDateRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'period=month&compare=previous_year';
   const {
     period,
     compare,
@@ -898,13 +902,18 @@ const getPreviousDate = (date, date1, date2, compare, interval) => {
  * Returns the allowed selectable intervals for a specific query.
  *
  * @param  {Object} query Current query
+ * @param {string} defaultDateRange - the store's default date range
  * @return {Array} Array containing allowed intervals.
  */
 
 function getAllowedIntervalsForQuery(query) {
+  let defaultDateRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'period=&compare=previous_year';
+  const {
+    period
+  } = getDateParamsFromQuery(query, defaultDateRange);
   let allowed = [];
 
-  if (query.period === 'custom') {
+  if (period === 'custom') {
     const {
       primary
     } = getCurrentDates(query);
@@ -924,7 +933,7 @@ function getAllowedIntervalsForQuery(query) {
       allowed = ['hour', 'day'];
     }
   } else {
-    switch (query.period) {
+    switch (period) {
       case 'today':
       case 'yesterday':
         allowed = ['hour', 'day'];
@@ -961,12 +970,14 @@ function getAllowedIntervalsForQuery(query) {
 /**
  * Returns the current interval to use.
  *
- * @param  {Object} query Current query
+ * @param {Object} query Current query
+ * @param {string} defaultDateRange - the store's default date range
  * @return {string} Current interval.
  */
 
 function getIntervalForQuery(query) {
-  const allowed = getAllowedIntervalsForQuery(query);
+  let defaultDateRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'period=&compare=previous_year';
+  const allowed = getAllowedIntervalsForQuery(query, defaultDateRange);
   const defaultInterval = allowed[0];
   let current = query.interval || defaultInterval;
 
@@ -984,9 +995,11 @@ function getIntervalForQuery(query) {
  * @return {string} Current chart type.
  */
 
-function getChartTypeForQuery({
-  chartType
-}) {
+function getChartTypeForQuery(_ref) {
+  let {
+    chartType
+  } = _ref;
+
   if (['line', 'bar'].includes(chartType)) {
     return chartType;
   }
@@ -998,6 +1011,31 @@ const weekTicksThreshold = 9;
 const defaultTableDateFormat = 'm/d/Y';
 /**
  * Returns date formats for the current interval.
+ *
+ * @param {string} interval Interval to get date formats for.
+ * @param {number} [ticks] Number of ticks the axis will have.
+ * @param {Object} [option] Options
+ * @param {string} [option.type] Date format type, d3 or php, defaults to d3.
+ * @return {string} Current interval.
+ */
+
+function getDateFormatsForInterval(interval) {
+  let ticks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  let option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+    type: 'd3'
+  };
+
+  switch (option.type) {
+    case 'php':
+      return getDateFormatsForIntervalPhp(interval, ticks);
+
+    case 'd3':
+    default:
+      return getDateFormatsForIntervalD3(interval, ticks);
+  }
+}
+/**
+ * Returns d3 date formats for the current interval.
  * See https://github.com/d3/d3-time-format for chart formats.
  *
  * @param  {string} interval Interval to get date formats for.
@@ -1005,7 +1043,8 @@ const defaultTableDateFormat = 'm/d/Y';
  * @return {string} Current interval.
  */
 
-function getDateFormatsForInterval(interval, ticks = 0) {
+function getDateFormatsForIntervalD3(interval) {
+  let ticks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   let screenReaderFormat = '%B %-d, %Y';
   let tooltipLabelFormat = '%B %-d, %Y';
   let xFormat = '%Y-%m-%d';
@@ -1038,9 +1077,11 @@ function getDateFormatsForInterval(interval, ticks = 0) {
       } else {
         xFormat = '%b';
         x2Format = '%Y';
-      }
+      } // eslint-disable-next-line @wordpress/i18n-translator-comments
 
-      screenReaderFormat = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Week of %B %-d, %Y', 'woocommerce-admin');
+
+      screenReaderFormat = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Week of %B %-d, %Y', 'woocommerce-admin'); // eslint-disable-next-line @wordpress/i18n-translator-comments
+
       tooltipLabelFormat = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Week of %B %-d, %Y', 'woocommerce-admin');
       break;
 
@@ -1068,6 +1109,81 @@ function getDateFormatsForInterval(interval, ticks = 0) {
   };
 }
 /**
+ * Returns php date formats for the current interval.
+ * See see https://www.php.net/manual/en/datetime.format.php.
+ *
+ * @param  {string} interval Interval to get date formats for.
+ * @param  {number}    [ticks] Number of ticks the axis will have.
+ * @return {string} Current interval.
+ */
+
+function getDateFormatsForIntervalPhp(interval) {
+  let ticks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  let screenReaderFormat = 'F j, Y';
+  let tooltipLabelFormat = 'F j, Y';
+  let xFormat = 'Y-m-d';
+  let x2Format = 'M Y';
+  let tableFormat = defaultTableDateFormat;
+
+  switch (interval) {
+    case 'hour':
+      screenReaderFormat = 'gA F j, Y';
+      tooltipLabelFormat = 'gA M j, Y';
+      xFormat = 'gA';
+      x2Format = 'M j, Y';
+      tableFormat = 'h A';
+      break;
+
+    case 'day':
+      if (ticks < dayTicksThreshold) {
+        xFormat = 'j';
+      } else {
+        xFormat = 'M';
+        x2Format = 'Y';
+      }
+
+      break;
+
+    case 'week':
+      if (ticks < weekTicksThreshold) {
+        xFormat = 'j';
+        x2Format = 'M Y';
+      } else {
+        xFormat = 'M';
+        x2Format = 'Y';
+      } // Since some alphabet letters have php associated formats, we need to escape them first.
+
+
+      const escapedWeekOfStr = Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Week of', 'woocommerce-admin').replace(/(\w)/g, '\\$1');
+
+      screenReaderFormat = `${escapedWeekOfStr} F j, Y`;
+      tooltipLabelFormat = `${escapedWeekOfStr} F j, Y`;
+      break;
+
+    case 'quarter':
+    case 'month':
+      screenReaderFormat = 'F Y';
+      tooltipLabelFormat = 'F Y';
+      xFormat = 'M';
+      x2Format = 'Y';
+      break;
+
+    case 'year':
+      screenReaderFormat = 'Y';
+      tooltipLabelFormat = 'Y';
+      xFormat = 'Y';
+      break;
+  }
+
+  return {
+    screenReaderFormat,
+    tooltipLabelFormat,
+    xFormat,
+    x2Format,
+    tableFormat
+  };
+}
+/**
  * Gutenberg's moment instance is loaded with i18n values, which are
  * PHP date formats, ie 'LLL: "F j, Y g:i a"'. Override those with translations
  * of moment style js formats.
@@ -1077,10 +1193,12 @@ function getDateFormatsForInterval(interval, ticks = 0) {
  * @param {Array} config.weekdaysShort
  */
 
-function loadLocaleData({
-  userLocale,
-  weekdaysShort
-}) {
+function loadLocaleData(_ref2) {
+  let {
+    userLocale,
+    weekdaysShort
+  } = _ref2;
+
   // Don't update if the wp locale hasn't been set yet, like in unit tests, for instance.
   if (moment__WEBPACK_IMPORTED_MODULE_0___default.a.locale() !== 'en') {
     moment__WEBPACK_IMPORTED_MODULE_0___default.a.updateLocale(userLocale, {
@@ -1156,14 +1274,21 @@ function validateDateInputForRange(type, value, before, after, format) {
 
 /***/ }),
 
-/***/ 58:
+/***/ 5:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
+
+/***/ }),
+
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
-var formats = __webpack_require__(34);
+var utils = __webpack_require__(45);
+var formats = __webpack_require__(39);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -1442,13 +1567,13 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
+var utils = __webpack_require__(45);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -1704,13 +1829,6 @@ module.exports = function (str, opts) {
     return utils.compact(obj);
 };
 
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["moment"]; }());
 
 /***/ })
 

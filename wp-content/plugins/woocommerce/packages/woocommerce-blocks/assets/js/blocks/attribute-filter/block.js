@@ -18,6 +18,14 @@ import FilterSubmitButton from '@woocommerce/base-components/filter-submit-butto
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { Notice } from '@wordpress/components';
+import classNames from 'classnames';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { isBoolean, isString } from '@woocommerce/types';
+import {
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	PREFIX_QUERY_ARG_QUERY_TYPE,
+} from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -25,30 +33,74 @@ import { Notice } from '@wordpress/components';
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 import { previewAttributeObject, previewOptions } from './preview';
+import { useBorderProps } from '../../hooks/style-attributes';
 import './style.scss';
+import {
+	formatParams,
+	getActiveFilters,
+	areAllFiltersRemoved,
+	isQueryArgsEqual,
+	parseTaxonomyToGenerateURL,
+} from './utils';
+
+/**
+ * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
+ *
+ * @param {string} url    Current page URL.
+ * @param {Array}  params Parameters and their constraints.
+ *
+ * @return {string}       New URL with query parameters in it.
+ */
 
 /**
  * Component displaying an attribute filter.
  *
- * @param {Object} props Incoming props for the component.
- * @param {Object} props.attributes Incoming block attributes.
+ * @param {Object}  props            Incoming props for the component.
+ * @param {Object}  props.attributes Incoming block attributes.
  * @param {boolean} props.isEditor
  */
 const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
+	const hasFilterableProducts = getSettingWithCoercion(
+		'has_filterable_products',
+		false,
+		isBoolean
+	);
+
+	const filteringForPhpTemplate = getSettingWithCoercion(
+		'is_rendering_php_template',
+		false,
+		isBoolean
+	);
+
+	const pageUrl = getSettingWithCoercion(
+		'page_url',
+		window.location.href,
+		isString
+	);
+
+	const [ hasSetPhpFilterDefaults, setHasSetPhpFilterDefaults ] = useState(
+		false
+	);
+
 	const attributeObject =
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? previewAttributeObject
 			: getAttributeFromID( blockAttributes.attributeId );
 
-	const [ checked, setChecked ] = useState( [] );
+	const [ checked, setChecked ] = useState(
+		getActiveFilters( filteringForPhpTemplate, attributeObject )
+	);
+
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? previewOptions
 			: []
 	);
+
+	const borderProps = useBorderProps( blockAttributes );
 
 	const [ queryState ] = useQueryStateByContext();
 	const [
@@ -60,7 +112,7 @@ const AttributeFilterBlock = ( {
 		results: attributeTerms,
 		isLoading: attributeTermsLoading,
 	} = useCollection( {
-		namespace: '/wc/store',
+		namespace: '/wc/store/v1',
 		resourceName: 'products/attributes/terms',
 		resourceValues: [ attributeObject?.id || 0 ],
 		shouldSelect: blockAttributes.attributeId > 0,
@@ -177,27 +229,92 @@ const AttributeFilterBlock = ( {
 		[ attributeTerms ]
 	);
 
-	const onSubmit = useCallback(
-		( isChecked ) => {
+	/**
+	 * Appends query params to the current pages URL and redirects them to the new URL for PHP rendered templates.
+	 *
+	 * @param {Object}  query             The object containing the active filter query.
+	 * @param {boolean} allFiltersRemoved If there are active filters or not.
+	 */
+	const redirectPageForPhpTemplate = useCallback(
+		( query, allFiltersRemoved = false ) => {
+			if ( allFiltersRemoved ) {
+				const currentQueryArgKeys = Object.keys(
+					getQueryArgs( window.location.href )
+				);
+
+				const parsedTaxonomy = parseTaxonomyToGenerateURL(
+					attributeObject?.taxonomy
+				);
+
+				const url = currentQueryArgKeys.reduce(
+					( currentUrl, queryArg ) =>
+						queryArg.includes(
+							PREFIX_QUERY_ARG_QUERY_TYPE + parsedTaxonomy
+						) ||
+						queryArg.includes(
+							PREFIX_QUERY_ARG_FILTER_TYPE + parsedTaxonomy
+						)
+							? removeQueryArgs( currentUrl, queryArg )
+							: currentUrl,
+					window.location.href
+				);
+
+				const newUrl = formatParams( url, query );
+				window.location.href = newUrl;
+			} else {
+				const newUrl = formatParams( pageUrl, query );
+				const currentQueryArgs = getQueryArgs( window.location.href );
+				const newUrlQueryArgs = getQueryArgs( newUrl );
+
+				if ( ! isQueryArgsEqual( currentQueryArgs, newUrlQueryArgs ) ) {
+					window.location.href = newUrl;
+				}
+			}
+		},
+		[ pageUrl, attributeObject?.taxonomy ]
+	);
+
+	const onSubmit = ( checkedFilters ) => {
+		const query = updateAttributeFilter(
+			productAttributesQuery,
+			setProductAttributesQuery,
+			attributeObject,
+			getSelectedTerms( checkedFilters ),
+			blockAttributes.queryType === 'or' ? 'in' : 'and'
+		);
+
+		// This is for PHP rendered template filtering only.
+		if ( filteringForPhpTemplate ) {
+			redirectPageForPhpTemplate( query, checkedFilters.length === 0 );
+		}
+	};
+
+	const updateCheckedFilters = useCallback(
+		( checkedFilters ) => {
 			if ( isEditor ) {
 				return;
 			}
 
-			updateAttributeFilter(
-				productAttributesQuery,
-				setProductAttributesQuery,
-				attributeObject,
-				getSelectedTerms( isChecked ),
-				blockAttributes.queryType === 'or' ? 'in' : 'and'
-			);
+			setChecked( checkedFilters );
+			if ( ! blockAttributes.showFilterButton ) {
+				updateAttributeFilter(
+					productAttributesQuery,
+					setProductAttributesQuery,
+					attributeObject,
+					getSelectedTerms( checkedFilters ),
+					blockAttributes.queryType === 'or' ? 'in' : 'and'
+				);
+			}
 		},
 		[
 			isEditor,
+			setChecked,
 			productAttributesQuery,
 			setProductAttributesQuery,
 			attributeObject,
 			getSelectedTerms,
 			blockAttributes.queryType,
+			blockAttributes.showFilterButton,
 		]
 	);
 
@@ -217,17 +334,13 @@ const AttributeFilterBlock = ( {
 			! isShallowEqual( previousCheckedQuery, currentCheckedQuery ) && // checked query changed
 			! isShallowEqual( checked, currentCheckedQuery ) // checked query doesn't match the UI
 		) {
-			setChecked( currentCheckedQuery );
-			if ( ! blockAttributes.showFilterButton ) {
-				onSubmit( currentCheckedQuery );
-			}
+			updateCheckedFilters( currentCheckedQuery );
 		}
 	}, [
 		checked,
 		currentCheckedQuery,
 		previousCheckedQuery,
-		onSubmit,
-		blockAttributes.showFilterButton,
+		updateCheckedFilters,
 	] );
 
 	const multiple =
@@ -314,19 +427,78 @@ const AttributeFilterBlock = ( {
 				}
 			}
 
-			setChecked( newChecked );
-			if ( ! blockAttributes.showFilterButton ) {
-				onSubmit( newChecked );
-			}
+			updateCheckedFilters( newChecked );
 		},
-		[
-			checked,
-			displayedOptions,
-			multiple,
-			onSubmit,
-			blockAttributes.showFilterButton,
-		]
+		[ checked, displayedOptions, multiple, updateCheckedFilters ]
 	);
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 *
+	 * When we render the PHP block template (e.g. Classic Block) we need to set the default checked values,
+	 * and also update the URL when the filters are clicked/updated.
+	 */
+	useEffect( () => {
+		if ( filteringForPhpTemplate && attributeObject ) {
+			if (
+				areAllFiltersRemoved( {
+					currentCheckedFilters: checked,
+					hasSetPhpFilterDefaults,
+				} )
+			) {
+				if ( ! blockAttributes.showFilterButton ) {
+					setChecked( [] );
+					redirectPageForPhpTemplate( productAttributesQuery, true );
+				}
+			}
+
+			if ( ! blockAttributes.showFilterButton ) {
+				setChecked( checked );
+				redirectPageForPhpTemplate( productAttributesQuery, false );
+			}
+		}
+	}, [
+		hasSetPhpFilterDefaults,
+		redirectPageForPhpTemplate,
+		filteringForPhpTemplate,
+		productAttributesQuery,
+		attributeObject,
+		checked,
+		blockAttributes.showFilterButton,
+	] );
+
+	/**
+	 * Important: For PHP rendered block templates only.
+	 *
+	 * When we set the default parameter values which we get from the URL in the above useEffect(),
+	 * we need to run updateCheckedFilters which will set these values in state for the Active Filters block.
+	 */
+	useEffect( () => {
+		if ( filteringForPhpTemplate ) {
+			const activeFilters = getActiveFilters(
+				filteringForPhpTemplate,
+				attributeObject
+			);
+			if (
+				activeFilters.length > 0 &&
+				! hasSetPhpFilterDefaults &&
+				! attributeTermsLoading
+			) {
+				setHasSetPhpFilterDefaults( true );
+				updateCheckedFilters( activeFilters );
+			}
+		}
+	}, [
+		attributeObject,
+		filteringForPhpTemplate,
+		hasSetPhpFilterDefaults,
+		attributeTermsLoading,
+		updateCheckedFilters,
+	] );
+
+	if ( ! hasFilterableProducts ) {
+		return null;
+	}
 
 	// Short-circuit if no attribute is selected.
 	if ( ! attributeObject ) {
@@ -381,7 +553,11 @@ const AttributeFilterBlock = ( {
 					<DropdownSelector
 						attributeLabel={ attributeObject.label }
 						checked={ checked }
-						className={ 'wc-block-attribute-filter-dropdown' }
+						className={ classNames(
+							'wc-block-attribute-filter-dropdown',
+							borderProps.className
+						) }
+						style={ { ...borderProps.style, borderStyle: 'none' } }
 						inputLabel={ blockAttributes.heading }
 						isLoading={ isLoading }
 						multiple={ multiple }

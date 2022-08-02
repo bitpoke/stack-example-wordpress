@@ -89,6 +89,8 @@ class Actions {
 	/**
 	 * Initialize Sync for cron jobs, set up listeners for WordPress Actions,
 	 * and set up a shut-down action for sending actions to WordPress.com
+	 * If dedicated Sync is enabled and this is a dedicated Sync request
+	 * up an init action for sending actions to WordPress.com instead.
 	 *
 	 * @access public
 	 * @static
@@ -96,6 +98,17 @@ class Actions {
 	public static function init() {
 		// Everything below this point should only happen if we're a valid sync site.
 		if ( ! self::sync_allowed() ) {
+			return;
+		}
+
+		// If dedicated Sync is enabled and this is a dedicated Sync request, no need to
+		// initialize Sync for cron jobs or set up a shut-down action for sending actions to WordPress.com.
+		// We only need to set up an init action for sending actions to WordPress.com and exit early.
+		// Note: We also need to initialize the listener so that callable and constant changes, eg actions that
+		// rely on 'jetpack_sync_before_send_queue_sync' are picked up and added to the queue if needed.
+		if ( Settings::is_dedicated_sync_enabled() && Dedicated_Sender::is_dedicated_sync_request() ) {
+			self::initialize_listener();
+			add_action( 'init', array( __CLASS__, 'add_dedicated_sync_sender_init' ), 90 );
 			return;
 		}
 
@@ -164,6 +177,22 @@ class Actions {
 	}
 
 	/**
+	 * Immediately sends actions on init for the current dedicated Sync request.
+	 *
+	 * @access public
+	 * @static
+	 */
+	public static function add_dedicated_sync_sender_init() {
+		if ( apply_filters(
+			'jetpack_sync_sender_should_load',
+			true
+		) ) {
+			self::initialize_sender();
+			self::$sender->do_dedicated_sync_and_exit();
+		}
+	}
+
+	/**
 	 * Define JETPACK_SYNC_READ_ONLY constant if not defined.
 	 * This notifies sync to not run in shutdown if it was initialized during init.
 	 *
@@ -192,6 +221,13 @@ class Actions {
 
 		if ( Constants::is_true( 'DOING_CRON' ) ) {
 			return self::sync_via_cron_allowed();
+		}
+
+		/**
+		 * For now, if dedicated Sync is enabled we will always initialize send, even for GET and unauthenticated requests.
+		 */
+		if ( Settings::is_dedicated_sync_enabled() ) {
+			return true;
 		}
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
@@ -312,6 +348,22 @@ class Actions {
 			}
 		}
 
+		// Sync locks.
+		$debug['debug_details']['dedicated_sync_enabled'] = Settings::is_dedicated_sync_enabled();
+
+		$queue      = self::$sender->get_sync_queue();
+		$full_queue = self::$sender->get_full_sync_queue();
+
+		$debug['debug_details']['sync_locks'] = array(
+			'retry_time_sync'             => get_option( self::RETRY_AFTER_PREFIX . 'sync' ),
+			'retry_time_full_sync'        => get_option( self::RETRY_AFTER_PREFIX . 'full_sync' ),
+			'next_sync_time_sync'         => self::$sender->get_next_sync_time( 'sync' ),
+			'next_sync_time_full_sync'    => self::$sender->get_next_sync_time( 'full_sync' ),
+			'queue_locked_sync'           => $queue->is_locked(),
+			'queue_locked_full_sync'      => $full_queue->is_locked(),
+			'dedicated_sync_request_lock' => \Jetpack_Options::get_raw_option( Dedicated_Sender::DEDICATED_SYNC_REQUEST_LOCK_OPTION_NAME, null ),
+		);
+
 		// Sync Logs.
 		$debug['debug_details']['last_succesful_sync'] = get_option( self::LAST_SUCCESS_PREFIX . 'sync', '' );
 		$debug['debug_details']['sync_error_log']      = get_option( self::ERROR_LOG_PREFIX . 'sync', '' );
@@ -379,14 +431,16 @@ class Actions {
 	public static function send_data( $data, $codec_name, $sent_timestamp, $queue_id, $checkout_duration, $preprocess_duration, $queue_size = null, $buffer_id = null ) {
 
 		$query_args = array(
-			'sync'       => '1',             // Add an extra parameter to the URL so we can tell it's a sync action.
-			'codec'      => $codec_name,
-			'timestamp'  => $sent_timestamp,
-			'queue'      => $queue_id,
-			'cd'         => sprintf( '%.4f', $checkout_duration ),
-			'pd'         => sprintf( '%.4f', $preprocess_duration ),
-			'queue_size' => $queue_size,
-			'buffer_id'  => $buffer_id,
+			'sync'           => '1',             // Add an extra parameter to the URL so we can tell it's a sync action.
+			'codec'          => $codec_name,
+			'timestamp'      => $sent_timestamp,
+			'queue'          => $queue_id,
+			'cd'             => sprintf( '%.4f', $checkout_duration ),
+			'pd'             => sprintf( '%.4f', $preprocess_duration ),
+			'queue_size'     => $queue_size,
+			'buffer_id'      => $buffer_id,
+			// TODO this will be extended in the future. Might be good to extract in a separate method to support future entries too.
+			'sync_flow_type' => Settings::is_dedicated_sync_enabled() ? 'dedicated' : 'default',
 		);
 
 		$query_args['timeout'] = Settings::is_doing_cron() ? 30 : 20;
@@ -435,6 +489,17 @@ class Actions {
 				// if unexpected value default to 3 minutes.
 				update_option( self::RETRY_AFTER_PREFIX . $queue_id, microtime( true ) + 180, false );
 			}
+		}
+
+		// Enable/Disable Dedicated Sync flow via response headers.
+		$dedicated_sync_header = $rpc->get_response_header( 'Jetpack-Dedicated-Sync' );
+		if ( false !== $dedicated_sync_header ) {
+			$dedicated_sync_enabled = 'on' === $dedicated_sync_header ? 1 : 0;
+			Settings::update_settings(
+				array(
+					'dedicated_sync_enabled' => $dedicated_sync_enabled,
+				)
+			);
 		}
 
 		if ( ! $result ) {
@@ -628,6 +693,14 @@ class Actions {
 			// Explicitly only allow 1 do_full_sync call until issue with Immediate Full Sync is resolved.
 			// For more context see p1HpG7-9pe-p2.
 			if ( 'full_sync' === $type && $executions >= 1 ) {
+				break;
+			}
+
+			/**
+			 * Only try to sync once if Dedicated Sync is enabled. Dedicated Sync has its own requeueing mechanism
+			 * that will re-run it if there are items in the queue at the end.
+			 */
+			if ( 'sync' === $type && $executions >= 1 && Settings::is_dedicated_sync_enabled() ) {
 				break;
 			}
 

@@ -304,7 +304,7 @@ if ( ! class_exists( 'Jetpack_EU_Cookie_Law_Widget' ) ) {
 			}
 
 			// Show the banner again if a setting has been changed.
-			setcookie( self::$cookie_name, '', time() - 86400, '/' );
+			setcookie( self::$cookie_name, '', time() - 86400, '/', COOKIE_DOMAIN, is_ssl(), false ); // phpcs:ignore Jetpack.Functions.SetCookie -- Fine to have accessible.
 
 			return $instance;
 		}
@@ -331,7 +331,7 @@ if ( ! class_exists( 'Jetpack_EU_Cookie_Law_Widget' ) ) {
 	 */
 	function jetpack_register_eu_cookie_law_widget() {
 		register_widget( 'Jetpack_EU_Cookie_Law_Widget' );
-	};
+	}
 
 	add_action( 'widgets_init', 'jetpack_register_eu_cookie_law_widget' );
 }

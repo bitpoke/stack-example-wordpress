@@ -3,7 +3,18 @@
  */
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { InspectorControls, BlockControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	BlockControls,
+	useBlockProps,
+} from '@wordpress/block-editor';
+import { Icon, category, external } from '@wordpress/icons';
+import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
+import { mapValues, toArray, sortBy } from 'lodash';
+import { getAdminLink, getSetting } from '@woocommerce/settings';
+import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
+import BlockTitle from '@woocommerce/editor-components/block-title';
+import classnames from 'classnames';
 import {
 	Placeholder,
 	Disabled,
@@ -12,14 +23,11 @@ import {
 	Button,
 	ToolbarGroup,
 	withSpokenMessages,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { Icon, server, external } from '@woocommerce/icons';
-import { SearchListControl } from '@woocommerce/components';
-import { mapValues, toArray, sortBy } from 'lodash';
-import { getAdminLink, getSetting } from '@woocommerce/settings';
-import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
-import BlockTitle from '@woocommerce/editor-components/block-title';
-import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 
 /**
  * Internal dependencies
@@ -45,6 +53,8 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const [ isEditing, setIsEditing ] = useState(
 		! attributeId && ! isPreview
 	);
+
+	const blockProps = useBlockProps();
 
 	const getBlockControls = () => {
 		return (
@@ -114,7 +124,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 						'woocommerce'
 					) }
 				>
-					<ToggleButtonControl
+					<ToggleGroupControl
 						label={ __(
 							'Query Type',
 							'woocommerce'
@@ -131,56 +141,51 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 								  )
 						}
 						value={ queryType }
-						options={ [
-							{
-								label: __(
-									'And',
-									'woocommerce'
-								),
-								value: 'and',
-							},
-							{
-								label: __(
-									'Or',
-									'woocommerce'
-								),
-								value: 'or',
-							},
-						] }
 						onChange={ ( value ) =>
 							setAttributes( {
 								queryType: value,
 							} )
 						}
-					/>
-					<ToggleButtonControl
+					>
+						<ToggleGroupControlOption
+							value="and"
+							label={ __(
+								'And',
+								'woocommerce'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="or"
+							label={ __( 'Or', 'woocommerce' ) }
+						/>
+					</ToggleGroupControl>
+					<ToggleGroupControl
 						label={ __(
 							'Display Style',
 							'woocommerce'
 						) }
 						value={ displayStyle }
-						options={ [
-							{
-								label: __(
-									'List',
-									'woocommerce'
-								),
-								value: 'list',
-							},
-							{
-								label: __(
-									'Dropdown',
-									'woocommerce'
-								),
-								value: 'dropdown',
-							},
-						] }
 						onChange={ ( value ) =>
 							setAttributes( {
 								displayStyle: value,
 							} )
 						}
-					/>
+					>
+						<ToggleGroupControlOption
+							value="list"
+							label={ __(
+								'List',
+								'woocommerce'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="dropdown"
+							label={ __(
+								'Dropdown',
+								'woocommerce'
+							) }
+						/>
+					</ToggleGroupControl>
 					<ToggleControl
 						label={ __(
 							'Filter button',
@@ -221,7 +226,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const noAttributesPlaceholder = () => (
 		<Placeholder
 			className="wc-block-attribute-filter"
-			icon={ <Icon srcElement={ server } /> }
+			icon={ <Icon icon={ category } /> }
 			label={ __(
 				'Filter Products by Attribute',
 				'woocommerce'
@@ -246,7 +251,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			>
 				{ __( 'Add new attribute', 'woocommerce' ) +
 					' ' }
-				<Icon srcElement={ external } />
+				<Icon icon={ external } />
 			</Button>
 			<Button
 				className="wc-block-attribute-filter__read_more_button"
@@ -355,7 +360,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		return (
 			<Placeholder
 				className="wc-block-attribute-filter"
-				icon={ <Icon srcElement={ server } /> }
+				icon={ <Icon icon={ category } /> }
 				label={ __(
 					'Filter Products by Attribute',
 					'woocommerce'
@@ -378,13 +383,18 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
 	) : (
-		<>
+		<div { ...blockProps }>
 			{ getBlockControls() }
 			{ getInspectorControls() }
 			{ isEditing ? (
 				renderEditMode()
 			) : (
-				<div className={ className }>
+				<div
+					className={ classnames(
+						className,
+						'wc-block-attribute-filter'
+					) }
+				>
 					<BlockTitle
 						className="wc-block-attribute-filter__title"
 						headingLevel={ headingLevel }
@@ -398,7 +408,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 					</Disabled>
 				</div>
 			) }
-		</>
+		</div>
 	);
 };
 

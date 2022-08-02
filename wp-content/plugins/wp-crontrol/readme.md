@@ -3,8 +3,8 @@
 Contributors: johnbillion, scompt  
 Tags: cron, wp-cron, crontrol, debug  
 Requires at least: 4.2  
-Tested up to: 5.8  
-Stable tag: 1.12.0  
+Tested up to: 6.0  
+Stable tag: 1.14.0  
 Requires PHP: 5.3  
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -39,11 +39,11 @@ I maintain several other plugins for developers. Check them out:
 
 ### Does this plugin work with PHP 8?
 
-Yes.
+Yes, it's actively tested and working up to PHP 8.1.
 
 ### I get the error "There was a problem spawning a call to the WP-Cron system on your site". How do I fix this?
 
-[You can read all about problems spwaning WP-Cron here](https://github.com/johnbillion/wp-crontrol/wiki/Problems-with-spawning-a-call-to-the-WP-Cron-system).
+[You can read all about problems spawning WP-Cron here](https://github.com/johnbillion/wp-crontrol/wiki/Problems-with-spawning-a-call-to-the-WP-Cron-system).
 
 ### Why do some cron events miss their schedule?
 
@@ -156,6 +156,29 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 3. New cron schedules can be added, giving plugin developers more options when scheduling events<br>![](.wordpress-org/screenshot-3.png)
 
 ## Changelog ##
+
+### 1.14.0 ###
+
+* Reverts the changes introduced in version 1.13 while I look into the problem with the deployment process for wordpress.org
+
+### 1.13.2 ###
+
+* Fixes another issue with missing files in the release
+
+### 1.13.1 ###
+
+* Fixes an issue with missing files in the 1.13.0 release
+
+### 1.13.0 ###
+
+* Introduces the ability to pause and resume cron events from the event listing screen; see the FAQ for full details
+* Implements an autoloader to reduce memory usage
+* Bumps the minimum supported version of PHP to 5.6
+
+### 1.12.1 ###
+
+* Corrects an issue where an invalid hook callback isn't always identified
+* Various code quality improvements
 
 ### 1.12.0 ###
 
@@ -281,6 +304,12 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 - Terminology and i18n improvements.
 
 
+### 1.3.1 ###
+
+- Display a less scary looking message when `DISABLE_WP_CRON` is defined.
+- Correct the example code for cron event arguments.
+
+
 ### 1.3 ###
 
 - Improvements to the UI.
@@ -308,47 +337,4 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 - Correctly display the local time when listing cron events
 - Remove a PHP notice
 - Pass the WP-Cron spawn check through the same filter as the actual spawner
-
-
-### 1.2 ###
-
-- Added support for [WP-CLI](http://wp-cli.org/)
-- Removed some PHP4 code that's no longer relevant
-
-
-### 1.1 ###
-
-- Bug fixes for running cron events and adding cron schedules
-- Added a cron spawn test to check for errors when spawning cron
-- Various small tweaks
-- WordPress 3.4 compatibility
-
-
-### 1.0 ###
-
-- Input of PHP code for cron events
-- Non-repeating cron events
-- Handles cron events with arguments
-
-
-### 0.3 ###
-
-- Internationalization
-- Editing/deleting/execution of cron events
-- More text, status messages, etc.
-- Allow a user to enter a schedule event in a human manner
-- Looks better on WordPress 2.5
-
-
-### 0.2 ###
-
-- Fully documented the code.
-- Fixed the bug that the activate action wouldn't be run if the plugin wasn't in a subdirectory.
-- Now will play nicely in case any other plugins specify additional cron schedules.
-- Minor cosmetic fixes.
-
-
-### 0.1 ###
-
-- Super basic, look at what's in WP-Cron functionality.
 

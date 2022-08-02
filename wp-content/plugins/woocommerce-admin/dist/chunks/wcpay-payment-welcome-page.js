@@ -1,13 +1,13 @@
 (window["__wcAdmin_webpackJsonp"] = window["__wcAdmin_webpackJsonp"] || []).push([[54],{
 
-/***/ 601:
+/***/ 623:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 632:
+/***/ 653:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15,29 +15,26 @@
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/extends.js
-var helpers_extends = __webpack_require__(36);
+var helpers_extends = __webpack_require__(40);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
 // EXTERNAL MODULE: external ["wp","element"]
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
-
-// EXTERNAL MODULE: ./packages/wc-admin-settings/build-module/index.js
-var build_module = __webpack_require__(13);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: external ["wp","apiFetch"]
-var external_wp_apiFetch_ = __webpack_require__(18);
+var external_wp_apiFetch_ = __webpack_require__(19);
 var external_wp_apiFetch_default = /*#__PURE__*/__webpack_require__.n(external_wp_apiFetch_);
 
 // EXTERNAL MODULE: external ["wp","i18n"]
@@ -59,11 +56,11 @@ var external_wp_i18n_ = __webpack_require__(2);
   limitedTimeOffer: Object(external_wp_i18n_["__"])('Limited time offer', 'woocommerce-admin'),
   heading: Object(external_wp_i18n_["__"])('WooCommerce Payments', 'woocommerce-admin'),
   bannerHeading: Object(external_wp_i18n_["__"])('Save big with WooCommerce Payments', 'woocommerce-admin'),
-  bannerCopy: Object(external_wp_i18n_["__"])('50% transaction fee discount for up to $125,000 in payments or six months', 'woocommerce-admin'),
+  bannerCopy: Object(external_wp_i18n_["__"])('No card transaction fees for up to 3 months (or $25,000 in payments)', 'woocommerce-admin'),
   discountCopy: Object(external_wp_i18n_["__"])('Discount will be applied upon install and completed setup of WooCommerce Payments', 'woocommerce-admin'),
   learnMore: Object(external_wp_i18n_["__"])('Learn more', 'woocommerce-admin'),
   onboarding: {
-    description: Object(external_wp_i18n_["__"])("Save 50% on transaction fees by managing transactions with WooCommerce Payments. With WooCommerce Payments, you can securely accept major cards, Apple Pay, and payments in over 100 currencies. Track cash flow and manage recurring revenue directly from your store's dashboard - with no setup costs or monthly fees.", 'woocommerce-admin')
+    description: Object(external_wp_i18n_["__"])("Save up to $800 in fees by managing transactions with WooCommerce Payments. With WooCommerce Payments, you can securely accept major cards, Apple Pay, and payments in over 100 currencies. Track cash flow and manage recurring revenue directly from your store's dashboard - with no setup costs or monthly fees.", 'woocommerce-admin')
   },
   paymentMethodsHeading: Object(external_wp_i18n_["__"])('Accepted payment methods', 'woocommerce-admin'),
   surveyTitle: Object(external_wp_i18n_["__"])('Remove WooCommerce Payments', 'woocommerce-admin'),
@@ -850,13 +847,13 @@ Object(external_wp_element_["createElement"])("svg", {
   fill: "#2E4F7D"
 })));
 // EXTERNAL MODULE: ./client/payments-welcome/style.scss
-var style = __webpack_require__(601);
+var style = __webpack_require__(623);
 
-// EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js + 2 modules
-var icon = __webpack_require__(117);
+// EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/icon/index.js
+var icon = __webpack_require__(105);
 
 // EXTERNAL MODULE: ./node_modules/@wordpress/icons/build-module/library/help.js
-var help = __webpack_require__(503);
+var help = __webpack_require__(525);
 
 // CONCATENATED MODULE: ./client/payments-welcome/faq.tsx
 
@@ -930,9 +927,10 @@ const FrequentlyAskedQuestions = () => {
  *
  */
 
-function ExitSurveyModal({
-  setExitSurveyModalOpen
-}) {
+function ExitSurveyModal(_ref) {
+  let {
+    setExitSurveyModalOpen
+  } = _ref;
   const [isOpen, setOpen] = Object(external_wp_element_["useState"])(true);
   const [isHappyChecked, setHappyChecked] = Object(external_wp_element_["useState"])(false);
   const [isInstallChecked, setInstallChecked] = Object(external_wp_element_["useState"])(false);
@@ -1028,6 +1026,9 @@ function ExitSurveyModal({
 }
 
 /* harmony default export */ var exit_survey_modal = (ExitSurveyModal);
+// EXTERNAL MODULE: ./client/utils/admin-settings.js
+var admin_settings = __webpack_require__(23);
+
 // CONCATENATED MODULE: ./client/payments-welcome/index.tsx
 
 
@@ -1035,7 +1036,6 @@ function ExitSurveyModal({
 /**
  * External dependencies
  */
-
 
 
 
@@ -1061,7 +1061,8 @@ function ExitSurveyModal({
 
 
 
-const PROMO_NAME = 'wcpay-promo-2021-6-incentive-2';
+
+const PROMO_NAME = 'wcpay-promo-2022-3-incentive-100-off';
 
 const LearnMore = () => {
   const handleClick = () => {
@@ -1084,9 +1085,11 @@ const TermsOfService = () => Object(external_wp_element_["createElement"])("span
   className: "wcpay-connect-account-page-terms-of-service"
 }, strings.terms);
 
-const ConnectPageError = ({
-  errorMessage
-}) => {
+const ConnectPageError = _ref => {
+  let {
+    errorMessage
+  } = _ref;
+
   if (!errorMessage) {
     return null;
   }
@@ -1098,12 +1101,13 @@ const ConnectPageError = ({
   }, errorMessage);
 };
 
-const ConnectPageOnboarding = ({
-  isJetpackConnected,
-  installAndActivatePlugins,
-  setErrorMessage,
-  connectUrl
-}) => {
+const ConnectPageOnboarding = _ref2 => {
+  let {
+    isJetpackConnected,
+    installAndActivatePlugins,
+    setErrorMessage,
+    connectUrl
+  } = _ref2;
   const [isSubmitted, setSubmitted] = Object(external_wp_element_["useState"])(false);
   const [isNoThanksClicked, setNoThanksClicked] = Object(external_wp_element_["useState"])(false);
   const [isExitSurveyModalOpen, setExitSurveyModalOpen] = Object(external_wp_element_["useState"])(false);
@@ -1192,7 +1196,7 @@ const ConnectAccountPage = () => {
     pageViewTimestamp = typeof pageViewTimestamp === 'undefined' || typeof pageViewTimestamp === 'string' ? true : false;
     return {
       isJetpackConnected: select('wc/admin/plugins').isJetpackConnected(),
-      connectUrl: 'admin.php?wcpay-connect=1&_wpnonce=' + Object(build_module["f" /* getSetting */])('wcpay_welcome_page_connect_nonce'),
+      connectUrl: 'admin.php?wcpay-connect=1&_wpnonce=' + Object(admin_settings["d" /* getAdminSetting */])('wcpay_welcome_page_connect_nonce'),
       hasViewedWelcomePage: pageViewTimestamp
     };
   });

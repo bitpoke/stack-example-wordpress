@@ -82,12 +82,12 @@ this["wc"] = this["wc"] || {}; this["wc"]["explat"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 465);
+/******/ 	return __webpack_require__(__webpack_require__.s = 486);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 268:
+/***/ 277:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -297,15 +297,22 @@ function tryDecode(str, decode) {
 
 /***/ }),
 
-/***/ 27:
+/***/ 28:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["hooks"]; }());
+
+/***/ }),
+
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var stringify = __webpack_require__(58);
-var parse = __webpack_require__(59);
-var formats = __webpack_require__(34);
+var stringify = __webpack_require__(62);
+var parse = __webpack_require__(63);
+var formats = __webpack_require__(39);
 
 module.exports = {
     formats: formats,
@@ -316,7 +323,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 34:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -347,13 +354,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ 41:
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var formats = __webpack_require__(34);
+var formats = __webpack_require__(39);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -606,7 +613,123 @@ module.exports = {
 
 /***/ }),
 
-/***/ 465:
+/***/ 466:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/** @license React v17.0.2
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+__webpack_require__(467);var f=__webpack_require__(6),g=60103;exports.Fragment=60107;if("function"===typeof Symbol&&Symbol.for){var h=Symbol.for;g=h("react.element");exports.Fragment=h("react.fragment")}var m=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,n=Object.prototype.hasOwnProperty,p={key:!0,ref:!0,__self:!0,__source:!0};
+function q(c,a,k){var b,d={},e=null,l=null;void 0!==k&&(e=""+k);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(l=a.ref);for(b in a)n.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return{$$typeof:g,type:c,key:e,ref:l,props:d,_owner:m.current}}exports.jsx=q;exports.jsxs=q;
+
+
+/***/ }),
+
+/***/ 467:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+
+/***/ }),
+
+/***/ 486:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -641,13 +764,11 @@ PERFORMANCE OF THIS SOFTWARE.
 var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return extendStatics(d, b);
 };
 
 function __extends(d, b) {
-    if (typeof b !== "function" && b !== null)
-        throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -729,16 +850,13 @@ function __generator(thisArg, body) {
     }
 }
 
-var __createBinding = Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
+function __createBinding(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
-});
+}
 
-function __exportStar(m, o) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) __createBinding(o, m, p);
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 
 function __values(o) {
@@ -770,31 +888,19 @@ function __read(o, n) {
     return ar;
 }
 
-/** @deprecated */
 function __spread() {
     for (var ar = [], i = 0; i < arguments.length; i++)
         ar = ar.concat(__read(arguments[i]));
     return ar;
 }
 
-/** @deprecated */
 function __spreadArrays() {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
         for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
             r[k] = a[j];
     return r;
-}
-
-function __spreadArray(to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-}
+};
 
 function __await(v) {
     return this instanceof __await ? (this.v = v, this) : new __await(v);
@@ -831,17 +937,11 @@ function __makeTemplateObject(cooked, raw) {
     return cooked;
 };
 
-var __setModuleDefault = Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-};
-
 function __importStar(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result.default = mod;
     return result;
 }
 
@@ -849,17 +949,19 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
-function __classPrivateFieldGet(receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
 }
 
-function __classPrivateFieldSet(receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
 }
 
 // CONCATENATED MODULE: ./node_modules/@automattic/explat-client/dist/esm/internal/timing.js
@@ -1356,75 +1458,96 @@ function createSsrSafeDummyExPlatClient(config) {
 var esm_createExPlatClient = typeof window === 'undefined' ? createSsrSafeDummyExPlatClient : createExPlatClient;
 
 
+// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
+var jsx_runtime = __webpack_require__(78);
+
 // EXTERNAL MODULE: external "React"
-var external_React_ = __webpack_require__(5);
-var external_React_default = /*#__PURE__*/__webpack_require__.n(external_React_);
+var external_React_ = __webpack_require__(6);
 
 // CONCATENATED MODULE: ./node_modules/@automattic/explat-client-react-helpers/dist/esm/index.js
 
-/**
- * External dependencies
- */
 
-var defaultExperimentOptions = {
-    isEligible: true,
+const defaultExperimentOptions = {
+  isEligible: true
 };
 function createExPlatClientReactHelpers(exPlatClient) {
-    var useExperiment = function (experimentName, providedOptions) {
-        if (providedOptions === void 0) { providedOptions = {}; }
-        var options = __assign(__assign({}, defaultExperimentOptions), providedOptions);
-        var previousExperimentName = Object(external_React_["useState"])(experimentName)[0];
-        var _a = Object(external_React_["useState"])([
-            true,
-            null,
-        ]), state = _a[0], setState = _a[1];
-        Object(external_React_["useEffect"])(function () {
-            var isSubscribed = true;
-            if (options.isEligible) {
-                exPlatClient.loadExperimentAssignment(experimentName).then(function (experimentAssignment) {
-                    if (isSubscribed) {
-                        setState([false, experimentAssignment]);
-                    }
-                });
-            }
-            return function () {
-                isSubscribed = false;
-            };
-        }, [experimentName, options.isEligible]);
-        if (experimentName !== previousExperimentName &&
-            !previousExperimentName.startsWith('explat_test')) {
-            exPlatClient.config.logError({
-                message: '[ExPlat] useExperiment: experimentName should never change between renders!',
-            });
-        }
-        if (!options.isEligible) {
-            return [false, null];
-        }
-        return state;
+  const useExperiment = function (experimentName) {
+    let providedOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    const options = { ...defaultExperimentOptions,
+      ...providedOptions
     };
-    var Experiment = function (_a) {
-        var defaultExperience = _a.defaultExperience, treatmentExperience = _a.treatmentExperience, loadingExperience = _a.loadingExperience, experimentName = _a.name, options = _a.options;
-        var _b = useExperiment(experimentName, options), isLoading = _b[0], experimentAssignment = _b[1];
-        if (isLoading) {
-            return external_React_default.a.createElement(external_React_default.a.Fragment, null, loadingExperience);
-        }
-        else if (!(experimentAssignment === null || experimentAssignment === void 0 ? void 0 : experimentAssignment.variationName)) {
-            return external_React_default.a.createElement(external_React_default.a.Fragment, null, defaultExperience);
-        }
-        return external_React_default.a.createElement(external_React_default.a.Fragment, null, treatmentExperience);
-    };
-    var ProvideExperimentData = function (_a) {
-        var children = _a.children, experimentName = _a.name, options = _a.options;
-        var _b = useExperiment(experimentName, options), isLoading = _b[0], experimentAssignment = _b[1];
-        return children(isLoading, experimentAssignment);
-    };
-    return {
-        useExperiment: useExperiment,
-        Experiment: Experiment,
-        ProvideExperimentData: ProvideExperimentData,
-    };
-}
+    const [previousExperimentName] = Object(external_React_["useState"])(experimentName);
+    const [state, setState] = Object(external_React_["useState"])([true, null]);
+    Object(external_React_["useEffect"])(() => {
+      let isSubscribed = true;
 
+      if (options.isEligible) {
+        exPlatClient.loadExperimentAssignment(experimentName).then(experimentAssignment => {
+          if (isSubscribed) {
+            setState([false, experimentAssignment]);
+          }
+        });
+      }
+
+      return () => {
+        isSubscribed = false;
+      };
+    }, [experimentName, options.isEligible]);
+
+    if (experimentName !== previousExperimentName && !previousExperimentName.startsWith('explat_test')) {
+      exPlatClient.config.logError({
+        message: '[ExPlat] useExperiment: experimentName should never change between renders!'
+      });
+    }
+
+    if (!options.isEligible) {
+      return [false, null];
+    }
+
+    return state;
+  };
+
+  const Experiment = _ref => {
+    let {
+      defaultExperience,
+      treatmentExperience,
+      loadingExperience,
+      name: experimentName,
+      options
+    } = _ref;
+    const [isLoading, experimentAssignment] = useExperiment(experimentName, options);
+
+    if (isLoading) {
+      return Object(jsx_runtime["jsx"])(jsx_runtime["Fragment"], {
+        children: loadingExperience
+      }, void 0);
+    } else if (!(experimentAssignment !== null && experimentAssignment !== void 0 && experimentAssignment.variationName)) {
+      return Object(jsx_runtime["jsx"])(jsx_runtime["Fragment"], {
+        children: defaultExperience
+      }, void 0);
+    }
+
+    return Object(jsx_runtime["jsx"])(jsx_runtime["Fragment"], {
+      children: treatmentExperience
+    }, void 0);
+  };
+
+  const ProvideExperimentData = _ref2 => {
+    let {
+      children,
+      name: experimentName,
+      options
+    } = _ref2;
+    const [isLoading, experimentAssignment] = useExperiment(experimentName, options);
+    return children(isLoading, experimentAssignment);
+  };
+
+  return {
+    useExperiment,
+    Experiment,
+    ProvideExperimentData
+  };
+}
 // CONCATENATED MODULE: ./packages/explat/build-module/utils.js
 /**
  * Boolean determining if environment is development.
@@ -1476,34 +1599,55 @@ const logError = error => {
   }
 };
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(27);
+var lib = __webpack_require__(32);
+
+// EXTERNAL MODULE: external ["wp","hooks"]
+var external_wp_hooks_ = __webpack_require__(28);
 
 // CONCATENATED MODULE: ./packages/explat/build-module/assignment.js
 /**
  * External dependencies
  */
 
+
 const EXPLAT_VERSION = '0.1.0';
-const assignment_fetchExperimentAssignment = async ({
-  experimentName,
-  anonId
-}) => {
+const assignment_fetchExperimentAssignment = async _ref => {
+  let {
+    experimentName,
+    anonId
+  } = _ref;
+
   var _a, _b, _c, _d, _e, _f, _g, _h;
 
   if (!((_a = window.wcTracks) === null || _a === void 0 ? void 0 : _a.isEnabled)) {
     throw new Error(`Tracking is disabled, can't fetch experimentAssignment`);
   }
+  /**
+   * List of URL query parameters to be sent to the server.
+   *
+   * @filter woocommerce_explat_request_args
+   * @example
+   * addFilter(
+   * 	'woocommerce_explat_request_args',
+   * 	'woocommerce_explat_request_args',
+   * ( args ) => {
+   * 	args.experimentName = 'my-experiment';
+   * 	return args;
+   * });
+   *
+   */
 
-  const params = Object(lib["stringify"])({
+
+  const params = Object(external_wp_hooks_["applyFilters"])('woocommerce_explat_request_args', {
     experiment_name: experimentName,
     anon_id: anonId !== null && anonId !== void 0 ? anonId : undefined,
     woo_country_code: ((_d = (_c = (_b = window.wcSettings) === null || _b === void 0 ? void 0 : _b.preloadSettings) === null || _c === void 0 ? void 0 : _c.general) === null || _d === void 0 ? void 0 : _d.woocommerce_default_country) || ((_h = (_g = (_f = (_e = window.wcSettings) === null || _e === void 0 ? void 0 : _e.admin) === null || _f === void 0 ? void 0 : _f.preloadSettings) === null || _g === void 0 ? void 0 : _g.general) === null || _h === void 0 ? void 0 : _h.woocommerce_default_country)
   });
-  const response = await window.fetch(`https://public-api.wordpress.com/wpcom/v2/experiments/${EXPLAT_VERSION}/assignments/woocommerce?${params}`);
+  const response = await window.fetch(`https://public-api.wordpress.com/wpcom/v2/experiments/${EXPLAT_VERSION}/assignments/woocommerce?${Object(lib["stringify"])(params)}`);
   return await response.json();
 };
-// EXTERNAL MODULE: ./packages/explat/node_modules/cookie/index.js
-var cookie = __webpack_require__(268);
+// EXTERNAL MODULE: ./node_modules/cookie/index.js
+var cookie = __webpack_require__(277);
 var cookie_default = /*#__PURE__*/__webpack_require__.n(cookie);
 
 // CONCATENATED MODULE: ./packages/explat/build-module/anon.js
@@ -1614,21 +1758,21 @@ const {
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["React"]; }());
 
 /***/ }),
 
-/***/ 58:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
-var formats = __webpack_require__(34);
+var utils = __webpack_require__(45);
+var formats = __webpack_require__(39);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -1907,13 +2051,13 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
+var utils = __webpack_require__(45);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -2168,6 +2312,19 @@ module.exports = function (str, opts) {
 
     return utils.compact(obj);
 };
+
+
+/***/ }),
+
+/***/ 78:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (true) {
+  module.exports = __webpack_require__(466);
+} else {}
 
 
 /***/ })

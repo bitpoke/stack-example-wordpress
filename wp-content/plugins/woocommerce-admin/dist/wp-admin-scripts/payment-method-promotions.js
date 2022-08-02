@@ -82,7 +82,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["paymentMethodPromotions"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 474);
+/******/ 	return __webpack_require__(__webpack_require__.s = 495);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -94,14 +94,14 @@ this["wc"] = this["wc"] || {}; this["wc"]["paymentMethodPromotions"] =
 
 /***/ }),
 
-/***/ 11:
+/***/ 12:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["data"]; }());
 
 /***/ }),
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["tracks"]; }());
@@ -115,28 +115,28 @@ this["wc"] = this["wc"] || {}; this["wc"]["paymentMethodPromotions"] =
 
 /***/ }),
 
-/***/ 21:
+/***/ 22:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wc"]["components"]; }());
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["components"]; }());
 
 /***/ }),
 
-/***/ 462:
+/***/ 483:
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
 
-/***/ 474:
+/***/ 495:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -147,28 +147,28 @@ __webpack_require__.r(__webpack_exports__);
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: external ["wc","components"]
-var external_wc_components_ = __webpack_require__(21);
+var external_wc_components_ = __webpack_require__(22);
 
 // EXTERNAL MODULE: external ["wc","data"]
-var external_wc_data_ = __webpack_require__(11);
+var external_wc_data_ = __webpack_require__(12);
 
 // EXTERNAL MODULE: external ["wc","tracks"]
-var external_wc_tracks_ = __webpack_require__(16);
+var external_wc_tracks_ = __webpack_require__(17);
 
 // EXTERNAL MODULE: external ["wp","data"]
-var external_wp_data_ = __webpack_require__(7);
+var external_wp_data_ = __webpack_require__(8);
 
 // EXTERNAL MODULE: ./node_modules/dompurify/dist/purify.js
-var purify = __webpack_require__(55);
+var purify = __webpack_require__(57);
 
 // EXTERNAL MODULE: external ["wp","i18n"]
 var external_wp_i18n_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./client/wp-admin-scripts/payment-method-promotions/payment-promotion-row.scss
-var payment_promotion_row = __webpack_require__(462);
+var payment_promotion_row = __webpack_require__(483);
 
 // CONCATENATED MODULE: ./client/wp-admin-scripts/payment-method-promotions/payment-promotion-row.tsx
 
@@ -199,12 +199,13 @@ function sanitizeHTML(html) {
   };
 }
 
-const PaymentPromotionRow = ({
-  paymentMethod,
-  title,
-  subTitleContent,
-  columns
-}) => {
+const PaymentPromotionRow = _ref => {
+  let {
+    paymentMethod,
+    title,
+    subTitleContent,
+    columns
+  } = _ref;
   const {
     gatewayId,
     pluginSlug,
@@ -377,7 +378,7 @@ PAYMENT_METHOD_PROMOTIONS.forEach(paymentMethod => {
 
 /***/ }),
 
-/***/ 55:
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! @license DOMPurify | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.2.2/LICENSE */
@@ -1739,7 +1740,7 @@ PAYMENT_METHOD_PROMOTIONS.forEach(paymentMethod => {
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["data"]; }());

@@ -82,7 +82,7 @@ this["wc"] = this["wc"] || {}; this["wc"]["navigation"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 469);
+/******/ 	return __webpack_require__(__webpack_require__.s = 490);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -94,14 +94,14 @@ this["wc"] = this["wc"] || {}; this["wc"]["navigation"] =
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["url"]; }());
 
 /***/ }),
 
-/***/ 23:
+/***/ 24:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -126,15 +126,22 @@ function _extends() {
 
 /***/ }),
 
-/***/ 27:
+/***/ 28:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["hooks"]; }());
+
+/***/ }),
+
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var stringify = __webpack_require__(58);
-var parse = __webpack_require__(59);
-var formats = __webpack_require__(34);
+var stringify = __webpack_require__(62);
+var parse = __webpack_require__(63);
+var formats = __webpack_require__(39);
 
 module.exports = {
     formats: formats,
@@ -145,21 +152,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["components"]; }());
-
-/***/ }),
-
-/***/ 31:
-/***/ (function(module, exports) {
-
-(function() { module.exports = window["wp"]["hooks"]; }());
-
-/***/ }),
-
-/***/ 34:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -193,17 +186,17 @@ module.exports = {
 /***/ 4:
 /***/ (function(module, exports) {
 
-(function() { module.exports = window["lodash"]; }());
+(function() { module.exports = window["wp"]["components"]; }());
 
 /***/ }),
 
-/***/ 41:
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var formats = __webpack_require__(34);
+var formats = __webpack_require__(39);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -456,10 +449,11 @@ module.exports = {
 
 /***/ }),
 
-/***/ 43:
+/***/ 47:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return invariant; });
 var isProduction = "production" === 'production';
 var prefix = 'Invariant failed';
 function invariant(condition, message) {
@@ -469,15 +463,17 @@ function invariant(condition, message) {
     if (isProduction) {
         throw new Error(prefix);
     }
-    throw new Error(prefix + ": " + (message || ''));
+    var provided = typeof message === 'function' ? message() : message;
+    var value = provided ? prefix + ": " + provided : prefix;
+    throw new Error(value);
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (invariant);
+
 
 
 /***/ }),
 
-/***/ 469:
+/***/ 490:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -510,22 +506,22 @@ __webpack_require__.d(__webpack_exports__, "WooNavigationItem", function() { ret
 var external_wp_element_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external ["wp","url"]
-var external_wp_url_ = __webpack_require__(15);
+var external_wp_url_ = __webpack_require__(16);
 
 // EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(27);
+var lib = __webpack_require__(32);
 
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(4);
+var external_lodash_ = __webpack_require__(5);
 
 // EXTERNAL MODULE: external ["wp","hooks"]
-var external_wp_hooks_ = __webpack_require__(31);
+var external_wp_hooks_ = __webpack_require__(28);
 
 // EXTERNAL MODULE: external ["wp","components"]
-var external_wp_components_ = __webpack_require__(3);
+var external_wp_components_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./node_modules/history/esm/history.js + 2 modules
-var esm_history = __webpack_require__(53);
+var esm_history = __webpack_require__(55);
 
 // CONCATENATED MODULE: ./packages/navigation/build-module/history.js
 /**
@@ -574,13 +570,55 @@ function getHistory() {
         };
       },
 
-      createHref: (...args) => browserHistory.createHref.apply(browserHistory, args),
-      push: (...args) => browserHistory.push.apply(browserHistory, args),
-      replace: (...args) => browserHistory.replace.apply(browserHistory, args),
-      go: (...args) => browserHistory.go.apply(browserHistory, args),
-      goBack: (...args) => browserHistory.goBack.apply(browserHistory, args),
-      goForward: (...args) => browserHistory.goForward.apply(browserHistory, args),
-      block: (...args) => browserHistory.block.apply(browserHistory, args),
+      createHref: function () {
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return browserHistory.createHref.apply(browserHistory, args);
+      },
+      push: function () {
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        return browserHistory.push.apply(browserHistory, args);
+      },
+      replace: function () {
+        for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+          args[_key3] = arguments[_key3];
+        }
+
+        return browserHistory.replace.apply(browserHistory, args);
+      },
+      go: function () {
+        for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+          args[_key4] = arguments[_key4];
+        }
+
+        return browserHistory.go.apply(browserHistory, args);
+      },
+      goBack: function () {
+        for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+          args[_key5] = arguments[_key5];
+        }
+
+        return browserHistory.goBack.apply(browserHistory, args);
+      },
+      goForward: function () {
+        for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+          args[_key6] = arguments[_key6];
+        }
+
+        return browserHistory.goForward.apply(browserHistory, args);
+      },
+      block: function () {
+        for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+          args[_key7] = arguments[_key7];
+        }
+
+        return browserHistory.block.apply(browserHistory, args);
+      },
 
       listen(listener) {
         return browserHistory.listen(() => {
@@ -816,7 +854,15 @@ const getPath = () => getHistory().location.pathname;
  * @return {Object} Object containing the persisted queries.
  */
 
-const getPersistedQuery = (query = getQuery()) => {
+const getPersistedQuery = function () {
+  let query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getQuery();
+
+  /**
+   * Filter persisted queries. These query parameters remain in the url when other parameters are updated.
+   *
+   * @filter woocommerce_admin_persisted_queries
+   * @param {Array.<string>} persistedQueries Array of persisted queries.
+   */
   const params = Object(external_wp_hooks_["applyFilters"])('woocommerce_admin_persisted_queries', ['period', 'compare', 'before', 'after', 'interval', 'type']);
   return Object(external_lodash_["pick"])(query, params);
 };
@@ -843,7 +889,8 @@ const pathIsExcluded = path => getQueryExcludedScreens().includes(getScreenFromP
  * @return {string} Screen name
  */
 
-const getScreenFromPath = (path = getPath()) => {
+const getScreenFromPath = function () {
+  let path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getPath();
   return path === '/' ? 'homescreen' : path.replace('/analytics', '').replace('/', '');
 };
 /**
@@ -853,7 +900,8 @@ const getScreenFromPath = (path = getPath()) => {
  * @return {Array<number>} List of IDs converted to an array of unique integers.
  */
 
-function getIdsFromQuery(queryString = '') {
+function getIdsFromQuery() {
+  let queryString = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   return [...getSetOfIdsFromQuery(queryString)];
 }
 /**
@@ -863,7 +911,8 @@ function getIdsFromQuery(queryString = '') {
  * @return {Set<number>} List of IDs converted to a set of integers.
  */
 
-function getSetOfIdsFromQuery(queryString = '') {
+function getSetOfIdsFromQuery() {
+  let queryString = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   return new Set( // Return only unique ids.
   queryString.split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id)));
 }
@@ -874,7 +923,9 @@ function getSetOfIdsFromQuery(queryString = '') {
  * @return {Array} List of search words.
  */
 
-function getSearchWords(query = getQuery()) {
+function getSearchWords() {
+  let query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getQuery();
+
   if (typeof query !== 'object') {
     throw new Error('Invalid parameter passed to getSearchWords, it expects an object or no parameters.');
   }
@@ -903,7 +954,10 @@ function getSearchWords(query = getQuery()) {
  * @return {string}  Updated URL merging query params into existing params.
  */
 
-function getNewPath(query, path = getPath(), currentQuery = getQuery(), page = 'wc-admin') {
+function getNewPath(query) {
+  let path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getPath();
+  let currentQuery = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : getQuery();
+  let page = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'wc-admin';
   const args = {
     page,
     ...currentQuery,
@@ -940,7 +994,10 @@ function getQuery() {
  * @return {Function} A callback which will update `param` to the passed value when called.
  */
 
-function onQueryChange(param, path = getPath(), query = getQuery()) {
+function onQueryChange(param) {
+  let path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getPath();
+  let query = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : getQuery();
+
   switch (param) {
     case 'sort':
       return (key, dir) => updateQueryString({
@@ -970,7 +1027,10 @@ function onQueryChange(param, path = getPath(), query = getQuery()) {
  * @param {string} page Page key (defaults to "wc-admin")
  */
 
-function updateQueryString(query, path = getPath(), currentQuery = getQuery(), page = 'wc-admin') {
+function updateQueryString(query) {
+  let path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getPath();
+  let currentQuery = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : getQuery();
+  let page = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'wc-admin';
   const newPath = getNewPath(query, path, currentQuery, page);
   getHistory().push(newPath);
 }
@@ -1019,41 +1079,44 @@ const addHistoryListener = listener => {
   };
 };
 /**
- * Create a Fill for extensions to add client facing custom Navigation Items.
+ * A Fill for extensions to add client facing custom Navigation Items.
  *
  * @slotFill WooNavigationItem
- * @example
- * const MyExtenstionNavItem = () => (
- * 	<WooNavigationItem item="my-extension">My Extension</WooNavigationItem>
- * );
- *
- * registerPlugin( 'my-extension', {
- * 	render: MyExtenstionNavItem,
- * 	scope: 'woocommerce-admin',
- * } );
- * @param {Object} param0
- * @param {Array} param0.children - Node children.
- * @param {string} param0.item - Navigation item slug.
+ * @scope woocommerce-navigation
+ * @param {Object} props React props.
+ * @param {Array} props.children Node children.
+ * @param {string} props.item Navigation item slug.
  */
 
-const WooNavigationItem = ({
-  children,
-  item
-}) => {
+const WooNavigationItem = _ref => {
+  let {
+    children,
+    item
+  } = _ref;
   return Object(external_wp_element_["createElement"])(external_wp_components_["Fill"], {
     name: 'woocommerce_navigation_' + item
   }, children);
 };
 
-WooNavigationItem.Slot = ({
-  name
-}) => Object(external_wp_element_["createElement"])(external_wp_components_["Slot"], {
-  name: 'woocommerce_navigation_' + name
-});
+WooNavigationItem.Slot = _ref2 => {
+  let {
+    name
+  } = _ref2;
+  return Object(external_wp_element_["createElement"])(external_wp_components_["Slot"], {
+    name: 'woocommerce_navigation_' + name
+  });
+};
 
 /***/ }),
 
-/***/ 53:
+/***/ 5:
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
+
+/***/ }),
+
+/***/ 55:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1068,7 +1131,7 @@ __webpack_require__.d(__webpack_exports__, "d", function() { return /* binding *
 // UNUSED EXPORTS: createHashHistory, parsePath
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(23);
+var esm_extends = __webpack_require__(24);
 
 // CONCATENATED MODULE: ./node_modules/resolve-pathname/esm/resolve-pathname.js
 function isAbsolute(pathname) {
@@ -1186,7 +1249,7 @@ function valueEqual(a, b) {
 /* harmony default export */ var value_equal = (valueEqual);
 
 // EXTERNAL MODULE: ./node_modules/tiny-invariant/dist/tiny-invariant.esm.js
-var tiny_invariant_esm = __webpack_require__(43);
+var tiny_invariant_esm = __webpack_require__(47);
 
 // CONCATENATED MODULE: ./node_modules/history/esm/history.js
 
@@ -2112,14 +2175,14 @@ function createMemoryHistory(props) {
 
 /***/ }),
 
-/***/ 58:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
-var formats = __webpack_require__(34);
+var utils = __webpack_require__(45);
+var formats = __webpack_require__(39);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -2398,13 +2461,13 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(41);
+var utils = __webpack_require__(45);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;

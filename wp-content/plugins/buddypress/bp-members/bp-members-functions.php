@@ -942,9 +942,10 @@ function bp_is_user_spammer( $user_id = 0 ) {
 	 *
 	 * @since 1.6.0
 	 *
-	 * @param bool $is_spammer Whether or not user is marked as spammer.
+	 * @param bool     $is_spammer Whether or not user is marked as spammer.
+	 * @param \WP_User $user       The user to which we are acting on.
 	 */
-	return apply_filters( 'bp_is_user_spammer', (bool) $is_spammer );
+	return apply_filters( 'bp_is_user_spammer', (bool) $is_spammer, $user );
 }
 
 /**
@@ -1010,9 +1011,10 @@ function bp_is_user_deleted( $user_id = 0 ) {
 	 *
 	 * @since 1.6.0
 	 *
-	 * @param bool $is_deleted Whether or not user is marked as deleted.
+	 * @param bool     $is_deleted Whether or not user is marked as deleted.
+	 * @param \WP_User $user       The user to which we are acting on.
 	 */
-	return apply_filters( 'bp_is_user_deleted', (bool) $is_deleted );
+	return apply_filters( 'bp_is_user_deleted', (bool) $is_deleted, $user );
 }
 
 /**
@@ -3165,7 +3167,7 @@ function bp_remove_member_type( $user_id, $member_type ) {
 
 	// No need to continue if the member doesn't have the type.
 	$existing_types = bp_get_member_type( $user_id, false );
-	if ( ! in_array( $member_type, $existing_types, true ) ) {
+	if ( ! is_array( $existing_types ) || ! in_array( $member_type, $existing_types, true ) ) {
 		return false;
 	}
 

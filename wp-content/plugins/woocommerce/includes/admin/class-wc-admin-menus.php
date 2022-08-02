@@ -6,6 +6,9 @@
  * @version 2.5.0
  */
 
+use Automattic\WooCommerce\Internal\Admin\Orders\ListTable as Custom_Orders_List_Table;
+use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+
 defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WC_Admin_Menus', false ) ) {
@@ -16,6 +19,10 @@ if ( class_exists( 'WC_Admin_Menus', false ) ) {
  * WC_Admin_Menus Class.
  */
 class WC_Admin_Menus {
+	/**
+	 * @var Custom_Orders_List_Table
+	 */
+	private $orders_list_table;
 
 	/**
 	 * Hook in tabs.
@@ -25,6 +32,7 @@ class WC_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'menu_highlight' ) );
 		add_action( 'admin_menu', array( $this, 'menu_order_count' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
+		add_action( 'admin_menu', array( $this, 'orders_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'reports_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
@@ -57,7 +65,7 @@ class WC_Admin_Menus {
 
 		$woocommerce_icon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxwYXRoIGZpbGw9IiNhMmFhYjIiIGQ9Ik02MTIuMTkyIDQyNi4zMzZjMC02Ljg5Ni0zLjEzNi01MS42LTI4LTUxLjYtMzcuMzYgMC00Ni43MDQgNzIuMjU2LTQ2LjcwNCA4Mi42MjQgMCAzLjQwOCAzLjE1MiA1OC40OTYgMjguMDMyIDU4LjQ5NiAzNC4xOTItLjAzMiA0Ni42NzItNzIuMjg4IDQ2LjY3Mi04OS41MnptMjAyLjE5MiAwYzAtNi44OTYtMy4xNTItNTEuNi0yOC4wMzItNTEuNi0zNy4yOCAwLTQ2LjYwOCA3Mi4yNTYtNDYuNjA4IDgyLjYyNCAwIDMuNDA4IDMuMDcyIDU4LjQ5NiAyNy45NTIgNTguNDk2IDM0LjE5Mi0uMDMyIDQ2LjY4OC03Mi4yODggNDYuNjg4LTg5LjUyek0xNDEuMjk2Ljc2OGMtNjguMjI0IDAtMTIzLjUwNCA1NS40ODgtMTIzLjUwNCAxMjMuOTJ2NjUwLjcyYzAgNjguNDMyIDU1LjI5NiAxMjMuOTIgMTIzLjUwNCAxMjMuOTJoMzM5LjgwOGwxMjMuNTA0IDEyMy45MzZWODk5LjMyOGgyNzguMDQ4YzY4LjIyNCAwIDEyMy41Mi01NS40NzIgMTIzLjUyLTEyMy45MnYtNjUwLjcyYzAtNjguNDMyLTU1LjI5Ni0xMjMuOTItMTIzLjUyLTEyMy45MmgtNzQxLjM2em01MjYuODY0IDQyMi4xNmMwIDU1LjA4OC0zMS4wODggMTU0Ljg4LTEwMi42NCAxNTQuODgtNi4yMDggMC0xOC40OTYtMy42MTYtMjUuNDI0LTYuMDE2LTMyLjUxMi0xMS4xNjgtNTAuMTkyLTQ5LjY5Ni01Mi4zNTItNjYuMjU2IDAgMC0zLjA3Mi0xNy43OTItMy4wNzItNDAuNzUyIDAtMjIuOTkyIDMuMDcyLTQ1LjMyOCAzLjA3Mi00NS4zMjggMTUuNTUyLTc1LjcyOCA0My41NTItMTA2LjczNiA5Ni40NDgtMTA2LjczNiA1OS4wNzItLjAzMiA4My45NjggNTguNTI4IDgzLjk2OCAxMTAuMjA4ek00ODYuNDk2IDMwMi40YzAgMy4zOTItNDMuNTUyIDE0MS4xNjgtNDMuNTUyIDIxMy40MjR2NzUuNzEyYy0yLjU5MiAxMi4wOC00LjE2IDI0LjE0NC0yMS44MjQgMjQuMTQ0LTQ2LjYwOCAwLTg4Ljg4LTE1MS40NzItOTIuMDE2LTE2MS44NC02LjIwOCA2Ljg5Ni02Mi4yNCAxNjEuODQtOTYuNDQ4IDE2MS44NC0yNC44NjQgMC00My41NTItMTEzLjY0OC00Ni42MDgtMTIzLjkzNkMxNzYuNzA0IDQzNi42NzIgMTYwIDMzNC4yMjQgMTYwIDMyNy4zMjhjMC0yMC42NzIgMS4xNTItMzguNzM2IDI2LjA0OC0zOC43MzYgNi4yMDggMCAyMS42IDYuMDY0IDIzLjcxMiAxNy4xNjggMTEuNjQ4IDYyLjAzMiAxNi42ODggMTIwLjUxMiAyOS4xNjggMTg1Ljk2OCAxLjg1NiAyLjkyOCAxLjUwNCA3LjAwOCA0LjU2IDEwLjQzMiAzLjE1Mi0xMC4yODggNjYuOTI4LTE2OC43ODQgOTQuOTYtMTY4Ljc4NCAyMi41NDQgMCAzMC40IDQ0LjU5MiAzMy41MzYgNjEuODI0IDYuMjA4IDIwLjY1NiAxMy4wODggNTUuMjE2IDIyLjQxNiA4Mi43NTIgMC0xMy43NzYgMTIuNDgtMjAzLjEyIDY1LjM5Mi0yMDMuMTIgMTguNTkyLjAzMiAyNi43MDQgNi45MjggMjYuNzA0IDI3LjU2OHpNODcwLjMyIDQyMi45MjhjMCA1NS4wODgtMzEuMDg4IDE1NC44OC0xMDIuNjQgMTU0Ljg4LTYuMTkyIDAtMTguNDQ4LTMuNjE2LTI1LjQyNC02LjAxNi0zMi40MzItMTEuMTY4LTUwLjE3Ni00OS42OTYtNTIuMjg4LTY2LjI1NiAwIDAtMy44ODgtMTcuOTItMy44ODgtNDAuODk2czMuODg4LTQ1LjE4NCAzLjg4OC00NS4xODRjMTUuNTUyLTc1LjcyOCA0My40ODgtMTA2LjczNiA5Ni4zODQtMTA2LjczNiA1OS4xMDQtLjAzMiA4My45NjggNTguNTI4IDgzLjk2OCAxMTAuMjA4eiIvPjwvc3ZnPg==';
 
-		if ( current_user_can( 'edit_others_shop_orders' ) ) {
+		if ( self::can_view_woocommerce_menu_item() ) {
 			$menu[] = array( '', 'read', 'separator-woocommerce', '', 'wp-menu-separator woocommerce' ); // WPCS: override ok.
 		}
 
@@ -70,7 +78,7 @@ class WC_Admin_Menus {
 	 * Add menu item.
 	 */
 	public function reports_menu() {
-		if ( current_user_can( 'edit_others_shop_orders' ) ) {
+		if ( self::can_view_woocommerce_menu_item() ) {
 			add_submenu_page( 'woocommerce', __( 'Reports', 'woocommerce' ), __( 'Reports', 'woocommerce' ), 'view_woocommerce_reports', 'wc-reports', array( $this, 'reports_page' ) );
 		} else {
 			add_menu_page( __( 'Sales reports', 'woocommerce' ), __( 'Sales reports', 'woocommerce' ), 'view_woocommerce_reports', 'wc-reports', array( $this, 'reports_page' ), 'dashicons-chart-bar', '55.6' );
@@ -84,6 +92,13 @@ class WC_Admin_Menus {
 		$settings_page = add_submenu_page( 'woocommerce', __( 'WooCommerce settings', 'woocommerce' ), __( 'Settings', 'woocommerce' ), 'manage_woocommerce', 'wc-settings', array( $this, 'settings_page' ) );
 
 		add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
+	}
+
+	/**
+	 * Check if the user can access the top-level WooCommerce item.
+	 */
+	public static function can_view_woocommerce_menu_item() {
+		return current_user_can( 'edit_others_shop_orders' );
 	}
 
 	/**
@@ -241,7 +256,7 @@ class WC_Admin_Menus {
 	 * @return bool
 	 */
 	public function custom_menu_order( $enabled ) {
-		return $enabled || current_user_can( 'edit_others_shop_orders' );
+		return $enabled || self::can_view_woocommerce_menu_item();
 	}
 
 	/**
@@ -292,6 +307,47 @@ class WC_Admin_Menus {
 	 */
 	public function addons_page() {
 		WC_Admin_Addons::output();
+	}
+
+	/**
+	 * Link to the order admin list table from the main WooCommerce menu.
+	 *
+	 * @return void
+	 */
+	public function orders_menu(): void {
+		if ( wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled() ) {
+			add_submenu_page( 'woocommerce', __( 'Orders', 'woocommerce' ), __( 'Orders', 'woocommerce' ), 'edit_others_shop_orders', 'wc-orders', array( $this, 'orders_page' ) );
+			add_filter( 'manage_woocommerce_page_wc-orders_columns', array( $this, 'orders_table' ) );
+
+			// In some cases (such as if the authoritative order store was changed earlier in the current request) we
+			// need an extra step to remove the menu entry for the menu post type.
+			add_action(
+				'admin_init',
+				function () {
+					remove_submenu_page( 'woocommerce', 'edit.php?post_type=shop_order' );
+				}
+			);
+		}
+	}
+
+	/**
+	 * Set-up the orders admin list table.
+	 *
+	 * @return void
+	 */
+	public function orders_table(): void {
+		$this->orders_list_table = new Custom_Orders_List_Table();
+		$this->orders_list_table->setup();
+	}
+
+	/**
+	 * Render the orders admin list table.
+	 *
+	 * @return void
+	 */
+	public function orders_page(): void {
+		$this->orders_list_table->prepare_items();
+		$this->orders_list_table->display();
 	}
 
 	/**

@@ -1,10 +1,10 @@
 === Jetpack - WP Security, Backup, Speed, & Growth ===
 Contributors: automattic, adamkheckler, adrianmoldovanwp, aduth, akirk, allendav, alternatekev, andy, annamcphee, annezazu, apeatling, arcangelini, azaozz, batmoo, barry, beaulebens, biskobe, blobaugh, bjorsch, brbrr, cainm, cena, cfinke, chaselivingston, chellycat, clickysteve, csonnek, danielbachhuber, davoraltman, daniloercoli, delawski, designsimply, dllh, drawmyface, dsmart, dzver, ebinnion, egregor, eliorivero, enej, eoigal, erania-pinnera, ethitter, fgiannar, gcorne, georgestephanis, gibrown, goldsounds, hew, hugobaeta, hypertextranch, iammattthomas, iandunn, jblz, jasmussen, jeffgolenski, jeherve, jenhooks, jenia, jessefriedman, jgs, jkudish, jmdodd, joanrho, johnjamesjacoby, jshreve, kbrownkd, keoshi, koke, kraftbj, lancewillett, leogermani, lschuyler, macmanx, martinremy, matt, matveb, mattwiebe, maverick3x6, mcsf, mdawaffe, mdbitz, MichaelArestad, migueluy, mikeyarce, mkaz, nancythanki, nickmomrik, obenland, oskosk, pento, professor44, rachelsquirrel, rdcoll, ryancowles, richardmuscat, richardmtl, robertbpugh, roccotripaldi, samhotchkiss, samiff, scarstocea, scottsweb, sdixon194, sdquirk, sermitr, simison, stephdau, tmoorewp, tyxla, Viper007Bond, westi, yoavf, zinigor
 Tags: Security, backup, Woo, malware, scan, spam, CDN, search, social
-Stable tag: 10.6
-Requires at least: 5.8
+Stable tag: 11.2
+Requires at least: 5.9
 Requires PHP: 5.6
-Tested up to: 5.9
+Tested up to: 6.0
 
 Improve your WP security with powerful one-click tools like backup and malware scan. Get essential free tools including stats, CDN and social sharing.
 
@@ -242,36 +242,43 @@ Jetpack Backup can do a full website migration to a new host, migrate theme file
 4. Promote your newest posts, pages, and products across your social media channels.
 
 == Changelog ==
-### 10.6 - 2022-02-01
+### 11.2 - 2022-08-02
 #### Enhancements
-- Contact Info and Markdown Blocks: add color, typography and spacing features.
-- Dashboard: support Beta versions of Automattic plugins in plugin cards.
-- Embeds: add support for Descript.com embeds.
-- Image Compare Block: Add `wide` and `full` alignment options
-- Pay with PayPal Block: do not display the block on the frontend if PayPal is misconfigured.
-- Search: improve accessibility via headings hierarchy and aria roles.
-- Stats: add new filter allowing site owners to exclude IP addresses from being tracked in stats.
-- Tiled Gallery Block: improve the block so it can be used within the mobile applications.
+- Blocks: enable Jetpack block collection for the native editor block inserter (on self hosted Jetpack sites).
+- Connection: make sure pre-existing settings are respected on plugin activation.
+- Form Block: add a lock to the contact form submit button.
+- Native block inserter: only display blocks under a Jetpack heading if the host app is WordPress.
+- Podcast Player: add new actions to make it possible for users to set up code that runs for podcast fetches.
+- VideoPress Block (beta): mutiple UI enhancements including error messaging, markup, layout and behavior. Currently a JETPACK_BETA_BLOCKS feature.
+
 
 #### Improved compatibility
-- Instant Search: synchronize more meta data so the search feature can be used with more third-party plugins.
-- Sharing / AMP plugin: avoid adding sharing's CSS on AMP pages when the sharing feature is not active.
-- Subscription form: update the placeholder color to be the same as the text color of the site.
+- Admin UI: add h1 page headings for better screen reader navigation.
+- Custom Post Types: change Nova functions to public to re-allow hooking.
 
 #### Bug fixes
-- Backups: hide backup preparation message for sites without backup.
-- Connection: correctly request list of active features so they can be activated on a reconnection.
-- Donations block: add a missing closing div for the front-end rendering.
-- Donations block: don't display the donations block to visitors unless Stripe is connected.
-- Donations block: fixed an issue which was invalidating existing blocks if they were edited by non-plan owners.
-- Donations block: tweak currency display for the edit control.
-- Pay with Paypal Block: properly display the card icons below the button.
-- Protect: fixed math fallback's input accessibility and display.
-- Scan: avoid PHP notice when non-admin users access the dashboard.
-- Search: Initialize debug bar using correct class
-- Subscription form: adding a default line-height to avoid differences using different font-faces on input and button elements
-- Widget Visibility: ensure it remains possible to edit visibility for legacy widgets in the block-based widget editor.
+- Admin menu: display the translations for the plan name.
+- Comments: avoid PHP Notice when using Jetpack's Comment form feature when your site is no longer properly connected to WordPress.com.
+- Connection: fix Jetpack redirect after registration.
+- Form Block: prevent error notice when processing submission from 404 page.
+- Form block: fix Checkbox Group option color.
+- Form block: preserve line breaks in form submissions.
+- Gathering Twitter Threads: ensure that only contributors can access the endpoint to unroll threads.
+- Masterbar: ensure that the WordPress.com Add Ons menu item doesn't display on Jetpack-connected sites.
+- Masterbar: fix All Posts dashboard redirect issue when switching between classic and default editor views.
+- Product Descriptions: fix search price on Search Product Description by accounting for sale coupons and ensuring the correct JP Search tier is shown.
+- Related Posts: avoid PHP warnings when visiting AMP post views.
+- Sharing: ensure that sharing buttons are not displayed for excerpts.
+- Sharing: hide button information in Blog Posts block in editor.
+- Slideshow Block: override container display to prevent a gap between slideshow and contents.
+- Slideshow Block: support wide and full alignment options.
+- Stats: allow custom user role stats settings to be properly recognized and saved.
+- Stats: fix dashboard widget form name to allow form choices to be saved.
+- Subscribe block: fix support for allowed HTML tags in submit button.
+- Subscriptions: format the number of subscribers displayed in the block editor's controls.
+- VideoPress: avoid PHP notices when inserting videos that miss some metadata.
+- VideoPress: fix bug when getting the video preview of the VideoPress block.
 
 --------
 
-[See the previous changelogs here](https://github.com/Automattic/jetpack/blob/master/projects/plugins/jetpack/CHANGELOG.md#changelog)
+[See the previous changelogs here](https://github.com/Automattic/jetpack/blob/trunk/projects/plugins/jetpack/CHANGELOG.md#changelog)
