@@ -1,5 +1,8 @@
 wp/
 wp-content/uploads
 
+docker-compose.override.yaml
+!.devcontainer/docker-compose.override.yaml
+
 # WP-CLI
 wp-cli.local.yml

@@ -1,0 +1,30 @@
+{
+  "name": "WordPress",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": "."
+  },
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "WordPress",
+      "onAutoForward": "openBrowser"
+    },
+    "3306": {
+      "label": "MySQL",
+      "onAutoForward": "ignore"
+    }
+  },
+  "features": {
+    "docker-in-docker": "latest"
+  },
+  "extensions": [
+    "johnbillion.vscode-wordpress-hooks",
+    "bmewburn.vscode-intelephense-client",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-mysql"
+  ],
+  "postStartCommand": "test -f docker-compose.override.yaml || cp .devcontainer/docker-compose.override.yaml ./ && docker-compose up -d"
+}

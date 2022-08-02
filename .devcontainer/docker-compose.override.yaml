@@ -1,0 +1,13 @@
+services:
+  db:
+    ports:
+      - 3306:3306
+  wordpress:
+    ports:
+      - 8080:8080
+    environment:
+      CODESPACES: ${CODESPACES}
+      CODESPACE_NAME: ${CODESPACE_NAME}
+      NGINX_ACCESS_LOG: /dev/stdout
+      STATS_ENABLED: "true" # allow access to pahs like /-/php-info
+      STATS_WHITELIST_CIDR: 0.0.0.0/0 # allow access to stats from everywhere, since we are in development mode
