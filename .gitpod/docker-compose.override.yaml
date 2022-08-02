@@ -1,0 +1,18 @@
+services:
+  db:
+    ports:
+      - 3306:3306
+  wordpress:
+    user: "33333:33333"
+    tmpfs:
+      - /usr/local/docker/etc:uid=33333,gid=33333
+      - /var/run:uid=33333,gid=33333
+    ports:
+      - 8080:8080
+    environment:
+      WORKER_GROUP: 33333
+      WORKER_USER: 33333
+      GITPOD: "on"
+      NGINX_ACCESS_LOG: /dev/stdout
+      STATS_ENABLED: "true" # allow access to pahs like /-/php-info
+      STATS_WHITELIST_CIDR: 0.0.0.0/0 # allow access to stats from everywhere, since we are in development mode

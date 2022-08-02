@@ -1,0 +1,21 @@
+tasks:
+  - name: Google Cloud SDK
+    init: sudo .devcontainer/library-scripts/google-cloud-sdk.sh
+  - name: Docker Compose
+    before: test -f docker-compose.override.yaml || cp .gitpod/docker-compose.override.yaml ./
+    init: docker-compose pull
+    command: docker-compose up -d ; docker-compose logs -f wordpress
+
+ports:
+  - port: 8080
+    onOpen: open-browser
+  - port: 3306
+    onOpen: ignore
+
+vscode:
+  extensions:
+    - bmewburn.vscode-intelephense-client
+    - johnbillion.vscode-wordpress-hooks
+    - ms-azuretools.vscode-docker
+    - mtxr.sqltools
+    - mtxr.sqltools-driver-mysql

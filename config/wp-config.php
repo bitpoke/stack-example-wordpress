@@ -1,5 +1,11 @@
 <?php
-// Set custom wp-config.php settings in this file 
+// Set custom wp-config.php settings in this file
+
+if ( 'on' === getenv( 'GITPOD' ) ) {
+	// on Gitpod, make sure the user can update plugins, themes, translations, mu-plugins and drop-ins
+	define( 'FS_METHOD', 'direct' );
+}
+
 if ( 'true' === getenv('CODESPACES') ) {
 	// on Github Codespaces obey the X-Forwarded-Host header
 	$_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
