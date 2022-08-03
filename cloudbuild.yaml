@@ -1,0 +1,13 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/${_SITE_NAME}:$SHORT_SHA', '.' ]
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['patch', '-n', '${_PROJECT_NAME}', 'wordpress', '${_SITE_NAME}', '--type=json', '-p', '[{"op": "replace", "path": "/spec/image", "value": "gcr.io/$PROJECT_ID/${_SITE_NAME}:$SHORT_SHA"}]']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=<your cluster zone>'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=<your cluster name>'
+images:
+  - 'gcr.io/$PROJECT_ID/${_SITE_NAME}:$SHORT_SHA'
+substitutions:
+  _SITE_NAME : <your site name>
+  _PROJECT_NAME : <your project name>
