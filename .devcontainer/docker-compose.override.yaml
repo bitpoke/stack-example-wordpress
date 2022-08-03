@@ -2,9 +2,13 @@ services:
   db:
     ports:
       - 3306:3306
+    volumes:
+      - ../:/workspaces
   wordpress:
     ports:
       - 8080:8080
+    volumes:
+      - ../:/workspaces
     environment:
       CODESPACES: ${CODESPACES}
       CODESPACE_NAME: ${CODESPACE_NAME}

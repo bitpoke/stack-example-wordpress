@@ -2,6 +2,8 @@ services:
   db:
     ports:
       - 3306:3306
+    volumes:
+      - ../:/workspace
   wordpress:
     user: "33333:33333"
     tmpfs:
@@ -9,6 +11,8 @@ services:
       - /var/run:uid=33333,gid=33333
     ports:
       - 8080:8080
+    volumes:
+      - ../:/workspace
     environment:
       WORKER_GROUP: 33333
       WORKER_USER: 33333
