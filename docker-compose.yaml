@@ -17,6 +17,9 @@ services:
       DB_NAME: wordpress
       MEMCACHED_HOST: memcached:11211
       WP_ENV: development
+      NGINX_ACCESS_LOG: /dev/stdout # enable nginx access log
+      STATS_ENABLED: "true" # allow access to pahs like /-/php-info
+      STATS_WHITELIST_CIDR: 0.0.0.0/0 # allow access to stats from everywhere, since we are in development mode
   db:
     image: percona:5.7
     volumes:

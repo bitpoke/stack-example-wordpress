@@ -1,8 +1,8 @@
+image: bitpoke/devcontainer:latest
+
 tasks:
-  - name: Google Cloud SDK
-    init: sudo .devcontainer/library-scripts/google-cloud-sdk.sh
   - name: Docker Compose
-    before: test -f docker-compose.override.yaml || cp .gitpod/docker-compose.override.yaml ./
+    before: test -f docker-compose.override.yaml || cp .devcontainer/docker-compose.override.yaml ./
     init: docker-compose pull
     command: docker-compose up -d ; docker-compose logs -f wordpress
 

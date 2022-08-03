@@ -1,12 +1,15 @@
 {
-  "name": "WordPress",
-  "build": {
-    "dockerfile": "./Dockerfile",
-    "context": "."
+  "name": "Bitpoke Codespace",
+  "image": "bitpoke/devcontainer:latest",
+  "overrideCommand": false,
+  "remoteUser": "gitpod",
+  "containerEnv": {
+    "WORKSPACE_FOLDER": "${containerWorkspaceFolder}"
   },
-  "remoteUser": "vscode",
-  "workspaceFolder": "/workspace",
-  "forwardPorts": [8080],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+  "workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+  "forwardPorts": [8080,3306],
+  "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--privileged", "--init" ],
   "portsAttributes": {
     "8080": {
       "label": "WordPress",
@@ -17,12 +20,14 @@
       "onAutoForward": "ignore"
     }
   },
-  "features": {
-    "docker-in-docker": "latest"
-  },
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
+    "source=${localWorkspaceFolderBasename}_workspace,target=/workspace,type=volume"
+  ],
   "extensions": [
-    "johnbillion.vscode-wordpress-hooks",
+    "ms-azuretools.vscode-docker",
     "bmewburn.vscode-intelephense-client",
+    "johnbillion.vscode-wordpress-hooks",
     "mtxr.sqltools",
     "mtxr.sqltools-driver-mysql"
   ],

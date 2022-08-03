@@ -1,7 +1,7 @@
 <?php
 // Set custom wp-config.php settings in this file
 
-if ( 'on' === getenv( 'GITPOD' ) ) {
+if ( '' !== getenv( 'GITPOD_WORKSPACE_ID' ) ) {
 	// on Gitpod, make sure the user can update plugins, themes, translations, mu-plugins and drop-ins
 	define( 'FS_METHOD', 'direct' );
 }

@@ -3,15 +3,22 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ../:/workspaces
+      - ${WORKSPACE_FOLDER:-/workspace}:${WORKSPACE_FOLDER:-/workspace}
   wordpress:
+    user: "33333:33333"
     ports:
       - 8080:8080
+    tmpfs:
+      - /usr/local/docker/etc:uid=33333,gid=33333
+      - /var/run:uid=33333,gid=33333
     volumes:
-      - ../:/workspaces
+      - ${WORKSPACE_FOLDER:-/workspace}:${WORKSPACE_FOLDER:-/workspace}
     environment:
-      CODESPACES: ${CODESPACES}
-      CODESPACE_NAME: ${CODESPACE_NAME}
-      NGINX_ACCESS_LOG: /dev/stdout
-      STATS_ENABLED: "true" # allow access to pahs like /-/php-info
-      STATS_WHITELIST_CIDR: 0.0.0.0/0 # allow access to stats from everywhere, since we are in development mode
+      - CODESPACES
+      - CODESPACE_NAME
+      - GITPOD_WORKSPACE_ID
+      - GITPOD_WORKSPACE_URL
+      - GITPOD_REPO_ROOT
+      - GITPOD_WORKSPACE_CLUSTER_HOST
+      - WORKER_GROUP=33333
+      - WORKER_USER=33333
