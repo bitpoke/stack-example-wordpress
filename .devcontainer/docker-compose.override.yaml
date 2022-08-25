@@ -1,11 +1,15 @@
 services:
   db:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 3306:3306
     volumes:
       - ${WORKSPACE_FOLDER:-/workspace}:${WORKSPACE_FOLDER:-/workspace}
   wordpress:
     user: "33333:33333"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 8080:8080
     tmpfs:
