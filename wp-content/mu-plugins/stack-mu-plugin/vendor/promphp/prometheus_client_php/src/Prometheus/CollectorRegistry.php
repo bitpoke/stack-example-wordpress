@@ -65,7 +65,17 @@ class CollectorRegistry implements RegistryInterface
      */
     public static function getDefault(): CollectorRegistry
     {
-        return self::$defaultRegistry ?? (self::$defaultRegistry = new self(new Redis()));
+        return self::$defaultRegistry ?? (self::$defaultRegistry = new self(new Redis()));  /** @phpstan-ignore-line */
+    }
+
+    /**
+     * Removes all previously stored metrics from underlying storage adapter
+     *
+     * @return void
+     */
+    public function wipeStorage(): void
+    {
+        $this->storageAdapter->wipeStorage();
     }
 
     /**

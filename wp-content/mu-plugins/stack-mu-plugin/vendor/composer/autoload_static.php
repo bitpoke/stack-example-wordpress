@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
+class ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -220,6 +220,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Composer\\Installers\\MajimaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MajimaInstaller.php',
         'Composer\\Installers\\MakoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MakoInstaller.php',
         'Composer\\Installers\\MantisBTInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MantisBTInstaller.php',
+        'Composer\\Installers\\MatomoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MatomoInstaller.php',
         'Composer\\Installers\\MauticInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MauticInstaller.php',
         'Composer\\Installers\\MayaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MayaInstaller.php',
         'Composer\\Installers\\MediaWikiInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MediaWikiInstaller.php',
@@ -312,6 +313,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Dotenv\\Validator' => __DIR__ . '/..' . '/vlucas/phpdotenv/src/Validator.php',
         'Env\\Env' => __DIR__ . '/..' . '/oscarotero/env/src/Env.php',
         'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
+        'Firebase\\JWT\\CachedKeySet' => __DIR__ . '/..' . '/firebase/php-jwt/src/CachedKeySet.php',
         'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
         'Firebase\\JWT\\JWK' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWK.php',
         'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
@@ -324,6 +326,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Google\\Auth\\Cache\\Item' => __DIR__ . '/..' . '/google/auth/src/Cache/Item.php',
         'Google\\Auth\\Cache\\MemoryCacheItemPool' => __DIR__ . '/..' . '/google/auth/src/Cache/MemoryCacheItemPool.php',
         'Google\\Auth\\Cache\\SysVCacheItemPool' => __DIR__ . '/..' . '/google/auth/src/Cache/SysVCacheItemPool.php',
+        'Google\\Auth\\Cache\\TypedItem' => __DIR__ . '/..' . '/google/auth/src/Cache/TypedItem.php',
         'Google\\Auth\\CredentialsLoader' => __DIR__ . '/..' . '/google/auth/src/CredentialsLoader.php',
         'Google\\Auth\\Credentials\\AppIdentityCredentials' => __DIR__ . '/..' . '/google/auth/src/Credentials/AppIdentityCredentials.php',
         'Google\\Auth\\Credentials\\GCECredentials' => __DIR__ . '/..' . '/google/auth/src/Credentials/GCECredentials.php',
@@ -350,9 +353,6 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Google\\Auth\\ProjectIdProviderInterface' => __DIR__ . '/..' . '/google/auth/src/ProjectIdProviderInterface.php',
         'Google\\Auth\\ServiceAccountSignerTrait' => __DIR__ . '/..' . '/google/auth/src/ServiceAccountSignerTrait.php',
         'Google\\Auth\\SignBlobInterface' => __DIR__ . '/..' . '/google/auth/src/SignBlobInterface.php',
-        'Google\\Auth\\Subscriber\\AuthTokenSubscriber' => __DIR__ . '/..' . '/google/auth/src/Subscriber/AuthTokenSubscriber.php',
-        'Google\\Auth\\Subscriber\\ScopedAccessTokenSubscriber' => __DIR__ . '/..' . '/google/auth/src/Subscriber/ScopedAccessTokenSubscriber.php',
-        'Google\\Auth\\Subscriber\\SimpleSubscriber' => __DIR__ . '/..' . '/google/auth/src/Subscriber/SimpleSubscriber.php',
         'Google\\Auth\\UpdateMetadataInterface' => __DIR__ . '/..' . '/google/auth/src/UpdateMetadataInterface.php',
         'Google\\CRC32\\Builtin' => __DIR__ . '/..' . '/google/crc32/src/Builtin.php',
         'Google\\CRC32\\CRC32' => __DIR__ . '/..' . '/google/crc32/src/CRC32.php',
@@ -413,6 +413,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Google\\Cloud\\Core\\Iam\\Iam' => __DIR__ . '/..' . '/google/cloud-core/src/Iam/Iam.php',
         'Google\\Cloud\\Core\\Iam\\IamConnectionInterface' => __DIR__ . '/..' . '/google/cloud-core/src/Iam/IamConnectionInterface.php',
         'Google\\Cloud\\Core\\Iam\\PolicyBuilder' => __DIR__ . '/..' . '/google/cloud-core/src/Iam/PolicyBuilder.php',
+        'Google\\Cloud\\Core\\InsecureCredentialsWrapper' => __DIR__ . '/..' . '/google/cloud-core/src/InsecureCredentialsWrapper.php',
         'Google\\Cloud\\Core\\Int64' => __DIR__ . '/..' . '/google/cloud-core/src/Int64.php',
         'Google\\Cloud\\Core\\Iterator\\ItemIterator' => __DIR__ . '/..' . '/google/cloud-core/src/Iterator/ItemIterator.php',
         'Google\\Cloud\\Core\\Iterator\\ItemIteratorTrait' => __DIR__ . '/..' . '/google/cloud-core/src/Iterator/ItemIteratorTrait.php',
@@ -453,16 +454,19 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Google\\Cloud\\Core\\Testing\\ArrayHasSameValuesToken' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/ArrayHasSameValuesToken.php',
         'Google\\Cloud\\Core\\Testing\\CheckForClassTrait' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/CheckForClassTrait.php',
         'Google\\Cloud\\Core\\Testing\\DatastoreOperationRefreshTrait' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/DatastoreOperationRefreshTrait.php',
-        'Google\\Cloud\\Core\\Testing\\DocBlockStripSpaces' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/DocBlockStripSpaces.php',
         'Google\\Cloud\\Core\\Testing\\FileListFilterIterator' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/FileListFilterIterator.php',
+        'Google\\Cloud\\Core\\Testing\\GcTestListener' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/GcTestListener.php',
         'Google\\Cloud\\Core\\Testing\\GrpcTestTrait' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/GrpcTestTrait.php',
         'Google\\Cloud\\Core\\Testing\\KeyPairGenerateTrait' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/KeyPairGenerateTrait.php',
         'Google\\Cloud\\Core\\Testing\\Lock\\MockValues' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Lock/MockValues.php',
+        'Google\\Cloud\\Core\\Testing\\Reflection\\DescriptionFactory' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/DescriptionFactory.php',
+        'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerFactory' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerFactory.php',
+        'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerV3' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerV3.php',
+        'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerV4' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerV4.php',
         'Google\\Cloud\\Core\\Testing\\RegexFileFilter' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/RegexFileFilter.php',
         'Google\\Cloud\\Core\\Testing\\Snippet\\Container' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Container.php',
         'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\Coverage' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Coverage/Coverage.php',
         'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\ExcludeFilter' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Coverage/ExcludeFilter.php',
-        'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\ResultPrinter' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Coverage/ResultPrinter.php',
         'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\Scanner' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Coverage/Scanner.php',
         'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\ScannerInterface' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Coverage/ScannerInterface.php',
         'Google\\Cloud\\Core\\Testing\\Snippet\\Fixtures' => __DIR__ . '/..' . '/google/cloud-core/src/Testing/Snippet/Fixtures.php',
@@ -584,6 +588,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'GuzzleHttp\\Psr7\\StreamWrapper' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/StreamWrapper.php',
         'GuzzleHttp\\Psr7\\UploadedFile' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UploadedFile.php',
         'GuzzleHttp\\Psr7\\Uri' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Uri.php',
+        'GuzzleHttp\\Psr7\\UriComparator' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UriComparator.php',
         'GuzzleHttp\\Psr7\\UriNormalizer' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UriNormalizer.php',
         'GuzzleHttp\\Psr7\\UriResolver' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UriResolver.php',
         'GuzzleHttp\\Psr7\\Utils' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Utils.php',
@@ -592,6 +597,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'GuzzleHttp\\RetryMiddleware' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/RetryMiddleware.php',
         'GuzzleHttp\\TransferStats' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/TransferStats.php',
         'GuzzleHttp\\Utils' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Utils.php',
+        'Monolog\\Attribute\\AsMonologProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/AsMonologProcessor.php',
         'Monolog\\DateTimeImmutable' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/DateTimeImmutable.php',
         'Monolog\\ErrorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/ErrorHandler.php',
         'Monolog\\Formatter\\ChromePHPFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
@@ -601,6 +607,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Monolog\\Formatter\\FluentdFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/FluentdFormatter.php',
         'Monolog\\Formatter\\FormatterInterface' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/FormatterInterface.php',
         'Monolog\\Formatter\\GelfMessageFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/GelfMessageFormatter.php',
+        'Monolog\\Formatter\\GoogleCloudLoggingFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/GoogleCloudLoggingFormatter.php',
         'Monolog\\Formatter\\HtmlFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/HtmlFormatter.php',
         'Monolog\\Formatter\\JsonFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/JsonFormatter.php',
         'Monolog\\Formatter\\LineFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/LineFormatter.php',
@@ -676,6 +683,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Monolog\\Handler\\SqsHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/SqsHandler.php',
         'Monolog\\Handler\\StreamHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/StreamHandler.php',
         'Monolog\\Handler\\SwiftMailerHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/SwiftMailerHandler.php',
+        'Monolog\\Handler\\SymfonyMailerHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/SymfonyMailerHandler.php',
         'Monolog\\Handler\\SyslogHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/SyslogHandler.php',
         'Monolog\\Handler\\SyslogUdpHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/SyslogUdpHandler.php',
         'Monolog\\Handler\\SyslogUdp\\UdpSocket' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/SyslogUdp/UdpSocket.php',
@@ -684,6 +692,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Monolog\\Handler\\WebRequestRecognizerTrait' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/WebRequestRecognizerTrait.php',
         'Monolog\\Handler\\WhatFailureGroupHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/WhatFailureGroupHandler.php',
         'Monolog\\Handler\\ZendMonitorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Handler/ZendMonitorHandler.php',
+        'Monolog\\LogRecord' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/LogRecord.php',
         'Monolog\\Logger' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Logger.php',
         'Monolog\\Processor\\GitProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/GitProcessor.php',
         'Monolog\\Processor\\HostnameProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/HostnameProcessor.php',
@@ -707,6 +716,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'PhpOption\\None' => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption/None.php',
         'PhpOption\\Option' => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption/Option.php',
         'PhpOption\\Some' => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption/Some.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Prometheus\\Collector' => __DIR__ . '/..' . '/promphp/prometheus_client_php/src/Prometheus/Collector.php',
         'Prometheus\\CollectorRegistry' => __DIR__ . '/..' . '/promphp/prometheus_client_php/src/Prometheus/CollectorRegistry.php',
         'Prometheus\\Counter' => __DIR__ . '/..' . '/promphp/prometheus_client_php/src/Prometheus/Counter.php',
@@ -789,6 +799,7 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
         'Symfony\\Polyfill\\Ctype\\Ctype' => __DIR__ . '/..' . '/symfony/polyfill-ctype/Ctype.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
+        'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
@@ -796,9 +807,9 @@ class ComposerStaticInit0a8f238773fd09064e0063a5a00971a2
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0a8f238773fd09064e0063a5a00971a2::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0a8f238773fd09064e0063a5a00971a2::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit0a8f238773fd09064e0063a5a00971a2::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c::$classMap;
 
         }, null, ClassLoader::class);
     }

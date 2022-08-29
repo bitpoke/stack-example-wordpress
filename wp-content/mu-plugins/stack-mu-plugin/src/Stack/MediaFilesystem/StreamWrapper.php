@@ -606,7 +606,8 @@ class StreamWrapper
      */
     public function stream_metadata($path, $option, $value)
     {
-        return false;
+        // all meta operation are noop, for broader compaibility with media plugin ecosystem
+        return true;
     }
 
     /**

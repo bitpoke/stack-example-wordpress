@@ -25,8 +25,8 @@
         "composer/installers": "^1.9 || ^2.0",
         "vlucas/phpdotenv": ">=4.1.8 <6",
         "oscarotero/env": "^2.1",
-        "google/cloud-storage": "^1.21",
-        "google/auth": "^1.9.0",
+        "google/cloud-storage": "^1.28",
+        "google/auth": "^1.21.0",
         "promphp/prometheus_client_php": "^2.1"
     },
     "config": {

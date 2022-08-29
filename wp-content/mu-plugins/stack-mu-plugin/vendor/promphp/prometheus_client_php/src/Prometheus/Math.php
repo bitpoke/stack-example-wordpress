@@ -6,7 +6,6 @@ namespace Prometheus;
 
 class Math
 {
-
     /**
      * taken from https://www.php.net/manual/fr/function.stats-stat-percentile.php#79752
      * @param float[] $arr must be sorted
@@ -21,14 +20,11 @@ class Math
             return 0;
         }
 
-        $allindex = ($count - 1) * $q;
-        $intvalindex = (int) $allindex;
-        $floatval = $allindex - $intvalindex;
-        if ($count > $intvalindex + 1) {
-            $result = $floatval * ($arr[$intvalindex + 1] - $arr[$intvalindex]) + $arr[$intvalindex];
-        } else {
-            $result = $arr[$intvalindex];
+        $j = floor($count * $q);
+        $r = $count * $q - $j;
+        if (0.0 === $r) {
+            return $arr[$j - 1];
         }
-        return $result;
+        return $arr[$j];
     }
 }
