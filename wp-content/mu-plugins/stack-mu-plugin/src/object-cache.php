@@ -3,7 +3,7 @@
  * Plugin Name: Bitpoke Stack Object Cache
  * Plugin URI: https://www.bitpoke.io/stack/
  * Description: WordPress object cache backend for Bitpoke Stack. This backend is based on memcached.
- * Version: 0.7.2
+ * Version: 0.8.0
  * Author: Bitpoke
  * Author URI: http://www.bitpoke.io/
  */

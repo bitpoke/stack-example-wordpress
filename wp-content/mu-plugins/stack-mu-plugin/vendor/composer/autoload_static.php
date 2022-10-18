@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c
+class ComposerStaticInit7e25a8fca6e9b4c67e7dbc512129037b
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -784,7 +784,10 @@ class ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c
         'Stack\\BlobStore\\GoogleCloudStorage' => __DIR__ . '/../..' . '/src/Stack/BlobStore/GoogleCloudStorage.php',
         'Stack\\BlobStore\\LocalFilesystem' => __DIR__ . '/../..' . '/src/Stack/BlobStore/LocalFilesystem.php',
         'Stack\\BlobStore\\WordPressObjectCache' => __DIR__ . '/../..' . '/src/Stack/BlobStore/WordPressObjectCache.php',
+        'Stack\\CDNOffloader' => __DIR__ . '/../..' . '/src/Stack/CDNOffloader.php',
         'Stack\\Config' => __DIR__ . '/../..' . '/src/Stack/Config.php',
+        'Stack\\ContentFilter' => __DIR__ . '/../..' . '/src/Stack/ContentFilter.php',
+        'Stack\\ContentFilterInterface' => __DIR__ . '/../..' . '/src/Stack/ContentFilterInterface.php',
         'Stack\\DNSDiscovery' => __DIR__ . '/../..' . '/src/Stack/DNSDiscovery.php',
         'Stack\\MediaFilesystem\\StreamWrapper' => __DIR__ . '/../..' . '/src/Stack/MediaFilesystem/StreamWrapper.php',
         'Stack\\MediaStorage' => __DIR__ . '/../..' . '/src/Stack/MediaStorage.php',
@@ -807,9 +810,9 @@ class ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitfc556cd2a8ab5326d4f110b046776e0c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit7e25a8fca6e9b4c67e7dbc512129037b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit7e25a8fca6e9b4c67e7dbc512129037b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit7e25a8fca6e9b4c67e7dbc512129037b::$classMap;
 
         }, null, ClassLoader::class);
     }

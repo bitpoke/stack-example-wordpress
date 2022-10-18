@@ -3,7 +3,7 @@
  * Plugin Name: Bitpoke Stack
  * Plugin URI: https://www.bitpoke.io/stack/
  * Description: Must-Use plugin for Stack
- * Version: 0.7.2
+ * Version: 0.8.0
  * Author: Bitpoke
  * Author URI: https://www.bitpoke.io/
  */

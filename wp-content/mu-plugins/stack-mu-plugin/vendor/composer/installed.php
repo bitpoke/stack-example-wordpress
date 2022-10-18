@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'v0.7.2',
-        'version' => '0.7.2.0',
+        'pretty_version' => 'v0.8.0',
+        'version' => '0.8.0.0',
         'type' => 'wordpress-muplugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '686250854770dd929f993ccf2936a861418636e8',
+        'reference' => '7e108ec37f1c7018eed335ab5ffae2c0fd02902e',
         'name' => 'bitpoke/stack-mu-plugin',
         'dev' => false,
     ),
     'versions' => array(
         'bitpoke/stack-mu-plugin' => array(
-            'pretty_version' => 'v0.7.2',
-            'version' => '0.7.2.0',
+            'pretty_version' => 'v0.8.0',
+            'version' => '0.8.0.0',
             'type' => 'wordpress-muplugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '686250854770dd929f993ccf2936a861418636e8',
+            'reference' => '7e108ec37f1c7018eed335ab5ffae2c0fd02902e',
             'dev_requirement' => false,
         ),
         'composer/installers' => array(
