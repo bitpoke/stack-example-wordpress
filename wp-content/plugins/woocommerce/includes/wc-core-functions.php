@@ -703,7 +703,7 @@ function get_woocommerce_currency_symbols() {
 			'CVE' => '&#36;',
 			'CZK' => '&#75;&#269;',
 			'DJF' => 'Fr',
-			'DKK' => 'DKK',
+			'DKK' => 'kr.',
 			'DOP' => 'RD&#36;',
 			'DZD' => '&#x62f;.&#x62c;',
 			'EGP' => 'EGP',
@@ -948,15 +948,6 @@ function wc_get_image_size( $image_size ) {
 		$image_size = $size['width'] . '_' . $size['height'];
 	} else {
 		$image_size = str_replace( 'woocommerce_', '', $image_size );
-
-		// Legacy size mapping.
-		if ( 'shop_single' === $image_size ) {
-			$image_size = 'single';
-		} elseif ( 'shop_catalog' === $image_size ) {
-			$image_size = 'thumbnail';
-		} elseif ( 'shop_thumbnail' === $image_size ) {
-			$image_size = 'gallery_thumbnail';
-		}
 
 		if ( 'single' === $image_size ) {
 			$size['width']  = absint( wc_get_theme_support( 'single_image_width', get_option( 'woocommerce_single_image_width', 600 ) ) );
@@ -2098,7 +2089,7 @@ function wc_print_r( $expression, $return = false ) {
  */
 function wc_register_default_log_handler( $handlers ) {
 	$handler_class = Constants::get_constant( 'WC_LOG_HANDLER' );
-	if ( ! class_exists( $handler_class ) ) {
+	if ( is_null( $handler_class ) || ! class_exists( $handler_class ) ) {
 		$handler_class = WC_Log_Handler_File::class;
 	}
 
@@ -2521,20 +2512,15 @@ function wc_selected( $value, $options ) {
 function wc_get_server_database_version() {
 	global $wpdb;
 
-	if ( empty( $wpdb->is_mysql ) ) {
+	if ( empty( $wpdb->is_mysql ) || ! $wpdb->use_mysqli ) {
 		return array(
 			'string' => '',
 			'number' => '',
 		);
 	}
 
-	// phpcs:disable WordPress.DB.RestrictedFunctions, PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved
-	if ( $wpdb->use_mysqli ) {
-		$server_info = mysqli_get_server_info( $wpdb->dbh );
-	} else {
-		$server_info = mysql_get_server_info( $wpdb->dbh );
-	}
-	// phpcs:enable WordPress.DB.RestrictedFunctions, PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved
+	// phpcs:ignore WordPress.DB.RestrictedFunctions
+	$server_info = mysqli_get_server_info( $wpdb->dbh );
 
 	return array(
 		'string' => $server_info,

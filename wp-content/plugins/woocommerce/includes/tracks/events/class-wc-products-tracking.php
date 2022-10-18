@@ -134,23 +134,41 @@ class WC_Products_Tracking {
 			"
 			if ( $( 'h1.wp-heading-inline' ).text().trim() === '" . __( 'Edit product', 'woocommerce' ) . "') {
 				var initialStockValue = $( '#_stock' ).val();
-				var hasRecordedEvent = false;
+				var isBlockEditor = false;
+				var child_element = '#publish';
 
-				$( '#publish' ).on( 'click', function() {
-					if ( hasRecordedEvent ) {
-						return;
+				if ( $( '.block-editor' ).length !== 0 && $( '.block-editor' )[0] ) {
+	    			isBlockEditor = true;
+				}
+
+				if ( isBlockEditor ) {
+					child_element = '.editor-post-publish-button';
+				}
+
+				$( '#wpwrap' ).on( 'click', child_element, function() {
+					var description_value  = '';
+					var tagsText = '';
+					var currentStockValue = $( '#_stock' ).val();
+
+					if ( ! isBlockEditor ) {
+						tagsText          = $( '[name=\"tax_input[product_tag]\"]' ).val();
+						if ( $( '#content' ).is( ':visible' ) ) {
+							description_value = $( '#content' ).val();	
+						} else if ( typeof tinymce === 'object' && tinymce.get( 'content' ) ) {
+							description_value = tinymce.get( 'content' ).getContent();
+						}
+					} else {
+						description_value  = $( '.block-editor-rich-text__editable' ).text();
 					}
 
-					var tagsText          = $( '[name=\"tax_input[product_tag]\"]' ).val();
-					var currentStockValue = $( '#_stock' ).val();
-					var description_value  = $( '#content' ).is( ':visible' ) ? $( '#content' ).val() : tinymce.get( 'content' ).getContent();
 					var properties = {
 						attributes:				$( '.woocommerce_attribute' ).length,
 						categories:				$( '[name=\"tax_input[product_cat][]\"]:checked' ).length,
 						cross_sells:			$( '#crosssell_ids option' ).length ? 'Yes' : 'No',
-						description:			description_value.length ? 'Yes' : 'No',
+						description:			description_value.trim() !== '' ? 'Yes' : 'No',
 						enable_reviews:			$( '#comment_status' ).is( ':checked' ) ? 'Yes' : 'No',
 						is_virtual:				$( '#_virtual' ).is( ':checked' ) ? 'Yes' : 'No',
+						is_block_editor:		isBlockEditor,
 						is_downloadable:		$( '#_downloadable' ).is( ':checked' ) ? 'Yes' : 'No',
 						manage_stock:			$( '#_manage_stock' ).is( ':checked' ) ? 'Yes' : 'No',
 						menu_order:				$( '#menu_order' ).val() ? 'Yes' : 'No',
@@ -165,9 +183,7 @@ class WC_Products_Tracking {
 						upsells:				$( '#upsell_ids option' ).length ? 'Yes' : 'No',
 						weight:					$( '#_weight' ).val() ? 'Yes' : 'No',
 					};
-
 					window.wcTracks.recordEvent( 'product_update', properties );
-					hasRecordedEvent = true;
 				} );
 			}
 			"
@@ -329,17 +345,7 @@ class WC_Products_Tracking {
 			return;
 		}
 
-		$script_assets_filename = WCAdminAssets::get_script_asset_filename( 'wp-admin-scripts', 'product-tracking' );
-		$script_assets          = require WC_ADMIN_ABSPATH . WC_ADMIN_DIST_JS_FOLDER . 'wp-admin-scripts/' . $script_assets_filename;
-
-		wp_enqueue_script(
-			'wc-admin-product-tracking',
-			WCAdminAssets::get_url( 'wp-admin-scripts/product-tracking', 'js' ),
-			array_merge( array( WC_ADMIN_APP ), $script_assets ['dependencies'] ),
-			WCAdminAssets::get_file_version( 'js' ),
-			true
-		);
-
+		WCAdminAssets::register_script( 'wp-admin-scripts', 'product-tracking', false );
 		wp_localize_script(
 			'wc-admin-product-tracking',
 			'productScreen',
@@ -365,16 +371,7 @@ class WC_Products_Tracking {
 		}
 		// phpcs:enable
 
-		$script_assets_filename = WCAdminAssets::get_script_asset_filename( 'wp-admin-scripts', 'attributes-tracking' );
-		$script_assets          = require WC_ADMIN_ABSPATH . WC_ADMIN_DIST_JS_FOLDER . 'wp-admin-scripts/' . $script_assets_filename;
-
-		wp_enqueue_script(
-			'wc-admin-attributes-tracking',
-			WCAdminAssets::get_url( 'wp-admin-scripts/attributes-tracking', 'js' ),
-			array_merge( array( WC_ADMIN_APP ), $script_assets ['dependencies'] ),
-			WCAdminAssets::get_file_version( 'js' ),
-			true
-		);
+		WCAdminAssets::register_script( 'wp-admin-scripts', 'attributes-tracking', false );
 	}
 
 	/**
@@ -398,17 +395,7 @@ class WC_Products_Tracking {
 			isset( $_GET['taxonomy'] ) &&
 			'product_tag' === wp_unslash( $_GET['taxonomy'] )
 		) {
-			// phpcs:enable
-			$tags_script_assets_filename = WCAdminAssets::get_script_asset_filename( 'wp-admin-scripts', 'tags-tracking' );
-			$tags_script_assets          = require WC_ADMIN_ABSPATH . WC_ADMIN_DIST_JS_FOLDER . 'wp-admin-scripts/' . $tags_script_assets_filename;
-
-			wp_enqueue_script(
-				'wc-admin-tags-tracking',
-				WCAdminAssets::get_url( 'wp-admin-scripts/tags-tracking', 'js' ),
-				array_merge( array( WC_ADMIN_APP ), $tags_script_assets ['dependencies'] ),
-				WCAdminAssets::get_file_version( 'js' ),
-				true
-			);
+			WCAdminAssets::register_script( 'wp-admin-scripts', 'tags-tracking', false );
 			return;
 		}
 
@@ -417,29 +404,9 @@ class WC_Products_Tracking {
 			isset( $_GET['taxonomy'] ) &&
 			'product_cat' === wp_unslash( $_GET['taxonomy'] )
 		) {
-			// phpcs:enable
-			$category_script_assets_filename = WCAdminAssets::get_script_asset_filename( 'wp-admin-scripts', 'category-tracking' );
-			$category_script_assets          = require WC_ADMIN_ABSPATH . WC_ADMIN_DIST_JS_FOLDER . 'wp-admin-scripts/' . $category_script_assets_filename;
-
-			wp_enqueue_script(
-				'wc-admin-category-tracking',
-				WCAdminAssets::get_url( 'wp-admin-scripts/category-tracking', 'js' ),
-				array_merge( array( WC_ADMIN_APP ), $category_script_assets ['dependencies'] ),
-				WCAdminAssets::get_file_version( 'js' ),
-				true
-			);
+			WCAdminAssets::register_script( 'wp-admin-scripts', 'category-tracking', false );
 			return;
 		}
-
-		$script_assets_filename = WCAdminAssets::get_script_asset_filename( 'wp-admin-scripts', 'add-term-tracking' );
-		$script_assets          = require WC_ADMIN_ABSPATH . WC_ADMIN_DIST_JS_FOLDER . 'wp-admin-scripts/' . $script_assets_filename;
-
-		wp_enqueue_script(
-			'wc-admin-add-term-tracking',
-			WCAdminAssets::get_url( 'wp-admin-scripts/add-term-tracking', 'js' ),
-			array_merge( array( WC_ADMIN_APP ), $script_assets ['dependencies'] ),
-			WCAdminAssets::get_file_version( 'js' ),
-			true
-		);
+		WCAdminAssets::register_script( 'wp-admin-scripts', 'add-term-tracking', false );
 	}
 }

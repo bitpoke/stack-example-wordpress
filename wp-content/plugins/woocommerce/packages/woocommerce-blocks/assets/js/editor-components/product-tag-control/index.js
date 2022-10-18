@@ -93,13 +93,8 @@ class ProductTagControl extends Component {
 
 	render() {
 		const { list, loading } = this.state;
-		const {
-			isCompact,
-			onChange,
-			onOperatorChange,
-			operator,
-			selected,
-		} = this.props;
+		const { isCompact, onChange, onOperatorChange, operator, selected } =
+			this.props;
 
 		const messages = {
 			clear: __(
@@ -108,7 +103,7 @@ class ProductTagControl extends Component {
 			),
 			list: __( 'Product Tags', 'woocommerce' ),
 			noItems: __(
-				"Your store doesn't have any product tags.",
+				'You have not set up any product tags on your store.',
 				'woocommerce'
 			),
 			search: __(

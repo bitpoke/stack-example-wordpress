@@ -282,6 +282,37 @@ function wc_product_post_type_link( $permalink, $post ) {
 add_filter( 'post_type_link', 'wc_product_post_type_link', 10, 2 );
 
 /**
+ * Filter to add upload tips under the product image thumbnail.
+ *
+ * @param  string $content The HTML markup for the admin post thumbnail.
+ * @return string
+ */
+function wc_product_post_thumbnail_html( $content ) {
+	$suggestion  = '<div class="image-added-detail">';
+	$suggestion .= '<p>';
+	$suggestion .= '<span class="dashicons-info-outline dashicons"></span>';
+	/* translators: 1: formatted file size */
+	$suggestion .= esc_html( sprintf( __( 'Upload JPEG files that are 1000 x 1000 pixels or larger (max. %1$s).', 'woocommerce' ), size_format( wp_max_upload_size() ) ) );
+	$suggestion .= ' <a href="https://woocommerce.com/posts/fast-high-quality-product-photos/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'How to prepare images?', 'woocommerce' ) . '<span class="dashicons-external dashicons"></span></a>';
+	$suggestion .= '</p>';
+	$suggestion .= '</div>';
+
+	return $content . $suggestion;
+}
+
+/**
+ * Action to add the filter to add upload tips under the product image thumbnail.
+ *
+ * @param WP_Screen $current_screen Current WP_Screen object.
+ */
+function wc_add_product_post_thumbnail_html_filter( $current_screen ) {
+	if ( 'product' === $current_screen->post_type && 'post' === $current_screen->base ) {
+		add_filter( 'admin_post_thumbnail_html', 'wc_product_post_thumbnail_html' );
+	}
+}
+add_action( 'current_screen', 'wc_add_product_post_thumbnail_html_filter' );
+
+/**
  * Get the placeholder image URL either from media, or use the fallback image.
  *
  * @param string $size Thumbnail size to use.
@@ -392,7 +423,7 @@ function wc_get_formatted_variation( $variation, $flat = false, $include_names =
 			// If this is a term slug, get the term's nice name.
 			if ( taxonomy_exists( $name ) ) {
 				$term = get_term_by( 'slug', $value, $name );
-				if ( ! is_wp_error( $term ) && ! empty( $term->name ) ) {
+				if ( ! is_wp_error( $term ) && $term && null !== $term->name && '' !== $term->name ) {
 					$value = $term->name;
 				}
 			}
@@ -987,7 +1018,7 @@ function wc_get_price_including_tax( $product, $args = array() ) {
 		)
 	);
 
-	$price = '' !== $args['price'] ? max( 0.0, (float) $args['price'] ) : $product->get_price();
+	$price = '' !== $args['price'] ? max( 0.0, (float) $args['price'] ) : (float) $product->get_price();
 	$qty   = '' !== $args['qty'] ? max( 0.0, (float) $args['qty'] ) : 1;
 
 	if ( '' === $price ) {
@@ -1071,7 +1102,7 @@ function wc_get_price_excluding_tax( $product, $args = array() ) {
 		)
 	);
 
-	$price = '' !== $args['price'] ? max( 0.0, (float) $args['price'] ) : $product->get_price();
+	$price = '' !== $args['price'] ? max( 0.0, (float) $args['price'] ) : (float) $product->get_price();
 	$qty   = '' !== $args['qty'] ? max( 0.0, (float) $args['qty'] ) : 1;
 
 	if ( '' === $price ) {

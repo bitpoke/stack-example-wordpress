@@ -27,7 +27,7 @@ class WooCommercePayments extends Task {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Get paid with WooCommerce Payments', 'woocommerce' );
+		return __( 'Set up WooCommerce Payments', 'woocommerce' );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class WooCommercePayments extends Task {
 	 */
 	public function get_additional_info() {
 		return __(
-			'By setting up, you are agreeing to the <a href="https://wordpress.com/tos/" target="_blank">Terms of Service</a>',
+			'By using WooCommerce Payments you agree to be bound by our <a href="https://wordpress.com/tos/" target="_blank">Terms of Service</a> and acknowledge that you have read our <a href="https://automattic.com/privacy/" target="_blank">Privacy Policy</a>',
 			'woocommerce'
 		);
 	}
@@ -87,9 +87,9 @@ class WooCommercePayments extends Task {
 	 * @return bool
 	 */
 	public function can_view() {
-		$has_task_list_previously_completed = ( new TaskList( array( 'id' => 'setup' ) ) )->has_previously_completed();
+		$payments = $this->task_list->get_task( 'payments' );
 
-		return ! $has_task_list_previously_completed && // Do not re-display the task if the task list has already been completed.
+		return ! $payments->is_complete() && // Do not re-display the task if the "add payments" task has already been completed.
 			self::is_installed() &&
 			self::is_supported() &&
 			( $this->get_parent_id() !== 'setup_two_column' || ! self::is_connected() );

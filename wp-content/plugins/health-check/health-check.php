@@ -9,33 +9,22 @@
  * Plugin URI: https://wordpress.org/plugins/health-check/
  * Description: Checks the health of your WordPress install.
  * Author: The WordPress.org community
- * Version: 1.4.5
+ * Version: 1.5.0
  * Author URI: https://wordpress.org/plugins/health-check/
  * Text Domain: health-check
  */
 
+namespace HealthCheck;
+
 // Check that the file is not accessed directly.
+use Health_Check;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-// Set the minimum PHP version WordPress supports.
-define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
-
-// Set the lowest PHP version still receiving security updates.
-define( 'HEALTH_CHECK_PHP_SUPPORTED_VERSION', '5.6' );
-
-// Set the PHP version WordPress recommends.
-define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.2' );
-
-// Set the minimum MySQL version WordPress supports.
-define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
-
-// Set the MySQL version WordPress recommends.
-define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
-
 // Set the plugin version.
-define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.4.5' );
+define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.5.0' );
 
 // Set the plugin file.
 define( 'HEALTH_CHECK_PLUGIN_FILE', __FILE__ );
@@ -46,42 +35,44 @@ define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
 // Set the plugin URL root.
 define( 'HEALTH_CHECK_PLUGIN_URL', plugins_url( '/', __FILE__ ) );
 
-// Set the current cURL version.
-define( 'HEALTH_CHECK_CURL_VERSION', '7.58' );
-
-// Set the minimum cURL version that we've tested that core works with.
-define( 'HEALTH_CHECK_CURL_MIN_VERSION', '7.38' );
-
 // Always include our compatibility file first.
-require_once( dirname( __FILE__ ) . '/includes/compat.php' );
+require_once( dirname( __FILE__ ) . '/compat.php' );
+
+// Backwards compatible pull in of extra resources
+if ( ! class_exists( 'WP_Debug_Data' ) ) {
+	$original_paths = array(
+		'class-wp-site-health.php' => ABSPATH . '/wp-admin/includes/class-wp-site-health.php',
+		'class-wp-debug-data.php'  => ABSPATH . '/wp-admin/includes/class-wp-debug-data.php',
+	);
+
+	foreach ( $original_paths as $filename => $original_path ) {
+		if ( file_exists( $original_path ) ) {
+			require_once $original_path;
+		} else {
+			require_once __DIR__ . '/HealthCheck/BackCompat/' . $filename;
+
+			if ( ! defined( 'HEALTH_CHECK_BACKCOMPAT_LOADED' ) ) {
+				define( 'HEALTH_CHECK_BACKCOMPAT_LOADED', true );
+			}
+		}
+	}
+}
 
 // Include class-files used by our plugin.
-require_once( dirname( __FILE__ ) . '/includes/class-health-check.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-site-status.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-updates.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-dashboard-widget.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-loopback.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-troubleshoot.php' );
 
 // Tools section.
-require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-tool.php' );
-require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-files-integrity.php' );
-require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-mail-check.php' );
-require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-plugin-compatibility.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-tool.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-files-integrity.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-mail-check.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-plugin-compatibility.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-phpinfo.php' );
 
 // Initialize our plugin.
 new Health_Check();
 
-// Initialize the dashboard widget.
-new Health_Check_Dashboard_Widget();
-
-// Setup up scheduled events.
-register_activation_hook( __FILE__, array( 'Health_Check', 'plugin_activation' ) );
-register_deactivation_hook( __FILE__, array( 'Health_Check', 'plugin_deactivation' ) );
-
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cli.php' );
+	require_once( dirname( __FILE__ ) . '/HealthCheck/class-cli.php' );
 }

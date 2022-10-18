@@ -9,15 +9,12 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
  * Internal dependencies
  */
-import {
-	useColorProps,
-	useTypographyProps,
-} from '../../../../hooks/style-attributes';
 
 /**
  * Product Price Block Component.
@@ -79,7 +76,8 @@ const Block = ( props ) => {
 			// This is the regular or original price when the `price` value is a sale price.
 			regularPrice={ prices.regular_price }
 			regularPriceClassName={ classnames( {
-				[ `${ parentClassName }__product-price__regular` ]: parentClassName,
+				[ `${ parentClassName }__product-price__regular` ]:
+					parentClassName,
 			} ) }
 		/>
 	);

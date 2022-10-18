@@ -64,7 +64,7 @@ class WC_Order_Refund extends WC_Abstract_Order {
 	 */
 	public function get_post_title() {
 		// @codingStandardsIgnoreStart
-		return sprintf( __( 'Refund &ndash; %s', 'woocommerce' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'woocommerce' ) ) );
+		return sprintf( __( 'Refund &ndash; %s', 'woocommerce' ), (new DateTime('now'))->format( _x( 'M d, Y @ h:i A', 'Order date parsed by DateTime::format', 'woocommerce' ) ) );
 		// @codingStandardsIgnoreEnd
 	}
 
@@ -194,7 +194,7 @@ class WC_Order_Refund extends WC_Abstract_Order {
 			return false;
 		}
 
-		$result = get_post( $id );
+		$result = wc_get_order( $id );
 
 		if ( $result ) {
 			$this->populate( $result );
