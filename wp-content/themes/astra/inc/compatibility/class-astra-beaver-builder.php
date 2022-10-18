@@ -46,6 +46,28 @@ if ( ! class_exists( 'Astra_Beaver_Builder' ) ) :
 			add_action( 'wp', array( $this, 'beaver_builder_default_setting' ), 20 );
 			add_action( 'do_meta_boxes', array( $this, 'beaver_builder_default_setting' ), 20 );
 			add_filter( 'astra_theme_assets', array( $this, 'add_styles' ) );
+			add_filter( 'astra_disable_block_content_attr', array( $this, 'remove_astra_block_editor_attr' ), 10, 2 );
+		}
+
+		/**
+		 * Disable Astra's block editor attr which applied for further block layout CSS.
+		 *
+		 * @param bool $flag Flag to enable/disable entry content attr.
+		 * @param int  $post_id Post ID.
+		 *
+		 * @since  3.8.1
+		 * @return bool true|false
+		 */
+		public function remove_astra_block_editor_attr( $flag, $post_id ) {
+			$post = get_post( $post_id );
+
+			/** @psalm-suppress PossiblyInvalidPropertyFetch */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			if ( ! empty( $post->post_content ) && is_callable( 'FLBuilderModel::is_builder_enabled' ) && FLBuilderModel::is_builder_enabled() ) {
+				/** @psalm-suppress PossiblyInvalidPropertyFetch */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				$flag = false;
+			}
+
+			return $flag;
 		}
 
 		/**
@@ -68,21 +90,44 @@ if ( ! class_exists( 'Astra_Beaver_Builder' ) ) :
 			$page_builder_flag = get_post_meta( $id, '_astra_content_layout_flag', true );
 			if ( isset( $post ) && empty( $page_builder_flag ) && ( is_admin() || is_singular() ) ) {
 
-				if ( empty( $post->post_content ) && $do_render && FLBuilderModel::is_builder_enabled() ) {
+				/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				if ( empty( $post->post_content ) && $do_render && is_callable( 'FLBuilderModel::is_builder_enabled' ) && FLBuilderModel::is_builder_enabled() ) {
+					/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					update_post_meta( $id, '_astra_content_layout_flag', 'disabled' );
-					update_post_meta( $id, 'site-post-title', 'disabled' );
-					update_post_meta( $id, 'ast-title-bar-display', 'disabled' );
-					update_post_meta( $id, 'ast-featured-img', 'disabled' );
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					update_post_meta( $id, 'site-post-title', 'disabled' );
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					update_post_meta( $id, 'ast-title-bar-display', 'disabled' );
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					update_post_meta( $id, 'ast-featured-img', 'disabled' );
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					$content_layout = get_post_meta( $id, 'site-content-layout', true );
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
 					if ( empty( $content_layout ) || 'default' == $content_layout ) {
+						/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						update_post_meta( $id, 'site-content-layout', 'page-builder' );
+						/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					}
 
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					$sidebar_layout = get_post_meta( $id, 'site-sidebar-layout', true );
+					/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
 					if ( empty( $sidebar_layout ) || 'default' == $sidebar_layout ) {
+						/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						update_post_meta( $id, 'site-sidebar-layout', 'no-sidebar' );
+						/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					}
 				}
 			}

@@ -278,7 +278,7 @@ body #learndash_lessons #quiz_list,
 body #learndash_lessons .lessons_list,
 body #learndash_quizzes #quiz_list,
 body #learndash_quizzes .lessons_list {
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--ast-border-color);
   border-top: none;
   overflow: hidden;
 }
@@ -329,7 +329,7 @@ body .wpProQuiz_content .wpProQuiz_questionList {
   margin-bottom: 1em;
   padding: 1em;
   background: #fbfbfb;
-  border-color: #e2e2e2;
+  border-color: var(--ast-border-color);
 }
 
 body .wpProQuiz_content .wpProQuiz_questionList[data-type="single"] .wpProQuiz_answerIncorrect,
@@ -397,7 +397,7 @@ body .wpProQuiz_content .wpProQuiz_questionList[data-type="sort_answer"] .wpProQ
   padding: 5px 10px;
   background: #fbfbfb;
   box-shadow: none;
-  border-color: #e2e2e2;
+  border-color: var(--ast-border-color);
   display: inline-block;
   width: 100%;
   position: relative;
@@ -433,7 +433,7 @@ body .wpProQuiz_content .wpProQuiz_questionList[data-type="matrix_sort_answer"] 
 body .wpProQuiz_content .wpProQuiz_listItem[data-type="matrix_sort_answer"] .wpProQuiz_matrixSortString,
 body .wpProQuiz_content .wpProQuiz_questionList[data-type="matrix_sort_answer"] .wpProQuiz_matrixSortString {
   background: #fff;
-  border-color: #e2e2e2;
+  border-color: var(--ast-border-color);
   padding: 5px 15px 15px;
 }
 
@@ -498,14 +498,14 @@ body .wpProQuiz_content .wpProQuiz_tipp > div {
   left: 0;
   bottom: 12px;
   background: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid var(--ast-border-color);
   box-shadow: 0px 0px 4px 0px #ccc;
   max-width: 500px;
 }
 
 body .wpProQuiz_content .wpProQuiz_tipp > div .wpProQuiz_header {
   font-weight: 600;
-  border-bottom: 1px solid #e2e2e2;
+  border-bottom: 1px solid var(--ast-border-color);
   padding-bottom: 5px;
 }
 
@@ -522,9 +522,8 @@ body .wpProQuiz_content .wpProQuiz_tipp > div:before, body .wpProQuiz_content .w
 body .wpProQuiz_content .wpProQuiz_tipp > div:before {
   bottom: 0px;
   border-left: 8px solid transparent;
-  border-top: 8px solid #eee;
+  border-top: 8px solid var(--ast-border-color);
   border-right: 8px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.2);
   left: 15px;
 }
 
@@ -582,7 +581,7 @@ body .wpProQuiz_content .wpProQuiz_loadQuiz p {
 
 body .wpProQuiz_content .wpProQuiz_box,
 body .wpProQuiz_content .wpProQuiz_reviewQuestion {
-  border-color: #e2e2e2;
+  border-color: var(--ast-border-color);
   background-color: #fbfbfb;
 }
 
@@ -592,7 +591,7 @@ body .wpProQuiz_content .wpProQuiz_reviewQuestion li {
   height: 2.5em;
   line-height: 2.5;
   padding: 0;
-  border-color: #e2e2e2;
+  border-color: var(--ast-border-color);
   box-shadow: none;
   font-weight: 600;
 }

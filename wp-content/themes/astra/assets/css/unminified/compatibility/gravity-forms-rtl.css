@@ -9,7 +9,7 @@
   height: 2.2em;
   border-width: 1px;
   border-style: solid;
-  border-color: #eaeaea;
+  border-color: var(--ast-border-color);
   border-radius: 2px;
   background: #fafafa;
   padding: 0;
@@ -27,7 +27,7 @@
 .gform_wrapper textarea:focus,
 .gform_wrapper select:focus {
   background: #fff;
-  border-color: #eaeaea;
+  border-color: var(--ast-border-color);
   outline: 0;
   box-shadow: none;
 }

@@ -41,6 +41,20 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 			$_configs = array(
 
 				/**
+				 * Option: Divider
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[llms-course-grid-divider]',
+					'section'  => $section,
+					'title'    => __( 'Columns', 'astra' ),
+					'type'     => 'control',
+					'control'  => 'ast-heading',
+					'priority' => 1,
+					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+				),
+
+				/**
 				 * Option: Course Columns
 				 */
 				array(
@@ -58,13 +72,13 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 						)
 					),
 					'title'             => __( 'Course Columns', 'astra' ),
-					'priority'          => 0,
+					'priority'          => 1,
 					'input_attrs'       => array(
 						'step' => 1,
 						'min'  => 1,
 						'max'  => 6,
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
 				),
 
 				/**
@@ -85,15 +99,37 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 						)
 					),
 					'title'             => __( 'Membership Columns', 'astra' ),
-					'priority'          => 0,
+					'priority'          => 1,
 					'input_attrs'       => array(
 						'step' => 1,
 						'min'  => 1,
 						'max'  => 6,
 					),
-					'divider'           => $divider_array,
 				),
 			);
+
+			// Learn More link if Astra Pro is not activated.
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+
+				$_configs[] =
+
+					/**
+					 * Option: Learn More about Contant Typography
+					 */
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[llms-button-link]',
+						'type'     => 'control',
+						'control'  => 'ast-button-link',
+						'section'  => $section,
+						'priority' => 999,
+						'title'    => __( 'View Astra Pro Features', 'astra' ),
+						'url'      => astra_get_pro_url( 'https://wpastra.com/pro', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+						'settings' => array(),
+						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+
+					);
+
+			}
 
 			return array_merge( $configurations, $_configs );
 

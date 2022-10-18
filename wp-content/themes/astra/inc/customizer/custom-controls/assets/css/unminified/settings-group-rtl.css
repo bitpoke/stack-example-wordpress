@@ -1,19 +1,18 @@
 .ast-adv-toggle-icon {
   left: 2px;
-  top: 0;
   position: absolute;
   width: 18px;
   height: 18px;
   font-size: 18px;
-  border: 1px solid #ddd;
   border-radius: 2px;
   padding: 4px;
-  color: #0073aa;
-  background: #fff;
+  color: var(--ast-customizer-color-8);
+  background: var(--ast-customizer-color-9);
+  cursor: pointer;
 }
 
 .ast-adv-toggle-icon:hover {
-  color: #099fd6;
+  color: var(--ast-customizer-color-1);
 }
 
 .ast-adv-toggle-icon:before {
@@ -204,7 +203,23 @@
   margin-bottom: 10px;
   font-size: 13px;
   margin-top: 3px;
-  display: block;
+}
+
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-responsive-slider .ast-responsive-units,
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-responsive-slider .ast-range-unit,
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-slider .ast-range-unit,
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-slider .ast-range-unit {
+  top: 6px;
+}
+
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-responsive-slider .ast-resp-slider-reset-wrap,
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-slider .ast-resp-slider-reset-wrap {
+  top: 3px;
+}
+
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-slider .ast-responsive-slider-btns,
+.customize-control-ast-settings-group .ast-field-settings-modal .customize-control-ast-responsive-slider .ast-responsive-slider-btns {
+  top: 2px;
 }
 
 .ast-field-settings-modal .customize-control {
@@ -312,3 +327,12 @@
 .ast-top-divider.customize-control-ast-settings-group .ast-toggle-desc-wrap .ast-adv-toggle-icon {
     top: 23px;
 }
+
+/**
+ * Responsive slider control inside settings-group, case: body-font, headings-font.
+ */
+ .ast-fields-wrap .customize-control-ast-responsive-slider .ast-slider-wrap > label,
+ .ast-fields-wrap .customize-control-ast-selector .ast-slider-wrap > label {
+    display: inline-block;
+}
+

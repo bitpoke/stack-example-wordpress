@@ -53,7 +53,7 @@ class Astra_Performance_Configs extends Astra_Customizer_Config_Base {
 				'type'      => 'control',
 				'control'   => 'ast-toggle-control',
 				'title'     => __( 'Preload Local Fonts', 'astra' ),
-				'divider'   => array( 'ast_class' => 'ast-top-divider ast-bottom-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-top-dotted-divider ast-bottom-dotted-divider' ),
 				'section'   => 'section-performance',
 				'transport' => 'postMessage',
 				'priority'  => 20,
@@ -78,6 +78,7 @@ class Astra_Performance_Configs extends Astra_Customizer_Config_Base {
 				'title'    => __( 'Flush Local Fonts Cache', 'astra' ),
 				'help'     => '<p>' . __( 'Click the button to reset the local fonts cache.', 'astra' ) . '</p> <br/> <input type="button" class="button button-secondary ast-flush-font-files" value="' . __( 'Flush Local Font Files', 'astra' ) . '"/>',
 				'settings' => array(),
+				'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				'context'  => array(
 					array(
 						'setting'  => ASTRA_THEME_SETTINGS . '[load-google-fonts-locally]',

@@ -264,7 +264,7 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 					),
 					'priority'  => 18,
 					'transport' => 'postMessage',
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
 				),
 
 				/**
@@ -293,7 +293,53 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 					'section'   => 'section-buttons',
 					'transport' => 'postMessage',
 					'priority'  => 18.5,
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+				),
+
+				/**
+				 * Group: Theme Button Border Group
+				 */
+				array(
+					'name'      => ASTRA_THEME_SETTINGS . '[theme-button-border-color-group]',
+					'default'   => astra_get_option( 'theme-button-border-color-group' ),
+					'type'      => 'control',
+					'control'   => 'ast-color-group',
+					'title'     => __( 'Border Color', 'astra' ),
+					'section'   => 'section-buttons',
+					'transport' => 'postMessage',
+					'priority'  => 18.5,
+					'divider'   => array( 'ast_class' => 'ast-bottom-section-divider' ),
+				),
+
+				/**
+				 * Option: Global Button Border Color
+				 */
+				array(
+					'name'              => 'theme-button-border-group-border-color',
+					'parent'            => ASTRA_THEME_SETTINGS . '[theme-button-border-color-group]',
+					'default'           => astra_get_option( 'theme-button-border-group-border-color' ),
+					'transport'         => 'postMessage',
+					'type'              => 'sub-control',
+					'section'           => 'section-buttons',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'priority'          => 18.5,
+					'title'             => __( 'Border Color', 'astra' ),
+				),
+
+				/**
+				 * Option: Global Button Border Hover Color
+				 */
+				array(
+					'name'              => 'theme-button-border-group-border-h-color',
+					'default'           => astra_get_option( 'theme-button-border-group-border-h-color' ),
+					'parent'            => ASTRA_THEME_SETTINGS . '[theme-button-border-color-group]',
+					'transport'         => 'postMessage',
+					'type'              => 'sub-control',
+					'section'           => 'section-buttons',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'priority'          => 18.5,
+					'title'             => __( 'Border Hover Color', 'astra' ),
 				),
 
 				/**
@@ -351,6 +397,31 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 				),
 
 				/**
+				 * Option: Theme Button Padding
+				 */
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[theme-button-padding]',
+					'default'           => astra_get_option( 'theme-button-padding' ),
+					'type'              => 'control',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'section'           => 'section-buttons',
+					'title'             => __( 'Padding', 'astra' ),
+					'linked_choices'    => true,
+					'transport'         => 'postMessage',
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
+						'top'    => __( 'Top', 'astra' ),
+						'right'  => __( 'Right', 'astra' ),
+						'bottom' => __( 'Bottom', 'astra' ),
+						'left'   => __( 'Left', 'astra' ),
+					),
+					'priority'          => 19,
+					'connected'         => false,
+					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider' ),
+				),
+
+				/**
 				 * Option: Global Button Border Size
 				 */
 				array(
@@ -360,6 +431,7 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 					'name'           => ASTRA_THEME_SETTINGS . '[theme-button-border-group-border-size]',
 					'transport'      => 'postMessage',
 					'linked_choices' => true,
+					'suffix'         => 'px',
 					'priority'       => 19,
 					'default'        => astra_get_option( 'theme-button-border-group-border-size' ),
 					'title'          => __( 'Border Width', 'astra' ),
@@ -369,52 +441,6 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 						'bottom' => __( 'Bottom', 'astra' ),
 						'left'   => __( 'Left', 'astra' ),
 					),
-				),
-
-				/**
-				 * Group: Theme Button Border Group
-				 */
-				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[theme-button-border-color-group]',
-					'default'   => astra_get_option( 'theme-button-border-color-group' ),
-					'type'      => 'control',
-					'control'   => 'ast-color-group',
-					'title'     => __( 'Border Color', 'astra' ),
-					'section'   => 'section-buttons',
-					'transport' => 'postMessage',
-					'priority'  => 19,
-				),
-
-				/**
-				 * Option: Global Button Border Color
-				 */
-				array(
-					'name'              => 'theme-button-border-group-border-color',
-					'parent'            => ASTRA_THEME_SETTINGS . '[theme-button-border-color-group]',
-					'default'           => astra_get_option( 'theme-button-border-group-border-color' ),
-					'transport'         => 'postMessage',
-					'type'              => 'sub-control',
-					'section'           => 'section-buttons',
-					'control'           => 'ast-color',
-					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
-					'priority'          => 19,
-					'title'             => __( 'Border Color', 'astra' ),
-				),
-
-				/**
-				 * Option: Global Button Border Hover Color
-				 */
-				array(
-					'name'              => 'theme-button-border-group-border-h-color',
-					'default'           => astra_get_option( 'theme-button-border-group-border-h-color' ),
-					'parent'            => ASTRA_THEME_SETTINGS . '[theme-button-border-color-group]',
-					'transport'         => 'postMessage',
-					'type'              => 'sub-control',
-					'section'           => 'section-buttons',
-					'control'           => 'ast-color',
-					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
-					'priority'          => 19,
-					'title'             => __( 'Border Hover Color', 'astra' ),
 				),
 
 				/**
@@ -435,33 +461,8 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 						'step' => 1,
 						'max'  => 200,
 					),
-					'divider'     => array( 'ast_class' => 'ast-bottom-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
 				),
-
-				/**
-				 * Option: Theme Button Padding
-				 */
-				array(
-					'name'              => ASTRA_THEME_SETTINGS . '[theme-button-padding]',
-					'default'           => astra_get_option( 'theme-button-padding' ),
-					'type'              => 'control',
-					'control'           => 'ast-responsive-spacing',
-					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
-					'section'           => 'section-buttons',
-					'title'             => __( 'Padding', 'astra' ),
-					'linked_choices'    => true,
-					'transport'         => 'postMessage',
-					'unit_choices'      => array( 'px', 'em', '%' ),
-					'choices'           => array(
-						'top'    => __( 'Top', 'astra' ),
-						'right'  => __( 'Right', 'astra' ),
-						'bottom' => __( 'Bottom', 'astra' ),
-						'left'   => __( 'Left', 'astra' ),
-					),
-					'priority'          => 35,
-					'connected'         => false,
-				),
-
 			);
 
 			if ( false === Astra_Builder_Helper::$is_header_footer_builder_active ) {

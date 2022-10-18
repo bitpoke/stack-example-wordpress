@@ -31,7 +31,7 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			$_section = 'section-colors-background';
-			
+
 			if ( class_exists( 'Astra_Ext_Extension' ) && Astra_Ext_Extension::is_active( 'colors-and-background' ) && ! astra_has_gcp_typo_preset_compatibility() ) {
 				$_section = 'section-colors-body';
 			}
@@ -57,7 +57,30 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 					'title'     => __( 'Global Palette', 'astra' ),
 					'default'   => astra_get_palette_colors(),
 					'transport' => 'postMessage',
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
+				),
+
+				/**
+				 * Option: Theme color heading
+				 */
+				array(
+					'name'        => ASTRA_THEME_SETTINGS . '[theme-color-divider-reset]',
+					'section'     => $_section,
+					'title'       => __( 'Theme Color', 'astra' ),
+					'type'        => 'control',
+					'control'     => 'ast-group-title',
+					'priority'    => 5,
+					'settings'    => array(),
+					'input_attrs' => array(
+						'reset_linked_controls' => array(
+							'theme-color',
+							'link-color',
+							'link-h-color',
+							'heading-base-color',
+							'text-color',
+							'border-color',
+						),
+					),
 				),
 
 				/**
@@ -70,33 +93,47 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 					'section'  => $_section,
 					'default'  => astra_get_option( 'theme-color' ),
 					'priority' => 5,
-					'title'    => __( 'Theme Color', 'astra' ),
+					'title'    => __( 'Accent', 'astra' ),
 				),
 
 				/**
-				 * Option: Link Color
+				 * Option: Link Colors group.
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[link-color]',
+					'name'       => ASTRA_THEME_SETTINGS . '[base-link-colors-group]',
+					'default'    => astra_get_option( 'base-link-colors-group' ),
+					'type'       => 'control',
+					'control'    => 'ast-color-group',
+					'title'      => __( 'Links', 'astra' ),
+					'section'    => $_section,
+					'transport'  => 'postMessage',
+					'priority'   => 5,
+					'responsive' => false,
+				),
+
+				array(
+					'name'     => 'link-color',
+					'parent'   => ASTRA_THEME_SETTINGS . '[base-link-colors-group]',
 					'section'  => $_section,
-					'type'     => 'control',
+					'type'     => 'sub-control',
 					'control'  => 'ast-color',
 					'default'  => astra_get_option( 'link-color' ),
 					'priority' => 5,
-					'title'    => __( 'Link Color', 'astra' ),
+					'title'    => __( 'Normal', 'astra' ),
 				),
 
 				/**
 				 * Option: Link Hover Color
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[link-h-color]',
+					'name'     => 'link-h-color',
+					'parent'   => ASTRA_THEME_SETTINGS . '[base-link-colors-group]',
 					'section'  => $_section,
 					'default'  => astra_get_option( 'link-h-color' ),
-					'type'     => 'control',
+					'type'     => 'sub-control',
 					'control'  => 'ast-color',
-					'priority' => 5,
-					'title'    => __( 'Link Hover Color', 'astra' ),
+					'priority' => 10,
+					'title'    => __( 'Hover', 'astra' ),
 				),
 
 				/**
@@ -109,10 +146,41 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 					'control'  => 'ast-color',
 					'section'  => $_section,
 					'priority' => 6,
-					'title'    => __( 'Text Color', 'astra' ),
-					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
+					'title'    => __( 'Body Text', 'astra' ),
+				),
+
+				/**
+				 * Option: Text Color
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[border-color]',
+					'default'  => astra_get_option( 'border-color' ),
+					'type'     => 'control',
+					'control'  => 'ast-color',
+					'section'  => $_section,
+					'priority' => 6,
+					'title'    => __( 'Borders', 'astra' ),
+					'divider'  => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
 				),
 			);
+
+			// Learn More link if Astra Pro is not activated.
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+
+				$_configs[] = array(
+
+					'name'     => ASTRA_THEME_SETTINGS . '[section-body-colors-ast-button-link]',
+					'type'     => 'control',
+					'control'  => 'ast-button-link',
+					'section'  => $_section,
+					'priority' => 999,
+					'title'    => __( 'View Astra Pro Features', 'astra' ),
+					'url'      => astra_get_pro_url( 'https://wpastra.com/pro', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+				);
+
+			}
 
 			$configurations = array_merge( $configurations, $_configs );
 

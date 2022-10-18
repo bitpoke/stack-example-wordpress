@@ -76,6 +76,42 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 						'max'  => 600,
 					),
 					'context'           => Astra_Builder_Helper::$general_tab,
+					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
+				),
+
+				// Option: Below Header Background styling.
+				array(
+					'name'      => ASTRA_THEME_SETTINGS . '[hbb-header-bg-obj-responsive]',
+					'type'      => 'control',
+					'section'   => $_section,
+					'control'   => 'ast-responsive-background',
+					'transport' => 'postMessage',
+					'default'   => astra_get_option( 'hbb-header-bg-obj-responsive' ),
+					'title'     => __( 'Background', 'astra' ),
+					'priority'  => 40,
+					'context'   => Astra_Builder_Helper::$design_tab,
+					'divider'   => array( 'ast_class' => 'ast-section-spacing' ),
+				),
+
+				// Section: Below Header Border Color.
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[hbb-header-bottom-border-color]',
+					'transport'         => 'postMessage',
+					'default'           => astra_get_option( 'hbb-header-bottom-border-color' ),
+					'type'              => 'control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'section'           => $_section,
+					'priority'          => 40,
+					'title'             => __( 'Bottom Border Color', 'astra' ),
+					'context'           => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[hbb-header-separator]',
+							'operator' => '>=',
+							'value'    => 1,
+						),
+						Astra_Builder_Helper::$design_tab_config,
+					),
 				),
 
 				// Section: Below Header Border.
@@ -95,42 +131,9 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 						'max'  => 10,
 					),
 					'context'     => Astra_Builder_Helper::$design_tab,
+					'divider'     => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
-				// Section: Below Header Border Color.
-				array(
-					'name'              => ASTRA_THEME_SETTINGS . '[hbb-header-bottom-border-color]',
-					'transport'         => 'postMessage',
-					'default'           => astra_get_option( 'hbb-header-bottom-border-color' ),
-					'type'              => 'control',
-					'control'           => 'ast-color',
-					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
-					'section'           => $_section,
-					'priority'          => 50,
-					'title'             => __( 'Bottom Border Color', 'astra' ),
-					'context'           => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[hbb-header-separator]',
-							'operator' => '>=',
-							'value'    => 1,
-						),
-						Astra_Builder_Helper::$design_tab_config,
-					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
-				),
-
-				// Option: Below Header Background styling.
-				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[hbb-header-bg-obj-responsive]',
-					'type'      => 'control',
-					'section'   => $_section,
-					'control'   => 'ast-responsive-background',
-					'transport' => 'postMessage',
-					'default'   => astra_get_option( 'hbb-header-bg-obj-responsive' ),
-					'title'     => __( 'Background', 'astra' ),
-					'priority'  => 70,
-					'context'   => Astra_Builder_Helper::$design_tab,
-				),
 			);
 
 			$_configs = array_merge( $_configs, Astra_Builder_Base_Configuration::prepare_advanced_tab( $_section ) );

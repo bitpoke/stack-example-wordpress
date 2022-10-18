@@ -51,7 +51,7 @@ if ( ! class_exists( 'Astra_Builder_Base_Dynamic_CSS' ) ) {
 		 *
 		 * @param string $section_id section id.
 		 * @param string $selector selector.
-		 * @return array
+		 * @return string
 		 */
 		public static function prepare_advanced_margin_padding_css( $section_id, $selector ) {
 

@@ -216,7 +216,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 							</div>',
 						$image_path,
 						__( 'Thank you for installing Astra!', 'astra' ),
-						__( 'Did you know Astra comes with dozens of ready-to-use <a href="https://wpastra.com/starter-templates/?utm_source=welcome_page&utm_medium=helpful_information&utm_campaign=astra_theme">starter templates</a>? Install the Starter Templates plugin to get started.', 'astra' ),
+						__( 'Did you know Astra comes with dozens of ready-to-use <a href="https://wpastra.com/starter-templates/?utm_source=welcome_page&utm_medium=helpful_information&utm_campaign=astra_theme" target="_blank">starter templates</a>? Install the Starter Templates plugin to get started.', 'astra' ),
 						esc_attr( $ast_sites_notice_btn['class'] ),
 						'href="' . astra_get_prop( $ast_sites_notice_btn, 'link', '' ) . '"',
 						'data-slug="' . astra_get_prop( $ast_sites_notice_btn, 'data_slug', '' ) . '"',
@@ -415,6 +415,15 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 						#side-sortables #astra_settings_meta_box select { min-width: 100%; }
 						#normal-sortables #astra_settings_meta_box select { min-width: 200px; }
 					</style>';
+
+					/**
+					 * Register admin script for missing Layout option from nested Column Blocks inside Group/Cover blocks.
+					 *
+					 * @see https://github.com/WordPress/gutenberg/issues/33374 & https://gist.github.com/Luehrsen/c4aad3b33435058c19ea80f5f1c268e8 - Remove this once the issue is fixed.
+					 *
+					 * @since 3.7.9
+					 */
+					wp_enqueue_script( 'astra-column-block-comp-js', ASTRA_THEME_URI . 'inc/assets/js/column-block-compatibility.js', array( 'wp-util', 'wp-hooks', 'wp-blocks' ), ASTRA_THEME_VERSION, false );
 				}
 			}
 			/* Add CSS for the Submenu for BSF plugins added in Appearance Menu */
@@ -1094,6 +1103,25 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 		}
 
 		/**
+		 * Check if Spectra is installed.
+		 *
+		 * @since 3.9.2
+		 *
+		 * @access public
+		 * @return array
+		 */
+		public static function astra_get_spectra_plugin_data() {
+			$path    = 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php';
+			$plugins = get_plugins();
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			return array(
+				'is_exist' => isset( $plugins[ $path ] ),
+				'version'  => ( isset( $plugins[ $path ] ) && $plugins[ $path ]['Version'] ) ? $plugins[ $path ]['Version'] : '2.0.0',
+			);
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		}
+
+		/**
 		 * Include Welcome page content
 		 *
 		 * @since 1.2.4
@@ -1114,9 +1142,25 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				)
 			);
 
+			$spectra_plugin_data = self::astra_get_spectra_plugin_data();
+
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$spectra_plugin_slug = ( ! $spectra_plugin_data['is_exist'] ) || version_compare( $spectra_plugin_data['version'], '2.0.0', '>=' ) ? 'spectra' : 'uag';
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
 			$recommended_plugins = apply_filters(
 				'astra_recommended_plugins',
 				array(
+					'ultimate-addons-for-gutenberg' =>
+						array(
+							'plugin-name'        => __( 'Spectra — Free WordPress Page Builder Plugin', 'astra' ),
+							'plugin-init'        => 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php',
+							'settings-link'      => admin_url( 'options-general.php?page=' . esc_attr( $spectra_plugin_slug ) ),
+							'settings-link-text' => 'Settings',
+							'highlight-label'    => __( 'Popular', 'astra' ),
+							'display'            => function_exists( 'register_block_type' ),
+						),
+
 					'astra-import-export'           =>
 						array(
 							'plugin-name'        => __( 'Import / Export Customizer Settings', 'astra' ),
@@ -1179,15 +1223,6 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 						'settings-link'      => admin_url( 'edit.php?post_type=bsf-sidebar' ),
 						'settings-link-text' => 'Settings',
 					),
-
-					'ultimate-addons-for-gutenberg' =>
-						array(
-							'plugin-name'        => __( 'Ultimate Addons for Gutenberg', 'astra' ),
-							'plugin-init'        => 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php',
-							'settings-link'      => admin_url( 'options-general.php?page=uag' ),
-							'settings-link-text' => 'Settings',
-							'display'            => function_exists( 'register_block_type' ),
-						),
 				)
 			);
 
@@ -1205,6 +1240,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 									<ul class="ast-addon-list">
 										<?php
 										foreach ( $recommended_plugins as $slug => $plugin ) {
+											$highlight_label_attr = isset( $plugin['highlight-label'] ) ? 'highlight-label="' . esc_html( $plugin['highlight-label'] ) . '"' : '';
 
 											// If display condition for the plugin does not meet, skip the plugin from displaying.
 											if ( isset( $plugin['display'] ) && false === $plugin['display'] ) {
@@ -1225,7 +1261,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 												)
 											) . '>';
 
-												echo '<a href="' . esc_url( self::build_worg_plugin_link( $slug ) ) . '" target="_blank">';
+												echo '<a href="' . esc_url( self::build_worg_plugin_link( $slug ) ) . '" target="_blank"' . $highlight_label_attr . '>';
 													echo esc_html( $plugin['plugin-name'] );
 												echo '</a>';
 

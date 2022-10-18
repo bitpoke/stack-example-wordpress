@@ -83,7 +83,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	 */
 	$defaults['hb-header-main-layout-width'] = 'content';
 	$defaults['hb-header-height']            = array(
-		'desktop' => 70,
+		'desktop' => ( false === astra_check_is_structural_setup() ) ? 70 : 80,
 		'tablet'  => '',
 		'mobile'  => '',
 	);
@@ -327,6 +327,8 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'section-footer-menu-margin',
 		'section-primary-footer-builder-padding',
 		'section-primary-footer-builder-margin',
+		'section-header-woo-cart-padding',
+		'section-header-woo-cart-margin',
 	);
 
 	foreach ( $margin_defaults as $margin_default ) {
@@ -826,7 +828,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 			'#4B4F58',
 			'#F5F5F5',
 			'#FFFFFF',
-			'#F2F5F7',
+			'#E5E5E5',
 			'#424242',
 			'#000000',
 		),
@@ -936,19 +938,43 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	/**
 	 * Woo-Cart.
 	 */
-	$defaults['woo-header-cart-icon-style']             = 'outline';
-	$defaults['header-woo-cart-icon-color']             = '';
-	$defaults['transparent-header-woo-cart-icon-color'] = '';
-	$defaults['woo-header-cart-icon-radius']            = 3;
-	$defaults['woo-header-cart-total-display']          = true;
-	$defaults['woo-header-cart-title-display']          = true;
+	$defaults['woo-header-cart-click-action']              = 'default';
+	$defaults['woo-desktop-cart-flyout-width']             = 460;
+	$defaults['woo-header-cart-icon-total-label-position'] = array(
+		'desktop' => '',
+		'tablet'  => '',
+		'mobile'  => '',
+	);
+	$defaults['header-woo-cart-icon-size']                 = array(
+		'desktop' => '',
+		'tablet'  => '',
+		'mobile'  => '',
+	);
+	$defaults['woo-header-cart-icon-style']                = 'outline';
+	$defaults['woo-desktop-cart-flyout-direction']         = 'right';
+	$defaults['header-woo-cart-icon-color']                = '';
+	$defaults['transparent-header-woo-cart-icon-color']    = '';
+	$defaults['header-woo-cart-icon-hover-color']          = '';
+	$defaults['woo-header-cart-icon-radius']               = 3;
+	$defaults['woo-header-cart-badge-display']             = true;
+	// Woo Cart - Dynamic label default value.
+	$defaults['woo-header-cart-label-display'] = '';
 
 	// Cart tray > General Color styles.
-	$defaults['header-woo-cart-text-color']       = '';
-	$defaults['header-woo-cart-link-color']       = '';
-	$defaults['header-woo-cart-background-color'] = '';
-	$defaults['header-woo-cart-separator-color']  = '';
-	$defaults['header-woo-cart-link-hover-color'] = '';
+	$defaults['header-woo-cart-text-color']             = '';
+	$defaults['header-woo-cart-link-color']             = '';
+	$defaults['header-woo-cart-background-color']       = array(
+		'desktop' => '',
+		'tablet'  => '',
+		'mobile'  => '',
+	);
+	$defaults['header-woo-cart-background-hover-color'] = array(
+		'desktop' => '',
+		'tablet'  => '',
+		'mobile'  => '',
+	);
+	$defaults['header-woo-cart-separator-color']        = '';
+	$defaults['header-woo-cart-link-hover-color']       = '';
 
 	// Cart tray > Cart Button styles.
 	$defaults['header-woo-cart-btn-text-color']       = '';

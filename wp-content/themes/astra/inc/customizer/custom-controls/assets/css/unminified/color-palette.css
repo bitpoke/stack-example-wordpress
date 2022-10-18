@@ -9,14 +9,16 @@
 	right: unset;
 	top: unset;
 	vertical-align: sub;
+	z-index: 10;
 }
 
 #customize-control-astra-color-palettes .astra-color-picker-wrap {
 	position: absolute;
 	z-index: 1;
 	right: 0;
-	width: 21em;
+	width: 100%;
 	display: none;
+	margin-top: 10px;
 }
 
 #customize-control-astra-color-palettes .astra-color-picker-wrap.picker-open{
@@ -47,6 +49,7 @@
 	grid-template-columns: repeat(9, 1fr);
 	align-items: center;
 	position: relative;
+	gap: 2px;
 }
 
 .ast-single-palette-wrap
@@ -66,6 +69,7 @@
 	.ast-color-palette-wrapper
 	.ast-color-picker-wrap {
 	margin-top: 12px;
+	cursor: pointer;
 }
 
 #customize-control-astra-color-palettes .ast-reset-btn:disabled {
@@ -73,26 +77,41 @@
 }
 
 #customize-control-astra-color-palettes .ast-single-color-container {
-	width: 20%;
-	height: 100%;
+	width: 25%;
+	height: 48px;
 	display: inline-block;
 }
 
-#customize-control-astra-color-palettes .ast-color-palette-wrap {
-	height: 50px;
-	width: 30%;
-	float: left;
-	margin-left: 12px;
-	position: relative;
+#customize-control-astra-color-palettes .ast-color-palette-wrap > section {
+    text-align: center;
+	outline: none;
+	border-radius: 3px;
+	cursor: pointer;
+    transition: all 0.2s;
+	box-shadow: 0 0 0 1px #ddd;
+}
+
+.ast-color-palette-container {
+	width: 100%;
+	display: inline-grid;
+	grid-template-columns: auto auto;
+	column-gap: 16px;
+	row-gap: 16px;
+}
+
+#customize-control-astra-color-palettes .ast-field-settings-modal {
+	display: none;
+	padding: 16px;
+}
+.ast-color-palette-wrap {
+    transition: all 0.2s;
+}
+.ast-color-palette-wrap.active {
+    box-shadow: 0px 12px 20px -8px rgb(30 41 59 / 16%);
 }
 
 #customize-control-astra-color-palettes .ast-color-palette-wrapper {
 	clear: both;
-	margin-top: 10px;
-}
-
-#customize-control-astra-color-palettes .ast-color-palette-wrap:first-child {
-	margin-left: 0;
 }
 
 #customize-control-astra-color-palettes .ast-palette-selection-wrapper {
@@ -100,46 +119,37 @@
 	padding: 2px;
 }
 
-#customize-control-astra-color-palettes .ast-palette-label-wrap{
-	position: absolute;
-    bottom: -1%;
-    left: 0;
-    background-color: rgba(0,0,0,0.75);
-    color: #FFF;
-    overflow: hidden;
-    width: 100%;
-    text-align: center;
-}
-
 @media (min-width: 1800px) {
 	#customize-control-astra-color-palettes .astra-color-picker-wrap {
-		width: 24em;
+		width: auto;
 	}
 }
 
-#customize-control-astra-color-palettes .ast-color-palette-wrap:hover{
-    box-shadow: 0 0 0 2px #eeeeee;
+#customize-control-astra-color-palettes .ast-color-palette-wrap.active > section {
+    box-shadow: 0 0 0 1px #334155;
 }
-#customize-control-astra-color-palettes .ast-color-palette-wrap.active{
-    outline: none;
-    box-shadow: 0 0 0 2px #0574bd;
-}
-#customize-control-astra-color-palettes .ast-palette-label-wrap{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    font-size: 10px;
-    text-align: left;
+.ast-palette-label-wrap{
+    text-align: center;
+	color: #9CA3AF;
+	overflow: hidden;
+	width: 100%;
     box-sizing: border-box;
-    padding: 0 5px;
-    background-color: rgb(0 0 0 / 55%);
+    padding: 0;
     transition: .15s color ease-in-out,.15s background-color ease-in-out,.15s border-color ease-in-out;
+	font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 22px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 
-#customize-control-astra-color-palettes .ast-color-palette-wrap.active .ast-palette-label-wrap,
-#customize-control-astra-color-palettes .ast-color-palette-wrap:hover .ast-palette-label-wrap{
-    background-color: rgb(0 0 0 / 80%);
+.ast-color-palette-wrap.active .ast-palette-label-wrap {
+    color: #334155;
+}
+
+#customize-control-astra-color-palettes .ast-field-settings-modal {
+    margin-top: -35px;
 }
 
 .astra-advanced-color-indicate .global-color{
@@ -148,19 +158,69 @@
 
 .color-button-wrap.has-global-palette-color .astra-advanced-color-indicate .global-color{
     color: #fff;
-	display: block;
+    display: block;
     opacity: 1;
     position: absolute;
     left: 50%;
     top: 50%;
     display: block;
-    transform: translate(-50%, -50%);
     text-align: center;
-	font-size: 12px;
-	mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
 }
 .color-button-wrap.has-global-palette-color .astra-advanced-color-indicate .global-color svg{
     width: 10px;
     height: 10px;
     transform: scale(1.5);
+}
+
+#customize-control-astra-color-palettes .ast-adv-toggle-icon {
+	top: -5px;
+}
+
+.ast-color-picker-custom-tooltip {
+	position: absolute;
+    top: -30px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ast-color-picker-custom-tooltip[data-title]::after {
+	content: attr(data-title);
+    min-width: 3em;
+    max-width: 10em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 1ch 1.5ch;
+    border-radius: 0.3ch;
+    box-shadow: 0 1em 2em -0.5em rgb(0 0 0 / 35%);
+    background: var(--ast-customizer-color-12);
+    color: var(--ast-customizer-color-10);
+    z-index: 1000;
+    bottom: calc(100% + 5px);
+    text-align: center;
+    animation: tooltips-vert .3s ease-out forwards;
+	text-transform: none;
+    font-size: .9em;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    display: none;
+    opacity: 0;
+    left: 50%;
+    transform: translate(-50%,-0.5em);
+}
+
+.ast-color-picker-custom-tooltip-wrapper {
+	position: relative;
+}
+
+.ast-color-picker-wrap:hover + .ast-color-picker-custom-tooltip-wrapper .ast-color-picker-custom-tooltip[data-title]::after{
+	display: flex;
+	white-space: break-spaces;
+	inline-size: max-content;
 }

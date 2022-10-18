@@ -26,10 +26,6 @@ add_filter( 'astra_dynamic_theme_css', 'astra_fb_primary_footer_dynamic_css' );
  */
 function astra_fb_primary_footer_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
-	if ( ! ( Astra_Builder_Helper::is_footer_row_empty( 'primary' ) || is_customize_preview() ) ) {
-		return $dynamic_css;
-	}
-
 	$global_footer_bg = astra_get_option( 'footer-bg-obj-responsive' );
 
 	$css_output_desktop = array(
@@ -39,6 +35,19 @@ function astra_fb_primary_footer_dynamic_css( $dynamic_css, $dynamic_css_filtere
 	$dynamic_css .= astra_parse_css( $css_output_desktop );
 	// Advanced CSS for Header Builder.
 	$dynamic_css .= Astra_Builder_Base_Dynamic_CSS::prepare_advanced_margin_padding_css( 'section-footer-builder-layout', '.ast-hfb-header .site-footer' );
+
+	$footer_css_output_tablet = array(
+		'.site-footer' => astra_get_responsive_background_obj( $global_footer_bg, 'tablet' ),
+	);
+	$footer_css_output_mobile = array(
+		'.site-footer' => astra_get_responsive_background_obj( $global_footer_bg, 'mobile' ),
+	);
+
+	/* Parse CSS from array() */
+	$css_output  = astra_parse_css( $footer_css_output_tablet, '', astra_get_tablet_breakpoint() );
+	$css_output .= astra_parse_css( $footer_css_output_mobile, '', astra_get_mobile_breakpoint() );
+
+	$dynamic_css .= $css_output;
 
 	if ( ! ( Astra_Builder_Helper::is_footer_row_empty( 'primary' ) || is_customize_preview() ) ) {
 		return $dynamic_css;

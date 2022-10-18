@@ -9,6 +9,17 @@
   margin: 1em 0 0.2em;
 }
 
+.customize-control-ast-divider .customize-control-suffix {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-weight: 600;
+    color: var(--ast-customizer-color-1);
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
 .customize-control-ast-divider .customizer-text {
     margin-top: -10px;
     display: block;
@@ -42,12 +53,12 @@
  * CSS for ast-divider attribute started.
  */
 .ast-bottom-divider {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--ast-customizer-color-7);
 	padding-bottom: 25px;
 }
 
 .ast-top-divider {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--ast-customizer-color-7);
 	padding-top: 25px;
 }
 
@@ -61,10 +72,6 @@
 
 .ast-top-divider .ast-control-wrap .ast-color-btn-reset-wrap {
     top: 25px;
-}
-
-.ast-top-divider .ast-control-wrap .ast-responsive-btns {
-    top: 28px;
 }
 
 .ast-top-divider .ast-control-wrap .astra-color-picker-wrap {
@@ -83,4 +90,128 @@
 
 .ast-top-divider.customize-control-ast-select .ast-divider-title {
     margin-bottom: 25px;
+}
+
+
+/*
+* CSS for ast-spacing attribute started.
+*/
+
+.customize-control.ast-bottom-spacing {
+	margin-bottom: 16px;
+}
+
+.customize-control.ast-top-spacing {
+	margin-top: 16px;
+}
+
+/*
+* CSS for ast-divider attribute started.
+*/
+
+.customize-control.ast-top-dotted-divider,
+#customize-control-astra-settings-edd-archive-variable-button-text,
+#customize-control-astra-settings-header-account-logged-out-text,
+#customize-control-blogname,
+#customize-control-blogdescription,
+#customize-control-astra-settings-shop-load-more-text,
+#customize-control-astra-settings-single-product-shipping-text,
+#customize-control-astra-settings-ast-header-retina-logo,
+#customize-control-astra-settings-product-sale-percent-value,
+#customize-control-astra-settings-header-account-create-menu-link,
+#customize-control-astra-settings-woo-cart-button-text,
+#customize-control-astra-settings-sticky-header-retina-logo {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--ast-customizer-color-7);
+}
+
+#customize-control-astra-settings-product-sale-percent-value .ast-control-tooltip {
+    top: 24px;
+} 
+
+.customize-control.ast-top-dotted-divider .ast-adv-toggle-icon {
+    top: 25px;
+}
+
+.customize-control.ast-bottom-dotted-divider,
+#customize-control-astra-settings-header-account-logged-in-text {
+    margin-bottom: 8px;
+    padding-bottom: 24px;
+    border-bottom: 1px dashed var(--ast-customizer-color-7);
+}
+
+.customize-control.ast-bottom-dotted-divider .ast-adv-toggle-icon {
+    bottom: 25px;
+}
+
+
+/*
+* CSS for ast-section-divider attribute started.
+*/
+
+.customize-control.ast-top-section-divider,
+.customize-control.ast-bottom-section-divider {
+    position: relative;
+}
+
+.customize-control.ast-top-section-divider {
+    padding-top: 32px;
+    margin-top: 32px;
+}
+
+.customize-control.ast-bottom-section-divider {
+    padding-bottom: 32px;
+    margin-bottom: 16px;
+}
+
+.customize-control.ast-top-section-divider::before,
+.customize-control.ast-bottom-section-divider::after {
+    content: '';
+    position: absolute;
+    right: -100%;
+    background-color: var(--ast-customizer-color-7);
+    width: 500%;
+    height: 1px;
+}
+
+
+.customize-control.ast-top-section-divider::before {
+    top: 0;
+}
+
+.customize-control.ast-bottom-section-divider::after {
+    bottom: 0;
+}
+
+
+/*
+* CSS for ast-first-control-spacing attribute started.
+*/
+[ID*="-create-menu-link"] .ahfb-builder-item-start {
+    margin-bottom: 0;
+}
+
+.customize-control.ast-section-spacing,
+#customize-control-astra-settings-footer-create-menu-link,
+#customize-control-astra-settings-footer-language-switcher-options,
+#customize-control-astra-settings-header-mobile-menu-create-menu-link,
+#customize-control-astra-settings-header-language-switcher-options,
+#customize-control-astra-settings-site-icon-link,
+#customize-control-custom_logo,
+#customize-control-astra-settings-header-above-stick,
+[ID*="sub-accordion-section-section-hb-menu-"] [ID*="-create-menu-link"],
+[ID*="customize-control-astra-settings-header-button"][ID*="-text"],
+[ID*="customize-control-astra-settings-footer-button"][ID*="-text"] {
+    margin-top: 32px;
+}
+
+#customize-control-body-font-variant,
+#customize-control-headings-font-variant {
+    margin-top: 0;
+}
+
+#customize-control-body-font-variant .customize-control-title,
+#customize-control-headings-font-variant .customize-control-title {
+    margin-top: 23px;
 }

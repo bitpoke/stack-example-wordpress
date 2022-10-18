@@ -1,0 +1,14 @@
+.ast-menu-setting-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.ast-menu-setting-wrap .dashicon {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+	color: #9CA3AF;
+}
+.ast-menu-location-btn {
+	cursor: pointer;
+}

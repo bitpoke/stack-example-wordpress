@@ -32,5 +32,6 @@
 .ast-reset-btn-preset-wrap .components-button.is-secondary:hover{
 	box-shadow: none;
 	background: transparent;
+	color: var(--ast-customizer-color-1);
 }
 

@@ -299,3 +299,18 @@ a.astra-starter-sites-detail-link {
 .ast-other-links-list .dashicons {
     margin-left: 6px;
 }
+.astra-recommended-plugin > a[highlight-label]:after {
+	color: #fff;
+	font-size: 0.65em;
+	font-weight: 600;
+	position: relative;
+	content: attr(highlight-label);
+	padding: 0.3em 0.6em 0.3em;
+	top: -1px;
+	right: 12px;
+	letter-spacing: 0.5px;
+	line-height: 1em;
+	background-color: rgb(97 4 255);
+	text-transform: uppercase;
+	border-radius: 2px;
+}

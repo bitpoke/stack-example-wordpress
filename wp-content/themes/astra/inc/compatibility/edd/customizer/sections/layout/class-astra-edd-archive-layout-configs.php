@@ -47,7 +47,7 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 							'desktop' => 4,
 							'tablet'  => 3,
 							'mobile'  => 2,
-						) 
+						)
 					),
 					'priority'          => 10,
 					'title'             => __( 'Archive Columns', 'astra' ),
@@ -56,8 +56,21 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 						'min'  => 1,
 						'max'  => 6,
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 					'transport'         => 'postMessage',
+				),
+
+				/**
+				 * Option: Divider
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure-divider]',
+					'section'  => 'section-edd-archive',
+					'title'    => __( 'Product Structure', 'astra' ),
+					'type'     => 'control',
+					'control'  => 'ast-heading',
+					'priority' => 30,
+					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -69,7 +82,7 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 					'control'           => 'ast-sortable',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_multi_choices' ),
 					'section'           => 'section-edd-archive',
-					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 					'default'           => astra_get_option( 'edd-archive-product-structure' ),
 					'priority'          => 30,
 					'title'             => __( 'Product Structure', 'astra' ),
@@ -82,6 +95,20 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 						'short_desc' => __( 'Short Description', 'astra' ),
 						'add_cart'   => __( 'Add To Cart', 'astra' ),
 					),
+				),
+
+				/**
+				 * Option: Divider
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[edd-archive-button-divider]',
+					'section'  => 'section-edd-archive',
+					'title'    => __( 'Buttons', 'astra' ),
+					'type'     => 'control',
+					'control'  => 'ast-heading',
+					'priority' => 31,
+					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
 				),
 
 				/**
@@ -103,19 +130,29 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 							'value'    => 'add_cart',
 						),
 					),
+					'divider'  => array( 'ast_class' => 'ast-top-spacing ast-bottom-section-divider' ),
 				),
 
 				/**
 				 * Option: Variable product button
 				 */
+
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[edd-archive-variable-button]',
-					'type'     => 'control',
-					'control'  => 'ast-select',
-					'section'  => 'section-edd-archive',
-					'divider'  => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
-					'default'  => astra_get_option( 'edd-archive-variable-button' ),
-					'context'  => array(
+					'name'       => ASTRA_THEME_SETTINGS . '[edd-archive-variable-button]',
+					'default'    => astra_get_option( 'edd-archive-variable-button' ),
+					'section'    => 'section-edd-archive',
+					'type'       => 'control',
+					'control'    => 'ast-selector',
+					'title'      => __( 'Variable Product Button', 'astra' ),
+					'priority'   => 31,
+					'choices'    => array(
+						'button'  => __( 'Button', 'astra' ),
+						'options' => __( 'Options', 'astra' ),
+					),
+					'transport'  => 'refresh',
+					'renderAs'   => 'text',
+					'responsive' => false,
+					'context'    => array(
 						Astra_Builder_Helper::$general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
@@ -123,12 +160,7 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 							'value'    => 'add_cart',
 						),
 					),
-					'priority' => 31,
-					'title'    => __( 'Variable Product Button', 'astra' ),
-					'choices'  => array(
-						'button'  => __( 'Button', 'astra' ),
-						'options' => __( 'Options', 'astra' ),
-					),
+					'divider'    => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -157,19 +189,21 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 				 * Option: Archive Content Width
 				 */
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[edd-archive-width]',
-					'type'      => 'control',
-					'control'   => 'ast-select',
-					'section'   => 'section-edd-archive',
-					'default'   => astra_get_option( 'edd-archive-width' ),
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
-					'priority'  => 220,
-					'title'     => __( 'Archive Content Width', 'astra' ),
-					'choices'   => array(
+					'name'       => ASTRA_THEME_SETTINGS . '[edd-archive-width]',
+					'default'    => astra_get_option( 'edd-archive-width' ),
+					'section'    => 'section-edd-archive',
+					'type'       => 'control',
+					'control'    => 'ast-selector',
+					'title'      => __( 'Archive Content Width', 'astra' ),
+					'divider'    => array( 'ast_class' => 'ast-top-section-divider' ),
+					'priority'   => 220,
+					'choices'    => array(
 						'default' => __( 'Default', 'astra' ),
 						'custom'  => __( 'Custom', 'astra' ),
 					),
-					'transport' => 'postMessage',
+					'transport'  => 'postMessage',
+					'renderAs'   => 'text',
+					'responsive' => false,
 				),
 
 				/**
@@ -199,8 +233,32 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 						'step' => 1,
 						'max'  => 1920,
 					),
+					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
 				),
 			);
+
+			// Learn More link if Astra Pro is not activated.
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+
+				$_configs[] =
+
+					/**
+					 * Option: Learn More about Contant Typography
+					 */
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[edd-product-archive-button-link]',
+						'type'     => 'control',
+						'control'  => 'ast-button-link',
+						'section'  => 'section-edd-archive',
+						'priority' => 999,
+						'title'    => __( 'View Astra Pro Features', 'astra' ),
+						'url'      => astra_get_pro_url( 'https://wpastra.com/pro', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+						'settings' => array(),
+						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+
+					);
+
+			}
 
 			$configurations = array_merge( $configurations, $_configs );
 

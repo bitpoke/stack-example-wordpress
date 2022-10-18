@@ -33,23 +33,35 @@ if ( ! class_exists( 'Astra_Learndash_Sidebar_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: LearnDash
+				 * Option: Sidebar Layout.
 				 */
+
 				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[learndash-sidebar-layout]',
-					'type'        => 'control',
-					'control'     => 'ast-select',
-					'section'     => 'section-sidebars',
-					'divider'     => array( 'ast_class' => 'ast-top-divider' ),
-					'default'     => astra_get_option( 'learndash-sidebar-layout' ),
-					'priority'    => 5,
-					'title'       => __( 'LearnDash', 'astra' ),
-					'description' => __( 'This layout will apply on all single course, lesson, topic and quiz.', 'astra' ),
-					'choices'     => array(
-						'default'       => __( 'Default', 'astra' ),
-						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
-						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
-						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[learndash-sidebar-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'section-learndash',
+					'default'           => astra_get_option( 'learndash-sidebar-layout' ),
+					'priority'          => 5,
+					'title'             => __( 'Sidebar Layout', 'astra' ),
+					'choices'           => array(
+						'default'       => array(
+							'label' => __( 'Default', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+						),
+						'no-sidebar'    => array(
+							'label' => __( 'No Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
+						),
+						'left-sidebar'  => array(
+							'label' => __( 'Left Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
+						),
+						'right-sidebar' => array(
+							'label' => __( 'Right Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
+						),
 					),
 				),
 			);

@@ -106,7 +106,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					),
 					'renderAs'   => 'text',
 					'responsive' => false,
-					'divider'    => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-top-dotted-divider ast-bottom-dotted-divider' ),
 				),
 
 				/**
@@ -129,7 +129,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'renderAs'   => 'text',
 					'responsive' => false,
 					'transport'  => 'postMessage',
-					'divider'    => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-bottom-section-divider ast-top-section-divider' ),
 				),
 
 				/**
@@ -167,6 +167,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'context'           => Astra_Builder_Helper::$design_tab,
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_background_obj' ),
 					'default'           => astra_get_option( 'off-canvas-background' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				// Option: Off-Canvas Close Icon Color.
@@ -197,7 +198,6 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 							),
 						),
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
 				),
 
 				// Spacing Between every element in the flyout.
@@ -211,6 +211,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'transport' => 'postMessage',
 					'priority'  => 28,
 					'context'   => Astra_Builder_Helper::$design_tab,
+					'divider'   => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				// Option Group: Off-Canvas Colors Group.
@@ -225,6 +226,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'context'           => Astra_Builder_Helper::$design_tab,
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_background_obj' ),
 					'default'           => astra_get_option( 'off-canvas-background' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -265,6 +267,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 							),
 						),
 					),
+					'divider'        => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 			);

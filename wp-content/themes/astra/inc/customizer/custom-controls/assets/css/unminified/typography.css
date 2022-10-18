@@ -34,3 +34,16 @@ span.select2-container.select2-container--default.select2-container--open li.sel
 .wp-full-overlay-footer .devices-wrapper .preview-mobile {
   vertical-align: middle;
 }
+
+.customize-control-ast-font-variant .ast-variant-select input#react-select-2-input:focus {
+  box-shadow: none;
+}
+
+.ast-variant-select [CLASS*="-indicatorContainer"] {
+  padding: 2px;
+  display: contents;
+}
+
+.ast-variant-select [CLASS*="-multiValue"] > div:first-child {
+  padding: 0 0 0 6px;
+}

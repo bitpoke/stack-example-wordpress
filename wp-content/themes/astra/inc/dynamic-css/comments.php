@@ -51,8 +51,13 @@ function astra_comments_css( $dynamic_css ) {
 		);
 		$dynamic_css .= astra_parse_css( $desktop_comment_global );
 
+		$update_customizer_defaults = ( true === astra_check_is_structural_setup() );
+		$padding_comment_title      = $update_customizer_defaults ? '1em 0 0' : '2em 0';
+		$padding_ast_comment        = $update_customizer_defaults ? '2em 0' : '1em 0';
+		$padding_ast_comment_list   = $update_customizer_defaults ? '0' : '0.5em';
+
 		$single_post_comment_css = '.comments-count-wrapper {
-      padding: 2em 0;
+			padding: ' . esc_attr( $padding_comment_title ) . ';
       }
 
       .comments-count-wrapper .comments-title {
@@ -63,7 +68,7 @@ function astra_comments_css( $dynamic_css ) {
       .ast-comment-list {
       margin: 0;
       word-wrap: break-word;
-      padding-bottom: 0.5em;
+      padding-bottom: ' . esc_attr( $padding_ast_comment_list ) . ';
       list-style: none;
       }
 
@@ -105,7 +110,7 @@ function astra_comments_css( $dynamic_css ) {
       }
 
       .ast-comment {
-      padding: 1em 0;
+      	padding: ' . esc_attr( $padding_ast_comment ) . ' ;
       }
       .ast-comment-avatar-wrap img {
       border-radius: 50%;
@@ -190,17 +195,6 @@ function astra_comments_css( $dynamic_css ) {
       background-color: #fff;
       }
 
-      .ast-separate-container .ast-comment-list li.depth-1 {
-      padding: 4em 6.67em;
-      margin-bottom: 2em;
-      }
-
-      @media (max-width: 1200px) {
-      .ast-separate-container .ast-comment-list li.depth-1 {
-        padding: 3em 3.34em;
-      }
-      }
-
       .ast-separate-container .ast-comment-list li.depth-1 .children li {
       padding-bottom: 0;
       padding-top: 0;
@@ -233,25 +227,47 @@ function astra_comments_css( $dynamic_css ) {
       padding: 0 0 0 2em;
       }
 
-      .ast-separate-container .comment-respond {
-      background-color: #fff;
-      padding: 4em 6.67em;
-      border-bottom: 0;
-      }
-
-     @media (max-width: 1200px) {
-       .ast-separate-container .comment-respond {
-         padding: 3em 2.34em;
-       }
-     }
-
       .ast-separate-container .comment-reply-title {
         padding-top: 0;
       }
 
       .comment-content a {
         word-wrap: break-word;
+      }
+
+      .comment-form-legend {
+        margin-bottom: unset;
+        padding: 0 0.5em;
       }';
+
+		if ( false === $update_customizer_defaults ) {
+			$single_post_comment_css .= '.ast-separate-container .ast-comment-list li.depth-1 {
+				padding: 4em 6.67em;
+				margin-bottom: 2em;
+			}
+			@media (max-width: 1200px) {
+				.ast-separate-container .ast-comment-list li.depth-1 {
+				padding: 3em 3.34em;
+				}
+			}
+			.ast-separate-container .comment-respond {
+				background-color: #fff;
+				padding: 4em 6.67em;
+				border-bottom: 0;
+			}
+			@media (max-width: 1200px) {
+				.ast-separate-container .comment-respond {
+					padding: 3em 2.34em;
+				}
+			}
+			';
+		} else {
+			$single_post_comment_css .= '
+				.page.ast-page-builder-template .comments-area {
+					margin-top: 2em;
+				}
+			';
+		}
 
 		if ( $is_site_rtl ) {
 			$single_post_comment_css .= '

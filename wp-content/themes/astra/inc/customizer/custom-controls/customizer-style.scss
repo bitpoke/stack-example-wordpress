@@ -28,15 +28,31 @@
 .customize-control:not(.customize-control-nav_menu_item) {
 	position: relative;
 	margin-bottom: 0;
-	margin-top: 25px;
+	margin-top: 16px;
 }
+
+.customize-control.customize-control-ast-color, .customize-control.customize-control-ast-color-group, .customize-control-ast-responsive-background, .customize-control-ast-background {
+	display: flex;
+	align-items: center;
+	min-height: 28px;
+    flex-wrap: wrap;
+}
+
+.customize-control-ast-responsive-background label {
+	white-space: nowrap;
+}
+
+.customize-control[ID*="-builder-layout-ast-context-tabs"] {
+    margin-top: 0;
+}
+
 
 [ID*="-builder-layout-ast-context-tabs"] {
     margin-top: 10px;
 }
 
 .customize-section-title {
-	margin: -12px -20px 0 -20px;
+	margin: -12px -24px 0 -24px;
 }
 
 .customize-section-description-container, #customize-controls .customize-info.section-meta, #customize-controls .customize-info {
@@ -54,6 +70,10 @@
 .components-base-control {
 	.components-base-control__field {
     	margin-bottom: 0;
+
+        .components-input-control__backdrop {
+            border-color: #ddd;
+        }
 	}
 }
 
@@ -64,7 +84,7 @@
 
 .customize-control-title {
 	display: inline-block;
-	margin-bottom: 20px;
+	margin-bottom: 16px;
     vertical-align: middle;
 }
 
@@ -73,15 +93,43 @@
 	display: contents;
 }
 
-.customize-control-ast-font-variant .select2 {
-	margin-bottom: 12px;
-}
-
 .customize-control .ast-control-tooltip {
     position: absolute;
     top: 0;
     right: 0;
+    color: var(--ast-customizer-color-6);
 }
+
+.customize-control.customize-control-ast-toggle-control .ast-control-tooltip {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+}
+
+.customize-control.customize-control-ast-toggle-control.ast-top-dotted-divider .ast-control-tooltip {
+    position: absolute;
+    top: 55%;
+    right: 40px;
+    transform: translateY(0);
+}
+
+.customize-control.customize-control-ast-toggle-control.ast-top-divider .ast-control-tooltip {
+    top: calc(50% + 15px);
+}
+
+.customize-control.customize-control-ast-toggle-control.ast-bottom-divider .ast-control-tooltip {
+    top: calc(50% - 11px);
+}
+
+.customize-control.customize-control-ast-toggle-control {
+    .ast-description-enabled {
+        .components-form-toggle {
+            margin-left: 25px;
+        }
+    }
+}
+
 .customize-control.customize-control-ast-divider .ast-control-tooltip {
     position: absolute;
     top: auto;
@@ -120,7 +168,7 @@ input[type="text"] {
 /* CSS to show popups without scroll */
 #customize-theme-controls .control-section.open {
     height: 100%;
-    padding: 12px 20px 25px 20px;
+    padding: 12px 24px 25px 24px;
 }
 
 /* Safari Browser specific CSS */
@@ -187,7 +235,44 @@ input[type="text"] {
 }
 
 /* Customizer - builder widget area's block gets round shapes in more-settings tab */
-.customize-widgets-layout__inspector .components-circular-option-picker__option::after {
-    box-shadow: none;
-    position: unset;
+.components-circular-option-picker__option-wrapper::before{
+    background: unset;
+}
+
+.block-editor-panel-color-gradient-settings .components-circular-option-picker__option-wrapper{
+	position: relative;
+}
+
+/* Hiding this specific control on responsive devices.  */
+.preview-tablet {
+	#customize-control-astra-settings-woo-desktop-cart-flyout-width {
+		display: none;
+	}
+	#customize-control-astra-settings-woo-desktop-cart-flyout-direction {
+		display: none;
+	}
+}
+.preview-mobile {
+	#customize-control-astra-settings-woo-desktop-cart-flyout-width {
+		display: none;
+	}
+	#customize-control-astra-settings-woo-desktop-cart-flyout-direction {
+		display: none;
+	}
+}
+
+#customize-theme-controls .accordion-section-title, #customize-outer-theme-controls .accordion-section-title,
+#customize-controls .control-section.control-section-ast_section .accordion-section-title {
+    border-bottom: 1px solid var(--ast-customizer-color-7);
+}
+
+.wp-core-ui #customize-controls .control-section:hover > .accordion-section-title,
+.wp-core-ui #customize-controls .control-section .accordion-section-title:hover,
+.wp-core-ui #customize-controls .control-section.open .accordion-section-title,
+.wp-core-ui #customize-controls .control-section .accordion-section-title:focus,
+.wp-core-ui .customize-panel-back:hover,
+.wp-core-ui .customize-panel-back:focus,
+.wp-core-ui .customize-section-back:hover,
+.wp-core-ui .customize-section-back:focus {
+    border-left-color:  var(--ast-customizer-color-1);
 }

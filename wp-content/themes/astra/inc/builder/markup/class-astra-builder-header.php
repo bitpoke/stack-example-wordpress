@@ -50,6 +50,8 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		 */
 		public function __construct() {
 
+			add_action( 'astra_header', array( $this, 'global_astra_header' ), 0 );
+
 			if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
 
 				$this->remove_existing_actions();
@@ -128,6 +130,24 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 					if ( $index ) {
 						Astra_Builder_UI_Controller::render_social_icon( $index, 'header' );
 					}
+				}
+			}
+		}
+
+		/**
+		 * Remove complete header Support on basis of meta option.
+		 *
+		 * @since 3.8.0
+		 * @return void
+		 */
+		public function global_astra_header() {
+			$display = get_post_meta( (int) astra_get_post_id(), 'ast-global-header-display', true );
+			$display = apply_filters( 'astra_header_display', $display );
+			if ( 'disabled' === $display ) {
+				remove_action( 'astra_header', 'astra_header_markup' );
+				/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) { // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
+					remove_action( 'astra_header', array( $this, 'header_builder_markup' ) ); // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
 				}
 			}
 		}
@@ -358,13 +378,12 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 			}
 		}
 
-
 		/**
 		 *  Call Mobile below header UI.
 		 */
 		public function mobile_below_header() {
 
-			$display = get_post_meta( get_the_ID(), 'ast-hfb-mobile-header-display', true );
+			$display = get_post_meta( (int) astra_get_post_id(), 'ast-hfb-mobile-header-display', true );
 			$display = apply_filters( 'astra_below_mobile_header_display', $display );
 
 			if ( 'disabled' !== $display ) {
@@ -408,7 +427,9 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		 */
 		public function mobile_cart_flyout() {
 
-			if ( Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) || Astra_Builder_Helper::is_component_loaded( 'edd-cart', 'header' ) ) {
+			// Hide cart flyout only if current page is checkout/cart.
+			if ( ( Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) && class_exists( 'WooCommerce' ) && ! is_cart() && ! is_checkout() ) || Astra_Builder_Helper::is_component_loaded( 'edd-cart', 'header' ) ) {
+
 				Astra_Builder_UI_Controller::render_mobile_cart_flyout_markup();
 			}
 		}

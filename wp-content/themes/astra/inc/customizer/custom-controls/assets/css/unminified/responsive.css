@@ -1,7 +1,13 @@
 .ast-responsive-btns {
   display: inline-block;
   line-height: 1;
-  vertical-align: sub;
+  vertical-align: top;
+}
+
+.customize-control-ast-responsive-select .ast-responsive-btns {
+  position: relative;
+  top: -1px;
+  right: -5px;
 }
 
 .ast-responsive-btns > li {
@@ -18,7 +24,6 @@
   cursor: pointer;
   background: none;
   border: none;
-  opacity: .75;
   outline: none;
 }
 

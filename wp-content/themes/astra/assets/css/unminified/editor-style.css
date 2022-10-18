@@ -290,7 +290,7 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 fieldset {
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--ast-border-color);
   margin: 0 0px;
   padding: 0.35em 0.625em 0.75em;
 }
@@ -1358,7 +1358,7 @@ q:after {
 }
 
 blockquote {
-  border-left: 5px solid rgba(0, 0, 0, 0.05);
+  border-left: 5px solid var(--ast-border-color);
   padding: 20px;
   font-size: 1.2em;
   font-style: italic;
@@ -1439,7 +1439,7 @@ ins {
 }
 
 table, th, td {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--ast-border-color);
 }
 
 table {
@@ -1469,7 +1469,7 @@ input[type="button"],
 input[type="reset"],
 input[type="submit"] {
   border: 1px solid;
-  border-color: #eaeaea;
+  border-color: var(--ast-border-color);
   border-radius: 2px;
   background: #e6e6e6;
   padding: .6em 1em .4em;
@@ -1488,7 +1488,7 @@ input[type="reset"]:focus,
 input[type="submit"]:hover,
 input[type="submit"]:focus {
   color: #fff;
-  border-color: #eaeaea;
+  border-color: var(--ast-border-color);
 }
 
 button:active, button:focus,
@@ -1502,7 +1502,7 @@ input[type="reset"]:active,
 input[type="reset"]:focus,
 input[type="submit"]:active,
 input[type="submit"]:focus {
-  border-color: #eaeaea;
+  border-color: var(--ast-border-color);
   outline: none;
 }
 
@@ -1514,7 +1514,7 @@ input[type="search"],
 input[type="tel"],
 textarea {
   color: #666;
-  border: 1px solid #ccc;
+  border: 1px solid var(--ast-border-color);
   border-radius: 2px;
   -webkit-appearance: none;
 }

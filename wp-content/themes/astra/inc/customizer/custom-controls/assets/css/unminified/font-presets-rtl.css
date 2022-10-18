@@ -1,45 +1,117 @@
 .ast-typo-presets {
+	width: 100%;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    row-gap: 8px;
+	column-gap: 8px;
     justify-content: space-between;
 }
 .ast-typo-presets .ast-typo-preset-item {
     padding: 0;
-    border-radius: 2px;
-    margin: 8.5px 0;
+    border-radius: 3px;
     cursor: pointer;
-    background: #f0f0f1;
-    border: 1px solid #a0a5aa;
-    width: 28%;
-    height: 54px;
+    border: 1px solid var(--ast-customizer-color-7);
+    height: 64px;
     text-align: center;
+	width: 47.5%;
+	position: relative;
 }
 .ast-typo-presets .ast-typo-preset-item:hover{
-	border: 1px solid #3582c4;
+	border: 1px solid var(--ast-customizer-color-1);
 }
 
 .ast-typo-presets .ast-typo-preset-item svg {
-    transform: scale(.3);
-    height: 84px;
-    width: 114px;
+	transform: scale(1);
+    width: 100%;
+    height: 100%;
     padding: 0;
-    margin-right: -22px;
-    margin-top: -13px;
+    margin: 0px;
 }
 .ast-typo-presets .ast-typo-preset-item.active {
-    border: 1px solid #3582c4;
-    background: #fff;
+    border: 1px solid var(--ast-customizer-color-1);
+    background: var(--ast-customizer-color-9);
+}
+.customize-control-ast-typography-presets .ast-reset-btn-preset-wrap {
+    top: -5px;
 }
 
-.ast-typography-reset-btn {
-	margin-top: 15px;
-    padding: 0 20px;
-	cursor: pointer;
-	background: #2271b1;
-    border-color: #2271b1;
-    color: #fff;
-	font-size: 13px;
-    line-height: 2.15384615;
-    min-height: 30px;
+.ast-typo-preset-item .components-tooltip {
+	margin-top: -8px;
+}
+
+.ast-typo-preset-item .components-tooltip::before {
+	border-bottom: none!important;
+    border-right-color: transparent!important;
+    border-left-color: transparent!important;
+    border-top-style: solid!important;
+	border-top-color: #1e1e1e!important;
+    margin-right: -10px;
+	bottom: -8px;
+	content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    line-height: 0;
+	border: 8px solid #ccc;
+}
+
+.ast-typo-preset-item .components-tooltip::after {
+	border-bottom: none!important;
+    border-right-color: transparent!important;
+    border-left-color: transparent!important;
+    border-top-style: solid!important;
+	border-top-color: #1e1e1e!important;
+    margin-right: -10px;
+	bottom: -6px;
+	content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    line-height: 0;
+	border: 8px solid #fff;
+}
+
+.ast-typopreset-custom-tooltip {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ast-typopreset-custom-tooltip[data-title]::after {
+	content: attr(data-title);
+    min-width: 3em;
+    max-width: 10em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 1ch 1.5ch;
+    border-radius: 0.3ch;
+    box-shadow: 0 1em 2em -0.5em rgb(0 0 0 / 35%);
+    background: var(--ast-customizer-color-12);
+    color: var(--ast-customizer-color-10);
+    z-index: 1000;
+    bottom: calc(100% + 5px);
+    text-align: center;
+    animation: tooltips-vert .3s ease-out forwards;
+	text-transform: none;
+    font-size: .9em;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    display: none;
+    opacity: 0;
+    right: 50%;
+    transform: translate(50%,-0.5em);
+}
+
+.ast-typopreset-custom-tooltip[data-title]:hover::after{
+	display: flex;
+	white-space: break-spaces;
+	inline-size: max-content;
 }

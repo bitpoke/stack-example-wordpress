@@ -43,17 +43,30 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 					 * Option: Learn More about Typography
 					 */
 					array(
-						'name'     => ASTRA_THEME_SETTINGS . '[ast-sngle-blog-typography-more-feature-description]',
+						'name'     => ASTRA_THEME_SETTINGS . '[blog-single-post-ast-button-link]',
 						'type'     => 'control',
-						'control'  => 'ast-description',
+						'control'  => 'ast-button-link',
 						'section'  => 'section-blog-single',
 						'priority' => 999,
-						'title'    => '',
-						'help'     => '<p>' . __( 'More Options Available in Astra Pro!', 'astra' ) . '</p><a href="' . astra_get_pro_url( 'https://wpastra.com/pro/', 'customizer', 'learn-more', 'upgrade-to-pro' ) . '" class="button button-secondary"  target="_blank" rel="noopener">' . __( 'Learn More', 'astra' ) . '</a>',
+						'title'    => __( 'View Astra Pro Features', 'astra' ),
+						'url'      => astra_get_pro_url( 'https://wpastra.com/pro/', 'customizer', 'learn-more', 'upgrade-to-pro' ),
 						'settings' => array(),
-						'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
+						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 					),
 
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[blog-single-post-design-ast-button-link]',
+						'type'     => 'control',
+						'control'  => 'ast-button-link',
+						'section'  => 'section-blog-single',
+						'priority' => 999,
+						'title'    => __( 'View Astra Pro Features', 'astra' ),
+						'url'      => astra_get_pro_url( 'https://wpastra.com/pro/', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+						'settings' => array(),
+						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+						'context'  => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+						Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+					),
 				);
 			}
 
@@ -67,7 +80,7 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 						'priority'  => Astra_Builder_Helper::$is_header_footer_builder_active ?
 						13 : 20,
 						'control'   => 'ast-settings-group',
-						'title'     => __( 'Post / Page Title Font', 'astra' ),
+						'title'     => __( 'Title Font', 'astra' ),
 						'section'   => 'section-blog-single',
 						'transport' => 'postMessage',
 						'context'   => Astra_Builder_Helper::$is_header_footer_builder_active ?
@@ -77,22 +90,30 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 					/**
 					 * Option: Single Post / Page Title Font Size
 					 */
+
 					array(
-						'name'        => 'font-size-entry-title',
-						'parent'      => ASTRA_THEME_SETTINGS . '[blog-single-title-typo]',
-						'section'     => 'section-blog-single',
-						'type'        => 'sub-control',
-						'control'     => 'ast-responsive',
-						'default'     => astra_get_option( 'font-size-entry-title' ),
-						'transport'   => 'postMessage',
-						'priority'    => 8,
-						'title'       => __( 'Size', 'astra' ),
-						'input_attrs' => array(
-							'min' => 0,
-						),
-						'units'       => array(
-							'px' => 'px',
-							'em' => 'em',
+						'name'              => 'font-size-entry-title',
+						'parent'            => ASTRA_THEME_SETTINGS . '[blog-single-title-typo]',
+						'type'              => 'sub-control',
+						'control'           => 'ast-responsive-slider',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
+						'section'           => 'section-blog-single',
+						'transport'         => 'postMessage',
+						'title'             => __( 'Size', 'astra' ),
+						'priority'          => 8,
+						'default'           => astra_get_option( 'font-size-entry-title' ),
+						'suffix'            => array( 'px', 'em' ),
+						'input_attrs'       => array(
+							'px' => array(
+								'min'  => 0,
+								'step' => 1,
+								'max'  => 100,
+							),
+							'em' => array(
+								'min'  => 0,
+								'step' => 0.01,
+								'max'  => 20,
+							),
 						),
 					),
 				);
@@ -103,24 +124,33 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 				/**
 				 * Option: Single Post / Page Title Font Size
 				 */
+
 				$new_configs[] = array(
-					'name'        => ASTRA_THEME_SETTINGS . '[font-size-entry-title]',
-					'section'     => 'section-blog-single',
-					'type'        => 'control',
-					'control'     => 'ast-responsive',
-					'default'     => astra_get_option( 'font-size-entry-title' ),
-					'transport'   => 'postMessage',
-					'priority'    => 9,
-					'title'       => __( 'Post / Page Title Font Size', 'astra' ),
-					'input_attrs' => array(
-						'min' => 0,
+					'name'              => ASTRA_THEME_SETTINGS . '[font-size-entry-title]',
+					'type'              => 'control',
+					'control'           => 'ast-responsive-slider',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
+					'section'           => 'section-blog-single',
+					'transport'         => 'postMessage',
+					'title'             => __( 'Post / Page Title Font', 'astra' ),
+					'priority'          => 13,
+					'default'           => astra_get_option( 'font-size-entry-title' ),
+					'suffix'            => array( 'px', 'em' ),
+					'input_attrs'       => array(
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
-					),
-					'context'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
-						Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+					'context'           => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+					Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 				);
 			}
 

@@ -477,7 +477,7 @@ class Astra_Global_Typo_Configs extends Astra_Customizer_Config_Base {
 				'transport' => 'postMessage',
 				'priority'  => 5,
 				'title'     => __( 'Presets', 'astra' ),
-				'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-section-spacing' ),
 			),
 
 		);

@@ -42,6 +42,14 @@ if ( ! class_exists( 'Astra_Customizer_Register_Edd_Section' ) ) {
 				),
 
 				array(
+					'name'     => 'section-edd-general',
+					'title'    => __( 'General', 'astra' ),
+					'type'     => 'section',
+					'section'  => 'section-edd-group',
+					'priority' => 10,
+				),
+
+				array(
 					'name'     => 'section-edd-archive',
 					'title'    => __( 'Product Archive', 'astra' ),
 					'type'     => 'section',

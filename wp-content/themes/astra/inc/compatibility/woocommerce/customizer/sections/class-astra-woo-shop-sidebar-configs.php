@@ -33,42 +33,108 @@ if ( ! class_exists( 'Astra_Woo_Shop_Sidebar_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: Shop Page
+				 * Option: Sidebar Layout.
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[woocommerce-sidebar-layout]',
-					'type'     => 'control',
-					'control'  => 'ast-select',
-					'section'  => 'section-sidebars',
-					'default'  => astra_get_option( 'woocommerce-sidebar-layout' ),
-					'priority' => 5,
-					'title'    => __( 'WooCommerce', 'astra' ),
-					'choices'  => array(
-						'default'       => __( 'Default', 'astra' ),
-						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
-						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
-						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[woocommerce-sidebar-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'section-woo-general',
+					'default'           => astra_get_option( 'woocommerce-sidebar-layout' ),
+					'priority'          => 5,
+					'title'             => __( 'Sidebar Layout', 'astra' ),
+					'choices'           => array(
+						'default'       => array(
+							'label' => __( 'Default', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+						),
+						'no-sidebar'    => array(
+							'label' => __( 'No Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
+						),
+						'left-sidebar'  => array(
+							'label' => __( 'Left Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
+						),
+						'right-sidebar' => array(
+							'label' => __( 'Right Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
+						),
+					),
+					'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
+				),
+
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[archive-product-sidebar-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'woocommerce_product_catalog',
+					'default'           => astra_get_option( 'archive-product-sidebar-layout', 'default' ),
+					'priority'          => 5,
+					'title'             => __( 'Sidebar Layout', 'astra' ),
+					'choices'           => array(
+						'default'       => array(
+							'label' => __( 'Default', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+						),
+						'no-sidebar'    => array(
+							'label' => __( 'No Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
+						),
+						'left-sidebar'  => array(
+							'label' => __( 'Left Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
+						),
+						'right-sidebar' => array(
+							'label' => __( 'Right Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
+						),
 					),
 				),
 
 				/**
-				 * Option: Single Product
+				 * Option: Divider
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[single-product-sidebar-layout]',
+					'name'     => ASTRA_THEME_SETTINGS . '[shop-display-options-divider]',
+					'section'  => 'woocommerce_product_catalog',
+					'title'    => __( 'Shop Display Options', 'astra' ),
 					'type'     => 'control',
-					'control'  => 'ast-select',
-					'default'  => astra_get_option( 'single-product-sidebar-layout' ),
-					'section'  => 'section-sidebars',
-					'priority' => 5,
-					'title'    => __( 'Single Product', 'astra' ),
-					'choices'  => array(
-						'default'       => __( 'Default', 'astra' ),
-						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
-						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
-						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
+					'control'  => 'ast-heading',
+					'priority' => 9.5,
+					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+				),
+
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[single-product-sidebar-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'section-woo-shop-single',
+					'default'           => astra_get_option( 'single-product-sidebar-layout', 'default' ),
+					'priority'          => 5,
+					'title'             => __( 'Sidebar Layout', 'astra' ),
+					'choices'           => array(
+						'default'       => array(
+							'label' => __( 'Default', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+						),
+						'no-sidebar'    => array(
+							'label' => __( 'No Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
+						),
+						'left-sidebar'  => array(
+							'label' => __( 'Left Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
+						),
+						'right-sidebar' => array(
+							'label' => __( 'Right Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
+						),
 					),
-					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 			);
 

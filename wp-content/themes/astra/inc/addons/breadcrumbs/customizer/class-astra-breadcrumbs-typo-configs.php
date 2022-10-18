@@ -54,7 +54,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Typo_Configs' ) ) {
 					'title'     => __( 'Content Font', 'astra' ),
 					'section'   => 'section-breadcrumb',
 					'transport' => 'postMessage',
-					'priority'  => 73,
+					'priority'  => 71,
 					'context'   => array(
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
@@ -64,7 +64,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Typo_Configs' ) ) {
 						( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
 							Astra_Builder_Helper::$design_tab_config : Astra_Builder_Helper::$general_tab_config,
 					),
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
 				),
 
 				/**
@@ -86,22 +86,30 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Typo_Configs' ) ) {
 				/**
 				 * Option: Font Size
 				 */
+
 				array(
-					'name'        => 'breadcrumb-font-size',
-					'control'     => 'ast-responsive',
-					'type'        => 'sub-control',
-					'parent'      => ASTRA_THEME_SETTINGS . '[section-breadcrumb-typo]',
-					'section'     => 'section-breadcrumb',
-					'default'     => astra_get_option( 'breadcrumb-font-size' ),
-					'transport'   => 'postMessage',
-					'title'       => __( 'Size', 'astra' ),
-					'priority'    => 10,
-					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
+					'name'              => 'breadcrumb-font-size',
+					'parent'            => ASTRA_THEME_SETTINGS . '[section-breadcrumb-typo]',
+					'type'              => 'sub-control',
+					'control'           => 'ast-responsive-slider',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
+					'section'           => 'section-breadcrumb',
+					'transport'         => 'postMessage',
+					'title'             => __( 'Size', 'astra' ),
+					'priority'          => 10,
+					'default'           => astra_get_option( 'breadcrumb-font-size' ),
+					'suffix'            => array( 'px', 'em' ),
+					'input_attrs'       => array(
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
 				),
 

@@ -149,6 +149,13 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Loader' ) ) {
 				'mobile-unit'  => 'px',
 			);
 
+			/**
+			 * Breadcrumb Separator defaults
+			 */
+
+			$defaults['breadcrumb-separator-selector'] = '\003E';
+			$defaults['breadcrumb-separator']          = '\00bb';
+			
 			return $defaults;
 		}
 

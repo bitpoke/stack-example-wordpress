@@ -127,7 +127,7 @@ if ( ! class_exists( 'Astra_Visual_Composer' ) ) :
 		 */
 		public function add_styles( $assets ) {
 			if ( ! empty( $assets['css'] ) ) {
-				$assets['css'] = array( 'astra-vc-builder' => 'compatibility/page-builder/vc-plugin' ) + $assets['css'];          
+				$assets['css'] = array( 'astra-vc-builder' => 'compatibility/page-builder/vc-plugin' ) + $assets['css'];
 			}
 			return $assets;
 		}

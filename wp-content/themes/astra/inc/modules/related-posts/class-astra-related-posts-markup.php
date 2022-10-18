@@ -200,7 +200,7 @@ class Astra_Related_Posts_Markup {
 
 		?>
 			<p class="ast-related-post-cta read-more">
-				<a class="ast-related-post-link <?php echo esc_html( $custom_class ); ?>" href="<?php echo esc_url( apply_filters( 'astra_related_post_link', get_the_permalink(), $current_post_id ) ); ?>" target="<?php echo esc_html( $target ); ?>" rel="bookmark noopener noreferrer"><?php echo esc_html( $cta_text ); ?></a>
+				<a class="ast-related-post-link <?php echo esc_html( $custom_class ); ?>" href="<?php echo esc_url( apply_filters( 'astra_related_post_link', get_the_permalink(), $current_post_id ) ); ?>" aria-label="<?php echo esc_attr__( 'Related post link', 'astra' ); ?>"  target="<?php echo esc_html( $target ); ?>" rel="bookmark noopener noreferrer"><?php echo esc_html( $cta_text ); ?></a>
 			</p>
 		<?php
 

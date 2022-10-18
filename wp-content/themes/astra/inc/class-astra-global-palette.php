@@ -41,6 +41,7 @@ class Astra_Global_Palette {
 		add_filter( 'astra_theme_customizer_js_localize', array( $this, 'localize_variables' ) );
 		add_filter( 'astra_before_foreground_color_generation', array( $this, 'get_color_by_palette_variable' ) );
 		$this->includes();
+		add_filter( 'astra_dynamic_theme_css', array( $this, 'global_border_compatibility' ) );
 	}
 
 	/**
@@ -249,6 +250,27 @@ class Astra_Global_Palette {
 		}
 
 		return $color;
+	}
+
+	/**
+	 * Add dynamic CSS for the global border color.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param  string $dynamic_css          Astra Dynamic CSS.
+	 *
+	 * @return String Generated dynamic CSS for global border.
+	 */
+	public function global_border_compatibility( $dynamic_css ) {
+		$global_border_color = astra_get_option( 'border-color', '#dddddd' );
+
+		$global_border = '
+			:root {
+				--ast-border-color : ' . $global_border_color . ';
+			}
+		';
+
+		return $dynamic_css .= Astra_Enqueue_Scripts::trim_css( $global_border );
 	}
 }
 

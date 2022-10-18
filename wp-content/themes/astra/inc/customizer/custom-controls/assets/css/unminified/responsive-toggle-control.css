@@ -21,14 +21,17 @@
 }
 
 .customize-control-ast-responsive-toggle-control .ast-responsive-toggle-control-wrapper .ast-responsive-toggle-control.active {
-    width: 90%;
+    position: relative;
+    top: 2px;
+    width: 91%;
     display: inline-block;
     vertical-align: middle;
 }
 
 .customize-control-ast-responsive-toggle-control .ast-responsive-toggle-control-wrapper .ast-responsive-toggle-btns {
-    position: unset;
+    position: relative;
     float: right;
+    top: 4px;
 }
 
 .customize-control-ast-responsive-toggle-control .ast-responsive-toggle-control-wrapper .ast-responsive-toggle-btns > li.active{
@@ -39,7 +42,7 @@
     margin-bottom: 0;
     display: none;
 }
-  
+
 .ast-responsive-toggle-btns > li.active {
     display: inline-block;
 }
@@ -49,7 +52,6 @@
     cursor: pointer;
     background: none;
     border: none;
-    opacity: .75;
     outline: none;
 }
 

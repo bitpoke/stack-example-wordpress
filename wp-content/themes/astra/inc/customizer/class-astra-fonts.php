@@ -192,7 +192,7 @@ final class Astra_Fonts {
 
 			$font_args['display'] = astra_get_fonts_display_property();
 
-			return add_query_arg( $font_args, $base_url );
+			return esc_url_raw( add_query_arg( $font_args, $base_url ) );
 		}
 
 		return '';

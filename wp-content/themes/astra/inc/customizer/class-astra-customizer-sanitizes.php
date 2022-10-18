@@ -365,7 +365,7 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		/**
 		 * Sanitize checkbox
 		 *
-		 * @param  number $input setting input.
+		 * @param  mixed $input setting input.
 		 * @return number        setting input value.
 		 */
 		public static function sanitize_checkbox( $input ) {

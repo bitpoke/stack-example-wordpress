@@ -251,7 +251,7 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 
 			if ( astra_strposa( $url, $allowed_providers ) ) {
 				if ( $add_astra_oembed_wrapper ) {
-					$html = ( '' !== $html ) ? '<div class="ast-oembed-container">' . $html . '</div>' : '';
+					$html = ( '' !== $html ) ? '<div class="ast-oembed-container" style="height: 100%;">' . $html . '</div>' : '';
 				}
 			}
 

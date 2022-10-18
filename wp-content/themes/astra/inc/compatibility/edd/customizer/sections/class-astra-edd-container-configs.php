@@ -33,24 +33,117 @@ if ( ! class_exists( 'Astra_Edd_Container_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: Shop Page
+				 * Option: Container Layout.
 				 */
+
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[edd-content-layout]',
-					'type'     => 'control',
-					'control'  => 'ast-select',
-					'default'  => astra_get_option( 'edd-content-layout' ),
-					'section'  => 'section-container-layout',
-					'priority' => 85,
-					'title'    => __( 'Easy Digital Downloads Layout', 'astra' ),
-					'divider'  => array( 'ast_class' => 'ast-top-divider' ),
-					'choices'  => array(
-						'default'                 => __( 'Default', 'astra' ),
-						'boxed-container'         => __( 'Boxed', 'astra' ),
-						'content-boxed-container' => __( 'Content Boxed', 'astra' ),
-						'plain-container'         => __( 'Full Width / Contained', 'astra' ),
-						'page-builder'            => __( 'Full Width / Stretched', 'astra' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-content-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'section-edd-general',
+					'default'           => astra_get_option( 'edd-content-layout' ),
+					'priority'          => 5,
+					'title'             => __( 'Container Layout', 'astra' ),
+					'choices'           => array(
+						'default'                 => array(
+							'label' => __( 'Default', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+						),
+						'boxed-container'         => array(
+							'label' => __( 'Boxed', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-boxed', false ) : '',
+						),
+						'content-boxed-container' => array(
+							'label' => __( 'Content Boxed', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-content-boxed', false ) : '',
+						),
+						'plain-container'         => array(
+							'label' => __( 'Full Width / Contained', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-contained', false ) : '',
+						),
+						'page-builder'            => array(
+							'label' => __( 'Full Width / Stretched', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-stretched', false ) : '',
+						),
 					),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
+				),
+
+				/**
+				 * Option: Archive Container Layout.
+				 */
+
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-archive-product-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'section-edd-archive',
+					'default'           => astra_get_option( 'edd-archive-product-layout' ),
+					'priority'          => 5,
+					'title'             => __( 'Container Layout', 'astra' ),
+					'choices'           => array(
+						'default'                 => array(
+							'label' => __( 'Default', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+						),
+						'boxed-container'         => array(
+							'label' => __( 'Boxed', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-boxed', false ) : '',
+						),
+						'content-boxed-container' => array(
+							'label' => __( 'Content Boxed', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-content-boxed', false ) : '',
+						),
+						'plain-container'         => array(
+							'label' => __( 'Full Width / Contained', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-contained', false ) : '',
+						),
+						'page-builder'            => array(
+							'label' => __( 'Full Width / Stretched', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-stretched', false ) : '',
+						),
+					),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
+				),
+
+				/**
+				 * Option: Single Container Layout.
+				 */
+
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-single-product-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'section-edd-single',
+					'default'           => astra_get_option( 'edd-single-product-layout' ),
+					'priority'          => 5,
+					'title'             => __( 'Container Layout', 'astra' ),
+					'choices'           => array(
+						'default'                 => array(
+							'label' => __( 'Default', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+						),
+						'boxed-container'         => array(
+							'label' => __( 'Boxed', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-boxed', false ) : '',
+						),
+						'content-boxed-container' => array(
+							'label' => __( 'Content Boxed', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-content-boxed', false ) : '',
+						),
+						'plain-container'         => array(
+							'label' => __( 'Full Width / Contained', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-contained', false ) : '',
+						),
+						'page-builder'            => array(
+							'label' => __( 'Full Width / Stretched', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-stretched', false ) : '',
+						),
+					),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
 				),
 			);
 

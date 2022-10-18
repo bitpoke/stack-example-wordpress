@@ -58,6 +58,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Transparent_Header_Configs' ) ) {
 					'context'    => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
 					'responsive' => true,
 					'rgba'       => true,
+					'divider'    => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**

@@ -38,7 +38,7 @@
 		?>
 	</header><!-- .entry-header -->
 
-	<div class="entry-content clear" 
+	<div class="entry-content clear"
 		<?php
 				echo astra_attr(
 					'article-entry-content-page',

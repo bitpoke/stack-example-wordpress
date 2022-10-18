@@ -36,78 +36,63 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 				 * Option: Default Sidebar Position
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[site-sidebar-layout]',
-					'type'     => 'control',
-					'control'  => 'ast-select',
-					'section'  => 'section-sidebars',
-					'default'  => astra_get_option( 'site-sidebar-layout' ),
-					'priority' => 5,
-					'title'    => __( 'Default Layout', 'astra' ),
-					'choices'  => array(
-						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
-						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
-						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[site-sidebar-layout]',
+					'type'              => 'control',
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'section'           => 'section-sidebars',
+					'default'           => astra_get_option( 'site-sidebar-layout' ),
+					'priority'          => 5,
+					'title'             => __( 'Default Layout', 'astra' ),
+					'choices'           => array(
+						'no-sidebar'    => array(
+							'label' => __( 'No Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
+						),
+						'left-sidebar'  => array(
+							'label' => __( 'Left Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
+						),
+						'right-sidebar' => array(
+							'label' => __( 'Right Sidebar', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
+						),
 					),
-					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider ast-section-spacing' ),
 				),
 
 				/**
-				 * Option: Page
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[single-page-sidebar-layout]',
-					'type'     => 'control',
-					'control'  => 'ast-select',
-					'section'  => 'section-sidebars',
-					'default'  => astra_get_option( 'single-page-sidebar-layout' ),
-					'priority' => 5,
-					'title'    => __( 'Pages', 'astra' ),
-					'choices'  => array(
-						'default'       => __( 'Default', 'astra' ),
-						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
-						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
-						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
-					),
-				),
+					 * Option: Sidebar Page
+					 */
 
-				/**
-				 * Option: Blog Post
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[single-post-sidebar-layout]',
-					'type'     => 'control',
-					'control'  => 'ast-select',
-					'default'  => astra_get_option( 'single-post-sidebar-layout' ),
-					'section'  => 'section-sidebars',
-					'priority' => 5,
-					'title'    => __( 'Blog Posts', 'astra' ),
-					'choices'  => array(
-						'default'       => __( 'Default', 'astra' ),
-						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
-						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
-						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
+					array(
+						'name'              => ASTRA_THEME_SETTINGS . '[single-page-sidebar-layout]',
+						'type'              => 'control',
+						'control'           => 'ast-radio-image',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+						'section'           => 'section-page-group',
+						'default'           => astra_get_option( 'single-page-sidebar-layout', 'default' ),
+						'priority'          => 5,
+						'title'             => __( 'Sidebar Layout', 'astra' ),
+						'choices'           => array(
+							'default'       => array(
+								'label' => __( 'Default', 'astra' ),
+								'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+							),
+							'no-sidebar'    => array(
+								'label' => __( 'No Sidebar', 'astra' ),
+								'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
+							),
+							'left-sidebar'  => array(
+								'label' => __( 'Left Sidebar', 'astra' ),
+								'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
+							),
+							'right-sidebar' => array(
+								'label' => __( 'Right Sidebar', 'astra' ),
+								'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
+							),
+						),
 					),
-				),
-
-				/**
-				 * Option: Blog Post Archive
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[archive-post-sidebar-layout]',
-					'type'     => 'control',
-					'control'  => 'ast-select',
-					'default'  => astra_get_option( 'archive-post-sidebar-layout' ),
-					'section'  => 'section-sidebars',
-					'priority' => 5,
-					'title'    => __( 'Archives', 'astra' ),
-					'choices'  => array(
-						'default'       => __( 'Default', 'astra' ),
-						'no-sidebar'    => __( 'No Sidebar', 'astra' ),
-						'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
-						'right-sidebar' => __( 'Right Sidebar', 'astra' ),
-					),
-					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
-				),
 
 				/**
 				 * Option: Primary Content Width
@@ -127,6 +112,7 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 						'step' => 1,
 						'max'  => 50,
 					),
+
 				),
 
 				array(
@@ -137,9 +123,42 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 					'priority' => 15,
 					'title'    => '',
 					'help'     => __( 'Sidebar width will apply only when one of the above sidebar is set.', 'astra' ),
+					'divider'  => array( 'ast_class' => 'ast-bottom-section-divider' ),
 					'settings' => array(),
 				),
 			);
+
+			// Learn More link if Astra Pro is not activated.
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+
+				$_configs[] = array(
+					'name'     => ASTRA_THEME_SETTINGS . '[site-sidebars-ast-button-link]',
+					'type'     => 'control',
+					'control'  => 'ast-button-link',
+					'section'  => 'section-sidebars',
+					'priority' => 999,
+					'title'    => __( 'View Astra Pro Features', 'astra' ),
+					'url'      => astra_get_pro_url( 'https://wpastra.com/pro/', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+				);
+			}
+
+			// Learn More link if Astra Pro is not activated.
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+
+				$_configs[] = array(
+					'name'     => ASTRA_THEME_SETTINGS . '[site-page-group-ast-button-link]',
+					'type'     => 'control',
+					'control'  => 'ast-button-link',
+					'section'  => 'section-page-group',
+					'priority' => 999,
+					'title'    => __( 'View Astra Pro Features', 'astra' ),
+					'url'      => astra_get_pro_url( 'https://wpastra.com/pro/', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
+				);
+			}
 
 			return array_merge( $configurations, $_configs );
 		}

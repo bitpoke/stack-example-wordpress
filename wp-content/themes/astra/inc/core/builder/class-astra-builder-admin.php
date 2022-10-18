@@ -142,11 +142,11 @@ final class Astra_Builder_Admin {
 		$migration_flag = astra_get_option( 'v3-option-migration', false );
 		astra_update_option( 'is-header-footer-builder', $migrate );
 		if ( $migrate && false === $migration_flag ) {
+			require_once ASTRA_THEME_DIR . 'inc/theme-update/astra-builder-migration-updater.php';  // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 			astra_header_builder_migration();
 		}
 		wp_send_json_success();
 	}
-
 }
 
 /**

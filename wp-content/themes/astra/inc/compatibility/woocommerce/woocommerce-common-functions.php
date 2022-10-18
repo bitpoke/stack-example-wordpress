@@ -297,3 +297,55 @@ if ( ! function_exists( 'astra_woocommerce_div_wrapper_close' ) ) :
 	}
 
 endif;
+
+
+
+/**
+ * Checking whether shop page style is selected as modern layout.
+ */
+if ( ! function_exists( 'astra_is_shop_page_modern_style' ) ) :
+
+	/**
+	 * Checking whether shop page style is selected as modern layout.
+	 *
+	 * @return bool true|false.
+	 */
+	function astra_is_shop_page_modern_style() {
+		return ( 'shop-page-modern-style' === astra_get_option( 'shop-style' ) ) ? true : false;
+	}
+
+endif;
+
+/**
+ * Check if Woocommerce pro addons is enabled.
+ *
+ * @return bool true|false.
+ */
+function astra_has_pro_woocommerce_addon() {
+	/** @psalm-suppress UndefinedClass  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	return ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'woocommerce' ) ) ? true : false;
+	/** @psalm-suppress UndefinedClass  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+}
+
+/**
+ * Support cart color setting to default cart icon, till now with other cart icons have this color compatibility but default one don't have this.
+ * This case is only for old header layout.
+ *
+ * @since 3.9.2
+ * @return boolean false if it is an existing user, true if not.
+ */
+function astra_cart_color_default_icon_old_header() {
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings['can-reflect-cart-color-in-old-header'] = isset( $astra_settings['can-reflect-cart-color-in-old-header'] ) ? false : true;
+	return apply_filters( 'astra_support_default_cart_color_in_old_header', $astra_settings['can-reflect-cart-color-in-old-header'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+}
+
+/**
+ * Function to check the Add to Cart quantity buttons.
+ *
+ * @return bool true|false.
+ * @since 3.9.2
+ */
+function astra_add_to_cart_quantity_btn_enabled() {
+	return apply_filters( 'astra_add_to_cart_quantity_btn_enabled', astra_get_option( 'single-product-plus-minus-button' ) );
+}

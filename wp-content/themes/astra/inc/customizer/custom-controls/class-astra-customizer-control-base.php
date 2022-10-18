@@ -57,6 +57,7 @@ if ( ! class_exists( 'Astra_Customizer_Control_Base' ) ) {
 
 			wp_enqueue_style( 'astra-custom-control-style' . $file_rtl, $css_uri . 'custom-controls' . $file_prefix . $file_rtl . '.css', null, ASTRA_THEME_VERSION );
 
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( ! SCRIPT_DEBUG ) {
 
 				// Enqueue Customizer script.

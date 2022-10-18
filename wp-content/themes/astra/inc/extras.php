@@ -119,7 +119,7 @@ if ( ! function_exists( 'astra_get_content_layout' ) ) {
 	 * Return current content layout
 	 *
 	 * @since 1.0.0
-	 * @return boolean  content layout.
+	 * @return mixed content layout.
 	 */
 	function astra_get_content_layout() {
 
@@ -375,9 +375,8 @@ add_filter( 'astra_customizer_configurations', 'astra_remove_controls', 99 );
  * @return string The menu item.
  */
 function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
-	$role     = 'presentation';
-	$tabindex = '0';
-	$icon     = '';
+	$role = 'presentation';
+	$icon = '';
 
 	/**
 	 * These menus are not overriden by the 'Astra_Custom_Nav_Walker' class present in Addon - Nav Menu module.
@@ -425,7 +424,7 @@ function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
 	}
 	foreach ( $item->classes as $value ) {
 		if ( 'menu-item-has-children' === $value ) {
-			$title = $title . '<span role="' . esc_attr( $role ) . '" class="dropdown-menu-toggle" tabindex="' . esc_attr( $tabindex ) . '" >' . $icon . '</span>';
+			$title = $title . '<span role="' . esc_attr( $role ) . '" class="dropdown-menu-toggle" >' . $icon . '</span>';
 		}
 	}
 	if ( 0 < $depth ) {
@@ -582,6 +581,18 @@ function astra_is_elemetor_active() {
  */
 function astra_addon_has_3_5_0_version() {
 	return defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, '3.5.0', '<' );
+}
+
+/**
+ * Check the Astra addon version.
+ * For  major update and frequently we used version_compare, added a function for this for easy maintenance.
+ * 
+ * @param string $version Astra addon version.
+ * @param string $compare Compare symbols.
+ * @since  3.9.2
+ */
+function astra_addon_check_version( $version, $compare ) {
+	return defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, $version, $compare );
 }
 
 /**
@@ -799,4 +810,164 @@ function astra_check_elementor_pro_3_5_version() {
 		return true;
 	}
 	return false;
+}
+
+/**
+ * Should Content BG settings apply to Fullwidth Contained/Stretched layout or not?
+ *
+ * Do not apply content background to fullwidth layouts in following cases -
+ * 1. For backward compatibility.
+ * 2. When site layout is Max-width.
+ * 3. When site layout is Padded.
+ *
+ * @since 3.7.8
+ * @return boolean
+ */
+function astra_apply_content_background_fullwidth_layouts() {
+	$astra_site_layout              = astra_get_option( 'site-layout' );
+	$astra_apply_content_background = astra_get_option( 'apply-content-background-fullwidth-layouts', true );
+
+	return ( $astra_apply_content_background && 'ast-box-layout' !== $astra_site_layout && 'ast-padded-layout' !== $astra_site_layout );
+}
+
+/**
+ * Search Component static CSS.
+ *
+ * @return string
+ * @since 3.5.0
+ */
+function astra_search_static_css() {
+	$search_css = '
+	.main-header-bar .main-header-bar-navigation .ast-search-icon {
+		display: block;
+		z-index: 4;
+		position: relative;
+	}
+	.ast-search-icon .ast-icon {
+		z-index: 4;
+	}
+	.ast-search-icon {
+		z-index: 4;
+		position: relative;
+		line-height: normal;
+	}
+	.main-header-bar .ast-search-menu-icon .search-form {
+		background-color: #ffffff;
+	}
+	.ast-search-menu-icon.ast-dropdown-active.slide-search .search-form {
+		visibility: visible;
+		opacity: 1;
+	}
+	.ast-search-menu-icon .search-form {
+		border: 1px solid #e7e7e7;
+		line-height: normal;
+		padding: 0 3em 0 0;
+		border-radius: 2px;
+		display: inline-block;
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+		position: relative;
+		color: inherit;
+		background-color: #fff;
+	}
+	.ast-search-menu-icon .astra-search-icon {
+		-js-display: flex;
+		display: flex;
+		line-height: normal;
+	}
+	.ast-search-menu-icon .astra-search-icon:focus {
+		outline: none;
+	}
+	.ast-search-menu-icon .search-field {
+		border: none;
+		background-color: transparent;
+		transition: width .2s;
+		border-radius: inherit;
+		color: inherit;
+		font-size: inherit;
+		width: 0;
+		color: #757575;
+	}
+	.ast-search-menu-icon .search-submit {
+		display: none;
+		background: none;
+		border: none;
+		font-size: 1.3em;
+		color: #757575;
+	}
+	.ast-search-menu-icon.ast-dropdown-active {
+		visibility: visible;
+		opacity: 1;
+		position: relative;
+	}
+	.ast-search-menu-icon.ast-dropdown-active .search-field {
+		width: 235px;
+	}
+	.ast-header-search .ast-search-menu-icon.slide-search .search-form, .ast-header-search .ast-search-menu-icon.ast-inline-search .search-form {
+		-js-display: flex;
+		display: flex;
+		align-items: center;
+	}';
+
+	if ( is_rtl() ) {
+		$search_css .= '
+		.ast-search-menu-icon.ast-inline-search .search-field {
+			width : 100%;
+			padding : 0.60em;
+			padding-left : 5.5em;
+		}
+		.site-header-section-left .ast-search-menu-icon.slide-search .search-form {
+			padding-right: 3em;
+			padding-left: unset;
+			right: -1em;
+			left: unset;
+		}
+		.site-header-section-left .ast-search-menu-icon.slide-search .search-form .search-field {
+			margin-left: unset;
+			margin-right: 10px;
+		}
+		.ast-search-menu-icon.slide-search .search-form {
+			-webkit-backface-visibility: visible;
+			backface-visibility: visible;
+			visibility: hidden;
+			opacity: 0;
+			transition: all .2s;
+			position: absolute;
+			z-index: 3;
+			left: -1em;
+			top: 50%;
+			transform: translateY(-50%);
+		}';
+	} else {
+		$search_css .= '
+		.ast-search-menu-icon.ast-inline-search .search-field {
+			width : 100%;
+			padding : 0.60em;
+			padding-right : 5.5em;
+		}
+		.site-header-section-left .ast-search-menu-icon.slide-search .search-form {
+			padding-left: 3em;
+			padding-right: unset;
+			left: -1em;
+			right: unset;
+		}
+		.site-header-section-left .ast-search-menu-icon.slide-search .search-form .search-field {
+			margin-right: unset;
+			margin-left: 10px;
+		}
+		.ast-search-menu-icon.slide-search .search-form {
+			-webkit-backface-visibility: visible;
+			backface-visibility: visible;
+			visibility: hidden;
+			opacity: 0;
+			transition: all .2s;
+			position: absolute;
+			z-index: 3;
+			right: -1em;
+			top: 50%;
+			transform: translateY(-50%);
+		}';
+	}
+
+	return Astra_Enqueue_Scripts::trim_css( $search_css );
 }

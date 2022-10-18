@@ -199,7 +199,7 @@
 .edd_pagination a,
 .edd_pagination span {
   margin: 0 0 5px 5px;
-  border: 1px solid #d3ced2;
+  border: 1px solid var(--ast-border-color);
   text-decoration: none;
   line-height: 1;
   font-size: 1em;
@@ -250,7 +250,7 @@
   border-top: 0.2em solid rgba(255, 255, 255, 0.2);
   border-left: 0.2em solid rgba(255, 255, 255, 0.2);
   border-bottom: 0.2em solid rgba(255, 255, 255, 0.2);
-  border-right: 0.2em solid #fff;
+  border-right: 0.2em solid var(--ast-border-color);
   font-size: 0.75em;
   position: absolute;
   right: calc(50% - 0.75em);
@@ -399,7 +399,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
   line-height: 1.618;
   box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.07);
   transition: all 0.3s ease;
-  border: 2px solid #E6E6E6;
+  border: 2px solid var(--ast-border-color);
   opacity: 0;
   visibility: hidden;
 }
@@ -449,7 +449,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 
 .ast-edd-site-header-cart .widget_edd_cart_widget:before {
   border-color: rgba(230, 230, 230, 0);
-  border-bottom-color: #E6E6E6;
+  border-bottom-color: var(--ast-border-color);
   border-width: 9px;
   margin-right: -5px;
   left: 5px;
@@ -536,7 +536,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 }
 
 .widget_edd_cart_widget .edd-cart-item {
-  border-bottom: 1px solid #e2e2e2;
+  border-bottom: 1px solid var(--ast-border-color);
   padding: .5em 0 .5em 1.6em;
   position: relative;
 }
@@ -544,7 +544,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 .widget_edd_cart_widget .edd-cart-number-of-items {
   margin-bottom: 0;
   padding-bottom: .5em;
-  border-bottom: 1px solid #e2e2e2;
+  border-bottom: 1px solid var(--ast-border-color);
   font-weight: 700;
 }
 
@@ -582,7 +582,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
   align-items: center;
   color: #ccc;
   visibility: visible;
-  border: 1px solid #ccc;
+  border: 1px solid var(--ast-border-color);
   border-radius: 50%;
   font-weight: 700;
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
@@ -594,7 +594,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 }
 
 .widget_edd_cart_widget .edd-cart-meta {
-  border-bottom: 1px solid #e2e2e2;
+  border-bottom: 1px solid var(--ast-border-color);
 }
 
 .widget_edd_cart_widget .edd_total {
@@ -729,7 +729,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 .edd_form legend {
   font-size: 22px;
   font-size: 1.4rem;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--ast-border-color);
   background: #fafafa;
   font-weight: bold;
   padding: 15px 30px;
@@ -812,7 +812,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 #edd_checkout_wrap legend {
   font-size: 22px;
   font-size: 1.4rem;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--ast-border-color);
   background: #fafafa;
   font-weight: bold;
   padding: 15px 30px;
@@ -857,7 +857,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 }
 
 #edd_checkout_wrap #edd_discount_code {
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--ast-border-color);
   margin-bottom: 2em;
   padding-top: .5em;
   padding-bottom: .5em;
@@ -887,7 +887,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 }
 
 #edd_checkout_form_wrap fieldset {
-  border: 1px solid #eee;
+  border: 1px solid var(--ast-border-color);
   margin: 0 0 20px;
 }
 
@@ -904,7 +904,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 #edd_checkout_form_wrap #edd-discount-code-wrap,
 #edd_checkout_form_wrap #edd_final_total_wrap,
 #edd_checkout_form_wrap #edd_show_discount {
-  border: 1px solid #eee;
+  border: 1px solid var(--ast-border-color);
   margin: 0 0 20px;
 }
 
@@ -969,7 +969,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 
 /* EDD License manager */
 .edd_sl_form > div {
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--ast-border-color);
   padding: 10px 20px;
 }
 
@@ -1087,7 +1087,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 .edd_download_purchase_form input[type=reset],
 .edd_download_purchase_form input[type=tel],
 .edd_download_purchase_form textarea {
-  border-color: #dddddd;
+  border-color: var(--ast-border-color);
   background: #fff;
   box-shadow: none;
   border-radius: 0px;
@@ -1112,13 +1112,13 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 .edd_download_purchase_form input[type=tel]:focus,
 .edd_download_purchase_form textarea:focus {
   box-shadow: none;
-  border-color: #dddddd;
+  border-color: var(--ast-border-color);
   outline: 0;
 }
 
 #edd_checkout_wrap select,
 .edd_download_purchase_form select {
-  border: 1px solid #dddddd;
+  border: 1px solid var(--ast-border-color);
   border-radius: 0px;
   box-shadow: none;
 }
@@ -1151,7 +1151,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
   min-width: 285px;
   width: 20em;
   text-align: center;
-  border: 1px solid #e0e5e8;
+  border: 1px solid var(--ast-border-color);
   box-shadow: 0 0 6px 0 #e1e3e4;
   height: 2.5em;
   background: #eef2f5;
@@ -1180,7 +1180,7 @@ a.edd-add-to-cart .edd-add-to-cart-label, .edd-loading {
 }
 
 #edd_profile_editor_form fieldset {
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--ast-border-color);
   margin-bottom: 2em;
 }
 

@@ -234,6 +234,7 @@
 
 .astra-popover-color .ast-color-palette .components-button.is-pressed:focus:not(:disabled) {
 	box-shadow: none;
+	border: none;
 }
 
 .astra-popover-color .components-custom-gradient-picker {
@@ -297,12 +298,12 @@
 .customize-control-ast-responsive-color .ast-color-btn-reset-wrap {
   display: inline-block;
   line-height: 1;
-  top: 0;
+  top: 4.5px;
 }
 .customize-control-ast-responsive-background .ast-responsive-btns,
 .customize-control-ast-responsive-color .ast-responsive-btns {
-  position: absolute;
-  right: 64px;
+  position: relative;
+  right: -5px;
   top: 3px;
 }
 .ast-field-settings-modal .customize-control-ast-responsive-background .ast-responsive-btns,

@@ -252,3 +252,20 @@
  .customize-control-ast-background .wp-picker-container {
  	display: block;
  }
+
+#sub-accordion-section-woocommerce_checkout.open.ast-active-design-tab
+	li[ID*="customize-control-woocommerce_"] {
+	display: none;
+}
+
+#sub-accordion-section-woocommerce_checkout.open.ast-active-design-tab
+	li#customize-control-wp_page_for_privacy_policy {
+	display: none;
+}
+
+/**
+ * Hide core shop/archive WooCommerce options on Design tab.
+*/
+ #sub-accordion-section-woocommerce_product_catalog.open.ast-active-design-tab li[ID*="customize-control-woocommerce_"] {
+	display: none;
+}

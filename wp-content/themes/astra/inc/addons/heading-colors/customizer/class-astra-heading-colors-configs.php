@@ -31,7 +31,7 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			$_section = 'section-colors-background';
-			
+
 			if ( class_exists( 'Astra_Ext_Extension' ) && Astra_Ext_Extension::is_active( 'colors-and-background' ) && ! astra_has_gcp_typo_preset_compatibility() ) {
 				$_section = 'section-colors-body';
 			}
@@ -47,7 +47,7 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'transport'         => 'postMessage',
 					'priority'          => 5,
 					'name'              => ASTRA_THEME_SETTINGS . '[heading-base-color]',
-					'title'             => __( 'Heading Color ( H1 - H6 )', 'astra' ),
+					'title'             => __( 'Heading (H1-H6)', 'astra' ),
 					'section'           => $_section,
 				),
 
@@ -59,11 +59,11 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'default'   => astra_get_option( 'button-text-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Button Font', 'astra' ),
+					'title'     => __( 'Font', 'astra' ),
 					'section'   => 'section-buttons',
 					'transport' => 'postMessage',
-					'priority'  => 25,
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'priority'  => 18.5,
+					'divider'   => array( 'ast_class' => 'ast-bottom-section-divider' ),
 				),
 
 				/**
@@ -85,23 +85,32 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 				/**
 				 * Option: Button Font Size
 				 */
+
 				array(
-					'name'        => 'font-size-button',
-					'transport'   => 'postMessage',
-					'title'       => __( 'Size', 'astra' ),
-					'type'        => 'sub-control',
-					'parent'      => ASTRA_THEME_SETTINGS . '[button-text-typography]',
-					'section'     => 'section-buttons',
-					'control'     => 'ast-responsive',
-					'priority'    => 2,
-					'default'     => astra_get_option( 'font-size-button' ),
-					'input_attrs' => array(
-						'min' => 0,
+					'name'              => 'font-size-button',
+					'parent'            => ASTRA_THEME_SETTINGS . '[button-text-typography]',
+					'type'              => 'sub-control',
+					'control'           => 'ast-responsive-slider',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
+					'section'           => 'section-buttons',
+					'transport'         => 'postMessage',
+					'title'             => __( 'Size', 'astra' ),
+					'priority'          => 2,
+					'default'           => astra_get_option( 'font-size-button' ),
+					'suffix'            => array( 'px', 'em' ),
+					'input_attrs'       => array(
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 20,
+						),
 					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
-					),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
 				),
 
 				/**

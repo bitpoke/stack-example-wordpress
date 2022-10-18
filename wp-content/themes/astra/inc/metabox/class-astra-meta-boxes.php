@@ -60,47 +60,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			 *
 			 * @see https://php.net/manual/en/filter.filters.sanitize.php
 			 */
-			self::$meta_option = apply_filters(
-				'astra_meta_box_options',
-				array(
-					'ast-hfb-above-header-display'  => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'ast-main-header-display'       => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'ast-hfb-below-header-display'  => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'ast-hfb-mobile-header-display' => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'footer-sml-layout'             => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'footer-adv-display'            => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'site-post-title'               => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'site-sidebar-layout'           => array(
-						'default'  => 'default',
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'site-content-layout'           => array(
-						'default'  => 'default',
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'ast-featured-img'              => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-					'ast-breadcrumbs-content'       => array(
-						'sanitize' => 'FILTER_DEFAULT',
-					),
-				)
-			);
-
+			self::post_meta_options();
 			add_action( 'load-post.php', array( $this, 'init_metabox' ) );
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
 			add_action( 'do_meta_boxes', array( $this, 'remove_metabox' ) );
@@ -170,7 +130,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 		 *  Init Metabox
 		 */
 		public function init_metabox() {
-
+			self::post_meta_options();
 			add_action( 'add_meta_boxes', array( $this, 'setup_meta_box' ) );
 			add_action( 'save_post', array( $this, 'save_meta_box' ) );
 		}
@@ -305,30 +265,45 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				<div class="disable-section-meta">
 					<?php do_action( 'astra_meta_box_markup_disable_sections_before', $meta ); ?>
 
-					<?php if ( $show_meta_field && Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) ) : ?>
+					<?php
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) ) :
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+						?>
 					<div class="ast-hfb-above-header-display-option-wrap">
 						<input type="checkbox" id="ast-hfb-above-header-display" name="ast-hfb-above-header-display" value="disabled" <?php checked( $above_header, 'disabled' ); ?> />
 						<label for="ast-hfb-above-header-display"><?php esc_html_e( 'Disable Above Header', 'astra' ); ?></label> <br />
 					</div>
 					<?php endif; ?>
 
-					<?php if ( $show_meta_field && Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) ) : ?>
+					<?php
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) ) :
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+						?>
 					<div class="ast-main-header-display-option-wrap">
 						<label for="ast-main-header-display">
 							<input type="checkbox" id="ast-main-header-display" name="ast-main-header-display" value="disabled" <?php checked( $primary_header, 'disabled' ); ?> />
-							<?php esc_html_e( 'Disable Primary Header', 'astra' ); ?>
+						<?php esc_html_e( 'Disable Primary Header', 'astra' ); ?>
 						</label>
 					</div>
 					<?php endif; ?>
 
-					<?php if ( $show_meta_field && Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) ) : ?>
+					<?php
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) ) :
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+						?>
 					<div class="ast-hfb-below-header-display-option-wrap">
 						<input type="checkbox" id="ast-hfb-below-header-display" name="ast-hfb-below-header-display" value="disabled" <?php checked( $below_header, 'disabled' ); ?> />
 						<label for="ast-hfb-below-header-display"><?php esc_html_e( 'Disable Below Header', 'astra' ); ?></label> <br />
 					</div>
 					<?php endif; ?>
-
-					<?php if ( $show_meta_field && Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' ) ) : ?>
+					<?php
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && ( Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' ) ) ) :
+						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+						?>
 
 					<div class="ast-hfb-mobile-header-display-option-wrap">
 						<input type="checkbox" id="ast-hfb-mobile-header-display" name="ast-hfb-mobile-header-display" value="disabled" <?php checked( $mobile_header, 'disabled' ); ?> />
@@ -491,12 +466,15 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			$settings_title = $metabox_name;
 
 			/* Directory and Extension */
-			$file_prefix = ( true === SCRIPT_DEBUG ) ? '' : '.min';
-			$dir_name    = ( true === SCRIPT_DEBUG ) ? 'unminified' : 'minified';
-			$css_uri     = ASTRA_THEME_URI . '/inc/metabox/extend-metabox/css/' . $dir_name;
+			$file_prefix  = ( is_rtl() ) ? '-rtl' : '';
+			$file_prefix .= ( true === SCRIPT_DEBUG ) ? '' : '.min';
+			$dir_name     = ( true === SCRIPT_DEBUG ) ? 'unminified' : 'minified';
+			$css_uri      = ASTRA_THEME_URI . '/inc/metabox/extend-metabox/css/' . $dir_name;
 
 			wp_enqueue_style( 'astra-meta-box', $css_uri . '/metabox' . $file_prefix . '.css', array(), ASTRA_THEME_VERSION );
+
 			wp_enqueue_script( 'astra-meta-settings' );
+			$astra_ext_extension_class_exists = class_exists( 'Astra_Ext_Extension' ) ? true : false;
 			wp_localize_script(
 				'astra-meta-settings',
 				'astMetaParams',
@@ -509,14 +487,20 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'content_layout_title'     => __( 'Content Layout', 'astra' ),
 					'disable_sections_title'   => __( 'Disable Sections', 'astra' ),
 					'disable_sections'         => $this->get_disable_section_fields(),
+					'isWhiteLabelled'          => astra_is_white_labelled(),
 					'sticky_header_title'      => __( 'Sticky Header', 'astra' ),
 					'sticky_header_options'    => $this->get_sticky_header_options(),
 					'transparent_header_title' => __( 'Transparent Header', 'astra' ),
 					'page_header_title'        => __( 'Page Header', 'astra' ),
+					'page_header_edit_link'    => esc_url( admin_url( 'edit.php?post_type=astra_adv_header' ) ),
 					'header_options'           => $this->get_header_enabled_options(),
+					'headers_meta_options'     => $this->get_header_disable_meta_fields(),
 					'page_header_options'      => $this->get_page_header_options(),
+					'page_header_availability' => $this->check_page_header_availability(),
 					'is_bb_themer_layout'      => ! astra_check_is_bb_themer_layout(), // Show page header option only when bb is not activated.
 					'is_addon_activated'       => defined( 'ASTRA_EXT_VER' ) ? true : false,
+					'sticky_addon_enabled'     => ( $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'sticky-header' ) ) ? true : false,
+					'register_astra_metabox'   => apply_filters( 'astra_settings_metabox_register', true ),
 				)
 			);
 		}
@@ -527,9 +511,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 		public function get_sidebar_options() {
 			return array(
 				'default'       => __( 'Customizer Setting', 'astra' ),
+				'no-sidebar'    => __( 'No Sidebar', 'astra' ),
 				'left-sidebar'  => __( 'Left Sidebar', 'astra' ),
 				'right-sidebar' => __( 'Right Sidebar', 'astra' ),
-				'no-sidebar'    => __( 'No Sidebar', 'astra' ),
 			);
 		}
 
@@ -547,63 +531,130 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 		}
 
 		/**
-		 * Get disable section fields.
+		 * Get header related sub-meta fields.
+		 *
+		 * @return array $astra_header_options All header dependent toggle based page elements.
 		 */
-		public function get_disable_section_fields() {
-			return array(
-				array(
+		public function get_header_disable_meta_fields() {
+			$astra_header_options = array();
+
+			if ( Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) ) {
+				$astra_header_options[] = array(
 					'key'   => 'ast-hfb-above-header-display',
 					'label' => __( 'Disable Above Header', 'astra' ),
-				),
-				array(
+				);
+			}
+
+			if ( Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) ) {
+				$astra_header_options[] = array(
 					'key'   => 'ast-main-header-display',
 					'label' => __( 'Disable Primary Header', 'astra' ),
-				),
-				array(
+				);
+			}
+
+			if ( Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) ) {
+				$astra_header_options[] = array(
 					'key'   => 'ast-hfb-below-header-display',
 					'label' => __( 'Disable Below Header', 'astra' ),
-				),
-				array(
+				);
+			}
+
+			if (
+				Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) ||
+				Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) ||
+				Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' )
+			) {
+				$astra_header_options[] = array(
 					'key'   => 'ast-hfb-mobile-header-display',
 					'label' => __( 'Disable Mobile Header', 'astra' ),
-				),
+				);
+			}
+
+			return $astra_header_options;
+		}
+
+		/**
+		 * Get disable section fields.
+		 *
+		 * @return array $astra_page_meta_elements All toggle based page elements.
+		 */
+		public function get_disable_section_fields() {
+
+			$astra_page_meta_elements = array(
 				array(
-					'key'   => 'site-post-title',
-					'label' => __( 'Disable Title', 'astra' ),
-				),
-				array(
-					'key'   => 'ast-breadcrumbs-content',
-					'label' => __( 'Disable Breadcrumb', 'astra' ),
-				),
-				array(
-					'key'   => 'ast-featured-img',
-					'label' => __( 'Disable Featured Image', 'astra' ),
+					'key'   => 'ast-global-header-display',
+					'label' => __( 'Disable Header', 'astra' ),
 				),
 				array(
 					'key'   => 'footer-sml-layout',
 					'label' => __( 'Disable Footer', 'astra' ),
 				),
 			);
+
+			if ( 'none' !== astra_get_option( 'breadcrumb-position', 'none' ) ) {
+				$astra_page_meta_elements[] = array(
+					'key'   => 'ast-breadcrumbs-content',
+					'label' => __( 'Disable Breadcrumb', 'astra' ),
+				);
+			}
+
+			return $astra_page_meta_elements;
 		}
 
 		/**
 		 * Get sticky header options.
 		 */
 		public function get_sticky_header_options() {
-			return array(
-				array(
+			$astra_sticky_header_options     = array();
+			$sticky_above_header_condition   = false;
+			$sticky_primary_header_condition = false;
+			$sticky_below_header_condition   = false;
+
+			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			if ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'sticky-header' ) ) {
+				/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				$sticky_on_devices = astra_get_option( 'sticky-header-on-devices' );
+				switch ( $sticky_on_devices ) {
+					case 'desktop':
+						$sticky_above_header_condition   = Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' );
+						$sticky_primary_header_condition = Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' );
+						$sticky_below_header_condition   = Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' );
+						break;
+					case 'mobile':
+						$sticky_above_header_condition   = Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' );
+						$sticky_primary_header_condition = Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' );
+						$sticky_below_header_condition   = Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' );
+						break;
+					default:
+						$sticky_above_header_condition   = ( Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) ) ? true : false;
+						$sticky_primary_header_condition = ( Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) ) ? true : false;
+						$sticky_below_header_condition   = ( Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' ) ) ? true : false;
+						break;
+				}
+			}
+
+			if ( $sticky_above_header_condition ) {
+				$astra_sticky_header_options[] = array(
 					'key'   => 'header-above-stick-meta',
 					'label' => __( 'Stick Above Header', 'astra' ),
-				),
-				array(
+				);
+			}
+
+			if ( $sticky_primary_header_condition ) {
+				$astra_sticky_header_options[] = array(
 					'key'   => 'header-main-stick-meta',
-					'label' => __( 'Disable Primary Header', 'astra' ),
-				),
-				array(
+					'label' => __( 'Stick Primary Header', 'astra' ),
+				);
+			}
+
+			if ( $sticky_below_header_condition ) {
+				$astra_sticky_header_options[] = array(
 					'key'   => 'header-below-stick-meta',
 					'label' => __( 'Stick Below Header', 'astra' ),
-				),
-			);
+				);
+			}
+
+			return $astra_sticky_header_options;
 		}
 
 		/**
@@ -611,10 +662,36 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 		 */
 		public function get_header_enabled_options() {
 			return array(
-				'default'  => __( 'Customizer Setting', 'astra' ),
+				'default'  => __( 'Inherit', 'astra' ),
 				'enabled'  => __( 'Enabled', 'astra' ),
 				'disabled' => __( 'Disabled', 'astra' ),
 			);
+		}
+
+		/**
+		 * Checking the page headers are available and have some posts with it.
+		 *
+		 * @since 3.8.0
+		 * @return bool true|false.
+		 */
+		public function check_page_header_availability() {
+			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+				return false;
+			}
+
+			if ( class_exists( 'Astra_Ext_Extension' ) && ! Astra_Ext_Extension::is_active( 'advanced-headers' ) ) {
+				return false;
+			}
+
+			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$page_headers = Astra_Target_Rules_Fields::get_post_selection( 'astra_adv_header' );
+			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
+			if ( empty( $page_headers ) ) {
+				return false;
+			}
+
+			return true;
 		}
 
 		/**
@@ -646,7 +723,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			$meta = self::get_meta_option();
 
 			register_post_meta(
-				'', // Pass an empty string to register the meta key across all existing post types.
+				'',
 				'site-sidebar-layout',
 				array(
 					'show_in_rest'  => true,
@@ -663,6 +740,17 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'show_in_rest'  => true,
 					'single'        => true,
 					'default'       => isset( $meta['site-content-layout']['default'] ) ? $meta['site-content-layout']['default'] : '',
+					'type'          => 'string',
+					'auth_callback' => '__return_true',
+				)
+			);
+			register_post_meta(
+				'',
+				'ast-global-header-display',
+				array(
+					'show_in_rest'  => true,
+					'single'        => true,
+					'default'       => isset( $meta['ast-global-header-display']['default'] ) ? $meta['ast-global-header-display']['default'] : '',
 					'type'          => 'string',
 					'auth_callback' => '__return_true',
 				)
@@ -819,6 +907,57 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'default'       => isset( $meta['header-below-stick-meta']['default'] ) ? $meta['header-below-stick-meta']['default'] : '',
 					'type'          => 'string',
 					'auth_callback' => '__return_true',
+				)
+			);
+		}
+
+		/**
+		 * Setup meta options for Astra meta settings.
+		 *
+		 * @since 3.7.8
+		 */
+		public static function post_meta_options() {
+			self::$meta_option = apply_filters(
+				'astra_meta_box_options',
+				array(
+					'ast-global-header-display'     => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-hfb-above-header-display'  => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-main-header-display'       => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-hfb-below-header-display'  => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-hfb-mobile-header-display' => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'footer-sml-layout'             => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'footer-adv-display'            => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'site-post-title'               => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'site-sidebar-layout'           => array(
+						'default'  => 'default',
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'site-content-layout'           => array(
+						'default'  => 'default',
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-featured-img'              => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-breadcrumbs-content'       => array(
+						'sanitize' => 'FILTER_DEFAULT',
+					),
 				)
 			);
 		}

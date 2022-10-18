@@ -82,6 +82,40 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			 * @since  3.7.5
 			 */
 			add_filter( 'astra_theme_woocommerce_dynamic_css', array( $this, 'elementor_wc_widgets_compatibility_styles' ) );
+
+			if ( $this->is_elementor_editor() && class_exists( 'WooCommerce' ) && astra_check_elementor_pro_3_5_version() ) {
+				add_action( 'init', array( $this, 'update_woocommerce_checkout' ) );
+			}
+		}
+
+		/**
+		 * Check if Elementor Editor is open.
+		 *
+		 * @since  3.8.0
+		 *
+		 * @return boolean true iF Elementor Editor is loaded, false If Elementor Editor is not loaded.
+		 */
+		public function is_elementor_editor() {
+			if ( ( isset( $_REQUEST['action'] ) && 'elementor' == $_REQUEST['action'] ) || isset( $_REQUEST['elementor-preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				return true;
+			}
+
+			return false;
+		}
+
+		/**
+		 * Remove actions of WooCommerce for shipping form fields, as it needs only in 'col-1'.
+		 *
+		 * Case: Theme's 'woocommerce_checkout' action conflicting with Elementor Pro's checkout widget. On frontend billing + shipping details wrapper comes under col-1 div because of theme's above action. But in Elementor editor, billing + shipping wrappers comes in two different cols, i.e. col-1 & col-2. Due to this, styling looks inappropriate in editor only.
+		 *
+		 * @since 3.8.0
+		 * @return void
+		 */
+		public function update_woocommerce_checkout() {
+			if ( ! apply_filters( 'astra_woo_shop_product_structure_override', false ) ) {
+				add_action( 'woocommerce_checkout_billing', array( WC()->checkout(), 'checkout_form_shipping' ) );
+			}
+			remove_action( 'woocommerce_checkout_shipping', array( WC()->checkout(), 'checkout_form_shipping' ) );
 		}
 
 		/**
@@ -138,6 +172,9 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 				),
 				'.elementor-widget-woocommerce-cart td.product-name dl.variation dt' => array(
 					'font-weight' => 'inherit',
+				),
+				'.elementor-element.elementor-widget-woocommerce-checkout-page .e-checkout__container #customer_details .col-1'  => array(
+					'margin-bottom' => '0',
 				),
 			);
 

@@ -173,3 +173,17 @@ body.customize-partial-edit-shortcuts-shown .customize-partial-edit-shortcut but
 .customize-partial-edit-shortcut-astra-settings-footer-desktop-items > button.customize-partial-edit-shortcut-button {
 	display: none;
 }
+
+.ast-post-banner-highlight:hover {
+	outline: 1px solid #007cba;
+	z-index: 99;
+}
+.ast-post-banner-highlight .banner-editor-shortcut {
+    top: -2px;
+    left: 30px;
+}
+.ast-post-banner-highlight .banner-editor-shortcut > button {
+	box-shadow: unset;
+	border: unset;
+	border-radius: 0 0 0 2px;
+}

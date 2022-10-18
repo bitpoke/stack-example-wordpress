@@ -177,7 +177,7 @@
 .woocommerce #content table.cart td.actions .coupon,
 .woocommerce-page table.cart td.actions .coupon,
 .woocommerce-page #content table.cart td.actions .coupon {
-  *zoom: 1;
+  zoom: 1;
   padding-bottom: 0.5em;
 }
 

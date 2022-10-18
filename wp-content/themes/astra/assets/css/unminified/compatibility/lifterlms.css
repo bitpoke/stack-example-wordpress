@@ -22,7 +22,7 @@
 }
 
 .widget .llms-widget-syllabus .llms-section {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--ast-border-color);
   margin-bottom: 0.5em;
   padding-bottom: 0.5em;
 }
@@ -225,7 +225,7 @@
 
 .single-lesson .llms-course-navigation {
   padding: 2em 0 0;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid var(--ast-border-color);
 }
 
 .single-lesson .llms-course-navigation .llms-lesson-preview {
@@ -344,7 +344,7 @@ body #review_box,
 body #old_reviews {
   margin: 0;
   padding: 2em 0 0;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid var(--ast-border-color);
 }
 
 body #old_reviews > hr {
@@ -376,7 +376,7 @@ body #review_box #review_text,
 body #review_box #review_title {
   margin-bottom: 1em;
   width: 100%;
-  border-color: #dddddd;
+  border-color: var(--ast-border-color);
   background: #fff;
   border-radius: 0;
 }
@@ -593,7 +593,7 @@ body .llms-loop-item-content .llms-progress-bar .progress-bar-complete {
 
 .llms-pagination ul li {
   margin: 0 5px 5px 0;
-  border: 1px solid #d3ced2;
+  border: 1px solid var(--ast-border-color);
   padding: 0;
   float: left;
   display: inline;
@@ -687,11 +687,11 @@ body .llms-loop-item-content .llms-progress-bar .progress-bar-complete {
 }
 
 .lifterlms .llms-checkout-wrapper .llms-checkout-col.llms-col-2 {
-  border: 2px solid #ebebeb;
+  border: 2px solid var(--ast-border-color);
 }
 
 .lifterlms .llms-checkout-wrapper .llms-login {
-  border: 1px solid #d3ced2;
+  border: 1px solid var(--ast-border-color);
   margin-bottom: 2em;
   border-radius: 5px;
 }

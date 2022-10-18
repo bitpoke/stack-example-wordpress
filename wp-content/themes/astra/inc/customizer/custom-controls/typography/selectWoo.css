@@ -1,4 +1,5 @@
 .select2-container {
+  font-size: 14px;
   box-sizing: border-box;
   display: inline-block;
   margin: 0;
@@ -8,7 +9,9 @@
     box-sizing: border-box;
     cursor: pointer;
     display: block;
-    height: 28px;
+    min-height: 32px;
+	padding-top: 1px;
+    padding-bottom: 1px;
     user-select: none;
     -webkit-user-select: none; }
     .select2-container .select2-selection--single .select2-selection__rendered {
@@ -127,11 +130,11 @@
 
 .select2-container--default .select2-selection--single {
   background-color: #fff;
-  border: 1px solid #aaa;
+  border: 1px solid #ddd;
   border-radius: 4px; }
   .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #444;
-    line-height: 28px; }
+    line-height: 2; }
   .select2-container--default .select2-selection--single .select2-selection__clear {
     cursor: pointer;
     float: right;
@@ -139,11 +142,19 @@
   .select2-container--default .select2-selection--single .select2-selection__placeholder {
     color: #999; }
   .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 26px;
     position: absolute;
-    top: 1px;
+    top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	justify-content: center;
     right: 1px;
-    width: 20px; }
+    width: 24px; }
+   	.select2-container--default .select2-selection--single .select2-selection__arrow .dashicons {
+		font-size: 16px;
+		width: 16px;
+		height: 16px;
+		color: #4B5563;
+	}
     .select2-container--default .select2-selection--single .select2-selection__arrow b {
       border-color: #888 transparent transparent transparent;
       border-style: solid;
