@@ -1,14 +1,14 @@
-# <!=Copyright (C) 2021 Automattic
+# <!=Copyright (C) 2022 Automattic
 # This file is distributed under the GNU General Public License v3 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Storefront 3.9.1\n"
+"Project-Id-Version: Storefront 4.1.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/storefront\n"
-"POT-Creation-Date: 2021-09-27 19:05:21+00:00\n"
+"POT-Creation-Date: 2022-08-23 19:58:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: node-wp-i18n 1.2.6\n"
@@ -228,49 +228,49 @@ msgstr ""
 msgid "Huge"
 msgstr ""
 
-#: inc/class-storefront.php:247
+#: inc/class-storefront.php:259
 msgid "Sidebar"
 msgstr ""
 
-#: inc/class-storefront.php:253
+#: inc/class-storefront.php:265
 msgid "Below Header"
 msgstr ""
 
-#: inc/class-storefront.php:255
+#: inc/class-storefront.php:267
 msgid ""
 "Widgets added to this region will appear beneath the header and above the "
 "main content."
 msgstr ""
 
-#: inc/class-storefront.php:268
+#: inc/class-storefront.php:280
 #. translators: 1: column number
 msgid "Footer Column %1$d"
 msgstr ""
 
-#: inc/class-storefront.php:271
+#: inc/class-storefront.php:283
 #. translators: 1: column number
 msgid "Widgets added here will appear in column %1$d of the footer."
 msgstr ""
 
-#: inc/class-storefront.php:274
+#: inc/class-storefront.php:286
 #. translators: 1: row number, 2: column number
 msgid "Footer Row %1$d - Column %2$d"
 msgstr ""
 
-#: inc/class-storefront.php:277
+#: inc/class-storefront.php:289
 #. translators: 1: column number, 2: row number
 msgid "Widgets added here will appear in column %1$d of footer row %2$d."
 msgstr ""
 
-#: inc/class-storefront.php:349
+#: inc/class-storefront.php:361
 msgid "Expand child menu"
 msgstr ""
 
-#: inc/class-storefront.php:350
+#: inc/class-storefront.php:362
 msgid "Collapse child menu"
 msgstr ""
 
-#: inc/class-storefront.php:484
+#: inc/class-storefront.php:496
 msgid "Post Navigation"
 msgstr ""
 
