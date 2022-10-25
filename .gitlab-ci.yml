@@ -1,0 +1,72 @@
+stages:
+  - build
+  - publish
+  - deploy
+
+variables:
+  GITLAB_IMAGE: registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  # GCR_IMAGE: # eg. gcr.io/project/sitename
+  # GOOGLE_CLOUD_PROJECT: # eg. fiery-owl-3487
+  # GOOGLE_CLOUD_ZONE: # eg. us-central1-a
+  # GOOGLE_KUBERNETES_ENGINE_CLUSTER: # eg. my-cluster-375
+  # BITPOKE_PROJECT: # eg. proj-5eyhr
+  # BITPOKE_SITE_NAME: # eg. my-awesome-site-com-ruy6
+
+
+docker-build:
+  # Use the official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
+  script:
+    - : "${GITLAB_IMAGE:?}"
+    - : "${GCR_IMAGE:?}"
+    - : "${GOOGLE_APPLICATION_CREDENTIALS:?}"
+    - : "${GOOGLE_CLOUD_PROJECT:?}"
+    - : "${GOOGLE_CLOUD_ZONE:?}"
+    - : "${GOOGLE_KUBERNETES_ENGINE_CLUSTER:?}"
+    - : "${BITPOKE_PROJECT:?}"
+    - : "${BITPOKE_SITE_NAME:?}"
+    - docker pull $GITLAB_IMAGE:$CI_COMMIT_BRANCH || true # Allows us to use --cache-from
+    - docker build --cache-from $GITLAB_IMAGE -t $GITLAB_IMAGE:$CI_COMMIT_SHA .
+    - docker tag $GITLAB_IMAGE:$CI_COMMIT_SHA $GITLAB_IMAGE:$CI_COMMIT_BRANCH
+    - docker push $GITLAB_IMAGE:$CI_COMMIT_SHA
+    - docker push $GITLAB_IMAGE:$CI_COMMIT_BRANCH
+
+docker-publish:
+  image: docker:latest
+  stage: publish
+  services:
+    - docker:dind
+  dependencies:
+    - "docker-build"
+  before_script:
+    # Login to Gitlab registry
+    - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
+    # Login to Google Cloud Registry
+    - cat "$GOOGLE_APPLICATION_CREDENTIALS" | docker login -u _json_key --password-stdin https://gcr.io
+    - cat "$GOOGLE_APPLICATION_CREDENTIALS" | docker login -u _json_key --password-stdin https://us.gcr.io
+    - cat "$GOOGLE_APPLICATION_CREDENTIALS" | docker login -u _json_key --password-stdin https://eu.gcr.io
+    - cat "$GOOGLE_APPLICATION_CREDENTIALS" | docker login -u _json_key --password-stdin https://asia.gcr.io
+  script:
+    - docker pull $GITLAB_IMAGE:$CI_COMMIT_SHA
+    - docker tag $GITLAB_IMAGE:$CI_COMMIT_SHA $GCR_IMAGE:$CI_COMMIT_SHA
+    - docker push $GCR_IMAGE:$CI_COMMIT_SHA
+
+deploy on prod:
+  stage: deploy
+  image: google/cloud-sdk
+  only:
+    - master
+  dependencies:
+    - docker-publish
+  script:
+   - gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+   - gcloud config set project $GOOGLE_CLOUD_PROJECT
+   - gcloud config set container/cluster $GOOGLE_KUBERNETES_ENGINE_CLUSTER
+   - gcloud config set compute/zone $GOOGLE_CLOUD_ZONE
+   - gcloud container clusters get-credentials $GOOGLE_KUBERNETES_ENGINE_CLUSTER --zone $GOOGLE_CLOUD_ZONE --project $GOOGLE_CLOUD_PROJECT
+   - 'kubectl -n $BITPOKE_PROJECT patch wordpress $BITPOKE_SITE_NAME --type=json -p "[{\"op\": \"replace\", \"path\": \"/spec/image\", \"value\": \"$GCR_IMAGE:$CI_COMMIT_SHA\"}]"'
