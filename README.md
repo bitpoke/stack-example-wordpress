@@ -19,7 +19,7 @@ The Bitpoke Stack provides a base image for building and developing classic
 WordPress sites. The `Dockerfile` is as simple as:
 
 ```Dockerfile
-FROM docker.io/bitpoke/wordpress-runtime:6.0.1
+FROM docker.io/bitpoke/wordpress-runtime:6.0.3
 ```
 
 ## Development
