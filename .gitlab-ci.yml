@@ -22,14 +22,14 @@ docker-build:
   before_script:
     - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
   script:
-    - : "${GITLAB_IMAGE:?}"
-    - : "${GCR_IMAGE:?}"
-    - : "${GOOGLE_APPLICATION_CREDENTIALS:?}"
-    - : "${GOOGLE_CLOUD_PROJECT:?}"
-    - : "${GOOGLE_CLOUD_ZONE:?}"
-    - : "${GOOGLE_KUBERNETES_ENGINE_CLUSTER:?}"
-    - : "${BITPOKE_PROJECT:?}"
-    - : "${BITPOKE_SITE_NAME:?}"
+    - ': "${GITLAB_IMAGE:?}"'
+    - ': "${GCR_IMAGE:?}"'
+    - ': "${GOOGLE_APPLICATION_CREDENTIALS:?}"'
+    - ': "${GOOGLE_CLOUD_PROJECT:?}"'
+    - ': "${GOOGLE_CLOUD_ZONE:?}"'
+    - ': "${GOOGLE_KUBERNETES_ENGINE_CLUSTER:?}"'
+    - ': "${BITPOKE_PROJECT:?}"'
+    - ': "${BITPOKE_SITE_NAME:?}"'
     - docker pull $GITLAB_IMAGE:$CI_COMMIT_BRANCH || true # Allows us to use --cache-from
     - docker build --cache-from $GITLAB_IMAGE -t $GITLAB_IMAGE:$CI_COMMIT_SHA .
     - docker tag $GITLAB_IMAGE:$CI_COMMIT_SHA $GITLAB_IMAGE:$CI_COMMIT_BRANCH
