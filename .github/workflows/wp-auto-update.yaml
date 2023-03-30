@@ -1,0 +1,60 @@
+name: Auto update
+run-name: Auto update for WordPress plugins and themes
+on:
+  schedule:
+    # The time is UTC. Currently set to run each weekday morning, 8:32 AM UTC
+    - cron: '32 8 * * 1-5'
+  workflow_dispatch:
+env:
+  AUTO_UPDATE_AUTHOR: Bitpoke Bot
+  AUTO_UPDATE_AUTHOR_EMAIL: bitpoke-bot@users.noreply.github.com
+jobs:
+  update:
+    name: Update themes and plugins
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup git
+        run: |
+          git config --global user.name "${{ env.AUTO_UPDATE_AUTHOR }}"
+          git config --global user.email "${{ env.AUTO_UPDATE_AUTHOR_EMAIL }}"
+
+      - name: Setup docker-compose environment
+        run: |
+          echo "UID=$(id -u)" >> .env
+          echo "GID=$(id -g)" >> .env
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build
+        uses: docker/bake-action@v2.3.0
+        with:
+          push: false
+          load: true
+          set: |
+            wordpress.cache-from=type=gha
+            wordpress.cache-to=type=gha
+            wordpress.tags=wordpress
+
+      - name: Start containers
+        run: docker compose up -d
+
+      - name: Wait for containers to start
+        run: |
+          timeout 30s ${SHELL} -c 'until docker compose exec --no-TTY db bash -c '"'"'MYSQL_PWD=${MYSQL_ROOT_PASSWORD} mysqladmin -s -u root -P 3306 ping | grep "mysqld is alive" > /dev/null'"'"'; do echo "Waiting for MySQL service to start..."; sleep 1; done'
+          timeout 30s ${SHELL} -c 'until docker compose exec --no-TTY wordpress bash -c '"'"'curl --write-out %{http_code} --silent --output /dev/null http://localhost:8080/-/php-ping | grep "200"'"'"' > /dev/null ; do echo "Waiting for WordPress HTTP service" ; sleep 1 ; done'
+
+      - name: Install WordPress
+        run: docker compose exec --no-TTY wordpress wp core install --url=http://localhost:8080 --title='Dummy Install' --admin_user=admin --admin_password=not-so-secure --admin_email=admin@example.com --skip-email
+
+      - name: Update WordPress plugins
+        run: scripts/wp-update-and-commit.sh plugin
+
+      - name: Update WordPress themes
+        run: scripts/wp-update-and-commit.sh theme
+
+      - name: Push changes
+        run: git push
+
