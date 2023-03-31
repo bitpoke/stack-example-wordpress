@@ -703,6 +703,7 @@ window.bp = window.bp || {};
 			event.preventDefault();
 
 			this.model.set( this.resetModel );
+			bp.Nouveau.Messages.views.trigger( 'compose:resetForm' );
 		}
 	} );
 
@@ -1353,7 +1354,7 @@ window.bp = window.bp || {};
 		},
 
 		messagesFetched: function( collection, response ) {
-			if ( ! _.isUndefined( response.thread ) ) {
+			if ( response.thread && !! response.thread.length ) {
 				this.options.thread = new Backbone.Model( response.thread );
 			}
 
@@ -1378,14 +1379,20 @@ window.bp = window.bp || {};
 		},
 
 		sendReply: function( event ) {
+			var threadItem;
 			event.preventDefault();
 
 			if ( true === this.reply.get( 'sending' ) ) {
 				return;
 			}
 
+			threadItem = this.options.thread;
+			if ( ! threadItem.has( 'id' ) ) {
+				threadItem = this.options.collection.at( 0 );
+			}
+
 			this.reply.set ( {
-				thread_id : this.options.thread.get( 'id' ),
+				thread_id : threadItem.get( 'id' ),
 				content   : tinyMCE.activeEditor.getContent(),
 				sending   : true
 			} );

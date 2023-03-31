@@ -95,11 +95,11 @@ class BP_REST_Components_Endpoint extends WP_REST_Controller {
 		$components = bp_core_get_components( $type );
 
 		// Active components.
-		$active_components = apply_filters( 'bp_active_components', bp_get_option( 'bp-active-components' ) );
+		$active_components = (array) apply_filters( 'bp_active_components', bp_get_option( 'bp-active-components' ) );
 
 		// Core component is always active.
-		if ( 'optional' !== $type ) {
-			$active_components['core'] = $components['core'];
+		if ( 'optional' !== $type && ! empty( $components['core'] ) ) {
+			$active_components['core'] = '1';
 		}
 
 		// Inactive components.
@@ -108,7 +108,7 @@ class BP_REST_Components_Endpoint extends WP_REST_Controller {
 		$current_components = array();
 		switch ( $args['status'] ) {
 			case 'all':
-				foreach ( $components as $name => $labels ) {
+				foreach ( array_keys( $components ) as $name ) {
 					$current_components[] = $this->get_component_info( $name );
 				}
 				break;
@@ -466,7 +466,8 @@ class BP_REST_Components_Endpoint extends WP_REST_Controller {
 					break;
 				case 'blogs':
 					$features = array(
-						'site_icon' => bp_is_active( 'blogs', 'site-icon' ),
+						'site_icon'       => bp_is_active( 'blogs', 'site-icon' ),
+						'sites_directory' => is_multisite(),
 					);
 					break;
 				case 'messages':
