@@ -5,6 +5,7 @@
  * @package jetpack
  */
 
+use Automattic\Jetpack\Assets;
 use Automattic\Jetpack\Assets\Logo as Jetpack_Logo;
 use Automattic\Jetpack\Redirect;
 use Automattic\Jetpack\Status;
@@ -37,13 +38,27 @@ class Jetpack_Stats_Dashboard_Widget {
 	 * Sets up the Jetpack Stats widget in the WordPress admin dashboard.
 	 */
 	public static function wp_dashboard_setup() {
+
+		/**
+		 * Filter whether the Jetpack Stats dashboard widget should be shown to the current user.
+		 * By default, the dashboard widget is shown to users who can view_stats.
+		 *
+		 * @module stats
+		 * @since 11.9
+		 *
+		 * @param bool Whether to show the widget to the current user.
+		 */
+		if ( ! apply_filters( 'jetpack_stats_dashboard_widget_show_to_user', current_user_can( 'view_stats' ) ) ) {
+			return;
+		}
+
 		if ( Jetpack::is_connection_ready() ) {
 			add_action( 'jetpack_dashboard_widget', array( __CLASS__, 'dashboard_widget_footer' ), 999 );
 		}
 
 		if ( has_action( 'jetpack_dashboard_widget' ) ) {
 			$widget_title = sprintf(
-				__( 'Stats by Jetpack', 'jetpack' )
+				__( 'Jetpack Stats', 'jetpack' )
 			);
 
 			wp_add_dashboard_widget(
@@ -51,7 +66,15 @@ class Jetpack_Stats_Dashboard_Widget {
 				$widget_title,
 				array( __CLASS__, 'dashboard_widget' )
 			);
-			wp_enqueue_style( 'jetpack-dashboard-widget', plugins_url( 'css/dashboard-widget.css', JETPACK__PLUGIN_FILE ), array(), JETPACK__VERSION );
+			wp_enqueue_style(
+				'jetpack-dashboard-widget',
+				Assets::get_file_url_for_environment(
+					'css/dashboard-widget.min.css',
+					'css/dashboard-widget.css'
+				),
+				array(),
+				JETPACK__VERSION
+			);
 			wp_style_add_data( 'jetpack-dashboard-widget', 'rtl', 'replace' );
 		}
 	}
@@ -107,7 +130,7 @@ class Jetpack_Stats_Dashboard_Widget {
 			</div>
 
 			<div class="akismet">
-				<h3><?php esc_html_e( 'Anti-spam', 'jetpack' ); ?></h3>
+				<h3><?php esc_html_e( 'Akismet Anti-spam', 'jetpack' ); ?></h3>
 				<?php if ( is_plugin_active( 'akismet/akismet.php' ) ) : ?>
 					<p class="blocked-count">
 						<?php echo esc_html( number_format_i18n( get_option( 'akismet_spam_count', 0 ) ) ); ?>
@@ -152,7 +175,7 @@ class Jetpack_Stats_Dashboard_Widget {
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=jetpack#/settings?term=' . rawurlencode( $i18n_headers['name'] ) ) ); ?>"
 					>
 						<?php
-						esc_html_e( 'Configure stats', 'jetpack' );
+						esc_html_e( 'Configure Jetpack Stats', 'jetpack' );
 						?>
 				</a>
 				|
