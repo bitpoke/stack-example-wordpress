@@ -4,7 +4,7 @@
  Plugin URI: https://wordpress.org/plugins/debug-bar/
  Description: Adds a debug menu to the admin bar that shows query, cache, and other helpful debugging information.
  Author: wordpressdotorg
- Version: 1.1.3
+ Version: 1.1.4
  Author URI: https://wordpress.org/
  Text Domain: debug-bar
  */
@@ -286,11 +286,18 @@ class Debug_Bar {
 
 			<div id='debug-bar-info'>
 				<div id="debug-status">
-					<?php //@todo: Add a links to information about WP_DEBUG, PHP version, MySQL version, and Peak Memory.
-					$statuses   = array();
+					<?php
+					$statuses = array();
+
+					$host_name = __( 'Site', 'debug-bar' );
+					if ( is_callable( 'php_uname' ) ) {
+						$host_name = php_uname( 'n' );
+					} elseif ( ! empty( $_SERVER['SERVER_NAME'] ) ) {
+						$host_name = $_SERVER['SERVER_NAME'];
+					}
 					$statuses[] = array(
 						'site',
-						php_uname( 'n' ),
+						$host_name,
 						/* translators: %d is the site id number in a multi-site setting. */
 						sprintf( __( '#%d', 'debug-bar' ), get_current_blog_id() ),
 					);
