@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Test Email
 description: WP Test Email is allows you to test if your WordPress installation is sending mail or not.
-Version: 1.1.5
+Version: 1.1.6
 Author: Boopathi Rajan
 Text Domain: wp-test-email
 Author URI: https://www.boopathirajan.com
