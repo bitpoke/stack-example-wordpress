@@ -7,14 +7,10 @@ services:
     volumes:
       - ${WORKSPACE_FOLDER:-/workspace}:${WORKSPACE_FOLDER:-/workspace}
   wordpress:
-    user: "33333:33333"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
       - 8080:8080
-    tmpfs:
-      - /usr/local/docker/etc:uid=33333,gid=33333
-      - /var/run:uid=33333,gid=33333
     volumes:
       - ${WORKSPACE_FOLDER:-/workspace}:${WORKSPACE_FOLDER:-/workspace}
     environment:
@@ -24,5 +20,3 @@ services:
       - GITPOD_WORKSPACE_URL
       - GITPOD_REPO_ROOT
       - GITPOD_WORKSPACE_CLUSTER_HOST
-      - WORKER_GROUP=33333
-      - WORKER_USER=33333

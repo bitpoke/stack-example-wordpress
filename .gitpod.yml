@@ -2,7 +2,10 @@ image: bitpoke/devcontainer:latest
 
 tasks:
   - name: Docker Compose
-    before: test -f docker-compose.override.yaml || cp .devcontainer/docker-compose.override.yaml ./
+    before: |
+      test -f docker-compose.override.yaml || cp .devcontainer/docker-compose.override.yaml ./
+      echo "UID=$(id -u)" >> .env
+      echo "GID=$(id -g)" >> .env
     init: docker-compose pull
     command: docker-compose up -d ; docker-compose logs -f wordpress
 
