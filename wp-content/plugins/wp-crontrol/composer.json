@@ -1,0 +1,93 @@
+{
+	"name": "johnbillion/wp-crontrol",
+	"description": "WP Crontrol lets you view and control what's happening in the WP-Cron system.",
+	"homepage": "https://github.com/johnbillion/wp-crontrol/",
+	"license": "GPL-2.0-or-later",
+	"type": "wordpress-plugin",
+	"authors": [
+		{
+			"name": "John Blackbourn",
+			"homepage": "https://johnblackbourn.com/"
+		},
+		{
+			"name": "Edward Dale",
+			"homepage": "http://scompt.com/"
+		}
+	],
+	"config": {
+		"sort-packages": true,
+		"preferred-install": "dist",
+		"prepend-autoloader": false,
+		"classmap-authoritative": true,
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"roots/wordpress-core-installer": true
+		}
+	},
+	"require-dev": {
+		"codeception/module-asserts": "^1.0",
+		"codeception/module-filesystem": "^1.0",
+		"codeception/module-webdriver": "^1.0",
+		"codeception/util-universalframework": "^1.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+		"lucatume/wp-browser": "^3.0",
+		"phpcompatibility/phpcompatibility-wp": "2.1.2",
+		"phpstan/phpstan": "^1.7",
+		"phpunit/phpunit": "^9.0",
+		"roots/wordpress-core-installer": "^1.0.0",
+		"roots/wordpress-full": "*",
+		"szepeviktor/phpstan-wordpress": "^1.0",
+		"wp-coding-standards/wpcs": "2.3.0"
+	},
+	"require": {
+		"php": ">=5.6",
+		"composer/installers": "^1.0 || ^2.0"
+	},
+	"autoload": {
+		"classmap": [
+			"src"
+		]
+	},
+	"extra": {
+		"wordpress-install-dir": "tests/wordpress"
+	},
+	"scripts": {
+		"test:cs": [
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs --basepath=./ --standard=phpcs53.xml",
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs --basepath=./ ."
+		],
+		"test:cs2pr": [
+			"phpcs -nsq --report=checkstyle --cache=tests/cache/phpcs . | cs2pr"
+		],
+		"test:analyze": [
+			"phpstan analyze --memory-limit=1024M"
+		],
+		"test:start": [
+			"docker compose up -d"
+		],
+		"test:acceptance": [
+			"bin/test.sh"
+		],
+		"test:stop": [
+			"docker compose down"
+		],
+		"test": [
+			"composer validate --strict",
+			"@test:cs",
+			"@test:analyze",
+			"@test:acceptance"
+		]
+	},
+	"support": {
+		"issues": "https://github.com/johnbillion/wp-crontrol/issues",
+		"forum": "https://wordpress.org/support/plugin/wp-crontrol",
+		"source": "https://github.com/johnbillion/wp-crontrol"
+	},
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/johnbillion"
+		}
+	]
+}

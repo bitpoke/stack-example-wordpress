@@ -9,6 +9,8 @@ use stdClass;
 use Crontrol\Schedule;
 use WP_Error;
 
+use const Crontrol\PAUSED_OPTION;
+
 /**
  * Executes a cron event immediately.
  *
@@ -245,6 +247,68 @@ function delete( $hook, $sig, $next_run_utc ) {
 }
 
 /**
+ * Pauses a cron event.
+ *
+ * @param string $hook The hook name of the event to pause.
+ * @return true|WP_Error True if the pause was successful, WP_Error otherwise.
+ */
+function pause( $hook ) {
+	$paused = get_option( PAUSED_OPTION, array() );
+
+	if ( ! is_array( $paused ) ) {
+		$paused = array();
+	}
+
+	$paused[ $hook ] = true;
+
+	$result = update_option( PAUSED_OPTION, $paused, true );
+
+	if ( false === $result ) {
+		return new WP_Error(
+			'could_not_pause',
+			sprintf(
+				/* translators: 1: The name of the cron event. */
+				__( 'Failed to pause the cron event %s.', 'wp-crontrol' ),
+				$hook
+			)
+		);
+	}
+
+	return true;
+}
+
+/**
+ * Resumes a paused cron event.
+ *
+ * @param string $hook The hook name of the event to resume.
+ * @return true|WP_Error True if the resumption was successful, WP_Error otherwise.
+ */
+function resume( $hook ) {
+	$paused = get_option( PAUSED_OPTION );
+
+	if ( ! is_array( $paused ) || ( count( $paused ) === 0 ) ) {
+		return true;
+	}
+
+	unset( $paused[ $hook ] );
+
+	$result = update_option( PAUSED_OPTION, $paused, true );
+
+	if ( false === $result ) {
+		return new WP_Error(
+			'could_not_resume',
+			sprintf(
+				/* translators: 1: The name of the cron event. */
+				__( 'Failed to resume the cron event %s.', 'wp-crontrol' ),
+				$hook
+			)
+		);
+	}
+
+	return true;
+}
+
+/**
  * Returns a flattened array of cron events.
  *
  * @return array<string,stdClass> An array of cron event objects keyed by unique signature.
@@ -264,7 +328,7 @@ function get() {
 				// This is a prime candidate for a Crontrol_Event class but I'm not bothering currently.
 				$events[ "$hook-$sig-$time" ] = (object) array(
 					'hook'     => $hook,
-					'time'     => $time, // UTC
+					'timestamp' => $time, // UTC
 					'sig'      => $sig,
 					'args'     => $data['args'],
 					'schedule' => $data['schedule'],
@@ -351,7 +415,7 @@ function get_schedule_name( stdClass $event ) {
 	$schedules = Schedule\get();
 
 	if ( isset( $schedules[ $event->schedule ] ) ) {
-		return $schedules[ $event->schedule ]['display'];
+		return isset( $schedules[ $event->schedule ]['display'] ) ? $schedules[ $event->schedule ]['display'] : $schedules[ $event->schedule ]['name'];
 	}
 
 	return new WP_Error( 'unknown_schedule', sprintf(
@@ -386,9 +450,25 @@ function is_too_frequent( stdClass $event ) {
  * @return bool Whether the event is late.
  */
 function is_late( stdClass $event ) {
-	$until = $event->time - time();
+	$until = $event->timestamp - time();
 
 	return ( $until < ( 0 - ( 10 * MINUTE_IN_SECONDS ) ) );
+}
+
+/**
+ * Determines whether an event is paused.
+ *
+ * @param stdClass $event The event.
+ * @return bool Whether the event is paused.
+ */
+function is_paused( stdClass $event ) {
+	$paused = get_option( PAUSED_OPTION );
+
+	if ( ! is_array( $paused ) ) {
+		return false;
+	}
+
+	return array_key_exists( $event->hook, $paused );
 }
 
 /**
@@ -400,8 +480,6 @@ function get_list_table() {
 	static $table = null;
 
 	if ( ! $table ) {
-		require_once __DIR__ . '/event-list-table.php';
-
 		$table = new Table();
 		$table->prepare_items();
 
@@ -434,13 +512,13 @@ function uasort_order_events( $a, $b ) {
 			}
 			break;
 		default:
-			if ( $a->time === $b->time ) {
+			if ( $a->timestamp === $b->timestamp ) {
 				$compare = 0;
 			} else {
 				if ( 'desc' === $order ) {
-					$compare = ( $a->time > $b->time ) ? 1 : -1;
+					$compare = ( $a->timestamp > $b->timestamp ) ? 1 : -1;
 				} else {
-					$compare = ( $a->time < $b->time ) ? 1 : -1;
+					$compare = ( $a->timestamp < $b->timestamp ) ? 1 : -1;
 				}
 			}
 			break;
