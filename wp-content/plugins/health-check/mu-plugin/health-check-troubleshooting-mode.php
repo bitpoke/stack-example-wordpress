@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.8.1
+	Version: 1.9.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Set the MU plugin version.
-define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.8.1' );
+define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.8.0' );
 
 class Health_Check_Troubleshooting_MU {
 	private $disable_hash    = null;
@@ -32,9 +32,11 @@ class Health_Check_Troubleshooting_MU {
 		'health-check-plugin-force-enable',
 		'health-check-plugin-force-disable',
 		'health-check-theme-force-switch',
+		'_wpnonce',
 	);
 
 	private $default_themes = array(
+		'twentytwentythree',
 		'twentytwentytwo',
 		'twentytwentyone',
 		'twentytwenty',
@@ -48,6 +50,14 @@ class Health_Check_Troubleshooting_MU {
 		'twentyeleven',
 		'twentyten',
 	);
+
+	private $latest_classic_default_theme = 'twentytwentyone';
+
+	private $show_nonce_validator = false;
+
+	private $nonce_validator_details = '';
+
+	private $nonce_validator_fields = array();
 
 	/**
 	 * Health_Check_Troubleshooting_MU constructor.
@@ -98,6 +108,9 @@ class Health_Check_Troubleshooting_MU {
 
 			add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
 			add_action( 'init', array( $this, 'health_check_troubleshoot_get_captures' ) );
+
+			// If needed, prompt the user to confirm their actions if they are missing a valid nonce.
+			add_action( 'admin_footer', array( $this, 'nonce_confirmation_prompt' ) );
 
 			/*
 			 * Plugin activations can be forced by other tools in things like themes, so let's
@@ -156,7 +169,7 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		printf(
-			'<div class="notice notice-warning dismissable"><p>%s</p><p><a href="%s" class="button button-primary">%s</a></p></div>',
+			'<div class="notice notice-warning dismissable"><p>%s</p><p><a href="%s" class="button button-primary">%s</a> <a href="%s" class="button button-secondary">%s</a></p></div>',
 			esc_html__( 'You don\'t have any of the default themes installed. A default theme helps you determine if your current theme is causing conflicts.', 'health-check' ),
 			esc_url(
 				admin_url(
@@ -166,7 +179,16 @@ class Health_Check_Troubleshooting_MU {
 					)
 				)
 			),
-			esc_html__( 'Install a default theme', 'health-check' )
+			esc_html__( 'Install the latest default theme', 'health-check' ),
+			esc_url(
+				admin_url(
+					sprintf(
+						'theme-install.php?theme=%s',
+						$this->latest_classic_default_theme
+					)
+				)
+			),
+			esc_html__( 'Install the latest classic default theme', 'health-check' )
 		);
 	}
 
@@ -357,6 +379,7 @@ class Health_Check_Troubleshooting_MU {
 					add_query_arg(
 						array(
 							'health-check-troubleshoot-disable-plugin' => $plugin_slug,
+							'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $plugin_slug ) ),
 						),
 						admin_url( 'plugins.php' )
 					)
@@ -370,6 +393,7 @@ class Health_Check_Troubleshooting_MU {
 					add_query_arg(
 						array(
 							'health-check-troubleshoot-enable-plugin' => $plugin_slug,
+							'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $plugin_slug ) ),
 						),
 						admin_url( 'plugins.php' )
 					)
@@ -597,8 +621,71 @@ class Health_Check_Troubleshooting_MU {
 		delete_option( 'health-check-allowed-plugins' );
 		delete_option( 'health-check-default-theme' );
 		delete_option( 'health-check-current-theme' );
+		delete_option( 'health-check-dashboard-notices' );
 
 		delete_option( 'health-check-backup-plugin-list' );
+	}
+
+	/**
+	 * Takes a URL, or uses the current URL, and removes the query args we use to control the Troubleshooting Mode.
+	 *
+	 * @param string $url Optional. Defaults to the current URL. The URL to strip query arguments from.
+	 *
+	 * @return string
+	 */
+	private function get_clean_url( $url = null ) {
+		if ( ! $url ) {
+			$url = site_url( $_SERVER['REQUEST_URI'] );
+		}
+
+		return remove_query_arg( $this->available_query_args, $url );
+	}
+
+	/**
+	 * A helper function to validate if nonces exist, and is valid.
+	 *
+	 * This helps us add nonce-verification to internal links within the WordPress admin, while
+	 * at the same time allowing for the flexibility of support volunteers giving direct links to users who
+	 * may otherwise spend needless time looking for the correct links.
+	 *
+	 * @param string $action The action being performed and confirmed.
+	 * @param array  $assets And array of the plugins, or themes, the action is applied to.
+	 *
+	 * @return boolean
+	 */
+	private function validate_action_nonce( $action, $assets ) {
+		$nonce_action = sprintf(
+			'%s-%s',
+			$action,
+			md5( implode( ',', $assets ) )
+		);
+
+		$nonce = ( isset( $_GET['_wpnonce'] ) ? $_GET['_wpnonce'] : false );
+
+		// Validate nonce.
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $nonce, $nonce_action ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Generate a predetermined formatted nonce value for the actions we wish to perform.
+	 *
+	 * @param string $action The action being performed and confirmed.
+	 * @param array  $assets An array of the plugins, or themes, the action is applied to.
+	 *
+	 * @return false|string
+	 */
+	private function prepare_action_nonce( $action, $assets ) {
+		$nonce_action = sprintf(
+			'%s-%s',
+			$action,
+			md5( implode( ',', $assets ) )
+		);
+
+		return wp_create_nonce( $nonce_action );
 	}
 
 	/**
@@ -612,6 +699,25 @@ class Health_Check_Troubleshooting_MU {
 	function health_check_troubleshoot_get_captures() {
 		// Disable Troubleshooting Mode.
 		if ( isset( $_GET['health-check-disable-troubleshooting'] ) ) {
+			// Validate the cache or return early.
+			if ( ! $this->validate_action_nonce( 'health-check-disable-troubleshooting', array() ) ) {
+				$this->show_nonce_validator   = true;
+				$this->nonce_validator_fields = array(
+					'_wpnonce'                             => $this->prepare_action_nonce(
+						'health-check-disable-troubleshooting',
+						array()
+					),
+					'health-check-disable-troubleshooting' => 1,
+				);
+
+				$this->nonce_validator_details = sprintf(
+					'<p>%s</p>',
+					__( 'You were attempting to <strong>disable Troubleshooting Mode</strong>.', 'health-check' )
+				);
+
+				return;
+			}
+
 			$this->disable_troubleshooting_mode();
 
 			wp_redirect( remove_query_arg( $this->available_query_args ) );
@@ -620,6 +726,25 @@ class Health_Check_Troubleshooting_MU {
 
 		// Dismiss notices.
 		if ( isset( $_GET['health-check-dismiss-notices'] ) && $this->is_troubleshooting() && is_admin() ) {
+			// Validate the cache or return early.
+			if ( ! $this->validate_action_nonce( 'health-check-dismiss-notices', array() ) ) {
+				$this->show_nonce_validator   = true;
+				$this->nonce_validator_fields = array(
+					'_wpnonce'                     => $this->prepare_action_nonce(
+						'health-check-dismiss-notices',
+						array()
+					),
+					'health-check-dismiss-notices' => 1,
+				);
+
+				$this->nonce_validator_details = sprintf(
+					'<p>%s</p>',
+					__( 'You were attempting to <strong>dismiss all notices</strong>.', 'health-check' )
+				);
+
+				return;
+			}
+
 			update_option( 'health-check-dashboard-notices', array() );
 
 			wp_redirect( admin_url() );
@@ -628,6 +753,32 @@ class Health_Check_Troubleshooting_MU {
 
 		// Enable an individual plugin.
 		if ( isset( $_GET['health-check-troubleshoot-enable-plugin'] ) ) {
+			// Validate the cache or return early.
+			if ( ! $this->validate_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $_GET['health-check-troubleshoot-enable-plugin'] ) ) ) {
+				$this->show_nonce_validator   = true;
+				$this->nonce_validator_fields = array(
+					'_wpnonce' => $this->prepare_action_nonce(
+						'health-check-troubleshoot-enable-plugin',
+						array( $_GET['health-check-troubleshoot-enable-plugin'] )
+					),
+					'health-check-troubleshoot-enable-plugin' => implode( ',', array( $_GET['health-check-troubleshoot-enable-plugin'] ) ),
+				);
+
+				$this->nonce_validator_details = sprintf(
+					'<p>%s</p>',
+					sprintf(
+						// translators: The plugin being affected.
+						__( 'You were attempting to <strong>enable</strong> the %s plugin while troubleshooting.', 'health-check' ),
+						sprintf(
+							'<strong>%s</strong>',
+							$_GET['health-check-troubleshoot-enable-plugin']
+						)
+					)
+				);
+
+				return;
+			}
+
 			$old_allowed_plugins = $this->allowed_plugins;
 
 			$this->allowed_plugins[ $_GET['health-check-troubleshoot-enable-plugin'] ] = $_GET['health-check-troubleshoot-enable-plugin'];
@@ -660,7 +811,9 @@ class Health_Check_Troubleshooting_MU {
 								array(
 									'health-check-troubleshoot-enable-plugin' => $_GET['health-check-troubleshoot-enable-plugin'],
 									'health-check-plugin-force-enable' => 'true',
-								)
+									'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $_GET['health-check-troubleshoot-enable-plugin'] ) ),
+								),
+								$this->get_clean_url()
 							)
 						),
 						esc_attr(
@@ -686,6 +839,31 @@ class Health_Check_Troubleshooting_MU {
 
 		// Disable an individual plugin.
 		if ( isset( $_GET['health-check-troubleshoot-disable-plugin'] ) ) {
+			// Validate the cache or return early.
+			if ( ! $this->validate_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $_GET['health-check-troubleshoot-disable-plugin'] ) ) ) {
+				$this->show_nonce_validator   = true;
+				$this->nonce_validator_fields = array(
+					'_wpnonce' => $this->prepare_action_nonce(
+						'health-check-troubleshoot-disable-plugin',
+						array( $_GET['health-check-troubleshoot-disable-plugin'] )
+					),
+					'health-check-troubleshoot-disable-plugin' => implode( ',', array( $_GET['health-check-troubleshoot-disable-plugin'] ) ),
+				);
+
+				$this->nonce_validator_details = sprintf(
+					'<p>%s</p>',
+					sprintf(
+						// translators: The plugin being affected.
+						__( 'You were attempting to <strong>disable</strong> the %s plugin while troubleshooting.', 'health-check' ),
+						sprintf(
+							'<strong>%s</strong>',
+							$_GET['health-check-troubleshoot-disable-plugin']
+						)
+					)
+				);
+
+				return;
+			}
 			$old_allowed_plugins = $this->allowed_plugins;
 
 			unset( $this->allowed_plugins[ $_GET['health-check-troubleshoot-disable-plugin'] ] );
@@ -718,7 +896,9 @@ class Health_Check_Troubleshooting_MU {
 								array(
 									'health-check-troubleshoot-disable-plugin' => $_GET['health-check-troubleshoot-disable-plugin'],
 									'health-check-plugin-force-disable' => 'true',
-								)
+									'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $_GET['health-check-troubleshoot-disable-plugin'] ) ),
+								),
+								$this->get_clean_url()
 							)
 						),
 						esc_attr(
@@ -744,6 +924,32 @@ class Health_Check_Troubleshooting_MU {
 
 		// Change the active theme for this session.
 		if ( isset( $_GET['health-check-change-active-theme'] ) ) {
+			// Validate the cache or return early.
+			if ( ! $this->validate_action_nonce( 'health-check-change-active-theme', array( $_GET['health-check-change-active-theme'] ) ) ) {
+				$this->show_nonce_validator   = true;
+				$this->nonce_validator_fields = array(
+					'_wpnonce'                         => $this->prepare_action_nonce(
+						'health-check-change-active-theme',
+						array( $_GET['health-check-change-active-theme'] )
+					),
+					'health-check-change-active-theme' => implode( ',', array( $_GET['health-check-change-active-theme'] ) ),
+				);
+
+				$this->nonce_validator_details = sprintf(
+					'<p>%s</p>',
+					sprintf(
+						// translators: The theme being activated.
+						__( 'You were attempting to <strong>change the active theme</strong> to %s while troubleshooting.', 'health-check' ),
+						sprintf(
+							'<strong>%s</strong>',
+							$_GET['health-check-change-active-theme']
+						)
+					)
+				);
+
+				return;
+			}
+
 			$old_theme = get_option( 'health-check-current-theme' );
 
 			update_option( 'health-check-current-theme', $_GET['health-check-change-active-theme'] );
@@ -773,7 +979,9 @@ class Health_Check_Troubleshooting_MU {
 								array(
 									'health-check-change-active-theme' => $_GET['health-check-change-active-theme'],
 									'health-check-theme-force-switch' => 'true',
-								)
+									'_wpnonce' => $this->prepare_action_nonce( 'health-check-change-active-theme', array( $_GET['health-check-change-active-theme'] ) ),
+								),
+								$this->get_clean_url()
 							)
 						),
 						esc_attr(
@@ -897,7 +1105,9 @@ class Health_Check_Troubleshooting_MU {
 					$url = add_query_arg(
 						array(
 							'health-check-troubleshoot-disable-plugin' => $plugin_slug,
-						)
+							'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $plugin_slug ) ),
+						),
+						$this->get_clean_url()
 					);
 				} else {
 					$enabled = false;
@@ -912,7 +1122,9 @@ class Health_Check_Troubleshooting_MU {
 					$url = add_query_arg(
 						array(
 							'health-check-troubleshoot-enable-plugin' => $plugin_slug,
-						)
+							'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $plugin_slug ) ),
+						),
+						$this->get_clean_url()
 					);
 				}
 
@@ -959,7 +1171,9 @@ class Health_Check_Troubleshooting_MU {
 				$node['href'] = add_query_arg(
 					array(
 						'health-check-change-active-theme' => $theme['id'],
-					)
+						'_wpnonce'                         => $this->prepare_action_nonce( 'health-check-change-active-theme', array( $theme['id'] ) ),
+					),
+					$this->get_clean_url()
 				);
 			}
 
@@ -975,7 +1189,9 @@ class Health_Check_Troubleshooting_MU {
 				'href'   => add_query_arg(
 					array(
 						'health-check-disable-troubleshooting' => true,
-					)
+						'_wpnonce' => $this->prepare_action_nonce( 'health-check-disable-troubleshooting', array() ),
+					),
+					$this->get_clean_url()
 				),
 			)
 		);
@@ -1051,7 +1267,9 @@ class Health_Check_Troubleshooting_MU {
 							add_query_arg(
 								array(
 									'health-check-disable-troubleshooting' => true,
-								)
+									'_wpnonce' => $this->prepare_action_nonce( 'health-check-disable-troubleshooting', array() ),
+								),
+								$this->get_clean_url()
 							)
 						),
 						esc_html__( 'Disable Troubleshooting Mode', 'health-check' )
@@ -1114,7 +1332,9 @@ class Health_Check_Troubleshooting_MU {
 												add_query_arg(
 													array(
 														'health-check-troubleshoot-disable-plugin' => $plugin_slug,
-													)
+														'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $plugin_slug ) ),
+													),
+													$this->get_clean_url()
 												)
 											),
 											esc_attr(
@@ -1133,7 +1353,9 @@ class Health_Check_Troubleshooting_MU {
 												add_query_arg(
 													array(
 														'health-check-troubleshoot-enable-plugin' => $plugin_slug,
-													)
+														'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $plugin_slug ) ),
+													),
+													$this->get_clean_url()
 												)
 											),
 											esc_attr(
@@ -1207,7 +1429,9 @@ class Health_Check_Troubleshooting_MU {
 											add_query_arg(
 												array(
 													'health-check-change-active-theme' => $theme['id'],
-												)
+													'_wpnonce'                         => $this->prepare_action_nonce( 'health-check-change-active-theme', array( $theme['id'] ) ),
+												),
+												$this->get_clean_url()
 											)
 										),
 										esc_attr(
@@ -1317,7 +1541,9 @@ class Health_Check_Troubleshooting_MU {
 										add_query_arg(
 											array(
 												'health-check-dismiss-notices' => true,
-											)
+												'_wpnonce' => $this->prepare_action_nonce( 'health-check-dismiss-notices', array() ),
+											),
+											$this->get_clean_url()
 										)
 									),
 									esc_html__( 'Dismiss notices', 'health-check' )
@@ -1332,6 +1558,55 @@ class Health_Check_Troubleshooting_MU {
 		<?php
 	}
 
+	public function nonce_confirmation_prompt() {
+		// If the nonce-validator is disabled, do not show anything.
+		if ( ! $this->show_nonce_validator ) {
+			return;
+		}
+
+		$kses_allowed_markup = array(
+			'p'      => array( 'class' ),
+			'ul'     => array( 'class' ),
+			'li'     => array( 'class' ),
+			'strong' => array(),
+			'em'     => array(),
+		);
+
+		$form_fields = array();
+
+		foreach ( $this->nonce_validator_fields as $field => $value ) {
+			$form_fields[] = sprintf(
+				'<input type="hidden" name="%s" value="%s" />',
+				esc_attr( $field ),
+				esc_attr( $value )
+			);
+		}
+
+		echo '
+<div id="health-check-nonce-validator" class="health-check-troubleshooting">
+	<div class="health-check-nonce-validator-wrapper">
+		<form action="" method="get" class="health-check-nonce-validator-inner">
+			' . implode( "\n", $form_fields ) . '
+
+			<h2>
+				' . esc_html__( 'Troubleshooting Mode - Security check', 'health-check' ) . '
+			</h2>
+
+			<p>
+				' . esc_html__( 'You were attempting to perform an action that requires a security token, which was either not present in your request, or was considered invalid. Please verify that the following action is intentional, or feel free to cancel the action and nothing will change.', 'health-check' ) . '
+			</p>
+
+			' . wp_kses( $this->nonce_validator_details, $kses_allowed_markup ) . '
+
+			<hr />
+
+			<button type="submit" class="button button-primary">' . esc_html__( 'Confirm', 'health-check' ) . '</button>
+			<button type="button" class="button button-secondary" onclick="document.getElementById(\'health-check-nonce-validator\').remove()">' . esc_html__( 'Cancel', 'health-check' ) . '</button>
+		</form>
+	</div>
+</div>
+';
+	}
 }
 
 new Health_Check_Troubleshooting_MU();
