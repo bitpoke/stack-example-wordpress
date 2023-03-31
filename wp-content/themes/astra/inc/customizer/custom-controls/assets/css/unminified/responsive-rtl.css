@@ -4,12 +4,6 @@
   vertical-align: top;
 }
 
-.customize-control-ast-responsive-select .ast-responsive-btns {
-  position: relative;
-  top: -1px;
-  left: -5px;
-}
-
 .ast-responsive-btns > li {
   margin-bottom: 0;
   display: none;
@@ -33,74 +27,6 @@
   font-size: 15px;
 }
 
-.ast-field-settings-modal .customize-control-ast-responsive .ast-responsive-btns {
-  margin-top: 6px;
-  position: absolute;
-  left: 15px;
-  top: 0px;
-}
-
-.customize-control-ast-responsive .input-wrapper {
-  overflow: hidden;
-}
-
-.customize-control-ast-responsive .ast-responsive-btns {
-    position: absolute;
-    top: 2px;
-    left: 0;
-}
-
-.customize-control-ast-responsive .input-wrapper input {
-  display: none;
-  width: 82%;
-  float: none;
-}
-
-.customize-control-ast-responsive .input-wrapper input.active {
-  display: block;
-}
-
-.customize-control-ast-responsive .input-wrapper .ast-responsive-select {
-  width: 50px;
-  margin: 0;
-  margin-right: 2px;
-  padding: 0 8px 0 24px;
-  font-size: 13px;
-  text-transform: uppercase;
-  float: none;
-  display: none;
-}
-
-.customize-control-ast-responsive .input-wrapper .ast-responsive-input.active + .ast-responsive-select {
-  display: block;
-  width: 25%;
-  float: none;
-}
-
-.customize-control-ast-responsive .input-wrapper .ast-non-reponsive.ast-responsive-input {
-  display: inline-block;
-}
-
-.customize-control-ast-responsive .input-wrapper .ast-non-reponsive.ast-responsive-input.active {
-  display: inline-block;
-}
-
-.customize-control-ast-responsive .input-wrapper .ast-non-reponsive.ast-responsive-select {
-  display: inline-block;
-}
-
-#customize-control-astra-settings-font-size-body.customize-control-ast-responsive .input-wrapper {
-  display: inline-block;
-}
-
-#customize-control-astra-settings-font-size-body.customize-control-ast-responsive .input-wrapper .ast-responsive-select {
-  display: none;
-}
-
-#customize-control-astra-settings-font-size-body.customize-control-ast-responsive .input-wrapper .ast-responsive-input {
-  width: 100%;
-}
-
 .input-wrapper.ast-responsive-wrapper {
   display: inline-flex;
   justify-content: space-between;
@@ -108,9 +34,4 @@
   align-items: flex-start;
   flex: 0 1;
   width: 100%;
-}
-.customize-control-ast-responsive .ast-responsive-btns {
-  position: absolute;
-  left: 0px;
-  top: 1px;
 }

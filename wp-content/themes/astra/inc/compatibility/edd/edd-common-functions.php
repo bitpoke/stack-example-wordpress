@@ -204,12 +204,27 @@ if ( ! function_exists( 'astra_edd_terms_list' ) ) {
 	 * @return void
 	 */
 	function astra_edd_terms_list( $taxonomy_name ) {
-		$terms = get_terms( $taxonomy_name );
+		$terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 		?>
 	<div class="ast-edd-download-categories">
 		<?php foreach ( $terms as $term ) : ?>
-			<a href="<?php echo esc_url( get_term_link( $term, $taxonomy_name ) ); ?>" title="<?php echo esc_attr( $term->name ); ?>"> <?php echo esc_html( $term->name ); ?> </a>
-		<?php endforeach; ?>
+			<?php 
+				$term_link = get_term_link( $term, $taxonomy_name );
+
+				// If there was an error, continue to the next term.
+			if ( is_wp_error( $term_link ) ) {
+				continue;
+			}
+			?>
+			<a href="
+			<?php 
+			/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			echo esc_url( $term_link );
+			?>
+			" title="<?php echo esc_attr( $term->name ); ?>"> <?php echo esc_html( $term->name ); ?> </a>	
+			<?php 
+		endforeach; 
+		?>
 	</div>
 		<?php
 	}

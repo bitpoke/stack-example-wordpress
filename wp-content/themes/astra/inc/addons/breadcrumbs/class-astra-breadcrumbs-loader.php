@@ -70,12 +70,13 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Loader' ) ) {
 		 */
 		public function theme_defaults( $defaults ) {
 
+			$astra_options = Astra_Theme_Options::get_astra_options();
+
 			/**
 			 * Breadcrumb Typography
 			 */
-			$defaults['breadcrumb-font-family']    = 'inherit';
-			$defaults['breadcrumb-font-weight']    = 'inherit';
-			$defaults['breadcrumb-text-transform'] = 'inherit';
+			$defaults['breadcrumb-font-family'] = 'inherit';
+			$defaults['breadcrumb-font-weight'] = 'inherit';
 
 			/**
 			 * Breadcrumb Responsive Colors
@@ -137,16 +138,23 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Loader' ) ) {
 			/**
 			 * Breadcrumb Font Defaults
 			 */
-			$defaults['breadcrumb-font-family']    = 'inherit';
-			$defaults['breadcrumb-font-weight']    = 'inherit';
-			$defaults['breadcrumb-text-transform'] = '';
-			$defaults['breadcrumb-font-size']      = array(
+			$defaults['breadcrumb-font-family'] = 'inherit';
+			$defaults['breadcrumb-font-weight'] = 'inherit';
+			$defaults['breadcrumb-font-size']   = array(
 				'desktop'      => '',
 				'tablet'       => '',
 				'mobile'       => '',
 				'desktop-unit' => 'px',
 				'tablet-unit'  => 'px',
 				'mobile-unit'  => 'px',
+			);
+			$defaults['breadcrumb-font-extras'] = array(
+				'line-height'         => ! isset( $astra_options['breadcrumb-font-extras'] ) && isset( $astra_options['breadcrumb-line-height'] ) ? $astra_options['breadcrumb-line-height'] : '',
+				'line-height-unit'    => 'em',
+				'letter-spacing'      => '',
+				'letter-spacing-unit' => 'px',
+				'text-transform'      => ! isset( $astra_options['breadcrumb-font-extras'] ) && isset( $astra_options['breadcrumb-text-transform'] ) ? $astra_options['breadcrumb-text-transform'] : '',
+				'text-decoration'     => '',
 			);
 
 			/**
@@ -155,7 +163,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Loader' ) ) {
 
 			$defaults['breadcrumb-separator-selector'] = '\003E';
 			$defaults['breadcrumb-separator']          = '\00bb';
-			
+
 			return $defaults;
 		}
 

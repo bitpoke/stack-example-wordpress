@@ -46,8 +46,8 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 						'control'           => 'ast-responsive-slider',
 						'default'           => astra_get_option( 'font-size-site-title' ),
 						'transport'         => 'postMessage',
-						'priority'          => 9,
-						'title'             => __( 'Size', 'astra' ),
+						'priority'          => 12,
+						'title'             => __( 'Font Size', 'astra' ),
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
 						'suffix'            => array( 'px', 'em' ),
 						'input_attrs'       => array(
@@ -76,8 +76,8 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 						'control'           => 'ast-responsive-slider',
 						'default'           => astra_get_option( 'font-size-site-tagline' ),
 						'transport'         => 'postMessage',
-						'priority'          => 14,
-						'title'             => __( 'Size', 'astra' ),
+						'priority'          => 16,
+						'title'             => __( 'Font Size', 'astra' ),
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
 						'suffix'            => array( 'px', 'em' ),
 						'input_attrs'       => array(
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 					/**
 					 * Option: Site Title Font Size
 					 */
-	
+
 					array(
 						'name'              => ASTRA_THEME_SETTINGS . '[font-size-site-title]',
 						'type'              => 'control',

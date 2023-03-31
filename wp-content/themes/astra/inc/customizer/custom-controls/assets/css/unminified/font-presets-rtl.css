@@ -72,6 +72,159 @@
 	border: 8px solid #fff;
 }
 
+.ast-font-styling {
+	display: flex;
+	justify-content: space-between;
+	gap: 15px;
+	align-items: center;
+	padding-bottom: 20px;
+	border-bottom: 1px dashed #D4D4D4;
+}
+
+.ast-font-extras-wrapper, .ast-font-spacing-wrapper{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.ast-font-extras-wrapper .ast-font-extras-input, .ast-font-spacing-wrapper .ast-font-spacing-input {
+	position: relative;
+	display: flex;
+	align-items: center;
+	background: #fff;
+	max-width: 72px;
+	width: 100%;
+	border: 1px solid #d1d5db;
+	border-radius: 3px;
+	padding: 0 3px;
+}
+
+.ast-font-extras-wrapper .ast-font-extras-input input, .ast-font-spacing-wrapper .ast-font-spacing-input input {
+	padding: 0;
+	border: none;
+	min-height: 32px;
+	border-radius: 3px;
+	border: none !important;
+	box-shadow: none !important;
+	text-align: center;
+	padding: 0 5px;
+}
+.ast-font-extras-wrapper .ast-font-extras-input input[type=number], .ast-font-spacing-wrapper .ast-font-spacing-input input[type=number] {
+	-moz-appearance: textfield;
+}
+.ast-font-extras-input:hover, .ast-font-spacing-input:hover {
+	border-color: var(--ast-customizer-color-2);
+}
+
+.ast-font-extras-wrapper .ast-font-extras-input svg, .ast-font-spacing-wrapper .ast-font-spacing-input svg {
+	width: 38px;
+	height: 28px;
+}
+
+.ast-font-extras-input .plus-minus-control .dashicons,
+.ast-font-spacing-input .plus-minus-control .dashicons {
+	font-size: 10px;
+	color: #9CA3AF;
+	width: 12px;
+	height: 10px;
+	display: inherit;
+	cursor: pointer;
+}
+
+div .ast-field-settings-modal .customize-control-ast-font-extras {
+	margin-top: 15px;
+}
+
+.ast-font-extras-input input[type=number]::-webkit-inner-spin-button,
+.ast-font-extras-input input[type=number]::-webkit-outer-spin-button,
+.ast-font-spacing-input input[type=number]::-webkit-inner-spin-button,
+.ast-font-spacing-input input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.ast-font-unit-wrapper {
+	display: flex;
+	gap: 6px;
+	font-size: 11px;
+	font-weight: 500;
+	color: #9CA3AF;
+}
+.ast-font-unit-wrapper span {
+	cursor: pointer;
+}
+
+.ast-font-unit-wrapper span:hover {
+	color: #0284c7;
+}
+
+.ast-font-unit-wrapper .active {
+	color: #0284c7;
+	cursor: default;
+}
+
+.ast-font-styling-second {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	padding-top: 20px;
+}
+
+.ast-font-transform-wrapper, .ast-font-decoration-wrapper {
+	display: flex;
+	align-items: center;
+	flex: 1;
+
+}
+
+.ast-font-transform-wrapper div, .ast-font-decoration-wrapper div {
+	padding: 8px 0;
+	width: 33%;
+	text-align: center;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	color: #334155;
+}
+
+.ast-font-transform-wrapper div.active, .ast-font-decoration-wrapper div.active {
+	background-color: #0284c7;
+	color: #fff;
+	cursor: pointer;
+}
+
+.ast-font-item-type {
+	border: 1px solid #d1d5db;
+}
+
+.ast-font-item-type:hover {
+	background-color: #0284c7;
+	color: #fff;
+	cursor: pointer;
+}
+
+.ast-font-item-type:first-child {
+	border: 1px solid #d1d5db;
+	border-left: none;
+	border-radius: 0 3px 3px 0;
+}
+
+.ast-font-item-type:last-child {
+	border: 1px solid #d1d5db;
+	border-right: none;
+	border-radius: 3px 0 0 3px;
+}
+
+.ast-font-item-type.ast-font-deco-underline{
+	text-decoration: underline;
+}
+
+.ast-font-item-type.ast-font-deco-linethrough{
+	text-decoration: line-through;
+}
+
 .ast-typopreset-custom-tooltip {
 	position: absolute;
     top: 0;

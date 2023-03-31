@@ -178,3 +178,33 @@ function astra_deprecated_primary_submenu_border_class_filter( $class_selector )
 
 	return $class_selector;
 }
+
+// Deprecating astra_single_banner_post_meta filter.
+add_filter( 'astra_single_post_meta', 'astra_deprecated_astra_single_banner_post_meta_filter', 10, 1 );
+
+/**
+ * Single meta markup filter.
+ *
+ * @since 4.0.2
+ * @param string $meta_markup Markup of meta.
+ * @return string  $meta_markup Markup of meta.
+ */
+function astra_deprecated_astra_single_banner_post_meta_filter( $meta_markup ) {
+	$meta_markup = astra_apply_filters_deprecated( 'astra_single_banner_post_meta', array( $meta_markup ), '4.0.2', 'astra_single_post_meta', '' );
+	return $meta_markup;
+}
+
+// Deprecating astra_get_option_dynamic-blog-layouts filter.
+add_filter( 'astra_get_option_dynamic_blog_layouts', 'astra_deprecated_astra_get_option_dynamic_blog_layouts_filter', 10, 1 );
+
+/**
+ * Don't apply direct new layouts to legacy users.
+ *
+ * @since 4.1.0
+ * @param string $dynamic_blog_layout false if it is an existing user , true if not.
+ * @return boolean  $dynamic_blog_layout false if it is an existing user , true if not.
+ */
+function astra_deprecated_astra_get_option_dynamic_blog_layouts_filter( $dynamic_blog_layout ) {
+	$dynamic_blog_layout = astra_apply_filters_deprecated( 'astra_get_option_dynamic-blog-layouts', array( $dynamic_blog_layout ), '4.1.0', 'astra_get_option_dynamic_blog_layouts', '' );
+	return $dynamic_blog_layout;
+}

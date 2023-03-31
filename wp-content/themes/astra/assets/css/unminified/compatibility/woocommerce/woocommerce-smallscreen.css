@@ -175,6 +175,14 @@
 .woocommerce #content table.cart .product-thumbnail,
 .woocommerce-page table.cart .product-thumbnail,
 .woocommerce-page #content table.cart .product-thumbnail {
+  display: block;
+  text-align: center !important;
+}
+
+.woocommerce table.cart .product-thumbnail:before,
+.woocommerce #content table.cart .product-thumbnail:before,
+.woocommerce-page table.cart .product-thumbnail:before,
+.woocommerce-page #content table.cart .product-thumbnail:before {
   display: none;
 }
 

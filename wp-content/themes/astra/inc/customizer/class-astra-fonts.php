@@ -123,8 +123,8 @@ final class Astra_Fonts {
 		 *
 		 * @since 3.6.0
 		 */
-		if ( astra_get_option( 'load-google-fonts-locally' ) && ! is_customize_preview() && ! is_admin() ) {
-			if ( astra_get_option( 'preload-local-fonts' ) ) {
+		if ( Astra_API_Init::get_admin_settings_option( 'self_hosted_gfonts', false ) && ! is_customize_preview() && ! is_admin() ) {
+			if ( Astra_API_Init::get_admin_settings_option( 'preload_local_fonts', false ) ) {
 				astra_load_preload_local_fonts( $google_font_url );
 			}
 			wp_enqueue_style( 'astra-google-fonts', astra_get_webfont_url( $google_font_url ), array(), ASTRA_THEME_VERSION, 'all' );

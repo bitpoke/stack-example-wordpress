@@ -29,20 +29,35 @@
                 dynamicStyle += '} ';
 
                 dynamicStyle +=  '@media (max-width: ' + tablet_break_point + 'px) {';
-                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-vertical-menu .menu-item {';
-                dynamicStyle += 'align-items: ' + alignment['tablet'] + ';';
+                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-tablet-vertical-menu {';
+                dynamicStyle +=  'justify-content:' +  alignment['tablet'] + ';';
                 dynamicStyle += '} ';
-                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-horizontal-menu {';
+                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-tablet-vertical-menu .menu-item {';
+                dynamicStyle +=  'display:' + 'grid;';
+                dynamicStyle +=  'justify-content:' +  alignment['tablet'] + ';';
+                dynamicStyle +=  'align-items: ' + alignment['tablet'] + ';';
+                dynamicStyle += '} ';
+                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-tablet-horizontal-menu {';
                 dynamicStyle += 'justify-content: ' + alignment['tablet'] + ';';
+                dynamicStyle += 'display: flex;';
                 dynamicStyle += '} ';
                 dynamicStyle += '} ';
 
                 dynamicStyle +=  '@media (max-width: ' + mobile_break_point + 'px) {';
-                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-vertical-menu .menu-item {';
+                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-mobile-vertical-menu {';
+                dynamicStyle +=  'display:' + 'grid;';
+                dynamicStyle +=  'justify-content:' +  alignment['mobile'] + ';';
+                dynamicStyle += '} ';
+
+                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-mobile-vertical-menu .menu-item {';
+                dynamicStyle +=  'justify-content:' +  alignment['mobile'] + ';';
+
                 dynamicStyle += 'align-items: ' + alignment['mobile'] + ';';
                 dynamicStyle += '} ';
-                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-horizontal-menu {';
+
+                dynamicStyle += '.footer-widget-area[data-section="section-footer-menu"] .astra-footer-mobile-horizontal-menu {';
                 dynamicStyle += 'justify-content: ' + alignment['mobile'] + ';';
+                dynamicStyle += 'display: flex;';
                 dynamicStyle += '} ';
                 dynamicStyle += '} ';
 

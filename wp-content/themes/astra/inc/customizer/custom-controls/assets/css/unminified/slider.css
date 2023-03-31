@@ -76,10 +76,15 @@
   text-align: center;
   user-select: none;
   opacity: 0.6;
+  cursor: pointer;
 }
 
 .customize-control-ast-responsive-slider .ast-responsive-units li.single-unit.active {
   opacity: 1;
   font-weight: 600;
   color: #0073aa;
+  cursor: default;
+}
+.ast-field-settings-modal .ast-fields-wrap > .customize-control-ast-responsive-slider + .customize-control-ast-font {
+    margin-top: 8px;
 }

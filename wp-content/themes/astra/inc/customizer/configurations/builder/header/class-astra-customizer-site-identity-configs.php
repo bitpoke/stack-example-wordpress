@@ -58,7 +58,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'type'           => 'control',
 					'control'        => 'ast-customizer-link',
 					'section'        => 'astra-site-identity',
-					'priority'       => 5,
+					'priority'       => 100,
 					'link_type'      => 'section',
 					'is_button_link' => true,
 					'linked'         => 'title_tagline',
@@ -75,26 +75,6 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'control'     => 'ast-builder-header-control',
 					'priority'    => 0,
 					'description' => '',
-				),
-
-				/**
-				 * Option: Display Title
-				 */
-				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
-					'type'      => 'control',
-					'control'   => 'ast-responsive-toggle-control',
-					'default'   => astra_get_option( 'display-site-title-responsive' ),
-					'section'   => 'title_tagline',
-					'title'     => __( 'Display Site Title', 'astra' ),
-					'priority'  => 7,
-					'transport' => 'postMessage',
-					'partial'   => array(
-						'selector'            => '.site-branding',
-						'container_inclusive' => true,
-						'render_callback'     => 'Astra_Builder_Header::site_identity',
-					),
-					'context'   => Astra_Builder_Helper::$general_tab,
 				),
 
 				// Option: Site Title Color.
@@ -125,7 +105,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'context'   => Astra_Builder_Helper::$design_tab,
 				),
 
-				
+
 				/**
 						 * Option: Divider
 						 */

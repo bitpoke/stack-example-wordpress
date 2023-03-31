@@ -85,7 +85,9 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 					$val = $input_attrs['min'];
 				}
 
+				/** @psalm-suppress InvalidCast */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				$dv = (float) $val / $input_attrs['step'];
+				/** @psalm-suppress InvalidCast */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 				$dv = round( $dv );
 

@@ -129,7 +129,7 @@ class Astra_Related_Posts_Markup {
 												do_action( 'astra_related_post_after_featured_image', $post_id );
 											} else {
 												?>
-														<header class="entry-header">
+														<header class="entry-header related-entry-header">
 														<?php
 															$this->astra_get_related_post_title( $post_id );
 															echo apply_filters( 'astra_related_posts_meta_html', '<div class="entry-meta">' . $output_str . '</div>', $output_str ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -200,7 +200,7 @@ class Astra_Related_Posts_Markup {
 
 		?>
 			<p class="ast-related-post-cta read-more">
-				<a class="ast-related-post-link <?php echo esc_html( $custom_class ); ?>" href="<?php echo esc_url( apply_filters( 'astra_related_post_link', get_the_permalink(), $current_post_id ) ); ?>" aria-label="<?php echo esc_attr__( 'Related post link', 'astra' ); ?>"  target="<?php echo esc_html( $target ); ?>" rel="bookmark noopener noreferrer"><?php echo esc_html( $cta_text ); ?></a>
+				<a class="ast-related-post-link <?php echo esc_attr( $custom_class ); ?>" href="<?php echo esc_url( apply_filters( 'astra_related_post_link', get_the_permalink(), $current_post_id ) ); ?>" aria-label="<?php echo esc_attr__( 'Related post link', 'astra' ); ?>"  target="<?php echo esc_url( $target ); ?>" rel="bookmark noopener noreferrer"><?php echo esc_html( $cta_text ); ?></a>
 			</p>
 		<?php
 
@@ -266,7 +266,7 @@ class Astra_Related_Posts_Markup {
 		do_action( 'astra_related_post_before_title', $current_post_id );
 		?>
 			<<?php echo esc_html( $title_tag ); ?> class="ast-related-post-title entry-title">
-				<a href="<?php echo esc_url( apply_filters( 'astra_related_post_link', get_the_permalink(), $current_post_id ) ); ?>" target="<?php echo esc_html( $target ); ?>" rel="bookmark noopener noreferrer"><?php the_title(); ?></a>
+				<a href="<?php echo esc_url( apply_filters( 'astra_related_post_link', get_the_permalink(), $current_post_id ) ); ?>" target="<?php echo esc_attr( $target ); ?>" rel="bookmark noopener noreferrer"><?php the_title(); ?></a>
 			</<?php echo esc_html( $title_tag ); ?>>
 		<?php
 		do_action( 'astra_related_post_after_title', $current_post_id );

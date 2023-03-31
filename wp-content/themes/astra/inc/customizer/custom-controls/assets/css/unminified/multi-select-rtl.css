@@ -1,0 +1,34 @@
+.customize-control-ast-multi-selector .input-wrapper {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+.customize-control-ast-multi-selector .ast-multiselector-inner-wrap {
+	display: flex;
+	justify-content: center;
+	flex: 1 1 0;
+	background: var(--ast-customizer-color-9);
+	border: 1px solid var(--ast-customizer-color-7);
+	padding: .6em 0;
+	cursor: pointer;
+	--ast-customizer-multiselect-icon-color: var(--ast-customizer-color-6);
+	margin-right: -1px;
+}
+
+.customize-control-ast-multi-selector .ast-multiselector-inner-wrap.active {
+	--ast-customizer-multiselect-icon-color: var(--ast-customizer-color-1);
+	border-color: var(--ast-customizer-color-3);
+	z-index: 1;
+}
+.customize-control-ast-multi-selector .ast-multiselector-inner-wrap svg {
+	fill: var(--ast-customizer-color-10);
+}
+.ast-multiselector-inner-wrap .ahfb-icon-set {
+	line-height: 1;
+}
+.customize-control-ast-multi-selector .ast-multiselector-inner-wrap:last-child {
+	border-radius: 3px 0px 0px 3px;
+}
+.customize-control-ast-multi-selector .ast-multiselector-inner-wrap:first-child {
+	border-radius: 0px 3px 3px 0px;
+}

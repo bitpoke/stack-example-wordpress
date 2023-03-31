@@ -167,7 +167,7 @@ final class Astra_Control_Typography extends WP_Customize_Control {
 
 		<label>
 		<# if ( data.label ) { #>
-			<span class="customize-control-title">{{{data.label}}}</span>
+			<span class="customize-control-title">{{{data.label}}}</span> <?php // phpcs:ignore WordPressVIPMinimum.Security.Mustache.OutputNotation -- Required to display label ?>
 		<# } #>
 
 		</label>

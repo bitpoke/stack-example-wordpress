@@ -88,6 +88,14 @@ class Astra_Heading_Colors_Loader {
 	 */
 	public function theme_defaults( $defaults ) {
 
+		$astra_options = Astra_Theme_Options::get_astra_options();
+		/**
+		 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
+		 *
+		 * @since 4.0.0
+		 */
+		$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
+
 		/**
 		* Heading Tags <h1> to <h6>
 		*/
@@ -99,61 +107,99 @@ class Astra_Heading_Colors_Loader {
 		$defaults['h6-color'] = '';
 
 		// Header <H1>.
-		$defaults['font-family-h1']    = 'inherit';
-		$defaults['font-weight-h1']    = 'inherit';
-		$defaults['text-transform-h1'] = '';
-		$defaults['line-height-h1']    = '';
+		$defaults['font-family-h1'] = 'inherit';
+		$defaults['font-weight-h1'] = 'inherit';
+		$defaults['font-extras-h1'] = array(
+			'line-height'         => ! isset( $astra_options['font-extras-h1'] ) && isset( $astra_options['line-height-h1'] ) ? $astra_options['line-height-h1'] : '1.4',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['font-extras-h1'] ) && isset( $astra_options['text-transform-h1'] ) ? $astra_options['text-transform-h1'] : '',
+			'text-decoration'     => '',
+		);
 
 		// Header <H2>.
-		$defaults['font-family-h2']    = 'inherit';
-		$defaults['font-weight-h2']    = 'inherit';
-		$defaults['text-transform-h2'] = '';
-		$defaults['line-height-h2']    = '';
+		$defaults['font-family-h2'] = 'inherit';
+		$defaults['font-weight-h2'] = 'inherit';
+		$defaults['font-extras-h2'] = array(
+			'line-height'         => ! isset( $astra_options['font-extras-h2'] ) && isset( $astra_options['line-height-h2'] ) ? $astra_options['line-height-h2'] : '1.25',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['font-extras-h2'] ) && isset( $astra_options['text-transform-h2'] ) ? $astra_options['text-transform-h2'] : '',
+			'text-decoration'     => '',
+		);
 
 		// Header <H3>.
-		$defaults['font-family-h3']    = 'inherit';
-		$defaults['font-weight-h3']    = 'inherit';
-		$defaults['text-transform-h3'] = '';
-		$defaults['line-height-h3']    = '';
+		$defaults['font-family-h3'] = 'inherit';
+		$defaults['font-weight-h3'] = 'inherit';
+		$defaults['font-extras-h3'] = array(
+			'line-height'         => ! isset( $astra_options['font-extras-h3'] ) && isset( $astra_options['line-height-h3'] ) ? $astra_options['line-height-h3'] : '1.2',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['font-extras-h3'] ) && isset( $astra_options['text-transform-h3'] ) ? $astra_options['text-transform-h3'] : '',
+			'text-decoration'     => '',
+		);
 
 		// Header <H4>.
-		$defaults['font-family-h4']    = 'inherit';
-		$defaults['font-weight-h4']    = 'inherit';
-		$defaults['text-transform-h4'] = '';
-		$defaults['line-height-h4']    = '';
+		$defaults['font-family-h4'] = 'inherit';
+		$defaults['font-weight-h4'] = 'inherit';
+		$defaults['font-extras-h4'] = array(
+			'line-height'         => ! isset( $astra_options['font-extras-h4'] ) && isset( $astra_options['line-height-h4'] ) ? $astra_options['line-height-h4'] : '1.2',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['font-extras-h4'] ) && isset( $astra_options['text-transform-h4'] ) ? $astra_options['text-transform-h4'] : '',
+			'text-decoration'     => '',
+		);
 
 		// Header <H5>.
-		$defaults['font-family-h5']    = 'inherit';
-		$defaults['font-weight-h5']    = 'inherit';
-		$defaults['text-transform-h5'] = '';
-		$defaults['line-height-h5']    = '';
+		$defaults['font-family-h5'] = 'inherit';
+		$defaults['font-weight-h5'] = 'inherit';
+		$defaults['font-extras-h5'] = array(
+			'line-height'         => ! isset( $astra_options['font-extras-h5'] ) && isset( $astra_options['line-height-h5'] ) ? $astra_options['line-height-h5'] : '1.2',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['font-extras-h5'] ) && isset( $astra_options['text-transform-h5'] ) ? $astra_options['text-transform-h5'] : '',
+			'text-decoration'     => '',
+		);
 
 		// Header <H6>.
-		$defaults['font-family-h6']    = 'inherit';
-		$defaults['font-weight-h6']    = 'inherit';
-		$defaults['text-transform-h6'] = '';
-		$defaults['line-height-h6']    = '';
+		$defaults['font-family-h6'] = 'inherit';
+		$defaults['font-weight-h6'] = 'inherit';
+		$defaults['font-extras-h6'] = array(
+			'line-height'         => ! isset( $astra_options['font-extras-h6'] ) && isset( $astra_options['line-height-h6'] ) ? $astra_options['line-height-h6'] : '1.25',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['font-extras-h6'] ) && isset( $astra_options['text-transform-h6'] ) ? $astra_options['text-transform-h6'] : '',
+			'text-decoration'     => '',
+		);
 
 		/**
 		 * Theme button Font Defaults
 		 */
-		$defaults['font-weight-button']    = 'inherit';
-		$defaults['font-family-button']    = 'inherit';
-		$defaults['font-size-button']      = array(
-			'desktop'      => '',
+		$defaults['font-weight-button'] = $apply_new_default_color_typo_values ? '500' : 'inherit';
+		$defaults['font-family-button'] = 'inherit';
+		$defaults['font-size-button']   = array(
+			'desktop'      => $apply_new_default_color_typo_values ? '16' : '',
 			'tablet'       => '',
 			'mobile'       => '',
 			'desktop-unit' => 'px',
 			'tablet-unit'  => 'px',
 			'mobile-unit'  => 'px',
 		);
-		$defaults['text-transform-button'] = '';
 
-		/**
-		 * Check backward compatibility for button line height.
-		 */
-		$defaults['theme-btn-line-height']    = 1;
-		$defaults['theme-btn-letter-spacing'] = '';
+		$defaults['font-extras-button'] = array(
+			'line-height'         => ! isset( $astra_options['font-extras-button'] ) && isset( $astra_options['theme-btn-line-height'] ) ? $astra_options['theme-btn-line-height'] : 1,
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => ! isset( $astra_options['font-extras-button'] ) && isset( $astra_options['theme-btn-letter-spacing'] ) ? $astra_options['theme-btn-letter-spacing'] : '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['font-extras-button'] ) && isset( $astra_options['text-transform-button'] ) ? $astra_options['text-transform-button'] : '',
+			'text-decoration'     => '',
+		);
 
 		return $defaults;
 	}

@@ -38,7 +38,17 @@ if ( ! class_exists( 'Astra_Customizer_Register_Learndash_Section' ) ) {
 					'name'     => 'section-learndash',
 					'priority' => 65,
 					'title'    => __( 'LearnDash', 'astra' ),
+
 				),
+
+				array(
+					'name'     => 'section-leandash-general',
+					'title'    => __( 'General', 'astra' ),
+					'type'     => 'section',
+					'section'  => 'section-learndash',
+					'priority' => 10,
+				),
+
 			);
 
 			return array_merge( $configurations, $configs );

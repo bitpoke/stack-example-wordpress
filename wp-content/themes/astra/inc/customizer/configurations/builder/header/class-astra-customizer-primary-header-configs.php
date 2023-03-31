@@ -148,9 +148,6 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'context'     => Astra_Builder_Helper::$design_tab,
 					'divider'     => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
-
-			
-
 			);
 
 			$_configs = array_merge( $_configs, Astra_Builder_Base_Configuration::prepare_advanced_tab( $_section ) );

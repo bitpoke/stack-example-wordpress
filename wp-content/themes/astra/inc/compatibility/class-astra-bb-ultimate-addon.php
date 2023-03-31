@@ -216,7 +216,7 @@ if ( ! class_exists( 'Astra_BB_Ultimate_Addon' ) ) :
 		 * @since 2.2.0
 		 */
 		public function default_type_button_text_transform() {
-			$theme_btn_text_transform = astra_get_option( 'text-transform-button' );
+			$theme_btn_text_transform = astra_get_font_extras( astra_get_option( 'font-extras-button' ), 'text-transform' );
 			return $theme_btn_text_transform;
 		}
 

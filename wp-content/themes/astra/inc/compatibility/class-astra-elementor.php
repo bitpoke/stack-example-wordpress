@@ -65,6 +65,33 @@ if ( ! class_exists( 'Astra_Elementor' ) ) :
 			add_action( 'rest_request_after_callbacks', array( $this, 'elementor_add_theme_colors' ), 999, 3 );
 			add_filter( 'rest_request_after_callbacks', array( $this, 'display_global_colors_front_end' ), 999, 3 );
 			add_filter( 'astra_dynamic_theme_css', array( $this, 'generate_global_elementor_style' ), 11 );
+
+			/**
+			 * Compatibility for Elementor title disable from editor and elementor builder.
+			 *
+			 * @since  4.1.0
+			 */
+			add_filter( 'astra_entry_header_class', array( $this, 'astra_entry_header_class_custom' ), 1, 99 );
+		}
+
+
+		/**
+		 * Hide elementor title.
+		 *
+		 * @param array $classes Array of elementor edit mode check.
+		 *
+		 * @since 4.1.0
+		 */
+		function astra_entry_header_class_custom( $classes ) {
+			$post_id = astra_get_post_id(); 
+			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$edit_mode = get_post_meta( $post_id, '_elementor_edit_mode', true ); 
+
+			if ( $edit_mode && $edit_mode === 'builder' ) { 
+				$classes[] = 'ast-header-without-markup';
+			}
+
+			return $classes;
 		}
 
 		/**
@@ -91,6 +118,10 @@ if ( ! class_exists( 'Astra_Elementor' ) ) :
 				$elementor_heading_margin_comp = array(
 					'.elementor-widget-heading .elementor-heading-title' => array(
 						'margin' => '0',
+					),
+					'.elementor-page .ast-menu-toggle' => array(
+						'color'      => 'unset !important',
+						'background' => 'unset !important',
 					),
 				);
 

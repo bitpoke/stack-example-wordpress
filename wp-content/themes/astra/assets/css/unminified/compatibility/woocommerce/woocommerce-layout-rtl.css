@@ -433,14 +433,6 @@
   width: 80px;
 }
 
-.woocommerce table.cart td.actions .button,
-.woocommerce #content table.cart td.actions .button, .woocommerce-page table.cart td.actions .button,
-.woocommerce-page #content table.cart td.actions .button {
-  line-height: 1;
-  border-width: 1px;
-  border-style: solid;
-}
-
 .woocommerce table.cart td.actions .coupon,
 .woocommerce #content table.cart td.actions .coupon, .woocommerce-page table.cart td.actions .coupon,
 .woocommerce-page #content table.cart td.actions .coupon {

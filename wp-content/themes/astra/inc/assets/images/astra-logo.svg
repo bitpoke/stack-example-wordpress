@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="ast-logo-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	width="60px" height="60px" viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:url(#SVGID_1_);}
-</style>
-<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="514.4975" y1="-404.01" x2="569.5025" y2="-383.9898" gradientTransform="matrix(1 0 0 -1 -512 -364)">
-	<stop  offset="0" style="stop-color:#5437DC"/>
-	<stop  offset="1" style="stop-color:#EE79FF"/>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="20" fill="url(#paint0_linear_2349_55861)"/>
+<path d="M19.7688 8.00063C19.7679 7.99979 19.7688 7.99979 19.7688 8.00063C16.5122 14.6651 13.2557 21.333 10 27.9975C11.3949 27.9975 12.7907 27.9975 14.1865 27.9975C16.8208 22.8376 19.4568 17.6759 22.0919 12.5126L19.7688 8.00063Z" fill="white"/>
+<path d="M24.1092 16.2694C22.7652 18.976 21.4213 21.6833 20.0774 24.3899L19.9996 24.5408H20.0774C21.3695 24.5408 22.6615 24.5408 23.9536 24.5408C24.4704 25.6933 24.9873 26.8475 25.5041 28C27.0027 28 28.5014 28 30 28C28.0364 24.0881 26.0719 20.1788 24.1092 16.2694Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_2349_55861" x1="-5.96046e-07" y1="40" x2="47.0588" y2="28.2353" gradientUnits="userSpaceOnUse">
+<stop stop-color="#492CDD"/>
+<stop offset="1" stop-color="#AD38E2"/>
 </linearGradient>
-<path class="st0" d="M30,0.74C13.84,0.74,0.74,13.84,0.74,30c0,16.16,13.1,29.26,29.26,29.26c16.16,0,29.26-13.1,29.26-29.26
-	C59.26,13.84,46.16,0.74,30,0.74z M21.15,45.1c-2.13,0-4.25,0-6.37,0c4.95-10.46,9.91-20.92,14.86-31.38c0,0,0,0,0,0l3.54,7.08
-	C29.17,28.9,25.16,37,21.15,45.1z M38.37,45.1c-0.78-1.81-1.57-3.62-2.35-5.43c-1.97,0-3.93,0-5.9,0H30l0.12-0.24
-	c2.04-4.25,4.09-8.5,6.14-12.74c2.98,6.13,5.97,12.27,8.97,18.41C42.94,45.1,40.66,45.1,38.37,45.1z"/>
+</defs>
 </svg>

@@ -50,3 +50,30 @@ add_action( 'astra_register_admin_menu', 'astra_deprecated_asta_register_admin_m
 function astra_deprecated_asta_register_admin_menu_hook( $parent_page, $page_title, $capability, $page_menu_slug, $page_menu_func ) {
 	astra_do_action_deprecated( 'asta_register_admin_menu', array( $parent_page, $page_title, $capability, $page_menu_slug, $page_menu_func ), '3.7.4', 'astra_register_admin_menu' );
 }
+
+/**
+ * Actions which are deprecated in admin redesign phase.
+ *
+ * @since 4.0.0
+ */
+function astra_show_deprecated_admin_hooks_warnings() {
+	global $pagenow;
+	$screen = get_current_screen();
+	if ( 'admin.php' === $pagenow && is_object( $screen ) && 'toplevel_page_' . Astra_Menu::get_theme_page_slug() === $screen->id ) {
+		astra_do_action_deprecated( 'astra_welcome_page_content_before', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_welcome_page_content', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_welcome_page_content_after', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_welcome_page_right_sidebar_before', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_welcome_page_right_sidebar_content', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_welcome_page_right_sidebar_after', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_single_post_order_before', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_single_post_title_before', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_single_post_title_after', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_single_post_meta_before', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_single_post_meta_after', array(), '4.0.0' );
+		astra_do_action_deprecated( 'astra_single_post_order_after', array(), '4.0.0' );
+	}
+}
+
+// Depreciating legacy admin hooks.
+add_action( 'admin_notices', 'astra_show_deprecated_admin_hooks_warnings', 999 );

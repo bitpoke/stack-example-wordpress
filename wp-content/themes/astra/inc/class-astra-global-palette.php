@@ -118,9 +118,49 @@ class Astra_Global_Palette {
 	 * @return array Palette options.
 	 */
 	public static function get_default_color_palette() {
+		/**
+		 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
+		 *
+		 * @since 4.0.0
+		 */
+		$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
 		return array(
 			'currentPalette' => 'palette_1',
-			'palettes'       => array(
+			'palettes'       => $apply_new_default_color_typo_values ? array(
+				'palette_1' => array(
+					'#046bd2',
+					'#045cb4',
+					'#1e293b',
+					'#334155',
+					'#f9fafb',
+					'#FFFFFF',
+					'#e2e8f0',
+					'#cbd5e1',
+					'#94a3b8',
+				),
+				'palette_2' => array(
+					'#0170B9',
+					'#3a3a3a',
+					'#3a3a3a',
+					'#4B4F58',
+					'#F5F5F5',
+					'#FFFFFF',
+					'#F2F5F7',
+					'#424242',
+					'#000000',
+				),
+				'palette_3' => array(
+					'#0170B9',
+					'#3a3a3a',
+					'#3a3a3a',
+					'#4B4F58',
+					'#F5F5F5',
+					'#FFFFFF',
+					'#F2F5F7',
+					'#424242',
+					'#000000',
+				),
+			) : array(
 				'palette_1' => array(
 					'#0170B9',
 					'#3a3a3a',

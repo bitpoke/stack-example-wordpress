@@ -346,7 +346,7 @@ class Astra_Social_Icon_Component_Configs {
 					'priority'    => 2,
 					'transport'   => 'postMessage',
 					'default'     => astra_get_option( $builder_type . '-social-' . $index . '-bg-space' ),
-					'title'       => __( 'Icon Background Spacing', 'astra' ),
+					'title'       => __( 'Icon Background Space', 'astra' ),
 					'suffix'      => 'px',
 					'type'        => 'control',
 					'control'     => 'ast-slider',
@@ -384,25 +384,29 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-				 * Option: Social Icon Radius
-				 */
-				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-radius]',
-					'section'     => $_section,
-					'priority'    => 4,
-					'transport'   => 'postMessage',
-					'default'     => astra_get_option( $builder_type . '-social-' . $index . '-radius' ),
-					'title'       => __( 'Icon Radius', 'astra' ),
-					'suffix'      => 'px',
-					'type'        => 'control',
-					'control'     => 'ast-slider',
-					'input_attrs' => array(
-						'min'  => 0,
-						'step' => 1,
-						'max'  => 50,
+					* Option: Button Radius Fields
+					*/
+					array(
+						'name'              => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-radius-fields]',
+						'default'           => astra_get_option( $builder_type . '-social-' . $index . '-radius-fields' ),
+						'type'              => 'control',
+						'control'           => 'ast-responsive-spacing',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+						'section'           => $_section,
+						'title'             => __( 'Icon Radius', 'astra' ),
+						'linked_choices'    => true,
+						'transport'         => 'postMessage',
+						'unit_choices'      => array( 'px', 'em', '%' ),
+						'choices'           => array(
+							'top'    => __( 'Top', 'astra' ),
+							'right'  => __( 'Right', 'astra' ),
+							'bottom' => __( 'Bottom', 'astra' ),
+							'left'   => __( 'Left', 'astra' ),
+						),
+						'priority'          => 4,
+						'connected'         => false,
+						'context'           => Astra_Builder_Helper::$design_tab,
 					),
-					'context'     => Astra_Builder_Helper::$design_tab,
-				),
 
 				/**
 				 * Option: Divider

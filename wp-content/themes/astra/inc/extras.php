@@ -131,11 +131,9 @@ if ( ! function_exists( 'astra_get_content_layout' ) ) {
 
 			if ( empty( $content_layout ) ) {
 
-				$post_type = get_post_type();
+				$post_type = strval( get_post_type() );
 
-				if ( 'post' === $post_type || 'page' === $post_type ) {
-					$content_layout = astra_get_option( 'single-' . get_post_type() . '-content-layout' );
-				}
+				$content_layout = astra_get_option( 'single-' . $post_type . '-content-layout' );
 
 				if ( 'default' == $content_layout || empty( $content_layout ) ) {
 
@@ -147,11 +145,9 @@ if ( ! function_exists( 'astra_get_content_layout' ) ) {
 		} else {
 
 			$content_layout = '';
-			$post_type      = get_post_type();
+			$post_type      = strval( get_post_type() );
 
-			if ( 'post' === $post_type ) {
-				$content_layout = astra_get_option( 'archive-' . get_post_type() . '-content-layout' );
-			}
+			$content_layout = astra_get_option( 'archive-' . $post_type . '-content-layout' );
 
 			if ( is_search() ) {
 				$content_layout = astra_get_option( 'archive-post-content-layout' );
@@ -184,7 +180,7 @@ if ( ! function_exists( 'astra_check_is_ie' ) ) :
 		$is_ie = false;
 
 		if ( ! empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
-			$ua = htmlentities( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ), ENT_QUOTES, 'UTF-8' );
+			$ua = htmlentities( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ), ENT_QUOTES, 'UTF-8' );  // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__ -- Need to check if its ie.
 			if ( strpos( $ua, 'Trident/7.0' ) !== false ) {
 				$is_ie = true;
 			}
@@ -375,7 +371,7 @@ add_filter( 'astra_customizer_configurations', 'astra_remove_controls', 99 );
  * @return string The menu item.
  */
 function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
-	$role = 'presentation';
+	$role = 'application';
 	$icon = '';
 
 	/**
@@ -422,9 +418,12 @@ function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
 		// Assign icons to only those menu which are registered by Astra.
 		$icon = Astra_Icons::get_icons( 'arrow' );
 	}
+	$custom_tabindex  = true === Astra_Builder_Helper::$is_header_footer_builder_active ? 'tabindex="0"' : '';
+	$astra_arrow_icon = '<span role="' . esc_attr( $role ) . '" class="dropdown-menu-toggle ast-header-navigation-arrow" ' . $custom_tabindex . ' aria-expanded="false" aria-label="' . esc_attr__( 'Menu Toggle', 'astra' ) . '" >' . $icon . '</span>';
+
 	foreach ( $item->classes as $value ) {
 		if ( 'menu-item-has-children' === $value ) {
-			$title = $title . '<span role="' . esc_attr( $role ) . '" class="dropdown-menu-toggle" >' . $icon . '</span>';
+			$title = $title . $astra_arrow_icon;
 		}
 	}
 	if ( 0 < $depth ) {
@@ -574,19 +573,9 @@ function astra_is_elemetor_active() {
 }
 
 /**
- * Check the Astra addon 3.5.0 version is using or not.
- * As this is major update and frequently we used version_compare, added a function for this for easy maintenance.
- *
- * @since  3.5.0
- */
-function astra_addon_has_3_5_0_version() {
-	return defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, '3.5.0', '<' );
-}
-
-/**
  * Check the Astra addon version.
  * For  major update and frequently we used version_compare, added a function for this for easy maintenance.
- * 
+ *
  * @param string $version Astra addon version.
  * @param string $compare Compare symbols.
  * @since  3.9.2
@@ -635,7 +624,7 @@ function astra_load_preload_local_fonts( $url, $format = 'woff2' ) {
 		$font_format = apply_filters( 'astra_local_google_fonts_format', $format );
 		foreach ( $astra_local_font_files as $key => $local_font ) {
 			if ( $local_font ) {
-				echo '<link rel="preload" href="' . esc_url( $local_font ) . '" as="font" type="font/' . esc_attr( $font_format ) . '" crossorigin>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo '<link rel="preload" href="' . esc_url( $local_font ) . '" as="font" type="font/' . esc_attr( $font_format ) . '" crossorigin>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Preparing HTML link tag.
 			}
 		}
 		return;
@@ -764,7 +753,7 @@ function astra_remove_widget_design_options() {
  * @since 3.7.0
  */
 function astra_get_palette_colors() {
-	return get_option( 'astra-color-palettes', Astra_Global_Palette::get_default_color_palette() );
+	return get_option( 'astra-color-palettes', apply_filters( 'astra_global_color_palette', Astra_Global_Palette::get_default_color_palette() ) );
 }
 
 /**
@@ -970,4 +959,72 @@ function astra_search_static_css() {
 	}
 
 	return Astra_Enqueue_Scripts::trim_css( $search_css );
+}
+
+/**
+ * Showcase "Upgrade to Pro" notices for Astra & here is the filter work as central control to enable/disable those notices from customizer, meta settings, admin area, pro post types pages.
+ *
+ * @since 3.9.4
+ * @return bool
+ */
+function astra_showcase_upgrade_notices() {
+	return ( ! defined( 'ASTRA_EXT_VER' ) && astra_get_option( 'ast-disable-upgrade-notices', true ) ) ? true : false;
+}
+
+/**
+ * Function which will return CSS for font-extras control.
+ * It includes - line-height, letter-spacing, text-decoration, font-style.
+ *
+ * @param array  $config contains extra font settings.
+ * @param string $setting basis on this setting will return.
+ * @param mixed  $unit Unit.
+ *
+ * @since 4.0.0
+ */
+function astra_get_font_extras( $config, $setting, $unit = false ) {
+	$css = isset( $config[ $setting ] ) ? $config[ $setting ] : '';
+
+	if ( $unit && $css ) {
+		$css .= isset( $config[ $unit ] ) ? $config[ $unit ] : '';
+	}
+
+	return $css;
+}
+
+/**
+ * Function which will return CSS array for font specific props for further parsing CSS.
+ * It includes - font-family, font-weight, font-size, line-height, text-transform, letter-spacing, text-decoration, color (optional).
+ *
+ * @param string $font_family Font family.
+ * @param string $font_weight Font weight.
+ * @param array  $font_size Font size.
+ * @param string $font_extras contains all font controls.
+ * @param string $color In most of cases color is also added, so included optional param here.
+
+ * @return array  array of build CSS font settings.
+ *
+ * @since 4.0.0
+ */
+function astra_get_font_array_css( $font_family, $font_weight, $font_size, $font_extras, $color = '' ) {
+	$font_extras_ast_option = astra_get_option(
+		$font_extras,
+		array(
+			'line-height'         => '',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => '',
+			'text-decoration'     => '',
+		)
+	);
+	return array(
+		'color'           => esc_attr( $color ),
+		'font-family'     => astra_get_css_value( $font_family, 'font' ),
+		'font-weight'     => astra_get_css_value( $font_weight, 'font' ),
+		'font-size'       => ! empty( $font_size ) ? astra_responsive_font( $font_size, 'desktop' ) : '',
+		'line-height'     => astra_get_font_extras( $font_extras_ast_option, 'line-height', 'line-height-unit' ),
+		'text-transform'  => astra_get_font_extras( $font_extras_ast_option, 'text-transform' ),
+		'letter-spacing'  => astra_get_font_extras( $font_extras_ast_option, 'letter-spacing', 'letter-spacing-unit' ),
+		'text-decoration' => astra_get_font_extras( $font_extras_ast_option, 'text-decoration' ),
+	);
 }

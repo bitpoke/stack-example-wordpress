@@ -3,9 +3,9 @@ Contributors: brainstormforce
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: custom-menu, custom-logo, entertainment, featured-images, full-width-template, one-column, two-columns, left-sidebar, e-commerce, right-sidebar, custom-colors, editor-style, featured-images, full-width-template, microformats, post-formats, rtl-language-support, theme-options, threaded-comments, translation-ready, blog
-Tested up to: 6.0.2
+Tested up to: 6.2
 Requires PHP: 5.3
-Stable tag: 3.9.2
+Stable tag: 4.1.2
 
 Astra is fast, fully customizable & beautiful WordPress theme suitable for blog, personal portfolio, business website and WooCommerce storefront.
 
@@ -54,18 +54,13 @@ There are multiple ways you can use a child theme with the Astra Theme, Use any 
 2. More information on creating child theme. - https://developer.wordpress.org/themes/advanced-topics/child-themes/
 
 
-= Screenshot Licenses =
+= Screenshot & WP-Preview Starter Content Licenses =
 
 Screenshot image is a collage of actual sites created using the Astra WordPress Theme.
 
-Icons used in the Screenshot image are all licensed under Creative Commons ( CC BY 4.0 ) License ( https://fontawesome.com/license/free )
-https://fontawesome.com/v5.15/icons/store?style=solid
-https://fontawesome.com/v5.15/icons/shopping-cart?style=solid
-https://fontawesome.com/v5.15/icons/pen-square?style=solid
-https://fontawesome.com/v5.15/icons/user-tie?style=solid
-https://fontawesome.com/v5.15/icons/user-tie?style=solid
+Icons used are all licensed under Massachusetts Institute of Technology ( MIT ) License ( https://heroicons.com )
 
-Illustrations used in the Screenshot images are all licensed under Creative Commons ( CC0 ) License ( https://gumroad.com/l/humaaans )
+Illustrations used are all licensed under Creative Commons ( CC0 ) License ( https://gumroad.com/l/humaaans )
 https://websitedemos.net/web-design-agency-08/wp-content/uploads/sites/796/2021/05/standing-24.png
 https://websitedemos.net/web-design-agency-08/wp-content/uploads/sites/796/2021/05/sitting-2.png
 
@@ -74,9 +69,12 @@ https://websitedemos.net/web-design-agency-08/wp-content/uploads/sites/796/2021/
 https://websitedemos.net/web-design-agency-08/wp-content/uploads/sites/796/2021/05/boy-with-code-container.png
 https://websitedemos.net/web-design-agency-08/wp-content/uploads/sites/796/2021/05/web-browser.png
 
+Images used in the WordPress preview starter content are all licensed under Creative Commons ( CC0 ) License ( https://pxhere.com )
+
 The same site as screenshot can be imported from here https://websitedemos.net/web-design-agency-08/.
 
 For more information, refer to this document on how to create a page like in the screenshot - https://wpastra.com/docs/replicating-the-screenshot/.
+
 
 = Normalizing styles =
 

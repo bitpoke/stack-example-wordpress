@@ -41,7 +41,7 @@ switch ( $astra_header_component_slug ) {
 	case 'menu-1':
 		?>
 		<div class="ast-builder-menu-1 ast-builder-menu ast-flex ast-builder-menu-1-focus-item ast-builder-layout-element site-header-focus-item" data-section="section-hb-menu-1">
-			<?php do_action( 'astra_header_menu_1' ); ?>
+			<?php do_action( 'astra_header_menu_1', $astra_active_device ); ?>
 		</div>
 		<?php
 		break;
@@ -49,7 +49,7 @@ switch ( $astra_header_component_slug ) {
 	case 'menu-2':
 		?>
 		<div class="ast-builder-menu-2 ast-builder-menu ast-flex ast-builder-menu-2-focus-item ast-builder-layout-element site-header-focus-item" data-section="section-hb-menu-2">
-			<?php do_action( 'astra_header_menu_2' ); ?>
+			<?php do_action( 'astra_header_menu_2', $astra_active_device ); ?>
 		</div>
 		<?php
 		break;
@@ -188,7 +188,7 @@ switch ( $astra_header_component_slug ) {
 		break;
 
 	default:
-		do_action( 'astra_render_header_components', $astra_header_component_slug );
+		do_action( 'astra_render_header_components', $astra_header_component_slug, $astra_active_device );
 		break;
 
 }

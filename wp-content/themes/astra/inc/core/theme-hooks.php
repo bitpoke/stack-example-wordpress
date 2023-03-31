@@ -444,6 +444,15 @@ function astra_entry_content_single() {
 }
 
 /**
+ * Entry content single-page.
+ *
+ * @since 4.0.0
+ */
+function astra_entry_content_single_page() {
+	do_action( 'astra_entry_content_single_page' );
+}
+
+/**
  * 404
  */
 function astra_entry_content_404_page() {

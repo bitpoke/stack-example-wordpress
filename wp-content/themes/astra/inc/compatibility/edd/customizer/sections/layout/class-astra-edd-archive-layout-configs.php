@@ -30,6 +30,10 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
+			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$grid_ast_divider = ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'edd' ) ) ? array() : array( 'ast_class' => 'ast-top-section-divider' );
+			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
 			$_configs = array(
 
 				/**
@@ -56,6 +60,7 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 						'min'  => 1,
 						'max'  => 6,
 					),
+					'divider'           => $grid_ast_divider,
 					'transport'         => 'postMessage',
 				),
 
@@ -238,7 +243,7 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 			);
 
 			// Learn More link if Astra Pro is not activated.
-			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+			if ( astra_showcase_upgrade_notices() ) {
 
 				$_configs[] =
 
@@ -252,10 +257,9 @@ if ( ! class_exists( 'Astra_Edd_Archive_Layout_Configs' ) ) {
 						'section'  => 'section-edd-archive',
 						'priority' => 999,
 						'title'    => __( 'View Astra Pro Features', 'astra' ),
-						'url'      => astra_get_pro_url( 'https://wpastra.com/pro', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+						'url'      => astra_get_pro_url( ASTRA_PRO_UPGRADE_URL, 'customizer', 'learn-more', 'upgrade-to-pro' ),
 						'settings' => array(),
 						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
-
 					);
 
 			}

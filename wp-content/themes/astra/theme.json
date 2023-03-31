@@ -89,5 +89,14 @@
       "wideSize": "var(--wp--custom--ast-wide-width-size)",
       "fullSize": "none"
     }
+  },
+  "styles": {
+    "elements": {
+      "link": {
+          "typography": {
+            "textDecoration": "none"
+          }
+      }
+    }
   }
 }

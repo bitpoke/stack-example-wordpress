@@ -56,6 +56,8 @@
 				}
 			}
 		}
+
+		document.dispatchEvent( new CustomEvent( "astra_on_slide_In_cart_open",  { "detail": {} }) );
 	}
 
 	/**

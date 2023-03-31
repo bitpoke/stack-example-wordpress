@@ -109,7 +109,7 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 			);
 
 			// Learn More link if Astra Pro is not activated.
-			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+			if ( astra_showcase_upgrade_notices() ) {
 
 				$_configs[] =
 
@@ -123,10 +123,9 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 						'section'  => $section,
 						'priority' => 999,
 						'title'    => __( 'View Astra Pro Features', 'astra' ),
-						'url'      => astra_get_pro_url( 'https://wpastra.com/pro', 'customizer', 'learn-more', 'upgrade-to-pro' ),
+						'url'      => astra_get_pro_url( ASTRA_PRO_UPGRADE_URL, 'customizer', 'learn-more', 'upgrade-to-pro' ),
 						'settings' => array(),
 						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
-
 					);
 
 			}

@@ -26,7 +26,7 @@ add_filter( 'astra_dynamic_theme_css', 'astra_above_header_row_setting', 11 );
  */
 function astra_above_header_row_setting( $dynamic_css, $dynamic_css_filtered = '' ) {
 
-	if ( ! is_customize_preview() && ( ! Astra_Builder_helper::is_row_empty( 'above', 'header', 'desktop' ) && ! Astra_Builder_helper::is_row_empty( 'above', 'header', 'mobile' ) ) ) {
+	if ( ! is_customize_preview() && ( ! Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) && ! Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) ) ) {
 		return $dynamic_css;
 	}
 
@@ -47,9 +47,6 @@ function astra_above_header_row_setting( $dynamic_css, $dynamic_css_filtered = '
 	$hba_header_height_desktop = ( isset( $hba_header_height['desktop'] ) && ! empty( $hba_header_height['desktop'] ) ) ? $hba_header_height['desktop'] : '';
 	$hba_header_height_tablet  = ( isset( $hba_header_height['tablet'] ) && ! empty( $hba_header_height['tablet'] ) ) ? $hba_header_height['tablet'] : '';
 	$hba_header_height_mobile  = ( isset( $hba_header_height['mobile'] ) && ! empty( $hba_header_height['mobile'] ) ) ? $hba_header_height['mobile'] : '';
-
-	// Spacing CSS options.
-	$hba_header_spacing = astra_get_option( 'hba-header-spacing' );
 
 	/**
 	 * Above Header General options
@@ -88,12 +85,6 @@ function astra_above_header_row_setting( $dynamic_css, $dynamic_css_filtered = '
 	} else {
 		$common_css_output['.ast-above-header-bar'] = array(
 			'border-bottom-style' => 'none',
-		);
-	}
-
-	if ( astra_addon_has_3_5_0_version() ) {
-		$common_css_output['.ast-above-header-bar.ast-header-sticked'] = array(
-			'z-index' => 9,
 		);
 	}
 

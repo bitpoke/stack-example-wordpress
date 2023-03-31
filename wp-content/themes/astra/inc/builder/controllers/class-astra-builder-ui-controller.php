@@ -135,10 +135,12 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 		/**
 		 * Prepare Edit icon inside customizer.
+		 *
+		 * @param string $class custom class.
+		 * @since 3.9.4
 		 */
-		public static function render_customizer_edit_button() {
-			?>
-			<div class="customize-partial-edit-shortcut" data-id="ahfb">
+		public static function render_customizer_edit_button( $class = '' ) { ?>
+			<div class="customize-partial-edit-shortcut <?php echo esc_attr( $class ); ?>" data-id="ahfb">
 				<button aria-label="<?php esc_attr_e( 'Click to edit this element.', 'astra' ); ?>"
 						title="<?php esc_attr_e( 'Click to edit this element.', 'astra' ); ?>"
 						class="customize-partial-edit-shortcut-button item-customizer-focus">
@@ -291,12 +293,14 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 		 * @since 3.1.0
 		 */
 		public static function render_mobile_cart_flyout_markup() {
-			$current_canvas_width = astra_get_option( 'woo-desktop-cart-flyout-width' ); 
-			$is_width_long        = $current_canvas_width && $current_canvas_width > 500 ? 'ast-large-view' : '';
-			
+			$flyout_cart_width              = astra_get_option( 'woo-slide-in-cart-width' );
+			$flyout_cart_width_desktop      = ( isset( $flyout_cart_width['desktop'] ) ) ? $flyout_cart_width['desktop'] : '';
+			$flyout_cart_width_desktop_unit = ( isset( $flyout_cart_width['desktop-unit'] ) ) ? $flyout_cart_width['desktop-unit'] : '';
+			$flyout_cart_unit_breakpoint    = 'px' === $flyout_cart_width_desktop_unit ? 500 : 50;
+			$is_width_long                  = $flyout_cart_width_desktop && $flyout_cart_width_desktop > $flyout_cart_unit_breakpoint ? 'ast-large-view' : '';
 			?>
 			<div class="astra-mobile-cart-overlay"></div>
-			<div id="astra-mobile-cart-drawer" class="astra-cart-drawer open-right">
+			<div id="astra-mobile-cart-drawer" class="astra-cart-drawer">
 				<div class="astra-cart-drawer-header">
 					<button type="button" class="astra-cart-drawer-close" aria-label="<?php echo esc_attr__( 'Close Cart Drawer', 'astra' ); ?>">
 							<?php echo self::fetch_svg_icon( 'close' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

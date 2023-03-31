@@ -21,42 +21,78 @@
 	 */
 	astra_css( 'astra-settings[heading-base-color]', 'color', headingSelectors );
 
-	var h1_widget_title, h2_widget_title, h3_widget_title, h4_widget_title, h5_widget_title, h6_widget_title = '';
-	if( astraCustomizer.font_weights_widget_title_support ) {
-		h1_widget_title = 'h1.widget-title';
-		h2_widget_title = 'h2.widget-title';
-		h3_widget_title = 'h3.widget-title';
-		h4_widget_title = 'h4.widget-title';
-		h5_widget_title = 'h5.widget-title';
-		h6_widget_title = 'h6.widget-title';
+
+	function headingDynamicCss(slug) {
+		let anchorSupport = '';
+		let WidthTitleSupport = '';
+
+		// Check if anchors should be loaded in the CSS for headings.
+		if( astraCustomizer.includeAnchorsInHeadindsCss ) {
+			anchorSupport = ',.entry-content ' + slug + ' a';
+		}
+
+		// Add widget title support to font-weight preview CSS.
+		if( astraCustomizer.font_weights_widget_title_support ) {
+			WidthTitleSupport = ',' + slug + '.widget-title';
+		}
+
+		astra_generate_outside_font_family_css( 'astra-settings[font-family-'+ slug +']', slug + ', .entry-content ' + slug + anchorSupport );
+		astra_generate_font_weight_css( 'astra-settings[font-family-'+ slug +']', 'astra-settings[font-weight-'+ slug +']', 'font-weight', slug + ', .entry-content ' + slug + anchorSupport + WidthTitleSupport );
+
+		wp.customize( 'astra-settings[font-extras-'+ slug +']', function( value ) {
+
+			value.bind( function( data ) {
+				let elementorSupport = '';
+				let dynamicStyle = '';
+
+				if ( astraCustomizer.page_builder_button_style_css ) {
+					elementorSupport = ',.elementor-widget-heading '+ slug +'.elementor-heading-title';
+				}
+
+					// Line Height
+					const globalSelectorLineHeight = slug + ', .entry-content '+ slug + elementorSupport + anchorSupport;
+
+					if( data['line-height'] && data['line-height-unit'] ) {
+						dynamicStyle += globalSelectorLineHeight + '{';
+						dynamicStyle += 'line-height : ' + data['line-height'] + data['line-height-unit'] + ';' ;
+						dynamicStyle += '}';
+					}
+
+					const globalSelector = slug +', .entry-content ' + slug + anchorSupport;
+
+					if( data['letter-spacing'] || data['text-decoration'] || data['text-transform'] ) {
+						dynamicStyle += globalSelector + '{';
+						if( data['letter-spacing'] && data['letter-spacing-unit'] ) {
+							dynamicStyle += 'letter-spacing : ' + data['letter-spacing'] + data['letter-spacing-unit'] + ";" ;
+						}
+						if( data['text-decoration'] ) {
+							dynamicStyle += 'text-decoration : ' + data['text-decoration'] + ";";
+						}
+						if( data['text-transform'] ) {
+							dynamicStyle += 'text-transform : ' + data['text-transform']  + ';' ;
+						}
+
+						dynamicStyle += '}';
+					}
+					astra_add_dynamic_css( 'font-extras-'+ slug, dynamicStyle );
+			});
+		});
 	}
 
-	astra_generate_outside_font_family_css( 'astra-settings[font-family-h1]', 'h1, .entry-content h1' );
-	astra_generate_font_weight_css( 'astra-settings[font-family-h1]', 'astra-settings[font-weight-h1]', 'font-weight', 'h1, .entry-content h1, ' + h1_widget_title );
-	astra_css('astra-settings[line-height-h1]', 'line-height', 'h1, .entry-content h1, .elementor-widget-heading h1.elementor-heading-title');
-	astra_css('astra-settings[text-transform-h1]', 'text-transform', 'h1, .entry-content h1');
 
-	astra_generate_outside_font_family_css( 'astra-settings[font-family-h2]', 'h2, .entry-content h2' );
-	astra_generate_font_weight_css( 'astra-settings[font-family-h2]', 'astra-settings[font-weight-h2]', 'font-weight', 'h2, .entry-content h2, ' + h2_widget_title );
-	astra_css('astra-settings[line-height-h2]', 'line-height', 'h2, .entry-content h2, .elementor-widget-heading h2.elementor-heading-title');
-	astra_css('astra-settings[text-transform-h2]', 'text-transform', 'h2, .entry-content h2');
+	headingDynamicCss('h1');
+	headingDynamicCss('h2');
+	headingDynamicCss('h3');
+	headingDynamicCss('h4');
+	headingDynamicCss('h5');
+	headingDynamicCss('h6');
 
-	astra_generate_outside_font_family_css( 'astra-settings[font-family-h3]', 'h3, .entry-content h3' );
-	astra_generate_font_weight_css( 'astra-settings[font-family-h3]', 'astra-settings[font-weight-h3]', 'font-weight', 'h3, .entry-content h3, ' + h3_widget_title );
-	astra_css('astra-settings[line-height-h3]', 'line-height', 'h3, .entry-content h3, .elementor-widget-heading h3.elementor-heading-title');
-	astra_css('astra-settings[text-transform-h3]', 'text-transform', 'h3, .entry-content h3');
+	let woo_button_attr = '';
 
-	astra_generate_outside_font_family_css( 'astra-settings[font-family-h4]', 'h4, .entry-content h4' );
-	astra_generate_font_weight_css( 'astra-settings[font-family-h4]', 'astra-settings[font-weight-h4]', 'font-weight', 'h4, .entry-content h4, ' + h4_widget_title );
-	astra_css('astra-settings[text-transform-h4]', 'text-transform', 'h4, .entry-content h4');
-
-	astra_generate_outside_font_family_css( 'astra-settings[font-family-h5]', 'h5, .entry-content h5' );
-	astra_generate_font_weight_css( 'astra-settings[font-family-h5]', 'astra-settings[font-weight-h5]', 'font-weight', 'h5, .entry-content h5, ' + h5_widget_title );
-	astra_css('astra-settings[text-transform-h5]', 'text-transform', 'h5, .entry-content h5');
-
-	astra_generate_outside_font_family_css( 'astra-settings[font-family-h6]', 'h6, .entry-content h6' );
-	astra_generate_font_weight_css( 'astra-settings[font-family-h6]', 'astra-settings[font-weight-h6]', 'font-weight', 'h6, .entry-content h6, ' + h6_widget_title );
-	astra_css('astra-settings[text-transform-h6]', 'text-transform', 'h6, .entry-content h6');
+	// WooCommerce global button compatibility for new users only.
+	if( astraCustomizer.astra_woo_btn_global_compatibility ) {
+		woo_button_attr = ', .woocommerce a.button, .woocommerce button.button, .woocommerce .woocommerce-message a.button, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce input.button,.woocommerce-cart table.cart td.actions .button, .woocommerce form.checkout_coupon .button, .woocommerce #respond input#submit, .wc-block-grid__products .wc-block-grid__product .wp-block-button__link';
+	}
 
 	if ( astraCustomizer.page_builder_button_style_css ) {
 
@@ -78,21 +114,22 @@
 		}
 
 		// Button Typo
-		astra_generate_outside_font_family_css( 'astra-settings[font-family-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link' + ele_btn_font_family );
-		astra_generate_font_weight_css( 'astra-settings[font-family-button]', 'astra-settings[font-weight-button]', 'font-weight', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link' + ele_btn_font_weight );
-		astra_css( 'astra-settings[text-transform-button]', 'text-transform', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link' + ele_btn_transform );
-		astra_responsive_font_size( 'astra-settings[font-size-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link' + ele_btn_font_size );
-		astra_css( 'astra-settings[theme-btn-line-height]', 'line-height', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link' + ele_btn_line_height );
-		astra_css( 'astra-settings[theme-btn-letter-spacing]', 'letter-spacing', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link' + ele_btn_letter_spacing, 'px' );
+		astra_generate_outside_font_family_css( 'astra-settings[font-family-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button' + ele_btn_font_family + woo_button_attr );
+		astra_generate_font_weight_css( 'astra-settings[font-family-button]', 'astra-settings[font-weight-button]', 'font-weight', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button' + ele_btn_font_weight + woo_button_attr );
+		astra_font_extras_css( 'font-extras-button', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button' + ele_btn_transform + woo_button_attr );
+
+		astra_responsive_font_size( 'astra-settings[font-size-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button' + ele_btn_font_size + woo_button_attr );
+		astra_css( 'astra-settings[theme-btn-line-height]', 'line-height', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button' + ele_btn_line_height + woo_button_attr );
+		astra_css( 'astra-settings[theme-btn-letter-spacing]', 'letter-spacing', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button .wp-block-button__link, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button' + ele_btn_letter_spacing + woo_button_attr, 'px' );
 
 	} else {
 		// Button Typo
-		astra_generate_outside_font_family_css( 'astra-settings[font-family-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' );
-		astra_generate_font_weight_css( 'astra-settings[font-family-button]', 'astra-settings[font-weight-button]', 'font-weight', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' );
-		astra_css( 'astra-settings[text-transform-button]', 'text-transform', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' );
-		astra_responsive_font_size( 'astra-settings[font-size-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' );
-		astra_css( 'astra-settings[theme-btn-line-height]', 'line-height', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' );
-		astra_css( 'astra-settings[theme-btn-letter-spacing]', 'letter-spacing', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]', 'px' );
+		astra_generate_outside_font_family_css( 'astra-settings[font-family-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' + woo_button_attr );
+		astra_generate_font_weight_css( 'astra-settings[font-family-button]', 'astra-settings[font-weight-button]', 'font-weight', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' + woo_button_attr );
+		astra_font_extras_css( 'font-extras-button', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' + woo_button_attr );
+		astra_responsive_font_size( 'astra-settings[font-size-button]', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' + woo_button_attr );
+		astra_css( 'astra-settings[theme-btn-line-height]', 'line-height', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' + woo_button_attr );
+		astra_css( 'astra-settings[theme-btn-letter-spacing]', 'letter-spacing', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' + woo_button_attr , 'px' );
 	}
 
 } )( jQuery );

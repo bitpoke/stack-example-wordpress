@@ -162,9 +162,10 @@ if ( ! function_exists( 'astra_blog_post_thumbnail_and_title_order' ) ) {
 	function astra_blog_post_thumbnail_and_title_order() {
 
 		$blog_post_thumb_title_order = astra_get_option( 'blog-post-structure' );
-		if ( is_single() ) {
-			$blog_post_thumb_title_order = astra_get_option( 'blog-single-post-structure' );
+		if ( is_singular() ) {
+			return astra_banner_elements_order();
 		}
+
 		if ( is_array( $blog_post_thumb_title_order ) ) {
 			// Append the custom class for second element for single post.
 			foreach ( $blog_post_thumb_title_order as $post_thumb_title_order ) {
@@ -183,20 +184,6 @@ if ( ! function_exists( 'astra_blog_post_thumbnail_and_title_order' ) ) {
 						do_action( 'astra_blog_archive_title_meta_before' );
 						astra_get_blog_post_title_meta();
 						do_action( 'astra_blog_archive_title_meta_after' );
-						break;
-
-					// Single Post Featured Image.
-					case 'single-image':
-						do_action( 'astra_blog_single_featured_image_before' );
-						astra_get_blog_post_thumbnail( 'single' );
-						do_action( 'astra_blog_single_featured_image_after' );
-						break;
-
-						// Single Post Title and Single Post Meta.
-					case 'single-title-meta':
-						do_action( 'astra_blog_single_title_meta_before' );
-						astra_get_single_post_title_meta();
-						do_action( 'astra_blog_single_title_meta_after' );
 						break;
 				}
 			}
@@ -283,53 +270,6 @@ if ( ! function_exists( 'astra_get_blog_post_title_meta' ) ) {
 }
 
 /**
- * Single Post Title & Meta Order
- */
-if ( ! function_exists( 'astra_get_single_post_title_meta' ) ) {
-
-	/**
-	 * Blog post Thumbnail
-	 *
-	 * @since  1.0.8
-	 */
-	function astra_get_single_post_title_meta() {
-
-		// Single Post Title and Single Post Meta.
-		do_action( 'astra_single_post_order_before' );
-
-		?>
-		<div class="ast-single-post-order">
-			<?php
-
-			do_action( 'astra_single_post_title_before' );
-
-			astra_the_title(
-				'<h1 class="entry-title" ' . astra_attr(
-					'article-title-blog-single',
-					array(
-						'class' => '',
-					)
-				) . '>',
-				'</h1>'
-			);
-
-			do_action( 'astra_single_post_title_after' );
-
-			do_action( 'astra_single_post_meta_before' );
-
-			astra_single_get_post_meta();
-
-			do_action( 'astra_single_post_meta_after' );
-
-			?>
-		</div>
-		<?php
-
-		do_action( 'astra_single_post_order_after' );
-	}
-}
-
-/**
  * Get audio files from post content
  */
 if ( ! function_exists( 'astra_get_audios_from_post' ) ) {
@@ -389,4 +329,189 @@ if ( ! function_exists( 'astra_get_video_from_post' ) ) {
 			}
 		}
 	}
+}
+
+/**
+ * Get last word of string to get meta-key of custom post structure.
+ *
+ * @since 4.0.0
+ * @param string $string from this get last word.
+ * @return string $last_word result.
+ */
+function astra_get_last_meta_word( $string ) {
+	$string    = explode( '-', $string );
+	$last_word = array_pop( $string );
+	return $last_word;
+}
+
+/**
+ * Get the current archive description.
+ *
+ * @since 4.0.0
+ * @param string $post_type post type.
+ * @return string $description Description for archive.
+ */
+function astra_get_archive_description( $post_type ) {
+	$description = '';
+
+	if ( ! is_search() ) {
+
+		$get_archive_description = get_the_archive_description();
+		$get_author_meta         = trim( get_the_author_meta( 'description' ) );
+
+		if ( ! empty( $get_archive_description ) ) {
+			$description = get_the_archive_description();
+		}
+		if ( is_author() ) {
+			if ( ! empty( $get_author_meta ) ) {
+				$description = get_the_author_meta( 'description' );
+			}
+		}
+		if ( empty( $description ) && ! have_posts() ) {
+			$description = esc_html( astra_default_strings( 'string-content-nothing-found-message', false ) );
+		}
+	}
+	if ( is_post_type_archive( $post_type ) ) {
+		$description = astra_get_option( 'ast-dynamic-archive-' . $post_type . '-custom-description', '' );
+	}
+	if ( 'post' === $post_type && ( ( is_front_page() && is_home() ) || is_home() ) ) {
+		$description = astra_get_option( 'ast-dynamic-archive-post-custom-description', '' );
+	}
+	return $description;
+}
+
+/**
+ * Custom single post Title & Meta order display.
+ *
+ * @since 4.0.0
+ * @param array $structure archive or single post structure.
+ * @return mixed
+ */
+function astra_banner_elements_order( $structure = array() ) {
+
+	if ( true === apply_filters( 'astra_remove_entry_header_content', false ) ) {
+		return;
+	}
+
+	global $post;
+	if ( is_null( $post ) ) {
+		return;
+	}
+
+	// If Blog / Latest Post page is active then looping required strctural order.
+	if ( ( ! is_front_page() && is_home() ) && false === astra_get_option( 'ast-dynamic-archive-post-banner-on-blog', false ) ) {
+		return astra_blog_post_thumbnail_and_title_order();
+	}
+
+	$post_type = $post->post_type;
+
+	$prefix      = 'archive';
+	$structure   = astra_get_option( 'ast-dynamic-' . $prefix . '-' . $post_type . '-structure', array( 'ast-dynamic-' . $prefix . '-' . $post_type . '-title', 'ast-dynamic-' . $prefix . '-' . $post_type . '-description' ) );
+	$layout_type = astra_get_option( 'ast-dynamic-' . $prefix . '-' . $post_type . '-layout', 'layout-1' );
+
+	if ( is_singular() ) {
+		$prefix    = 'single';
+		$structure = astra_get_option( 'ast-dynamic-' . $prefix . '-' . $post_type . '-structure', array( 'ast-dynamic-' . $prefix . '-' . $post_type . '-title', 'ast-dynamic-' . $prefix . '-' . $post_type . '-meta' ) );
+		if ( 'page' === $post_type ) {
+			$structure = astra_get_option( 'ast-dynamic-single-page-structure', array( 'ast-dynamic-single-page-image', 'ast-dynamic-single-page-title' ) );
+		}
+		$layout_type = astra_get_option( 'ast-dynamic-' . $prefix . '-' . $post_type . '-layout', 'layout-1' );
+	}
+
+	do_action( 'astra_single_post_banner_before' );
+
+	foreach ( $structure as $metaval ) {
+		$meta_key = $prefix . '-' . astra_get_last_meta_word( $metaval );
+		switch ( $meta_key ) {
+			case 'single-breadcrumb':
+				do_action( 'astra_single_post_banner_breadcrumb_before' );
+				echo astra_get_breadcrumb(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				do_action( 'astra_single_post_banner_breadcrumb_after' );
+				break;
+
+			case 'single-title':
+				do_action( 'astra_single_post_banner_title_before' );
+				if ( 'page' === $post_type ) {
+					astra_the_title(
+						'<h1 class="entry-title" ' . astra_attr(
+							'article-title-content-page',
+							array(
+								'class' => '',
+							)
+						) . '>',
+						'</h1>'
+					);
+				} else {
+					astra_the_title(
+						'<h1 class="entry-title" ' . astra_attr(
+							'article-title-blog-single',
+							array(
+								'class' => '',
+							)
+						) . '>',
+						'</h1>'
+					);
+				}
+				do_action( 'astra_single_post_banner_title_after' );
+				break;
+
+			case 'single-excerpt':
+				do_action( 'astra_single_post_banner_excerpt_before' );
+				echo '<span>' . get_the_excerpt( $post->ID ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				do_action( 'astra_single_post_banner_excerpt_after' );
+				break;
+
+			case 'single-meta':
+				do_action( 'astra_single_post_banner_meta_before' );
+				$post_meta = astra_get_option( 'ast-dynamic-single-' . $post_type . '-metadata', array( 'comments', 'author', 'date' ) );
+				$output    = '';
+				if ( ! empty( $post_meta ) ) {
+					$output_str = astra_get_post_meta( $post_meta );
+					if ( ! empty( $output_str ) ) {
+						$output = apply_filters( 'astra_single_post_meta', '<div class="entry-meta">' . $output_str . '</div>' ); // WPCS: XSS OK.
+					}
+				}
+				echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				do_action( 'astra_single_post_banner_meta_after' );
+				break;
+
+			case 'single-image':
+				$featured_background = astra_get_option( 'ast-dynamic-single-' . $post_type . '-featured-as-background', false );
+
+				if ( ( 'layout-2' === $layout_type && false === $featured_background ) || 'layout-1' === $layout_type ) {
+					do_action( 'astra_blog_single_featured_image_before' );
+					astra_get_blog_post_thumbnail( 'single' );
+					do_action( 'astra_blog_single_featured_image_after' );
+				}
+				break;
+
+			case 'archive-title':
+				do_action( 'astra_blog_archive_title_before' );
+				add_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
+				if ( 'layout-1' === $layout_type ) {
+					astra_the_post_title( '<h1 class="page-title ast-archive-title">', '</h1>', 0, true );
+				} else {
+					astra_the_post_title( '<h1>', '</h1>', 0, true );
+				}
+				remove_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
+				do_action( 'astra_blog_archive_title_after' );
+				break;
+
+			case 'archive-breadcrumb':
+				if ( ! is_author() ) {
+					do_action( 'astra_blog_archive_breadcrumb_before' );
+					echo astra_get_breadcrumb(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					do_action( 'astra_blog_archive_breadcrumb_after' );
+				}
+				break;
+
+			case 'archive-description':
+				do_action( 'astra_blog_archive_description_before' );
+				echo wp_kses_post( wpautop( astra_get_archive_description( $post_type ) ) );
+				do_action( 'astra_blog_archive_description_after' );
+				break;
+		}
+	}
+
+	do_action( 'astra_single_post_banner_after' );
 }

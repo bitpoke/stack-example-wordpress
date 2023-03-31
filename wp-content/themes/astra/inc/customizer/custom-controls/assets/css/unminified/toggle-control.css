@@ -8,16 +8,19 @@
 }
 
 .customize-control-ast-link .ast-togglecontrol-wrapper .components-base-control__field {
-  margin: 20px 0;
+  margin: 24px 0 0;
 }
 
-.ast-togglecontrol-wrapper .toggle-control-label {
+.ast-togglecontrol-wrapper .toggle-control-label, .ast-togglecontrol-wrapper .components-toggle-control__label {
   font-size: 14px;
+  font-weight: 600;
 }
 
 .customize-control-ast-toggle-control .components-toggle-control .components-toggle-control__label, .ast-togglecontrol-wrapper label {
   display: flex;
   flex: 1 1 auto;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .ast-switch ~ label {
@@ -61,4 +64,12 @@
 }
 .ast-switch:not(:checked), .ast-switch:checked {
   opacity: 0;
+}
+
+/* Wordpress 6.1 Compatibility CSS for toggle UI */
+.components-toggle-control .components-base-control__field {
+	display: flex;
+	margin-bottom: 12px;
+	line-height: initial;
+	align-items: center;
 }

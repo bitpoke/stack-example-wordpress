@@ -418,16 +418,26 @@ if ( ! class_exists( 'Astra_Builder_Base_Dynamic_CSS' ) ) {
 		 */
 		public static function prepare_visibility_css( $section_id, $selector, $default_property = 'flex', $mobile_tablet_default = '' ) {
 
+			$astra_options      = Astra_Theme_Options::get_astra_options();
 			$css_output_desktop = array();
 			$css_output_tablet  = array();
 			$css_output_mobile  = array();
 
-			// For Mobile/Tablet we need display grid property to display elements centerd alignment.
+			// For Mobile/Tablet we need display grid property to display elements centered alignment.
 			$mobile_tablet_default = ( $mobile_tablet_default ) ? $mobile_tablet_default : $default_property;
 
-			$hide_desktop = ( ! astra_get_option( $section_id . '-hide-desktop' ) ) ? $default_property : 'none';
-			$hide_tablet  = ( ! astra_get_option( $section_id . '-hide-tablet' ) ) ? $mobile_tablet_default : 'none';
-			$hide_mobile  = ( ! astra_get_option( $section_id . '-hide-mobile' ) ) ? $mobile_tablet_default : 'none';
+			$parent_visibility = astra_get_option(
+				$section_id . '-visibility-responsive',
+				array(
+					'desktop' => ! isset( $astra_options[ $section_id . '-visibility-responsive' ] ) && isset( $astra_options[ $section_id . '-hide-desktop' ] ) ? ( $astra_options[ $section_id . '-hide-desktop' ] ? 0 : 1 ) : 1,
+					'tablet'  => ! isset( $astra_options[ $section_id . '-visibility-responsive' ] ) && isset( $astra_options[ $section_id . '-hide-tablet' ] ) ? ( $astra_options[ $section_id . '-hide-tablet' ] ? 0 : 1 ) : 1,
+					'mobile'  => ! isset( $astra_options[ $section_id . '-visibility-responsive' ] ) && isset( $astra_options[ $section_id . '-hide-mobile' ] ) ? ( $astra_options[ $section_id . '-hide-mobile' ] ? 0 : 1 ) : 1,
+				)
+			);
+
+			$hide_desktop = ( $parent_visibility['desktop'] ) ? $default_property : 'none';
+			$hide_tablet  = ( $parent_visibility['tablet'] ) ? $mobile_tablet_default : 'none';
+			$hide_mobile  = ( $parent_visibility['mobile'] ) ? $mobile_tablet_default : 'none';
 
 			$css_output_desktop = array(
 				$selector => array(

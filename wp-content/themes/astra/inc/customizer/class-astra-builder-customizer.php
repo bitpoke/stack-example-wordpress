@@ -136,6 +136,32 @@ final class Astra_Builder_Customizer {
 					cursor: pointer;
 				}
 			</style>';
+			if ( astra_wp_version_compare( '6.1', '<' ) ) {
+				echo '<style type="text/css" class="astra-wp-6-0-builder-popover-compatibility">
+					.components-popover.ahfb-popover-add-builder {
+						left: 50% !important;
+						top: 0 !important;
+						position: absolute;
+						bottom: auto;
+					}
+					.ahfb-builder-group .ahfb-builder-area:nth-child(3) .ahfb-builder-add-item.center-on-left .components-popover.ahfb-popover-add-builder, .ahfb-builder-group .ahfb-builder-area:nth-child(4) .ahfb-builder-add-item .components-popover.ahfb-popover-add-builder, .ahfb-builder-group .ahfb-builder-area:nth-child(5) .ahfb-builder-add-item .components-popover.ahfb-popover-add-builder, .ahfb-builder-group.ast-grid-row-layout-3-cwide .ahfb-builder-area-3 .ahfb-builder-add-item .components-popover.ahfb-popover-add-builder {
+						left: -20% !important;
+					}
+					.ahfb-builder-group.ast-grid-row-layout-6-equal .ahfb-builder-area-6 .ahfb-builder-add-item .components-popover.ahfb-popover-add-builder {
+						left: -35% !important;
+					}
+					.customize-control-ast-builder .components-popover.ahfb-popover-add-builder[data-x-axis="center"] {
+						left: 160px !important;
+					}
+					.customize-control-ast-builder .components-popover.ahfb-popover-add-builder[data-x-axis="right"] {
+						left: 0px !important;
+					}
+					.components-popover.ahfb-popover-add-builder .components-popover__content {
+						bottom: 0;
+					}
+					</style>
+				';
+			}
 		}
 	}
 

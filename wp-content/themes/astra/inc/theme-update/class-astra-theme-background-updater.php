@@ -29,44 +29,6 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 		 * @var array
 		 */
 		private static $db_updates = array(
-			'2.1.3' => array(
-				'astra_submenu_below_header',
-			),
-			'2.2.0' => array(
-				'astra_page_builder_button_color_compatibility',
-				'astra_vertical_horizontal_padding_migration',
-			),
-			'2.3.0' => array(
-				'astra_header_button_new_options',
-			),
-			'2.3.3' => array(
-				'astra_elementor_default_color_typo_comp',
-			),
-			'2.3.4' => array(
-				'astra_breadcrumb_separator_fix',
-			),
-			'2.4.0' => array(
-				'astra_responsive_base_background_option',
-				'astra_update_theme_tablet_breakpoint',
-			),
-			'2.4.4' => array(
-				'astra_gtn_full_wide_image_group_css',
-			),
-			'2.5.0' => array(
-				'astra_global_button_woo_css',
-				'astra_gtn_full_wide_group_cover_css',
-			),
-			'2.5.2' => array(
-				'astra_footer_widget_bg',
-			),
-			'2.6.0' => array(
-				'astra_bg_control_migration',
-				'astra_bg_responsive_control_migration',
-				'astra_gutenberg_core_blocks_design_compatibility',
-			),
-			'2.6.1' => array(
-				'astra_gutenberg_media_text_block_css_compatibility',
-			),
 			'3.0.0' => array(
 				'astra_header_builder_compatibility',
 			),
@@ -139,6 +101,18 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 			'3.9.2' => array(
 				'astra_apply_woocommerce_show_password_icon_css',
 				'astra_shop_style_design_layout',
+			),
+			'3.9.4' => array(
+				'astra_theme_background_updater_3_9_4',
+			),
+			'4.0.0' => array(
+				'astra_theme_background_updater_4_0_0',
+			),
+			'4.0.2' => array(
+				'astra_theme_background_updater_4_0_2',
+			),
+			'4.1.0' => array(
+				'astra_theme_background_updater_4_1_0',
 			),
 		);
 

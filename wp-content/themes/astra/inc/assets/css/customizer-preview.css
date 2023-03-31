@@ -4,14 +4,14 @@
  * With new design improvements.
  */
 
- .ast-primary-header-bar, .ast-above-header-bar, .ast-below-header-bar, .site-footer-focus-item {
+ .ast-primary-header-bar, .ast-above-header-bar, .ast-below-header-bar, .site-footer-focus-item, .customizer-item-block-preview {
     outline: 1px solid transparent;
     position: relative;
     transition: outline 0.15s ease;
     outline-offset: -1px;
 }
 
-.site-header-focus-item .customize-partial-edit-shortcut, .site-footer-focus-item .customize-partial-edit-shortcut {
+.site-header-focus-item .customize-partial-edit-shortcut, .site-footer-focus-item .customize-partial-edit-shortcut, .customizer-item-block-preview .customize-partial-edit-shortcut{
     opacity: 0;
     transition: all 0.2s;
     top: 5px;
@@ -59,11 +59,11 @@ body.customize-partial-edit-shortcuts-shown .customize-partial-edit-shortcut but
 }
 
 .ast-primary-header-bar:hover, .ast-above-header-bar:hover, .ast-below-header-bar:hover,
-.site-primary-footer-wrap.site-footer-focus-item:hover, .site-above-footer-wrap.site-footer-focus-item:hover, .site-below-footer-wrap.site-footer-focus-item:hover {
+.site-primary-footer-wrap.site-footer-focus-item:hover, .site-above-footer-wrap.site-footer-focus-item:hover, .site-below-footer-wrap.site-footer-focus-item:hover,.customizer-item-block-preview:hover  {
     outline: 1px solid #007cba;
 }
 
-.site-footer-focus-item:hover > * > .customize-partial-edit-shortcut,.site-footer-focus-item:hover > div.customize-partial-edit-shortcut, .ast-primary-header-bar:hover .row-editor-shortcut, .ast-above-header-bar:hover .row-editor-shortcut, .ast-below-header-bar:hover .row-editor-shortcut, .site-header-focus-item:hover > * > .customize-partial-edit-shortcut, .site-header-focus-item:hover > .customize-partial-edit-shortcut {
+.site-footer-focus-item:hover > * > .customize-partial-edit-shortcut,.site-footer-focus-item:hover > div.customize-partial-edit-shortcut, .ast-primary-header-bar:hover .row-editor-shortcut, .customizer-item-block-preview:hover .row-editor-shortcut, .ast-above-header-bar:hover .row-editor-shortcut, .ast-below-header-bar:hover .row-editor-shortcut, .site-header-focus-item:hover > * > .customize-partial-edit-shortcut, .site-header-focus-item:hover > .customize-partial-edit-shortcut, .customizer-item-block-preview:hover > .customize-partial-edit-shortcut {
     opacity: 1;
 }
 
@@ -176,7 +176,7 @@ body.customize-partial-edit-shortcuts-shown .customize-partial-edit-shortcut but
 
 .ast-post-banner-highlight:hover {
 	outline: 1px solid #007cba;
-	z-index: 99;
+	z-index: 9;
 }
 .ast-post-banner-highlight .banner-editor-shortcut {
     top: -2px;
@@ -186,4 +186,8 @@ body.customize-partial-edit-shortcuts-shown .customize-partial-edit-shortcut but
 	box-shadow: unset;
 	border: unset;
 	border-radius: 0 0 0 2px;
+}
+.ast-archive-entry-banner .customize-partial-edit-shortcut button, .ast-single-entry-banner .customize-partial-edit-shortcut button {
+    font-size: 20px;
+    line-height: 1em;
 }

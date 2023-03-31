@@ -37,7 +37,7 @@ if ( ! class_exists( 'Astra_Learndash_General_Configs' ) ) {
 				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[learndash-lesson-serial-number]',
-					'section'  => 'section-learndash',
+					'section'  => 'section-leandash-general',
 					'type'     => 'control',
 					'control'  => 'ast-toggle-control',
 					'default'  => astra_get_option( 'learndash-lesson-serial-number' ),
@@ -57,7 +57,7 @@ if ( ! class_exists( 'Astra_Learndash_General_Configs' ) ) {
 					'default'  => astra_get_option( 'learndash-differentiate-rows' ),
 					'type'     => 'control',
 					'control'  => 'ast-toggle-control',
-					'section'  => 'section-learndash',
+					'section'  => 'section-leandash-general',
 					'title'    => __( 'Differentiate Rows', 'astra' ),
 					'priority' => 30,
 				),

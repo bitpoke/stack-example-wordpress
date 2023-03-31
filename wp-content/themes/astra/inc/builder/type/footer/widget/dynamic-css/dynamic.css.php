@@ -77,22 +77,26 @@ function astra_fb_widget_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' )
 				'text-align' => $mobile_alignment,
 			),
 		);
-
-		if ( astra_support_footer_widget_right_margin() ) {
-			$css_output_desktop['.footer-widget-area.widget-area.site-footer-focus-item'] = array(
-				'width' => 'auto',
-			);
-		}
-
+		
 		/* Parse CSS from array() */
 		$css_output  = astra_parse_css( $css_output_desktop );
 		$css_output .= astra_parse_css( $css_output_tablet, '', astra_get_tablet_breakpoint() );
 		$css_output .= astra_parse_css( $css_output_mobile, '', astra_get_mobile_breakpoint() );
-
+		
 		$dynamic_css .= $css_output;
-
-		$dynamic_css .= Astra_Widget_Component_Dynamic_CSS::astra_widget_dynamic_css( 'footer' );
+		
 	}
+
+	if ( astra_support_footer_widget_right_margin() && ! is_customize_preview() ) {
+		$footer_area_css_output = array(
+			'.footer-widget-area.widget-area.site-footer-focus-item' => array(
+				'width' => 'auto',
+			),
+		);
+		$dynamic_css           .= astra_parse_css( $footer_area_css_output );
+	}
+
+	$dynamic_css .= Astra_Widget_Component_Dynamic_CSS::astra_widget_dynamic_css( 'footer' );
 
 	return $dynamic_css;
 }

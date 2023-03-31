@@ -70,6 +70,15 @@ class Astra_Related_Posts_Loader {
 	 */
 	public function theme_defaults( $defaults ) {
 
+		/**
+		 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
+		 *
+		 * @since 4.0.0
+		 */
+		$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
+
+		$astra_options = Astra_Theme_Options::get_astra_options();
+
 		// Related Posts.
 		$defaults['enable-related-posts']          = false;
 		$defaults['related-posts-title']           = __( 'Related Posts', 'astra' );
@@ -95,9 +104,9 @@ class Astra_Related_Posts_Loader {
 			'author',
 		);
 		// Related Posts - Color styles.
-		$defaults['related-posts-text-color']            = '';
+		$defaults['related-posts-text-color']            = $apply_new_default_color_typo_values ? 'var(--ast-global-color-2)' : '';
 		$defaults['related-posts-link-color']            = '';
-		$defaults['related-posts-title-color']           = '';
+		$defaults['related-posts-title-color']           = $apply_new_default_color_typo_values ? 'var(--ast-global-color-2)' : '';
 		$defaults['related-posts-background-color']      = '';
 		$defaults['related-posts-meta-color']            = '';
 		$defaults['related-posts-link-hover-color']      = '';
@@ -106,9 +115,17 @@ class Astra_Related_Posts_Loader {
 		$defaults['related-posts-section-title-font-family']    = 'inherit';
 		$defaults['related-posts-section-title-font-weight']    = 'inherit';
 		$defaults['related-posts-section-title-text-transform'] = '';
-		$defaults['related-posts-section-title-line-height']    = '';
+		$defaults['related-posts-section-title-line-height']    = $apply_new_default_color_typo_values ? '1.25' : '';
+		$defaults['related-posts-section-title-font-extras']    = array(
+			'line-height'         => ! isset( $astra_options['related-posts-section-title-font-extras'] ) && isset( $astra_options['related-posts-section-title-line-height'] ) ? $astra_options['related-posts-section-title-line-height'] : '1.6',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['related-posts-section-title-font-extras'] ) && isset( $astra_options['related-posts-section-title-text-transform'] ) ? $astra_options['related-posts-section-title-text-transform'] : '',
+			'text-decoration'     => '',
+		);
 		$defaults['related-posts-section-title-font-size']      = array(
-			'desktop'      => '30',
+			'desktop'      => $apply_new_default_color_typo_values ? '26' : '30',
 			'tablet'       => '',
 			'mobile'       => '',
 			'desktop-unit' => 'px',
@@ -118,7 +135,7 @@ class Astra_Related_Posts_Loader {
 
 		// Related Posts - Title typo.
 		$defaults['related-posts-title-font-family']    = 'inherit';
-		$defaults['related-posts-title-font-weight']    = 'inherit';
+		$defaults['related-posts-title-font-weight']    = $apply_new_default_color_typo_values ? '500' : 'inherit';
 		$defaults['related-posts-title-text-transform'] = '';
 		$defaults['related-posts-title-line-height']    = '1';
 		$defaults['related-posts-title-font-size']      = array(
@@ -128,6 +145,14 @@ class Astra_Related_Posts_Loader {
 			'desktop-unit' => 'px',
 			'tablet-unit'  => 'px',
 			'mobile-unit'  => 'px',
+		);
+		$defaults['related-posts-title-font-extras']    = array(
+			'line-height'         => ! isset( $astra_options['related-posts-title-font-extras'] ) && isset( $astra_options['related-posts-title-line-height'] ) ? $astra_options['related-posts-title-line-height'] : '1',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['related-posts-title-font-extras'] ) && isset( $astra_options['related-posts-title-text-transform'] ) ? $astra_options['related-posts-title-text-transform'] : '',
+			'text-decoration'     => '',
 		);
 
 		// Related Posts - Meta typo.
@@ -143,13 +168,27 @@ class Astra_Related_Posts_Loader {
 			'tablet-unit'  => 'px',
 			'mobile-unit'  => 'px',
 		);
+		$defaults['related-posts-meta-font-extras']    = array(
+			'line-height'         => ! isset( $astra_options['related-posts-meta-font-extras'] ) && isset( $astra_options['related-posts-meta-line-height'] ) ? $astra_options['related-posts-meta-line-height'] : '1.6',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['related-posts-meta-font-extras'] ) && isset( $astra_options['related-posts-meta-text-transform'] ) ? $astra_options['related-posts-meta-text-transform'] : '',
+			'text-decoration'     => '',
+		);
 
 		// Related Posts - Content typo.
-		$defaults['related-posts-content-font-family']    = 'inherit';
-		$defaults['related-posts-content-font-weight']    = 'inherit';
-		$defaults['related-posts-content-text-transform'] = '';
-		$defaults['related-posts-content-line-height']    = '';
-		$defaults['related-posts-content-font-size']      = array(
+		$defaults['related-posts-content-font-family'] = 'inherit';
+		$defaults['related-posts-content-font-weight'] = 'inherit';
+		$defaults['related-posts-content-font-extras'] = array(
+			'line-height'         => ! isset( $astra_options['related-posts-content-font-extras'] ) && isset( $astra_options['related-posts-content-line-height'] ) ? $astra_options['related-posts-content-line-height'] : '',
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['related-posts-content-font-extras'] ) && isset( $astra_options['related-posts-content-text-transform'] ) ? $astra_options['related-posts-content-text-transform'] : '',
+			'text-decoration'     => '',
+		);
+		$defaults['related-posts-content-font-size']   = array(
 			'desktop'      => '',
 			'tablet'       => '',
 			'mobile'       => '',

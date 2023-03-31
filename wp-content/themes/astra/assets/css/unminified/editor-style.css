@@ -280,6 +280,7 @@ input[type="search"] {
   border: 0;
 }
 
+.archive .no-results .ast-search-submit,
 .search .site-main .ast-search-submit {
   display: none;
 }
@@ -1377,7 +1378,7 @@ acronym {
 }
 
 pre {
-  background: #eee;
+  background: var(--ast-code-block-background);
   font-family: "Courier 10 Pitch", Courier, monospace;
   margin-bottom: 1.6em;
   overflow: auto;
@@ -1631,9 +1632,9 @@ textarea {
 # Media
 --------------------------------------------------------------*/
 /* Make sure embeds and iframes fit their containers. */
-embed,
-iframe,
-object {
+embed, .entry-content[ast-blocks-layout] > embed,
+iframe, .entry-content[ast-blocks-layout] > iframe,
+object, .entry-content[ast-blocks-layout] > object {
   max-width: 100%;
 }
 

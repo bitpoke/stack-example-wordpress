@@ -45,5 +45,5 @@ span.select2-container.select2-container--default.select2-container--open li.sel
 }
 
 .ast-variant-select [CLASS*="-multiValue"] > div:first-child {
-  padding: 0 6px 0 0;
+  padding: 0;
 }

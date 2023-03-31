@@ -49,7 +49,7 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 					'section'           => 'section-container-layout',
 					'default'           => astra_get_option( 'site-content-layout' ),
 					'priority'          => 9,
-					'title'             => __( 'Default Layout', 'astra' ),
+					'title'             => __( 'Container Layout', 'astra' ),
 					'choices'           => array(
 						'boxed-container'         => array(
 							'label' => __( 'Boxed', 'astra' ),
@@ -66,46 +66,13 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 						'page-builder'            => array(
 							'label' => __( 'Full Width / Stretched', 'astra' ),
 							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-stretched', false ) : '',
+						),
+						'narrow-container'        => array(
+							'label' => __( 'Narrow Width', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'narrow-container', false ) : '',
 						),
 					),
 					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider' ),
-				),
-
-				/**
-				 * Option: Single Page Content Layout
-				 */
-				array(
-					'name'              => ASTRA_THEME_SETTINGS . '[single-page-content-layout]',
-					'type'              => 'control',
-					'control'           => 'ast-radio-image',
-					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
-					'section'           => 'section-page-group',
-					'default'           => astra_get_option( 'single-page-content-layout', 'default' ),
-					'priority'          => 4,
-					'title'             => __( 'Container Layout', 'astra' ),
-					'choices'           => array(
-						'default'                 => array(
-							'label' => __( 'Default', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
-						),
-						'boxed-container'         => array(
-							'label' => __( 'Boxed', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-boxed', false ) : '',
-						),
-						'content-boxed-container' => array(
-							'label' => __( 'Content Boxed', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-content-boxed', false ) : '',
-						),
-						'plain-container'         => array(
-							'label' => __( 'Full Width / Contained', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-contained', false ) : '',
-						),
-						'page-builder'            => array(
-							'label' => __( 'Full Width / Stretched', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-stretched', false ) : '',
-						),
-					),
-					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
 				),
 
 				/**
@@ -169,19 +136,31 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 			$configurations = array_merge( $configurations, $_configs );
 
 			// Learn More link if Astra Pro is not activated.
-			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
-
+			if ( astra_showcase_upgrade_notices() ) {
 				$config = array(
-
 					array(
 						'name'     => ASTRA_THEME_SETTINGS . '[ast-site-layout-button-link]',
 						'type'     => 'control',
-						'control'  => 'ast-button-link',
+						'control'  => 'ast-upgrade',
+						'renderAs' => 'list',
+						'choices'  => array(
+							'one'   => array(
+								'title' => __( 'Full Width layout', 'astra' ),
+							),
+							'two'   => array(
+								'title' => __( 'Padded layout', 'astra' ),
+							),
+							'three' => array(
+								'title' => __( 'Fluid layout', 'astra' ),
+							),
+							'four'  => array(
+								'title' => __( 'Container spacings', 'astra' ),
+							),
+						),
 						'section'  => 'section-container-layout',
+						'default'  => '',
 						'priority' => 999,
-						'title'    => __( 'View Astra Pro Features', 'astra' ),
-						'url'      => astra_get_pro_url( 'https://wpastra.com/pro', 'customizer', 'learn-more', 'upgrade-to-pro' ),
-						'settings' => array(),
+						'title'    => __( 'Use containers to their maximum potential with Astra Pro', 'astra' ),
 						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 					),
 				);

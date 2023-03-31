@@ -266,24 +266,29 @@ class Astra_Customizer_Mobile_Trigger_Configs extends Astra_Customizer_Config_Ba
 			),
 
 			/**
-			 * Option: Border Radius
-			 */
+			* Option: Button Radius Fields
+			*/
 			array(
-				'name'        => ASTRA_THEME_SETTINGS . '[mobile-header-toggle-border-radius]',
-				'default'     => astra_get_option( 'mobile-header-toggle-border-radius' ),
-				'type'        => 'control',
-				'control'     => 'ast-slider',
-				'section'     => $_section,
-				'title'       => __( 'Border Radius', 'astra' ),
-				'priority'    => 50,
-				'suffix'      => 'px',
-				'transport'   => 'postMessage',
-				'input_attrs' => array(
-					'min'  => 0,
-					'step' => 1,
-					'max'  => 100,
+				'name'              => ASTRA_THEME_SETTINGS . '[mobile-header-toggle-border-radius-fields]',
+				'default'           => astra_get_option( 'mobile-header-toggle-border-radius-fields' ),
+				'type'              => 'control',
+				'control'           => 'ast-responsive-spacing',
+				'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+				'section'           => $_section,
+				'title'             => __( 'Border Radius', 'astra' ),
+				'linked_choices'    => true,
+				'transport'         => 'postMessage',
+				'unit_choices'      => array( 'px', 'em', '%' ),
+				'choices'           => array(
+					'top'    => __( 'Top', 'astra' ),
+					'right'  => __( 'Right', 'astra' ),
+					'bottom' => __( 'Bottom', 'astra' ),
+					'left'   => __( 'Left', 'astra' ),
 				),
-				'context'     => array(
+				'priority'          => 50,
+				'connected'         => false,
+				'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
+				'context'           => array(
 					Astra_Builder_Helper::$design_tab_config,
 					array(
 						'setting'  => ASTRA_THEME_SETTINGS . '[mobile-header-toggle-btn-style]',
@@ -291,7 +296,6 @@ class Astra_Customizer_Mobile_Trigger_Configs extends Astra_Customizer_Config_Ba
 						'value'    => 'minimal',
 					),
 				),
-				'divider'     => array( 'ast_class' => 'ast-top-section-divider' ),
 			),
 
 
@@ -369,7 +373,7 @@ class Astra_Customizer_Mobile_Trigger_Configs extends Astra_Customizer_Config_Ba
 					'type'        => 'sub-control',
 					'priority'    => 23,
 					'suffix'      => 'px',
-					'title'       => __( 'Size', 'astra' ),
+					'title'       => __( 'Font Size', 'astra' ),
 					'control'     => 'ast-slider',
 					'transport'   => 'postMessage',
 					'input_attrs' => array(
@@ -386,7 +390,7 @@ class Astra_Customizer_Mobile_Trigger_Configs extends Astra_Customizer_Config_Ba
 		} else {
 
 			$typo_configs = array(
-				
+
 				// Option: Trigger Font Size.
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[mobile-header-label-font-size]',

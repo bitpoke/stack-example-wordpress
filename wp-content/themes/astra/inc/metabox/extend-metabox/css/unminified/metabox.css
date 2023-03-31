@@ -1,3 +1,7 @@
+.ast-header-settings-modal .components-modal__header svg {
+    width: 30px;
+    height: 30px;
+}
 .ast-sidebar-container .ast-sidebar-layout-meta-wrap .components-input-control__container .components-select-control__input {
 	padding: 3px 24px 3px 8px;
 	font-size: 14px;
@@ -130,7 +134,10 @@ div#astra_settings_meta_box {
 .ast-meta-selector-controller .ast-selector-inner-wrap .components-button:focus:not(:disabled) {
     box-shadow: none;
 }
-.components-toggle-control .components-base-control__field {
+.ast-meta-settings-content .components-toggle-control .components-base-control__field,
+.ast-sidebar-container .components-toggle-control .components-base-control__field,
+.ast-meta-settings-content .components-toggle-control .components-base-control__field .components-flex,
+.ast-sidebar-container .components-toggle-control .components-base-control__field .components-flex {
 	justify-content: space-between;
 	flex-direction: row-reverse;
 	margin-bottom: 0;
@@ -294,4 +301,22 @@ td.ast-advanced-hook-row-heading {
 .ast-radio-img-svg:hover .ast-meta-image-tooltip {
 	opacity: 1;
 	visibility: visible;
+}
+
+.ast-pro-upgrade-cta-wrapper {
+    padding: 20px;
+    text-align: center;
+}
+p.ast-upgrade-description {
+    margin-top: 15px;
+	margin-bottom: 15px;
+}
+a.ast-pro-upgrade-link {
+    color: #0284C7;
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    padding: 8px;
+    border: 1px solid #0284C7;
+    border-radius: 2px;
 }

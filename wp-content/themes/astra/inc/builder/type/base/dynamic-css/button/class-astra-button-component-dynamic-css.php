@@ -48,10 +48,11 @@ class Astra_Button_Component_Dynamic_CSS {
 
 			$_prefix = 'button' . $index;
 
-			$selector             = '.ast-' . $builder_type . '-button-' . $index;
-			$button_font_size     = astra_get_option( $builder_type . '-' . $_prefix . '-font-size' );
-			$button_border_width  = astra_get_option( $builder_type . '-' . $_prefix . '-border-size' );
-			$button_border_radius = astra_get_option( $builder_type . '-' . $_prefix . '-border-radius' );
+			$selector                    = '.ast-' . $builder_type . '-button-' . $index;
+			$button_font_size            = astra_get_option( $builder_type . '-' . $_prefix . '-font-size' );
+			$button_border_width         = astra_get_option( $builder_type . '-' . $_prefix . '-border-size' );
+			$button_border_radius_fields = astra_get_option( $builder_type . '-' . $_prefix . '-border-radius-fields' );
+
 			// Normal Responsive Colors.
 			$button_bg_color_desktop = astra_get_prop( astra_get_option( $builder_type . '-' . $_prefix . '-back-color' ), 'desktop' );
 			$button_bg_color_tablet  = astra_get_prop( astra_get_option( $builder_type . '-' . $_prefix . '-back-color' ), 'tablet' );
@@ -77,13 +78,6 @@ class Astra_Button_Component_Dynamic_CSS {
 			$button_border_h_color_tablet  = astra_get_prop( astra_get_option( $builder_type . '-' . $_prefix . '-border-h-color' ), 'tablet' );
 			$button_border_h_color_mobile  = astra_get_prop( astra_get_option( $builder_type . '-' . $_prefix . '-border-h-color' ), 'mobile' );
 
-			// Typography controls.
-			$button_font_family    = astra_get_option( $builder_type . '-' . $_prefix . '-font-family', 'inherit' );
-			$button_font_weight    = astra_get_option( $builder_type . '-' . $_prefix . '-font-weight', 'inherit' );
-			$button_text_transform = astra_get_option( $builder_type . '-' . $_prefix . '-text-transform' );
-			$button_line_height    = astra_get_option( $builder_type . '-' . $_prefix . '-line-height' );
-			$button_letter_spacing = astra_get_option( $builder_type . '-' . $_prefix . '-letter-spacing' );
-
 			/**
 			 * Button CSS.
 			 */
@@ -92,31 +86,26 @@ class Astra_Button_Component_Dynamic_CSS {
 				/**
 				 * Button font size.
 				 */
-				$selector . '[data-section*="section-' . $context . '-button-"] .ast-builder-button-wrap .ast-custom-button' => array(
-					// Typography.
-					'font-family'    => astra_get_css_value( $button_font_family, 'font' ),
-					'font-weight'    => astra_get_css_value( $button_font_weight, 'font' ),
-					'line-height'    => esc_attr( $button_line_height ),
-					'text-transform' => esc_attr( $button_text_transform ),
-					'letter-spacing' => astra_get_css_value( $button_letter_spacing, 'px' ),
-					'font-size'      => astra_responsive_font( $button_font_size, 'desktop' ),
-				),
+				$selector . '[data-section*="section-' . $context . '-button-"] .ast-builder-button-wrap .ast-custom-button' => astra_get_font_array_css( astra_get_option( $builder_type . '-' . $_prefix . '-font-family', 'inherit' ), astra_get_option( $builder_type . '-' . $_prefix . '-font-weight', 'inherit' ), $button_font_size, $builder_type . '-' . $_prefix . '-font-extras' ),
 
 				/**
 				 * Button Colors.
 				 */
 				$selector . ' .ast-custom-button'       => array(
 					// Colors.
-					'color'               => $button_color_desktop,
-					'background'          => $button_bg_color_desktop,
+					'color'                      => $button_color_desktop,
+					'background'                 => $button_bg_color_desktop,
 
 					// Border.
-					'border-color'        => $button_border_color_desktop,
-					'border-top-width'    => astra_get_css_value( $button_border_width['top'], 'px' ),
-					'border-bottom-width' => astra_get_css_value( $button_border_width['bottom'], 'px' ),
-					'border-left-width'   => astra_get_css_value( $button_border_width['left'], 'px' ),
-					'border-right-width'  => astra_get_css_value( $button_border_width['right'], 'px' ),
-					'border-radius'       => astra_get_css_value( $button_border_radius, 'px' ),
+					'border-color'               => $button_border_color_desktop,
+					'border-top-width'           => astra_get_css_value( $button_border_width['top'], 'px' ),
+					'border-bottom-width'        => astra_get_css_value( $button_border_width['bottom'], 'px' ),
+					'border-left-width'          => astra_get_css_value( $button_border_width['left'], 'px' ),
+					'border-right-width'         => astra_get_css_value( $button_border_width['right'], 'px' ),
+					'border-top-left-radius'     => astra_responsive_spacing( $button_border_radius_fields, 'top', 'desktop' ),
+					'border-top-right-radius'    => astra_responsive_spacing( $button_border_radius_fields, 'right', 'desktop' ),
+					'border-bottom-right-radius' => astra_responsive_spacing( $button_border_radius_fields, 'bottom', 'desktop' ),
+					'border-bottom-left-radius'  => astra_responsive_spacing( $button_border_radius_fields, 'left', 'desktop' ),
 				),
 
 				// Hover Options.
@@ -145,12 +134,16 @@ class Astra_Button_Component_Dynamic_CSS {
 				 */
 				$selector . ' .ast-custom-button'       => array(
 					// Typography.
-					'font-size'    => astra_responsive_font( $button_font_size, 'tablet' ),
+					'font-size'                  => astra_responsive_font( $button_font_size, 'tablet' ),
 
 					// Colors.
-					'color'        => $button_color_tablet,
-					'background'   => $button_bg_color_tablet,
-					'border-color' => $button_border_color_tablet,
+					'color'                      => $button_color_tablet,
+					'background'                 => $button_bg_color_tablet,
+					'border-color'               => $button_border_color_tablet,
+					'border-top-left-radius'     => astra_responsive_spacing( $button_border_radius_fields, 'top', 'tablet' ),
+					'border-top-right-radius'    => astra_responsive_spacing( $button_border_radius_fields, 'right', 'tablet' ),
+					'border-bottom-right-radius' => astra_responsive_spacing( $button_border_radius_fields, 'bottom', 'tablet' ),
+					'border-bottom-left-radius'  => astra_responsive_spacing( $button_border_radius_fields, 'left', 'tablet' ),
 				),
 				// Hover Options.
 				$selector . ' .ast-custom-button:hover' => array(
@@ -178,12 +171,16 @@ class Astra_Button_Component_Dynamic_CSS {
 				 */
 				$selector . ' .ast-custom-button'        => array(
 					// Typography.
-					'font-size'    => astra_responsive_font( $button_font_size, 'mobile' ),
+					'font-size'                  => astra_responsive_font( $button_font_size, 'mobile' ),
 
 					// Colors.
-					'color'        => $button_color_mobile,
-					'background'   => $button_bg_color_mobile,
-					'border-color' => $button_border_color_mobile,
+					'color'                      => $button_color_mobile,
+					'background'                 => $button_bg_color_mobile,
+					'border-color'               => $button_border_color_mobile,
+					'border-top-left-radius'     => astra_responsive_spacing( $button_border_radius_fields, 'top', 'mobile' ),
+					'border-top-right-radius'    => astra_responsive_spacing( $button_border_radius_fields, 'right', 'mobile' ),
+					'border-bottom-right-radius' => astra_responsive_spacing( $button_border_radius_fields, 'bottom', 'mobile' ),
+					'border-bottom-left-radius'  => astra_responsive_spacing( $button_border_radius_fields, 'left', 'mobile' ),
 				),
 				// Hover Options.
 				$selector . ' ..ast-custom-button:hover' => array(

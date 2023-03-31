@@ -47,7 +47,6 @@
 .component-color-indicator {
     width: 25px;
     height: 16px;
-    margin-left: 0.8rem;
     display: inline-block;
 }
 
@@ -261,6 +260,11 @@
     padding: 14px 5px;
 }
 
+.customize-control-ast-responsive-background .astra-popover-color .components-h-stack.ast-color-palette,
+.customize-control-ast-color-group .astra-popover-color .astra-background-tabs .components-h-stack.ast-color-palette {
+    padding: 0 5px 14px;
+}
+
 .astra-popover-color .components-h-stack .components-button {
     flex: inherit;
 }
@@ -297,7 +301,7 @@
 }
 .astra-color-picker-wrap {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
 	top: 30px;
     left: 0;
     right: 0;
@@ -310,6 +314,13 @@
     width: 100%;
 }
 
+.astra-popover-color .components-custom-gradient-picker{
+    z-index: 1;
+}
+.astra-popover-color .components-custom-gradient-picker__ui-line{
+    z-index: -1;
+}
+
 .astra-color-picker-wrap.picker-open{
 	display: block;
 }
@@ -320,6 +331,8 @@
 .ast-color-palette .components-circular-option-picker__option-wrapper {
     margin-right: 6px;
     position: relative;
+	height: 25px;
+    width: 25px;
 }
 /* Clear Button CSS */
 .ast-color-btn-clear-wrap {
@@ -363,6 +376,7 @@
 	padding: 4px;
 	background: transparent;
 	box-shadow: none;
+	cursor: pointer;
 }
 .astra-color-clear-button.components-button:focus:not(:disabled) {
 	outline: unset;
@@ -413,6 +427,7 @@
     width: max-content;
 }
 
+.astra-color-picker-wrap .components-custom-gradient-picker__inserter .components-color-picker,
 .astra-color-picker-wrap .astra-popover-color .ast-gradient-ui .components-color-picker,
 .astra-color-picker-wrap .astra-popover-color .ast-gradient-ui .react-colorful {
     width: 216px;
@@ -456,8 +471,8 @@
 	width: 20px;
 }
 .ast-color-palette .components-circular-option-picker__option.is-pressed + svg {
-	left: 3px;
-	top: -1px;
+	left: 0;
+	top: 0;
 	mix-blend-mode: difference;
 }
 .astra-popover-color .components-circular-option-picker .components-circular-option-picker__swatches {
@@ -481,7 +496,8 @@
         padding: 6px 10px;
     }
     .ast-color-palette .components-circular-option-picker__option.is-pressed + svg {
-        width: 16px;
+        width: 20px;
+        top: -2px;
     }
     .ast-color-palette .components-circular-option-picker__option-wrapper .components-circular-option-picker__option:focus::after {
         width: 24px;
@@ -498,17 +514,17 @@
         padding: 0 4px;
 	}
 	/** Modal Popup */
-	.ast-field-settings-modal .components-circular-option-picker__option-wrapper .components-circular-option-picker__option:focus::after {
-		width: 21px;
-		height: 21px;
+	.ast-fields-wrap .components-circular-option-picker__option-wrapper .components-circular-option-picker__option:focus::after {
+        width: auto;
+        height: auto;
 	}
-	.ast-field-settings-modal .ast-color-palette .components-circular-option-picker__option-wrapper {
-		height: 22px;
-		width: 22px;
+	.ast-fields-wrap .ast-color-palette .components-circular-option-picker__option-wrapper {
+		height: 20px;
+		width: 20px;
 	}
-	.ast-field-settings-modal .ast-color-palette .components-circular-option-picker__option.is-pressed + svg {
-		left: 2.5px;
-		top: -1px;
+	.ast-fields-wrap .ast-color-palette .components-circular-option-picker__option.is-pressed + svg {
+		left: 1px;
+		top: -2px;
 		width: 18px;
 	}
 }

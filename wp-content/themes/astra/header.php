@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	class="skip-link screen-reader-text"
 	href="#content"
 	role="link"
-	title="<?php echo esc_html( astra_default_strings( 'string-header-skip-link', false ) ); ?>">
+	title="<?php echo esc_attr( astra_default_strings( 'string-header-skip-link', false ) ); ?>">
 		<?php echo esc_html( astra_default_strings( 'string-header-skip-link', false ) ); ?>
 </a>
 

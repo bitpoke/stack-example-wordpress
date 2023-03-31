@@ -41,7 +41,7 @@ if ( ! class_exists( 'Astra_Learndash_Sidebar_Configs' ) ) {
 					'type'              => 'control',
 					'control'           => 'ast-radio-image',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
-					'section'           => 'section-learndash',
+					'section'           => 'section-leandash-general',
 					'default'           => astra_get_option( 'learndash-sidebar-layout' ),
 					'priority'          => 5,
 					'title'             => __( 'Sidebar Layout', 'astra' ),

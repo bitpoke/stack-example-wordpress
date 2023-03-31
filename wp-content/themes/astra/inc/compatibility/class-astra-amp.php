@@ -70,6 +70,16 @@ if ( ! class_exists( 'Astra_AMP' ) ) :
 			add_filter( 'astra_theme_dynamic_css', array( $this, 'dynamic_css' ) );
 			add_filter( 'astra_toggle_button_markup', array( $this, 'toggle_button_markup' ), 20, 2 );
 			add_filter( 'astra_schema_body', array( $this, 'body_id' ) );
+
+			/**
+			 * Scroll to top Addon.
+			 *
+			 * @since 4.0.0
+			 */
+			if ( true === astra_get_option( 'scroll-to-top-enable' ) ) {
+				remove_action( 'wp_footer', array( Astra_Scroll_To_Top_Loader::get_instance(), 'html_markup_loader' ) );
+				remove_filter( 'astra_dynamic_theme_css', 'astra_scroll_to_top_dynamic_css' );
+			}
 		}
 
 		/**

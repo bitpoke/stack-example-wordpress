@@ -162,6 +162,35 @@ final class Astra_Builder_Helper {
 	);
 
 	/**
+	 * Default button responsive spacing control value.
+	 *
+	 * @var string[][]
+	 */
+	public static $default_button_responsive_spacing = array(
+		'desktop'      => array(
+			'top'    => '12',
+			'right'  => '20',
+			'bottom' => '12',
+			'left'   => '20',
+		),
+		'tablet'       => array(
+			'top'    => '',
+			'right'  => '',
+			'bottom' => '',
+			'left'   => '',
+		),
+		'mobile'       => array(
+			'top'    => '',
+			'right'  => '',
+			'bottom' => '',
+			'left'   => '',
+		),
+		'desktop-unit' => 'px',
+		'tablet-unit'  => 'px',
+		'mobile-unit'  => 'px',
+	);
+
+	/**
 	 * Config Tablet device context.
 	 *
 	 * @var string[][]
@@ -949,7 +978,7 @@ final class Astra_Builder_Helper {
 			<div class="ast-mobile-popup-overlay"></div>
 			<div class="ast-mobile-popup-inner">
 					<div class="ast-mobile-popup-header">
-						<button type="button" id="menu-toggle-close" class="menu-toggle-close" aria-label="Close menu">
+						<button type="button" id="menu-toggle-close" class="menu-toggle-close" aria-label="Close menu" tabindex="0">
 							<span class="ast-svg-iconset">
 								<?php echo Astra_Builder_UI_Controller::fetch_svg_icon( 'close' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</span>

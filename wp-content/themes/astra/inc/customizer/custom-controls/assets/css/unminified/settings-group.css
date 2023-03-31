@@ -31,8 +31,12 @@
   border-radius: 3px;
   left: 0;
   right: 0;
-  z-index: 10000;
+  z-index: 8;
   background-color: #fff;
+}
+
+.customize-control-ast-color-palette .ast-field-settings-modal {
+	z-index: 11;
 }
 
 .ast-field-settings-modal .customize-control-ast-divider:first-child {
@@ -100,7 +104,7 @@
 
 .ast-field-settings-wrap .ast-field-settings-modal {
   border-radius: 3px;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -174,13 +178,17 @@
 
 /* Popup params padding */
 .ast-field-settings-modal .customize-control {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 16px;
+  padding-right: 16px;
   box-sizing: border-box;
+}
+.ast-control-wrap .ast-color-picker-alpha {
+    margin-left: -5px;
+    margin-right: -5px;
 }
 
 .ast-field-settings-modal .customize-control:first-child {
-  margin-top: 15px;
+  margin-top: 16px;
 }
 
 .ast-field-settings-modal .ui-tabs-nav .customize-control:first-child {
@@ -188,7 +196,7 @@
 }
 
 .ast-field-settings-modal .customize-control:last-child {
-  padding-bottom: 20px;
+  padding-bottom: 16px;
 }
 
 .customize-control-ast-settings-group {
@@ -223,7 +231,11 @@
 }
 
 .ast-field-settings-modal .customize-control {
-  margin-top: 20px;
+  margin-top: 2px;
+}
+
+#customize-control-headings-font-extras.ast-sub-top-dotted-divider {
+  margin-top: 12px;
 }
 
 /**
@@ -289,6 +301,68 @@
 .astra-popover-tabs .components-tab-panel__tabs-item.active-tab {
   background-color: #0185BA;
   color: #ffffff;
+}
+
+.astra-popover-tabs.astra-media-tab .components-tab-panel__tabs,
+.astra-popover-tabs.astra-media-tab .components-tab-panel__tab-content {
+  padding: 0;
+}
+
+.astra-popover-tabs.astra-media-tab .components-tab-panel__tabs-item.active-tab {
+  border-color: var(--ast-customizer-color-3);
+  background: var(--ast-customizer-color-1);
+}
+
+.astra-popover-tabs.astra-media-tab .components-tab-panel__tab-content .ast-social-icon-picker-label {
+  text-align: left;
+}
+
+.astra-media-tab .astra-media-image {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.astra-media-tab .ast-media-btn {
+  display: block;
+  width: 100%;
+  border: 1px dashed var(--ast-customizer-color-7);
+  box-sizing: border-box;
+  box-shadow: unset;
+  padding: 9px 0;
+  line-height: 1.6;
+  text-decoration: none;
+}
+
+.astra-media-tab .ast-danger-btn {
+  color: var(--ast-customizer-color-13);
+  margin-top: 10px;
+}
+
+.astra-media-tab .ast-media-btn:hover {
+  border-color: var(--ast-customizer-color-3);
+}
+
+.astra-media-tab .ast-danger-btn:hover {
+  border-color: var(--ast-customizer-color-13);
+}
+
+.components-base-control.ast-text-control-input {
+  margin-bottom: 16px;
+}
+
+.ast-payments-text-control-input .components-base-control__label {
+  text-transform: none;
+  color: #334155;
+  font-size: 13px;
+}
+
+.components-base-control.ast-payments-text-control-input {
+  margin-bottom: 20px;
+}
+
+.components-base-control.ast-text-control-input input {
+  border-color: var(--ast-customizer-color-7);
+  color: var(--ast-customizer-color-5);
 }
 
 .astra-popover-color .astra-popover-tabs .components-tab-panel__tabs button.components-tab-panel__tabs-item.active-tab:not(.is-primary):not(.is-tertiary):not(.is-link):hover {

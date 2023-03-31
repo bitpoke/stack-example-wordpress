@@ -96,6 +96,8 @@ if ( ! function_exists( 'astra_body_classes' ) ) {
 			$classes[] = 'ast-page-builder-template';
 		} elseif ( 'plain-container' == $content_layout ) {
 			$classes[] = 'ast-plain-container';
+		} elseif ( 'narrow-container' == $content_layout ) {
+			$classes[] = 'ast-narrow-container';
 		}
 
 		// Sidebar location.
@@ -105,22 +107,23 @@ if ( ! function_exists( 'astra_body_classes' ) ) {
 		// Current Astra verion.
 		$classes[] = esc_attr( 'astra-' . ASTRA_THEME_VERSION );
 
-		$menu_item    = astra_get_option( 'header-main-rt-section' );
-		$outside_menu = astra_get_option( 'header-display-outside-menu' );
+		if ( ! Astra_Builder_Helper::$is_header_footer_builder_active ) {
+			$menu_item    = astra_get_option( 'header-main-rt-section' );
+			$outside_menu = astra_get_option( 'header-display-outside-menu' );
 
-		if ( 'none' !== $menu_item && $outside_menu ) {
-			$classes[] = 'ast-header-custom-item-outside';
-		} else {
-			$classes[] = 'ast-header-custom-item-inside';
-		}
+			if ( 'none' !== $menu_item && $outside_menu ) {
+				$classes[] = 'ast-header-custom-item-outside';
+			} else {
+				$classes[] = 'ast-header-custom-item-inside';
+			}
+			/**
+			 * Add class for header width
+			 */
+			$header_content_layout = astra_get_option( 'header-main-layout-width' );
 
-		/**
-		 * Add class for header width
-		 */
-		$header_content_layout = astra_get_option( 'header-main-layout-width' );
-
-		if ( 'full' == $header_content_layout ) {
-			$classes[] = 'ast-full-width-primary-header';
+			if ( 'full' == $header_content_layout ) {
+				$classes[] = 'ast-full-width-primary-header';
+			}
 		}
 
 		return $classes;
@@ -151,6 +154,7 @@ if ( ! function_exists( 'astra_number_pagination' ) ) {
 
 		ob_start();
 		echo "<div class='ast-pagination'>";
+		/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		the_posts_pagination(
 			array(
 				'prev_text'    => astra_default_strings( 'string-blog-navigation-previous', false ),
@@ -159,6 +163,7 @@ if ( ! function_exists( 'astra_number_pagination' ) ) {
 				'in_same_term' => true,
 			)
 		);
+		/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		echo '</div>';
 		$output = ob_get_clean();
 		echo apply_filters( 'astra_pagination_markup', $output ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -223,6 +228,20 @@ if ( ! function_exists( 'astra_logo' ) ) {
 		}
 	}
 }
+
+/**
+ * Add custom attribute to custom site logo.
+ *
+ * @param mixed $html custom logo html.
+ * @since 4.1.0
+ * @return mixed custom logo html.
+ */
+function astra_add_custom_logo_attributes( $html ) {
+	$attributes = '';
+	return str_replace( 'rel="home"', 'rel="home"' . apply_filters( 'astra_custom_logo_attributes', $attributes ) . '', $html );
+}
+
+add_filter( 'get_custom_logo', 'astra_add_custom_logo_attributes' );
 
 /**
  * Return or echo site logo markup.
@@ -480,10 +499,10 @@ if ( ! function_exists( 'astra_get_custom_button' ) ) {
 		$outside_menu_item = apply_filters( 'astra_convert_link_to_button', $outside_menu );
 
 		if ( '1' == $outside_menu_item ) {
-			$custom_html = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '><div class=' . esc_attr( $button_classes ) . '>' . esc_attr( do_shortcode( $button_text ) ) . '</div></a>';
+			$custom_html = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '><div class=' . esc_attr( $button_classes ) . '>' . esc_html( do_shortcode( $button_text ) ) . '</div></a>';
 		} else {
-			$custom_html  = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '><div class=' . esc_attr( $button_classes ) . '>' . esc_attr( do_shortcode( $button_text ) ) . '</div></a>';
-			$custom_html .= '<a class="menu-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '>' . esc_attr( do_shortcode( $button_text ) ) . '</a>';
+			$custom_html  = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '><div class=' . esc_attr( $button_classes ) . '>' . esc_html( do_shortcode( $button_text ) ) . '</div></a>';
+			$custom_html .= '<a class="menu-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '>' . esc_html( do_shortcode( $button_text ) ) . '</a>';
 		}
 
 		return $custom_html;
@@ -1315,12 +1334,18 @@ if ( ! function_exists( 'astra_get_footer_widget' ) ) {
 			?>
 			<div class="widget ast-no-widget-row">
 				<h2 class='widget-title'><?php echo esc_html( $sidebar_name ); ?></h2>
-
-				<p class='no-widget-text'>
-					<a href='<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>'>
-						<?php esc_html_e( 'Click here to assign a widget for this area.', 'astra' ); ?>
-					</a>
-				</p>
+				<?php if ( is_customize_preview() ) { ?>
+					<div class="customizer-navigate-on-focus" data-section="widgets" data-type="panel">
+						<?php Astra_Builder_UI_Controller::render_customizer_edit_button(); ?>
+				<?php } ?>
+						<p class='no-widget-text'>
+							<a href='<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>'>
+								<?php esc_html_e( 'Click here to assign a widget for this area.', 'astra' ); ?>
+							</a>
+						</p>
+				<?php if ( is_customize_preview() ) { ?>
+					</div>
+				<?php } ?>
 			</div>
 			<?php
 		}
@@ -1335,40 +1360,70 @@ if ( ! function_exists( 'astra_entry_header_class' ) ) {
 	/**
 	 * Astra entry header class
 	 *
+	 * @param bool $echo output being echoed or not.
+	 *
 	 * @since 1.0.15
 	 */
-	function astra_entry_header_class() {
+	function astra_entry_header_class( $echo = true ) {
 
-		$post_id                    = astra_get_post_id();
-		$classes                    = array();
-		$title_markup               = astra_the_title( '', '', $post_id, false );
-		$thumb_markup               = astra_get_post_thumbnail( '', '', false );
-		$post_meta_markup           = astra_single_get_post_meta( '', '', false );
-		$blog_single_post_structure = astra_get_option( 'blog-single-post-structure' );
+		$post_id          = astra_get_post_id();
+		$post_type        = strval( get_post_type() );
+		$classes          = array();
+		$title_markup     = astra_the_title( '', '', $post_id, false );
+		$thumb_markup     = astra_get_post_thumbnail( '', '', false );
+		$post_meta_markup = astra_get_post_meta( astra_get_option( 'ast-dynamic-single-' . $post_type . '-metadata', array( 'comments', 'author', 'date' ) ) );
+		$single_structure = 'page' === $post_type ? astra_get_option( 'ast-dynamic-single-page-structure', array( 'ast-dynamic-single-page-image', 'ast-dynamic-single-page-title' ) ) : astra_get_option( 'ast-dynamic-single-' . esc_attr( $post_type ) . '-structure', array( 'ast-dynamic-single-' . $post_type . '-title', 'ast-dynamic-single-' . $post_type . '-meta' ) );
+		$get_the_excerpt  = get_the_excerpt();
 
-		if ( ! $blog_single_post_structure || ( 'single-image' === astra_get_prop( $blog_single_post_structure, 0 ) && empty( $thumb_markup ) && 'single-title-meta' !== astra_get_prop( $blog_single_post_structure, 1 ) ) ) {
-			$classes[] = 'ast-header-without-markup';
-		} elseif ( empty( $title_markup ) && empty( $thumb_markup ) && ( is_page() || empty( $post_meta_markup ) ) ) {
+		if ( empty( $single_structure ) ) {
 			$classes[] = 'ast-header-without-markup';
 		} else {
-
-			if ( empty( $title_markup ) ) {
-				$classes[] = 'ast-no-title';
+			$header_without_markup_counter = 0;
+			foreach ( $single_structure as $key ) {
+				$structure_key = 'single-' . astra_get_last_meta_word( $key );
+				switch ( $structure_key ) {
+					case 'single-title':
+						if ( empty( $title_markup ) ) {
+							$classes[] = 'ast-no-title';
+							++$header_without_markup_counter;
+						}
+						break;
+					case 'single-excerpt':
+						if ( empty( $get_the_excerpt ) ) {
+							$classes[] = 'ast-no-excerpt';
+							++$header_without_markup_counter;
+						}
+						break;
+					case 'single-meta':
+						if ( empty( $post_meta_markup ) ) {
+							$classes[] = 'ast-no-meta';
+							++$header_without_markup_counter;
+						}
+						break;
+					case 'single-image':
+						if ( empty( $thumb_markup ) ) {
+							$classes[] = 'ast-no-thumbnail';
+							++$header_without_markup_counter;
+						}
+						break;
+					default:
+						break;
+				}
 			}
 
-			if ( empty( $thumb_markup ) ) {
-				$classes[] = 'ast-no-thumbnail';
-			}
-
-			if ( is_page() || empty( $post_meta_markup ) ) {
-				$classes[] = 'ast-no-meta';
+			if ( count( $single_structure ) === $header_without_markup_counter ) {
+				$classes[] = 'ast-header-without-markup';
 			}
 		}
 
 		$classes = array_unique( apply_filters( 'astra_entry_header_class', $classes ) );
 		$classes = array_map( 'sanitize_html_class', $classes );
 
-		echo esc_attr( join( ' ', $classes ) );
+		if ( $echo ) {
+			echo esc_attr( join( ' ', $classes ) );
+		} else {
+			return ( join( ' ', $classes ) );
+		}
 	}
 }
 
@@ -1393,6 +1448,7 @@ if ( ! function_exists( 'astra_get_post_thumbnail' ) ) {
 		$check_is_singular = is_singular();
 
 		$featured_image = true;
+		$post_type      = strval( get_post_type() );
 
 		if ( $check_is_singular ) {
 			$is_featured_image = astra_get_option_meta( 'ast-featured-img' );
@@ -1407,9 +1463,9 @@ if ( ! function_exists( 'astra_get_post_thumbnail' ) ) {
 		$featured_image = apply_filters( 'astra_featured_image_enabled', $featured_image );
 
 		$blog_post_thumb   = astra_get_option( 'blog-post-structure' );
-		$single_post_thumb = astra_get_option( 'blog-single-post-structure' );
+		$single_post_thumb = astra_get_option( 'ast-dynamic-single-' . $post_type . '-structure', array( 'ast-dynamic-' . $post_type . '-post-title', 'ast-dynamic-' . $post_type . '-post-meta' ) );
 
-		if ( ( ( ! $check_is_singular && in_array( 'image', $blog_post_thumb ) ) || ( is_single() && in_array( 'single-image', $single_post_thumb ) ) || is_page() ) && has_post_thumbnail() ) {
+		if ( ( ( ! $check_is_singular && in_array( 'image', $blog_post_thumb ) ) || ( $check_is_singular && in_array( 'ast-dynamic-single-' . $post_type . '-image', $single_post_thumb ) ) || is_page() ) && has_post_thumbnail() ) {
 
 			if ( $featured_image && ( ! ( $check_is_singular ) || ( ! post_password_required() && ! is_attachment() && has_post_thumbnail() ) ) ) {
 
@@ -1632,3 +1688,25 @@ function astra_skip_elementor_onboarding( $network_wide ) {
 }
 
 add_action( 'activate_elementor/elementor.php', 'astra_skip_elementor_onboarding' );
+
+
+/**
+ * BBPress Multiple user profile compatibility issue.
+ *
+ * @param bool $value For checking this issue is still persist or not.
+ *
+ * @since 4.1.0
+ */
+function astra_bbpress_issue( $value ) {
+	/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	if ( class_exists( 'bbpress' ) && ( bbp_is_single_user() || bbp_is_search() ) ) {
+		/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			return false;
+	}
+	return $value;
+}
+
+add_filter( 'astra_single_layout_one_banner_visibility', 'astra_bbpress_issue', 50 );
+

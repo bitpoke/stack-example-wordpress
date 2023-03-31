@@ -100,7 +100,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'context'     => Astra_Builder_Helper::$general_tab,
 					'input_attrs' => array(
 						'responsive' => true,
-						'footer'     => 'primary',
+						'footer'     => 'below',
 						'layout'     => Astra_Builder_Helper::$footer_row_layouts,
 					),
 					'divider'     => array( 'ast_class' => 'ast-bottom-section-divider' ),

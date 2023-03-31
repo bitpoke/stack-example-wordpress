@@ -4,7 +4,7 @@
  * @since x.x.x
  */
 
- window.addEventListener( "load", function(e) {
+window.addEventListener( "load", function(e) {
     astrawpWooQuantityButtons();
 });
 
@@ -42,7 +42,7 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
             // Add plus and minus icons.
             $qty_parent = $quantityBoxes.parentElement;
             $qty_parent.classList.add( 'buttons_added' );
-            switch (  astra_qty_btn.style_type ) {
+            switch ( astra_qty_btn.style_type ) {
 
 				case 'no-internal-border':
 						$quantityBoxes.classList.add( 'ast-no-internal-border' );
@@ -78,14 +78,18 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
             }
 
             // Quantity input.
-            var objBody = document.getElementsByTagName( 'BODY' )[0];
-            if ( objBody.classList.contains( 'single-product' ) && ! $cart.classList.contains( 'grouped_form' ) ) {
+            let objbody = document.getElementsByTagName('BODY')[0];
+            let cart = document.getElementsByClassName('cart')[0];
+
+            if (objbody.classList.contains('single-product') && !cart.classList.contains('grouped_form')) {
+                let quantityInput = document.querySelector('.woocommerce input[type=number].qty');
                 // Check for single product page.
-                var $quantityInput = document.querySelector( '.woocommerce input[type=number].qty' );
-                $quantityInput.addEventListener( 'keyup' , function() {
-                    var qty_val = $quantityInput.value;
-                    $quantityInput.value = qty_val;
-                });
+                if (quantityInput) {
+                    quantityInput.addEventListener('keyup', function () {
+                        let qtyVal = quantityInput.value;
+                        quantityInput.value = qtyVal;
+                    });
+                }
             }
 
             var plus_minus_obj = e.querySelectorAll( '.plus, .minus' );
@@ -96,7 +100,7 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
 
                 pm_el.addEventListener( "click", function(ev) {
 
-                    
+
                     // Quantity.
                     var $quantityBox;
 
@@ -147,9 +151,13 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
                     }
 
                     // Trigger change event.
-                    var event = document.createEvent( 'HTMLEvents' );
-                    event.initEvent( 'change', true, false );
-                    $quantityBox.dispatchEvent( event );
+                    var update_cart_btn = document.getElementsByName("update_cart");
+                    if (update_cart_btn.length > 0) {
+                        for ( var btn = 0; btn < update_cart_btn.length; btn++ ) {
+                            update_cart_btn[btn].disabled = false;
+                            update_cart_btn[btn].click();
+                        }
+                    }
 
 
 					// Send AJAX request from mini cart.
@@ -162,7 +170,7 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
 						let qtyNonce = astra.single_product_qty_ajax_nonce;
 
                         miniCart.classList.add('ajax-mini-cart-qty-loading');
-                        
+
 						// Creating a XMLHttpRequest object.
 						let xhrRequest = new XMLHttpRequest();
 						xhrRequest.open( 'POST', astra.ajax_url, true );

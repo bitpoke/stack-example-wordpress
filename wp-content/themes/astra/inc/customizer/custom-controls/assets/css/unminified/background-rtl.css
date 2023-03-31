@@ -75,6 +75,11 @@
   text-decoration: none;
 }
 
+.customize-control-ast-responsive-background .more-settings .message,
+.customize-control-ast-background .more-settings .message {
+	margin-left: 5px;
+}
+
 .customize-control-ast-background .more-settings:focus {
   outline: 0;
   box-shadow: none;

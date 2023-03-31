@@ -9,7 +9,7 @@
   right: 0;
   opacity: 0;
   z-index: 1200;
-  transition: opacity .4s ease-in-out, transform .6s ease-in-out;
+  transition: opacity .4s ease-in-out, transform .6s ease-in-out, outline 0.15s ease;
   transform: translate(0, 0);
   background-color: var(--ast-global-color-5);
 }

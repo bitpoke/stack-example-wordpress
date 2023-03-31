@@ -2,7 +2,7 @@
 /**
  * Index file
  *
- * @package Astra Addon
+ * @package Astra
  * @since Astra 1.0.0
  */
 

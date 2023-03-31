@@ -1,8 +1,8 @@
 <?php
 /**
- * Sticky Header - Customizer.
+ * Transparent Header - Customizer.
  *
- * @package Astra Addon
+ * @package Astra
  * @since 1.0.0
  */
 

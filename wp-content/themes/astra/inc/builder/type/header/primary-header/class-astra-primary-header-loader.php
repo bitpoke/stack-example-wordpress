@@ -29,7 +29,6 @@ class Astra_Primary_Header_Loader {
 		add_action( 'customize_preview_init', array( $this, 'preview_scripts' ), 110 );
 
 		// Markup.
-		remove_filter( 'body_class', 'astra_body_classes' );
 		add_filter( 'body_class', array( $this, 'astra_body_header_classes' ) );
 	}
 
@@ -41,35 +40,6 @@ class Astra_Primary_Header_Loader {
 	 * @return array
 	 */
 	public function astra_body_header_classes( $classes ) {
-
-		if ( wp_is_mobile() ) {
-			$classes[] = 'ast-header-break-point';
-		} else {
-			$classes[] = 'ast-desktop';
-		}
-
-		if ( astra_is_amp_endpoint() ) {
-			$classes[] = 'ast-amp';
-		}
-
-		// Apply separate container class to the body.
-		$content_layout = astra_get_content_layout();
-		if ( 'content-boxed-container' == $content_layout ) {
-			$classes[] = 'ast-separate-container';
-		} elseif ( 'boxed-container' == $content_layout ) {
-			$classes[] = 'ast-separate-container ast-two-container';
-		} elseif ( 'page-builder' == $content_layout ) {
-			$classes[] = 'ast-page-builder-template';
-		} elseif ( 'plain-container' == $content_layout ) {
-			$classes[] = 'ast-plain-container';
-		}
-		// Sidebar location.
-		$page_layout = 'ast-' . astra_page_layout();
-		$classes[]   = esc_attr( $page_layout );
-
-		// Current Astra verion.
-		$classes[] = esc_attr( 'astra-' . ASTRA_THEME_VERSION );
-
 		/**
 		 * Add class for header width
 		 */

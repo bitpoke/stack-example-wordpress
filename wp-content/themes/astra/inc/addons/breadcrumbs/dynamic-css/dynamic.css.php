@@ -78,18 +78,10 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 	$breadcrumb_separator_color = astra_get_option( 'breadcrumb-separator-color', $default_color_array );
 	$breadcrumb_bg_color        = astra_get_option( 'breadcrumb-bg-color', $default_color_array );
 
-	$breadcrumb_font_family    = astra_get_option( 'breadcrumb-font-family' );
-	$breadcrumb_font_weight    = astra_get_option( 'breadcrumb-font-weight' );
-	$breadcrumb_font_size      = astra_get_option( 'breadcrumb-font-size' );
-	$breadcrumb_line_height    = astra_get_option( 'breadcrumb-line-height' );
-	$breadcrumb_text_transform = astra_get_option( 'breadcrumb-text-transform' );
-
-	$breadcrumb_spacing = astra_get_option( 'breadcrumb-spacing' );
-
-	$breadcrumb_alignment = astra_get_option( 'breadcrumb-alignment' );
-
-	$breadcrumb_separator = astra_get_option( 'breadcrumb-separator' );
-
+	$breadcrumb_font_size          = astra_get_option( 'breadcrumb-font-size' );
+	$breadcrumb_spacing            = astra_get_option( 'breadcrumb-spacing' );
+	$breadcrumb_alignment          = astra_get_option( 'breadcrumb-alignment' );
+	$breadcrumb_separator          = astra_get_option( 'breadcrumb-separator' );
 	$breadcrumb_separator_selector = astra_get_option( 'breadcrumb-separator-selector' );
 
 	/**
@@ -154,13 +146,7 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 				'color' => esc_attr( $breadcrumb_separator_color['desktop'] ),
 			),
 
-			'.ast-breadcrumbs-wrapper a, .ast-breadcrumbs-wrapper .breadcrumb_last, .ast-breadcrumbs-wrapper span' => array(
-				'font-family'    => astra_get_font_family( $breadcrumb_font_family ),
-				'font-weight'    => esc_attr( $breadcrumb_font_weight ),
-				'font-size'      => astra_responsive_font( $breadcrumb_font_size, 'desktop' ),
-				'line-height'    => esc_attr( $breadcrumb_line_height ),
-				'text-transform' => esc_attr( $breadcrumb_text_transform ),
-			),
+			'.ast-breadcrumbs-wrapper a, .ast-breadcrumbs-wrapper .breadcrumb_last, .ast-breadcrumbs-wrapper span' => astra_get_font_array_css( astra_get_option( 'breadcrumb-font-family' ), astra_get_option( 'breadcrumb-font-weight' ), $breadcrumb_font_size, 'breadcrumb-font-extras' ),
 		);
 
 		/* Yoast SEO Breadcrumb CSS - Tablet */
@@ -219,13 +205,7 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 				'color' => esc_attr( $breadcrumb_separator_color['desktop'] ),
 			),
 
-			'.ast-breadcrumbs-wrapper a, .ast-breadcrumbs-wrapper .breadcrumbs, .ast-breadcrumbs-wrapper .current-item' => array(
-				'font-family'    => astra_get_font_family( $breadcrumb_font_family ),
-				'font-weight'    => esc_attr( $breadcrumb_font_weight ),
-				'font-size'      => astra_responsive_font( $breadcrumb_font_size, 'desktop' ),
-				'line-height'    => esc_attr( $breadcrumb_line_height ),
-				'text-transform' => esc_attr( $breadcrumb_text_transform ),
-			),
+			'.ast-breadcrumbs-wrapper a, .ast-breadcrumbs-wrapper .breadcrumbs, .ast-breadcrumbs-wrapper .current-item' => astra_get_font_array_css( astra_get_option( 'breadcrumb-font-family' ), astra_get_option( 'breadcrumb-font-weight' ), $breadcrumb_font_size, 'breadcrumb-font-extras' ),
 		);
 
 		/* Breadcrumb NavXT CSS - Tablet */
@@ -284,13 +264,7 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 				'color' => esc_attr( $breadcrumb_separator_color['desktop'] ),
 			),
 
-			'.ast-breadcrumbs-wrapper a, .ast-breadcrumbs-wrapper .last, .ast-breadcrumbs-wrapper .separator' => array(
-				'font-family'    => astra_get_font_family( $breadcrumb_font_family ),
-				'font-weight'    => esc_attr( $breadcrumb_font_weight ),
-				'font-size'      => astra_responsive_font( $breadcrumb_font_size, 'desktop' ),
-				'line-height'    => esc_attr( $breadcrumb_line_height ),
-				'text-transform' => esc_attr( $breadcrumb_text_transform ),
-			),
+			'.ast-breadcrumbs-wrapper a, .ast-breadcrumbs-wrapper .last, .ast-breadcrumbs-wrapper .separator' => astra_get_font_array_css( astra_get_option( 'breadcrumb-font-family' ), astra_get_option( 'breadcrumb-font-weight' ), $breadcrumb_font_size, 'breadcrumb-font-extras' ),
 		);
 
 		/* Rank Math CSS - Tablet */
@@ -348,13 +322,7 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 			'.ast-breadcrumbs-inner .breadcrumb-item:after' => array(
 				'color' => esc_attr( $breadcrumb_separator_color['desktop'] ),
 			),
-			'.ast-breadcrumbs-inner, .ast-breadcrumbs-inner .breadcrumb-item, .ast-breadcrumbs-inner .breadcrumb-item.active, .ast-breadcrumbs-inner .breadcrumb-item:after' => array(
-				'font-family'    => astra_get_font_family( $breadcrumb_font_family ),
-				'font-weight'    => esc_attr( $breadcrumb_font_weight ),
-				'font-size'      => astra_responsive_font( $breadcrumb_font_size, 'desktop' ),
-				'line-height'    => esc_attr( $breadcrumb_line_height ),
-				'text-transform' => esc_attr( $breadcrumb_text_transform ),
-			),
+			'.ast-breadcrumbs-inner, .ast-breadcrumbs-inner .breadcrumb-item, .ast-breadcrumbs-inner .breadcrumb-item.active, .ast-breadcrumbs-inner .breadcrumb-item:after' => astra_get_font_array_css( astra_get_option( 'breadcrumb-font-family' ), astra_get_option( 'breadcrumb-font-weight' ), $breadcrumb_font_size, 'breadcrumb-font-extras' ),
 		);
 
 		/* SEOPress CSS - Tablet */
@@ -411,13 +379,7 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 				'color' => esc_attr( $breadcrumb_separator_color['desktop'] ),
 			),
 
-			'.ast-breadcrumbs-wrapper, .ast-breadcrumbs-wrapper a' => array(
-				'font-family'    => astra_get_font_family( $breadcrumb_font_family ),
-				'font-weight'    => esc_attr( $breadcrumb_font_weight ),
-				'font-size'      => astra_responsive_font( $breadcrumb_font_size, 'desktop' ),
-				'line-height'    => esc_attr( $breadcrumb_line_height ),
-				'text-transform' => esc_attr( $breadcrumb_text_transform ),
-			),
+			'.ast-breadcrumbs-wrapper, .ast-breadcrumbs-wrapper a' => astra_get_font_array_css( astra_get_option( 'breadcrumb-font-family' ), astra_get_option( 'breadcrumb-font-weight' ), $breadcrumb_font_size, 'breadcrumb-font-extras' ),
 		);
 
 		/* Default Breadcrumb CSS - Tablet */
@@ -551,7 +513,7 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 	$breadcrumbs_desktop['.ast-breadcrumbs-wrapper'] = array(
 		'text-align' => esc_attr( $breadcrumb_alignment ),
 	);
-	
+
 
 	$css .= astra_parse_css( $breadcrumbs_desktop );
 	$css .= astra_parse_css( $breadcrumbs_tablet, '', astra_get_tablet_breakpoint() );

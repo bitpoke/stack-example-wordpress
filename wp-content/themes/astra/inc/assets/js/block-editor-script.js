@@ -33,39 +33,46 @@ function astra_onload_function() {
 	wp.data.subscribe(function () {
 		setTimeout( function () {
 			// Compatibility for updating layout in editor with direct reflection.
-			const contentLayout = ( null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-layout'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-layout'] : 'default',
+			const contentLayout = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-layout'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-layout'] : 'default',
 				bodyClass = document.querySelector('body');
 
 			switch( contentLayout ) {
 				case 'boxed-container':
 					bodyClass.classList.add('ast-separate-container' , 'ast-two-container');
-					bodyClass.classList.remove('ast-page-builder-template' , 'ast-plain-container');
+					bodyClass.classList.remove('ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
 				break;
 				case 'content-boxed-container':
 					bodyClass.classList.add('ast-separate-container');
-					bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-plain-container');
+					bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
 				break;
 				case 'plain-container':
 					bodyClass.classList.add('ast-plain-container');
-					bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container');
+					bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container', 'ast-narrow-container');
 				break;
 				case 'page-builder':
 					bodyClass.classList.add('ast-page-builder-template');
-					bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container');
+					bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container', 'ast-narrow-container');
+				break;
+				case 'narrow-container':
+					bodyClass.classList.add('ast-narrow-container');
+					bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container', 'ast-page-builder-template');
 				break;
 				case 'default':
 					if( bodyClass.classList.contains( 'ast-default-layout-boxed-container' ) ) {
 						bodyClass.classList.add('ast-separate-container' , 'ast-two-container');
-						bodyClass.classList.remove('ast-page-builder-template' , 'ast-plain-container');
+						bodyClass.classList.remove('ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
 					} else if( bodyClass.classList.contains( 'ast-default-layout-content-boxed-container' ) ) {
 						bodyClass.classList.add('ast-separate-container');
-						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-plain-container');
+						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
 					} else if( bodyClass.classList.contains( 'ast-default-layout-page-builder' ) ) {
 						bodyClass.classList.add('ast-page-builder-template');
-						bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container');
-					} else {
+						bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container', 'ast-narrow-container');
+					} else if( bodyClass.classList.contains( 'ast-default-layout-plain-container' ) ) {
 						bodyClass.classList.add('ast-plain-container');
-						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container');
+						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container', 'ast-narrow-container');
+					} else if( bodyClass.classList.contains( 'ast-default-layout-narrow-container' ) ) {
+						bodyClass.classList.add('ast-narrow-container');
+						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container', 'ast-plain-container');
 					}
 				break;
 			}
@@ -74,7 +81,7 @@ function astra_onload_function() {
 
 			if( null !== editorStylesWrapper ) {
 				const editorStylesWrapperWidth = parseInt( editorStylesWrapper.offsetWidth )
-				if( editorStylesWrapperWidth < 1250 ) {
+				if( editorStylesWrapperWidth < 1350 ) {
 					editorStylesWrapper.classList.remove( 'ast-stacked-title-visibility' );
 					editorStylesWrapper.classList.add( 'ast-stacked-title-visibility' );
 				} else {
@@ -85,12 +92,13 @@ function astra_onload_function() {
 			/**
 			 * In WP-5.9 block editor comes up with color palette showing color-code canvas, but with theme var() CSS its appearing directly as it is. So updated them on wp.data event.
 			 */
-			const customColorPickerButtons = document.querySelectorAll( '.components-color-palette__custom-color' );
+			const customColorPickerButtons = document.querySelectorAll( '.components-color-palette__custom-color-value' );
 
 			for ( let btnCount = 0; btnCount < customColorPickerButtons.length; btnCount++ ) {
-				const colorCode = customColorPickerButtons[btnCount].innerText;
-				if ( colorCode.indexOf( 'var(--ast-global-color' ) > -1 ) {
-					customColorPickerButtons[btnCount].innerHTML = '<span class="ast-theme-block-color-name">' + astraColors[ colorCode ] + '</span>';
+				let colorCode = customColorPickerButtons[btnCount].innerText,
+					transformedCode = colorCode.toLowerCase();
+				if ( colorCode.indexOf( 'VAR(--AST-GLOBAL-COLOR' ) > -1 ) {
+					customColorPickerButtons[btnCount].innerHTML = astraColors[ transformedCode ];
 				}
 			}
 
@@ -137,6 +145,34 @@ function astra_onload_function() {
 				});
 			}
 
+			// Show post/page title wrapper outline & eye icon only when clicked.
+			const titleInput     = document.querySelector('.editor-post-title__input');
+			const visibilityIcon = document.querySelector('.title-visibility');
+			if( null != titleInput && null != visibilityIcon ) {
+				document.addEventListener('click', function (event){
+					if( ! titleBlock.contains( event.target ) ){
+						visibilityIcon.classList.remove('ast-show-visibility-icon');
+						titleInput.classList.remove('ast-show-editor-title-outline');
+					}
+				});
+				document.addEventListener('visibilitychange', function (){
+						visibilityIcon.classList.remove('ast-show-visibility-icon');
+						titleInput.classList.remove('ast-show-editor-title-outline');
+				});
+				titleBlock.addEventListener('focusout', function (){
+					visibilityIcon.classList.remove('ast-show-visibility-icon');
+					titleInput.classList.remove('ast-show-editor-title-outline');
+				});
+				titleBlock.addEventListener('click', function (){
+					visibilityIcon.classList.add('ast-show-visibility-icon');
+					titleInput.classList.add('ast-show-editor-title-outline');
+				});
+				titleInput.addEventListener('input', function (){
+					visibilityIcon.classList.add('ast-show-visibility-icon');
+					this.classList.add('ast-show-editor-title-outline');
+				});
+			}
+
 			var responsivePreview = document.querySelectorAll( '.is-tablet-preview, .is-mobile-preview' );
 			if( responsivePreview.length ) {
 				document.body.classList.add( 'responsive-enabled' );
@@ -145,7 +181,7 @@ function astra_onload_function() {
 			}
 
 			// Adding 'inherit-container-width' width to Group block externally.
-			let postBlocks = ( null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getCurrentPost() && undefined !== wp.data.select( 'core/editor' ).getBlocks() ) ? wp.data.select( 'core/editor' ).getBlocks() : false,
+			let postBlocks = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getCurrentPost() && undefined !== wp.data.select( 'core/block-editor' ).getBlocks() ) ? wp.data.select( 'core/block-editor' ).getBlocks() : false,
 				groupBlocks = document.querySelectorAll( '.block-editor-block-list__layout.is-root-container > .wp-block-group' );
 			if( postBlocks && groupBlocks ) {
 				for ( let blockNum = 0; blockNum < postBlocks.length; blockNum++ ) {
@@ -173,12 +209,12 @@ document.body.addEventListener('mousedown', function () {
 if(true === blockCssMode){
 	var blockCss = document.getElementById('astra-block-editor-styles-css');
 	var inlineCss = document.getElementById('astra-block-editor-styles-inline-css');
-	
+
 }else {
 	var blockCss = document.getElementById('astra-wp-editor-styles-css');
 	var inlineCss = document.getElementById('astra-wp-editor-styles-inline-css');
 }
-	
+
 
 	var blockFixCss = null !== blockCss ? blockCss.cloneNode(true) : null;
 	var blockInlineCss = null !== inlineCss ?  inlineCss.cloneNode(true) : null;
@@ -194,7 +230,7 @@ if(true === blockCssMode){
 			if(true === blockCssMode){
 				var styleTagId = 'astra-block-editor-styles-inline-css';
 				var styleTagBlockId = 'astra-block-editor-styles-css';
-				
+
 			} else{
 				var styleTagId = 'astra-wp-editor-styles-inline-css';
 				var styleTagBlockId = 'astra-wp-editor-styles-css';

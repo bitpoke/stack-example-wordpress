@@ -1,5 +1,5 @@
 .dashicons-editor-help[data-title]{
-	z-index: 10;
+	z-index: 1;
 }
 
 .ast-dashicons-custom-tooltip {
@@ -26,7 +26,7 @@
     box-shadow: 0 1em 2em -0.5em rgb(0 0 0 / 35%);
     background: var(--ast-customizer-color-12);
     color: var(--ast-customizer-color-10);
-    z-index: 1000;
+    z-index: 3;
     bottom: calc(100% + 5px);
     text-align: center;
     animation: tooltips-vert .3s ease-out forwards;

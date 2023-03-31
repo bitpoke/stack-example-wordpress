@@ -161,3 +161,12 @@
 .customize-control-ast-slider .ast-resp-slider-reset-wrap {
 	top: 1px;
 }
+
+
+.customize-control-ast-responsive-slider .ast-slider-wrap .components-range-control__number {
+  width: calc(48px) !important;
+}
+
+.customize-control-ast-responsive-slider .ast-slider-wrap .components-range-control__number input{
+  text-align: center;
+}

@@ -29,15 +29,6 @@
   margin-bottom: .5em;
 }
 
-.single .sfwd-courses .entry-header .ast-single-post-order + .post-thumb img,
-.single .sfwd-lessons .entry-header .ast-single-post-order + .post-thumb img,
-.single .sfwd-topic .entry-header .ast-single-post-order + .post-thumb img,
-.single .sfwd-quiz .entry-header .ast-single-post-order + .post-thumb img,
-.single .sfwd-certificates .entry-header .ast-single-post-order + .post-thumb img {
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-
 .single .sfwd-lessons .learndash_content .ast-oembed-container {
   margin-bottom: 1.6em;
 }

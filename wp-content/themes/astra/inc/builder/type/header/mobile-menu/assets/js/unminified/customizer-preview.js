@@ -34,26 +34,13 @@
             'font-weight',
             selector + ' .menu-item > .menu-link'
         );
-        astra_css(
-            'astra-settings[header-mobile-menu-text-transform]',
-            'text-transform',
-            selector + ' .menu-item > .menu-link'
-        );
+
         astra_responsive_font_size(
             'astra-settings[header-mobile-menu-font-size]',
             selector + ' .menu-item > .menu-link'
         );
-        astra_css(
-            'astra-settings[header-mobile-menu-line-height]',
-            'line-height',
-            selector + ' .menu-item > .menu-link, ' + selector + ' .menu-item > .ast-menu-toggle'
-        );
-        astra_css(
-            'astra-settings[header-mobile-menu-letter-spacing]',
-            'letter-spacing',
-            selector + ' .menu-item > .menu-link',
-            'px'
-        );
+
+		astra_font_extras_css( 'font-extras-header-mobile-menu', '.ast-builder-menu-mobile .main-navigation .menu-item > .menu-link' );
 
     /**
      * Color CSS.

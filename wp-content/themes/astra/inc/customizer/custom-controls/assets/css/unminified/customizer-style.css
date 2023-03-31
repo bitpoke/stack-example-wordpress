@@ -70,7 +70,7 @@
 }
 
 .components-base-control .components-base-control__field .components-input-control__backdrop {
-  border-color: #ddd;
+  border-color: #D1D5DB !important;
 }
 
 .customize-control .customize-inside-control-row {
@@ -101,6 +101,7 @@
   top: 50%;
   right: 40px;
   transform: translateY(-50%);
+  z-index: 1;
 }
 
 .customize-control.customize-control-ast-toggle-control.ast-top-dotted-divider .ast-control-tooltip {
@@ -166,9 +167,6 @@ input[type="text"].select2-search__field {
     .dashicons-desktop:before, .dashicons-tablet:before, .dashicons-smartphone:before {
       color: #000000;
       opacity: .75;
-    }
-    .ast-field-settings-modal .customize-control-ast-responsive .input-wrapper .ast-responsive-input.active + .ast-responsive-select {
-      width: 20%;
     }
     .ast-reset-btn.components-button svg {
       padding: 0px;
@@ -246,11 +244,48 @@ input[type="text"].select2-search__field {
 
 .wp-core-ui #customize-controls .control-section:hover > .accordion-section-title,
 .wp-core-ui #customize-controls .control-section .accordion-section-title:hover,
-.wp-core-ui #customize-controls .control-section.open .accordion-section-title,
 .wp-core-ui #customize-controls .control-section .accordion-section-title:focus,
 .wp-core-ui .customize-panel-back:hover,
 .wp-core-ui .customize-panel-back:focus,
 .wp-core-ui .customize-section-back:hover,
 .wp-core-ui .customize-section-back:focus {
   border-left-color: var(--ast-customizer-color-1);
+}
+
+/* Toggle Section Control */
+.ast-section-toggle {
+  display: grid;
+  grid-template-columns: 80% 1fr 1fr;
+}
+
+.ast-section-toggle label {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.ast-section-toggle:not(.active) > label {
+  cursor: default;
+}
+
+.ast-section-toggle-icon {
+  color: var(--wp-admin-theme-color);
+  cursor: pointer;
+  margin-bottom: -4px;
+  margin-left: 10px;
+}
+
+.ast-section-toggle-icon span {
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.customize-control-ast-section-toggle {
+  padding-top: 25px;
+  padding-bottom: 16px;
+}
+
+li[ID*="accordion-section-ast-dynamic-single-"].control-section-ast_section,
+li[ID*="accordion-section-ast-dynamic-archive-"].control-section-ast_section {
+  display: none !important;
 }

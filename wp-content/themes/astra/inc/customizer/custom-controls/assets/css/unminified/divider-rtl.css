@@ -112,23 +112,27 @@
 .customize-control.ast-top-dotted-divider,
 #customize-control-astra-settings-edd-archive-variable-button-text,
 #customize-control-astra-settings-header-account-logged-out-text,
-#customize-control-blogname,
-#customize-control-blogdescription,
 #customize-control-astra-settings-shop-load-more-text,
 #customize-control-astra-settings-single-product-shipping-text,
+#customize-control-astra-settings-checkout-back-to-cart-button-text,
 #customize-control-astra-settings-ast-header-retina-logo,
 #customize-control-astra-settings-product-sale-percent-value,
 #customize-control-astra-settings-header-account-create-menu-link,
 #customize-control-astra-settings-woo-cart-button-text,
+#customize-control-astra-settings-single-product-recently-viewed-text,
 #customize-control-astra-settings-sticky-header-retina-logo {
     margin-top: 24px;
     padding-top: 24px;
     border-top: 1px dashed var(--ast-customizer-color-7);
 }
 
+#customize-control-blogname, #customize-control-blogdescription, {
+	margin-top: 16px;
+}
+
 #customize-control-astra-settings-product-sale-percent-value .ast-control-tooltip {
     top: 24px;
-} 
+}
 
 .customize-control.ast-top-dotted-divider .ast-adv-toggle-icon {
     top: 25px;
@@ -165,6 +169,15 @@
     margin-bottom: 16px;
 }
 
+.customize-control.ast-sub-top-dotted-divider {
+    padding-top: 20px;
+}
+
+.customize-control.ast-sub-bottom-dotted-divider {
+    padding-bottom: 20px;
+	margin-bottom: 10px;
+}
+
 .customize-control.ast-top-section-divider::before,
 .customize-control.ast-bottom-section-divider::after {
     content: '';
@@ -175,13 +188,24 @@
     height: 1px;
 }
 
-
+.customize-control.ast-sub-top-dotted-divider::before,
 .customize-control.ast-top-section-divider::before {
     top: 0;
 }
 
+.customize-control.ast-sub-bottom-dotted-divider::after,
 .customize-control.ast-bottom-section-divider::after {
     bottom: 0;
+}
+
+.customize-control.ast-sub-top-dotted-divider::before,
+.customize-control.ast-sub-bottom-dotted-divider::after {
+    content: '';
+    border-top: 1px dashed var(--ast-customizer-color-7);
+    width: calc(100% - 30px);
+    height: 1px;
+    position: absolute;
+    right: 15px;
 }
 
 
@@ -211,7 +235,11 @@
     margin-top: 0;
 }
 
-#customize-control-body-font-variant .customize-control-title,
-#customize-control-headings-font-variant .customize-control-title {
-    margin-top: 23px;
+/* sidebar specific  */
+#sub-accordion-section-section-sidebars > .customize-control-ast-heading {
+    margin-top: 16px;
+}
+
+#sub-accordion-section-section-sidebars > .customize-control-ast-heading ~ .customize-control-ast-heading  {
+    margin-top: 32px;
 }

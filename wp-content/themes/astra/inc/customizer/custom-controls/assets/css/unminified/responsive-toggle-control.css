@@ -14,6 +14,8 @@
 .customize-control-ast-responsive-toggle-control .components-toggle-control .components-toggle-control__label, .ast-responsive-toggle-control label {
     display: flex;
     flex: 1 1 auto;
+	font-size: 14px;
+  	font-weight: 600;
 }
 
 .customize-control-ast-responsive-toggle-control .ast-responsive-toggle-control-wrapper .ast-responsive-toggle-control {
