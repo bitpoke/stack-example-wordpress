@@ -86,6 +86,23 @@ class Akismet {
 		return apply_filters( 'akismet_get_api_key', defined('WPCOM_API_KEY') ? constant('WPCOM_API_KEY') : get_option('wordpress_api_key') );
 	}
 
+	/**
+	 * Exchange the API key for a token that can only be used to access stats pages.
+	 *
+	 * @return string
+	 */
+	public static function get_access_token() {
+		static $access_token = null;
+
+		if ( is_null( $access_token ) ) {
+			$response = self::http_post( self::build_query( array( 'api_key' => self::get_api_key() ) ), 'token' );
+
+			$access_token = $response[1];
+		}
+
+		return $access_token;
+	}
+
 	public static function check_key_status( $key, $ip = null ) {
 		return self::http_post( Akismet::build_query( array( 'key' => $key, 'blog' => get_option( 'home' ) ) ), 'verify-key', $ip );
 	}
@@ -232,6 +249,25 @@ class Akismet {
 		if ( ! is_null( $post ) ) {
 			// $post can technically be null, although in the past, it's always been an indicator of another plugin interfering.
 			$comment[ 'comment_post_modified_gmt' ] = $post->post_modified_gmt;
+
+			// Tags and categories are important context in which to consider the comment.
+			$comment['comment_context'] = array();
+
+			$tag_names = wp_get_post_tags( $post->ID, array( 'fields' => 'names' ) );
+
+			if ( $tag_names && ! is_wp_error( $tag_names ) ) {
+				foreach ( $tag_names as $tag_name ) {
+					$comment['comment_context'][] = $tag_name;
+				}
+			}
+
+			$category_names = wp_get_post_categories( $post->ID, array( 'fields' => 'names' ) );
+
+			if ( $category_names && ! is_wp_error( $category_names ) ) {
+				foreach ( $category_names as $category_name ) {
+					$comment['comment_context'][] = $category_name;
+				}
+			}
 		}
 
 		$response = self::http_post( Akismet::build_query( $comment ), 'comment-check' );
@@ -1218,13 +1254,12 @@ class Akismet {
 		$akismet_ua = sprintf( 'WordPress/%s | Akismet/%s', $GLOBALS['wp_version'], constant( 'AKISMET_VERSION' ) );
 		$akismet_ua = apply_filters( 'akismet_ua', $akismet_ua );
 
-		$content_length = strlen( $request );
-
-		$api_key   = self::get_api_key();
 		$host      = self::API_HOST;
+		$api_key   = self::get_api_key();
 
-		if ( !empty( $api_key ) )
-			$host = $api_key.'.'.$host;
+		if ( $api_key ) {
+			$request = add_query_arg( 'api_key', $api_key, $request );
+		}
 
 		$http_host = $host;
 		// use a specific IP if provided

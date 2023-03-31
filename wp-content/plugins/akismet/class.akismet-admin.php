@@ -1053,10 +1053,6 @@ class Akismet_Admin {
 				
 				$notices[] =  array( 'type' => 'active-notice', 'time_saved' => $time_saved );
 			}
-			
-			if ( !empty( $akismet_user->limit_reached ) && in_array( $akismet_user->limit_reached, array( 'yellow', 'red' ) ) ) {
-				$notices[] = array( 'type' => 'limit-reached', 'level' => $akismet_user->limit_reached );
-			}
 		}
 		
 		if ( !isset( self::$notices['status'] ) && in_array( $akismet_user->status, array( 'cancelled', 'suspended', 'missing', 'no-sub' ) ) ) {
@@ -1085,8 +1081,6 @@ class Akismet_Admin {
 		$notices[] = array( 'type' => 'new-key-invalid' );
 		$notices[] = array( 'type' => 'existing-key-invalid' );
 		$notices[] = array( 'type' => 'new-key-failed' );
-		$notices[] = array( 'type' => 'limit-reached', 'level' => 'yellow' );
-		$notices[] = array( 'type' => 'limit-reached', 'level' => 'red' );
 		$notices[] = array( 'type' => 'usage-limit', 'api_calls' => '15000', 'usage_limit' => '10000', 'upgrade_plan' => 'Enterprise', 'upgrade_url' => 'https://akismet.com/account/' );
 		$notices[] = array( 'type' => 'spam-check-cron-disabled' );
 		*/
