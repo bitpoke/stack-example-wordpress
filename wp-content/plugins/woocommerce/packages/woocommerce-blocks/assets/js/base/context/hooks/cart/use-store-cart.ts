@@ -9,6 +9,7 @@ import {
 	CART_STORE_KEY as storeKey,
 	EMPTY_CART_COUPONS,
 	EMPTY_CART_ITEMS,
+	EMPTY_CART_CROSS_SELLS,
 	EMPTY_CART_FEES,
 	EMPTY_CART_ITEM_ERRORS,
 	EMPTY_CART_ERRORS,
@@ -99,6 +100,7 @@ export const defaultCartData: StoreCart = {
 	cartFees: EMPTY_CART_FEES,
 	cartItemsCount: 0,
 	cartItemsWeight: 0,
+	crossSellsProducts: EMPTY_CART_CROSS_SELLS,
 	cartNeedsPayment: true,
 	cartNeedsShipping: true,
 	cartItemErrors: EMPTY_CART_ITEM_ERRORS,
@@ -112,6 +114,7 @@ export const defaultCartData: StoreCart = {
 	cartHasCalculatedShipping: false,
 	paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
 	receiveCart: () => undefined,
+	receiveCartContents: () => undefined,
 	extensions: EMPTY_EXTENSIONS,
 };
 
@@ -136,8 +139,7 @@ export const useStoreCart = (
 	const { shouldSelect } = options;
 	const currentResults = useRef();
 
-	// This will keep track of jQuery and DOM events triggered by other blocks
-	// or components and will invalidate the store resolution accordingly.
+	// This will keep track of jQuery and DOM events that invalidate the store resolution.
 	useStoreCartEventListeners();
 
 	const results: StoreCart = useSelect(
@@ -150,6 +152,7 @@ export const useStoreCart = (
 				return {
 					cartCoupons: previewCart.coupons,
 					cartItems: previewCart.items,
+					crossSellsProducts: previewCart.cross_sells,
 					cartFees: previewCart.fees,
 					cartItemsCount: previewCart.items_count,
 					cartItemsWeight: previewCart.items_weight,
@@ -172,6 +175,10 @@ export const useStoreCart = (
 						typeof previewCart?.receiveCart === 'function'
 							? previewCart.receiveCart
 							: () => undefined,
+					receiveCartContents:
+						typeof previewCart?.receiveCartContents === 'function'
+							? previewCart.receiveCartContents
+							: () => undefined,
 				};
 			}
 
@@ -183,7 +190,7 @@ export const useStoreCart = (
 				! store.hasFinishedResolution( 'getCartData' );
 
 			const isLoadingRates = store.isCustomerDataUpdating();
-			const { receiveCart } = dispatch( storeKey );
+			const { receiveCart, receiveCartContents } = dispatch( storeKey );
 			const billingAddress = decodeValues( cartData.billingAddress );
 			const shippingAddress = cartData.needsShipping
 				? decodeValues( cartData.shippingAddress )
@@ -211,6 +218,7 @@ export const useStoreCart = (
 			return {
 				cartCoupons,
 				cartItems: cartData.items,
+				crossSellsProducts: cartData.crossSells,
 				cartFees,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
@@ -229,6 +237,7 @@ export const useStoreCart = (
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
 				paymentRequirements: cartData.paymentRequirements,
 				receiveCart,
+				receiveCartContents,
 			};
 		},
 		[ shouldSelect ]

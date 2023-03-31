@@ -26,10 +26,12 @@ describe( 'useStoreCart', () => {
 	let registry, renderer;
 
 	const receiveCartMock = () => {};
+	const receiveCartContentsMock = () => {};
 
 	const previewCartData = {
 		cartCoupons: previewCart.coupons,
 		cartItems: previewCart.items,
+		crossSellsProducts: previewCart.cross_sells,
 		cartFees: previewCart.fees,
 		cartItemsCount: previewCart.items_count,
 		cartItemsWeight: previewCart.items_weight,
@@ -101,8 +103,9 @@ describe( 'useStoreCart', () => {
 		hasCalculatedShipping: true,
 		extensions: {},
 		errors: [],
-		receiveCart: undefined,
 		paymentRequirements: [],
+		receiveCart: undefined,
+		receiveCartContents: undefined,
 	};
 	const mockCartTotals = {
 		currency_code: 'USD',
@@ -128,8 +131,9 @@ describe( 'useStoreCart', () => {
 		extensions: {},
 		isLoadingRates: false,
 		cartHasCalculatedShipping: true,
-		receiveCart: undefined,
 		paymentRequirements: [],
+		receiveCart: undefined,
+		receiveCartContents: undefined,
 	};
 
 	const getWrappedComponents = ( Component ) => (
@@ -139,8 +143,15 @@ describe( 'useStoreCart', () => {
 	);
 
 	const getTestComponent = ( options ) => () => {
-		const { receiveCart, ...results } = useStoreCart( options );
-		return <div results={ results } receiveCart={ receiveCart } />;
+		const { receiveCart, receiveCartContents, ...results } =
+			useStoreCart( options );
+		return (
+			<div
+				results={ results }
+				receiveCart={ receiveCart }
+				receiveCartContents={ receiveCartContents }
+			/>
+		);
 	};
 
 	const setUpMocks = () => {
@@ -189,12 +200,16 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } =
+			const { results, receiveCart, receiveCartContents } =
 				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
-			const { receiveCart: defaultReceiveCart, ...remaining } =
-				defaultCartData;
+			const {
+				receiveCart: defaultReceiveCart,
+				receiveCartContents: defaultReceiveCartContents,
+				...remaining
+			} = defaultCartData;
 			expect( results ).toEqual( remaining );
 			expect( receiveCart ).toEqual( defaultReceiveCart );
+			expect( receiveCartContents ).toEqual( defaultReceiveCartContents );
 		} );
 
 		it( 'return store data when shouldSelect is true', () => {
@@ -208,11 +223,12 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } =
+			const { results, receiveCart, receiveCartContents } =
 				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( mockStoreCartData );
 			expect( receiveCart ).toBeUndefined();
+			expect( receiveCartContents ).toBeUndefined();
 		} );
 	} );
 
@@ -224,6 +240,7 @@ describe( 'useStoreCart', () => {
 					previewCart: {
 						...previewCart,
 						receiveCart: receiveCartMock,
+						receiveCartContents: receiveCartContentsMock,
 					},
 				},
 			} );
@@ -238,11 +255,12 @@ describe( 'useStoreCart', () => {
 				);
 			} );
 
-			const { results, receiveCart } =
+			const { results, receiveCart, receiveCartContents } =
 				renderer.root.findByType( 'div' ).props; //eslint-disable-line testing-library/await-async-query
 
 			expect( results ).toEqual( previewCartData );
 			expect( receiveCart ).toEqual( receiveCartMock );
+			expect( receiveCartContents ).toEqual( receiveCartContentsMock );
 		} );
 	} );
 } );

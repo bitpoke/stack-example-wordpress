@@ -3,10 +3,13 @@
  */
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useCallback, useState, useEffect } from '@wordpress/element';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import {
+	CART_STORE_KEY,
+	CHECKOUT_STORE_KEY,
+	processErrorResponse,
+} from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
 import { usePrevious } from '@woocommerce/base-hooks';
-import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 import {
 	CartItem,
 	StoreCartItemQuantity,
@@ -20,7 +23,6 @@ import {
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
-import { useCheckoutContext } from '../../providers/cart-checkout';
 
 /**
  * Ensures the object passed has props key: string and quantity: number
@@ -54,14 +56,15 @@ export const useStoreCartItemQuantity = (
 	const { key: cartItemKey = '', quantity: cartItemQuantity = 1 } =
 		verifiedCartItem;
 	const { cartErrors } = useStoreCart();
-	const { dispatchActions } = useCheckoutContext();
+	const { __internalIncrementCalculating, __internalDecrementCalculating } =
+		useDispatch( CHECKOUT_STORE_KEY );
 
 	// Store quantity in hook state. This is used to keep the UI updated while server request is updated.
 	const [ quantity, setQuantity ] = useState< number >( cartItemQuantity );
 	const [ debouncedQuantity ] = useDebounce< number >( quantity, 400 );
 	const previousDebouncedQuantity = usePrevious( debouncedQuantity );
 	const { removeItemFromCart, changeCartItemQuantity } =
-		useDispatch( storeKey );
+		useDispatch( CART_STORE_KEY );
 
 	// Update local state when server updates.
 	useEffect( () => setQuantity( cartItemQuantity ), [ cartItemQuantity ] );
@@ -75,7 +78,7 @@ export const useStoreCartItemQuantity = (
 					delete: false,
 				};
 			}
-			const store = select( storeKey );
+			const store = select( CART_STORE_KEY );
 			return {
 				quantity: store.isItemPendingQuantity( cartItemKey ),
 				delete: store.isItemPendingDelete( cartItemKey ),
@@ -85,12 +88,12 @@ export const useStoreCartItemQuantity = (
 	);
 
 	const removeItem = useCallback( () => {
-		return cartItemKey
-			? removeItemFromCart( cartItemKey ).then( () => {
-					triggerFragmentRefresh();
-					return true;
-			  } )
-			: Promise.resolve( false );
+		if ( cartItemKey ) {
+			return removeItemFromCart( cartItemKey ).catch( ( error ) => {
+				processErrorResponse( error );
+			} );
+		}
+		return Promise.resolve( false );
 	}, [ cartItemKey, removeItemFromCart ] );
 
 	// Observe debounced quantity value, fire action to update server on change.
@@ -101,7 +104,11 @@ export const useStoreCartItemQuantity = (
 			Number.isFinite( previousDebouncedQuantity ) &&
 			previousDebouncedQuantity !== debouncedQuantity
 		) {
-			changeCartItemQuantity( cartItemKey, debouncedQuantity );
+			changeCartItemQuantity( cartItemKey, debouncedQuantity ).catch(
+				( error ) => {
+					processErrorResponse( error );
+				}
+			);
 		}
 	}, [
 		cartItemKey,
@@ -112,29 +119,39 @@ export const useStoreCartItemQuantity = (
 
 	useEffect( () => {
 		if ( isPending.delete ) {
-			dispatchActions.incrementCalculating();
+			__internalIncrementCalculating();
 		} else {
-			dispatchActions.decrementCalculating();
+			__internalDecrementCalculating();
 		}
 		return () => {
 			if ( isPending.delete ) {
-				dispatchActions.decrementCalculating();
+				__internalDecrementCalculating();
 			}
 		};
-	}, [ dispatchActions, isPending.delete ] );
+	}, [
+		__internalDecrementCalculating,
+		__internalIncrementCalculating,
+		isPending.delete,
+	] );
 
 	useEffect( () => {
 		if ( isPending.quantity || debouncedQuantity !== quantity ) {
-			dispatchActions.incrementCalculating();
+			__internalIncrementCalculating();
 		} else {
-			dispatchActions.decrementCalculating();
+			__internalDecrementCalculating();
 		}
 		return () => {
 			if ( isPending.quantity || debouncedQuantity !== quantity ) {
-				dispatchActions.decrementCalculating();
+				__internalDecrementCalculating();
 			}
 		};
-	}, [ dispatchActions, isPending.quantity, debouncedQuantity, quantity ] );
+	}, [
+		__internalIncrementCalculating,
+		__internalDecrementCalculating,
+		isPending.quantity,
+		debouncedQuantity,
+		quantity,
+	] );
 
 	return {
 		isPendingDelete: isPending.delete,

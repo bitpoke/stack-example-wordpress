@@ -2,16 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useEmitResponse,
-	useExpressPaymentMethods,
-} from '@woocommerce/base-context/hooks';
-import {
-	StoreNoticesContainer,
-	useCheckoutContext,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
+import { useExpressPaymentMethods } from '@woocommerce/base-context/hooks';
+import { noticeContexts } from '@woocommerce/base-context';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -21,7 +17,6 @@ import './style.scss';
 
 const CartExpressPayment = () => {
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
-	const { noticeContexts } = useEmitResponse();
 	const {
 		isCalculating,
 		isProcessing,
@@ -29,8 +24,20 @@ const CartExpressPayment = () => {
 		isBeforeProcessing,
 		isComplete,
 		hasError,
-	} = useCheckoutContext();
-	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
+	} = useSelect( ( select ) => {
+		const store = select( CHECKOUT_STORE_KEY );
+		return {
+			isCalculating: store.isCalculating(),
+			isProcessing: store.isProcessing(),
+			isAfterProcessing: store.isAfterProcessing(),
+			isBeforeProcessing: store.isBeforeProcessing(),
+			isComplete: store.isComplete(),
+			hasError: store.hasError(),
+		};
+	} );
+	const isExpressPaymentMethodActive = useSelect( ( select ) =>
+		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive()
+	);
 
 	if (
 		! isInitialized ||
@@ -52,7 +59,7 @@ const CartExpressPayment = () => {
 				isLoading={
 					isCalculating ||
 					checkoutProcessing ||
-					paymentStatus.isDoingExpressPayment
+					isExpressPaymentMethodActive
 				}
 			>
 				<div className="wc-block-components-express-payment wc-block-components-express-payment--cart">
@@ -66,7 +73,7 @@ const CartExpressPayment = () => {
 			</LoadingMask>
 			<div className="wc-block-components-express-payment-continue-rule wc-block-components-express-payment-continue-rule--cart">
 				{ /* translators: Shown in the Cart block between the express payment methods and the Proceed to Checkout button */ }
-				{ __( 'Any', 'woocommerce' ) }
+				{ __( 'Or', 'woocommerce' ) }
 			</div>
 		</>
 	);

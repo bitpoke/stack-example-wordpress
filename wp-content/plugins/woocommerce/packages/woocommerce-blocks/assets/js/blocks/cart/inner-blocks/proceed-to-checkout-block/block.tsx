@@ -1,19 +1,20 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useState, useEffect } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
-import { useCheckoutContext } from '@woocommerce/base-context';
 import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { defaultButtonLabel } from './constants';
 
 /**
  * Checkout button rendered in the full cart page.
@@ -21,12 +22,16 @@ import './style.scss';
 const Block = ( {
 	checkoutPageId,
 	className,
+	buttonLabel,
 }: {
 	checkoutPageId: number;
 	className: string;
+	buttonLabel: string;
 } ): JSX.Element => {
 	const link = getSetting( 'page-' + checkoutPageId, false );
-	const { isCalculating } = useCheckoutContext();
+	const isCalculating = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).isCalculating()
+	);
 	const [ positionReferenceElement, positionRelativeToViewport ] =
 		usePositionRelativeToViewport();
 	const [ showSpinner, setShowSpinner ] = useState( false );
@@ -61,7 +66,7 @@ const Block = ( {
 			onClick={ () => setShowSpinner( true ) }
 			showSpinner={ showSpinner }
 		>
-			{ __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }
+			{ buttonLabel || defaultButtonLabel }
 		</Button>
 	);
 

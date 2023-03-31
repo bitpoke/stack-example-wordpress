@@ -12,6 +12,7 @@ use Automattic\WooCommerce\StoreApi\Utilities\ArrayUtils;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\NoticeHandler;
 use Automattic\WooCommerce\StoreApi\Utilities\QuantityLimits;
+use Automattic\WooCommerce\Blocks\Package;
 use WP_Error;
 
 /**
@@ -32,6 +33,17 @@ class CartController {
 	}
 
 	/**
+	 * Recalculates the cart totals.
+	 */
+	public function calculate_totals() {
+		$cart = $this->get_cart_instance();
+		$cart->get_cart();
+		$cart->calculate_fees();
+		$cart->calculate_shipping();
+		$cart->calculate_totals();
+	}
+
+	/**
 	 * Based on the core cart class but returns errors rather than rendering notices directly.
 	 *
 	 * @todo Overriding the core add_to_cart method was necessary because core outputs notices when an item is added to
@@ -41,7 +53,7 @@ class CartController {
 	 * @throws RouteException Exception if invalid data is detected.
 	 *
 	 * @param array $request Add to cart request params.
-	 * @return string|Error
+	 * @return string
 	 */
 	public function add_to_cart( $request ) {
 		$cart    = $this->get_cart_instance();
@@ -170,7 +182,7 @@ class CartController {
 		$cart_item = $this->get_cart_item( $item_id );
 
 		if ( empty( $cart_item ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woocommerce' ), 404 );
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woocommerce' ), 409 );
 		}
 
 		$product = $cart_item['data'];
@@ -803,7 +815,9 @@ class CartController {
 			);
 		}
 
-		return $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
+		$packages = $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
+
+		return $packages;
 	}
 
 	/**
@@ -829,10 +843,10 @@ class CartController {
 			$index > 1 ?
 				sprintf(
 					/* translators: %d: shipping package number */
-					_x( 'Shipping method %d', 'shipping packages', 'woocommerce' ),
+					_x( 'Shipment %d', 'shipping packages', 'woocommerce' ),
 					$index
 				) :
-				_x( 'Shipping method', 'shipping packages', 'woocommerce' ),
+				_x( 'Shipment 1', 'shipping packages', 'woocommerce' ),
 			$package['package_id'],
 			$package
 		);
@@ -1194,6 +1208,11 @@ class CartController {
 				);
 			}
 
+			// Fills request array with unspecified attributes that have default values. This ensures the variation always has full data.
+			if ( '' !== $expected_value && ! isset( $request['variation'][ wc_variation_attribute_name( $attribute['name'] ) ] ) ) {
+				$request['variation'][ wc_variation_attribute_name( $attribute['name'] ) ] = $expected_value;
+			}
+
 			// If no attribute was posted, only error if the variation has an 'any' attribute which requires a value.
 			if ( '' === $expected_value ) {
 				$missing_attributes[] = $attribute_label;
@@ -1208,6 +1227,8 @@ class CartController {
 				400
 			);
 		}
+
+		ksort( $request['variation'] );
 
 		return $request;
 	}

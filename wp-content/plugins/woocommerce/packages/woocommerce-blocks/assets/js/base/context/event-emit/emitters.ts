@@ -1,9 +1,15 @@
 /**
  * Internal dependencies
  */
-import { getObserversByPriority } from './utils';
+import {
+	getObserversByPriority,
+	isErrorResponse,
+	isFailResponse,
+	ObserverResponse,
+	responseTypes,
+} from './utils';
 import type { EventObserversType } from './types';
-import { isErrorResponse, isFailResponse } from '../hooks/use-emit-response';
+import { isObserverResponse } from '../../../types/type-guards/observers';
 
 /**
  * Emits events on registered observers for the provided type and passes along
@@ -61,13 +67,13 @@ export const emitEventWithAbort = async (
 	observers: EventObserversType,
 	eventType: string,
 	data: unknown
-): Promise< Array< unknown > > => {
-	const observerResponses = [];
+): Promise< ObserverResponse[] > => {
+	const observerResponses: ObserverResponse[] = [];
 	const observersByType = getObserversByPriority( observers, eventType );
 	for ( const observer of observersByType ) {
 		try {
 			const response = await Promise.resolve( observer.callback( data ) );
-			if ( typeof response !== 'object' || response === null ) {
+			if ( ! isObserverResponse( response ) ) {
 				continue;
 			}
 			if ( ! response.hasOwnProperty( 'type' ) ) {
@@ -87,7 +93,7 @@ export const emitEventWithAbort = async (
 			// We don't handle thrown errors but just console.log for troubleshooting.
 			// eslint-disable-next-line no-console
 			console.error( e );
-			observerResponses.push( { type: 'error' } );
+			observerResponses.push( { type: responseTypes.ERROR } );
 			return observerResponses;
 		}
 	}

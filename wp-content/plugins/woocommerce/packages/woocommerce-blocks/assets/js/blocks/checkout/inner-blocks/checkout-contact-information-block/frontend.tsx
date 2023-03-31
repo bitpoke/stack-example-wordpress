@@ -4,7 +4,8 @@
 import classnames from 'classnames';
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import { useSelect } from '@wordpress/data';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -12,7 +13,6 @@ import { useCheckoutContext } from '@woocommerce/base-context';
 import Block from './block';
 import attributes from './attributes';
 import LoginPrompt from './login-prompt';
-import { useCheckoutBlockContext } from '../../context';
 
 const FrontendBlock = ( {
 	title,
@@ -23,13 +23,13 @@ const FrontendBlock = ( {
 }: {
 	title: string;
 	description: string;
-	allowCreateAccount: boolean;
 	showStepNumber: boolean;
 	children: JSX.Element;
 	className?: string;
 } ) => {
-	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
-	const { allowCreateAccount } = useCheckoutBlockContext();
+	const checkoutIsProcessing = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).isProcessing()
+	);
 
 	return (
 		<FormStep
@@ -44,7 +44,7 @@ const FrontendBlock = ( {
 			showStepNumber={ showStepNumber }
 			stepHeadingContent={ () => <LoginPrompt /> }
 		>
-			<Block allowCreateAccount={ allowCreateAccount } />
+			<Block />
 			{ children }
 		</FormStep>
 	);

@@ -2,12 +2,10 @@
  * External dependencies
  */
 import { useArgs } from '@storybook/client-api';
-import { Story, Meta } from '@storybook/react';
-import {
-	useValidationContext,
-	ValidationContextProvider,
-} from '@woocommerce/base-context';
+import type { Story, Meta } from '@storybook/react';
 import { INTERACTION_TIMEOUT } from '@woocommerce/storybook-controls';
+import { useDispatch } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -33,11 +31,12 @@ const Template: Story< TotalsCouponProps > = ( args ) => {
 	const onSubmit = ( code: string ) => {
 		args.onSubmit?.( code );
 		setArgs( { isLoading: true } );
-
-		setTimeout(
-			() => setArgs( { isLoading: false } ),
-			INTERACTION_TIMEOUT
-		);
+		return new Promise( ( resolve ) => {
+			setTimeout( () => {
+				setArgs( { isLoading: false } );
+				resolve( true );
+			}, INTERACTION_TIMEOUT );
+		} );
 	};
 
 	return <TotalsCoupon { ...args } onSubmit={ onSubmit } />;
@@ -52,7 +51,7 @@ LoadingState.args = {
 };
 
 export const ErrorState: Story< TotalsCouponProps > = ( args ) => {
-	const { setValidationErrors } = useValidationContext();
+	const { setValidationErrors } = useDispatch( VALIDATION_STORE_KEY );
 
 	setValidationErrors( { coupon: INVALID_COUPON_ERROR } );
 
@@ -61,10 +60,6 @@ export const ErrorState: Story< TotalsCouponProps > = ( args ) => {
 
 ErrorState.decorators = [
 	( StoryComponent ) => {
-		return (
-			<ValidationContextProvider>
-				<StoryComponent />
-			</ValidationContextProvider>
-		);
+		return <StoryComponent />;
 	},
 ];

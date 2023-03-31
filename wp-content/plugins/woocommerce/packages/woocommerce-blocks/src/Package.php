@@ -63,7 +63,7 @@ class Package {
 	}
 
 	/**
-	 * Returns an instance of the the FeatureGating class.
+	 * Returns an instance of the FeatureGating class.
 	 *
 	 * @return FeatureGating
 	 */
@@ -85,16 +85,10 @@ class Package {
 	 *
 	 * @return boolean
 	 */
-	// This function will be kept around but commented out in case we add feature-plugin-specific code in the future.
-	// phpcs:disable Squiz.PHP.CommentedOutCode
-	// phpcs:disable Squiz.Commenting.InlineComment.InvalidEndChar
-	// phpcs:disable Squiz.Commenting.InlineComment.SpacingBefore
-	//	public static function is_feature_plugin_build() {
-	//		return self::get_package()->is_feature_plugin_build();
-	//	}
-	// phpcs:enable Squiz.PHP.CommentedOutCode
-	// phpcs:enable Squiz.Commenting.InlineComment.InvalidEndChar
-	// phpcs:enable Squiz.Commenting.InlineComment.SpacingBefore
+	public static function is_feature_plugin_build() {
+		return self::get_package()->is_feature_plugin_build();
+	}
+
 
 	/**
 	 * Loads the dependency injection container for woocommerce blocks.
@@ -115,7 +109,7 @@ class Package {
 				NewPackage::class,
 				function ( $container ) {
 					// leave for automated version bumping.
-					$version = '8.5.1';
+					$version = '9.6.6';
 					return new NewPackage(
 						$version,
 						dirname( __DIR__ ),

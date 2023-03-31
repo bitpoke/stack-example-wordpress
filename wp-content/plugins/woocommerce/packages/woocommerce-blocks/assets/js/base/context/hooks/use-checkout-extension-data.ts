@@ -1,51 +1,43 @@
 /**
  * External dependencies
  */
-import { useCallback, useEffect, useRef } from '@wordpress/element';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useCallback, useRef } from '@wordpress/element';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import { useCheckoutContext } from '../providers/cart-checkout/checkout-state';
-import type { CheckoutStateContextState } from '../providers/cart-checkout/checkout-state/types';
+import type { CheckoutState } from '../../../data/checkout/default-state';
 
 /**
  * Custom hook for setting custom checkout data which is passed to the wc/store/checkout endpoint when processing orders.
  */
 export const useCheckoutExtensionData = (): {
-	extensionData: CheckoutStateContextState[ 'extensionData' ];
+	extensionData: CheckoutState[ 'extensionData' ];
 	setExtensionData: (
 		namespace: string,
 		key: string,
 		value: unknown
 	) => void;
 } => {
-	const { dispatchActions, extensionData } = useCheckoutContext();
+	const { __internalSetExtensionData } = useDispatch( CHECKOUT_STORE_KEY );
+	const extensionData = useSelect( ( select ) =>
+		select( CHECKOUT_STORE_KEY ).getExtensionData()
+	);
 	const extensionDataRef = useRef( extensionData );
 
-	useEffect( () => {
-		if ( ! isShallowEqual( extensionData, extensionDataRef.current ) ) {
-			extensionDataRef.current = extensionData;
-		}
-	}, [ extensionData ] );
-
-	const setExtensionDataWithNamespace = useCallback(
+	const setExtensionData = useCallback(
 		( namespace, key, value ) => {
-			const currentData = extensionDataRef.current[ namespace ] || {};
-			dispatchActions.setExtensionData( {
-				...extensionDataRef.current,
-				[ namespace ]: {
-					...currentData,
-					[ key ]: value,
-				},
+			__internalSetExtensionData( namespace, {
+				[ key ]: value,
 			} );
 		},
-		[ dispatchActions ]
+		[ __internalSetExtensionData ]
 	);
 
 	return {
 		extensionData: extensionDataRef.current,
-		setExtensionData: setExtensionDataWithNamespace,
+		setExtensionData,
 	};
 };

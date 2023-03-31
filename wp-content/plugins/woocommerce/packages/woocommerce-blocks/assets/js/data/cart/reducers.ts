@@ -8,7 +8,7 @@ import type { Reducer } from 'redux';
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { defaultCartState, CartState } from '../default-states';
+import { defaultCartState, CartState } from './default-state';
 import { EMPTY_CART_ERRORS } from '../constants';
 import type { CartAction } from './actions';
 
@@ -48,15 +48,7 @@ const reducer: Reducer< CartState > = (
 	action: Partial< CartAction >
 ) => {
 	switch ( action.type ) {
-		case types.RECEIVE_ERROR:
-			if ( action.error ) {
-				state = {
-					...state,
-					errors: state.errors.concat( action.error ),
-				};
-			}
-			break;
-		case types.REPLACE_ERRORS:
+		case types.SET_ERROR_DATA:
 			if ( action.error ) {
 				state = {
 					...state,
@@ -64,7 +56,7 @@ const reducer: Reducer< CartState > = (
 				};
 			}
 			break;
-		case types.RECEIVE_CART:
+		case types.SET_CART_DATA:
 			if ( action.response ) {
 				state = {
 					...state,
