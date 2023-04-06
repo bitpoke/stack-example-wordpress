@@ -1,17 +1,20 @@
-name: Auto update plugins and themes
-run-name: Auto update for WordPress plugins and themes
+name: Auto update WordPress core
+run-name: Auto update WordPress core
 on:
   schedule:
     # The time is UTC. Currently set to run each weekday morning, 8:32 AM UTC
-    - cron: '32 8 * * 1-5'
+    - cron: '52 8 * * 1-5'
   workflow_dispatch:
 env:
   AUTO_UPDATE_AUTHOR: Bitpoke Bot
   AUTO_UPDATE_AUTHOR_EMAIL: bitpoke-bot@users.noreply.github.com
 jobs:
   update:
-    name: Update themes and plugins
+    name: Update WordPress core
     runs-on: ubuntu-latest
+    # Disable WordPress Core auto-updates for repositories generated from stack-example-wordpress
+    # Remove or adjust the following condition if you want core auto-updates for your repository
+    if: github.repository == 'bitpoke/stack-example-wordpress'
     steps:
       - uses: actions/checkout@v3
 
@@ -27,6 +30,9 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Update WordPress themes
+        run: scripts/wp-core-update-and-commit.sh
 
       - name: Build
         uses: docker/bake-action@v2.3.0
@@ -48,12 +54,6 @@ jobs:
 
       - name: Install WordPress
         run: docker compose exec --no-TTY wordpress wp core install --url=http://localhost:8080 --title='Dummy Install' --admin_user=admin --admin_password=not-so-secure --admin_email=admin@example.com --skip-email
-
-      - name: Update WordPress plugins
-        run: scripts/wp-update-and-commit.sh plugin
-
-      - name: Update WordPress themes
-        run: scripts/wp-update-and-commit.sh theme
 
       - name: Push changes
         run: git push
