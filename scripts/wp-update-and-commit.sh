@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 : "${KIND:=${1:-"plugin"}}"
 KIND_PLURAL="${KIND}s"
 
 wp() {
-    docker compose exec --no-TTY wordpress wp "${@}"
+    docker compose exec --no-TTY wordpress wp --url=https://localhost "${@}"
 }
 
 for item in $(wp "${KIND}" list --update=available --fields=name,title,version,update_version --format=json | jq -r '.[] | @base64') ; do
