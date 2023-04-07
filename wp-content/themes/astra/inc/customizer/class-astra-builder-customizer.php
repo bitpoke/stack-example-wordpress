@@ -162,6 +162,14 @@ final class Astra_Builder_Customizer {
 					</style>
 				';
 			}
+			if ( astra_wp_version_compare( '6.2', '>=' ) ) {
+				echo '<style type="text/css" class="astra-wp-6-2-builder-popover-compatibility">
+					.popup-vertical-group .components-popover.ahfb-popover-add-builder {
+						left: 18% !important;
+					}
+					</style>
+				';
+			}
 		}
 	}
 

@@ -8,6 +8,17 @@ window.addEventListener( "load", function(e) {
     astrawpWooQuantityButtons();
 });
 
+
+/**This comment explains that in order to refresh the wc_fragments_refreshed event when an AJAX call is made, jQuery is used to update the quantity button. 
+ * Here plain JavaScript may not be able to trigger the wc_fragments_refreshed event in the same way, 
+ * hence the need to use jQuery
+*/
+jQuery( function( $ ) {
+    $( document.body ).on( 'wc_fragments_refreshed', function() {
+        astrawpWooQuantityButtons();
+    });
+});
+
 (function() {
     var send = XMLHttpRequest.prototype.send
     XMLHttpRequest.prototype.send = function() {

@@ -1,3 +1,13 @@
+v4.1.3
+- Fix: Container - Content Boxed layout removes Spectra column or container left padding.
+- Fix: Offcanvas - Due to clickable hidden area toggle buttons don't work in RTL mode.
+- Fix: Header Builder - Cart - On adding product to cart, quantity plus & minus buttons gets disappear.
+- Fix: Topic tags div visible multiple times and goes into infinite loop in case of BBPress.
+- Fix: Offcanvas - Builder component popup overlaps on customizer controls section.
+- Fix: WooCommerce - Widget's dropdown arrow is moving to top corner.
+- Fix: Header Builder - Cart - Slide cart goes blank when Elementor Pro is active with latest version.
+- Fix: get_the_excerpt() callback breaks the functionality of external plugins like BuddyPress Registration, Five Star Restaurant Reservations, Formidable Form.
+
 v4.1.2
 - Fix: Post content shrinks on one side for the blog archive.
 - Fix: Menu - CSS menu arrow icons are coming along with SVG icons.

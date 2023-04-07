@@ -1373,7 +1373,6 @@ if ( ! function_exists( 'astra_entry_header_class' ) ) {
 		$thumb_markup     = astra_get_post_thumbnail( '', '', false );
 		$post_meta_markup = astra_get_post_meta( astra_get_option( 'ast-dynamic-single-' . $post_type . '-metadata', array( 'comments', 'author', 'date' ) ) );
 		$single_structure = 'page' === $post_type ? astra_get_option( 'ast-dynamic-single-page-structure', array( 'ast-dynamic-single-page-image', 'ast-dynamic-single-page-title' ) ) : astra_get_option( 'ast-dynamic-single-' . esc_attr( $post_type ) . '-structure', array( 'ast-dynamic-single-' . $post_type . '-title', 'ast-dynamic-single-' . $post_type . '-meta' ) );
-		$get_the_excerpt  = get_the_excerpt();
 
 		if ( empty( $single_structure ) ) {
 			$classes[] = 'ast-header-without-markup';
@@ -1389,6 +1388,7 @@ if ( ! function_exists( 'astra_entry_header_class' ) ) {
 						}
 						break;
 					case 'single-excerpt':
+						$get_the_excerpt = get_the_excerpt();
 						if ( empty( $get_the_excerpt ) ) {
 							$classes[] = 'ast-no-excerpt';
 							++$header_without_markup_counter;
@@ -1700,7 +1700,7 @@ add_action( 'activate_elementor/elementor.php', 'astra_skip_elementor_onboarding
 function astra_bbpress_issue( $value ) {
 	/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 	/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-	if ( class_exists( 'bbpress' ) && ( bbp_is_single_user() || bbp_is_search() ) ) {
+	if ( class_exists( 'bbpress' ) && ( bbp_is_single_user() || bbp_is_search() || bbp_is_topic_tag() ) ) {
 		/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			return false;

@@ -477,7 +477,7 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	// Spectra Compatibility - Container block alignment with page title for container layouts.
 	if ( $spectra_gutenberg_compat_css ) {
 		$dynamic_css .= '
-			.ast-separate-container .entry-content .wp-block-uagb-container {
+			.ast-separate-container .entry-content .uagb-is-root-container {
 				padding-' . esc_attr( $ltr_left ) . ': 0;
 			}
 			.ast-page-builder-template .entry-header {
