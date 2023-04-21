@@ -1,0 +1,72 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Build and Deploy to Bitpoke App
+
+on:
+  # Uncomment to deploy when pushing on the main branch
+  # push:
+  #   branches:
+  #     - main
+
+  # By default run manually
+  workflow_dispatch:
+env:
+  BITPOKE_PROJECT: ${{ vars.BITPOKE_PROJECT }}
+  BITPOKE_SITE_NAME: ${{ vars.BITPOKE_SITE_NAME }}
+  GOOGLE_CLOUD_PROJECT: ${{ vars.GOOGLE_CLOUD_PROJECT }}
+  GOOGLE_CLOUD_ZONE: ${{ vars.GOOGLE_CLOUD_ZONE }}
+  GOOGLE_KUBERNETES_ENGINE_CLUSTER: ${{ vars.GOOGLE_KUBERNETES_ENGINE_CLUSTER }}
+  GCR_IMAGE: ${{ vars.GCR_IMAGE }}
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Setup gcloud CLI
+    - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+      with:
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
+        project_id: ${{ env.GOOGLE_CLOUD_PROJECT }}
+
+    # Configure Docker to use the gcloud command-line tool as a credential
+    # helper for authentication
+    - run: |-
+        gcloud --quiet auth configure-docker
+
+    # Build the Docker image
+    - name: Build
+      run: |-
+        docker build \
+          --tag "$GCR_IMAGE:$GITHUB_SHA" \
+          .
+
+    # Push the Docker image to Google Container Registry
+    - name: Publish
+      run: |-
+        docker push "$GCR_IMAGE:$GITHUB_SHA"
+
+
+    # Get the GKE credentials so we can deploy to the cluster
+    - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+      with:
+        cluster_name: ${{ env.GOOGLE_KUBERNETES_ENGINE_CLUSTER }}
+        location: ${{ env.GOOGLE_CLOUD_ZONE }}
+        credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
+
+
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: 'kubectl -n $BITPOKE_PROJECT patch wordpress $BITPOKE_SITE_NAME --type=json -p "[{\"op\": \"replace\", \"path\": \"/spec/image\", \"value\": \"$GCR_IMAGE:$GITHUB_SHA\"}]"'
