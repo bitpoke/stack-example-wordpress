@@ -8,5 +8,7 @@ docker-compose.override.yaml
 /*.sql
 /wp-content/**/*.sql
 
+.env
+
 # WP-CLI
 wp-cli.local.yml
