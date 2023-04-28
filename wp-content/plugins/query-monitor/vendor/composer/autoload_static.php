@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfaf42c5f235c65e8397793ae676be6da
+class ComposerStaticInit084da097a576dd0ebc492b6b782e985e
 {
     public static $classMap = array (
         'Debug_Bar' => __DIR__ . '/../..' . '/classes/debug_bar.php',
@@ -14,6 +14,7 @@ class ComposerStaticInitfaf42c5f235c65e8397793ae676be6da
         'QM_Backtrace' => __DIR__ . '/../..' . '/classes/Backtrace.php',
         'QM_CLI' => __DIR__ . '/../..' . '/classes/CLI.php',
         'QM_Collector' => __DIR__ . '/../..' . '/classes/Collector.php',
+        'QM_Collector_Assets' => __DIR__ . '/../..' . '/classes/Collector_Assets.php',
         'QM_Collectors' => __DIR__ . '/../..' . '/classes/Collectors.php',
         'QM_Component' => __DIR__ . '/../..' . '/classes/Component.php',
         'QM_DB' => __DIR__ . '/../..' . '/classes/DB.php',
@@ -95,7 +96,7 @@ class ComposerStaticInitfaf42c5f235c65e8397793ae676be6da
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitfaf42c5f235c65e8397793ae676be6da::$classMap;
+            $loader->classMap = ComposerStaticInit084da097a576dd0ebc492b6b782e985e::$classMap;
 
         }, null, ClassLoader::class);
     }

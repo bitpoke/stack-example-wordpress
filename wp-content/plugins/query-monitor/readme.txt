@@ -3,7 +3,7 @@ Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
 Requires at least: 5.2
 Tested up to: 6.2
-Stable tag: 3.12.1
+Stable tag: 3.12.2
 License: GPLv2 or later
 Requires PHP: 7.2
 Donate link: https://github.com/sponsors/johnbillion
@@ -120,11 +120,9 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
 
-### Is Query Monitor available on WordPress.com VIP Go?
+### Is Query Monitor available on WordPress.com VIP?
 
-Yes, it's included as part of the VIP Go platform. However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
-
-Please note that information about database queries and the environment is somewhat restricted on VIP. This is a platform restriction and not a Query Monitor issue.
+Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress.com VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
@@ -141,6 +139,14 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
 ## Changelog ##
+
+### 3.12.2 ###
+
+* Adds the total count to the table footer of the PHP Errors panel
+* Improves the destination URL for links that point to the site editor
+* Implements some minor visual improvements
+* Removes unreliable information about the transport for HTTP API requests
+* Removes Query Monitor output from the interim login modal
 
 ### 3.12.1 ###
 
@@ -184,7 +190,7 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 ### 3.10.1 ###
 
 * Prevents logging duplicate entries for multiple calls to load the same translation file
-* Brings the dispatcher priority back down to 9 for maximum compatibility with other plugins that use a shutdown handler
+* Brings the dispatcher priority back down to `9` for maximum compatibility with other plugins that use a shutdown handler
 
 
 ### 3.10.0 ###
@@ -395,12 +401,3 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
   * Add a friendly error message when the PHP version requirement isn't met.
   * Add support for the new privacy policy conditional in WP 5.2.
   * Add support for the new privacy policy template in WP 5.2.
-
-### 3.3.4 ###
-
-* Updated CSS to avoid conflicts with themes using `ul`, `nav`, and `li` styling.
-* Don't define `ajaxurl` if there are no Debug Bar panels to show.
-* New icon for QM! By [Tubagus Didin Asrori](https://www.instagram.com/asrorigus/).
-* Push the close button a bit further away from the edge of the screen to avoid scrollbar interference on macOS.
-* Fix clash with object cache plugins that keep their hit and miss stats private.
-* Add missing asset position counters.
