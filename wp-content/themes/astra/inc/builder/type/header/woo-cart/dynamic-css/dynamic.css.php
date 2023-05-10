@@ -15,6 +15,54 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 add_filter( 'astra_dynamic_theme_css', 'astra_hb_woo_cart_dynamic_css' );
 
+if ( ! function_exists( 'astra_cart_position' ) ) {
+	/**
+	 * Position markup
+	 *
+	 * @since 3.9.0
+	 * @param  string $postion  Position.
+	 * @param  string $device Device type.
+	 * @return array
+	 */
+	function astra_cart_position( $postion, $device ) {
+		switch ( $postion ) {
+			case 'bottom':
+				$css_total_position_output_bottom = array(
+					'.ast-cart-' . $device . '-position-bottom' => array(
+						'flex-direction' => 'column',
+						'padding-top'    => '7px',
+						'padding-bottom' => '5px',
+					),
+
+					'.ast-cart-' . $device . '-position-bottom .ast-woo-header-cart-info-wrap' => array(
+						'order'       => 2,
+						'line-height' => 1,
+						'margin-top'  => '0.5em',
+					),
+
+				);
+				return $css_total_position_output_bottom;
+			case 'right':
+				$css_total_position_output_right = array(
+					'.ast-cart-' . $device . '-position-right .ast-woo-header-cart-info-wrap' => array(
+						'order'       => 2,
+						'margin-left' => '0.7em',
+					),
+				);
+				return $css_total_position_output_right;
+			case 'left':
+				$css_total_position_output_left = array(
+					'.ast-cart-' . $device . '-position-left .ast-woo-header-cart-info-wrap' => array(
+						'margin-right' => '0.5em',
+					),
+				);
+				return $css_total_position_output_left;
+			default:
+				break;
+		}
+	}
+}
+
 /**
  * Dynamic CSS
  *
@@ -732,51 +780,6 @@ function astra_hb_woo_cart_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 		}
 	}
 
-	/**
-	 * Position markup
-	 *
-	 * @since 3.9.0
-	 * @param  string $postion  Position.
-	 * @param  string $device Device type.
-	 * @return array
-	 */
-	function astra_cart_position( $postion, $device ) {
-		switch ( $postion ) {
-			case 'bottom':
-				$css_total_position_output_bottom = array(
-					'.ast-cart-' . $device . '-position-bottom' => array(
-						'flex-direction' => 'column',
-						'padding-top'    => '7px',
-						'padding-bottom' => '5px',
-					),
-
-					'.ast-cart-' . $device . '-position-bottom .ast-woo-header-cart-info-wrap' => array(
-						'order'       => 2,
-						'line-height' => 1,
-						'margin-top'  => '0.5em',
-					),
-
-				);
-				return $css_total_position_output_bottom;
-			case 'right':
-				$css_total_position_output_right = array(
-					'.ast-cart-' . $device . '-position-right .ast-woo-header-cart-info-wrap' => array(
-						'order'       => 2,
-						'margin-left' => '0.7em',
-					),
-				);
-				return $css_total_position_output_right;
-			case 'left':
-				$css_total_position_output_left = array(
-					'.ast-cart-' . $device . '-position-left .ast-woo-header-cart-info-wrap' => array(
-						'margin-right' => '0.5em',
-					),
-				);
-				return $css_total_position_output_left;
-			default:
-				break;
-		}
-	}
 	$cart_l_p_mobile = '';
 	$cart_l_p_tablet = '';
 	if ( $cart_label_position_desktop ) {

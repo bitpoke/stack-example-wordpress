@@ -30,12 +30,13 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 	$dynamic_css .= astra_parse_css(
 		array(
 			'.ast-breadcrumbs .trail-browse, .ast-breadcrumbs .trail-items, .ast-breadcrumbs .trail-items li' => array(
-				'display'     => 'inline-block',
-				'margin'      => '0',
-				'padding'     => '0',
-				'border'      => 'none',
-				'background'  => 'inherit',
-				'text-indent' => '0',
+				'display'         => 'inline-block',
+				'margin'          => '0',
+				'padding'         => '0',
+				'border'          => 'none',
+				'background'      => 'inherit',
+				'text-indent'     => '0',
+				'text-decoration' => 'none',
 			),
 			'.ast-breadcrumbs .trail-browse'      => array(
 				'font-size'   => 'inherit',
@@ -379,7 +380,7 @@ function astra_breadcrumb_section_dynamic_css( $dynamic_css, $dynamic_css_filter
 				'color' => esc_attr( $breadcrumb_separator_color['desktop'] ),
 			),
 
-			'.ast-breadcrumbs-wrapper, .ast-breadcrumbs-wrapper a' => astra_get_font_array_css( astra_get_option( 'breadcrumb-font-family' ), astra_get_option( 'breadcrumb-font-weight' ), $breadcrumb_font_size, 'breadcrumb-font-extras' ),
+			'.ast-breadcrumbs-wrapper, .ast-breadcrumbs-wrapper *' => astra_get_font_array_css( astra_get_option( 'breadcrumb-font-family' ), astra_get_option( 'breadcrumb-font-weight' ), $breadcrumb_font_size, 'breadcrumb-font-extras' ),
 		);
 
 		/* Default Breadcrumb CSS - Tablet */

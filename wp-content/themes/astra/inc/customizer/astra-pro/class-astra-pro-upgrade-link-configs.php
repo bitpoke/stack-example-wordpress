@@ -32,7 +32,7 @@ if ( ! class_exists( 'Astra_Pro_Upgrade_Link_Configs' ) ) {
 					'type'             => 'section',
 					'ast_type'         => 'astra-pro',
 					'title'            => esc_html__( 'More Options Available in Astra Pro!', 'astra' ),
-					'pro_url'          => htmlspecialchars_decode( astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'upgrade_pro', 'astra_theme' ) ),
+					'pro_url'          => htmlspecialchars_decode( astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'main-cta' ) ),
 					'priority'         => 1,
 					'section_callback' => 'Astra_Pro_Customizer',
 				),

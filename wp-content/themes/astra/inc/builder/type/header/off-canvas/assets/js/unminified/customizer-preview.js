@@ -151,7 +151,7 @@
             }
 		} );
 	} );
-	
+
 	wp.customize( 'astra-settings[header-builder-menu-toggle-target]', function ( value ) {
         value.bind( function ( newval ) {
 			var menuTargetClass   = 'ast-builder-menu-toggle-' + newval + ' ';
@@ -161,7 +161,7 @@
 			jQuery( '.site-header' ).addClass( menuTargetClass );
 		} );
 	} );
-	
+
 	wp.customize( 'astra-settings[header-offcanvas-content-alignment]', function ( value ) {
         value.bind( function ( newval ) {
 
@@ -177,7 +177,7 @@
 			jQuery('.ast-desktop-header-content').removeClass( 'content-align-flex-start' );
 			jQuery('.ast-desktop-header-content').removeClass( 'content-align-flex-end' );
 			jQuery('.ast-desktop-header-content').removeClass( 'content-align-center' );
-			
+
 			jQuery('.ast-desktop-header-content').addClass( alignment_class );
 			jQuery('.ast-mobile-header-content').addClass( alignment_class );
 			jQuery('.ast-mobile-popup-drawer').addClass( alignment_class );

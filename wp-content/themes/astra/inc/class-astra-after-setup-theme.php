@@ -154,8 +154,8 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 			 * specifically font, colors, icons, and column width.
 			 */
 			/* Directory and Extension */
-			$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
-			$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
+			$dir_name    = 'minified';
+			$file_prefix = '.min';
 			if ( apply_filters( 'astra_theme_editor_style', true ) ) {
 				add_editor_style( 'assets/css/' . $dir_name . '/editor-style' . $file_prefix . '.css' );
 			}
@@ -169,7 +169,9 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 			add_theme_support( 'woocommerce' );
 
 			// Rank Math Breadcrumb.
-			add_theme_support( 'rank-math-breadcrumbs' );
+			if ( true === apply_filters( 'astra_rank_math_theme_support', true ) ) {
+				add_theme_support( 'rank-math-breadcrumbs' );
+			}
 
 			// Native AMP Support.
 			if ( true === apply_filters( 'astra_amp_support', true ) ) {

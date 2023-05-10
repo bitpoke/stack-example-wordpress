@@ -173,26 +173,20 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 				),
 
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[hba-stack]',
-					'default'   => astra_get_option( 'hba-stack' ),
-					'type'      => 'control',
-					'control'   => 'ast-selector',
-					'section'   => $_section,
-					'priority'  => 5,
-					'title'     => __( 'Inner Elements Layout', 'astra' ),
-					'choices'   => array(
+					'name'     => ASTRA_THEME_SETTINGS . '[hba-stack]',
+					'default'  => astra_get_option( 'hba-stack' ),
+					'type'     => 'control',
+					'control'  => 'ast-selector',
+					'section'  => $_section,
+					'priority' => 5,
+					'title'    => __( 'Inner Elements Layout', 'astra' ),
+					'choices'  => array(
 						'stack'  => __( 'Stack', 'astra' ),
 						'inline' => __( 'Inline', 'astra' ),
 					),
-					'context'   => Astra_Builder_Helper::$general_tab,
-					'transport' => 'postMessage',
-					'partial'   => array(
-						'selector'            => '.site-above-footer-wrap',
-						'container_inclusive' => false,
-						'render_callback'     => array( Astra_Builder_Footer::get_instance(), 'above_footer' ),
-					),
-					'renderAs'  => 'text',
-					'divider'   => array( 'ast_class' => 'ast-bottom-section-divider' ),
+					'context'  => Astra_Builder_Helper::$general_tab,
+					'renderAs' => 'text',
+					'divider'  => array( 'ast_class' => 'ast-bottom-section-divider' ),
 				),
 
 				// Section: Above Footer Border.
@@ -211,7 +205,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 						'step' => 1,
 						'max'  => 600,
 					),
-					'divider'     => array( 'ast_class' => 'ast-bottom-section-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
 					'context'     => Astra_Builder_Helper::$design_tab,
 				),
 
@@ -224,7 +218,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'control'           => 'ast-color',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
 					'section'           => $_section,
-					'priority'          => 50,
+					'priority'          => 45,
 					'title'             => __( 'Border Color', 'astra' ),
 					'context'           => array(
 						Astra_Builder_Helper::$design_tab_config,
@@ -234,7 +228,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 							'value'    => 1,
 						),
 					),
-					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider' ),
 				),
 
 				// Option: Above Footer Background styling.

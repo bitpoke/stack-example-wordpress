@@ -346,11 +346,21 @@ if ( ! function_exists( 'astra_get_background_obj' ) ) {
 					break;
 
 				case 'image':
-					if ( '' !== $bg_img && '' !== $bg_color && ( ! is_numeric( strpos( $bg_color, 'linear-gradient' ) ) && ! is_numeric( strpos( $bg_color, 'radial-gradient' ) ) ) ) {
-						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
-					}
-					if ( '' === $bg_color || is_numeric( strpos( $bg_color, 'linear-gradient' ) ) || is_numeric( strpos( $bg_color, 'radial-gradient' ) ) && '' !== $bg_img ) {
-						$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+					$overlay_type  = isset( $bg_obj['overlay-type'] ) ? $bg_obj['overlay-type'] : 'none';
+					$overlay_color = isset( $bg_obj['overlay-color'] ) ? $bg_obj['overlay-color'] : '';
+					$overlay_grad  = isset( $bg_obj['overlay-gradient'] ) ? $bg_obj['overlay-gradient'] : '';
+					if ( '' !== $bg_img ) {
+						if ( 'none' !== $overlay_type ) {
+							if ( 'classic' === $overlay_type && '' !== $overlay_color ) {
+								$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $overlay_color . ', ' . $overlay_color . '), url(' . $bg_img . ');';
+							} elseif ( 'gradient' === $overlay_type && '' !== $overlay_grad ) {
+								$gen_bg_css['background-image'] = $overlay_grad . ', url(' . $bg_img . ');';
+							} else {
+								$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+							}
+						} else {
+							$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+						}
 					}
 					break;
 
@@ -1471,11 +1481,26 @@ function astra_get_responsive_background_obj( $bg_obj_res, $device ) {
 				break;
 
 			case 'image':
-				if ( '' !== $bg_img && '' !== $bg_color && ( ! is_numeric( strpos( $bg_color, 'linear-gradient' ) ) && ! is_numeric( strpos( $bg_color, 'radial-gradient' ) ) ) ) {
-					$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
-				}
-				if ( '' === $bg_color || is_numeric( strpos( $bg_color, 'linear-gradient' ) ) || is_numeric( strpos( $bg_color, 'radial-gradient' ) ) && '' !== $bg_img ) {
-					$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				$overlay_type = isset( $bg_obj['overlay-type'] ) ? $bg_obj['overlay-type'] : 'none';
+				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				$overlay_color = isset( $bg_obj['overlay-color'] ) ? $bg_obj['overlay-color'] : '';
+				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				$overlay_grad = isset( $bg_obj['overlay-gradient'] ) ? $bg_obj['overlay-gradient'] : '';
+				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
+				if ( '' !== $bg_img ) {
+					if ( 'none' !== $overlay_type ) {
+						if ( 'classic' === $overlay_type && '' !== $overlay_color ) {
+							$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $overlay_color . ', ' . $overlay_color . '), url(' . $bg_img . ');';
+						} elseif ( 'gradient' === $overlay_type && '' !== $overlay_grad ) {
+							$gen_bg_css['background-image'] = $overlay_grad . ', url(' . $bg_img . ');';
+						} else {
+							$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+						}
+					} else {
+						$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+					}
 				}
 				break;
 

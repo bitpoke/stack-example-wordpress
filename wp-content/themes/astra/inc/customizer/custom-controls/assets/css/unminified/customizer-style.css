@@ -41,6 +41,17 @@
   white-space: nowrap;
 }
 
+.customize-control .media-position-setting label.components-text {
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.media-position-setting .astra-popover-tabs .components-tab-panel__tabs {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .customize-control[ID*="-builder-layout-ast-context-tabs"] {
   margin-top: 0;
 }
@@ -102,6 +113,10 @@
   right: 40px;
   transform: translateY(-50%);
   z-index: 1;
+}
+
+#customize-control-astra-settings-learndash-distraction-free-learning .ast-control-tooltip {
+    padding-top: 32px;
 }
 
 .customize-control.customize-control-ast-toggle-control.ast-top-dotted-divider .ast-control-tooltip {

@@ -112,7 +112,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 					'context'  => array(
 						Astra_Builder_Helper::$design_tab_config,
 					),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**

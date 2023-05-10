@@ -682,8 +682,8 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		public function woo_filter_style( $styles ) {
 
 			/* Directory and Extension */
-			$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
-			$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
+			$file_prefix = '.min';
+			$dir_name    = 'minified';
 
 			$css_uri = ASTRA_THEME_URI . 'assets/css/' . $dir_name . '/compatibility/woocommerce/';
 
@@ -981,8 +981,10 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		public function shop_no_of_products() {
 			$taxonomy_page_display = get_option( 'woocommerce_category_archive_display', false );
 			if ( is_product_taxonomy() && 'subcategories' === $taxonomy_page_display ) {
+				$products = astra_get_option( 'shop-no-of-products' );
 				if ( $this->astra_woo_is_subcategory() ) {
-					$products = astra_get_option( 'shop-no-of-products' );
+					return $products;
+				} elseif ( is_product_taxonomy() ) {
 					return $products;
 				}
 				$products = wp_count_posts( 'product' )->publish;

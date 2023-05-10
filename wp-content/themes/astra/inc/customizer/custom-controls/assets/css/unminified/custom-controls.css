@@ -1489,6 +1489,17 @@ input[type="text"], input[type="password"], input[type="color"], input[type="dat
   white-space: nowrap;
 }
 
+.customize-control .media-position-setting label.components-text {
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.media-position-setting .astra-popover-tabs .components-tab-panel__tabs {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .customize-control[ID*="-builder-layout-ast-context-tabs"] {
   margin-top: 0;
 }
@@ -1550,6 +1561,10 @@ input[type="text"], input[type="password"], input[type="color"], input[type="dat
   right: 40px;
   transform: translateY(-50%);
   z-index: 1;
+}
+
+#customize-control-astra-settings-learndash-distraction-free-learning .ast-control-tooltip {
+    padding-top: 32px;
 }
 
 .customize-control.customize-control-ast-toggle-control.ast-top-dotted-divider .ast-control-tooltip {
@@ -3019,6 +3034,10 @@ span.customize-control-title.ast-group-section-title {
 
 .media-position-setting.hide-settings {
   display: none;
+}
+
+.media-position-setting .astra-popover-tabs [ID*="-gradient-view"] {
+    padding: 0 0 15px 0;
 }
 
 .ast-field-settings-modal .customize-control-content .color-button-wrap {

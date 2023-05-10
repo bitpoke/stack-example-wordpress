@@ -82,6 +82,13 @@ class Astra_Posts_Structure_Markup {
 				add_filter( 'astra_single_layout_one_banner_visibility', '__return_false' );
 				return;
 			}
+
+			$visibility = get_post_meta( absint( astra_get_post_id() ), 'ast-banner-title-visibility', true );
+			$visibility = apply_filters( 'astra_banner_title_area_visibility', $visibility );
+			if ( 'disabled' === $visibility ) {
+				add_filter( 'astra_single_layout_one_banner_visibility', '__return_false' );
+				return;
+			}
 		} else {
 			// If layout-1 is set then no need to process further.
 			if ( false === astra_get_option( 'ast-archive-' . $post_type . '-title', ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) ? false : true ) ) {

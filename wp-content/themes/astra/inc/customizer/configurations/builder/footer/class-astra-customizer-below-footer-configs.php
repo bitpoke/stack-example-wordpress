@@ -185,12 +185,6 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 						'inline' => __( 'Inline', 'astra' ),
 					),
 					'context'   => Astra_Builder_Helper::$general_tab,
-					'transport' => 'postMessage',
-					'partial'   => array(
-						'selector'            => '.site-below-footer-wrap',
-						'container_inclusive' => false,
-						'render_callback'     => array( Astra_Builder_Footer::get_instance(), 'below_footer' ),
-					),
 					'renderAs'  => 'text',
 					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 				),

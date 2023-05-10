@@ -9,8 +9,22 @@ window.addEventListener( "load", function(e) {
 });
 
 
-/**This comment explains that in order to refresh the wc_fragments_refreshed event when an AJAX call is made, jQuery is used to update the quantity button. 
- * Here plain JavaScript may not be able to trigger the wc_fragments_refreshed event in the same way, 
+// Here we are selecting the node that will be observed for mutations.
+const astraminiCarttargetNode = document.getElementById("ast-site-header-cart");
+
+if (astraminiCarttargetNode != null) {
+    const config = { attributes: false, childList: true, subtree: true };
+
+    const astraMinicartObserver = () => {
+        astrawpWooQuantityButtons();
+    };
+
+    const observer = new MutationObserver(astraMinicartObserver);
+    observer.observe(astraminiCarttargetNode, config);
+}
+
+/**This comment explains that in order to refresh the wc_fragments_refreshed event when an AJAX call is made, jQuery is used to update the quantity button.
+ * Here plain JavaScript may not be able to trigger the wc_fragments_refreshed event in the same way,
  * hence the need to use jQuery
 */
 jQuery( function( $ ) {
@@ -160,6 +174,10 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
                         }
 
                     }
+
+                    // Trigger the change event on the input.
+                    var changeEvent = new Event('change');
+                    $quantityBox.dispatchEvent(changeEvent);
 
                     // Trigger change event.
                     var update_cart_btn = document.getElementsByName("update_cart");

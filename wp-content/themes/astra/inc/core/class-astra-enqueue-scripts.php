@@ -247,7 +247,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
 
 			$js_uri  = ASTRA_THEME_URI . 'assets/js/' . $dir_name . '/';
-			$css_uri = ASTRA_THEME_URI . 'assets/css/' . $dir_name . '/';
+			$css_uri = ASTRA_THEME_URI . 'assets/css/minified/';
 
 			/**
 			 * IE Only Js and CSS Files.
@@ -259,7 +259,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 			// Polyfill for CustomEvent for IE.
 			wp_register_script( 'astra-customevent', $js_uri . 'custom-events-polyfill' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );
-			wp_register_style( 'astra-galleries-css', $css_uri . 'galleries' . $file_prefix . '.css', array(), ASTRA_THEME_VERSION, 'all' );
+			wp_register_style( 'astra-galleries-css', $css_uri . 'galleries.min.css', array(), ASTRA_THEME_VERSION, 'all' );
 			// All assets.
 			$all_assets = self::theme_assets();
 			$styles     = $all_assets['css'];
@@ -279,7 +279,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 					}
 
 					// Generate CSS URL.
-					$css_file = $css_uri . $style . $file_prefix . '.css';
+					$css_file = $css_uri . $style . '.min.css';
 
 					// Register.
 					wp_register_style( $key, $css_file, $dependency, ASTRA_THEME_VERSION, 'all' );
@@ -322,9 +322,9 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 			if ( ! empty( $menu_animation ) || is_customize_preview() ) {
 				if ( class_exists( 'Astra_Cache' ) ) {
-					Astra_Cache::add_css_file( ASTRA_THEME_DIR . 'assets/css/' . $dir_name . '/menu-animation' . $rtl . $file_prefix . '.css' );
+					Astra_Cache::add_css_file( ASTRA_THEME_DIR . 'assets/css/minified/menu-animation' . $rtl . '.min.css' );
 				} else {
-					wp_register_style( 'astra-menu-animation', $css_uri . 'menu-animation' . $file_prefix . '.css', null, ASTRA_THEME_VERSION, 'all' );
+					wp_register_style( 'astra-menu-animation', $css_uri . 'menu-animation.min.css', null, ASTRA_THEME_VERSION, 'all' );
 					wp_enqueue_style( 'astra-menu-animation' );
 				}
 			}

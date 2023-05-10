@@ -266,6 +266,10 @@
   display: none;
 }
 
+.media-position-setting .astra-popover-tabs [ID*="-gradient-view"] {
+    padding: 0 0 15px 0;
+}
+
 .ast-field-settings-modal .customize-control-content .color-button-wrap {
   right: 30px;
   top: 0;

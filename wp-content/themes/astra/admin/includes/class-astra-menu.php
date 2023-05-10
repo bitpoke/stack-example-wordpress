@@ -185,7 +185,7 @@ class Astra_Menu {
 			);
 		}
 
-		if ( ! astra_is_white_labelled() ) {
+		if ( ! $this->spectra_has_top_level_menu() && ! astra_is_white_labelled() ) {
 			// Add Spectra submenu.
 			add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
 				self::$plugin_slug,
@@ -201,13 +201,23 @@ class Astra_Menu {
 	}
 
 	/**
+	 * In version 2.4.1 Spectra introduces top level admin menu so there is no meaning to show Spectra submenu from Astra menu.
+	 *
+	 * @since 4.1.4
+	 * @return bool true|false.
+	 */
+	public function spectra_has_top_level_menu() {
+		return defined( 'UAGB_VER' ) && version_compare( UAGB_VER, '2.4.1', '>=' ) ? true : false;
+	}
+
+	/**
 	 * Provide the Spectra admin page URL.
 	 *
 	 * @since 4.1.1
 	 * @return string url.
 	 */
 	public function get_spectra_page_admin_link() {
-		$spectra_admin_url = defined( 'UAGB_VER' ) ? ( version_compare( UAGB_VER, '2.4.1', '>=' ) ? admin_url( 'admin.php?page=' . UAGB_SLUG ) : admin_url( 'options-general.php?page=' . UAGB_SLUG ) ) : 'admin.php?page=' . self::$plugin_slug . '&path=spectra';
+		$spectra_admin_url = defined( 'UAGB_VER' ) ? ( $this->spectra_has_top_level_menu() ? admin_url( 'admin.php?page=' . UAGB_SLUG ) : admin_url( 'options-general.php?page=' . UAGB_SLUG ) ) : 'admin.php?page=' . self::$plugin_slug . '&path=spectra';
 		return apply_filters( 'astra_dashboard_spectra_admin_link', $spectra_admin_url );
 	}
 
@@ -423,11 +433,11 @@ class Astra_Menu {
 				'colors-and-background' => array(
 					'title'     => __( 'Colors & Background', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/colors-background-module/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/colors-background-module/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/colors-background-module/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/colors-background-module/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -436,11 +446,11 @@ class Astra_Menu {
 				'typography'            => array(
 					'title'     => __( 'Typography', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/typography-module/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/typography-module/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/typography-module/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/typography-module/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -449,11 +459,11 @@ class Astra_Menu {
 				'spacing'               => array(
 					'title'     => __( 'Spacing', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/spacing-addon-overview/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/spacing-addon-overview/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/spacing-addon-overview/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/spacing-addon-overview/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -462,11 +472,11 @@ class Astra_Menu {
 				'blog-pro'              => array(
 					'title'     => __( 'Blog Pro', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/blog-pro-overview/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/blog-pro-overview/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/blog-pro-overview/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/blog-pro-overview/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -475,11 +485,11 @@ class Astra_Menu {
 				'mobile-header'         => array(
 					'title'     => __( 'Mobile Header', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/mobile-header-with-astra/', 'astra-dashboard', 'learn-more', 'welcome-page' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/mobile-header-with-astra/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/mobile-header-with-astra/', 'astra-dashboard', 'learn-more', 'welcome-page' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/mobile-header-with-astra/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -488,11 +498,11 @@ class Astra_Menu {
 				'header-sections'       => array(
 					'title'     => __( 'Header Sections', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/header-sections-pro/', 'astra-dashboard', 'learn-more', 'welcome-page' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/header-sections-pro/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/header-sections-pro/', 'astra-dashboard', 'learn-more', 'welcome-page' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/header-sections-pro/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -501,11 +511,11 @@ class Astra_Menu {
 				'sticky-header'         => array(
 					'title'     => __( 'Sticky Header', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/sticky-header-pro/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/sticky-header-pro/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/sticky-header-pro/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/sticky-header-pro/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -514,11 +524,11 @@ class Astra_Menu {
 				'site-layouts'          => array(
 					'title'     => __( 'Site Layouts', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/site-layout-overview/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/site-layout-overview/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/site-layout-overview/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/site-layout-overview/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -527,11 +537,11 @@ class Astra_Menu {
 				'advanced-footer'       => array(
 					'title'     => __( 'Footer Widgets', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/footer-widgets-astra-pro/', 'astra-dashboard', 'learn-more', 'welcome-page' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/footer-widgets-astra-pro/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/footer-widgets-astra-pro/', 'astra-dashboard', 'learn-more', 'welcome-page' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/footer-widgets-astra-pro/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -540,11 +550,11 @@ class Astra_Menu {
 				'nav-menu'              => array(
 					'title'     => __( 'Nav Menu', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/nav-menu-addon/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/nav-menu-addon/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/nav-menu-addon/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/nav-menu-addon/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -555,11 +565,11 @@ class Astra_Menu {
 					'description'     => __( 'Add content conditionally in the various hook areas of the theme.', 'astra' ),
 					'manage_settings' => true,
 					'class'           => 'ast-addon',
-					'title_url'       => astra_get_pro_url( 'https://wpastra.com/docs/custom-layouts-pro/', 'wp', 'dashboard' ),
+					'title_url'       => astra_get_pro_url( 'https://wpastra.com/docs/custom-layouts-pro/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'           => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/custom-layouts-pro/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/custom-layouts-pro/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -570,11 +580,11 @@ class Astra_Menu {
 					'description'     => __( 'Make your header layouts look more appealing and sexy!', 'astra' ),
 					'manage_settings' => true,
 					'class'           => 'ast-addon',
-					'title_url'       => astra_get_pro_url( 'https://wpastra.com/docs/page-headers-overview/', 'wp', 'dashboard' ),
+					'title_url'       => astra_get_pro_url( 'https://wpastra.com/docs/page-headers-overview/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'           => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/page-headers-overview/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/page-headers-overview/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -584,11 +594,11 @@ class Astra_Menu {
 					'title'     => __( 'WooCommerce', 'astra' ),
 					'class'     => 'ast-addon',
 					'condition' => defined( 'ASTRA_EXT_VER' ) && class_exists( 'WooCommerce' ) ? true : false,
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/woocommerce-module-overview/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/woocommerce-module-overview/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/woocommerce-module-overview/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/woocommerce-module-overview/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -598,11 +608,11 @@ class Astra_Menu {
 					'title'     => __( 'Easy Digital Downloads', 'astra' ),
 					'class'     => 'ast-addon',
 					'condition' => defined( 'ASTRA_EXT_VER' ) && class_exists( 'Easy_Digital_Downloads' ) ? true : false,
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/easy-digital-downloads-module-overview/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/easy-digital-downloads-module-overview/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/easy-digital-downloads-module-overview/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/easy-digital-downloads-module-overview/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -613,11 +623,11 @@ class Astra_Menu {
 					'condition'   => defined( 'ASTRA_EXT_VER' ) && class_exists( 'SFWD_LMS' ) ? true : false,
 					'description' => __( 'Supercharge your LearnDash website with amazing design features.', 'astra' ),
 					'class'       => 'ast-addon',
-					'title_url'   => astra_get_pro_url( 'https://wpastra.com/docs/learndash-integration-in-astra-pro/', 'wp', 'dashboard' ),
+					'title_url'   => astra_get_pro_url( 'https://wpastra.com/docs/learndash-integration-in-astra-pro/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'       => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/learndash-integration-in-astra-pro/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/learndash-integration-in-astra-pro/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -627,11 +637,11 @@ class Astra_Menu {
 					'title'     => __( 'LifterLMS', 'astra' ),
 					'class'     => 'ast-addon',
 					'condition' => defined( 'ASTRA_EXT_VER' ) && class_exists( 'LifterLMS' ) ? true : false,
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/lifterlms-module-pro/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/lifterlms-module-pro/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/lifterlms-module-pro/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/lifterlms-module-pro/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -640,11 +650,11 @@ class Astra_Menu {
 				'white-label'           => array(
 					'title'     => __( 'White Label', 'astra' ),
 					'class'     => 'ast-addon',
-					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/how-to-white-label-astra/', 'wp', 'dashboard' ),
+					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/how-to-white-label-astra/', 'dashboard', 'free-theme', 'documentation' ),
 					'links'     => array(
 						array(
 							'link_class'   => 'ast-learn-more',
-							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/how-to-white-label-astra/', 'wp', 'dashboard' ),
+							'link_url'     => astra_get_pro_url( 'https://wpastra.com/docs/how-to-white-label-astra/', 'dashboard', 'free-theme', 'documentation' ),
 							'link_text'    => __( 'Documentation', 'astra' ),
 							'target_blank' => true,
 						),
@@ -653,8 +663,6 @@ class Astra_Menu {
 			)
 		);
 	}
-
-
 
 	/**
 	 * Get Astra's useful plugins.
