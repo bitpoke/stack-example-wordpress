@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-16T06:06:47+00:00\n"
+"POT-Creation-Date: 2023-05-15T19:42:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: buddypress\n"
@@ -1268,7 +1268,7 @@ msgid "Activity History"
 msgstr ""
 
 #. translators: 1: the human diff time. 2: the akismet history data.
-#: bp-activity/classes/class-bp-akismet.php:651
+#: bp-activity/classes/class-bp-akismet.php:650
 msgctxt "x hours ago - akismet cleared this item"
 msgid "%1$s &mdash; %2$s"
 msgstr ""
@@ -1450,7 +1450,7 @@ msgid "Limit result set to items created by a specific user (ID)."
 msgstr ""
 
 #: bp-activity/classes/class-bp-rest-activity-endpoint.php:1539
-#: bp-core/classes/class-bp-rest-components-endpoint.php:585
+#: bp-core/classes/class-bp-rest-components-endpoint.php:591
 msgid "Limit result set to items with a specific status."
 msgstr ""
 
@@ -1964,7 +1964,7 @@ msgid "ID of the user whose blogs user can post to."
 msgstr ""
 
 #: bp-blogs/classes/class-bp-rest-blogs-endpoint.php:804
-#: bp-core/classes/class-bp-rest-components-endpoint.php:594
+#: bp-core/classes/class-bp-rest-components-endpoint.php:600
 msgid "Limit result set to items with a specific type."
 msgstr ""
 
@@ -5323,36 +5323,36 @@ msgid "Sorry, you cannot deactivate a required component."
 msgstr ""
 
 #: bp-core/classes/class-bp-rest-components-endpoint.php:330
-#: bp-core/classes/class-bp-rest-components-endpoint.php:542
+#: bp-core/classes/class-bp-rest-components-endpoint.php:548
 msgid "inactive"
 msgstr ""
 
 #: bp-core/classes/class-bp-rest-components-endpoint.php:336
-#: bp-core/classes/class-bp-rest-components-endpoint.php:541
+#: bp-core/classes/class-bp-rest-components-endpoint.php:547
 msgid "active"
 msgstr ""
 
-#: bp-core/classes/class-bp-rest-components-endpoint.php:526
+#: bp-core/classes/class-bp-rest-components-endpoint.php:532
 msgid "Name of the object."
 msgstr ""
 
-#: bp-core/classes/class-bp-rest-components-endpoint.php:531
+#: bp-core/classes/class-bp-rest-components-endpoint.php:537
 msgid "Whether the component is active or not."
 msgstr ""
 
-#: bp-core/classes/class-bp-rest-components-endpoint.php:537
+#: bp-core/classes/class-bp-rest-components-endpoint.php:543
 msgid "Whether the object is active or inactive."
 msgstr ""
 
-#: bp-core/classes/class-bp-rest-components-endpoint.php:547
+#: bp-core/classes/class-bp-rest-components-endpoint.php:553
 msgid "HTML title of the object."
 msgstr ""
 
-#: bp-core/classes/class-bp-rest-components-endpoint.php:552
+#: bp-core/classes/class-bp-rest-components-endpoint.php:558
 msgid "HTML description of the object."
 msgstr ""
 
-#: bp-core/classes/class-bp-rest-components-endpoint.php:556
+#: bp-core/classes/class-bp-rest-components-endpoint.php:562
 msgid "Information about active features for the component."
 msgstr ""
 
@@ -11499,17 +11499,17 @@ msgstr ""
 msgid "Receive group invitations from my friends only?"
 msgstr ""
 
-#: bp-settings/bp-settings-functions.php:322
+#: bp-settings/bp-settings-functions.php:331
 msgctxt "WP Comments data exporter friendly name"
 msgid "Comments"
 msgstr ""
 
-#: bp-settings/bp-settings-functions.php:323
+#: bp-settings/bp-settings-functions.php:332
 msgctxt "WP Media data exporter friendly name"
 msgid "Media"
 msgstr ""
 
-#: bp-settings/bp-settings-functions.php:324
+#: bp-settings/bp-settings-functions.php:333
 msgctxt "WP Media data exporter friendly name"
 msgid "Personal information"
 msgstr ""
