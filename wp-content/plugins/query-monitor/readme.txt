@@ -3,7 +3,7 @@ Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
 Requires at least: 5.2
 Tested up to: 6.2
-Stable tag: 3.12.2
+Stable tag: 3.12.3
 License: GPLv2 or later
 Requires PHP: 7.2
 Donate link: https://github.com/sponsors/johnbillion
@@ -139,6 +139,12 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
 ## Changelog ##
+
+### 3.12.3 ###
+
+* Improves theme template part data collection when the Gutenberg plugin is in use with a block theme
+* Skips attempting to resolve a block template if the theme doesn't support block templates
+* Removes the fallback to `$EZSQL_ERROR` for database query errors as it's not possible to determine if the error should be ignored
 
 ### 3.12.2 ###
 
@@ -394,10 +400,3 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 
 * Fix a compatibility issue where QM and the fatal error protection in WordPress 5.2+ were handling syntax errors differently.
 * Fix some bugs with the icons for the panel controls.
-
-### 3.3.5 ###
-
-  * Add support for the new `get_template_part` action in WP 5.2.
-  * Add a friendly error message when the PHP version requirement isn't met.
-  * Add support for the new privacy policy conditional in WP 5.2.
-  * Add support for the new privacy policy template in WP 5.2.

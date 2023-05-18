@@ -85,6 +85,9 @@
 			"npm run build",
 			"acceptance-tests"
 		],
+		"test:destroy": [
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose down --volumes --remove-orphans"
+		],
 		"test:integration": [
 			"integration-tests"
 		],
@@ -97,10 +100,10 @@
 			"phpstan analyze --memory-limit=1024M"
 		],
 		"test:start": [
-			"docker-compose up -d"
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose up -d"
 		],
 		"test:stop": [
-			"docker-compose down"
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose down"
 		]
 	}
 }
