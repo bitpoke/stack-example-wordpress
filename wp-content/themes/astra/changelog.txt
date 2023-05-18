@@ -1,10 +1,14 @@
+v4.1.5
+- Fix: Offcanvas Menu - Transparent empty canvas visible on expanding offcanvas toggle button.
+- Fix: Custom Layouts - Block editor core blocks custom spacing incorrectly applies to custom layout blocks in editor.
+
 v4.1.4
 - New: Introducing new "Disable Banner Area" metabox based option to control visibility of title banner area. ( https://wpastra.com/docs/introducing-the-new-disable-banner-area-meta-based-option/ )
 - New: Introducing new filter "astra_rank_math_theme_support" to enable/disable rank-math theme support. ( https://wpastra.com/docs/introducing-new-filter-to-enable-disable-rank-math-theme-support/ )
 - New: Introducing new color and gradient overlay settings for background type image customizer options.
 - Improvement: Theme package size has been optimized from 9MB to under 6MB.
 - Improvement: Added WPML translation support for Pro Custom Layout's Layout, Display-Exclusion rules, Users rule options.
-- Improvement: Introduced filter 'astra_show_header_profile_gmpg_link' to remove gmpg link from webpage for GDPR.
+- Improvement: Introduced filter 'astra_header_profile_gmpg_link' to remove gmpg link from webpage for GDPR.
 - Fix: Spectra's Tab anchor links jerks when "Smooth Scroll to ID" option enabled from customizer.
 - Fix: WooCommerce - Cart - Realtime quantity updater not working on change of input box when Mix Match plugin is activated.
 - Fix: Breadcrumb content text-decoration style not working for active menu link.

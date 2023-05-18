@@ -173,20 +173,20 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 				),
 
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[hbb-stack]',
-					'default'   => astra_get_option( 'hbb-stack' ),
-					'type'      => 'control',
-					'control'   => 'ast-selector',
-					'section'   => $_section,
-					'priority'  => 5,
-					'title'     => __( 'Inner Elements Layout', 'astra' ),
-					'choices'   => array(
+					'name'     => ASTRA_THEME_SETTINGS . '[hbb-stack]',
+					'default'  => astra_get_option( 'hbb-stack' ),
+					'type'     => 'control',
+					'control'  => 'ast-selector',
+					'section'  => $_section,
+					'priority' => 5,
+					'title'    => __( 'Inner Elements Layout', 'astra' ),
+					'choices'  => array(
 						'stack'  => __( 'Stack', 'astra' ),
 						'inline' => __( 'Inline', 'astra' ),
 					),
-					'context'   => Astra_Builder_Helper::$general_tab,
-					'renderAs'  => 'text',
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'context'  => Astra_Builder_Helper::$general_tab,
+					'renderAs' => 'text',
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				// Section: Below Footer Border.

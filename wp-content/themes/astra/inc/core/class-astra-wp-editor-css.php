@@ -438,12 +438,6 @@ class Astra_WP_Editor_CSS {
 			'.block-editor-block-list__block'  => array(
 				'color' => esc_attr( $text_color ),
 			),
-			'.block-editor-block-list__layout.is-root-container > .wp-block-group, .block-editor-block-list__layout.is-root-container > [data-align="wide"] > .wp-block-group, .block-editor-block-list__layout.is-root-container > [data-align="full"] > .wp-block-group, .block-editor-block-list__layout.is-root-container > .wp-block-cover, .block-editor-block-list__layout.is-root-container > [data-align="wide"] > .wp-block-cover, .block-editor-block-list__layout.is-root-container > [data-align="full"] > .wp-block-cover, .block-editor-block-list__layout.is-root-container > .wp-block-columns, .block-editor-block-list__layout.is-root-container > [data-align="wide"] > .wp-block-columns, .block-editor-block-list__layout.is-root-container > [data-align="full"] > .wp-block-columns' => array(
-				'padding-top'    => 'var(--wp--custom--ast-default-block-top-padding)',
-				'padding-right'  => 'var(--wp--custom--ast-default-block-right-padding)',
-				'padding-bottom' => 'var(--wp--custom--ast-default-block-bottom-padding)',
-				'padding-left'   => 'var(--wp--custom--ast-default-block-left-padding)',
-			),
 			// Global selection CSS.
 			'.block-editor-block-list__layout .block-editor-block-list__block ::selection,.block-editor-block-list__layout .block-editor-block-list__block.is-multi-selected .editor-block-list__block-edit:before' => array(
 				'background-color' => esc_attr( $theme_color ),
@@ -764,6 +758,19 @@ class Astra_WP_Editor_CSS {
 		$mobile_css['.editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper > h1'] = array(
 			'font-size' => astra_responsive_font( $site_title_font_size, 'mobile' ),
 		);
+
+		/**
+		 * Core blocks custom spacing support.
+		 * Case :- Do not apply custom padding for custom layout group, cover & column blocks.
+		 */
+		if ( 'astra-advanced-hook' !== $post_type ) {
+			$desktop_css['.block-editor-block-list__layout.is-root-container > .wp-block-group, .block-editor-block-list__layout.is-root-container > [data-align="wide"] > .wp-block-group, .block-editor-block-list__layout.is-root-container > [data-align="full"] > .wp-block-group, .block-editor-block-list__layout.is-root-container > .wp-block-cover, .block-editor-block-list__layout.is-root-container > [data-align="wide"] > .wp-block-cover, .block-editor-block-list__layout.is-root-container > [data-align="full"] > .wp-block-cover, .block-editor-block-list__layout.is-root-container > .wp-block-columns, .block-editor-block-list__layout.is-root-container > [data-align="wide"] > .wp-block-columns, .block-editor-block-list__layout.is-root-container > [data-align="full"] > .wp-block-columns'] = array(
+				'padding-top'    => 'var(--wp--custom--ast-default-block-top-padding)',
+				'padding-right'  => 'var(--wp--custom--ast-default-block-right-padding)',
+				'padding-bottom' => 'var(--wp--custom--ast-default-block-bottom-padding)',
+				'padding-left'   => 'var(--wp--custom--ast-default-block-left-padding)',
+			);
+		}
 
 		$css .= astra_parse_css( $desktop_css );
 		/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
