@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online, storefront, che
 Requires at least: 6.0
 Tested up to: 6.2
 Requires PHP: 7.3
-Stable tag: 7.7.1
+Stable tag: 7.7.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -163,10 +163,10 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 7.7.1 2023-05-26 =
+= 7.7.2 2023-06-01 =
 
 **WooCommerce**
 
-* Update - Update WooCommerce Blocks to 10.0.5 [#38427](https://github.com/woocommerce/woocommerce/pull/38427)
+* Update - Update WooCommerce Blocks to 10.0.6 [#38533](https://github.com/woocommerce/woocommerce/pull/38533)
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
