@@ -2,7 +2,6 @@
 
 //phpcs:disable VariableAnalysis
 // There are "undefined" variables here because they're defined in the code that includes this file as a template.
-
 ?>
 <?php if ( $type == 'plugin' ) : ?>
 <div class="updated" id="akismet_setup_prompt">
@@ -33,7 +32,8 @@
 </div>
 <?php elseif ( $type == 'alert' ) : ?>
 <div class='error'>
-	<p><strong><?php printf( esc_html__( 'Akismet Error Code: %s', 'akismet' ), $code ); ?></strong></p>
+	<?php /* translators: The placeholder is an error code returned by Akismet. */ ?>
+	<p><strong><?php printf( esc_html__( 'Akismet error code: %s', 'akismet' ), esc_html( $code ) ); ?></strong></p>
 	<p><?php echo esc_html( $msg ); ?></p>
 	<p><?php
 
@@ -104,7 +104,6 @@
 	if ( $at_least_one_comment_in_moderation)  {
 		$check_pending_link = 'edit-comments.php?akismet_recheck=' . wp_create_nonce( 'akismet_recheck' );
 	}
-	
 	?>
 <div class="akismet-alert akismet-active">
 	<h3 class="akismet-key-status"><?php esc_html_e( 'Akismet is now protecting your site from spam. Happy blogging!', 'akismet' ); ?></h3>
@@ -165,7 +164,7 @@
 <?php elseif ( $type == 'usage-limit' && isset( Akismet::$limit_notices[ $code ] ) ) : ?>
 <div class="error akismet-usage-limit-alert">
 	<div class="akismet-usage-limit-logo">
-		<img src="<?php echo esc_url( plugins_url( '../_inc/img/logo-a-2x.png', __FILE__ ) ); ?>" alt="Akismet" />
+		<img src="<?php echo esc_url( plugins_url( '../_inc/img/logo-a-2x.png', __FILE__ ) ); ?>" alt="Akismet logo" />
 	</div>
 	<div class="akismet-usage-limit-text">
 		<h3>
@@ -199,7 +198,7 @@
 						number_format( $usage_limit )
 					)
 				);
-
+				echo '&nbsp;';
 				echo '<a href="https://docs.akismet.com/akismet-api-usage-limits/" target="_blank">';
 				echo esc_html( __( 'Learn more about usage limits.', 'akismet' ) );
 				echo '</a>';
@@ -207,7 +206,7 @@
 				break;
 			case 'SECOND_MONTH_OVER_LIMIT':
 				echo esc_html( __( 'Your Akismet usage has been over your plan&#8217;s limit for two consecutive months. Next month, we will restrict your account after you reach the limit. Please consider upgrading your plan.', 'akismet' ) );
-
+				echo '&nbsp;';
 				echo '<a href="https://docs.akismet.com/akismet-api-usage-limits/" target="_blank">';
 				echo esc_html( __( 'Learn more about usage limits.', 'akismet' ) );
 				echo '</a>';
@@ -215,7 +214,7 @@
 				break;
 			case 'THIRD_MONTH_APPROACHING_LIMIT':
 				echo esc_html( __( 'Your Akismet usage is nearing your plan&#8217;s limit for the third consecutive month. We will restrict your account after you reach the limit. Upgrade your plan so Akismet can continue blocking spam.', 'akismet' ) );
-
+				echo '&nbsp;';
 				echo '<a href="https://docs.akismet.com/akismet-api-usage-limits/" target="_blank">';
 				echo esc_html( __( 'Learn more about usage limits.', 'akismet' ) );
 				echo '</a>';
@@ -224,12 +223,13 @@
 			case 'THIRD_MONTH_OVER_LIMIT':
 			case 'FOUR_PLUS_MONTHS_OVER_LIMIT':
 				echo esc_html( __( 'Your Akismet usage has been over your plan&#8217;s limit for three consecutive months. We have restricted your account for the rest of the month. Upgrade your plan so Akismet can continue blocking spam.', 'akismet' ) );
-
+				echo '&nbsp;';
 				echo '<a href="https://docs.akismet.com/akismet-api-usage-limits/" target="_blank">';
 				echo esc_html( __( 'Learn more about usage limits.', 'akismet' ) );
 				echo '</a>';
 
 				break;
+
 			default:
 		}
 		?>
@@ -240,7 +240,7 @@
 			<?php
 			// If only a qty upgrade is required, show a more generic message.
 			if ( ! empty( $upgrade_type ) && 'qty' === $upgrade_type ) {
-				esc_html_e( 'Upgrade your Subscription Level', 'akismet' );
+				esc_html_e( 'Upgrade your subscription level', 'akismet' );
 			} else {
 				echo esc_html(
 					sprintf(
