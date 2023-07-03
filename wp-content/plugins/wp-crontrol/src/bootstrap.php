@@ -1098,7 +1098,6 @@ function test_cron_spawn( $cache = true ) {
 	$cron_runner_plugins = array(
 		'\HM\Cavalcade\Plugin\Job'         => 'Cavalcade',
 		'\Automattic\WP\Cron_Control\Main' => 'Cron Control',
-		'\KMM\KRoN\Core'                   => 'KMM KRoN',
 	);
 
 	foreach ( $cron_runner_plugins as $class => $plugin ) {
@@ -1144,7 +1143,7 @@ function test_cron_spawn( $cache = true ) {
 			'blocking'  => true,
 			'sslverify' => apply_filters( 'https_local_ssl_verify', $sslverify ),
 		),
-	) );
+	), $doing_wp_cron );
 
 	$cron_request['args']['blocking'] = true;
 
