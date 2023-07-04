@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online, storefront, che
 Requires at least: 6.1
 Tested up to: 6.2
 Requires PHP: 7.3
-Stable tag: 7.8.1
+Stable tag: 7.8.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -163,14 +163,11 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 7.8.1 2023-06-27 =
+= 7.8.2 2023-07-04 =
 
 **WooCommerce**
 
-* Update - Update WooCommerce Blocks to 10.2.4 [#38891](https://github.com/woocommerce/woocommerce/pull/38891)
-* Fix - Do not show "Adding new attribute failed" error message when loading of product screens is interrupted by page unload. [[#38815]](https://github.com/woocommerce/woocommerce/pull/38815)
-* Tweak - Always pass default product type options to product_type_options filter. [[#38854]](https://github.com/woocommerce/woocommerce/pull/38854)
-
+* Fix - Add missing require for a wc-admin helper function. [#39030](https://github.com/woocommerce/woocommerce/pull/39030)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
