@@ -180,7 +180,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 	var menu_toggle_all 	 = document.querySelectorAll( '#masthead .main-header-menu-toggle' ),
 		main_header_masthead = document.getElementById('masthead'),
-		menu_click_listeners = {},
+		menu_click_listeners_nav = {},
 		mobileHeaderType = '',
 		body = document.body,
 		mobileHeader = '';
@@ -683,7 +683,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	AstraToggleSetup = function () {
 
 		if( typeof astraAddon != 'undefined' && typeof astraToggleSetupPro === "function" ) {
-			astraToggleSetupPro( mobileHeaderType, body, menu_click_listeners );
+			astraToggleSetupPro( mobileHeaderType, body, menu_click_listeners_nav );
 		} else {
 			var flag = false;
 			var menuToggleAllLength;
@@ -711,8 +711,8 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 						menu_toggle_all[i].setAttribute('data-index', i);
 
-						if ( ! menu_click_listeners[i] ) {
-							menu_click_listeners[i] = menu_toggle_all[i];
+						if ( ! menu_click_listeners_nav[i] ) {
+							menu_click_listeners_nav[i] = menu_toggle_all[i];
 							menu_toggle_all[i].addEventListener('click', astraNavMenuToggle, false);
 						}
 					}

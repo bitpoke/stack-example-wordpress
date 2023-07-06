@@ -378,6 +378,7 @@ class Astra_Customizer_Mobile_Trigger_Configs extends Astra_Customizer_Config_Ba
 					'transport'   => 'postMessage',
 					'input_attrs' => array(
 						'min' => 0,
+						'max' => 200,
 					),
 					'units'       => array(
 						'px' => 'px',
@@ -404,6 +405,7 @@ class Astra_Customizer_Mobile_Trigger_Configs extends Astra_Customizer_Config_Ba
 					'transport'   => 'postMessage',
 					'input_attrs' => array(
 						'min' => 0,
+						'max' => 200,
 					),
 					'units'       => array(
 						'px' => 'px',

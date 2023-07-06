@@ -167,7 +167,7 @@ final class Astra_Builder_Base_Configuration {
 						'px' => array(
 							'min'  => 0,
 							'step' => 1,
-							'max'  => 100,
+							'max'  => 200,
 						),
 						'em' => array(
 							'min'  => 0,
@@ -202,7 +202,7 @@ final class Astra_Builder_Base_Configuration {
 						'px' => array(
 							'min'  => 0,
 							'step' => 1,
-							'max'  => 100,
+							'max'  => 200,
 						),
 						'em' => array(
 							'min'  => 0,
@@ -456,7 +456,7 @@ final class Astra_Builder_Base_Configuration {
 								'px' => array(
 									'min'  => 0,
 									'step' => 1,
-									'max'  => 100,
+									'max'  => 200,
 								),
 								'em' => array(
 									'min'  => 0,
@@ -498,7 +498,7 @@ final class Astra_Builder_Base_Configuration {
 								'px' => array(
 									'min'  => 0,
 									'step' => 1,
-									'max'  => 100,
+									'max'  => 200,
 								),
 								'em' => array(
 									'min'  => 0,

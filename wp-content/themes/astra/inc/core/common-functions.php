@@ -533,6 +533,9 @@ if ( ! function_exists( 'astra_update_option' ) ) {
 		$theme_options = get_option( ASTRA_THEME_SETTINGS );
 
 		// Update value in options array.
+		if ( ! is_array( $theme_options ) ) {
+			$theme_options = array();
+		}
 		$theme_options[ $option ] = $value;
 
 		update_option( ASTRA_THEME_SETTINGS, $theme_options );

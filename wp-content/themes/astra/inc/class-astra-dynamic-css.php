@@ -3601,6 +3601,15 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$parse_css .= astra_parse_css( $transparent_header_builder_mobile_css, '', astra_get_mobile_breakpoint() );
 			}
 
+			if ( self::astra_list_block_vertical_spacing() ) {
+				$list_spacing_css = array(
+					'.entry-content li > p' => array(
+						'margin-bottom' => 0,
+					),
+				);
+				$parse_css       .= astra_parse_css( $list_spacing_css );
+			}
+
 			$parse_css .= $dynamic_css;
 			$custom_css = astra_get_option( 'custom-css' );
 
@@ -3629,7 +3638,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			 *
 			 *   - Sidebar Positions CSS
 			 */
-			$secondary_width = astra_get_option( 'site-sidebar-width' );
+			$secondary_width = absint( astra_get_option( 'site-sidebar-width' ) );
 			$primary_width   = absint( 100 - $secondary_width );
 			$meta_style      = '';
 
@@ -3662,7 +3671,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						'width' => astra_get_css_value( $primary_width, '%' ),
 					),
 					'#secondary' => array(
-						'width' => astra_get_css_value( $secondary_width, '%' ),
+						'width' => astra_get_css_value( strval( $secondary_width ), '%' ),
 					),
 				);
 
@@ -4085,6 +4094,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$astra_settings                                        = get_option( ASTRA_THEME_SETTINGS );
 			$astra_settings['ele-default-color-typo-setting-comp'] = ( isset( $astra_settings['ele-default-color-typo-setting-comp'] ) && false === $astra_settings['ele-default-color-typo-setting-comp'] ) ? false : true;
 			return apply_filters( 'astra_elementor_default_color_font_comp', $astra_settings['ele-default-color-typo-setting-comp'] );
+		}
+
+		/**
+		 * For existing users, do not provide list vertical spacing.
+		 *
+		 * @since 4.1.6
+		 * @return boolean true for new users, false for old users.
+		 */
+		public static function astra_list_block_vertical_spacing() {
+			$astra_settings                                = get_option( ASTRA_THEME_SETTINGS );
+			$astra_settings['list-block-vertical-spacing'] = isset( $astra_settings['list-block-vertical-spacing'] ) ? false : true;
+			return apply_filters( 'astra_list_block_vertical_spacing', $astra_settings['list-block-vertical-spacing'] );
 		}
 
 		/**

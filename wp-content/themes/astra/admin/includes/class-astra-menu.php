@@ -306,6 +306,7 @@ class Astra_Menu {
 			'starter_templates_data' => self::get_starter_template_plugin_data(),
 			'astra_docs_data'        => get_option( 'astra_docs_data', Astra_API_Init::astra_get_knowledge_base_data() ),
 			'upgrade_notice'         => astra_showcase_upgrade_notices(),
+			'show_banner_video'      => apply_filters( 'astra_show_banner_video', true ),
 		);
 
 		$this->settings_app_scripts( apply_filters( 'astra_react_admin_localize', $localize ) );
@@ -1050,7 +1051,18 @@ class Astra_Menu {
 	 * @since 4.0.0
 	 */
 	public function astra_admin_footer_link() {
-		return '<span id="footer-thankyou"> Thank you for using <span class="focus:text-astra-hover active:text-astra-hover hover:text-astra-hover"> ' . esc_html( astra_get_theme_name() ) . '.</span></span>';
+		$theme_name = astra_get_theme_name();
+		if ( astra_is_white_labelled() ) {
+			$footer_text = '<span id="footer-thankyou">' . __( 'Thank you for using', 'astra' ) . '<span class="focus:text-astra-hover active:text-astra-hover hover:text-astra-hover"> ' . esc_html( $theme_name ) . '.</span></span>';
+		} else {
+			$footer_text = sprintf(
+				/* translators: 1: Astra, 2: Theme rating link */
+				__( 'Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!', 'astra' ),
+				'<span class="ast-footer-thankyou"><strong>' . esc_html( $theme_name ) . '</strong>',
+				'<a href="https://wordpress.org/support/theme/astra/reviews/?rate=5#new-post" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a></span>'
+			);
+		}
+		return $footer_text;
 	}
 }
 

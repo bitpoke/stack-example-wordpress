@@ -1,3 +1,26 @@
+v4.1.6
+- Improvement: Header Footer Builder - Added new social profile "TikTok".
+- Improvement: Improved title area customizer control UI for better user experience.
+- Improvement: Rearranged SureCart dynamic CPT sections on top level in the customizer.
+- Improvement: Refactor duplication blocks of code found in navigation JS file.
+- Improvement: Added a new filter 'astra_font_line_height_unit' to adjust the unit for line height. ( https://wpastra.com/docs/how-to-fix-the-line-height-unit-being-converted-to-em/ )
+- Improvement: Added a new filter 'astra_show_banner_video' to display/hide admin page banner YouTube video. ( https://wpastra.com/docs/enable-disable-youtube-videos-from-astra-admin-dashboard/ )
+- Improvement: Added font-size support till 200px in customizer typography options.
+- Fix: Header Builder - Menu - Item Divider doesn't work on the last submenu item.
+- Fix: Author Link not working on layout 2 for single post title.
+- Fix: WooCommerce - Sticky Header feature is overwritten by the Checkout dropdown fields.
+- Fix: Fatal error: Uncaught TypeError: Unsupported operand types: On frontend and customizer.
+- Fix: Applied bottom spacing creates big gap with paragraphs from list block in entry-content.
+- Fix: WooCommerce - Quantity not updating properly when ajax add to cart is used on shop page.
+- Fix: Related Posts - Read more CTA having "http://" prefix with target attribute.
+- Fix: WooCommerce - Slide-in cart automatically trigger while saving changes in Elementor editor.
+- Fix: Incompatibility with latest PHP v8.x versions.
+- Fix: Post title & Featured image is not visible while editing in Elementor with banner layout 2.
+- Fix: The Sticky Add to cart feature not working in the RTL version of the website.
+- Fix: Secondary menu SVG alignment on tablet/mobile including RTL version.
+- Fix: Single product payment icons misalignment on Safari browsers (Mac and iOS).
+- Fix: Blog - Read time option visible with free theme but not working.
+
 v4.1.5
 - Fix: Offcanvas Menu - Transparent empty canvas visible on expanding offcanvas toggle button.
 - Fix: Custom Layouts - Block editor core blocks custom spacing incorrectly applies to custom layout blocks in editor.

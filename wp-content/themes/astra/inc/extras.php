@@ -642,8 +642,9 @@ function astra_load_preload_local_fonts( $url, $format = 'woff2' ) {
  * @since 3.6.0
  */
 function astra_get_transparent_header_default_value() {
-	$astra_settings                                      = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['transparent-header-default-border'] = isset( $astra_settings['transparent-header-default-border'] ) ? false : true;
+	$astra_settings                                      = get_option( ASTRA_THEME_SETTINGS, array() );
+	$astra_settings['transparent-header-default-border'] = isset( $astra_settings['transparent-header-default-border'] ) ? $astra_settings['transparent-header-default-border'] : true;
+
 	return apply_filters( 'astra_transparent_header_default_border', $astra_settings['transparent-header-default-border'] );
 }
 
@@ -660,15 +661,15 @@ function astra_has_gcp_typo_preset_compatibility() {
 }
 
 /**
- * Check whether user is exising or new to apply the updated default values for button padding & support GB button paddings with global button padding options.
+ * Check whether user is existing or new to apply the updated default values for button padding & support GB button paddings with global button padding options.
  *
  * @since 3.6.3
  * @return string
  */
 function astra_button_default_padding_updated() {
-	$astra_settings                                = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['btn-default-padding-updated'] = isset( $astra_settings['btn-default-padding-updated'] ) ? $astra_settings['btn-default-padding-updated'] : true;
-	return apply_filters( 'astra_update_button_padding_defaults', $astra_settings['btn-default-padding-updated'] );
+	$astra_settings  = get_option( ASTRA_THEME_SETTINGS, array() );
+	$padding_updated = isset( $astra_settings['btn-default-padding-updated'] ) ? $astra_settings['btn-default-padding-updated'] : true;
+	return apply_filters( 'astra_update_button_padding_defaults', $padding_updated );
 }
 
 /**
@@ -985,7 +986,9 @@ function astra_get_font_extras( $config, $setting, $unit = false ) {
 	$css = isset( $config[ $setting ] ) ? $config[ $setting ] : '';
 
 	if ( $unit && $css ) {
-		$css .= isset( $config[ $unit ] ) ? $config[ $unit ] : '';
+		$unit_val = isset( $config[ $unit ] ) ? $config[ $unit ] : '';
+		$unit_val = 'line-height-unit' === $unit ? apply_filters( 'astra_font_line_height_unit', $unit_val ) : $unit_val;
+		$css     .= $unit_val;
 	}
 
 	return $css;

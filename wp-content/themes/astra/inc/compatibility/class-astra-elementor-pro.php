@@ -86,6 +86,29 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) :
 			if ( $this->is_elementor_editor() && class_exists( 'WooCommerce' ) && astra_check_elementor_pro_3_5_version() ) {
 				add_action( 'init', array( $this, 'update_woocommerce_checkout' ) );
 			}
+
+			add_filter( 'astra_shop_add_to_cart_js_localize', array( $this, 'astra_shop_add_to_cart_js_localize' ), 10, 1 );
+		}
+
+		/**
+		 * Append Elementor preview status.
+		 *
+		 * @param Array $localize_data
+		 *
+		 * @since 4.1.6
+		 * @return Array
+		 */
+		public function astra_shop_add_to_cart_js_localize( $localize_data ) {
+			$elementor_preview_active = false;
+
+			if ( class_exists( 'Elementor\Plugin' ) ) {
+				$elementor_preview_active = \Elementor\Plugin::$instance->preview->is_preview_mode();
+
+			}
+
+			$localize_data['elementor_preview_active'] = $elementor_preview_active;
+
+			return $localize_data;
 		}
 
 		/**

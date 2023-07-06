@@ -176,7 +176,7 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
                     }
 
                     // Trigger the change event on the input.
-                    var changeEvent = new Event('change');
+                    var changeEvent = new Event('change', { bubbles: true });
                     $quantityBox.dispatchEvent(changeEvent);
 
                     // Trigger change event.

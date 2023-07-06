@@ -31,18 +31,17 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			$blog_meta_choices = array(
-				'comments'  => __( 'Comments', 'astra' ),
-				'category'  => __( 'Category', 'astra' ),
-				'author'    => __( 'Author', 'astra' ),
-				'date'      => array(
+				'comments' => __( 'Comments', 'astra' ),
+				'category' => __( 'Category', 'astra' ),
+				'author'   => __( 'Author', 'astra' ),
+				'date'     => array(
 					'clone'       => false,
 					'is_parent'   => true,
 					'main_index'  => 'date',
 					'clone_limit' => 1,
 					'title'       => __( 'Date', 'astra' ),
 				),
-				'tag'       => __( 'Tag', 'astra' ),
-				'read-time' => __( 'Read Time', 'astra' ),
+				'tag'      => __( 'Tag', 'astra' ),
 			);
 
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort

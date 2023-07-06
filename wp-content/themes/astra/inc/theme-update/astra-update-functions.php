@@ -1268,3 +1268,17 @@ function astra_theme_background_updater_4_1_4() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility on version 4.1.6
+ *
+ * @since 4.1.6
+ * @return void
+ */
+function astra_theme_background_updater_4_1_6() {
+	$theme_options = get_option( 'astra-settings', array() );
+	if ( ! isset( $theme_options['list-block-vertical-spacing'] ) ) {
+		$theme_options['list-block-vertical-spacing'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}

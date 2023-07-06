@@ -95,13 +95,22 @@ class Astra_Posts_Structures_Configs extends Astra_Customizer_Config_Base {
 
 				$section_title = self::astra_get_dynamic_section_title( $post_type_object, $label );
 
-				$_configs[] = array(
-					'name'     => 'section-posttype-' . $label,
-					'type'     => 'section',
-					'section'  => $parent_section,
-					'title'    => $section_title,
-					'priority' => 69,
-				);
+				if ( 'sc_product' === $label ) {
+					$_configs[] = array(
+						'name'     => 'section-posttype-' . $label,
+						'type'     => 'section',
+						'title'    => $section_title,
+						'priority' => 69,
+					);
+				} else {
+					$_configs[] = array(
+						'name'     => 'section-posttype-' . $label,
+						'type'     => 'section',
+						'section'  => $parent_section,
+						'title'    => $section_title,
+						'priority' => 69,
+					);
+				}
 
 				if ( ! in_array( $label, $ignore_archive_for_posttypes ) ) {
 					$_configs[] = array(

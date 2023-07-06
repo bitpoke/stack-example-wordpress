@@ -193,6 +193,16 @@ function astra_hb_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 		$menu_spacing_tablet_top = astra_responsive_spacing( $menu_spacing, 'top', 'tablet' );
 		$menu_spacing_tablet_top = ( isset( $menu_spacing_tablet_top ) && ! empty( $menu_spacing_tablet_top ) ) ? $menu_spacing_tablet_top : 0;
 
+		if ( ! is_rtl() ) {
+			$selector_right_value = array(
+				'right' => '-15px',
+			);
+		} else {
+			$selector_right_value = array(
+				'left' => '-15px',
+			);
+		}
+
 		$css_output_tablet = array(
 
 			$mobile_selector . ' .menu-item > .menu-link' => array(
@@ -235,6 +245,7 @@ function astra_hb_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 				'top'   => $menu_spacing_tablet_top,
 				'right' => astra_calculate_spacing( astra_responsive_spacing( $menu_spacing, 'right', 'tablet' ), '-', '0.907', 'em' ),
 			),
+			$selector . ' .inline-on-mobile .menu-item.menu-item-has-children > .ast-menu-toggle' => $selector_right_value,
 			$selector . ' .menu-item-has-children > .menu-link:after' => array(
 				'content' => 'unset',
 			),
@@ -310,20 +321,23 @@ function astra_hb_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 		if ( true === $sub_menu_divider_toggle ) {
 			// Sub Menu Divider.
-			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu .menu-link' ]                       = array(
+			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu .menu-link' ]                           = array(
 				'border-bottom-width' => $sub_menu_divider_size . 'px',
 				'border-color'        => $sub_menu_divider_color,
 				'border-style'        => 'solid',
 			);
-			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu .menu-item:last-child .menu-link' ] = array(
+			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu:last-child > .menu-item > .menu-link' ] = array(
+				'border-bottom-width' => $sub_menu_divider_size . 'px',
+			);
+			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item:last-child > .menu-item > .menu-link' ]           = array(
 				'border-bottom-width' => 0,
 			);
 		} else {
-
 			$css_output_desktop[ '.ast-desktop .ast-builder-menu-' . $index . ' .menu-item .sub-menu .menu-link' ] = array(
 				'border-style' => 'none',
 			);
-		}
+		}       
+		
 
 		/* Parse CSS from array() */
 		$css_output  = astra_parse_css( $css_output_desktop );

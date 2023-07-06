@@ -1173,7 +1173,8 @@ final class Astra_Builder_Helper {
 	 * @return boolean true if it is an existing user , false if not.
 	 */
 	public static function apply_flex_based_css() {
-		$astra_settings                      = get_option( ASTRA_THEME_SETTINGS );
+		$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	
 		$astra_settings['is-flex-based-css'] = isset( $astra_settings['is-flex-based-css'] ) ? $astra_settings['is-flex-based-css'] : true;
 		return apply_filters( 'astra_apply_flex_based_css', $astra_settings['is-flex-based-css'] );
 	}

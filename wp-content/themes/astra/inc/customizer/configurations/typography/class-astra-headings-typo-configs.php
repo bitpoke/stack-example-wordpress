@@ -95,7 +95,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 					'px' => array(
 						'min'  => 0,
 						'step' => 1,
-						'max'  => 100,
+						'max'  => 200,
 					),
 					'em' => array(
 						'min'  => 0,
@@ -176,7 +176,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 					'px' => array(
 						'min'  => 0,
 						'step' => 1,
-						'max'  => 100,
+						'max'  => 200,
 					),
 					'em' => array(
 						'min'  => 0,
@@ -256,7 +256,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 					'px' => array(
 						'min'  => 0,
 						'step' => 1,
-						'max'  => 100,
+						'max'  => 200,
 					),
 					'em' => array(
 						'min'  => 0,
@@ -336,7 +336,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 					'px' => array(
 						'min'  => 0,
 						'step' => 1,
-						'max'  => 100,
+						'max'  => 200,
 					),
 					'em' => array(
 						'min'  => 0,
@@ -416,7 +416,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 					'px' => array(
 						'min'  => 0,
 						'step' => 1,
-						'max'  => 100,
+						'max'  => 200,
 					),
 					'em' => array(
 						'min'  => 0,
@@ -495,7 +495,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 					'px' => array(
 						'min'  => 0,
 						'step' => 1,
-						'max'  => 100,
+						'max'  => 200,
 					),
 					'em' => array(
 						'min'  => 0,

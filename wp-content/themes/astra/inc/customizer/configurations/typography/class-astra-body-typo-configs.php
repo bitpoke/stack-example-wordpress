@@ -142,6 +142,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'suffix'      => 'px',
 					'input_attrs' => array(
 						'min' => 0,
+						'max' => 200,
 					),
 					'units'       => array(
 						'px' => 'px',
