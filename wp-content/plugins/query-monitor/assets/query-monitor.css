@@ -167,6 +167,7 @@
 #wpadminbar .qm-alert {
   background-color: #f60;
 }
+#wpadminbar #wp-admin-bar-query-monitor-doing_it_wrong a,
 #wpadminbar #wp-admin-bar-query-monitor-stricts a,
 #wpadminbar #wp-admin-bar-query-monitor-deprecateds a,
 #wpadminbar #wp-admin-bar-query-monitor-notices a,
@@ -175,7 +176,9 @@
 #wpadminbar .qm-notice {
   background-color: #740;
 }
-#wpadminbar #wp-admin-bar-query-monitor-stricts a:focus, #wpadminbar #wp-admin-bar-query-monitor-stricts a:hover,
+#wpadminbar #wp-admin-bar-query-monitor-doing_it_wrong a:focus, #wpadminbar #wp-admin-bar-query-monitor-doing_it_wrong a:hover,
+#wpadminbar #wp-admin-bar-query-monitor-stricts a:focus,
+#wpadminbar #wp-admin-bar-query-monitor-stricts a:hover,
 #wpadminbar #wp-admin-bar-query-monitor-deprecateds a:focus,
 #wpadminbar #wp-admin-bar-query-monitor-deprecateds a:hover,
 #wpadminbar #wp-admin-bar-query-monitor-notices a:focus,
@@ -241,6 +244,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #wp-admin-bar-query-monitor-default .qm-alert a,
 #wp-admin-bar-query-monitor-default .qm-error a,
 #wp-admin-bar-query-monitor-default .qm-warning a,
+#wp-admin-bar-query-monitor-doing_it_wrong a,
 #wp-admin-bar-query-monitor-deprecateds a,
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,
@@ -1260,7 +1264,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main .qm-hide-name,
 #query-monitor-main .qm-hide-type,
 #query-monitor-main .qm-hide-caller,
-#query-monitor-main .qm-hide-component {
+#query-monitor-main .qm-hide-component,
+#query-monitor-main .qm-hide-host {
   display: none !important;
 }
 #query-monitor-main .qm thead th.qm-sortable-column {
