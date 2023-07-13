@@ -1,9 +1,9 @@
 === Storefront ===
 Contributors: automattic, tiagonoronha, jameskoster
 Requires at least: 5.3.4
-Tested up to: 6.2.1
-Stable tag: 4.3.0
-Version: 4.3.0
+Tested up to: 6.2.2
+Stable tag: 4.4.1
+Version: 4.4.1
 WC requires at least: 4.2
 WC tested up to: 7.7.0
 License: GPLv3 or later
@@ -16,7 +16,7 @@ Storefront is the perfect theme for your next WooCommerce project.
 
 Storefront is the perfect theme for your next WooCommerce project. Designed and developed by WooCommerce Core developers, it features a bespoke integration with WooCommerce itself plus many of the most popular customer facing WooCommerce extensions. There are several layout & color options to personalize your shop, multiple widget regions, a responsive design and much more. Developers will love its lean and extensible codebase making it a joy to customize and extend. Looking for a WooCommerce theme? Look no further!
 
-For more information about Storefront please go to https://woocommerce.com/storefront/.
+For more information about Storefront please go to https://woocommerce.com/products/storefront/.
 
 For even more customization, check out Storefront extensions https://woocommerce.com/product-category/storefront-extensions/ and Storefront child themes https://woocommerce.com/product-category/themes/storefront-child-theme-themes/.
 
@@ -50,6 +50,12 @@ To the best of our knowledge, Google doesn’t track nor share end user data.
 Privacy Policy for the Google Fonts API: https://developers.google.com/fonts/faq#what_does_using_the_google_fonts_api_mean_for_the_privacy_of_my_users
 
 == Changelog ==
+
+= 4.4.1 - 2023-07-12 =
+- Fix – Rerun release build to fix missing files from 4.4.0 release.
+
+= 4.4.0 - 2023-07-12 =
+- Fix – Theme URI now points to Storefront page in Woo Marketplace. All links to retired theme landing page have also been updated.
 
 = 4.3.0 - 2023-05-19 =
 - Fix – Adds nofollow value to rel attribute in footer credit link. ([#2096](https://github.com/woocommerce/storefront/pull/2096))
