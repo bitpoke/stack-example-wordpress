@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.9.0
+	Version: 1.9.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Set the MU plugin version.
-define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.8.0' );
+define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.9.1' );
 
 class Health_Check_Troubleshooting_MU {
 	private $disable_hash    = null;
@@ -145,13 +145,17 @@ class Health_Check_Troubleshooting_MU {
 			return;
 		}
 
-		wp_enqueue_style( 'health-check', plugins_url( '/health-check/build/health-check.css' ), array(), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION );
+		$health_check = include WP_PLUGIN_DIR . '/health-check/build/health-check.asset.php';
+
+		wp_enqueue_style( 'health-check', plugins_url( '/health-check/build/health-check.css' ), array(), $health_check['version'] );
 
 		if ( ! wp_script_is( 'site-health', 'registered' ) ) {
-			wp_enqueue_script( 'site-health', plugins_url( '/health-check/build/health-check.js' ), array( 'jquery', 'wp-a11y', 'wp-util' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
+			wp_enqueue_script( 'site-health', plugins_url( '/health-check/build/health-check.js' ), array( 'jquery', 'wp-a11y', 'wp-util' ), $health_check['version'], true );
 		}
 
-		wp_enqueue_script( 'health-check', plugins_url( '/health-check/build/troubleshooting-mode.js' ), array( 'site-health' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
+		$troubleshooter = include WP_PLUGIN_DIR . '/health-check/build/troubleshooting-mode.asset.php';
+
+		wp_enqueue_script( 'health-check', plugins_url( '/health-check/build/troubleshooting-mode.js' ), array( 'site-health' ), $troubleshooter['version'], true );
 	}
 
 	/**
@@ -617,7 +621,7 @@ class Health_Check_Troubleshooting_MU {
 
 	function disable_troubleshooting_mode() {
 		unset( $_COOKIE['wp-health-check-disable-plugins'] );
-		setcookie( 'wp-health-check-disable-plugins', null, 0, COOKIEPATH, COOKIE_DOMAIN );
+		setcookie( 'wp-health-check-disable-plugins', '', 0, COOKIEPATH, COOKIE_DOMAIN );
 		delete_option( 'health-check-allowed-plugins' );
 		delete_option( 'health-check-default-theme' );
 		delete_option( 'health-check-current-theme' );
@@ -635,7 +639,13 @@ class Health_Check_Troubleshooting_MU {
 	 */
 	private function get_clean_url( $url = null ) {
 		if ( ! $url ) {
-			$url = site_url( $_SERVER['REQUEST_URI'] );
+			// The full URL for the current request.
+			$raw_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+			// We prepare the `REQUEST_URI` entry our selves, to account for WP installs in subdirectories or similar.
+			$request_uri = str_ireplace( site_url( '/' ), '', $raw_url );
+
+			$url = site_url( $request_uri );
 		}
 
 		return remove_query_arg( $this->available_query_args, $url );
@@ -1287,6 +1297,10 @@ class Health_Check_Troubleshooting_MU {
 
 						<p>
 							<?php _e( 'The Health Check plugin will attempt to disable cache solutions on your site, but if you are using a custom caching solution, you may need to disable it manually when troubleshooting.', 'health-check' ); ?>
+						</p>
+
+						<p>
+							<?php _e( 'If you wish to troubleshoot as another user, or as an anonymous site visitor, the <a href="https://wordpress.org/plugins/user-switching/">User Switcher plugin</a> allows for all of this while also being compatible with Troubleshooting Mode.', 'health-check' ); ?>
 						</p>
 					</div>
 				</div>
