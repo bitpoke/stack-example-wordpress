@@ -1,3 +1,6 @@
+v4.1.7
+- Improvement: Compatibility with WordPress-6.3.
+
 v4.1.6
 - Improvement: Header Footer Builder - Added new social profile "TikTok".
 - Improvement: Improved title area customizer control UI for better user experience.
