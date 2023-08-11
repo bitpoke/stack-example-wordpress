@@ -1,3 +1,7 @@
+v4.1.8
+- Fix: Title enable/disable option missing in block editor with WordPress-6.3.
+- Fix: Content layouts not working realtime in block editor with WordPress-6.3. 
+
 v4.1.7
 - Improvement: Compatibility with WordPress-6.3.
 
