@@ -206,29 +206,123 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			/**
 			 * Get options
 			 */
-			$site_sidebar          = ( isset( $meta['site-sidebar-layout']['default'] ) ) ? $meta['site-sidebar-layout']['default'] : 'default';
-			$site_content_layout   = ( isset( $meta['site-content-layout']['default'] ) ) ? $meta['site-content-layout']['default'] : 'default';
-			$site_post_title       = ( isset( $meta['site-post-title']['default'] ) ) ? $meta['site-post-title']['default'] : '';
-			$footer_bar            = ( isset( $meta['footer-sml-layout']['default'] ) ) ? $meta['footer-sml-layout']['default'] : '';
-			$footer_widgets        = ( isset( $meta['footer-adv-display']['default'] ) ) ? $meta['footer-adv-display']['default'] : '';
-			$above_header          = ( isset( $meta['ast-hfb-above-header-display']['default'] ) ) ? $meta['ast-hfb-above-header-display']['default'] : 'default';
-			$primary_header        = ( isset( $meta['ast-main-header-display']['default'] ) ) ? $meta['ast-main-header-display']['default'] : '';
-			$below_header          = ( isset( $meta['ast-hfb-below-header-display']['default'] ) ) ? $meta['ast-hfb-below-header-display']['default'] : 'default';
-			$mobile_header         = ( isset( $meta['ast-hfb-mobile-header-display']['default'] ) ) ? $meta['ast-hfb-mobile-header-display']['default'] : 'default';
-			$ast_featured_img      = ( isset( $meta['ast-featured-img']['default'] ) ) ? $meta['ast-featured-img']['default'] : '';
-			$breadcrumbs_content   = ( isset( $meta['ast-breadcrumbs-content']['default'] ) ) ? $meta['ast-breadcrumbs-content']['default'] : '';
-			$ast_banner_visibility = ( isset( $meta['ast-banner-title-visibility']['default'] ) ) ? $meta['ast-banner-title-visibility']['default'] : '';
-
-			$show_meta_field = ! self::is_bb_themer_layout();
+			$site_sidebar            = ( isset( $meta['site-sidebar-layout']['default'] ) ) ? $meta['site-sidebar-layout']['default'] : 'default';
+			$site_content_style      = ( isset( $meta['site-content-style']['default'] ) ) ? $meta['site-content-style']['default'] : 'default';
+			$site_sidebar_style      = ( isset( $meta['site-sidebar-style']['default'] ) ) ? $meta['site-sidebar-style']['default'] : 'default';
+			$new_site_content_layout = ( isset( $meta['ast-site-content-layout']['default'] ) ) ? $meta['ast-site-content-layout']['default'] : '';
+			$site_post_title         = ( isset( $meta['site-post-title']['default'] ) ) ? $meta['site-post-title']['default'] : '';
+			$footer_bar              = ( isset( $meta['footer-sml-layout']['default'] ) ) ? $meta['footer-sml-layout']['default'] : '';
+			$footer_widgets          = ( isset( $meta['footer-adv-display']['default'] ) ) ? $meta['footer-adv-display']['default'] : '';
+			$above_header            = ( isset( $meta['ast-hfb-above-header-display']['default'] ) ) ? $meta['ast-hfb-above-header-display']['default'] : 'default';
+			$primary_header          = ( isset( $meta['ast-main-header-display']['default'] ) ) ? $meta['ast-main-header-display']['default'] : '';
+			$below_header            = ( isset( $meta['ast-hfb-below-header-display']['default'] ) ) ? $meta['ast-hfb-below-header-display']['default'] : 'default';
+			$mobile_header           = ( isset( $meta['ast-hfb-mobile-header-display']['default'] ) ) ? $meta['ast-hfb-mobile-header-display']['default'] : 'default';
+			$ast_featured_img        = ( isset( $meta['ast-featured-img']['default'] ) ) ? $meta['ast-featured-img']['default'] : '';
+			$breadcrumbs_content     = ( isset( $meta['ast-breadcrumbs-content']['default'] ) ) ? $meta['ast-breadcrumbs-content']['default'] : '';
+			$ast_banner_visibility   = ( isset( $meta['ast-banner-title-visibility']['default'] ) ) ? $meta['ast-banner-title-visibility']['default'] : '';
+			$exclude_cpt             = isset( $post->post_type ) ? in_array(
+				$post->post_type,
+				array(
+					'product',
+					'download',
+					'course',
+					'lesson',
+					'tutor_quiz',
+					'tutor_assignments',
+					'sfwd-assignment',
+					'sfwd-essays',
+					'sfwd-transactions',
+					'sfwd-certificates',
+					'sfwd-quiz',
+					'sfwd-courses',
+					'sfwd-lessons',
+					'sfwd-topic',
+					'groups',
+				) 
+			) : '';
+			$show_meta_field         = ! self::is_bb_themer_layout();
+			$old_meta_layout         = isset( $meta['site-content-layout']['default'] ) ? $meta['site-content-layout']['default'] : '';
+			$meta_key                = ( isset( $meta['astra-migrate-meta-layouts']['default'] ) ) ? $meta['astra-migrate-meta-layouts']['default'] : '';
+			$migrated_user           = ( ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support() );
 			do_action( 'astra_meta_box_markup_before', $meta );
 
+			// Migrate old user existing container layout option to new layout options.
+			if ( ! empty( $old_meta_layout ) && 'set' !== $meta_key && $migrated_user ) {
+				$old_meta_content_layout = $meta['site-content-layout']['default'];
+				switch ( $old_meta_content_layout ) {
+					case 'plain-container':
+						$new_site_content_layout = 'normal-width-container';
+						$site_content_style      = 'unboxed';
+						$site_sidebar_style      = 'unboxed';
+						break;
+					case 'boxed-container':
+						$new_site_content_layout = 'normal-width-container';
+						$site_content_style      = 'boxed';
+						$site_sidebar_style      = 'boxed';
+						break;
+					case 'content-boxed-container':
+						$new_site_content_layout = 'normal-width-container';
+						$site_content_style      = 'boxed';
+						$site_sidebar_style      = 'unboxed';
+						break;
+					case 'page-builder':
+						$new_site_content_layout = 'full-width-container';
+						$site_content_style      = 'unboxed';
+						$site_sidebar_style      = 'unboxed';
+						break;
+					case 'narrow-container':
+						$new_site_content_layout = 'narrow-width-container';
+						$site_content_style      = 'unboxed';
+						$site_sidebar_style      = 'unboxed';
+						break;
+					default:
+						$new_site_content_layout = 'default';
+						$site_content_style      = 'default';
+						$site_sidebar_style      = 'default';
+						break;
+				}
+			}
+				
+			/**
+			 * Option: Content Layout.
+			 */
+			?>
+			<div class="ast-site-content-layout-meta-wrap components-base-control__field">
+				<p class="post-attributes-label-wrapper" >
+					<strong> <?php esc_html_e( 'Container Layout', 'astra' ); ?> </strong>
+				</p>
+				<select name="ast-site-content-layout" id="ast-site-content-layout">
+					<option value="default" <?php selected( $new_site_content_layout, 'default' ); ?> > <?php esc_html_e( 'Customizer Setting', 'astra' ); ?></option>
+					<option value="normal-width-container" <?php selected( $new_site_content_layout, 'normal-width-container' ); ?> > <?php esc_html_e( 'Normal', 'astra' ); ?></option>
+					<?php if ( ! $exclude_cpt ) { ?>
+						<option value="narrow-width-container" <?php selected( $new_site_content_layout, 'narrow-width-container' ); ?> > <?php esc_html_e( 'Narrow', 'astra' ); ?></option>
+						<?php } ?>
+						<option value="full-width-container" <?php selected( $new_site_content_layout, 'full-width-container' ); ?> > <?php esc_html_e( 'Full Width', 'astra' ); ?></option>
+					</select>
+			</div>
+			<?php
+			/**
+			 * Option: Content Style.
+			 */
+			?>
+			<div class="site-content-style-meta-wrap components-base-control__field">
+				<p class="post-attributes-label-wrapper" >
+					<strong> <?php esc_html_e( 'Container Style', 'astra' ); ?> </strong>
+				</p>
+				<select name="site-content-style" id="site-content-style">
+					<option value="default" <?php selected( $site_content_style, 'default' ); ?> > <?php esc_html_e( 'Customizer Setting', 'astra' ); ?></option>
+					<option value="unboxed" <?php selected( $site_content_style, 'unboxed' ); ?> > <?php esc_html_e( 'Unboxed', 'astra' ); ?></option>
+					<option value="boxed" <?php selected( $site_content_style, 'boxed' ); ?> > <?php esc_html_e( 'Boxed', 'astra' ); ?></option>
+				</select>
+			</div>
+			<?php
 			/**
 			 * Option: Sidebar
 			 */
 			?>
 			<div class="site-sidebar-layout-meta-wrap components-base-control__field">
 				<p class="post-attributes-label-wrapper" >
-					<strong> <?php esc_html_e( 'Sidebar', 'astra' ); ?> </strong>
+					<strong> <?php esc_html_e( 'Sidebar Layout', 'astra' ); ?> </strong>
 				</p>
 				<select name="site-sidebar-layout" id="site-sidebar-layout">
 					<option value="default" <?php selected( $site_sidebar, 'default' ); ?> > <?php esc_html_e( 'Customizer Setting', 'astra' ); ?></option>
@@ -239,19 +333,17 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			</div>
 			<?php
 			/**
-			 * Option: Sidebar
+			 * Option: Sidebar Style.
 			 */
 			?>
-			<div class="site-content-layout-meta-wrap components-base-control__field">
+			<div class="site-sidebar-style-meta-wrap components-base-control__field">
 				<p class="post-attributes-label-wrapper" >
-					<strong> <?php esc_html_e( 'Content Layout', 'astra' ); ?> </strong>
+					<strong> <?php esc_html_e( 'Sidebar Style', 'astra' ); ?> </strong>
 				</p>
-				<select name="site-content-layout" id="site-content-layout">
-					<option value="default" <?php selected( $site_content_layout, 'default' ); ?> > <?php esc_html_e( 'Customizer Setting', 'astra' ); ?></option>
-					<option value="boxed-container" <?php selected( $site_content_layout, 'boxed-container' ); ?> > <?php esc_html_e( 'Boxed', 'astra' ); ?></option>
-					<option value="content-boxed-container" <?php selected( $site_content_layout, 'content-boxed-container' ); ?> > <?php esc_html_e( 'Content Boxed', 'astra' ); ?></option>
-					<option value="plain-container" <?php selected( $site_content_layout, 'plain-container' ); ?> > <?php esc_html_e( 'Full Width / Contained', 'astra' ); ?></option>
-					<option value="page-builder" <?php selected( $site_content_layout, 'page-builder' ); ?> > <?php esc_html_e( 'Full Width / Stretched', 'astra' ); ?></option>
+				<select name="site-sidebar-style" id="site-sidebar-style">
+					<option value="default" <?php selected( $site_sidebar_style, 'default' ); ?> > <?php esc_html_e( 'Customizer Setting', 'astra' ); ?></option>
+					<option value="unboxed" <?php selected( $site_sidebar_style, 'unboxed' ); ?> > <?php esc_html_e( 'Unboxed', 'astra' ); ?></option>
+					<option value="boxed" <?php selected( $site_sidebar_style, 'boxed' ); ?> > <?php esc_html_e( 'Boxed', 'astra' ); ?></option>
 				</select>
 			</div>
 			<?php
@@ -445,9 +537,14 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				// Store values.
 				if ( $meta_value ) {
 					update_post_meta( $post_id, $key, $meta_value );
+
+					// Update meta key (flag) as old user migration is already completed at this point. 
+					update_post_meta( $post_id, 'astra-migrate-meta-layouts', 'set' );
 				} else {
+
+					/** @psalm-suppress InvalidArgument */
 					delete_post_meta( $post_id, $key );
-				}
+				}           
 			}
 
 		}
@@ -515,6 +612,8 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'sidebar_options'                => $this->get_sidebar_options(),
 					'sidebar_title'                  => __( 'Sidebar', 'astra' ),
 					'content_layout'                 => $this->get_content_layout_options(),
+					'content_style'                  => $this->get_content_style_options(),
+					'sidebar_style'                  => $this->get_sidebar_style_options(),
 					'content_layout_title'           => __( 'Content Layout', 'astra' ),
 					'disable_sections_title'         => __( 'Disable Sections', 'astra' ),
 					'disable_sections'               => $this->get_disable_section_fields(),
@@ -535,6 +634,8 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'is_hide_contnet_layout_sidebar' => $ast_content_layout_sidebar,
 					'upgrade_pro_link'               => ASTRA_PRO_CUSTOMIZER_UPGRADE_URL,
 					'show_upgrade_notice'            => astra_showcase_upgrade_notices(),
+					// Flag needed to check whether user is old or new, true for old user, false for new.
+					'v4_1_6_migration'               => ( ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support() ),
 				)
 			);
 
@@ -542,7 +643,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 		}
 
 		/**
-		 * Get all Sidebar Options.
+		 * Returns an array of sidebar options.
+		 *
+		 * @return array The array of sidebar options.
 		 */
 		public function get_sidebar_options() {
 			return array(
@@ -554,16 +657,68 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 		}
 
 		/**
-		 * Get Contenr Layout Options.
+		 * Returns an array of content layout options for the current post type.
+		 *
+		 * @return array The array of content layout options.
 		 */
 		public function get_content_layout_options() {
+			$post_type   = get_post_type();
+			$exclude_cpt = in_array(
+				$post_type,
+				array(
+					'product',
+					'download',
+					'course',
+					'lesson',
+					'tutor_quiz',
+					'tutor_assignments',
+					'sfwd-assignment',
+					'sfwd-essays',
+					'sfwd-transactions',
+					'sfwd-certificates',
+					'sfwd-quiz',
+					'sfwd-courses',
+					'sfwd-lessons',
+					'sfwd-topic',
+					'groups',
+				) 
+			);
+			if ( astra_with_third_party() || $exclude_cpt ) {
+				return array(
+					'default'                => __( 'Customizer Setting', 'astra' ),
+					'normal-width-container' => __( 'Normal', 'astra' ),
+					'full-width-container'   => __( 'Full Width', 'astra' ),
+				);
+			}
 			return array(
-				'default'                 => __( 'Customizer Setting', 'astra' ),
-				'boxed-container'         => __( 'Boxed', 'astra' ),
-				'content-boxed-container' => __( 'Content Boxed', 'astra' ),
-				'plain-container'         => __( 'Full Width / Contained', 'astra' ),
-				'page-builder'            => __( 'Full Width / Stretched', 'astra' ),
-				'narrow-container'        => __( 'Narrow Width', 'astra' ),
+				'default'                => __( 'Customizer Setting', 'astra' ),
+				'normal-width-container' => __( 'Normal', 'astra' ),
+				'narrow-width-container' => __( 'Narrow', 'astra' ),
+				'full-width-container'   => __( 'Full Width', 'astra' ),
+			);
+		}
+
+		/**
+		 * @return array The array of content layout options.
+		 * @since 4.2.0
+		 */
+		public function get_content_style_options() {
+			return array(
+				'default' => __( 'Default', 'astra' ),
+				'unboxed' => __( 'Unboxed', 'astra' ),
+				'boxed'   => __( 'Boxed', 'astra' ),
+			);
+		}
+
+		/**
+		 * @return array The array of sidebar style options.
+		 * @since 4.2.0
+		 */
+		public function get_sidebar_style_options() {
+			return array(
+				'default' => __( 'Default', 'astra' ),
+				'unboxed' => __( 'Unboxed', 'astra' ),
+				'boxed'   => __( 'Boxed', 'astra' ),
 			);
 		}
 
@@ -794,6 +949,39 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			);
 			register_post_meta(
 				'',
+				'ast-site-content-layout',
+				array(
+					'show_in_rest'  => true,
+					'single'        => true,
+					'default'       => isset( $meta['ast-site-content-layout']['default'] ) ? $meta['ast-site-content-layout']['default'] : '',
+					'type'          => 'string',
+					'auth_callback' => '__return_true',
+				)
+			);
+			register_post_meta(
+				'',
+				'site-content-style',
+				array(
+					'show_in_rest'  => true,
+					'single'        => true,
+					'default'       => isset( $meta['site-content-style']['default'] ) ? $meta['site-content-style']['default'] : '',
+					'type'          => 'string',
+					'auth_callback' => '__return_true',
+				)
+			);
+			register_post_meta(
+				'',
+				'site-sidebar-style',
+				array(
+					'show_in_rest'  => true,
+					'single'        => true,
+					'default'       => isset( $meta['site-sidebar-style']['default'] ) ? $meta['site-sidebar-style']['default'] : '',
+					'type'          => 'string',
+					'auth_callback' => '__return_true',
+				)
+			);
+			register_post_meta(
+				'',
 				'ast-global-header-display',
 				array(
 					'show_in_rest'  => true,
@@ -968,6 +1156,17 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'auth_callback' => '__return_true',
 				)
 			);
+
+			register_post_meta(
+				'',
+				'astra-migrate-meta-layouts',
+				array(
+					'show_in_rest'  => true,
+					'single'        => true,
+					'type'          => 'string',
+					'auth_callback' => '__return_true',
+				)
+			);
 		}
 
 		/**
@@ -1010,9 +1209,21 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						'default'  => 'default',
 						'sanitize' => 'FILTER_SANITIZE_STRING',
 					),
-					'site-content-layout'           => array(
+					'ast-site-content-layout'       => array(
+						'default'  => '',
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'site-content-style'            => array(
 						'default'  => 'default',
-						'sanitize' => 'FILTER_SANITIZE_STRING',
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'site-sidebar-style'            => array(
+						'default'  => 'default',
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'astra-migrate-meta-layouts'    => array(
+						'default'  => 'default',
+						'sanitize' => 'FILTER_DEFAULT',
 					),
 					'ast-featured-img'              => array(
 						'sanitize' => 'FILTER_SANITIZE_STRING',

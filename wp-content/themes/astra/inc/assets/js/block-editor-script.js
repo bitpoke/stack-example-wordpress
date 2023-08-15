@@ -48,7 +48,9 @@ function astra_onload_function() {
 		}
 
 		let iframe = devicePreview.getElementsByTagName('iframe')[0];
-		editorDocument = iframe.contentWindow.document || iframe.contentDocument;
+		if ( devicePreview.querySelector('iframe') !== null ) {
+			editorDocument = iframe.contentWindow.document || iframe.contentDocument;
+		}
 
 		titleVisibility = editorDocument.querySelector( '.title-visibility' );
 		titleBlock = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
@@ -125,55 +127,150 @@ function astra_onload_function() {
 				}
 
 				let iframe = devicePreview.getElementsByTagName('iframe')[0];
-				editorDocument = iframe.contentWindow.document || iframe.contentDocument;
+				if ( devicePreview.querySelector('iframe') !== null ) {
+					editorDocument = iframe.contentWindow.document || iframe.contentDocument;
+				}
 
 				titleBlock = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
 			}
 
 			// Compatibility for updating layout in editor with direct reflection.
-			const contentLayout = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-layout'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-layout'] : 'default',
+			const contentLayout = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['ast-site-content-layout'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['ast-site-content-layout'] : 'default',
 				bodyClass = astraColors.ast_wp_version_higher_6_3 ? editorDocument.querySelector('html') : document.querySelector('body');
+			const contentStyle = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-style'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-style'] : 'default';
+			const sidebarStyle = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-style'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-style'] : 'default';
+			const sidebarLayout = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-layout'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-layout'] : 'default';
+			const applyContainerLayoutClasses = (layout) => {
+				switch (layout) {
+					case "plain-container":
+						bodyClass.classList.add("ast-plain-container");
+						bodyClass.classList.remove(
+							"ast-two-container",
+							"ast-page-builder-template",
+							"ast-separate-container",
+							"ast-narrow-container"
+						);
+						break;
+					case "content-boxed-container":
+						bodyClass.classList.add("ast-separate-container");
+						bodyClass.classList.remove(
+							"ast-two-container",
+							"ast-page-builder-template",
+							"ast-plain-container",
+							"ast-narrow-container"
+						);
+						break;
+					case "boxed-container":
+						bodyClass.classList.add(
+							"ast-separate-container",
+							"ast-two-container"
+						);
+						bodyClass.classList.remove(
+							"ast-page-builder-template",
+							"ast-plain-container",
+							"ast-narrow-container"
+						);
+						break;
+					case "page-builder-template":
+						bodyClass.classList.add("ast-page-builder-template");
+						bodyClass.classList.remove(
+							"ast-two-container",
+							"ast-plain-container",
+							"ast-separate-container",
+							"ast-narrow-container"
+						);
+						break;
+					case "narrow-container":
+						bodyClass.classList.add("ast-narrow-container");
+						bodyClass.classList.remove(
+							"ast-two-container",
+							"ast-plain-container",
+							"ast-separate-container",
+							"ast-page-builder-template"
+							);
+						break;
+					default:
+						break;
+				}
+			};
 
 			switch( contentLayout ) {
-				case 'boxed-container':
-					bodyClass.classList.add('ast-separate-container' , 'ast-two-container');
-					bodyClass.classList.remove('ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
+			case 'normal-width-container':
+				applyContainerLayoutClasses( 'plain-container' );
+			break;
+			case 'narrow-width-container':
+				applyContainerLayoutClasses( 'narrow-container' );
+			break;
+			case 'full-width-container':
+				applyContainerLayoutClasses( 'page-builder-template' );
+			break;
+			case 'default':
+				if( bodyClass.classList.contains( 'ast-default-layout-boxed-container' ) ) {
+					applyContainerLayoutClasses( 'boxed-container' );
+				}
+				else if( bodyClass.classList.contains( 'ast-default-layout-content-boxed-container' ) ) {
+					applyContainerLayoutClasses( 'content-boxed-container' );
+				} else if( bodyClass.classList.contains( 'ast-default-layout-page-builder' ) ) {
+					applyContainerLayoutClasses( 'page-builder-template' );
+				} else if( bodyClass.classList.contains( 'ast-default-layout-plain-container' ) ) {
+					applyContainerLayoutClasses( 'plain-container' );
+				} else if( bodyClass.classList.contains( 'ast-default-layout-narrow-container' ) ) {
+					applyContainerLayoutClasses( 'narrow-container' );
+				}
+			break;
+		}
+
+		const is_default_boxed         = bodyClass.classList.contains( 'ast-default-layout-boxed-container' );
+		const is_default_content_boxed = bodyClass.classList.contains( 'ast-default-layout-content-boxed-container' );
+		const is_default_normal        = bodyClass.classList.contains( 'ast-default-layout-plain-container' );
+		const is_default_normal_width  = ( 'default' === contentLayout && ( is_default_boxed || is_default_content_boxed || is_default_normal ) );
+		const is_content_style_boxed   = bodyClass.classList.contains( 'ast-default-content-boxed' );
+		const is_sidebar_style_boxed   = bodyClass.classList.contains( 'ast-default-sidebar-boxed' );
+
+		if ( 'normal-width-container' === contentLayout || is_default_normal_width ) {
+			switch ( contentStyle ) {
+				case 'boxed':
+					applyContainerLayoutClasses( 'boxed-container' );
+					break;
+				case 'unboxed':
+					applyContainerLayoutClasses( 'plain-container' );
 				break;
-				case 'content-boxed-container':
-					bodyClass.classList.add('ast-separate-container');
-					bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
-				break;
-				case 'plain-container':
-					bodyClass.classList.add('ast-plain-container');
-					bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container', 'ast-narrow-container');
-				break;
-				case 'page-builder':
-					bodyClass.classList.add('ast-page-builder-template');
-					bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container', 'ast-narrow-container');
-				break;
-				case 'narrow-container':
-					bodyClass.classList.add('ast-narrow-container');
-					bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container', 'ast-page-builder-template');
-				break;
-				case 'default':
-					if( bodyClass.classList.contains( 'ast-default-layout-boxed-container' ) ) {
-						bodyClass.classList.add('ast-separate-container' , 'ast-two-container');
-						bodyClass.classList.remove('ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
-					} else if( bodyClass.classList.contains( 'ast-default-layout-content-boxed-container' ) ) {
-						bodyClass.classList.add('ast-separate-container');
-						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-plain-container', 'ast-narrow-container');
-					} else if( bodyClass.classList.contains( 'ast-default-layout-page-builder' ) ) {
-						bodyClass.classList.add('ast-page-builder-template');
-						bodyClass.classList.remove('ast-two-container' , 'ast-plain-container' , 'ast-separate-container', 'ast-narrow-container');
-					} else if( bodyClass.classList.contains( 'ast-default-layout-plain-container' ) ) {
-						bodyClass.classList.add('ast-plain-container');
-						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container', 'ast-narrow-container');
-					} else if( bodyClass.classList.contains( 'ast-default-layout-narrow-container' ) ) {
-						bodyClass.classList.add('ast-narrow-container');
-						bodyClass.classList.remove('ast-two-container' , 'ast-page-builder-template' , 'ast-separate-container', 'ast-plain-container');
+				default:
+					if ( is_content_style_boxed ) {
+						applyContainerLayoutClasses( 'boxed-container' );
 					}
-				break;
+					break;
 			}
+
+			const is_sidebar_default_enabled = 'default' === sidebarLayout && ( ! bodyClass.classList.contains( 'ast-sidebar-default-no-sidebar' ) );
+			if( ( 'default' !== sidebarLayout && 'no-sidebar' !== sidebarLayout || is_sidebar_default_enabled ) ) {
+				switch ( sidebarStyle ) {
+					case 'boxed':
+						applyContainerLayoutClasses( 'boxed-container' );
+						break;
+					case 'unboxed':
+						applyContainerLayoutClasses( 'content-boxed-container' );
+						if ( 'unboxed' === contentStyle || 'default' === contentStyle && ! is_content_style_boxed ) {
+							applyContainerLayoutClasses( 'plain-container' );
+						}
+						break;
+					default:
+						if ( 'unboxed' === contentStyle && ! is_sidebar_style_boxed ) {
+							applyContainerLayoutClasses( 'plain-container' );
+						}
+						else if ( 'default' === contentStyle && ! is_sidebar_style_boxed && ! is_content_style_boxed ) {
+							applyContainerLayoutClasses( 'plain-container' );
+						}
+						else if ( is_sidebar_style_boxed ) {
+							applyContainerLayoutClasses( 'boxed-container' );
+						}
+						else if ( ! is_sidebar_style_boxed ) {
+							applyContainerLayoutClasses( 'content-boxed-container' );
+						}
+						break;
+				}
+			}
+		}
 
 			const editorStylesWrapper = editorDocument.querySelector( '.editor-styles-wrapper' );
 

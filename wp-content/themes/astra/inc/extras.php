@@ -111,12 +111,12 @@ if ( ! function_exists( 'astra_404_page_layout' ) ) {
 add_filter( 'astra_page_layout', 'astra_404_page_layout', 10, 1 );
 
 /**
- * Return current content layout
+ * Return current content layout.
  */
 if ( ! function_exists( 'astra_get_content_layout' ) ) {
 
 	/**
-	 * Return current content layout
+	 * Return current content layout.
 	 *
 	 * @since 1.0.0
 	 * @return mixed content layout.
@@ -125,44 +125,145 @@ if ( ! function_exists( 'astra_get_content_layout' ) ) {
 
 		if ( is_singular() ) {
 
-			// If post meta value is empty,
-			// Then get the POST_TYPE content layout.
-			$content_layout = astra_get_option_meta( 'site-content-layout', '', true );
+			// Old meta layout migration to new layout.
+			$old_meta_content_layout = astra_get_option_meta( 'site-content-layout', '', true );
+
+			if ( $old_meta_content_layout ) {
+				$content_layout = astra_toggle_layout( 'ast-site-content-layout', 'meta', false, $old_meta_content_layout );
+			} else {
+				$content_layout = astra_get_option_meta( 'ast-site-content-layout', '', true );
+	
+				// If post meta value is present, apply new layout option.
+				if ( $content_layout ) {
+					$content_layout = astra_toggle_layout( 'ast-site-content-layout', 'meta', false );
+				}
+			}
 
 			if ( empty( $content_layout ) ) {
 
-				$post_type = strval( get_post_type() );
-
-				$content_layout = astra_get_option( 'single-' . $post_type . '-content-layout' );
+				$post_type      = strval( get_post_type() );
+				$content_layout = astra_toggle_layout( 'single-' . $post_type . '-ast-content-layout', 'single', false );
 
 				if ( 'default' == $content_layout || empty( $content_layout ) ) {
 
 					// Get the GLOBAL content layout value.
 					// NOTE: Here not used `true` in the below function call.
-					$content_layout = astra_get_option( 'site-content-layout', 'full-width' );
+					$content_layout = astra_toggle_layout( 'ast-site-content-layout', 'global', false );
 				}
 			}
 		} else {
 
 			$content_layout = '';
 			$post_type      = strval( get_post_type() );
-
-			$content_layout = astra_get_option( 'archive-' . $post_type . '-content-layout' );
-
+			$content_layout = astra_toggle_layout( 'archive-' . $post_type . '-ast-content-layout', 'archive', false );
+			
 			if ( is_search() ) {
-				$content_layout = astra_get_option( 'archive-post-content-layout' );
+				$content_layout = astra_toggle_layout( 'archive-post-ast-content-layout', 'archive', false );
 			}
 
 			if ( 'default' == $content_layout || empty( $content_layout ) ) {
 
 				// Get the GLOBAL content layout value.
 				// NOTE: Here not used `true` in the below function call.
-				$content_layout = astra_get_option( 'site-content-layout', 'full-width' );
+				$content_layout = astra_toggle_layout( 'ast-site-content-layout', 'global', false );
 			}
 		}
 
 		return apply_filters( 'astra_get_content_layout', $content_layout );
 	}
+}
+
+/**
+ * Return current content layout as per new layout selection.
+ *
+ * @since 4.2.0
+ * @param mixed $new_content_option The new content layout option.
+ * @param mixed $level The level of the layout.
+ * @param mixed $post_id The id to fetch post meta.
+ * @param mixed $old_meta The old content layout option for migration cases.
+ * @return mixed content layout.
+ */
+function astra_toggle_layout( $new_content_option, $level, $post_id = false, $old_meta = false ) {
+
+	// Dynamic layout option for meta case.
+	$dynamic_layout_option = 'meta' === $level ? astra_get_option_meta( $new_content_option, '', true ) : astra_get_option( $new_content_option, 'default' );
+	$current_layout        = '';
+
+	// Get meta value by ID if specified.
+	if ( $post_id ) {
+		$dynamic_layout_option = get_post_meta( $post_id, $new_content_option, true );
+	}
+
+	// Meta layout migrations.
+	$meta_key              = astra_get_option_meta( 'astra-migrate-meta-layouts', '', true );
+	$migrated_user         = ( ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support() );
+	$third_party_meta_page = astra_third_party_archive_meta( 'site-content-layout' );
+	if ( 'meta' === $level && $migrated_user ) {
+		if ( false !== $third_party_meta_page ) {
+			$old_meta = $third_party_meta_page;
+			$meta_key = astra_third_party_archive_meta( 'astra-migrate-meta-layouts' );
+		}
+		if ( $old_meta && 'set' !== $meta_key ) {
+			$dynamic_layout_option = astra_migrate_meta_layout( $old_meta );
+		}
+	}
+
+	switch ( $dynamic_layout_option ) {
+		case 'normal-width-container':
+			$current_layout = 'plain-container';
+			break;
+		case 'narrow-width-container':
+			$current_layout = 'narrow-container';
+
+			// Exclude narrow layout for third party cases.
+			if ( astra_with_third_party() && ( ! $migrated_user ) ) {
+				$current_layout = 'plain-container';
+			}
+			break;
+		case 'full-width-container':
+			$current_layout = 'page-builder';
+			break;
+		default:
+			if ( 'meta' === $level && ! $migrated_user && 'set' !== $meta_key && $old_meta ) {
+				$current_layout = $old_meta;
+			} else {
+				$current_layout = '';
+			}
+			break;
+	}
+	return $current_layout;
+}
+
+/**
+ * Migrate old meta layout to new layout.
+ *
+ * @since 4.2.0
+ * @param mixed $meta_layout
+ * @return mixed new layout.
+ */
+function astra_migrate_meta_layout( $meta_layout ) {
+	$new_layout = '';
+	switch ( $meta_layout ) {
+		case 'boxed-container':
+			$new_layout = 'normal-width-container';
+			break;
+		case 'content-boxed-container':
+			$new_layout = 'normal-width-container';
+			break;
+		case 'plain-container':
+			$new_layout = 'normal-width-container';
+			break;
+		case 'page-builder':
+			$new_layout = 'full-width-container';
+			break;
+		case 'narrow-container':
+			$new_layout = 'narrow-width-container';
+			break;
+		default:
+			$new_layout = 'default';
+			break;
+	}
+	return $new_layout;
 }
 
 /**

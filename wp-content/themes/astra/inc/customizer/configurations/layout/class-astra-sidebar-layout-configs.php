@@ -58,7 +58,42 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
 						),
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider ast-section-spacing' ),
+				),
+
+				/**
+				 * Help Text: Sidebar Layout.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[site-sidebar-layout-description]',
+					'type'     => 'control',
+					'control'  => 'ast-description',
+					'section'  => 'section-sidebars',
+					'priority' => 5,
+					'title'    => '',
+					'help'     => __( 'Sidebar will only apply when container layout is set to normal.', 'astra' ),
+					'divider'  => array( 'ast_class' => 'ast-bottom-spacing' ),
+					'settings' => array(),
+					'hide'     => ( ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support() ),
+				),
+
+				/**
+				 * Option: Site Sidebar Style.
+				 */
+				array(
+					'name'       => ASTRA_THEME_SETTINGS . '[site-sidebar-style]',
+					'type'       => 'control',
+					'control'    => 'ast-selector',
+					'section'    => 'section-sidebars',
+					'default'    => astra_get_option( 'site-sidebar-style', 'unboxed' ),
+					'priority'   => 9,
+					'title'      => __( 'Sidebar Style', 'astra' ),
+					'choices'    => array(
+						'unboxed' => __( 'Unboxed', 'astra' ),
+						'boxed'   => __( 'Boxed', 'astra' ),
+					),
+					'responsive' => false,
+					'renderAs'   => 'text',
+					'divider'    => array( 'ast_class' => 'ast-top-divider ast-bottom-section-divider' ),
 				),
 
 				/**

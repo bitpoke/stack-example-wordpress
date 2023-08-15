@@ -40,6 +40,7 @@ if ( ! class_exists( 'Astra_Site_Layout_Configs' ) ) {
 					'section'     => 'section-container-layout',
 					'priority'    => 10,
 					'title'       => __( 'Container Width', 'astra' ),
+					'divider'     => array( 'ast_class' => 'ast-top-section-divider' ),
 					'context'     => ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'site-layouts' ) ) ? array(
 						Astra_Builder_Helper::$general_tab_config,
 						array(

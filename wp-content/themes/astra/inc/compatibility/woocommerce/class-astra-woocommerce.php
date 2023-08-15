@@ -808,9 +808,13 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 			$defaults['astra-woocommerce-cart-icons-flag'] = true;
 
 			// Container.
-			$defaults['woocommerce-content-layout']     = 'plain-container';
+			$defaults['woocommerce-ast-content-layout'] = 'normal-width-container';
 			$defaults['archive-product-content-layout'] = 'default';
 			$defaults['single-product-content-layout']  = 'default';
+
+			// Content Style.
+			$defaults['woocommerce-content-style'] = 'unboxed';
+			$defaults['woocommerce-sidebar-style'] = 'unboxed';
 
 			// Sidebar.
 			$defaults['woocommerce-sidebar-layout']     = 'no-sidebar';
@@ -1210,8 +1214,9 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 
 			if ( is_woocommerce() || is_checkout() || is_cart() || is_account_page() ) {
 
-				$woo_layout = astra_get_option( 'woocommerce-content-layout' );
+				$woo_layout = astra_toggle_layout( 'woocommerce-ast-content-layout', 'global', false );
 
+				// If not default override with woocommerce global container settings.
 				if ( 'default' !== $woo_layout ) {
 					$layout = $woo_layout;
 				}
@@ -1219,26 +1224,33 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 				$global_page_specific_layout = 'default';
 
 				if ( is_shop() || is_product_taxonomy() ) {
-					$global_page_specific_layout = astra_get_option( 'archive-product-content-layout', 'default' );
+					$global_page_specific_layout = astra_toggle_layout( 'archive-product-ast-content-layout', 'archive', false );
 				}
 
 				if ( is_product() ) {
-					$global_page_specific_layout = astra_get_option( 'single-product-content-layout', 'default' );
+					$global_page_specific_layout = astra_toggle_layout( 'single-product-ast-content-layout', 'single', false );
 				}
 
+				// If page specific is not default, overide with page specific layout.
 				if ( 'default' !== $global_page_specific_layout ) {
 					$layout = $global_page_specific_layout;
 				}
 
 				if ( is_shop() ) {
 					$shop_page_id = get_option( 'woocommerce_shop_page_id' );
-					$shop_layout  = get_post_meta( $shop_page_id, 'site-content-layout', true );
+					$shop_layout  = astra_toggle_layout( 'ast-site-content-layout', 'meta', $shop_page_id );
 				} elseif ( is_product_taxonomy() ) {
 					$shop_layout = 'default';
 				} else {
-					$shop_layout = astra_get_option_meta( 'site-content-layout', '', true );
+					$old_meta_layout = astra_get_option_meta( 'site-content-layout', '', true );
+					if ( isset( $old_meta_layout ) ) {
+						$shop_layout = astra_toggle_layout( 'ast-site-content-layout', 'meta', false, $old_meta_layout );
+					} else {
+						$shop_layout = astra_toggle_layout( 'ast-site-content-layout', 'meta', false );
+					}
 				}
 
+				// If meta is not default, overide with meta container layout settings.
 				if ( 'default' !== $shop_layout && ! empty( $shop_layout ) ) {
 					$layout = $shop_layout;
 				}

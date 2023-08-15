@@ -1452,6 +1452,12 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 
 			wp_enqueue_script( 'astra-customizer-preview-js', ASTRA_THEME_URI . 'assets/js/' . $dir . '/customizer-preview' . $js_prefix, array( 'customize-preview' ), ASTRA_THEME_VERSION, null );
 
+			// Get current container layout.
+			$content_layout   = astra_get_content_layout();
+			$is_boxed         = astra_is_content_style_boxed();
+			$is_sidebar_boxed = astra_is_sidebar_style_boxed();
+			$content_layout   = astra_apply_boxed_layouts( $content_layout, $is_boxed, $is_sidebar_boxed );
+
 			$localize_array = array(
 				'headerBreakpoint'                     => astra_header_break_point(),
 				'includeAnchorsInHeadindsCss'          => Astra_Dynamic_CSS::anchors_in_css_selectors_heading(),
@@ -1462,7 +1468,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				'gb_outline_buttons_patterns_support'  => Astra_Dynamic_CSS::gutenberg_core_patterns_compat(),
 				'font_weights_widget_title_support'    => Astra_Dynamic_CSS::support_font_css_to_widget_and_in_editor(),
 				'is_content_bg_option_to_load'         => astra_has_gcp_typo_preset_compatibility(),
-				'content_layout'                       => astra_get_content_layout(),
+				'content_layout'                       => $content_layout,
 				'site_layout'                          => astra_get_option( 'site-layout' ),
 				'has_block_editor_support'             => Astra_Dynamic_CSS::is_block_editor_support_enabled(),
 				'updated_gb_outline_button_patterns'   => astra_button_default_padding_updated(),

@@ -41,41 +41,69 @@ if ( ! class_exists( 'Astra_Lifter_Container_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option:Container Layout.
+				 * Option: Revamped Container Layout.
 				 */
 				array(
-					'name'              => ASTRA_THEME_SETTINGS . '[lifterlms-content-layout]',
+					'name'              => ASTRA_THEME_SETTINGS . '[lifterlms-ast-content-layout]',
 					'type'              => 'control',
 					'control'           => 'ast-radio-image',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
 					'section'           => $section,
-					'default'           => astra_get_option( 'lifterlms-content-layout' ),
+					'default'           => astra_get_option( 'lifterlms-ast-content-layout' ),
 					'priority'          => 1,
 					'title'             => __( 'Container Layout', 'astra' ),
 					'choices'           => array(
-						'default'                 => array(
+						'default'                => array(
 							'label' => __( 'Default', 'astra' ),
 							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
 						),
-						'boxed-container'         => array(
-							'label' => __( 'Boxed', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-boxed', false ) : '',
+						'normal-width-container' => array(
+							'label' => __( 'Normal', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'normal-width-container', false ) : '',
 						),
-						'content-boxed-container' => array(
-							'label' => __( 'Content Boxed', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-content-boxed', false ) : '',
-						),
-						'plain-container'         => array(
-							'label' => __( 'Full Width / Contained', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-contained', false ) : '',
-						),
-						'page-builder'            => array(
-							'label' => __( 'Full Width / Stretched', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-stretched', false ) : '',
+						'full-width-container'   => array(
+							'label' => __( 'Full Width', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'full-width-container', false ) : '',
 						),
 					),
-					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 				),
+
+				/**
+				 * Option: Content Style Option.
+				 */
+				array(
+					'name'       => ASTRA_THEME_SETTINGS . '[lifterlms-content-style]',
+					'type'       => 'control',
+					'control'    => 'ast-selector',
+					'section'    => $section,
+					'default'    => astra_get_option( 'lifterlms-content-style', 'default' ),
+					'priority'   => 1,
+					'title'      => __( 'Container Style', 'astra' ),
+					'choices'    => array(
+						'default' => 'Default',
+						'unboxed' => 'Unboxed',
+						'boxed'   => 'Boxed',
+					),
+					'renderAs'   => 'text',
+					'responsive' => false,
+				),
+
+				/**
+				 * Help Text: LifterLMS Content Style.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-content-style-description]',
+					'type'     => 'control',
+					'control'  => 'ast-description',
+					'section'  => $section,
+					'priority' => 1,
+					'title'    => '',
+					'help'     => __( 'Container style will apply only when layout is set to either normal or narrow.', 'astra' ),
+					'divider'  => array( 'ast_class' => 'ast-bottom-spacing' ),
+					'settings' => array(),
+				),
+
 			);
 
 			return array_merge( $configurations, $_configs );

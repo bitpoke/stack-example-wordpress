@@ -63,6 +63,44 @@ if ( ! class_exists( 'Astra_Learndash_Sidebar_Configs' ) ) {
 							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
 						),
 					),
+					'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
+				),
+
+				/**
+				 * Help Text: Learndash Sidebar Layout.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[learndash-sidebar-layout-description]',
+					'type'     => 'control',
+					'control'  => 'ast-description',
+					'section'  => 'section-leandash-general',
+					'priority' => 5,
+					'title'    => '',
+					'help'     => __( 'Sidebar will only apply when container layout is set to normal.', 'astra' ),
+					'divider'  => array( 'ast_class' => 'ast-bottom-spacing ast-section-divider' ),
+					'settings' => array(),
+					'hide'     => ( ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support() ),
+				),
+
+				/**
+				 * Option: Learndash Sidebar Style.
+				 */
+				array(
+					'name'       => ASTRA_THEME_SETTINGS . '[learndash-sidebar-style]',
+					'type'       => 'control',
+					'control'    => 'ast-selector',
+					'section'    => 'section-leandash-general',
+					'default'    => astra_get_option( 'learndash-sidebar-style', 'default' ),
+					'priority'   => 5,
+					'title'      => __( 'Sidebar Style', 'astra' ),
+					'choices'    => array(
+						'default' => __( 'Default', 'astra' ),
+						'unboxed' => __( 'Unboxed', 'astra' ),
+						'boxed'   => __( 'Boxed', 'astra' ),
+					),
+					'responsive' => false,
+					'renderAs'   => 'text',
+					'divider'    => array( 'ast_class' => 'ast-top-divider ast-top-spacing' ),
 				),
 			);
 

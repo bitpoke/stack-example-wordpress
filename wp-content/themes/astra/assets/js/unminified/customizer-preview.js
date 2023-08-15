@@ -791,7 +791,7 @@ function hasWordPressWidgetBlockEditor() {
 		var blog_grid = (typeof ( wp.customize._value['astra-settings[blog-grid]'] ) != 'undefined') ? wp.customize._value['astra-settings[blog-grid]']._value : 1;
 		var blog_layout = (typeof ( wp.customize._value['astra-settings[blog-layout]'] ) != 'undefined') ? wp.customize._value['astra-settings[blog-layout]']._value : 'blog-layout-1';
 
-		var dynamicSelector = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comments-area .comment-respond,.ast-separate-container .comments-area .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .site-main .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-count-wrapper, .ast-separate-container .comments-area .comments-title, .ast-single-related-posts-container, .ast-plain-container, .ast-narrow-container .site-content';
+		var dynamicSelector = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comments-area .comment-respond,.ast-separate-container .comments-area .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .site-main .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-count-wrapper, .ast-separate-container .comments-area .comments-title, .ast-single-related-posts-container, .ast-plain-container';
 
 		if( 'blog-layout-1' == blog_layout && 1 != blog_grid ) {
 			dynamicSelector   += ', .ast-separate-container .blog-layout-1, .ast-separate-container .blog-layout-2, .ast-separate-container .blog-layout-3';
@@ -825,12 +825,15 @@ function hasWordPressWidgetBlockEditor() {
 			dynamicSelector   += ', .ast-page-builder-template .site-content';
 			apply_content_bg(dynamicSelector);
 		}
-		else if ( 'narrow-container' == content_layout ) {
-			// Case: Container -> Narrow, Site-Layout -> Any.
-			dynamicSelector   += ', .ast-narrow-container .site-content';
-			apply_content_bg(dynamicSelector);
-		}
 	}
+
+	wp.customize( 'astra-settings[content-bg-obj-responsive]', function( setting ) {
+		setting.bind( function( color ) {
+			if ( 'narrow-container' == content_layout ) {
+				wp.customize.preview.send( 'refresh' );
+			}
+		} );
+	} );
 
 	/*
 	 * Blog Custom Width

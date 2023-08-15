@@ -208,7 +208,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 			);
 
 			// Container.
-			$defaults['lifterlms-content-layout'] = 'plain-container';
+			$defaults['lifterlms-ast-content-layout'] = 'normal-width-container';
 
 			// Sidebar.
 			$defaults['lifterlms-sidebar-layout']               = 'no-sidebar';
@@ -651,7 +651,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 
 			if ( is_lifterlms() || is_llms_account_page() || is_llms_checkout() ) {
 
-				$llms_layout = astra_get_option( 'lifterlms-content-layout' );
+				$llms_layout = astra_toggle_layout( 'lifterlms-ast-content-layout', 'global', false );
 
 				$supported_post_types = Astra_Posts_Structure_Loader::get_supported_post_types();
 				$post_type            = strval( get_post_type() );
@@ -660,10 +660,10 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 					$dynamic_sidebar_layout = '';
 
 					if ( is_singular() ) {
-						$dynamic_sidebar_layout = astra_get_option( 'single-' . $post_type . '-content-layout' );
+						$dynamic_sidebar_layout = astra_toggle_layout( 'single-' . $post_type . '-ast-content-layout', 'single', false );
 					}
 					if ( is_archive() ) {
-						$dynamic_sidebar_layout = astra_get_option( 'archive-' . $post_type . '-content-layout' );
+						$dynamic_sidebar_layout = astra_toggle_layout( 'archive-' . $post_type . '-ast-content-layout', 'archive', false );
 					}
 
 					if ( ! empty( $dynamic_sidebar_layout ) && 'default' !== $dynamic_sidebar_layout ) {
@@ -685,7 +685,12 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 				} elseif ( is_course_taxonomy() ) {
 					$shop_layout = 'default';
 				} else {
-					$shop_layout = astra_get_option_meta( 'site-content-layout', '', true );
+					$old_meta_layout = astra_get_option_meta( 'site-content-layout', '', true );
+					if ( isset( $old_meta_layout ) ) {
+						$shop_layout = astra_toggle_layout( 'ast-site-content-layout', 'meta', false, $old_meta_layout );
+					} else {
+						$shop_layout = astra_toggle_layout( 'ast-site-content-layout', 'meta', false );
+					}
 				}
 
 				if ( 'default' !== $shop_layout && ! empty( $shop_layout ) ) {

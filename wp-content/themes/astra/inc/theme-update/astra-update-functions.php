@@ -1282,3 +1282,112 @@ function astra_theme_background_updater_4_1_6() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Migrating users to new container layout options
+ *
+ * @since 4.2.0
+ * @return void
+ */
+function astra_theme_background_updater_4_2_0() {
+	$theme_options = get_option( 'astra-settings', array() );
+	if ( ! isset( $theme_options['v4-2-0-update-migration'] ) ) {
+
+		$post_types          = Astra_Posts_Structure_Loader::get_supported_post_types();
+		$theme_options       = get_option( 'astra-settings' );
+		$blog_types          = array( 'single', 'archive' );
+		$third_party_layouts = array( 'woocommerce', 'edd', 'lifterlms', 'lifterlms-course-lesson', 'learndash' );
+
+		// Global.
+		if ( isset( $theme_options['site-content-layout'] ) ) {
+			$theme_options = astra_apply_layout_migration( 'site-content-layout', 'ast-site-content-layout', 'site-content-style', 'site-sidebar-style', $theme_options );
+		}
+
+		// Single, archive.
+		foreach ( $blog_types as $index => $blog_type ) {
+			foreach ( $post_types as $index => $post_type ) {
+				$old_layout    = $blog_type . '-' . esc_attr( $post_type ) . '-content-layout';
+				$new_layout    = $blog_type . '-' . esc_attr( $post_type ) . '-ast-content-layout';
+				$content_style = $blog_type . '-' . esc_attr( $post_type ) . '-content-style';
+				$sidebar_style = $blog_type . '-' . esc_attr( $post_type ) . '-sidebar-style';
+
+				if ( isset( $theme_options[ $old_layout ] ) ) {
+					$theme_options = astra_apply_layout_migration( $old_layout, $new_layout, $content_style, $sidebar_style, $theme_options );
+				}
+			}
+		}
+
+		// Third party existing layout migrations to new layout options.
+		foreach ( $third_party_layouts as $index => $layout ) {
+			$old_layout    = $layout . '-content-layout';
+			$new_layout    = $layout . '-ast-content-layout';
+			$content_style = $layout . '-content-style';
+			$sidebar_style = $layout . '-sidebar-style';
+			if ( isset( $theme_options[ $old_layout ] ) ) {
+				if ( 'lifterlms' === $layout ) {
+
+					// Lifterlms course/lesson sidebar style migration case.
+					$theme_options = astra_apply_layout_migration( $old_layout, $new_layout, $content_style, 'lifterlms-course-lesson-sidebar-style', $theme_options );
+				}
+				$theme_options = astra_apply_layout_migration( $old_layout, $new_layout, $content_style, $sidebar_style, $theme_options );
+			}
+		}
+
+		if ( ! isset( $theme_options['fullwidth_sidebar_support'] ) ) {
+			$theme_options['fullwidth_sidebar_support'] = false;
+		}
+
+		$theme_options['v4-2-0-update-migration'] = true;
+		update_option( 'astra-settings', $theme_options );
+	}
+}
+
+/**
+ * Handle migration from old to new layouts.
+ *
+ * Migration cases for old users, old layouts -> new layouts.
+ *
+ * @since 4.2.0
+ * @param mixed $old_layout
+ * @param mixed $new_layout
+ * @param mixed $content_style
+ * @param mixed $sidebar_style
+ * @param array $theme_options
+ * @return array $theme_options The updated theme options.
+ */
+function astra_apply_layout_migration( $old_layout, $new_layout, $content_style, $sidebar_style, $theme_options ) {
+	switch ( astra_get_option( $old_layout ) ) {
+		case 'boxed-container':
+			$theme_options[ $new_layout ]    = 'normal-width-container';
+			$theme_options[ $content_style ] = 'boxed';
+			$theme_options[ $sidebar_style ] = 'boxed';
+			break;
+		case 'content-boxed-container':
+			$theme_options[ $new_layout ]    = 'normal-width-container';
+			$theme_options[ $content_style ] = 'boxed';
+			$theme_options[ $sidebar_style ] = 'unboxed';
+			break;
+		case 'plain-container':
+			$theme_options[ $new_layout ]    = 'normal-width-container';
+			$theme_options[ $content_style ] = 'unboxed';
+			$theme_options[ $sidebar_style ] = 'unboxed';
+			break;
+		case 'page-builder':
+			$theme_options[ $new_layout ]    = 'full-width-container';
+			$theme_options[ $content_style ] = 'unboxed';
+			$theme_options[ $sidebar_style ] = 'unboxed';
+			break;
+		case 'narrow-container':
+			$theme_options[ $new_layout ]    = 'narrow-width-container';
+			$theme_options[ $content_style ] = 'unboxed';
+			$theme_options[ $sidebar_style ] = 'unboxed';
+			break;
+		default:
+			$theme_options[ $new_layout ]    = 'default';
+			$theme_options[ $content_style ] = 'default';
+			$theme_options[ $sidebar_style ] = 'default';
+			break;
+	}
+	return $theme_options;
+}
+

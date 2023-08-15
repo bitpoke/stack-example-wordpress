@@ -64,7 +64,33 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$site_content_width         = astra_get_option( 'site-content-width', 1200 );
 			$narrow_container_max_width = astra_get_option( 'narrow-container-max-width', apply_filters( 'astra_narrow_container_width', 750 ) );
 			$header_logo_width          = astra_get_option( 'ast-header-responsive-logo-width' );
-			$container_layout           = astra_get_option( 'site-content-layout' );
+			$container_layout           = astra_toggle_layout( 'ast-site-content-layout', 'global', false );
+
+			// Get the Global Container Layout based on Global Boxed and Global Sidebar Style.
+			if ( 'plain-container' === $container_layout ) {
+				$is_boxed         = ( 'boxed' === astra_get_option( 'site-content-style' ) );
+				$is_sidebar_boxed = ( 'boxed' === astra_get_option( 'site-sidebar-style' ) );
+				$sidebar_layout   = astra_get_option( 'site-sidebar-layout' );
+
+				// Apply content boxed layout or boxed layout depending on content/sidebar style.
+				if ( 'no-sidebar' === $sidebar_layout ) {
+					if ( $is_boxed ) {
+						$container_layout = 'boxed-container';
+					}
+				} elseif ( 'no-sidebar' !== $sidebar_layout ) {
+					if ( $is_boxed ) {
+						$container_layout = $is_sidebar_boxed ? 'boxed-container' : 'content-boxed-container';
+					} elseif ( $is_sidebar_boxed ) {
+
+						/**
+						 * Case: unboxed container with sidebar boxed
+						 * Container unboxed css is applied through astra_apply_unboxed_container()
+						*/ 
+						$container_layout = 'boxed-container';
+					}
+				}
+			}
+
 			$title_color                = astra_get_option( 'header-color-site-title' );
 			$title_hover_color          = astra_get_option( 'header-color-h-site-title' );
 			$tagline_color              = astra_get_option( 'header-color-site-tagline' );
@@ -1789,12 +1815,12 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'.ast-separate-container .ast-article-post, .ast-separate-container .ast-article-single, .ast-separate-container .ast-comment-list li.depth-1, .ast-separate-container .comment-respond' => array(
 						'padding' => '3em',
 					),
+
 					'.ast-separate-container .ast-comment-list li.depth-1, .hentry' => array(
 						'margin-bottom' => '2em',
 					),
 					'.ast-separate-container .ast-archive-description, .ast-separate-container .ast-author-box' => array(
-						'background-color' => 'var(--ast-global-color-5)',
-						'border-bottom'    => '1px solid var(--ast-border-color)',
+						'border-bottom' => '1px solid var(--ast-border-color)',
 					),
 					'.ast-separate-container .comments-title' => array(
 						'padding' => '2em 2em 0 2em',
@@ -3209,23 +3235,10 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$parse_css .= astra_parse_css( $site_width, astra_get_tablet_breakpoint( '', 1 ) );
 
 			/* Narrow width container layout dynamic css */
-
-			// Global.
-			$parse_css .= astra_narrow_container_width( $container_layout, $narrow_container_max_width );
-
-			$post_type = strval( get_post_type() );
-			if ( is_singular() ) {
-				// Single layouts.
-				$single_container_layout = astra_get_option( 'single-' . $post_type . '-content-layout', '' );
-				$parse_css              .= astra_narrow_container_width( $single_container_layout, $narrow_container_max_width );
-			} else {
-				// Archive layouts.
-				$archive_container_layout = astra_get_option( 'archive-' . $post_type . '-content-layout', '' );
-				$parse_css               .= astra_narrow_container_width( $archive_container_layout, $narrow_container_max_width );
-			}
+			$parse_css .= astra_narrow_container_width( astra_get_content_layout(), $narrow_container_max_width );
 
 			// Page Meta.
-			$parse_css .= astra_narrow_container_width( astra_get_option_meta( 'site-content-layout', '', true ), $narrow_container_max_width );
+			$parse_css .= astra_narrow_container_width( astra_get_content_layout(), $narrow_container_max_width );
 
 			if ( Astra_Builder_Helper::apply_flex_based_css() ) {
 				$max_site_container_css = array(
@@ -3608,6 +3621,17 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					),
 				);
 				$parse_css       .= astra_parse_css( $list_spacing_css );
+			}
+
+			if ( self::astra_fullwidth_sidebar_support() ) {
+				if ( 'page-builder' == $ast_container_layout ) {
+					add_filter(
+						'astra_page_layout',
+						function() { // phpcs:ignore PHPCompatibility.FunctionDeclarations.NewClosure.Found
+							return 'no-sidebar';
+						}
+					);
+				}
 			}
 
 			$parse_css .= $dynamic_css;
@@ -4873,6 +4897,19 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 		public static function astra_woo_support_global_settings() {
 			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
 			return apply_filters( 'astra_get_option_woo_support_global_settings', isset( $astra_settings['woo_support_global_settings'] ) ? false : true );
+		}
+
+		/**
+		 * Check if fullwidth layout with sidebar is supported.
+		 * Old users - yes
+		 * New users - no
+		 *
+		 * @return bool true|false.
+		 * @since 4.2.0
+		 */
+		public static function astra_fullwidth_sidebar_support() {
+			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+			return apply_filters( 'astra_get_option_fullwidth_sidebar_support', isset( $astra_settings['fullwidth_sidebar_support'] ) ? false : true );
 		}
 	}
 }

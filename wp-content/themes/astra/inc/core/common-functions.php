@@ -1664,3 +1664,21 @@ function astra_narrow_container_width( $location, $narrow_container_max_width ) 
 		return '';
 	}
 }
+
+/**
+ * Function which will return the Sidebar Layout to determine default body classes for Editor.
+ * 
+ * @since 4.2.0
+ * @param string $post_type Post Type.
+ * @return string Sidebar Layout.
+ */
+function astra_get_sidebar_layout_for_editor( $post_type ) {
+
+	$sidebar_layout = astra_get_option( 'single-' . $post_type . '-sidebar-layout' );
+
+	if ( 'default' === $sidebar_layout ) {
+		$sidebar_layout = astra_get_option( 'site-sidebar-layout' );
+	}
+
+	return $sidebar_layout;
+}

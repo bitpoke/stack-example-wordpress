@@ -141,7 +141,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 		 */
 		public static function register_notices() {
 			// Return if white labeled.
-			if ( astra_is_white_labelled() ) {
+			if ( astra_is_white_labelled() || false === apply_filters( 'astra_showcase_starter_templates_notice', true ) ) {
 				return;
 			}
 

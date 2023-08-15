@@ -53,7 +53,7 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 					),
 					'transport'  => 'postMessage',
 					'responsive' => false,
-					'divider'    => array( 'ast_class' => 'ast-top-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-top-section-divider' ),
 					'renderAs'   => 'text',
 				),
 

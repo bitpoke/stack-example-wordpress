@@ -39,40 +39,66 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: Single Page Content Layout
+				 * Option: Global Revamped Container Layouts.
 				 */
 				array(
-					'name'              => ASTRA_THEME_SETTINGS . '[site-content-layout]',
+					'name'              => ASTRA_THEME_SETTINGS . '[ast-site-content-layout]',
 					'type'              => 'control',
 					'control'           => 'ast-radio-image',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
 					'section'           => 'section-container-layout',
-					'default'           => astra_get_option( 'site-content-layout' ),
+					'default'           => astra_get_option( 'ast-site-content-layout', 'normal-width-container' ),
 					'priority'          => 9,
 					'title'             => __( 'Container Layout', 'astra' ),
+					'transport'         => 'refresh',
 					'choices'           => array(
-						'boxed-container'         => array(
-							'label' => __( 'Boxed', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-boxed', false ) : '',
+						'normal-width-container' => array(
+							'label' => __( 'Normal', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'normal-width-container', false ) : '',
 						),
-						'content-boxed-container' => array(
-							'label' => __( 'Content Boxed', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-content-boxed', false ) : '',
+						'narrow-width-container' => array(
+							'label' => __( 'Narrow', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'narrow-width-container', false ) : '',
 						),
-						'plain-container'         => array(
-							'label' => __( 'Full Width / Contained', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-contained', false ) : '',
-						),
-						'page-builder'            => array(
-							'label' => __( 'Full Width / Stretched', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'container-full-width-stretched', false ) : '',
-						),
-						'narrow-container'        => array(
-							'label' => __( 'Narrow Width', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'narrow-container', false ) : '',
+						'full-width-container'   => array(
+							'label' => __( 'Full Width', 'astra' ),
+							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'full-width-container', false ) : '',
 						),
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-section-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-spacing ast-bottom-divider' ),
+				),
+
+				/**
+				 * Option: Global Content Style.
+				 */
+				array(
+					'name'       => ASTRA_THEME_SETTINGS . '[site-content-style]',
+					'type'       => 'control',
+					'control'    => 'ast-selector',
+					'section'    => 'section-container-layout',
+					'default'    => astra_get_option( 'site-content-style', 'boxed' ),
+					'priority'   => 9,
+					'title'      => __( 'Container Style', 'astra' ),
+					'choices'    => array(
+						'unboxed' => __( 'Unboxed', 'astra' ),
+						'boxed'   => __( 'Boxed', 'astra' ),
+					),
+					'responsive' => false,
+					'renderAs'   => 'text',
+				),
+
+				/**
+				 * Help Text: Global Content Style.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[site-content-style-description]',
+					'type'     => 'control',
+					'control'  => 'ast-description',
+					'section'  => 'section-container-layout',
+					'priority' => 9,
+					'title'    => '',
+					'help'     => __( 'Container style will apply only when layout is set to either normal or narrow.', 'astra' ),
+					'settings' => array(),
 				),
 
 				/**

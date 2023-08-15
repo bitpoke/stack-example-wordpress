@@ -297,6 +297,9 @@ td.ast-advanced-hook-row-heading {
 	align-items: center;
 	justify-content: center;
 	min-height: inherit;
+    right: 50%;
+    top: -38%;
+    transform: translateX(50%);
 }
 .ast-radio-img-svg:hover .ast-meta-image-tooltip {
 	opacity: 1;
@@ -319,4 +322,19 @@ a.ast-pro-upgrade-link {
     padding: 8px;
     border: 1px solid #0284C7;
     border-radius: 2px;
+}
+
+.ast-sub-section-title {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+#ast-label-container-style {
+    margin-top: 16px;
+}
+
+#ast-label-sidebar-style {
+    margin-top: 16px;
 }
