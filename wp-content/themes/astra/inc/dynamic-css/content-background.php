@@ -70,18 +70,18 @@ function astra_content_background_css( $dynamic_css ) {
 	);
 
 	// Apply Content BG Color for Narrow Unboxed Container.
-	if ( ! astra_is_content_style_boxed() ) {
+	if ( ! astra_is_content_style_boxed() && 'narrow-container' === $current_layout ) {
 		$container_css        = array_merge(
 			$container_css,
-			array( '.ast-narrow-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'desktop' ) ),
+			array( '.ast-narrow-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'desktop' ) )
 		);
 		$container_css_tablet = array_merge(
 			$container_css_tablet,
-			array( '.ast-narrow-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'tablet' ) ),
+			array( '.ast-narrow-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'tablet' ) )
 		);
 		$container_css_mobile = array_merge(
 			$container_css_mobile,
-			array( '.ast-narrow-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'mobile' ) ),
+			array( '.ast-narrow-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'mobile' ) )
 		);
 	}
 

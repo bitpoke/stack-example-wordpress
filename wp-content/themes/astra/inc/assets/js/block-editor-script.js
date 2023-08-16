@@ -33,7 +33,7 @@ function astra_onload_function() {
 	let titleVisibility = document.querySelector( '.title-visibility' ),
 		titleBlock = document.querySelector( '.edit-post-visual-editor__post-title-wrapper' ),
 		editorDocument = document,
-		postTitleOption = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-post-title'] || '';
+		postTitleOption = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-post-title'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-post-title'] : '';
 
 	if ( astraColors.ast_wp_version_higher_6_3 ) {
 		let desktopPreview = document.getElementsByClassName('is-desktop-preview'),
@@ -47,8 +47,8 @@ function astra_onload_function() {
 			devicePreview = mobilePreview[0];
 		}
 
-		let iframe = devicePreview.getElementsByTagName('iframe')[0];
-		if ( devicePreview.querySelector('iframe') !== null ) {
+		let iframe = undefined !== devicePreview ? devicePreview.getElementsByTagName('iframe')[0] : undefined;
+		if ( iframe && devicePreview.querySelector('iframe') !== null ) {
 			editorDocument = iframe.contentWindow.document || iframe.contentDocument;
 		}
 
@@ -126,8 +126,8 @@ function astra_onload_function() {
 					devicePreview = mobilePreview[0];
 				}
 
-				let iframe = devicePreview.getElementsByTagName('iframe')[0];
-				if ( devicePreview.querySelector('iframe') !== null ) {
+				let iframe = undefined !== devicePreview ? devicePreview.getElementsByTagName('iframe')[0] : undefined;
+				if ( iframe && devicePreview.querySelector('iframe') !== null ) {
 					editorDocument = iframe.contentWindow.document || iframe.contentDocument;
 				}
 
