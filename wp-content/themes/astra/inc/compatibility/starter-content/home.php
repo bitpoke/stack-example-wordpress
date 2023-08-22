@@ -18,8 +18,8 @@ $astra_default_home_content = '<!-- wp:cover {"minHeight":720,"minHeightUnit":"p
 <p>Pulvinar enim ac tortor nulla facilisi tristique facilisi <br>elementum sollicitudin eget lorem.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:buttons {"align":"wide"} -->
-<div class="wp-block-buttons alignwide"><!-- wp:button -->
+<!-- wp:buttons -->
+<div class="wp-block-buttons"><!-- wp:button -->
 <div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#">Make a Website</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons --></div><figure class="wp-block-media-text__media"><img src="' . trailingslashit( get_template_directory_uri() ) . 'inc/assets/images/starter-content/hero-img.svg" alt="" class="wp-image-118 size-full"/></figure></div>

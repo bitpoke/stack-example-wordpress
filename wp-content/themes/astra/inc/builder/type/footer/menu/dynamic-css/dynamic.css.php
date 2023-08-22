@@ -84,37 +84,41 @@ function astra_hb_footer_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 	$menu_spacing = astra_get_option( 'footer-main-menu-spacing' );
 
 	// - Desktop.
-	$menu_desktop_spacing_top = ( isset( $menu_spacing['desktop']['top'] ) && ! empty( $menu_spacing['desktop']['top'] ) ) ? $menu_spacing['desktop']['top'] : '';
+	$menu_desktop_spacing_top = ( isset( $menu_spacing['desktop']['top'] ) ) ? $menu_spacing['desktop']['top'] : '';
 
-	$menu_desktop_spacing_bottom = ( isset( $menu_spacing['desktop']['bottom'] ) && ! empty( $menu_spacing['desktop']['bottom'] ) ) ? $menu_spacing['desktop']['bottom'] : '';
+	$menu_desktop_spacing_bottom = ( isset( $menu_spacing['desktop']['bottom'] ) ) ? $menu_spacing['desktop']['bottom'] : '';
 
-	$menu_desktop_spacing_right = ( isset( $menu_spacing['desktop']['right'] ) && ! empty( $menu_spacing['desktop']['right'] ) ) ? $menu_spacing['desktop']['right'] : '';
+	$menu_desktop_spacing_right = ( isset( $menu_spacing['desktop']['right'] ) ) ? $menu_spacing['desktop']['right'] : '';
 
-	$menu_desktop_spacing_left = ( isset( $menu_spacing['desktop']['left'] ) && ! empty( $menu_spacing['desktop']['left'] ) ) ? $menu_spacing['desktop']['left'] : '';
+	$menu_desktop_spacing_left = ( isset( $menu_spacing['desktop']['left'] ) ) ? $menu_spacing['desktop']['left'] : '';
 
 	$menu_desktop_spacing_unit = ( isset( $menu_spacing['desktop-unit'] ) && ! empty( $menu_spacing['desktop-unit'] ) ) ? $menu_spacing['desktop-unit'] : '';
 
 	// - Tablet.
-	$menu_tablet_spacing_top = ( isset( $menu_spacing['tablet']['top'] ) && ! empty( $menu_spacing['tablet']['top'] ) ) ? $menu_spacing['tablet']['top'] : '';
-
-	$menu_tablet_spacing_bottom = ( isset( $menu_spacing['tablet']['bottom'] ) && ! empty( $menu_spacing['tablet']['bottom'] ) ) ? $menu_spacing['tablet']['bottom'] : '';
-
-	$menu_tablet_spacing_right = ( isset( $menu_spacing['tablet']['right'] ) && ! empty( $menu_spacing['tablet']['right'] ) ) ? $menu_spacing['tablet']['right'] : '';
-
-	$menu_tablet_spacing_left = ( isset( $menu_spacing['tablet']['left'] ) && ! empty( $menu_spacing['tablet']['left'] ) ) ? $menu_spacing['tablet']['left'] : '';
-
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_tablet_spacing_top = ( isset( $menu_spacing['tablet']['top'] ) ) ? $menu_spacing['tablet']['top'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_tablet_spacing_bottom = ( isset( $menu_spacing['tablet']['bottom'] ) ) ? $menu_spacing['tablet']['bottom'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_tablet_spacing_right = ( isset( $menu_spacing['tablet']['right'] ) ) ? $menu_spacing['tablet']['right'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_tablet_spacing_left = ( isset( $menu_spacing['tablet']['left'] ) ) ? $menu_spacing['tablet']['left'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 	$menu_tablet_spacing_unit = ( isset( $menu_spacing['tablet-unit'] ) && ! empty( $menu_spacing['tablet-unit'] ) ) ? $menu_spacing['tablet-unit'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 	// - Mobile.
-	$menu_mobile_spacing_top = ( isset( $menu_spacing['mobile']['top'] ) && ! empty( $menu_spacing['mobile']['top'] ) ) ? $menu_spacing['mobile']['top'] : '';
-
-	$menu_mobile_spacing_bottom = ( isset( $menu_spacing['mobile']['bottom'] ) && ! empty( $menu_spacing['mobile']['bottom'] ) ) ? $menu_spacing['mobile']['bottom'] : '';
-
-	$menu_mobile_spacing_right = ( isset( $menu_spacing['mobile']['right'] ) && ! empty( $menu_spacing['mobile']['right'] ) ) ? $menu_spacing['mobile']['right'] : '';
-
-	$menu_mobile_spacing_left = ( isset( $menu_spacing['mobile']['left'] ) && ! empty( $menu_spacing['mobile']['left'] ) ) ? $menu_spacing['mobile']['left'] : '';
-
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_mobile_spacing_top = ( isset( $menu_spacing['mobile']['top'] ) ) ? $menu_spacing['mobile']['top'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_mobile_spacing_bottom = ( isset( $menu_spacing['mobile']['bottom'] ) ) ? $menu_spacing['mobile']['bottom'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_mobile_spacing_right = ( isset( $menu_spacing['mobile']['right'] ) ) ? $menu_spacing['mobile']['right'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$menu_mobile_spacing_left = ( isset( $menu_spacing['mobile']['left'] ) ) ? $menu_spacing['mobile']['left'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 	$menu_mobile_spacing_unit = ( isset( $menu_spacing['mobile-unit'] ) && ! empty( $menu_spacing['mobile-unit'] ) ) ? $menu_spacing['mobile-unit'] : '';
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 	$margin = astra_get_option( $_section . '-margin' );
 

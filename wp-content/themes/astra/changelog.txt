@@ -1,3 +1,26 @@
+v4.2.2
+- New: Introduced new site logo color option.
+- Improvement: Header Footer Builder - Added new social profile "Threads".
+- Improvement: Values in customizer spacing controls should be unlinked if provided values are different.
+- Improvement: Guillemet symbol ">>" from "Post Comment" removed for better UI.
+- Improvement: New dashboard CTA banner for Starter Template installation.
+- Improvement: Synced comments-area border color with customizer border color setting.
+- Improvement: Accessibility improvements for WooCommerce pages.
+- Fix: "Post Comment" button & Search button does not inherit customizer global button stylings.
+- Fix: On home page & front page there is h1 tag assigned for site title.
+- Fix: Footer Builder - Menu - Zero '0' value not accepting in Menu Space.
+- Fix: Customizer - Typography font variation select dropdown gets cropped in font settings.
+- Fix: Related Posts - Meta's author link is incorrect for other than admin created posts.
+- Fix: Customizer - Typography - Font weight select dropdown gets blank after selecting font-family & font-weight “inherit”.
+- Fix: Spectra - Table of Content's anchor links jerks when "Smooth Scroll to ID" option enabled from customizer.
+- Fix: Blog: Pagination - Next Page and Previous Page pagination links jumps on mobile view on focus.
+- Fix: Editor - Theme preview starter-content button not aligned properly in the editor.
+- Fix: WooCommerce - Widget title size and color issue on all WooCommerce pages.
+- Fix: Block editor - Applying font-extras customizer settings to paragraph block (Line-height, Text Transform, Text Decoration, Letter Spacing).
+- Fix: Spectra Compatibility - Customizer spacing options overriding Spectra's block spacing.
+- Fix: Customizer - Gradient picker shrink in size under color-group background controls.
+- Fix: WooCommerce - Slide in cart action for Add to Cart button does not work.
+
 v4.2.1
 - Fix: PHP error while parsing container layout dynamic CSS under PHP-7.2 version.
 - Fix: Block editor - Undefined JS error while accessing post title visibility meta.
@@ -11,7 +34,7 @@ v4.2.0
 
 v4.1.8
 - Fix: Title enable/disable option missing in block editor with WordPress-6.3.
-- Fix: Content layouts not working realtime in block editor with WordPress-6.3. 
+- Fix: Content layouts not working realtime in block editor with WordPress-6.3.
 
 v4.1.7
 - Improvement: Compatibility with WordPress-6.3.

@@ -548,10 +548,6 @@ pre.wp-block code {
   word-break: normal;
 }
 
-.editor-styles-wrapper p {
-  line-height: 1.85714285714286;
-}
-
 .wp-block-quote.is-style-large cite {
   text-align: left;
 }

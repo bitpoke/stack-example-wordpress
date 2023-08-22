@@ -969,6 +969,9 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		),
 	);
 
+	// Default global SVG values.
+	$defaults['header-logo-color'] = '';
+
 	/**
 	* Mobile Menu
 	*/

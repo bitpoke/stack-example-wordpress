@@ -554,6 +554,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 						'300'       => __( 'Light 300', 'astra' ),
 						'300italic' => __( '300 Italic', 'astra' ),
 						'400'       => __( 'Normal 400', 'astra' ),
+						'normal'    => __( 'Normal 400', 'astra' ),
 						'italic'    => __( '400 Italic', 'astra' ),
 						'500'       => __( 'Medium 500', 'astra' ),
 						'500italic' => __( '500 Italic', 'astra' ),
@@ -1474,6 +1475,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				'updated_gb_outline_button_patterns'   => astra_button_default_padding_updated(),
 				'apply_content_bg_fullwidth_layouts'   => astra_get_option( 'apply-content-background-fullwidth-layouts', true ),
 				'astra_woo_btn_global_compatibility'   => is_callable( 'Astra_Dynamic_CSS::astra_woo_support_global_settings' ) ? Astra_Dynamic_CSS::astra_woo_support_global_settings() : false,
+				'v4_2_2_core_form_btns_styling'        => ( true === Astra_Dynamic_CSS::astra_core_form_btns_styling() ) ? ', #comments .submit, .search .search-submit' : '',
 			);
 
 			wp_localize_script( 'astra-customizer-preview-js', 'astraCustomizer', $localize_array );

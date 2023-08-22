@@ -77,6 +77,35 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 					'description' => '',
 				),
 
+				/**
+				 * Option: Header logo color.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[header-logo-color]',
+					'default'  => astra_get_option( 'header-logo-color' ),
+					'type'     => 'control',
+					'control'  => 'ast-color',
+					'section'  => 'title_tagline',
+					'priority' => 5,
+					'context'  => Astra_Builder_Helper::$design_tab,
+					'title'    => __( 'Logo Color', 'astra' ),
+					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+				),
+				
+				/**
+				 * Option: Header logo color description.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[header-logo-color-notice]',
+					'type'     => 'control',
+					'control'  => 'ast-description',
+					'section'  => 'title_tagline',
+					'priority' => 5,
+					'label'    => '',
+					'context'  => Astra_Builder_Helper::$design_tab,
+					'help'     => __( 'Use it with transparent images for optimal results.', 'astra' ),
+				),
+
 				// Option: Site Title Color.
 				array(
 					'name'      => 'header-color-site-title',

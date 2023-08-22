@@ -238,9 +238,15 @@ if ( ! function_exists( 'astra_post_author' ) ) {
 	 * @return html                Markup.
 	 */
 	function astra_post_author( $output_filter = '' ) {
-		
+
 		global $post;
-		$author_id = isset( $post->post_author ) ? $post->post_author : 1;
+		if ( isset( $post->post_author ) ) {
+			$author_id = $post->post_author;
+		} elseif ( is_callable( 'get_the_author_meta' ) ) {
+			$author_id = get_the_author_meta( 'ID' );
+		} else {
+			$author_id = 1;
+		}
 
 		ob_start();
 

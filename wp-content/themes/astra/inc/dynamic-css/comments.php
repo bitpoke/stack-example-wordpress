@@ -28,6 +28,7 @@ function astra_comments_css( $dynamic_css ) {
 		$theme_color    = astra_get_option( 'theme-color' );
 		$link_color     = astra_get_option( 'link-color', $theme_color );
 		$is_site_rtl    = is_rtl();
+		$border_color   = astra_get_option( 'border-color' );
 
 		if ( is_array( $body_font_size ) ) {
 			$body_font_size_desktop = ( isset( $body_font_size['desktop'] ) && '' != $body_font_size['desktop'] ) ? $body_font_size['desktop'] : 15;
@@ -58,7 +59,7 @@ function astra_comments_css( $dynamic_css ) {
 
 		$single_post_comment_css = '.comments-count-wrapper {
 			padding: ' . esc_attr( $padding_comment_title ) . ';
-      }
+      	}
 
       .comments-count-wrapper .comments-title {
       font-weight: normal;
@@ -83,7 +84,7 @@ function astra_comments_css( $dynamic_css ) {
 
       .ast-comment-list .comment-respond {
       padding: 1em 0;
-      border-bottom: 1px solid #eeeeee;
+      border-bottom: 1px solid ' . esc_attr( $border_color ) . ';
       }
 
       .ast-comment-list .comment-respond .comment-reply-title {

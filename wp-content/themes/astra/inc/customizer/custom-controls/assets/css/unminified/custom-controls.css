@@ -787,26 +787,6 @@
 .customize-control .components-tooltip {
     z-index: 8 !important;
 }
-.color-group-item .components-popover .components-popover__content,
-.ast-color-palette .components-popover .components-popover__content {
-    min-width: 3em;
-    max-width: 10em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 1ch 1.5ch;
-    border-radius: 0.3ch;
-    box-shadow: 0 1em 2em -0.5em rgb(0 0 0 / 35%);
-    background: var(--ast-customizer-color-12);
-    color: var(--ast-customizer-color-10);
-    z-index: 1000;
-    text-align: center;
-    text-transform: none;
-    font-size: .9em;
-    line-height: 1;
-    user-select: none;
-    pointer-events: none;
-}
 .ast-color-palette .components-popover .components-popover__content {
     bottom: calc(100% + 5px);
     animation: tooltips-vert .3s ease-out forwards;
@@ -2393,6 +2373,21 @@ div .ast-field-settings-modal .customize-control-ast-font-extras {
     background: linear-gradient(90deg, rgba(247,247,247,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%);
     pointer-events: none;
     z-index: 1;
+}
+
+#customize-control-astra-settings-ast-headings-font-settings .ast-fields-wrap,
+#customize-control-astra-settings-ast-body-font-settings .ast-fields-wrap {
+    overflow: visible;
+}
+
+/**
+ * Hide normal font weight from font weight dropdown and display only if its set as font weight.
+ */
+.customize-control-ast-font select option[value="normal"], .customize-control-ast-font select[data-value="normal"] option[value="400"] {
+    display: none;
+}
+.customize-control-ast-font select[data-value="normal"] option[value="normal"] {
+    display: block;
 }
 
 span.customize-control-title.ast-group-section-title {

@@ -117,6 +117,7 @@ final class Astra_Control_Typography extends WP_Customize_Control {
 			'300'       => __( 'Light 300', 'astra' ),
 			'300italic' => __( '300 Italic', 'astra' ),
 			'400'       => __( 'Normal 400', 'astra' ),
+			'normal'    => __( 'Normal 400', 'astra' ),
 			'italic'    => __( '400 Italic', 'astra' ),
 			'500'       => __( 'Medium 500', 'astra' ),
 			'500italic' => __( '500 Italic', 'astra' ),

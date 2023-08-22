@@ -1667,7 +1667,7 @@ function astra_narrow_container_width( $location, $narrow_container_max_width ) 
 
 /**
  * Function which will return the Sidebar Layout to determine default body classes for Editor.
- * 
+ *
  * @since 4.2.0
  * @param string $post_type Post Type.
  * @return string Sidebar Layout.
@@ -1681,4 +1681,161 @@ function astra_get_sidebar_layout_for_editor( $post_type ) {
 	}
 
 	return $sidebar_layout;
+}
+
+/**
+ * Gets the SVG for the duotone filter definition.
+ *
+ * @since 4.2.2
+ *
+ * @param string $filter_id The ID of the filter.
+ * @param array  $color    An array of color strings.
+ * @return string An SVG with a duotone filter definition.
+ */
+function astra_get_filter_svg( $filter_id, $color ) {
+
+	$duotone_values = array(
+		'r' => array(),
+		'g' => array(),
+		'b' => array(),
+		'a' => array(),
+	);
+
+	/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	$duotone_values['r'][] = $color['r'] / 255;
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$duotone_values['g'][] = $color['g'] / 255;
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$duotone_values['b'][] = $color['b'] / 255;
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$duotone_values['a'][] = $color['a'];
+	ob_start();
+
+	?>
+
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 0 0"
+		width="0"
+		height="0"
+		focusable="false"
+		role="none"
+		style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;"
+	>
+		<defs>
+			<filter id="<?php echo esc_attr( $filter_id ); ?>">
+				<feColorMatrix
+					color-interpolation-filters="sRGB"
+					type="matrix"
+					values="
+						.299 .587 .114 0 0
+						.299 .587 .114 0 0
+						.299 .587 .114 0 0
+						.299 .587 .114 0 0
+					"
+				/>
+				<feComponentTransfer color-interpolation-filters="sRGB" >
+					<feFuncR type="table" tableValues="<?php echo esc_attr( implode( ' ', $duotone_values['r'] ) ); ?>" />
+					<feFuncG type="table" tableValues="<?php echo esc_attr( implode( ' ', $duotone_values['g'] ) ); ?>" />
+					<feFuncB type="table" tableValues="<?php echo esc_attr( implode( ' ', $duotone_values['b'] ) ); ?>" />
+					<feFuncA type="table" tableValues="<?php echo esc_attr( implode( ' ', $duotone_values['a'] ) ); ?>" />
+				</feComponentTransfer>
+				<feComposite in2="SourceGraphic" operator="in" />
+			</filter>
+		</defs>
+	</svg>
+
+	<?php
+
+	$svg = ob_get_clean();
+
+	// Clean up the whitespace.
+	$svg = preg_replace( "/[\r\n\t ]+/", ' ', $svg );
+	$svg = str_replace( '> <', '><', $svg );
+	$svg = trim( $svg );
+
+	return $svg;
+}
+
+/**
+ * Converts HEX to RGB.
+ *
+ * @since 4.2.2
+ *
+ * @param string $hex Hex color.
+ * @return array split version of rgb.
+ */
+function astra_hex_to_rgb( $hex ) {
+	// @codingStandardsIgnoreStart
+	/**
+	 * @psalm-suppress PossiblyNullArrayAccess
+	 */
+	list($r, $g, $b) = sscanf( $hex, '#%02x%02x%02x' );
+
+	// @codingStandardsIgnoreEnd
+	return array(
+		'r' => $r,
+		'g' => $g,
+		'b' => $b,
+		'a' => 1,
+	);
+}
+
+/**
+ * Converts RGBA to split array RGBA.
+ *
+ * @since 4.2.2
+ *
+ * @param string $rgba RGBA value.
+ * @return array split version of rgba.
+ */
+function astra_split_rgba( $rgba ) {
+	// Remove the "rgba(" and ")" from the input string.
+	$rgba = str_replace( array( 'rgba(', ')' ), '', $rgba );
+
+	// Split the RGBA values by comma.
+	$values = explode( ',', $rgba );
+
+	// Convert each value from string to integer.
+	$r = intval( $values[0] );
+	$g = intval( $values[1] );
+	$b = intval( $values[2] );
+	$a = floatval( $values[3] );
+
+	// Create the split RGBA string.
+	return array(
+		'r' => $r,
+		'g' => $g,
+		'b' => $b,
+		'a' => $a,
+	);
+}
+
+
+/**
+ * Render svg mask.
+ *
+ * @since 4.2.2
+ *
+ * @param string $id id.
+ * @param string $filter_name filter name.
+ * @param string $color color.
+ * @return mixed masked svg,
+ */
+function astra_render_svg_mask( $id, $filter_name, $color ) {
+
+	if ( 0 === strpos( $color, 'var(--' ) ) {
+		$agp = new Astra_Global_Palette();
+		/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		$svg_color = astra_hex_to_rgb( $agp->get_color_by_palette_variable( $color ) );
+	} elseif ( preg_match( '/^#[a-f0-9]{6}$/i', $color ) ) {
+		/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		$svg_color = astra_hex_to_rgb( $color );
+	} else {
+		/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		$svg_color = astra_split_rgba( $color );
+	}
+
+	/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+	echo astra_get_filter_svg( $id, apply_filters( 'astra_' . $filter_name, $svg_color ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }

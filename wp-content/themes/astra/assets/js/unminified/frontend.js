@@ -1152,7 +1152,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	 * @since x.x.x
 	 */
 	if ( astra.is_scroll_to_id ) {
-		const links = document.querySelectorAll('a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"])');
+		const links = document.querySelectorAll('a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"]):not(.uagb-toc-link__trigger)');
 		if (links) {
 
 			for (const link of links) {

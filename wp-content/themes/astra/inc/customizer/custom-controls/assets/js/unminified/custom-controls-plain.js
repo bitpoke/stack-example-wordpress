@@ -140,7 +140,7 @@
 		{
 			var weightObject        = [ '400', '600' ];
 			if ( fontValue == 'inherit' ) {
-				weightObject = [ '100','200','300','400','500','600','700','800','900' ];
+				weightObject = [ '100','200','300','400','normal','500','600','700','800','900' ];
 			} else if ( 'undefined' != typeof AstFontFamilies.system[ fontValue ] ) {
 				weightObject = AstFontFamilies.system[ fontValue ].weights;
 			} else if ( 'undefined' != typeof AstFontFamilies.google[ fontValue ] ) {

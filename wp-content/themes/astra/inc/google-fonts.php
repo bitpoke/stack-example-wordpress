@@ -22,6 +22,12 @@ return array(
 		),
 	),
 	array(
+		'ADLaM Display' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
 		'Abel' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'sans-serif',
@@ -1279,6 +1285,12 @@ return array(
 		'Bree Serif' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'serif',
+		),
+	),
+	array(
+		'Bricolage Grotesque' => array(
+			'variants' => array( '200', '300', 'regular', '500', '600', '700', '800' ),
+			'category' => 'sans-serif',
 		),
 	),
 	array(
@@ -5585,7 +5597,7 @@ return array(
 	),
 	array(
 		'Noto Sans HK' => array(
-			'variants' => array( '100', '300', 'regular', '500', '700', '900' ),
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -5651,7 +5663,7 @@ return array(
 	),
 	array(
 		'Noto Sans KR' => array(
-			'variants' => array( '100', '300', 'regular', '500', '700', '900' ),
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -6035,7 +6047,7 @@ return array(
 	),
 	array(
 		'Noto Sans SC' => array(
-			'variants' => array( '100', '300', 'regular', '500', '700', '900' ),
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -6137,7 +6149,7 @@ return array(
 	),
 	array(
 		'Noto Sans TC' => array(
-			'variants' => array( '100', '300', 'regular', '500', '700', '900' ),
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -7774,6 +7786,12 @@ return array(
 		),
 	),
 	array(
+		'Ruwudu' => array(
+			'variants' => array( 'regular', '500', '600', '700' ),
+			'category' => 'serif',
+		),
+	),
+	array(
 		'Rye' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
@@ -9127,6 +9145,12 @@ return array(
 		'Waterfall' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Wavefont' => array(
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
+			'category' => 'display',
 		),
 	),
 	array(

@@ -196,6 +196,12 @@ function astra_pagination_css( $dynamic_css ) {
                     }';
 			}
 		}
+		$css_output_mobile   = array(
+			'.ast-pagination .next:focus, .ast-pagination .prev:focus' => array(
+				'width' => '100% !important',
+			),
+		);
+		$dynamic_css        .= astra_parse_css( $css_output_mobile, '', astra_get_mobile_breakpoint() );
 		return $dynamic_css .= Astra_Enqueue_Scripts::trim_css( $pagination_static_css );
 	}
 	return $dynamic_css;

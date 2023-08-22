@@ -569,12 +569,7 @@ function astra_get_site_title_tagline( $display_site_title, $display_site_taglin
 	if ( ! apply_filters( 'astra_disable_site_identity', false ) ) {
 
 		// Site Title.
-		$tag = 'span';
-		if ( is_home() || is_front_page() ) {
-			if ( apply_filters( 'astra_show_site_title_h1_tag', true ) && 'desktop' === $device ) {
-				$tag = 'h1';
-			}
-		}
+		$tag = apply_filters( 'astra_show_site_title_h1_tag', false ) ? 'h1' : 'span';
 
 		/**
 		 * Filters the site title output.
@@ -2020,3 +2015,27 @@ function astra_bbpress_issue( $value ) {
 
 add_filter( 'astra_single_layout_one_banner_visibility', 'astra_bbpress_issue', 50 );
 
+
+/**
+ * Render Svg Mask for Header logo
+ *
+ * @since 4.2.2
+ * @return void
+ */
+function astra_render_header_svg_mask() {
+
+	$transparent_header_logo_color = astra_get_option( 'transparent-header-logo-color' );
+	$header_logo_color             = astra_get_option( 'header-logo-color' );
+
+	if ( $header_logo_color && 'unset' !== $header_logo_color ) {
+		/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		astra_render_svg_mask( 'ast-img-color-filter', 'header_logo_svg_color', $header_logo_color );
+	}
+
+	if ( $transparent_header_logo_color && 'unset' !== $transparent_header_logo_color ) {
+		/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		astra_render_svg_mask( 'ast-img-color-filter-2', 'header_logo_svg_color', $transparent_header_logo_color );
+	}
+}
+
+add_action( 'wp_footer', 'astra_render_header_svg_mask' );

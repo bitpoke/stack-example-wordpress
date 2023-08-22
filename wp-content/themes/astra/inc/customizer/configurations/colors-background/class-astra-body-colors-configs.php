@@ -162,6 +162,7 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 					'title'    => __( 'Borders', 'astra' ),
 					'divider'  => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
 				),
+
 			);
 
 			$configurations = array_merge( $configurations, $_configs );

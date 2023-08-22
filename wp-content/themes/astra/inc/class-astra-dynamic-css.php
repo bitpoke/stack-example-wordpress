@@ -85,7 +85,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						/**
 						 * Case: unboxed container with sidebar boxed
 						 * Container unboxed css is applied through astra_apply_unboxed_container()
-						*/ 
+						*/
 						$container_layout = 'boxed-container';
 					}
 				}
@@ -771,7 +771,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			}
 
 			// Default widget title color.
-			$css_output['.widget-title'] = array(
+			$css_output['.widget-title, .widget .wp-block-heading'] = array(
 				'font-size' => astra_get_font_css_value( (int) $body_font_size_desktop * 1.428571429 ),
 				'color'     => astra_has_global_color_format_support() ? esc_attr( $heading_base_color ) : esc_attr( $text_color ),
 			);
@@ -810,8 +810,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 			// Accessibility options.
 			$enable_site_accessibility        = astra_get_option( 'site-accessibility-toggle', false );
-			$html_selectors_focus_visible     = 'a:focus-visible, .ast-menu-toggle:focus-visible, .site .skip-link:focus-visible, .wp-block-loginout input:focus-visible, .wp-block-search.wp-block-search__button-inside .wp-block-search__inside-wrapper, .ast-header-navigation-arrow:focus-visible';
-			$html_selectors_focus_only_inputs = 'input:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="password"]:focus, input[type="reset"]:focus, input[type="search"]:focus, textarea:focus, .wp-block-search__input:focus, [data-section="section-header-mobile-trigger"] .ast-button-wrap .ast-mobile-menu-trigger-minimal:focus, .ast-mobile-popup-drawer.active .menu-toggle-close:focus, .woocommerce-ordering select.orderby:focus, #ast-scroll-top:focus, .woocommerce a.add_to_cart_button:focus, .woocommerce .button.single_add_to_cart_button:focus';
+			$html_selectors_focus_visible     = 'a:focus-visible, .ast-menu-toggle:focus-visible, .site .skip-link:focus-visible, .wp-block-loginout input:focus-visible, .wp-block-search.wp-block-search__button-inside .wp-block-search__inside-wrapper, .ast-header-navigation-arrow:focus-visible, .woocommerce .wc-proceed-to-checkout > .checkout-button:focus-visible, .woocommerce .woocommerce-MyAccount-navigation ul li a:focus-visible, .ast-orders-table__row .ast-orders-table__cell:focus-visible, .woocommerce .woocommerce-order-details .order-again > .button:focus-visible, .woocommerce .woocommerce-message a.button.wc-forward:focus-visible, .woocommerce #minus_qty:focus-visible, .woocommerce #plus_qty:focus-visible, a#ast-apply-coupon:focus-visible, .woocommerce .woocommerce-info a:focus-visible, .woocommerce .astra-shop-summary-wrap a:focus-visible, .woocommerce a.wc-forward:focus-visible, #ast-apply-coupon:focus-visible, .woocommerce-js .woocommerce-mini-cart-item a.remove:focus-visible';
+			$html_selectors_focus_only_inputs = 'input:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="password"]:focus, input[type="reset"]:focus, input[type="search"]:focus, input[type="number"]:focus, textarea:focus, .wp-block-search__input:focus, [data-section="section-header-mobile-trigger"] .ast-button-wrap .ast-mobile-menu-trigger-minimal:focus, .ast-mobile-popup-drawer.active .menu-toggle-close:focus, .woocommerce-ordering select.orderby:focus, #ast-scroll-top:focus, #coupon_code:focus, .woocommerce-page #comment:focus, .woocommerce #reviews #respond input#submit:focus, .woocommerce a.add_to_cart_button:focus, .woocommerce .button.single_add_to_cart_button:focus, .woocommerce .woocommerce-cart-form button:focus, .woocommerce .woocommerce-cart-form__cart-item .quantity .qty:focus, .woocommerce .woocommerce-billing-fields .woocommerce-billing-fields__field-wrapper .woocommerce-input-wrapper > .input-text:focus, .woocommerce #order_comments:focus, .woocommerce #place_order:focus, .woocommerce .woocommerce-address-fields .woocommerce-address-fields__field-wrapper .woocommerce-input-wrapper > .input-text:focus, .woocommerce .woocommerce-MyAccount-content form button:focus, .woocommerce .woocommerce-MyAccount-content .woocommerce-EditAccountForm .woocommerce-form-row .woocommerce-Input.input-text:focus, .woocommerce .ast-woocommerce-container .woocommerce-pagination ul.page-numbers li a:focus, body #content .woocommerce form .form-row .select2-container--default .select2-selection--single:focus, #ast-coupon-code:focus, .woocommerce.woocommerce-js .quantity input[type=number]:focus, .woocommerce-js .woocommerce-mini-cart-item .quantity input[type=number]:focus, .woocommerce p#ast-coupon-trigger:focus';
 
 			if ( $enable_site_accessibility ) {
 				$outline_style = astra_get_option( 'site-accessibility-highlight-type' );
@@ -900,6 +900,19 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$css_output['.site-logo-img img'] = array(
 					' transition' => 'all 0.2s linear',
 				);
+
+				if ( astra_get_option( 'header-logo-color' ) ) {
+					$css_output['.site-logo-img img'] = array(
+						'filter'      => 'url(#ast-img-color-filter)',
+						' transition' => 'all 0.2s linear',
+					);
+				}
+
+				if ( astra_get_option( 'transparent-header-logo-color' ) ) {
+					$css_output['.site-logo-img .transparent-custom-logo img, .ast-theme-transparent-header .site-logo-img img'] = array(
+						'filter' => 'url(#ast-img-color-filter-2)',
+					);
+				}
 			}
 
 			$parse_css = '';
@@ -2152,17 +2165,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$search_button_selector       = ( ! $block_editor_legacy_setup || $is_wp_5_8_support_enabled ) ? ', form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button' : '';
 				$search_button_hover_selector = ( ! $block_editor_legacy_setup || $is_wp_5_8_support_enabled ) ? ', form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button:hover, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button:focus' : '';
 
-				$file_block_button_selector       = ( ! $block_editor_legacy_setup || $improve_gb_ui ) ? ', body .wp-block-file .wp-block-file__button' : '';
-				$file_block_button_hover_selector = ( ! $block_editor_legacy_setup || $improve_gb_ui ) ? ', body .wp-block-file .wp-block-file__button:hover, body .wp-block-file .wp-block-file__button:focus' : '';
-				$search_page_btn_selector         = ( true === $update_customizer_strctural_defaults ) ? ', .search .search-submit' : '';
-				$woo_btns_selector                = ( true === self::astra_woo_support_global_settings() ) ? ', .woocommerce a.button, .woocommerce button.button, .woocommerce .woocommerce-message a.button, .woocommerce #respond input#submit.alt, .woocommerce input.button.alt, .woocommerce input.button,.woocommerce input.button:disabled, .woocommerce input.button:disabled[disabled], .woocommerce input.button:disabled:hover, .woocommerce input.button:disabled[disabled]:hover, .woocommerce #respond input#submit, .woocommerce button.button.alt.disabled, .wc-block-grid__products .wc-block-grid__product .wp-block-button__link, .wc-block-grid__product-onsale, [CLASS*="wc-block"] button, .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons .button:not(.checkout):not(.ast-continue-shopping), .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons a.checkout, .woocommerce button.button.alt.disabled.wc-variation-selection-needed' : '';
-				$woo_btns_hover_selector          = ( true === self::astra_woo_support_global_settings() ) ? ', .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce .woocommerce-message a.button:hover,.woocommerce #respond input#submit:hover,.woocommerce #respond input#submit.alt:hover, .woocommerce input.button.alt:hover, .woocommerce input.button:hover, .woocommerce button.button.alt.disabled:hover, .wc-block-grid__products .wc-block-grid__product .wp-block-button__link:hover, [CLASS*="wc-block"] button:hover, .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons .button:not(.checkout):not(.ast-continue-shopping):hover, .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons a.checkout:hover, .woocommerce button.button.alt.disabled.wc-variation-selection-needed:hover' : '';
+				$file_block_button_selector             = ( ! $block_editor_legacy_setup || $improve_gb_ui ) ? ', body .wp-block-file .wp-block-file__button' : '';
+				$file_block_button_hover_selector       = ( ! $block_editor_legacy_setup || $improve_gb_ui ) ? ', body .wp-block-file .wp-block-file__button:hover, body .wp-block-file .wp-block-file__button:focus' : '';
+				$search_page_btn_selector               = ( true === $update_customizer_strctural_defaults ) ? ', .search .search-submit' : '';
+				$woo_btns_selector                      = ( true === self::astra_woo_support_global_settings() ) ? ', .woocommerce-js a.button, .woocommerce button.button, .woocommerce .woocommerce-message a.button, .woocommerce #respond input#submit.alt, .woocommerce input.button.alt, .woocommerce input.button,.woocommerce input.button:disabled, .woocommerce input.button:disabled[disabled], .woocommerce input.button:disabled:hover, .woocommerce input.button:disabled[disabled]:hover, .woocommerce #respond input#submit, .woocommerce button.button.alt.disabled, .wc-block-grid__products .wc-block-grid__product .wp-block-button__link, .wc-block-grid__product-onsale, [CLASS*="wc-block"] button, .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons .button:not(.checkout):not(.ast-continue-shopping), .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons a.checkout, .woocommerce button.button.alt.disabled.wc-variation-selection-needed' : '';
+				$woo_btns_hover_selector                = ( true === self::astra_woo_support_global_settings() ) ? ', .woocommerce-js a.button:hover, .woocommerce button.button:hover, .woocommerce .woocommerce-message a.button:hover,.woocommerce #respond input#submit:hover,.woocommerce #respond input#submit.alt:hover, .woocommerce input.button.alt:hover, .woocommerce input.button:hover, .woocommerce button.button.alt.disabled:hover, .wc-block-grid__products .wc-block-grid__product .wp-block-button__link:hover, [CLASS*="wc-block"] button:hover, .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons .button:not(.checkout):not(.ast-continue-shopping):hover, .woocommerce-js .astra-cart-drawer .astra-cart-drawer-content .woocommerce-mini-cart__buttons a.checkout:hover, .woocommerce button.button.alt.disabled.wc-variation-selection-needed:hover' : '';
+				$v4_2_2_core_form_btns_styling_selector = ( true === self::astra_core_form_btns_styling() ) ? ', #comments .submit, .search .search-submit' : '';
 
 				/**
 				 * Global button CSS - Desktop.
 				 */
 				$global_button_desktop = array(
-					'.menu-toggle, button, .ast-button, .ast-custom-button, .button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' . $search_button_selector . $file_block_button_selector . $search_page_btn_selector . $woo_btns_selector => array(
+					'.menu-toggle, button, .ast-button, .ast-custom-button, .button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' . $v4_2_2_core_form_btns_styling_selector . $search_button_selector . $file_block_button_selector . $search_page_btn_selector . $woo_btns_selector => array(
 						'border-style'               => 'solid',
 						'border-top-width'           => ( isset( $global_custom_button_border_size['top'] ) && '' !== $global_custom_button_border_size['top'] ) ? astra_get_css_value( $global_custom_button_border_size['top'], 'px' ) : '0',
 						'border-right-width'         => ( isset( $global_custom_button_border_size['right'] ) && '' !== $global_custom_button_border_size['right'] ) ? astra_get_css_value( $global_custom_button_border_size['right'], 'px' ) : '0',
@@ -2199,7 +2213,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				 * Global button CSS - Tablet.
 				 */
 				$global_button_tablet = array(
-					'.menu-toggle, button, .ast-button, .ast-custom-button, .button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' . $search_button_selector . $file_block_button_selector . $search_page_btn_selector . $woo_btns_selector => array(
+					'.menu-toggle, button, .ast-button, .ast-custom-button, .button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' . $v4_2_2_core_form_btns_styling_selector . $search_button_selector . $file_block_button_selector . $search_page_btn_selector . $woo_btns_selector => array(
 						'padding-top'                => astra_responsive_spacing( $theme_btn_padding, 'top', 'tablet' ),
 						'padding-right'              => astra_responsive_spacing( $theme_btn_padding, 'right', 'tablet' ),
 						'padding-bottom'             => astra_responsive_spacing( $theme_btn_padding, 'bottom', 'tablet' ),
@@ -2216,7 +2230,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				 * Global button CSS - Mobile.
 				 */
 				$global_button_mobile = array(
-					'.menu-toggle, button, .ast-button, .ast-custom-button, .button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' . $search_button_selector . $file_block_button_selector . $search_page_btn_selector . $woo_btns_selector => array(
+					'.menu-toggle, button, .ast-button, .ast-custom-button, .button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' . $v4_2_2_core_form_btns_styling_selector . $search_button_selector . $file_block_button_selector . $search_page_btn_selector . $woo_btns_selector => array(
 						'padding-top'                => astra_responsive_spacing( $theme_btn_padding, 'top', 'mobile' ),
 						'padding-right'              => astra_responsive_spacing( $theme_btn_padding, 'right', 'mobile' ),
 						'padding-bottom'             => astra_responsive_spacing( $theme_btn_padding, 'bottom', 'mobile' ),
@@ -4654,6 +4668,9 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				}
 			}
 
+			.ast-site-header-cart .cart-container:focus-visible {
+				display: inline-block;
+			}
 			';
 			if ( is_rtl() ) {
 				$cart_static_css .= '
@@ -4910,6 +4927,19 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 		public static function astra_fullwidth_sidebar_support() {
 			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
 			return apply_filters( 'astra_get_option_fullwidth_sidebar_support', isset( $astra_settings['fullwidth_sidebar_support'] ) ? false : true );
+		}
+
+		/**
+		 * Core Comment & Search Button Styling Compatibility.
+		 * Old Users - Will not reflect directly.
+		 * New Users - Direct reflection
+		 *
+		 * @return bool true|false.
+		 * @since 4.2.2
+		 */
+		public static function astra_core_form_btns_styling() {
+			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+			return apply_filters( 'astra_core_form_btns_styling', isset( $astra_settings['v4-2-2-core-form-btns-styling'] ) ? false : true );
 		}
 	}
 }

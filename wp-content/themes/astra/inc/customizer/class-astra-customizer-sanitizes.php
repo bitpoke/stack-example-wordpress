@@ -492,6 +492,7 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		public static function sanitize_font_weight( $input ) {
 
 			$valid = array(
+				'inherit',
 				'normal',
 				'bold',
 				'100',
