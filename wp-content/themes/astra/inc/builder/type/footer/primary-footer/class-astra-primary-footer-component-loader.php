@@ -48,7 +48,7 @@ class Astra_Primary_Footer_Component_Loader {
 			'astra-heading-primary-customizer-preview-js',
 			'AstraBuilderPrimaryFooterData',
 			array(
-				'footer_content_width' => astra_get_option( 'site-content-width' ),
+				'footer_content_width'      => astra_get_option( 'site-content-width' ),
 			)
 		);
 	}

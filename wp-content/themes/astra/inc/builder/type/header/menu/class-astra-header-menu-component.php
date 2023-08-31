@@ -90,7 +90,7 @@ class Astra_Header_Menu_Component {
 		$items_wrap .= astra_attr(
 			'site-navigation',
 			array(
-				'id'         => esc_attr( $theme_location ) . '-site-navigation-' . esc_attr( $device ),
+				'id'         => apply_filters( 'astra_header_site_navigation_id', esc_attr( $theme_location ) . '-site-navigation-' . esc_attr( $device ) ),
 				'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility site-header-focus-item',
 				'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
 			)
@@ -104,7 +104,7 @@ class Astra_Header_Menu_Component {
 		// Fallback Menu if primary menu not set.
 		$fallback_menu_args = array(
 			'theme_location' => $theme_location,
-			'menu_id'        => 'ast-hf-menu-' . $index,
+			'menu_id'        => apply_filters( 'astra_header_menu_ul_id', 'ast-hf-menu-' . $index ),
 			'menu_class'     => 'main-navigation ast-inline-flex',
 			'container'      => 'div',
 			'before'         => '<ul class="' . esc_attr( implode( ' ', $menu_classes ) ) . '">',
@@ -123,7 +123,7 @@ class Astra_Header_Menu_Component {
 			/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			wp_nav_menu(
 				array(
-					'menu_id'         => 'ast-hf-menu-' . $index,
+					'menu_id'         => apply_filters( 'astra_header_menu_ul_id', 'ast-hf-menu-' . $index ),
 					'menu_class'      => esc_attr( implode( ' ', $menu_classes ) ),
 					'container'       => 'div',
 					'container_class' => 'main-header-bar-navigation',
@@ -142,7 +142,9 @@ class Astra_Header_Menu_Component {
 						)
 					);
 					echo ' class="ast-flex-grow-1 navigation-accessibility" aria-label="' . esc_attr__( 'Site Navigation', 'astra' ) . '">';
+						/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						wp_page_menu( $fallback_menu_args );
+						/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					echo '</nav>';
 				echo '</div>';
 		}

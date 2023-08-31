@@ -1198,7 +1198,7 @@ function astra_theme_background_updater_4_1_4() {
 
 		foreach ( $ast_resp_bg_control_options as $key => $resp_bg_option ) {
 			// Desktop version.
-			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( isset( $theme_options[ $resp_bg_option ]['desktop'] ) && is_array( $theme_options[ $resp_bg_option ]['desktop'] ) && ! isset( $theme_options[ $resp_bg_option ]['desktop']['overlay-type'] ) ) {
 				// @codingStandardsIgnoreStart
 				$desk_bg_type = isset( $theme_options[ $resp_bg_option ]['desktop']['background-type'] ) ? $theme_options[ $resp_bg_option ]['desktop']['background-type'] : '';
@@ -1221,7 +1221,7 @@ function astra_theme_background_updater_4_1_4() {
 			}
 
 			// Tablet version.
-			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( isset( $theme_options[ $resp_bg_option ]['tablet'] ) && is_array( $theme_options[ $resp_bg_option ]['tablet'] ) && ! isset( $theme_options[ $resp_bg_option ]['tablet']['overlay-type'] ) ) {
 				// @codingStandardsIgnoreStart
 				$tablet_bg_type = isset( $theme_options[ $resp_bg_option ]['tablet']['background-type'] ) ? $theme_options[ $resp_bg_option ]['tablet']['background-type'] : '';
@@ -1242,7 +1242,7 @@ function astra_theme_background_updater_4_1_4() {
 
 
 			// Mobile version.
-			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */
+			/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( isset( $theme_options[ $resp_bg_option ]['mobile'] ) && is_array( $theme_options[ $resp_bg_option ]['mobile'] ) && ! isset( $theme_options[ $resp_bg_option ]['mobile']['overlay-type'] ) ) {
 				// @codingStandardsIgnoreStart
 				$mobile_bg_type = isset( $theme_options[ $resp_bg_option ]['mobile']['background-type'] ) ? $theme_options[ $resp_bg_option ]['mobile']['background-type'] : '';
@@ -1279,6 +1279,26 @@ function astra_theme_background_updater_4_1_6() {
 	$theme_options = get_option( 'astra-settings', array() );
 	if ( ! isset( $theme_options['list-block-vertical-spacing'] ) ) {
 		$theme_options['list-block-vertical-spacing'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}
+
+/**
+ * Set flag to avoid direct reflections on live site & to maintain backward compatibility for existing users.
+ *
+ * @since 4.1.7
+ * @return void
+ */
+function astra_theme_background_updater_4_1_7() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['add-hr-styling-css'] ) ) {
+		$theme_options['add-hr-styling-css'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+
+	if ( ! isset( $theme_options['astra-site-svg-logo-equal-height'] ) ) {
+		$theme_options['astra-site-svg-logo-equal-height'] = false;
 		update_option( 'astra-settings', $theme_options );
 	}
 }

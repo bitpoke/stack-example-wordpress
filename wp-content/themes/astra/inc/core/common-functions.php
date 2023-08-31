@@ -1811,7 +1811,6 @@ function astra_split_rgba( $rgba ) {
 	);
 }
 
-
 /**
  * Render svg mask.
  *

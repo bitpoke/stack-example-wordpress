@@ -333,6 +333,29 @@ function astra_builder_social_css( builder_type = 'header', social_count ) {
 			'px'
 		);
 
+		// Icon Brand Color.
+		astra_color_responsive_css(
+			context + '-soc-color',
+			'astra-settings[' + builder_type + '-social-' + index + '-brand-color]',
+			'fill',
+			selector + ' .ast-social-color-type-official svg'
+		);
+
+		astra_color_responsive_css(
+			context + '-soc-label-color',
+			'astra-settings[' + builder_type + '-social-' + index + '-brand-color]',
+			'color',
+			selector + ' .ast-social-color-type-official .social-item-label'
+		);
+
+		// Icon Label Brand Color.
+		astra_color_responsive_css(
+			context + '-soc-label-color',
+			'astra-settings[' + builder_type + '-social-' + index + '-brand-label-color]',
+			'color',
+			selector + ' .ast-social-color-type-official span.social-item-label'
+		);
+
 		// Icon Border Radius Fields
 		wp.customize('astra-settings[' + builder_type + '-social-' + index + '-radius-fields]', function (setting) {
 			setting.bind(function (border) {

@@ -1,3 +1,37 @@
+v4.3.0 (Unreleased)
+- New: Header-Footer Builder - Social - Enable Brand Color option on hover.
+- Improvement: Introducing new admin notice for incompatibility of Astra Pro.
+- Improvement: WooCommerce - Mini Cart - Cart price details do not update on the “Enter” keypress.
+- Fix: Header Builder - Menu - Parsing duplicate ID error for 'primary-site-navigation' and 'ast-hf-menu-x'.
+- Fix: Header Builder - Normal header and transparent header height issue. Introduced new filter: 'astra_site_svg_logo_equal_height' to enable or disable this fix.
+- Fix: Header Builder - Menu - On desktop toggle submenu click it goes in an infinite scroll loop when Elementor is active.
+- Fix: Footer Builder - The widget section gets 3.5em bottom spacing which affects frontend UI.
+- Fix: FILTER_SANITIZE_STRING deprecated notice coming while saving post meta.
+- Fix: Horizontal line is not inheriting the global text colors when Elementor is active.
+- Fix: bbPress widget items loading in an infinite loop while rendering banner layout.
+- Fix: Desktop and mobile header visible together at tablet_breakpoint (921px default) on scaled screen resolutions.
+- Fix: WooCommerce - Sticky add to cart scroll is not working properly for mobile & tablet.
+- Fix: WooCommerce - Swap Images feature shows the uncropped image.
+- Fix: WooCommerce - Subpages of My Account dashboard menu do not update the page title according to the set menu.
+- Fix: WooCommerce - Elementor Pro's Mini Cart widget conflicts with the Astra Mini Cart builder element.
+- Fix: WooCommerce - Left margin from the "Add to cart" button when Sold Individually option is selected.
+- Fix: WooCommerce - Shop Archive page Product Category Background color issue.
+- Fix: WooCommerce - PHP fatal error when 'astra_enable_woocommerce_integration' filter is used to disable Astra and WooCommerce extended integration. ( https://wpastra.com/docs/remove-astra-customization-for-woocommerce/ )
+- Fix: WooCommerce - Single Product - alt tag absent while rendering images for the WooCommerce payments.
+- Fix: WooCommerce - Cart button color setting is not working when a product is added to the cart.
+- Fix: WooCommerce - Default customizer layout setting not applied correctly for Single Product.
+- Fix: Customizer - Gradient picker breaking from responsive background control in WordPress 6.3.
+- Fix: Customizer - UI design tweak for the widget block editor.
+- Fix: Customizer - Widget Editor - Unable to scroll down to add blocks in the widget when header/footer builder area is active.
+- Fix: Block - Calendar widget block appearing with accent background color due to which date is not readable.
+- Fix: Block - List block widget showing list style type none instead of disc.
+- Fix: Block editor - Quote block text color does not match the set from the customizer.
+- Fix: Block editor - Group container inner blocks option is not disabled in the editor.
+- Fix: Block Editor - Query Loop Block - Tag 'article' inside 'article' getting extra spacing with Boxed layout.
+- Fix: Block Editor - Title visibility eye meta option not appearing in Firefox browser.
+- Fix: Appearing sub arrows under themes.php page for admin pages of other BSF plugins like Sidebar Manager, Adobe Typekit Fonts etc.
+- Fix: Default layout should be Fullwidth (formerly Full-width Stretched) when creating a new Elementor Page.
+
 v4.2.2
 - New: Introduced new site logo color option.
 - Improvement: Header Footer Builder - Added new social profile "Threads".

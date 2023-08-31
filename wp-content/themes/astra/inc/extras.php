@@ -227,7 +227,7 @@ function astra_toggle_layout( $new_content_option, $level, $post_id = false, $ol
 			if ( 'meta' === $level && ! $migrated_user && 'set' !== $meta_key && $old_meta ) {
 				$current_layout = $old_meta;
 			} else {
-				$current_layout = '';
+				$current_layout = $dynamic_layout_option;
 			}
 			break;
 	}
@@ -799,6 +799,17 @@ function astra_can_remove_elementor_toc_margin_space() {
 	return apply_filters( 'astra_remove_elementor_toc_margin', $astra_settings['remove-elementor-toc-margin-css'] );
 }
 
+/**
+ * Check whether user is exising or new to override the hr tag styling for elementor
+ * 
+ * @since 4.3.0
+ * @return boolean
+ */
+function astra_can_add_styling_for_hr() {
+	$astra_settings                       = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings['add-styling-for-hr'] = isset( $astra_settings['add-styling-for-hr'] ) ? false : true;
+	return apply_filters( 'astra_highlight_elementor_hr_tag', $astra_settings['add-styling-for-hr'] );
+}
 /**
  * This will check if user is new and apply global color format. This is to manage backward compatibility for colors.
  *

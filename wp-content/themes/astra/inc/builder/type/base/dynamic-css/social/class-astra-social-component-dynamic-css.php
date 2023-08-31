@@ -61,7 +61,16 @@ class Astra_Social_Component_Dynamic_CSS {
 			$icon_bg_spacing = ( isset( $icon_bg_spacing ) && '' !== $icon_bg_spacing ) ? (int) $icon_bg_spacing : '';
 
 			// Normal Responsive Colors.
-			$color_type                 = astra_get_option( $builder_type . '-social-' . $index . '-color-type' );
+			$color_type                       = astra_get_option( $builder_type . '-social-' . $index . '-color-type' );
+			$toggle_brand_hover               = astra_get_option( $builder_type . '-social-' . $index . '-brand-hover-toggle' );
+			$social_icons_brand_color_desktop = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-brand-color' ), 'desktop' );
+			$social_icons_brand_color_tablet  = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-brand-color' ), 'tablet' );
+			$social_icons_brand_color_mobile  = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-brand-color' ), 'mobile' );
+
+			$social_label_brand_color_desktop      = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-brand-label-color' ), 'desktop' );
+			$social_label_icons_brand_color_tablet = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-brand-label-color' ), 'tablet' );
+			$social_label_icons_brand_color_mobile = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-brand-label-color' ), 'mobile' );
+
 			$social_icons_color_desktop = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-color' ), 'desktop' );
 			$social_icons_color_tablet  = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-color' ), 'tablet' );
 			$social_icons_color_mobile  = astra_get_prop( astra_get_option( $builder_type . '-social-' . $index . '-color' ), 'mobile' );
@@ -134,6 +143,7 @@ class Astra_Social_Component_Dynamic_CSS {
 			);
 
 			if ( 'custom' === $color_type || is_customize_preview() ) {
+				
 				$css_output_desktop[ $selector . ' .ast-social-color-type-custom svg' ]['fill'] = $social_icons_color_desktop;
 				$css_output_desktop[ $selector . ' .ast-builder-social-element' ]['background'] = $social_icons_bg_color_desktop;
 
@@ -157,6 +167,37 @@ class Astra_Social_Component_Dynamic_CSS {
 				} else {
 					$css_output_desktop[ $selector . ' .ast-builder-social-element:hover .social-item-label' ]['color'] = $social_icons_h_color_desktop;
 				}
+			}
+
+		
+			if ( 'official' === $color_type && false === $toggle_brand_hover ) {
+				$css_output_desktop['.ast-social-color-type-official .ast-builder-social-element, .ast-social-color-type-official .social-item-label'] = array(
+					'color'            => 'var(--color)',
+					'background-color' => 'var(--background-color)',
+				);
+
+				$css_output_desktop['.header-social-inner-wrap.ast-social-color-type-official .ast-builder-social-element svg, .footer-social-inner-wrap.ast-social-color-type-official .ast-builder-social-element svg'] = array(
+					'fill' => 'currentColor',
+				);
+			}
+
+			if ( 'official' === $color_type && true === $toggle_brand_hover ) {
+				$css_output_desktop['.ast-social-color-type-official .ast-builder-social-element:hover, .ast-social-color-type-official .ast-builder-social-element:hover .social-item-label'] = array(
+					'color'            => 'var(--color)',
+					'background-color' => 'var(--background-color)',
+				);
+
+				$css_output_desktop['.header-social-inner-wrap.ast-social-color-type-official .ast-builder-social-element:hover svg, .footer-social-inner-wrap.ast-social-color-type-official .ast-builder-social-element:hover svg'] = array(
+					'fill' => 'currentColor',
+				);
+
+				$css_output_desktop[ $selector . ' .ast-social-color-type-official svg' ]['fill'] = $social_icons_brand_color_desktop;
+
+				if ( isset( $social_label_brand_color_desktop ) && ! empty( $social_label_brand_color_desktop ) ) {
+					$css_output_desktop[ $selector . ' .ast-social-color-type-official .social-item-label' ]['color'] = $social_label_brand_color_desktop;
+				} else {
+					$css_output_desktop[ $selector . ' .ast-social-color-type-official .social-item-label' ]['color'] = $social_icons_brand_color_desktop;
+				}           
 			}
 
 			/**
@@ -215,6 +256,18 @@ class Astra_Social_Component_Dynamic_CSS {
 				}
 			}
 
+			if ( 'official' === $color_type && true === $toggle_brand_hover ) {
+				$css_output_tablet[ $selector . ' .ast-social-color-type-official svg' ]['fill'] = $social_icons_brand_color_tablet;
+
+				if ( isset( $social_label_icons_brand_color_tablet ) && ! empty( $social_label_icons_brand_color_tablet ) ) {
+					$css_output_tablet[ $selector . ' .ast-social-color-type-official .social-item-label' ]['color'] = $social_icons_label_color_tablet;
+				} else {
+					$css_output_tablet[ $selector . ' .ast-social-color-type-official .social-item-label' ]['color'] = $social_icons_brand_color_tablet;
+				}
+			}
+
+		
+
 			/**
 			 * Social_icons CSS.
 			 */
@@ -271,6 +324,16 @@ class Astra_Social_Component_Dynamic_CSS {
 				}
 			}
 
+			if ( 'official' === $color_type && true === $toggle_brand_hover ) {
+				$css_output_mobile[ $selector . ' .ast-social-color-type-official svg' ]['fill'] = $social_icons_brand_color_mobile;
+
+				if ( isset( $social_label_icons_brand_color_mobile ) && ! empty( $social_label_icons_brand_color_mobile ) ) {
+					$css_output_mobile[ $selector . ' .ast-social-color-type-official .social-item-label' ]['color'] = $social_label_icons_brand_color_mobile;
+				} else {
+					$css_output_mobile[ $selector . ' .ast-social-color-type-official .social-item-label' ]['color'] = $social_icons_brand_color_mobile;
+				}
+			}
+
 			if ( 'footer' === $builder_type ) {
 
 				// Footer Social Alignment CSS.
@@ -318,23 +381,13 @@ class Astra_Social_Component_Dynamic_CSS {
 	 */
 	public static function get_social_static_css() {
 		$social_static_css = '
-		.ast-builder-social-element:hover {
-			color: #0274be;
-		}
 		.ast-social-stack-desktop .ast-builder-social-element,
 		.ast-social-stack-tablet .ast-builder-social-element,
 		.ast-social-stack-mobile .ast-builder-social-element {
 		  margin-top: 6px;
 		  margin-bottom: 6px;
 		}
-		.ast-social-color-type-official .ast-builder-social-element, .ast-social-color-type-official .social-item-label {
-			color: var(--color);
-			background-color: var(--background-color);
-		}
-		.header-social-inner-wrap.ast-social-color-type-official .ast-builder-social-element svg,
-		.footer-social-inner-wrap.ast-social-color-type-official .ast-builder-social-element svg {
-		  fill: currentColor;
-		}
+
 		.social-show-label-true .ast-builder-social-element {
 			width: auto;
 			padding: 0 0.4em;

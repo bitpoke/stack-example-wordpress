@@ -23,7 +23,6 @@
         selector + ' .ast-builder-grid-row, ' + selector + ' .site-footer-section'
     );
 
-
 	// Header Height.
 	astra_css(
 		'astra-settings[hbb-footer-height]',

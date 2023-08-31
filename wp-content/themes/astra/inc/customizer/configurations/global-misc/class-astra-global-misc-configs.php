@@ -42,7 +42,6 @@ class Astra_Global_Misc_Configs extends Astra_Customizer_Config_Base {
 				'section'  => 'section-global-misc',
 				'priority' => 10,
 			),
-
 		);
 
 		return array_merge( $configurations, $_configs );

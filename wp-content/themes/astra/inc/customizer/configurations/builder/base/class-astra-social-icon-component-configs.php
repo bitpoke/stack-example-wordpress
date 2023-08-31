@@ -89,12 +89,87 @@ class Astra_Social_Icon_Component_Configs {
 						'custom'   => __( 'Custom', 'astra' ),
 						'official' => __( 'Official', 'astra' ),
 					),
-					'transport'  => 'postMessage',
 					'context'    => Astra_Builder_Helper::$design_tab,
 					'responsive' => false,
 					'renderAs'   => 'text',
 					'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
 				),
+
+				array(
+					'name'       => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-brand-color]',
+					'default'    => astra_get_option( $builder_type . '-social-' . $index . '-brand-color' ),
+					'type'       => 'control',
+					'section'    => $_section,
+					'transport'  => 'postMessage',
+					'control'    => 'ast-responsive-color',
+					'title'      => __( 'Icon Color', 'astra' ),
+					'responsive' => true,
+					'rgba'       => true,
+					'context'    => array(
+						Astra_Builder_Helper::$design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-brand-hover-toggle]',
+							'operator' => '==',
+							'value'    => true,
+						),
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-color-type]',
+							'operator' => '==',
+							'value'    => 'official',
+						),
+					),
+					'priority'   => 1,
+				),
+
+				array(
+					'name'       => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-brand-label-color]',
+					'default'    => astra_get_option( $builder_type . '-social-' . $index . '-brand-label-color' ),
+					'type'       => 'control',
+					'section'    => $_section,
+					'transport'  => 'postMessage',
+					'control'    => 'ast-responsive-color',
+					'title'      => __( 'Label Color', 'astra' ),
+					'responsive' => true,
+					'rgba'       => true,
+					'context'    => array(
+						Astra_Builder_Helper::$design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-brand-hover-toggle]',
+							'operator' => '==',
+							'value'    => true,
+						),
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-color-type]',
+							'operator' => '==',
+							'value'    => 'official',
+						),
+					),
+					'priority'   => 1,
+					'divider'    => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+				),
+				
+				/**
+				 * Option: Toggle Social Icons Brand Color On Hover.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-brand-hover-toggle]',
+					'default'  => astra_get_option( $builder_type . '-social-' . $index . '-brand-hover-toggle' ),
+					'type'     => 'control',
+					'section'  => $_section,
+					'title'    => __( 'Enable Brand Color On Hover', 'astra' ),
+					'priority' => 1,
+					'control'  => 'ast-toggle-control',
+					'context'  => array(
+						Astra_Builder_Helper::$design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-color-type]',
+							'operator' => '==',
+							'value'    => 'official',
+						),
+					),
+				),
+
+
 
 				/**
 				 * Group: Primary Social Colors Group
@@ -155,7 +230,6 @@ class Astra_Social_Icon_Component_Configs {
 						),
 					),
 					'responsive' => true,
-					'divider'    => array( 'ast_class' => 'ast-bottom-section-divider' ),
 				),
 
 				/**
@@ -356,7 +430,7 @@ class Astra_Social_Icon_Component_Configs {
 						'max'  => 50,
 					),
 					'context'     => Astra_Builder_Helper::$design_tab,
-					'divider'     => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+				
 				),
 
 
@@ -379,7 +453,7 @@ class Astra_Social_Icon_Component_Configs {
 						'step' => 1,
 						'max'  => 50,
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-dotted-divider ast-top-section-divider' ),
 					'context'           => Astra_Builder_Helper::$design_tab,
 				),
 

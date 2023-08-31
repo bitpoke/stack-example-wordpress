@@ -584,9 +584,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				'.astra-logo-svg'                        => array(
 					'width' => astra_get_css_value( $header_logo_width['desktop'], 'px' ),
 				),
-				'.astra-logo-svg:not(.sticky-custom-logo .astra-logo-svg, .transparent-custom-logo .astra-logo-svg, .advanced-header-logo .astra-logo-svg)' => array(
-					'height' => astra_get_css_value( ( ! empty( $header_logo_width['desktop-svg-height'] ) && ! is_customize_preview() ) ? $header_logo_width['desktop-svg-height'] : '', 'px' ),
-				),
+
 				'.site-header .site-description'         => array(
 					'font-size' => astra_responsive_font( $site_tagline_font_size, 'desktop' ),
 					'display'   => esc_attr( $desktop_tagline_visibility ),
@@ -734,6 +732,13 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				),
 
 			);
+
+			/*  This is a fix issue with logo height for normal and transparent logo so that they are the same */
+			if ( ! apply_filters( 'astra_site_svg_logo_equal_height', astra_get_option( 'astra-site-svg-logo-equal-height', true ) ) ) {
+				$css_output['.astra-logo-svg:not(.sticky-custom-logo .astra-logo-svg, .transparent-custom-logo .astra-logo-svg, .advanced-header-logo .astra-logo-svg)'] = array(
+					'height' => astra_get_css_value( ( ! empty( $header_logo_width['desktop-svg-height'] ) && ! is_customize_preview() ) ? $header_logo_width['desktop-svg-height'] : '', 'px' ),
+				);
+			}
 
 			/* Compatibility with cost calculator plugin range slider*/
 			if ( defined( 'CALC_VERSION' ) ) {
@@ -1027,12 +1032,10 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				$parse_css .= astra_parse_css(
 					array(
-						'#ast-desktop-header' => array(
+						'.ast-header-break-point #ast-desktop-header' => array(
 							'display' => 'none',
 						),
-					),
-					'',
-					astra_get_tablet_breakpoint()
+					)
 				);
 
 				$parse_css .= astra_parse_css(
@@ -1144,6 +1147,9 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$parse_css                         .= astra_parse_css( $gtn_plugin_button_center_alignment );
 
 			$ast_container_layout = astra_get_content_layout();
+			$is_boxed             = astra_is_content_style_boxed();
+			$is_sidebar_boxed     = astra_is_sidebar_style_boxed();
+			$ast_container_layout = astra_apply_boxed_layouts( $ast_container_layout, $is_boxed, $is_sidebar_boxed );
 
 			/**
 			 * If transparent header is activated then it adds top 1.5em padding space, so this CSS will fix this issue.
@@ -1814,7 +1820,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						'flex-grow' => '1',
 					),
 					'.widget'                         => array(
-						'margin-bottom' => '3.5em',
+						'margin-bottom' => '1.25em',
 					),
 					'#secondary li'                   => array(
 						'line-height' => '1.5em',
@@ -1827,6 +1833,14 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					),
 					'.ast-separate-container .ast-article-post, .ast-separate-container .ast-article-single, .ast-separate-container .ast-comment-list li.depth-1, .ast-separate-container .comment-respond' => array(
 						'padding' => '3em',
+					),
+
+					'.ast-separate-container .ast-article-single .ast-article-single' => array(
+						'padding' => '0',
+					),
+
+					'.ast-article-single .wp-block-post-template-is-layout-grid' => array(
+						'padding-' . $ltr_left => '0',
 					),
 
 					'.ast-separate-container .ast-comment-list li.depth-1, .hentry' => array(
@@ -4450,7 +4464,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				right: 0;
 				width: 100%;
 				height: 100%;
-				z-index: 1;
+				z-index: 5;
 				background-color: var(--ast-global-color-5);
 				opacity: .5;
 			}
