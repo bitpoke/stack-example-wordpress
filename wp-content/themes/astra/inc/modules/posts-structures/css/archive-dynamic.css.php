@@ -168,9 +168,9 @@ function astra_post_archive_structure_dynamic_css( $dynamic_css, $dynamic_css_fi
 			if ( class_exists( 'WooCommerce' ) && 'product' === $current_post_type ) {
 				if ( 'custom' === $background_type ) {
 					$custom_background                                       = astra_get_option( 'ast-dynamic-archive-' . $current_post_type . '-banner-custom-bg' );
-					$css_output_desktop['.archive .ast-archive-description'] = astra_get_responsive_background_obj( $custom_background, 'desktop' );
-					$css_output_tablet['.archive .ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'tablet' );
-					$css_output_mobile['.archive .ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'mobile' );
+					$css_output_desktop['.archive section.ast-archive-description'] = astra_get_responsive_background_obj( $custom_background, 'desktop' );
+					$css_output_tablet['.archive section.ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'tablet' );
+					$css_output_mobile['.archive section.ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'mobile' );
 				} else {
 					// @codingStandardsIgnoreStart
 					/**
@@ -186,13 +186,13 @@ function astra_post_archive_structure_dynamic_css( $dynamic_css, $dynamic_css_fi
 					$overlay_color = astra_get_option( 'ast-dynamic-archive-' . $current_post_type . '-banner-featured-overlay', '' );
 					$taxonomy      = $wp_query->get_queried_object();
 					if ( is_callable( 'is_shop' ) && is_shop() && '' !== $overlay_color ) {
-						$css_output_desktop['.archive .ast-archive-description']['background'] = $overlay_color;
+						$css_output_desktop['.archive section.ast-archive-description']['background'] = $overlay_color;
 					}
 					if ( ! empty( $taxonomy->term_id ) ) {
 						$thumbnail_id   = get_term_meta( $taxonomy->term_id, 'thumbnail_id', true );
 						$feat_image_src = wp_get_attachment_url( $thumbnail_id );
 						if ( $feat_image_src ) {
-							$css_output_desktop['.archive .ast-archive-description'] = array(
+							$css_output_desktop['.archive section.ast-archive-description'] = array(
 								'background'            => 'url( ' . esc_url( $feat_image_src ) . ' )',
 								'background-repeat'     => 'no-repeat',
 								'background-attachment' => 'scroll',
@@ -200,17 +200,17 @@ function astra_post_archive_structure_dynamic_css( $dynamic_css, $dynamic_css_fi
 								'background-size'       => 'cover',
 							);
 							if ( '' !== $overlay_color ) {
-								$css_output_desktop['.archive .ast-archive-description']['background']            = 'url( ' . esc_url( $feat_image_src ) . ' ) ' . $overlay_color;
-								$css_output_desktop['.archive .ast-archive-description']['background-blend-mode'] = 'multiply';
+								$css_output_desktop['.archive section.ast-archive-description']['background']            = 'url( ' . esc_url( $feat_image_src ) . ' ) ' . $overlay_color;
+								$css_output_desktop['.archive section.ast-archive-description']['background-blend-mode'] = 'multiply';
 							}
 						}
 					}
 				}
 			} else {
 				$custom_background                                       = astra_get_option( 'ast-dynamic-archive-' . $current_post_type . '-banner-custom-bg' );
-				$css_output_desktop['.archive .ast-archive-description'] = astra_get_responsive_background_obj( $custom_background, 'desktop' );
-				$css_output_tablet['.archive .ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'tablet' );
-				$css_output_mobile['.archive .ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'mobile' );
+				$css_output_desktop['.archive section.ast-archive-description'] = astra_get_responsive_background_obj( $custom_background, 'desktop' );
+				$css_output_tablet['.archive section.ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'tablet' );
+				$css_output_mobile['.archive section.ast-archive-description']  = astra_get_responsive_background_obj( $custom_background, 'mobile' );
 			}
 		}
 	} else {

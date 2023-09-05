@@ -1,4 +1,9 @@
-v4.3.0 (Unreleased)
+v4.3.1
+- Fix: Block - Lists block style type updated to "disc" after v4.3.0 update.
+- Fix: Block Editor - Text color not inheriting as per the settings saved in customizer.
+- Fix: Single - Banner's custom background not working for Layout 1.
+
+v4.3.0
 - New: Header-Footer Builder - Social - Enable Brand Color option on hover.
 - Improvement: Introducing new admin notice for incompatibility of Astra Pro.
 - Improvement: WooCommerce - Mini Cart - Cart price details do not update on the “Enter” keypress.
