@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce 8.1.0\n"
+"Project-Id-Version: WooCommerce 8.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-12T19:28:12+00:00\n"
+"POT-Creation-Date: 2023-09-15T19:48:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: woocommerce\n"
@@ -8835,7 +8835,7 @@ msgid "Invalid coupon code"
 msgstr ""
 
 #: includes/abstracts/abstract-wc-order.php:1240
-#: includes/class-wc-ajax.php:1286
+#: includes/class-wc-ajax.php:1288
 #: includes/class-wc-discounts.php:250
 #: src/Internal/Orders/CouponsController.php:70
 msgid "Invalid coupon"
@@ -11284,7 +11284,7 @@ msgstr ""
 
 #. translators: 1: page name 2: page ID
 #: includes/admin/class-wc-admin-settings.php:622
-#: includes/class-wc-ajax.php:2028
+#: includes/class-wc-ajax.php:2030
 msgid "%1$s (ID: %2$s)"
 msgstr ""
 
@@ -12129,7 +12129,7 @@ msgstr ""
 #: includes/admin/class-wc-admin-status.php:429
 #: includes/admin/meta-boxes/views/html-order-notes.php:34
 #: includes/admin/views/html-admin-page-status-report.php:679
-#: includes/class-wc-ajax.php:1573
+#: includes/class-wc-ajax.php:1575
 #: templates/content-widget-reviews.php:38
 msgid "by %s"
 msgstr ""
@@ -14131,7 +14131,7 @@ msgstr ""
 #. translators: $1: customer name, $2 customer id, $3: customer email
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:340
 #: includes/admin/settings/views/html-keys-edit.php:43
-#: includes/class-wc-ajax.php:1770
+#: includes/class-wc-ajax.php:1772
 #: src/Internal/Admin/Orders/ListTable.php:771
 msgid "%1$s (#%2$s &ndash; %3$s)"
 msgstr ""
@@ -14645,7 +14645,7 @@ msgid "Optional"
 msgstr ""
 
 #: includes/admin/meta-boxes/views/html-order-notes.php:37
-#: includes/class-wc-ajax.php:1576
+#: includes/class-wc-ajax.php:1578
 msgid "Delete note"
 msgstr ""
 
@@ -17561,7 +17561,7 @@ msgid "Generate API key"
 msgstr ""
 
 #: includes/admin/settings/views/html-keys-edit.php:119
-#: includes/class-wc-ajax.php:2348
+#: includes/class-wc-ajax.php:2350
 msgid "Revoke key"
 msgstr ""
 
@@ -19188,63 +19188,63 @@ msgstr ""
 msgid "Return to shop"
 msgstr ""
 
-#: includes/class-wc-ajax.php:991
-#: includes/class-wc-ajax.php:1023
-#: includes/class-wc-ajax.php:1113
-#: includes/class-wc-ajax.php:1177
-#: includes/class-wc-ajax.php:1219
-#: includes/class-wc-ajax.php:1281
-#: includes/class-wc-ajax.php:1333
+#: includes/class-wc-ajax.php:993
+#: includes/class-wc-ajax.php:1025
+#: includes/class-wc-ajax.php:1115
+#: includes/class-wc-ajax.php:1179
+#: includes/class-wc-ajax.php:1221
+#: includes/class-wc-ajax.php:1283
+#: includes/class-wc-ajax.php:1335
 #: src/Internal/Orders/CouponsController.php:65
 msgid "Invalid order"
 msgstr ""
 
-#: includes/class-wc-ajax.php:1045
+#: includes/class-wc-ajax.php:1047
 #: includes/class-wc-order-item-product.php:72
 msgid "Invalid product ID"
 msgstr ""
 
 #. translators: %s product name
-#: includes/class-wc-ajax.php:1049
+#: includes/class-wc-ajax.php:1051
 msgid "%s is a variable product parent and cannot be added."
 msgstr ""
 
 #. translators: %s: error message
-#: includes/class-wc-ajax.php:1056
+#: includes/class-wc-ajax.php:1058
 #: includes/wc-rest-functions.php:99
 msgid "Error: %s"
 msgstr ""
 
 #. translators: %s item name.
-#: includes/class-wc-ajax.php:1069
+#: includes/class-wc-ajax.php:1071
 msgid "Added line items: %s"
 msgstr ""
 
 #. translators: %s fee amount
-#: includes/class-wc-ajax.php:1140
+#: includes/class-wc-ajax.php:1142
 msgid "%s fee"
 msgstr ""
 
-#: includes/class-wc-ajax.php:1225
+#: includes/class-wc-ajax.php:1227
 msgid "Invalid rate"
 msgstr ""
 
 #. translators: %s coupon code.
-#: includes/class-wc-ajax.php:1292
+#: includes/class-wc-ajax.php:1294
 msgid "Coupon removed: \"%s\"."
 msgstr ""
 
-#: includes/class-wc-ajax.php:1337
+#: includes/class-wc-ajax.php:1339
 msgid "Invalid items"
 msgstr ""
 
 #. translators: %1$s: item name %2$s: stock change
-#: includes/class-wc-ajax.php:1376
+#: includes/class-wc-ajax.php:1378
 msgid "Deleted %1$s and adjusted stock (%2$s)"
 msgstr ""
 
 #. translators: %s item name.
-#: includes/class-wc-ajax.php:1379
+#: includes/class-wc-ajax.php:1381
 #: includes/legacy/api/v1/class-wc-api-resource.php:333
 #: includes/legacy/api/v2/class-wc-api-products.php:468
 #: includes/legacy/api/v2/class-wc-api-products.php:2176
@@ -19261,57 +19261,57 @@ msgstr ""
 msgid "Deleted %s"
 msgstr ""
 
-#: includes/class-wc-ajax.php:1447
+#: includes/class-wc-ajax.php:1449
 msgid "Order not editable"
 msgstr ""
 
 #. translators: $1: Date created, $2 Time created
-#: includes/class-wc-ajax.php:1567
+#: includes/class-wc-ajax.php:1569
 msgid "added on %1$s at %2$s"
 msgstr ""
 
 #. Translators: %d stock amount
-#: includes/class-wc-ajax.php:1668
+#: includes/class-wc-ajax.php:1670
 msgid "Stock: %d"
 msgstr ""
 
-#: includes/class-wc-ajax.php:2161
+#: includes/class-wc-ajax.php:2163
 msgid "Invalid refund amount"
 msgstr ""
 
-#: includes/class-wc-ajax.php:2165
+#: includes/class-wc-ajax.php:2167
 msgid "Error processing refund. Please try again."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2269
+#: includes/class-wc-ajax.php:2271
 msgid "Description is missing."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2272
+#: includes/class-wc-ajax.php:2274
 msgid "User is missing."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2275
+#: includes/class-wc-ajax.php:2277
 msgid "Permissions is missing."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2286
+#: includes/class-wc-ajax.php:2288
 msgid "You do not have permission to assign API Keys to the selected user."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2312
+#: includes/class-wc-ajax.php:2314
 msgid "API Key updated successfully."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2340
+#: includes/class-wc-ajax.php:2342
 msgid "There was an error generating your API Key."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2347
+#: includes/class-wc-ajax.php:2349
 msgid "API Key generated successfully. Make sure to copy your new keys now as the secret key will be hidden once you leave this page."
 msgstr ""
 
-#: includes/class-wc-ajax.php:2436
+#: includes/class-wc-ajax.php:2438
 #: src/Internal/Admin/ProductReviews/ReviewsCommentsOverrides.php:93
 msgid "Dismiss this notice."
 msgstr ""
