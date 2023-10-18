@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-24T20:32:55+00:00\n"
+"POT-Creation-Date: 2023-10-17T18:06:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: buddypress\n"
@@ -891,8 +891,8 @@ msgstr ""
 #: bp-groups/bp-groups-template.php:4213
 #: bp-groups/bp-groups-template.php:5831
 #: bp-groups/classes/class-bp-groups-component.php:930
-#: bp-members/bp-members-blocks.php:496
-#: bp-members/bp-members-blocks.php:647
+#: bp-members/bp-members-blocks.php:501
+#: bp-members/bp-members-blocks.php:652
 #: bp-members/bp-members-template.php:864
 #: bp-members/bp-members-template.php:1675
 #: bp-members/bp-members-template.php:1734
@@ -4368,7 +4368,7 @@ msgstr ""
 #: bp-groups/classes/class-bp-groups-invite-template.php:258
 #: bp-groups/classes/class-bp-groups-invite-template.php:270
 #: bp-members/bp-members-blocks.php:91
-#: bp-members/bp-members-blocks.php:244
+#: bp-members/bp-members-blocks.php:249
 #: bp-templates/bp-nouveau/includes/activity/functions.php:93
 #: bp-groups/js/blocks/groups.js:229
 #: bp-members/js/blocks/members.js:215
@@ -5450,11 +5450,11 @@ msgstr ""
 #: bp-friends/bp-friends-blocks.php:132
 #: bp-friends/classes/class-bp-core-friends-widget.php:109
 #: bp-friends/classes/class-bp-core-friends-widget.php:204
-#: bp-groups/bp-groups-blocks.php:402
+#: bp-groups/bp-groups-blocks.php:407
 #: bp-groups/bp-groups-template.php:4755
 #: bp-groups/classes/class-bp-groups-widget.php:128
 #: bp-groups/classes/class-bp-groups-widget.php:243
-#: bp-members/bp-members-blocks.php:423
+#: bp-members/bp-members-blocks.php:428
 #: bp-members/classes/class-bp-core-members-widget.php:116
 #: bp-members/classes/class-bp-core-members-widget.php:237
 #: bp-templates/bp-legacy/buddypress/blogs/index.php:112
@@ -5587,10 +5587,10 @@ msgstr ""
 #: bp-friends/bp-friends-blocks.php:136
 #: bp-friends/classes/class-bp-core-friends-widget.php:110
 #: bp-friends/classes/class-bp-core-friends-widget.php:205
-#: bp-groups/bp-groups-blocks.php:406
+#: bp-groups/bp-groups-blocks.php:411
 #: bp-groups/classes/class-bp-groups-widget.php:130
 #: bp-groups/classes/class-bp-groups-widget.php:244
-#: bp-members/bp-members-blocks.php:427
+#: bp-members/bp-members-blocks.php:432
 #: bp-members/classes/class-bp-core-members-widget.php:118
 #: bp-members/classes/class-bp-core-members-widget.php:238
 #: bp-members/classes/class-bp-members-admin.php:1186
@@ -5603,10 +5603,10 @@ msgstr ""
 #: bp-friends/bp-friends-blocks.php:140
 #: bp-friends/classes/class-bp-core-friends-widget.php:111
 #: bp-friends/classes/class-bp-core-friends-widget.php:206
-#: bp-groups/bp-groups-blocks.php:410
+#: bp-groups/bp-groups-blocks.php:415
 #: bp-groups/classes/class-bp-groups-widget.php:132
 #: bp-groups/classes/class-bp-groups-widget.php:245
-#: bp-members/bp-members-blocks.php:434
+#: bp-members/bp-members-blocks.php:439
 #: bp-members/classes/class-bp-core-members-widget.php:122
 #: bp-members/classes/class-bp-core-members-widget.php:239
 #: bp-friends/js/blocks/friends.js:25
@@ -5617,14 +5617,14 @@ msgstr ""
 
 #. translators: %s is time elapsed since the registration date happened
 #: bp-friends/bp-friends-blocks.php:179
-#: bp-members/bp-members-blocks.php:472
+#: bp-members/bp-members-blocks.php:477
 msgctxt "The timestamp when the user registered"
 msgid "Registered %s"
 msgstr ""
 
 #. translators: %s: total friend count
 #: bp-friends/bp-friends-blocks.php:182
-#: bp-members/bp-members-blocks.php:475
+#: bp-members/bp-members-blocks.php:480
 msgid "%s friend"
 msgid_plural "%s friends"
 msgstr[0] ""
@@ -5632,12 +5632,12 @@ msgstr[1] ""
 
 #. translators: %s: last activity timestamp (e.g. "Active 1 hour ago")
 #: bp-friends/bp-friends-blocks.php:185
-#: bp-groups/bp-groups-blocks.php:284
-#: bp-groups/bp-groups-blocks.php:460
+#: bp-groups/bp-groups-blocks.php:289
+#: bp-groups/bp-groups-blocks.php:465
 #: bp-groups/classes/class-bp-groups-invite-template.php:283
 #: bp-groups/classes/class-bp-groups-widget.php:155
-#: bp-members/bp-members-blocks.php:312
-#: bp-members/bp-members-blocks.php:478
+#: bp-members/bp-members-blocks.php:317
+#: bp-members/bp-members-blocks.php:483
 #: bp-members/bp-members-template.php:1055
 #: bp-members/bp-members-template.php:1814
 #: bp-templates/bp-legacy/buddypress/groups/groups-loop.php:71
@@ -6388,7 +6388,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: bp-groups/bp-groups-admin.php:830
-#: bp-groups/bp-groups-blocks.php:368
+#: bp-groups/bp-groups-blocks.php:373
 #: bp-groups/classes/class-bp-groups-component.php:1138
 #: bp-groups/classes/class-bp-groups-widget.php:77
 #: bp-groups/classes/class-bp-groups-widget.php:214
@@ -6480,7 +6480,7 @@ msgstr ""
 #: bp-groups/bp-groups-admin.php:1010
 #: bp-groups/bp-groups-template.php:4734
 #: bp-groups/classes/class-bp-groups-component.php:787
-#: bp-members/bp-members-blocks.php:389
+#: bp-members/bp-members-blocks.php:394
 #: bp-members/classes/class-bp-core-members-widget.php:258
 #: bp-members/classes/class-bp-members-component.php:38
 #: bp-members/classes/class-bp-members-component.php:883
@@ -6677,26 +6677,26 @@ msgstr ""
 
 #. Translators: %s is the group's name.
 #: bp-groups/bp-groups-blocks.php:96
-#: bp-groups/bp-groups-blocks.php:259
-#: bp-groups/bp-groups-blocks.php:479
+#: bp-groups/bp-groups-blocks.php:264
+#: bp-groups/bp-groups-blocks.php:484
 #: bp-groups/js/dynamic-groups.js:51
 msgid "Group Profile photo of %s"
 msgstr ""
 
 #. translators: %d: the number of group members.
-#: bp-groups/bp-groups-blocks.php:292
+#: bp-groups/bp-groups-blocks.php:297
 msgid "%d member"
 msgid_plural "%d members"
 msgstr[0] ""
 msgstr[1] ""
 
-#: bp-groups/bp-groups-blocks.php:379
+#: bp-groups/bp-groups-blocks.php:384
 #: bp-groups/classes/class-bp-groups-widget.php:171
 #: bp-groups/js/dynamic-groups.js:56
 msgid "There are no groups to display."
 msgstr ""
 
-#: bp-groups/bp-groups-blocks.php:414
+#: bp-groups/bp-groups-blocks.php:419
 #: bp-groups/bp-groups-template.php:4762
 #: bp-groups/classes/class-bp-groups-widget.php:134
 #: bp-groups/classes/class-bp-groups-widget.php:246
@@ -6715,13 +6715,13 @@ msgid "Alphabetical"
 msgstr ""
 
 #. translators: %s is time elapsed since the group was created
-#: bp-groups/bp-groups-blocks.php:452
+#: bp-groups/bp-groups-blocks.php:457
 #: bp-groups/js/dynamic-groups.js:33
 msgid "Created %s"
 msgstr ""
 
 #. translators: %s is the number of Group members
-#: bp-groups/bp-groups-blocks.php:457
+#: bp-groups/bp-groups-blocks.php:462
 #: bp-groups/bp-groups-template.php:2232
 #: bp-templates/bp-nouveau/buddypress/members/single/groups/invites.php:40
 msgid "%s member"
@@ -8605,24 +8605,24 @@ msgstr ""
 msgid "View Profile"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:400
+#: bp-members/bp-members-blocks.php:405
 #: bp-members/js/dynamic-members.js:56
 msgid "No members found."
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:693
+#: bp-members/bp-members-blocks.php:698
 #: bp-members/classes/class-bp-core-whos-online-widget.php:180
 #: bp-members/classes/class-bp-members-component.php:917
 #: bp-members/js/blocks/online-members.js:127
 msgid "Who's Online"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:695
+#: bp-members/bp-members-blocks.php:700
 #: bp-members/classes/class-bp-core-whos-online-widget.php:103
 msgid "There are no users currently online"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:718
+#: bp-members/bp-members-blocks.php:723
 #: bp-members/classes/class-bp-core-recently-active-widget.php:180
 #: bp-members/classes/class-bp-members-component.php:943
 #: bp-members/js/blocks/active-members.js:116
@@ -8630,7 +8630,7 @@ msgstr ""
 msgid "Recently Active Members"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:720
+#: bp-members/bp-members-blocks.php:725
 #: bp-members/classes/class-bp-core-recently-active-widget.php:103
 msgid "There are no recently active members"
 msgstr ""
