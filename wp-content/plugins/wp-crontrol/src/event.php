@@ -500,26 +500,29 @@ function get_list_table() {
  */
 function uasort_order_events( $a, $b ) {
 	$orderby = ( ! empty( $_GET['orderby'] ) ) ? sanitize_text_field( $_GET['orderby'] ) : 'crontrol_next';
-	$order   = ( ! empty( $_GET['order'] ) ) ? sanitize_text_field( $_GET['order'] ) : 'desc';
+	$order   = ( ! empty( $_GET['order'] ) ) ? sanitize_text_field( $_GET['order'] ) : 'asc';
 	$compare = 0;
 
 	switch ( $orderby ) {
 		case 'crontrol_hook':
-			if ( 'desc' === $order ) {
+			if ( 'asc' === $order ) {
 				$compare = strcmp( $a->hook, $b->hook );
 			} else {
 				$compare = strcmp( $b->hook, $a->hook );
 			}
 			break;
-		default:
-			if ( $a->timestamp === $b->timestamp ) {
-				$compare = 0;
+		case 'crontrol_recurrence':
+			if ( 'asc' === $order ) {
+				$compare = ( $a->interval ?? 0 ) <=> ( $b->interval ?? 0 );
 			} else {
-				if ( 'desc' === $order ) {
-					$compare = ( $a->timestamp > $b->timestamp ) ? 1 : -1;
-				} else {
-					$compare = ( $a->timestamp < $b->timestamp ) ? 1 : -1;
-				}
+				$compare = ( $b->interval ?? 0 ) <=> ( $a->interval ?? 0 );
+			}
+			break;
+		default:
+			if ( 'asc' === $order ) {
+				$compare = $a->timestamp <=> $b->timestamp;
+			} else {
+				$compare = $b->timestamp <=> $a->timestamp;
 			}
 			break;
 	}
