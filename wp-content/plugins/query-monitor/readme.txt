@@ -1,9 +1,9 @@
 # Query Monitor
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
-Requires at least: 5.3
+Requires at least: 5.5
 Tested up to: 6.3
-Stable tag: 3.13.1
+Stable tag: 3.14.0
 License: GPLv2 or later
 Requires PHP: 7.4
 Donate link: https://github.com/sponsors/johnbillion
@@ -17,6 +17,8 @@ Query Monitor is the developer tools panel for WordPress. It enables debugging o
 It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
 Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
+
+Query Monitor supports versions of WordPress up to three years old, and PHP version 7.4 or higher.
 
 For complete information, please see [the Query Monitor website](https://querymonitor.com/).
 
@@ -142,11 +144,21 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 
 ## Changelog ##
 
+### 3.14.0 ###
+
+* Correct the port number handling when displaying URLs for scripts and styles
+* Improve the `db.php` handling when activating and deactivating Query Monitor on a single site within a Multisite network, and when `DISALLOW_FILE_MODS` is in use
+* Improve check for Debug Bar existence
+* Identify drop-in plugins as a specific component instead of "other"
+* Simplify some of the data structure used when logging queries
+* Specify that Query Monitor supports WordPress versions up to three years old
+
+
 ### 3.13.1 ###
 
-* Avoid a fatal error if a deprecated warning is triggered early on during the bootstrap process
-* Avoid a PHP warning that can be triggered during certain HTTP API requests when Curl is not in use
-* Don't load QM during the plugin update process
+* Avoids a fatal error if a deprecated warning is triggered early on during the bootstrap process
+* Avoids a PHP warning that can be triggered during certain HTTP API requests when Curl is not in use
+* Skips loading QM during the plugin update process
 
 ### 3.13.0 ###
 
@@ -382,25 +394,4 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 * More CSS resets to avoid overly tall filters in Firefox.
 * Improved styling for warning rows.
 * Display the log count in the menu item.
-
-
-### 3.4.0 ###
-
-* Introduce an exception handler so a stack trace can be shown for fatal errors in PHP >= 7.
-* Add separate persistence of QM window for front-end and admin area.
-* Add the request and response HTTP headers to the Request panel.
-* Introduce Started and Stopped columns in the Timings panel.
-* By popular demand, revert back to closest first ordering of stack traces so they're inline with most other dev tools out there.
-* Show the script handle in addition to the text domain in the Languages panel.
-* Improve the panel menu highlighting colours.
-* Better presentation of the default and current values for the settings constants.
-* Truncate long host names in the Scripts and Styles panels.
-* Add some more of the admin screen globals to the admin collector.
-* Switch back to using a monospace font in numeric data cells.
-* Allow dark mode to be enabled with `QM_DARK_MODE`.
-* Display the total query count even when `SAVEQUERIES` is defined as false.
-* Allow proper plural forms to be used wherever a phrase includes a numeric value.
-* More style resetting for compatibility with Twenty Twenty.
-* Avoid a division by zero when cache hits is 0.
-* Switch to (mostly) CSS for the child menu item marker.
 
