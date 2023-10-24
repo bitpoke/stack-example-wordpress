@@ -31,8 +31,7 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-			$tab_config = ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
-					Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab;
+			$tab_config = ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab;
 
 			$_configs = array(
 

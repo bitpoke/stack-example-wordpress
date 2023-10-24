@@ -73,6 +73,10 @@ class Astra_Heading_Colors_Loader {
 		$theme_btn_font_weight = astra_get_option( 'font-weight-button' );
 		Astra_Fonts::add_font( $theme_btn_font_family, $theme_btn_font_weight );
 
+		$theme_secondary_btn_font_family = astra_get_option( 'secondary-font-family-button' );
+		$theme_secondary_btn_font_weight = astra_get_option( 'secondary-font-weight-button' );
+		Astra_Fonts::add_font( $theme_secondary_btn_font_family, $theme_secondary_btn_font_weight );
+
 		$header_btn_font_family = astra_get_option( 'primary-header-button-font-family' );
 		$header_btn_font_weight = astra_get_option( 'primary-header-button-font-weight' );
 		Astra_Fonts::add_font( $header_btn_font_family, $header_btn_font_weight );
@@ -181,9 +185,19 @@ class Astra_Heading_Colors_Loader {
 		/**
 		 * Theme button Font Defaults
 		 */
-		$defaults['font-weight-button'] = $apply_new_default_color_typo_values ? '500' : 'inherit';
-		$defaults['font-family-button'] = 'inherit';
-		$defaults['font-size-button']   = array(
+		$defaults['font-weight-button']           = $apply_new_default_color_typo_values ? '500' : 'inherit';
+		$defaults['secondary-font-weight-button'] = $apply_new_default_color_typo_values ? '500' : 'inherit';
+		$defaults['font-family-button']           = 'inherit';
+		$defaults['secondary-font-family-button'] = 'inherit';
+		$defaults['font-size-button']             = array(
+			'desktop'      => $apply_new_default_color_typo_values ? '16' : '',
+			'tablet'       => '',
+			'mobile'       => '',
+			'desktop-unit' => 'px',
+			'tablet-unit'  => 'px',
+			'mobile-unit'  => 'px',
+		);
+		$defaults['secondary-font-size-button']   = array(
 			'desktop'      => $apply_new_default_color_typo_values ? '16' : '',
 			'tablet'       => '',
 			'mobile'       => '',
@@ -198,6 +212,15 @@ class Astra_Heading_Colors_Loader {
 			'letter-spacing'      => ! isset( $astra_options['font-extras-button'] ) && isset( $astra_options['theme-btn-letter-spacing'] ) ? $astra_options['theme-btn-letter-spacing'] : '',
 			'letter-spacing-unit' => 'px',
 			'text-transform'      => ! isset( $astra_options['font-extras-button'] ) && isset( $astra_options['text-transform-button'] ) ? $astra_options['text-transform-button'] : '',
+			'text-decoration'     => '',
+		);
+
+		$defaults['secondary-font-extras-button'] = array(
+			'line-height'         => ! isset( $astra_options['secondary-font-extras-button'] ) && isset( $astra_options['secondary-theme-btn-line-height'] ) ? $astra_options['secondary-theme-btn-line-height'] : 1,
+			'line-height-unit'    => 'em',
+			'letter-spacing'      => ! isset( $astra_options['secondary-font-extras-button'] ) && isset( $astra_options['secondary-theme-btn-letter-spacing'] ) ? $astra_options['secondary-theme-btn-letter-spacing'] : '',
+			'letter-spacing-unit' => 'px',
+			'text-transform'      => ! isset( $astra_options['secondary-font-extras-button'] ) && isset( $astra_options['secondary-text-transform-button'] ) ? $astra_options['secondary-text-transform-button'] : '',
 			'text-decoration'     => '',
 		);
 

@@ -56,7 +56,6 @@ class Astra_Widget_Component_Dynamic_CSS {
 				$builder_widget_selector = $selector . ' .' . $builder_type . '-widget-area-inner';
 			}
 
-			if ( ! astra_remove_widget_design_options() ) {
 
 				$title_font_size   = astra_get_option( $builder_type . '-widget-' . $index . '-font-size' );
 				$content_font_size = astra_get_option( $builder_type . '-widget-' . $index . '-content-font-size' );
@@ -89,9 +88,8 @@ class Astra_Widget_Component_Dynamic_CSS {
 					$builder_widget_selector . ' a:hover' => array(
 						'color' => $link_h_color_desktop,
 					),
-					$selector . ' .widget-title'          => array(
+					$selector . ' .widget-title, ' . $selector . ' h1, ' . $selector . ' .widget-area h1, ' . $selector . ' h2, ' . $selector . ' .widget-area h2, ' . $selector . ' h3, ' . $selector . ' .widget-area h3, ' . $selector . ' h4, ' . $selector . ' .widget-area h4, ' . $selector . ' h5, ' . $selector . ' .widget-area h5, ' . $selector . ' h6, ' . $selector . ' .widget-area h6' => array( 
 						'color'     => $title_color_desktop,
-						// Typography.
 						'font-size' => astra_responsive_font( $title_font_size, 'desktop' ),
 					),
 					$selector                             => array(
@@ -109,9 +107,8 @@ class Astra_Widget_Component_Dynamic_CSS {
 						// Typography.
 						'font-size' => astra_responsive_font( $content_font_size, 'tablet' ),
 					),
-					$selector . ' .widget-title'          => array(
+					$selector . ' .widget-title, ' . $selector . ' h1, ' . $selector . ' .widget-area h1, ' . $selector . ' h2, ' . $selector . ' .widget-area h2, ' . $selector . ' h3, ' . $selector . ' .widget-area h3, ' . $selector . ' h4, ' . $selector . ' .widget-area h4, ' . $selector . ' h5, ' . $selector . ' .widget-area h5, ' . $selector . ' h6, ' . $selector . ' .widget-area h6' => array( 
 						'color'     => $title_color_tablet,
-						// Typography.
 						'font-size' => astra_responsive_font( $title_font_size, 'tablet' ),
 					),
 					$builder_widget_selector . ' a'       => array(
@@ -135,9 +132,8 @@ class Astra_Widget_Component_Dynamic_CSS {
 						// Typography.
 						'font-size' => astra_responsive_font( $content_font_size, 'mobile' ),
 					),
-					$selector . ' .widget-title'          => array(
+					$selector . ' .widget-title, ' . $selector . ' h1, ' . $selector . ' .widget-area h1, ' . $selector . ' h2, ' . $selector . ' .widget-area h2, ' . $selector . ' h3, ' . $selector . ' .widget-area h3, ' . $selector . ' h4, ' . $selector . ' .widget-area h4, ' . $selector . ' h5, ' . $selector . ' .widget-area h5, ' . $selector . ' h6, ' . $selector . ' .widget-area h6' => array( 
 						'color'     => $title_color_mobile,
-						// Typography.
 						'font-size' => astra_responsive_font( $title_font_size, 'mobile' ),
 					),
 					$builder_widget_selector . ' a'       => array(
@@ -154,47 +150,15 @@ class Astra_Widget_Component_Dynamic_CSS {
 						'margin-right'  => astra_responsive_spacing( $margin, 'right', 'mobile' ),
 					),
 				);
-			} else {
 
-				$css_output_desktop = array(
-					$selector => array(
-						// Margin CSS.
-						'margin-top'    => astra_responsive_spacing( $margin, 'top', 'desktop' ),
-						'margin-bottom' => astra_responsive_spacing( $margin, 'bottom', 'desktop' ),
-						'margin-left'   => astra_responsive_spacing( $margin, 'left', 'desktop' ),
-						'margin-right'  => astra_responsive_spacing( $margin, 'right', 'desktop' ),
-					),
-				);
+				/* Parse CSS from array() */
+				$css_output  = astra_parse_css( $css_output_desktop );
+				$css_output .= astra_parse_css( $css_output_tablet, '', astra_get_tablet_breakpoint() );
+				$css_output .= astra_parse_css( $css_output_mobile, '', astra_get_mobile_breakpoint() );
 
-				$css_output_tablet = array(
-					$selector => array(
-						// Margin CSS.
-						'margin-top'    => astra_responsive_spacing( $margin, 'top', 'tablet' ),
-						'margin-bottom' => astra_responsive_spacing( $margin, 'bottom', 'tablet' ),
-						'margin-left'   => astra_responsive_spacing( $margin, 'left', 'tablet' ),
-						'margin-right'  => astra_responsive_spacing( $margin, 'right', 'tablet' ),
-					),
-				);
+				$css_output .= Astra_Builder_Base_Dynamic_CSS::prepare_visibility_css( $_section, $selector, 'block' );
 
-				$css_output_mobile = array(
-					$selector => array(
-						// Margin CSS.
-						'margin-top'    => astra_responsive_spacing( $margin, 'top', 'mobile' ),
-						'margin-bottom' => astra_responsive_spacing( $margin, 'bottom', 'mobile' ),
-						'margin-left'   => astra_responsive_spacing( $margin, 'left', 'mobile' ),
-						'margin-right'  => astra_responsive_spacing( $margin, 'right', 'mobile' ),
-					),
-				);
-			}
-
-			/* Parse CSS from array() */
-			$css_output  = astra_parse_css( $css_output_desktop );
-			$css_output .= astra_parse_css( $css_output_tablet, '', astra_get_tablet_breakpoint() );
-			$css_output .= astra_parse_css( $css_output_mobile, '', astra_get_mobile_breakpoint() );
-
-			$css_output .= Astra_Builder_Base_Dynamic_CSS::prepare_visibility_css( $_section, $selector, 'block' );
-
-			$generated_css .= $css_output;
+				$generated_css .= $css_output;
 
 		}
 

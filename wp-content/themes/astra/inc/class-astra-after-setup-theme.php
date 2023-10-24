@@ -239,11 +239,11 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 		 * @param  string $html The oEmbed markup.
 		 * @param  string $url The URL being embedded.
 		 * @param  array  $attr An array of attributes.
+		 * @param  bool   $core_yt_block Whether the oEmbed is being rendered by the core YouTube block.
 		 *
 		 * @return string       Updated embed markup.
 		 */
-		public function responsive_oembed_wrapper( $html, $url, $attr ) {
-
+		public function responsive_oembed_wrapper( $html, $url, $attr, $core_yt_block = false ) {
 			$add_astra_oembed_wrapper = apply_filters( 'astra_responsive_oembed_wrapper_enable', true );
 
 			$allowed_providers = apply_filters(
@@ -257,8 +257,13 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 				)
 			);
 
-			if ( astra_strposa( $url, $allowed_providers ) ) {
-				if ( $add_astra_oembed_wrapper ) {
+			if ( $core_yt_block ) {
+				if ( astra_strposa( $url, $allowed_providers ) && $add_astra_oembed_wrapper ) {
+					$embed_html = wp_oembed_get( $url );
+					$html       = false !== $embed_html ? '<div class="wp-block-embed__wrapper"> <div class="ast-oembed-container" style="height: 100%;">' . $embed_html . '</div> </div>' : '';
+				}
+			} else {
+				if ( astra_strposa( $url, $allowed_providers ) && $add_astra_oembed_wrapper ) {
 					$html = ( '' !== $html ) ? '<div class="ast-oembed-container" style="height: 100%;">' . $html . '</div>' : '';
 				}
 			}

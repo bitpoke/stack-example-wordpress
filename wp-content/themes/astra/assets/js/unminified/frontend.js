@@ -867,6 +867,22 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
             }
         }
 	}
+	var SearchInputs = document.querySelectorAll( '.search-field' );
+	SearchInputs.forEach(input => {
+		input.addEventListener('focus', function (e) {
+			var sibling = this.parentNode.parentNode.parentNode.querySelector( '.ast-search-menu-icon' );
+			if ( sibling ) {
+				astraToggleClass( sibling, 'ast-dropdown-active' );
+			}
+		});
+		input.addEventListener('blur', function (e) {
+			var sibling = this.parentNode.parentNode.parentNode.querySelector( '.ast-search-menu-icon' );
+			if ( sibling ) {
+				sibling.classList.remove( 'ast-dropdown-active' );
+				astraToggleClass( sibling, 'ast-dropdown-active' );
+			}
+		});
+	});
 
 	/* Hide Dropdown on body click*/
 	body.onclick = function( event ) {
@@ -910,19 +926,23 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			menu.className += ' nav-menu';
 		}
 
-		if ( 'off-canvas' === mobileHeaderType ) {
-			var popupClose = document.getElementById( 'menu-toggle-close' );
-			popupClose.onclick = function() {
-				if ( -1 !== containerMenu.className.indexOf( 'toggled' ) ) {
-					containerMenu.className = containerMenu.className.replace( ' toggled', '' );
-					button.setAttribute( 'aria-expanded', 'false' );
-					menu.setAttribute( 'aria-expanded', 'false' );
-				} else {
-					containerMenu.className += ' toggled';
-					button.setAttribute( 'aria-expanded', 'true' );
-					menu.setAttribute( 'aria-expanded', 'true' );
+		window.onload = function () {
+			if ('off-canvas' === mobileHeaderType) {
+				var popupClose = document.getElementById('menu-toggle-close');
+				if (popupClose) {
+					popupClose.onclick = function () {
+						if (-1 !== containerMenu.className.indexOf('toggled')) {
+							containerMenu.className = containerMenu.className.replace(' toggled', '');
+							button.setAttribute('aria-expanded', 'false');
+							menu.setAttribute('aria-expanded', 'false');
+						} else {
+							containerMenu.className += ' toggled';
+							button.setAttribute('aria-expanded', 'true');
+							menu.setAttribute('aria-expanded', 'true');
+						}
+					};
 				}
-			};
+			}
 		}
 
 		button.onclick = function() {

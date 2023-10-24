@@ -20,7 +20,7 @@ if ( ! class_exists( 'Astra_Builder_Base_Dynamic_CSS' ) ) {
 		/**
 		 * Member Variable
 		 *
-		 * @var instance
+		 * @var mixed instance
 		 */
 		private static $instance = null;
 
@@ -30,7 +30,9 @@ if ( ! class_exists( 'Astra_Builder_Base_Dynamic_CSS' ) ) {
 		 */
 		public static function get_instance() {
 
+			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( is_null( self::$instance ) ) {
+				/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				self::$instance = new self();
 			}
 

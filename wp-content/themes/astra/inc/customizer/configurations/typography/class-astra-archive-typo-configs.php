@@ -84,7 +84,7 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 				);
 			}
 
-			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
+			if ( ! defined( 'ASTRA_EXT_VER' ) || ( defined( 'ASTRA_EXT_VER' ) && ! Astra_Ext_Extension::is_active( 'typography' ) ) ) {
 				$new_configs = array(
 					/**
 					 * Option: Blog - Post Title Font Size

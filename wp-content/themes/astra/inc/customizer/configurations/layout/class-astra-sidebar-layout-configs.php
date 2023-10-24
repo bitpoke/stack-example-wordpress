@@ -128,6 +128,20 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 					'divider'  => array( 'ast_class' => 'ast-bottom-section-divider' ),
 					'settings' => array(),
 				),
+
+				/**
+				 * Option: Sticky Sidebar
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[site-sticky-sidebar]',
+					'default'  => astra_get_option( 'site-sticky-sidebar' ),
+					'type'     => 'control',
+					'section'  => 'section-sidebars',
+					'title'    => __( 'Enable Sticky Sidebar', 'astra' ),
+					'priority' => 15,
+					'control'  => 'ast-toggle-control',
+					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+				),
 			);
 
 			// Learn More link if Astra Pro is not activated.

@@ -1231,7 +1231,7 @@ if ( ! function_exists( 'astra_get_search_form' ) ) :
 
 		$form = get_search_form(
 			array(
-				'input_placeholder' => apply_filters( 'astra_search_field_placeholder', esc_attr_x( 'Search &hellip;', 'placeholder', 'astra' ) ),
+				'input_placeholder' => apply_filters( 'astra_search_field_placeholder', esc_attr_x( 'Search...', 'placeholder', 'astra' ) ),
 				'data_attributes'   => apply_filters( 'astra_search_field_toggle_data_attrs', '' ),
 				'input_value'       => get_search_query(),
 				'show_input_submit' => false,

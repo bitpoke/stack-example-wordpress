@@ -31,10 +31,10 @@ function addTitleVisibility() {
 	}
 
 	if( null !== titleBlock && null === titleVisibility ) {
-		let titleVisibilityTrigger = '<span class="ast-title title-visibility" data-tooltip="Disable Title"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"></path></svg> </span>';
+		let titleVisibilityTrigger = '<span class="ast-title title-visibility" data-tooltip="Disable Title"> <svg xmlns="http://www.w3.org/2000/svg" width="0px" viewBox="0 0 576 512"><path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"></path></svg> </span>';
 
 		if ( 'disabled' === postTitleOption ) {
-			titleVisibilityTrigger = '<span class="ast-title title-visibility" data-tooltip="Enable Title"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"></path></svg> </span>';
+			titleVisibilityTrigger = '<span class="ast-title title-visibility" data-tooltip="Enable Title"> <svg xmlns="http://www.w3.org/2000/svg" width="0px" viewBox="0 0 640 512"><path d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"></path></svg> </span>';
 		}
 
 		if ( null === titleVisibility ) {
@@ -56,7 +56,7 @@ function addTitleVisibility() {
 				this.parentNode.classList.remove( 'invisible' );
 				this.dataset.tooltip = 'Disable Title';
 				titleVisibilityTriggerElement.innerHTML = '';
-				titleVisibilityTriggerElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"></path></svg>';
+				titleVisibilityTriggerElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="0px" viewBox="0 0 576 512"><path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"></path></svg>';
 
 				wp.data.dispatch( 'core/editor' ).editPost(
 					{
@@ -69,7 +69,7 @@ function addTitleVisibility() {
 				this.parentNode.classList.add( 'invisible' );
 				this.dataset.tooltip = 'Enable Title';
 				titleVisibilityTriggerElement.innerHTML = '';
-				titleVisibilityTriggerElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"></path></svg>';
+				titleVisibilityTriggerElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="0px" viewBox="0 0 640 512"><path d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"></path></svg>';
 
 				wp.data.dispatch( 'core/editor' ).editPost(
 					{
@@ -118,7 +118,6 @@ function astra_onload_function() {
 
 			// Adding title visibility icon on wp.data.subscribe.
 			addTitleVisibility();
-
 			if ( astraColors.ast_wp_version_higher_6_3 ) {
 				let desktopPreview = document.getElementsByClassName('is-desktop-preview'),
 					tabletPreview = document.getElementsByClassName('is-tablet-preview'),
@@ -137,11 +136,18 @@ function astra_onload_function() {
 				}
 
 				titleBlock = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
+
+				// Add Google Fonts CSS to iframe.
+				var fontCss = document.getElementById('astra-google-fonts-css');
+				if ( fontCss && editorDocument && editorDocument.head ) {
+					editorDocument.head.appendChild( fontCss.cloneNode(true) );
+				}
 			}
 
 			// Compatibility for updating layout in editor with direct reflection.
 			const contentLayout = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['ast-site-content-layout'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['ast-site-content-layout'] : 'default',
-				bodyClass = astraColors.ast_wp_version_higher_6_3 ? editorDocument.querySelector('html') : document.querySelector('body');
+				bodyClass       = document.querySelector('body');
+				editorBodyClass = astraColors.ast_wp_version_higher_6_3 ? editorDocument.querySelector('html') : false;
 			const contentStyle = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-style'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-content-style'] : 'default';
 			const sidebarStyle = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-style'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-style'] : 'default';
 			const sidebarLayout = ( undefined !== wp.data.select( 'core/editor' ) && null !== wp.data.select( 'core/editor' ) && undefined !== wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ) && wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-layout'] ) ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )['site-sidebar-layout'] : 'default';
@@ -155,6 +161,15 @@ function astra_onload_function() {
 							"ast-separate-container",
 							"ast-narrow-container"
 						);
+						if ( editorBodyClass ) {
+							editorBodyClass.classList.add("ast-plain-container");
+							editorBodyClass.classList.remove(
+								"ast-two-container",
+								"ast-page-builder-template",
+								"ast-separate-container",
+								"ast-narrow-container"
+							);							
+						}
 						break;
 					case "content-boxed-container":
 						bodyClass.classList.add("ast-separate-container");
@@ -164,6 +179,15 @@ function astra_onload_function() {
 							"ast-plain-container",
 							"ast-narrow-container"
 						);
+						if ( editorBodyClass ) {
+							editorBodyClass.classList.add("ast-separate-container");
+							editorBodyClass.classList.remove(
+								"ast-two-container",
+								"ast-page-builder-template",
+								"ast-plain-container",
+								"ast-narrow-container"
+							);							
+						}
 						break;
 					case "boxed-container":
 						bodyClass.classList.add(
@@ -175,6 +199,17 @@ function astra_onload_function() {
 							"ast-plain-container",
 							"ast-narrow-container"
 						);
+						if ( editorBodyClass ) {
+							editorBodyClass.classList.add(
+								"ast-separate-container",
+								"ast-two-container"
+							);
+							editorBodyClass.classList.remove(
+								"ast-page-builder-template",
+								"ast-plain-container",
+								"ast-narrow-container"
+							);						
+						}
 						break;
 					case "page-builder-template":
 						bodyClass.classList.add("ast-page-builder-template");
@@ -184,6 +219,15 @@ function astra_onload_function() {
 							"ast-separate-container",
 							"ast-narrow-container"
 						);
+						if ( editorBodyClass ) {
+							editorBodyClass.classList.add("ast-page-builder-template");
+							editorBodyClass.classList.remove(
+								"ast-two-container",
+								"ast-plain-container",
+								"ast-separate-container",
+								"ast-narrow-container"
+							);						
+						}
 						break;
 					case "narrow-container":
 						bodyClass.classList.add("ast-narrow-container");
@@ -192,7 +236,16 @@ function astra_onload_function() {
 							"ast-plain-container",
 							"ast-separate-container",
 							"ast-page-builder-template"
-							);
+						);
+						if ( editorBodyClass ) {
+							editorBodyClass.classList.add("ast-narrow-container");
+							editorBodyClass.classList.remove(
+								"ast-two-container",
+								"ast-plain-container",
+								"ast-separate-container",
+								"ast-page-builder-template"
+							);					
+						}
 						break;
 					default:
 						break;
@@ -228,7 +281,7 @@ function astra_onload_function() {
 			const is_default_content_boxed = bodyClass && bodyClass.classList.contains( 'ast-default-layout-content-boxed-container' ) ? true : false;
 			const is_default_normal        = bodyClass && bodyClass.classList.contains( 'ast-default-layout-plain-container' ) ? true : false;
 			const is_default_normal_width  = ( 'default' === contentLayout && ( is_default_boxed || is_default_content_boxed || is_default_normal ) );
-			const is_content_style_boxed   = bodyClass && bodyClass.classList.contains( 'ast-default-content-boxed' ) ? true : false;
+			const is_content_style_boxed   = bodyClass && bodyClass.classList.contains( 'ast-default-content-style-boxed' ) ? true : false;
 			const is_sidebar_style_boxed   = bodyClass && bodyClass.classList.contains( 'ast-default-sidebar-boxed' ) ? true : false;
 
 			if ( 'normal-width-container' === contentLayout || is_default_normal_width ) {
@@ -272,6 +325,33 @@ function astra_onload_function() {
 								applyContainerLayoutClasses( 'content-boxed-container' );
 							}
 							break;
+					}
+				}
+			}
+
+			// Narrow + Boxed compatibility in editor.
+			if ( 'narrow-width-container' === contentLayout && ( 'boxed' === contentStyle || 'default' === contentStyle && is_content_style_boxed ) ) {
+				const editorArea = document.querySelector('.edit-post-visual-editor__content-area');
+				if ( editorArea ) {
+					editorArea.style.padding = '20px';
+				}
+			}
+			else {
+				const editorArea = document.querySelector('.edit-post-visual-editor__content-area');
+				if ( editorArea ) {
+					editorArea.style.padding = '0px';
+				}
+			}
+
+			// Container unboxed + sidebar boxed case.
+			let isUnboxedContainer = false;
+			const is_sidebar_default_enabled = 'default' === sidebarLayout && ( ! bodyClass.classList.contains( 'ast-sidebar-default-no-sidebar' ) );
+			if ( ( 'normal-width-container' === contentLayout || is_default_normal_width ) ) {
+				if ( is_sidebar_default_enabled || 'no-sidebar' !== sidebarLayout && 'default' !== sidebarLayout ) {
+					if ( 'default' === contentStyle && ! is_content_style_boxed ||  'unboxed' === contentStyle ) {
+						if ( 'boxed' === sidebarStyle || 'default' === sidebarStyle && is_sidebar_style_boxed ) {
+							isUnboxedContainer = true;
+						}
 					}
 				}
 			}
@@ -357,8 +437,318 @@ function astra_onload_function() {
 				}
 			}
 
+			// Live reflections for page background setting.
+			const backgroundToggle = (undefined !== wp.data.select('core/editor') &&
+			null !== wp.data.select('core/editor') &&
+			undefined !== wp.data.select('core/editor').getEditedPostAttribute('meta') &&
+			wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-enabled'])
+			? wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-enabled']
+			: 'default';
+
+			if ( 'enabled' === backgroundToggle ) {
+				if ( isUnboxedContainer ) {
+					updatePageBackground( false, isUnboxedContainer );
+				}
+				else {
+					updatePageBackground();
+				}
+			}
+			else if ( 'default' === backgroundToggle ) {
+				if ( isUnboxedContainer ) {
+					updatePageBackground( true, isUnboxedContainer );
+				}
+				else {
+					updatePageBackground( true );
+				}
+			}
+
 		}, 1 );
 	});
+}
+
+/*
+* Updates the page background css from the color picker.
+*/
+const updatePageBackground = ( apply_customizer_default = false, isUnboxedContainer = false ) => {
+	
+	let bgObj = (undefined !== wp.data.select('core/editor') &&
+    null !== wp.data.select('core/editor') &&
+    undefined !== wp.data.select('core/editor').getEditedPostAttribute('meta') &&
+    wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-meta'])
+    ? wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-meta']
+    : 'default';
+
+	let contentObj = (undefined !== wp.data.select('core/editor') &&
+    null !== wp.data.select('core/editor') &&
+    undefined !== wp.data.select('core/editor').getEditedPostAttribute('meta') &&
+    wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-content-background-meta'])
+    ? wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-content-background-meta']
+    : 'default';
+
+	if ( apply_customizer_default ) {
+		bgObj = astraColors.customizer_site_bg_obj;
+		contentObj = astraColors.customizer_content_bg_obj;
+	}
+
+	// Document as per wp version.
+	editorDoc = document;
+	let desktopPreview = document.getElementsByClassName('is-desktop-preview'),
+		tabletPreview = document.getElementsByClassName('is-tablet-preview'),
+		mobilePreview = document.getElementsByClassName('is-mobile-preview'),
+		devicePreview = desktopPreview[0];
+	if ( astraColors.ast_wp_version_higher_6_3 ) {
+
+		if ( tabletPreview.length > 0 ) {
+			devicePreview = tabletPreview[0];
+		} else if ( mobilePreview.length > 0 ) {
+			devicePreview = mobilePreview[0];
+		}
+
+		let iframe = undefined !== devicePreview ? devicePreview.getElementsByTagName('iframe')[0] : undefined;
+		if ( iframe && devicePreview.querySelector('iframe') !== null ) {
+			editorDoc = iframe.contentWindow.document || iframe.contentDocument;
+		}
+	}
+
+	if ( desktopPreview.length > 0 ) {
+
+		// Get the background object css values and update page background.
+		const desktopCSS = astraGetResponsiveBackgroundObj(bgObj, 'desktop');
+		applyStylesToElement('#editor .edit-post-visual-editor', desktopCSS, document );
+
+		// Check current layout.
+		is_boxed_based_layout = document.querySelector('body').contains( document.querySelector('.ast-separate-container') );
+
+		if ( astraColors.apply_content_bg_fullwidth && ( ! is_boxed_based_layout ) ) {
+
+			/** Fullwidth with Content Bg */
+			// Get the background object css values and update page content background.
+			const desktopContentCSS = astraGetResponsiveBackgroundObj(contentObj, 'desktop');
+			applyStylesToElement('.editor-styles-wrapper', desktopContentCSS, editorDoc );
+
+		}
+		else if ( ! astraColors.apply_content_bg_fullwidth && ( ! is_boxed_based_layout ) ) {
+
+			/** Fullwidth with Page Bg */
+			// Get the background object css values and update page background.
+			const desktopCSS = astraGetResponsiveBackgroundObj(bgObj, 'desktop');
+			applyStylesToElement('.editor-styles-wrapper', desktopCSS, document );
+
+		}
+		else if ( is_boxed_based_layout ) {
+
+			/** Boxed Layouts with Content Bg & Page Bg */
+			// Get the background object css values and update page background.
+			const desktopCSS = astraGetResponsiveBackgroundObj(bgObj, 'desktop');
+			applyStylesToElement('#editor .edit-post-visual-editor', desktopCSS, document );
+
+			// Get the background object css values and update page content background.
+			const desktopContentCSS = astraGetResponsiveBackgroundObj(contentObj, 'desktop');
+			applyStylesToElement('.editor-styles-wrapper', desktopContentCSS, editorDoc );
+
+		}
+
+		if ( isUnboxedContainer ) {
+
+			// Container unboxed + sidebar boxed -> update page content background to site background.
+			applyStylesToElement('.editor-styles-wrapper', desktopCSS, editorDoc );
+		}
+
+	}
+	else if ( tabletPreview.length > 0 ) {
+
+		// Check current layout.
+		is_boxed_based_layout = document.querySelector('body').contains( document.querySelector('.ast-separate-container') );
+
+		if ( astraColors.apply_content_bg_fullwidth && ( ! is_boxed_based_layout ) ) {
+			
+			/** Fullwidth with Content Bg */
+			// Get the background object css values and update page content background.
+			const tabletContentCSS = astraGetResponsiveBackgroundObj(contentObj, 'tablet');
+			applyStylesToElement('.editor-styles-wrapper', tabletContentCSS, editorDoc );
+
+			// Set page background to black to indicate that page background not applicable.
+			applyStylesToElement('#editor .edit-post-visual-editor', {'background-color' : '#363636'}, document );
+		}
+		else if ( ! astraColors.apply_content_bg_fullwidth && ( ! is_boxed_based_layout ) ) {
+			
+			/** Fullwidth with Page Bg */
+			// Get the background object css values and update page background.
+			const tabletCSS = astraGetResponsiveBackgroundObj(bgObj, 'tablet');
+			applyStylesToElement('.editor-styles-wrapper', tabletCSS, document );
+
+		}
+		else if ( is_boxed_based_layout ) {
+			
+			/** Boxed Layouts with Content Bg & Page Bg */
+			// Get the background object css values and update page background.
+			const tabletCSS = astraGetResponsiveBackgroundObj(bgObj, 'tablet');
+			applyStylesToElement('#editor .edit-post-visual-editor', tabletCSS, document );
+
+			// Get the background object css values and update page content background.
+			const tabletContentCSS = astraGetResponsiveBackgroundObj(contentObj, 'tablet');
+			applyStylesToElement('.editor-styles-wrapper', tabletContentCSS, editorDoc );
+
+		}
+	}
+	else if ( mobilePreview.length > 0 ) {
+
+		// Check current layout.
+		is_boxed_based_layout =   document.querySelector('body').contains( document.querySelector('.ast-separate-container') );
+
+		if ( astraColors.apply_content_bg_fullwidth && ( ! is_boxed_based_layout ) ) {
+			
+			/** Fullwidth with Content Bg */
+			// Get the background object css values and update page content background.
+			const mobileContentCSS = astraGetResponsiveBackgroundObj(contentObj, 'mobile');
+			applyStylesToElement('.editor-styles-wrapper', mobileContentCSS, editorDoc );
+
+			// Set page background to black to indicate that page background not applicable.
+			applyStylesToElement('#editor .edit-post-visual-editor', {'background-color' : '#363636'}, document );
+		}
+		else if ( ! astraColors.apply_content_bg_fullwidth && ( ! is_boxed_based_layout ) ) {
+			
+			/** Fullwidth with Page Bg */
+			// Get the background object css values and update page background.
+			const mobileCSS = astraGetResponsiveBackgroundObj(bgObj, 'mobile');
+			applyStylesToElement('.editor-styles-wrapper', mobileCSS, document );
+
+		}
+		else if ( is_boxed_based_layout ) {
+			
+			/** Boxed Layouts with Content Bg & Page Bg */
+			// Get the background object css values and update page background.
+			const mobileCSS = astraGetResponsiveBackgroundObj(bgObj, 'mobile');
+			applyStylesToElement('#editor .edit-post-visual-editor', mobileCSS, document );
+
+			// Get the background object css values and update page content background.
+			const mobileContentCSS = astraGetResponsiveBackgroundObj(contentObj, 'mobile');
+			applyStylesToElement('.editor-styles-wrapper', mobileContentCSS, editorDoc );
+
+		}
+	}
+
+
+}
+
+/*
+* Dynamically applies styles to DOM element.
+*/
+function applyStylesToElement( selector, styles, docObj ) {
+
+  const element = docObj.querySelector(selector);
+
+  // Remove any prior cache values if set already.
+  element.style.backgroundImage = 'none';
+
+  if (element) {
+    Object.keys(styles).forEach((property) => {
+      element.style[property] = styles[property];
+    });
+  } else {
+    console.error(`Element with selector "${selector}" not found.`);
+  }
+}
+
+/*
+* Generate Responsive Background Color CSS.
+*/
+function astraGetResponsiveBackgroundObj(bgObjRes, device) {
+ const genBgCss = {};
+
+ const bgObj = bgObjRes[device];
+ const bgImg = bgObj['background-image'] || '';
+ const bgTabImg = bgObjRes['tablet']['background-image'] || '';
+ const bgDeskImg = bgObjRes['desktop']['background-image'] || '';
+ const bgColor = bgObj['background-color'] || '';
+ const tabletCss = bgObjRes['tablet']['background-image'] ? true : false;
+ const desktopCss = bgObjRes['desktop']['background-image'] ? true : false;
+
+ const bgType = bgObj['background-type'] || '';
+
+ if ('' !== bgType) {
+   switch (bgType) {
+	 case 'color':
+	   if ('' !== bgImg && '' !== bgColor) {
+		 genBgCss['background-image'] = `linear-gradient(to right, ${bgColor}, ${bgColor}), url(${bgImg})`;
+	   } else if ('mobile' === device) {
+		 if (desktopCss) {
+		   genBgCss['background-image'] = `linear-gradient(to right, ${bgColor}, ${bgColor}), url(${bgDeskImg})`;
+		 } else if (tabletCss) {
+		   genBgCss['background-image'] = `linear-gradient(to right, ${bgColor}, ${bgColor}), url(${bgTabImg})`;
+		 } else {
+		   if ('' !== bgColor) {
+			 genBgCss['background-color'] = bgColor;
+			 genBgCss['background-image'] = 'none';
+		   }
+		 }
+	   } else if ('tablet' === device) {
+		 if (desktopCss) {
+		   genBgCss['background-image'] = `linear-gradient(to right, ${bgColor}, ${bgColor}), url(${bgDeskImg})`;
+		 } else {
+		   if ('' !== bgColor) {
+			 genBgCss['background-color'] = bgColor;
+			 genBgCss['background-image'] = 'none';
+		   }
+		 }
+	   } else if ('' === bgImg) {
+		 genBgCss['background-color'] = bgColor;
+		 genBgCss['background-image'] = 'none';
+	   }
+	   break;
+
+	 case 'image':
+	   const overlayType = bgObj['overlay-type'] || 'none';
+	   const overlayColor = bgObj['overlay-color'] || '';
+	   const overlayGrad = bgObj['overlay-gradient'] || '';
+
+	   if ('' !== bgImg) {
+		 if ('none' !== overlayType) {
+		   if ('classic' === overlayType && '' !== overlayColor) {
+			 genBgCss['background-image'] = `linear-gradient(to right, ${overlayColor}, ${overlayColor}), url(${bgImg})`;
+		   } else if ('gradient' === overlayType && '' !== overlayGrad) {
+			 genBgCss['background-image'] = `${overlayGrad}, url(${bgImg})`;
+		   } else {
+			 genBgCss['background-image'] = `url(${bgImg})`;
+		   }
+		 } else {
+		   genBgCss['background-image'] = `url(${bgImg})`;
+		 }
+	   }
+	   break;
+
+	 case 'gradient':
+	   if (bgColor) {
+		 genBgCss['background-image'] = bgColor;
+	   }
+	   break;
+
+	 default:
+	   break;
+   }
+ } else if ('' !== bgColor) {
+   genBgCss['background-color'] = bgColor;
+ }
+
+ if ('' !== bgImg) {
+   if (bgObj['background-repeat']) {
+	 genBgCss['background-repeat'] = bgObj['background-repeat'];
+   }
+
+   if (bgObj['background-position']) {
+	 genBgCss['background-position'] = bgObj['background-position'];
+   }
+
+   if (bgObj['background-size']) {
+	 genBgCss['background-size'] = bgObj['background-size'];
+   }
+
+   if (bgObj['background-attachment']) {
+	 genBgCss['background-attachment'] = bgObj['background-attachment'];
+   }
+ }
+
+  return genBgCss;
 }
 
 document.body.addEventListener('mousedown', function () {

@@ -77,7 +77,7 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 						'default'  => '',
 						'priority' => 999,
 						'context'  => array(),
-						'title'    => __( 'Extensive range of tools to help blog pages stand out', 'astra' ),
+						'title'    => __( 'Extensive range of tools to help blog pages stand out.', 'astra' ),
 						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 					),
 				);

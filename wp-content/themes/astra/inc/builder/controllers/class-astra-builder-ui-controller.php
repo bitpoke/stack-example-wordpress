@@ -20,7 +20,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 		/**
 		 * Astra SVGs.
 		 *
-		 * @var ast_svgs
+		 * @var mixed ast_svgs
 		 */
 		private static $ast_svgs = null;
 

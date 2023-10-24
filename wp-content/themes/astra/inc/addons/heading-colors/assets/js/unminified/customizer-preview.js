@@ -131,4 +131,13 @@
 		astra_css( 'astra-settings[theme-btn-letter-spacing]', 'letter-spacing', 'button, .ast-button, .ast-custom-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' + astraCustomizer.v4_2_2_core_form_btns_styling + woo_button_attr , 'px' );
 	}
 
+	// Secondary button typo.
+	let outline_btn_selector = '.wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link, .ast-outline-button';
+	astra_generate_outside_font_family_css( 'astra-settings[secondary-font-family-button]', outline_btn_selector );
+	astra_generate_font_weight_css( 'astra-settings[secondary-font-family-button]', 'astra-settings[secondary-font-weight-button]', 'font-weight', outline_btn_selector );
+	astra_font_extras_css( 'secondary-font-extras-button', outline_btn_selector );
+	astra_responsive_font_size( 'astra-settings[secondary-font-size-button]', outline_btn_selector );
+	astra_css( 'astra-settings[secondary-theme-btn-line-height]', 'line-height', outline_btn_selector );
+	astra_css( 'astra-settings[secondary-theme-btn-letter-spacing]', 'letter-spacing', outline_btn_selector, 'px' );
+
 } )( jQuery );

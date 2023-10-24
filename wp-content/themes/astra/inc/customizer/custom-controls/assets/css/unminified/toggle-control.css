@@ -65,6 +65,10 @@
 .ast-switch:not(:checked), .ast-switch:checked {
   opacity: 0;
 }
+.customize-control-ast-section-toggle .components-form-toggle {
+	margin-left: 5px;
+	text-align: right;
+}
 
 /* Wordpress 6.1 Compatibility CSS for toggle UI */
 .components-toggle-control .components-base-control__field {

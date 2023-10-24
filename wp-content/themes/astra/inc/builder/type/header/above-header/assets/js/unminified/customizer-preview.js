@@ -73,7 +73,7 @@
 	astra_apply_responsive_background_css( 'astra-settings[hba-header-bg-obj-responsive]', '.ast-above-header.ast-above-header-bar', 'mobile' );
 
 	// Advanced CSS Generation.
-	astra_builder_advanced_css( 'section-above-header-builder', '.ast-above-header.ast-above-header-bar' );
+	astra_builder_advanced_css( 'section-above-header-builder', '.ast-above-header.ast-above-header-bar, .ast-header-break-point #masthead.site-header .ast-above-header-bar' );
 
     // Advanced Visibility CSS Generation.
 	astra_builder_visibility_css( 'section-above-header-builder', '.ast-above-header-bar', 'grid' );

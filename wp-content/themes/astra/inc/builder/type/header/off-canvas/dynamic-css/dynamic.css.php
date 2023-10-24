@@ -157,10 +157,6 @@ function astra_off_canvas_static_css() {
 		box-shadow: none;
 	}
 
-	.ast-mobile-popup-drawer .ast-mobile-popup-header .menu-toggle-close:focus {
-		outline: thin dotted;
-	}
-
 	.ast-mobile-popup-drawer.ast-mobile-popup-full-width .ast-mobile-popup-inner {
 		max-width: none;
 		transition: transform 0s ease-in, opacity 0.2s ease-in;

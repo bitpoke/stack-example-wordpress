@@ -154,9 +154,14 @@ if ( ! function_exists( 'astra_woo_woocommerce_template_loop_product_title' ) ) 
 	 */
 	function astra_woo_woocommerce_template_loop_product_title() {
 
-		echo '<a href="' . esc_url( get_the_permalink() ) . '" class="ast-loop-product__link">';
+		$product_title_link = apply_filters( 'astra_woo_shop_product_title_link', '__return_true' );
+		if ( $product_title_link ) {
+			echo '<a href="' . esc_url( get_the_permalink() ) . '" class="ast-loop-product__link">';
+				woocommerce_template_loop_product_title();
+			echo '</a>';
+		} else {
 			woocommerce_template_loop_product_title();
-		echo '</a>';
+		}
 	}
 }
 

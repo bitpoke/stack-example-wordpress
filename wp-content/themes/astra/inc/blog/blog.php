@@ -354,6 +354,11 @@ function astra_get_last_meta_word( $string ) {
 function astra_get_archive_description( $post_type ) {
 	$description = '';
 
+	if ( defined( 'SURECART_PLUGIN_FILE' ) && is_page() && get_the_ID() === absint( get_option( 'surecart_shop_page_id' ) ) ) {
+		$description = astra_get_option( 'ast-dynamic-archive-sc_product-custom-description', '' );
+		return $description;
+	}
+
 	if ( ! is_search() ) {
 
 		$get_archive_description = get_the_archive_description();
@@ -398,12 +403,12 @@ function astra_banner_elements_order( $structure = array() ) {
 		return;
 	}
 
-	// If Blog / Latest Post page is active then looping required strctural order.
+	// If Blog / Latest Post page is active then looping required structural order.
 	if ( ( ! is_front_page() && is_home() ) && false === astra_get_option( 'ast-dynamic-archive-post-banner-on-blog', false ) ) {
 		return astra_blog_post_thumbnail_and_title_order();
 	}
 
-	$post_type = $post->post_type;
+	$post_type = strval( $post->post_type );
 
 	$prefix      = 'archive';
 	$structure   = astra_get_option( 'ast-dynamic-' . $prefix . '-' . $post_type . '-structure', array( 'ast-dynamic-' . $prefix . '-' . $post_type . '-title', 'ast-dynamic-' . $prefix . '-' . $post_type . '-description' ) );
@@ -419,8 +424,10 @@ function astra_banner_elements_order( $structure = array() ) {
 	}
 
 	do_action( 'astra_single_post_banner_before' );
+	$post_type = apply_filters( 'astra_banner_elements_post_type', $post_type );
+	$prefix    = apply_filters( 'astra_banner_elements_prefix', $prefix );
 
-	foreach ( $structure as $metaval ) {
+	foreach ( apply_filters( 'astra_banner_elements_structure', $structure ) as $metaval ) {
 		$meta_key = $prefix . '-' . astra_get_last_meta_word( $metaval );
 		switch ( $meta_key ) {
 			case 'single-breadcrumb':
@@ -477,6 +484,16 @@ function astra_banner_elements_order( $structure = array() ) {
 
 			case 'single-image':
 				$featured_background = astra_get_option( 'ast-dynamic-single-' . $post_type . '-featured-as-background', false );
+
+				if ( 'layout-1' === $layout_type ) {
+					$article_featured_image_position = astra_get_option( 'ast-dynamic-single-' . $post_type . '-article-featured-image-position-layout-1', 'behind' );
+				} else {
+					$article_featured_image_position = astra_get_option( 'ast-dynamic-single-' . $post_type . '-article-featured-image-position-layout-2', 'none' );
+				}
+
+				if ( 'none' !== $article_featured_image_position ) {
+					break;
+				}
 
 				if ( ( 'layout-2' === $layout_type && false === $featured_background ) || 'layout-1' === $layout_type ) {
 					do_action( 'astra_blog_single_featured_image_before' );

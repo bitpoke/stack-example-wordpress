@@ -238,50 +238,7 @@ class Astra_Posts_Structure_Loader {
 	 */
 	public static function get_supported_post_types() {
 		if ( empty( self::$supported_post_types ) || is_customize_preview() ) {
-			$queried_post_types = array_keys(
-				get_post_types(
-					apply_filters(
-						'astra_dynamic_get_post_types_query_args',
-						array(
-							'public'   => true,
-							'_builtin' => false,
-						)
-					)
-				)
-			);
-
-			$queried_post_types   = array_diff(
-				$queried_post_types,
-				array(
-					'astra-advanced-hook',
-					'astra_adv_header',
-					'elementor_library',
-					'brizy_template',
-
-					'course',
-					'lesson',
-					'llms_membership',
-
-					'tutor_quiz',
-					'tutor_assignments',
-
-					'testimonial',
-					'frm_display',
-					'mec_esb',
-					'mec-events',
-
-					'sfwd-assignment',
-					'sfwd-essays',
-					'sfwd-transactions',
-					'sfwd-certificates',
-					'sfwd-quiz',
-					'e-landing-page',
-				)
-			);
-			$queried_post_types[] = 'post';
-			$queried_post_types[] = 'page';
-
-			self::$supported_post_types = $queried_post_types;
+			self::$supported_post_types = astra_get_queried_post_types();
 		}
 
 		return apply_filters( 'astra_dynamic_post_structure_posttypes', self::$supported_post_types );

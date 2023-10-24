@@ -1,3 +1,34 @@
+v4.4.0
+- New: Header Builder - Search - Introducing a new feature Live Search. ( https://wpastra.com/docs/live-search/ )
+- New: Header Builder - Search - Post Types selection option to filter Live Search results within.
+- New: Header Builder - Search - Option to adjust search bar width.
+- New: Introducing a feature of Sticky Sidebar functionality for enhanced user experience. ( https://wpastra.com/docs/sticky-sidebar/ )
+- New: Introducing Primary & Secondary Button styles under Global - Buttons. ( https://wpastra.com/docs/secondary-buttons/ )
+- New: Introducing new Twitter-X Icon added for Social Sharing and Social Icons.
+- New: Introducing new featured image options like Image Ratio, Image Size, Image Position, etc for single banner layouts. ( https://wpastra.com/docs/featured-image-options-for-single-banner-layouts/ )
+- New: WooCommerce - Compatibility for a pro cart shortcode 'astra_woo_slide_in_cart', which adds support for a slide-in cart feature.
+- Improvement: Added a new filter 'astra_woo_shop_product_title_link' to remove the product title link from the product page.
+- Improvement: Header-Footer Builder - Enabled widget design options by default and it is supported for editor blocks as well.
+- Improvement: Updated default colors from color palette on fresh setup for better UI/UX.
+- Fix: Resolved console error which originated from "menu-toggle-close" element click on the frontend.
+- Fix: Theme's meta-box modal UI getting extra space after WordPress-6.3.
+- Fix: After WordPress 6.3 bottom spacing of 'figure' tag is missing.
+- Fix: Header-Footer Builder - Social - Background spacing issue breaking UI in customizer preview.
+- Fix: Block Editor - After WordPress 6.3 compatibility title visibility SVG icon jerks on page load with slow networks.
+- Fix: Site Identity - Logo Width sizes not working as expected in the customizer preview.
+- Fix: Duplicate dotted outlines are visible on focus of the close-menu toggle icon when accessibility is enabled.
+- Fix: Above Header - Left & Right spacing does not apply on frontend & in the customizer preview.
+- Fix: Blog Archive - Read More button not working with the excerpt when the Left Sidebar layout is active.
+- Fix: Customizer - Blog - Design tab section seems blank when Astra Pro is active and all pro addons are disabled.
+- Fix: Block - Embed/YouTube block not working inside nested blocks from Custom Layouts.
+- Fix: Breadcrumb - PHP warnings while accessing "name"/"rewrite" properties of the post object.
+- Fix: WooCommerce - Ultimate Addons for Elementor's Product widget missing with "View Cart" button.
+- Fix: Blog/Archive - Banner title font size is not working in responsive mode.
+- Fix: Header Builder - CLS issue due to appearing desktop and mobile header together on responsive devices.
+- Fix: Header Builder - Anchor tag link getting submenu background color which creates multiple color layer issues.
+- Fix: Social Share - Wrong SVG icon (Ravelry) showing on frontend due to incorrect path.
+- Fix: Comment Form - On active & focus of form fields they look improper.
+
 v4.3.1
 - Fix: Block - Lists block style type updated to "disc" after v4.3.0 update.
 - Fix: Block Editor - Text color not inheriting as per the settings saved in customizer.

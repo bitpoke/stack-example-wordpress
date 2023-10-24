@@ -457,10 +457,10 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 
 			switch ( $context ) {
 				case 'transparent-header':
-					$notice = '<div class="ast-customizer-notice wp-ui-highlight"><p>The Logo on this page is set from the Transparent Header Section. Please click the link below to customize Transparent Header Logo.</p></div>';
+					$notice = '<div class="ast-customizer-notice wp-ui-highlight"><p>' . __( 'The Logo on this page is set from the Transparent Header Section. Please click the link below to customize Transparent Header Logo.', 'astra' ) . '</p></div>';
 					break;
 				case 'transparent-meta':
-					$notice = '<div class="ast-customizer-notice wp-ui-highlight"><p>The header on this page is set from the Transparent Header.</p> <p> Please click the link below to customize Transparent Header </p></div>';
+					$notice = '<div class="ast-customizer-notice wp-ui-highlight"><p>' . __( 'The header on this page is set from the Transparent Header.', 'astra' ) . '</p> <p> ' . __( 'Please click the link below to customize Transparent Header', 'astra' ) . ' </p></div>';
 					break;
 				default:
 					$notice = '';

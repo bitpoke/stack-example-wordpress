@@ -124,6 +124,8 @@ class Astra_Global_Palette {
 		 * @since 4.0.0
 		 */
 		$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
+		$update_colors_for_starter_library   = Astra_Dynamic_CSS::astra_4_4_0_compatibility();
+
 		return array(
 			'currentPalette' => 'palette_1',
 			'palettes'       => $apply_new_default_color_typo_values ? array(
@@ -132,33 +134,33 @@ class Astra_Global_Palette {
 					'#045cb4',
 					'#1e293b',
 					'#334155',
-					'#f9fafb',
+					$update_colors_for_starter_library ? '#F0F5FA' : '#f9fafb',
 					'#FFFFFF',
-					'#e2e8f0',
-					'#cbd5e1',
-					'#94a3b8',
+					$update_colors_for_starter_library ? '#ADB6BE' : '#e2e8f0',
+					$update_colors_for_starter_library ? '#111111' : '#cbd5e1',
+					$update_colors_for_starter_library ? '#111111' : '#94a3b8',
 				),
 				'palette_2' => array(
 					'#0170B9',
-					'#3a3a3a',
+					$update_colors_for_starter_library ? '#045cb4' : '#3a3a3a',
 					'#3a3a3a',
 					'#4B4F58',
-					'#F5F5F5',
+					$update_colors_for_starter_library ? '#F0F5FA' : '#F5F5F5',
 					'#FFFFFF',
-					'#F2F5F7',
-					'#424242',
-					'#000000',
+					$update_colors_for_starter_library ? '#ADB6BE' : '#F2F5F7',
+					$update_colors_for_starter_library ? '#111111' : '#424242',
+					$update_colors_for_starter_library ? '#111111' : '#000000',
 				),
 				'palette_3' => array(
 					'#0170B9',
-					'#3a3a3a',
+					$update_colors_for_starter_library ? '#045cb4' : '#3a3a3a',
 					'#3a3a3a',
 					'#4B4F58',
-					'#F5F5F5',
+					$update_colors_for_starter_library ? '#F0F5FA' : '#F5F5F5',
 					'#FFFFFF',
-					'#F2F5F7',
-					'#424242',
-					'#000000',
+					$update_colors_for_starter_library ? '#ADB6BE' : '#F2F5F7',
+					$update_colors_for_starter_library ? '#111111' : '#424242',
+					$update_colors_for_starter_library ? '#111111' : '#000000',
 				),
 			) : array(
 				'palette_1' => array(

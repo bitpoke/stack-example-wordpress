@@ -20,7 +20,7 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		/**
 		 * Member Variable
 		 *
-		 * @var instance
+		 * @var mixed instance
 		 */
 		private static $instance = null;
 
@@ -28,7 +28,7 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		/**
 		 * Dynamic Methods.
 		 *
-		 * @var dynamic methods
+		 * @var array dynamic methods
 		 */
 		private static $methods = array();
 

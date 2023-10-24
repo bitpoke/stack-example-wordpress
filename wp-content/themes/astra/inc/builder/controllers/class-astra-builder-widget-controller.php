@@ -20,7 +20,7 @@ if ( ! class_exists( 'Astra_Builder_Widget_Controller' ) ) {
 		/**
 		 * Member Variable
 		 *
-		 * @var instance
+		 * @var mixed instance
 		 */
 		private static $instance = null;
 

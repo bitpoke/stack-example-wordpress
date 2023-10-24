@@ -2150,13 +2150,14 @@ li#accordion-section-ast-archive-post, li#accordion-section-ast-archive-product 
 	margin-bottom: 0;
 }
 
-.ahfb-sorter-drop-social_item_group .ahfb-sorter-item .ahfb-sorter-item-panel-header .dashicons {
+.ahfb-sorter-drop-social_item_group .ahfb-sorter-item .ahfb-sorter-item-panel-header .dashicons,
+.ahfb-sorter-drop-language_selector_group .ahfb-sorter-item .ahfb-sorter-item-panel-header .dashicons {
 	width: 16px;
 	height: 16px;
 	font-size: 16px;
 }
 
-.ahfb-sorter-item-remove {
+.ahfb-sorter-item-remove, .ahfb-sorter-item-visibility {
 	margin-right: -12px;
 }
 /** Site icon control specific CSS as divider attr can't accessible to core control. */

@@ -827,21 +827,23 @@ class Astra_Breadcrumb_Trail {
 		// Get the post type object.
 		$post_type_object = get_post_type_object( get_query_var( 'post_type' ) );
 
-		if ( false !== $post_type_object->rewrite ) {
+		if ( is_object( $post_type_object ) && is_array( $post_type_object->rewrite ) ) {
 
 			// If 'with_front' is true, add $wp_rewrite->front to the trail.
-			if ( $post_type_object->rewrite['with_front'] ) {
+			if ( isset( $post_type_object->rewrite['with_front'] ) && $post_type_object->rewrite['with_front'] ) {
 				$this->add_rewrite_front_items();
 			}
 			// If there's a rewrite slug, check for parents.
-			if ( ! empty( $post_type_object->rewrite['slug'] ) ) {
+			if ( isset( $post_type_object->rewrite['slug'] ) && ! empty( $post_type_object->rewrite['slug'] ) ) {
 				$this->add_path_parents( $post_type_object->rewrite['slug'] );
 			}
 		}
 
 		// Add the post type [plural] name to the trail end.
 		if ( is_paged() || is_author() ) {
-			$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), post_type_archive_title( '', false ) );
+    		if ( is_object( $post_type_object ) ) {
+        		$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), post_type_archive_title( '', false ) );
+			}
 		}
 		elseif ( true === $this->args['show_title'] ) {
 			$this->items[] = post_type_archive_title( '', false );

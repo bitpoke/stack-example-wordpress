@@ -193,7 +193,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 						'published' => __( 'Published', 'astra' ),
 						'updated'   => __( 'Last Updated', 'astra' ),
 					),
-					'divider'    => array( 'ast_class' => 'ast-top-divider ast-bottom-spacing' ),
+					'divider'    => array( 'ast_class' => 'ast-bottom-spacing' ),
 					'responsive' => false,
 					'renderAs'   => 'text',
 				),

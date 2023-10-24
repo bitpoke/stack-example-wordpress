@@ -43,9 +43,9 @@ if ( ! function_exists( 'astra_default_strings' ) ) {
 				'string-search-nothing-found'            => __( 'Nothing Found', 'astra' ),
 				'string-search-nothing-found-message'    => __( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'astra' ),
 				'string-full-width-search-message'       => __( 'Start typing and press enter to search', 'astra' ),
-				'string-full-width-search-placeholder'   => __( 'Search &hellip;', 'astra' ),
-				'string-header-cover-search-placeholder' => __( 'Search &hellip;', 'astra' ),
-				'string-search-input-placeholder'        => __( 'Search &hellip;', 'astra' ),
+				'string-full-width-search-placeholder'   => __( 'Search...', 'astra' ),
+				'string-header-cover-search-placeholder' => __( 'Search...', 'astra' ),
+				'string-search-input-placeholder'        => __( 'Search...', 'astra' ),
 
 				// Comment Template Strings.
 				'string-comment-reply-link'              => __( 'Reply', 'astra' ),

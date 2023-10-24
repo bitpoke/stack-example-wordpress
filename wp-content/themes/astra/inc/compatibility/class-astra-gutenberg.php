@@ -24,6 +24,7 @@ class Astra_Gutenberg {
 		}
 
 		add_filter( 'render_block_core/group', array( $this, 'add_inherit_width_group_class' ), 10, 2 );
+		add_filter( 'render_block', array( $this, 'add_iframe_wrapper' ), 10, 2 );
 	}
 
 	/**
@@ -121,9 +122,6 @@ class Astra_Gutenberg {
 		if (
 			isset( $block['blockName'] ) && isset( $block['attrs']['layout']['inherit'] ) && $block['attrs']['layout']['inherit']
 		) {
-			$block_classgroups    = isset( $block['attrs']['className'] ) ? $block['attrs']['className'] : '';
-			$processed_classnmaes = $block_classgroups . ' inherit-container-width';
-
 			$block_content = preg_replace(
 				'/' . preg_quote( 'class="', '/' ) . '/',
 				'class="inherit-container-width ',
@@ -149,6 +147,52 @@ class Astra_Gutenberg {
 		return $matches[1] . '<div class="wp-block-group__inner-container">' . $matches[2] . '</div>' . $matches[3];
 	}
 
+	/**
+	 * Add iframe wrapper for videos.
+	 *
+	 * @since 4.4.0
+	 * @access public
+	 *
+	 * @param string $block_content Rendered block content.
+	 * @param array  $block         Block object.
+	 *
+	 * @return string Filtered block content.
+	 */
+	public function add_iframe_wrapper( $block_content, $block ) {
+		$yt_wrapper_with_inner_iframe_regex = '/(ast-oembed-container)/';
+
+		if ( isset( $block['blockName'] ) && 'core/embed' !== $block['blockName'] && 'core/youtube' !== $block['blockName'] ) {
+			return $block_content;
+		}
+
+		/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		if ( ( ! empty( $block['blockName'] ) && ( 'core/embed' === $block['blockName'] || 'core/youtube' === $block['blockName'] ) ) && ! empty( $block['attrs'] ) && empty( $block['attrs']['url'] ) ) {
+			return $block_content;
+		}
+
+		if ( 1 === preg_match( $yt_wrapper_with_inner_iframe_regex, $block_content ) ) {
+			return $block_content;
+		}
+
+		$video_url     = ! empty( $block['attrs']['url'] ) ? esc_url( $block['attrs']['url'] ) : '';
+		$replace_regex = '/<div\s+class="wp-block-embed__wrapper">(.*?)<\/div>/s';
+
+		$updated_content = preg_replace_callback(
+			$replace_regex,
+			/**
+			 * Add iframe wrapper for videos.
+			 *
+			 * @param  array $matches Matches.
+			 * @return mixed          Updated content.
+			 */
+			function ( $matches ) use ( $video_url, $block_content, $block ) {
+				return Astra_After_Setup_Theme::get_instance()->responsive_oembed_wrapper( '', $video_url, array(), true );
+			},
+			$block_content
+		);
+
+		return $updated_content;
+	}
 }
 
 /**

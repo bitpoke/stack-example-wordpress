@@ -330,7 +330,7 @@ if ( ! function_exists( 'astra_post_link' ) ) {
 		return apply_filters( 'astra_post_link', $output, $output_filter );
 	}
 }
-add_filter( 'excerpt_more', 'astra_post_link', 1 );
+add_filter( 'excerpt_more', 'astra_post_link', 20 );
 
 /**
  * Function to get Number of Comments of Post

@@ -19,6 +19,7 @@
 }
 .customize-control-ast-sortable .sortable .ast-sortable-subcontrols {
     border: none;
+	padding: 0 9px 0 0;
     border-top: 1px solid #d1d5db;
     border-radius: 0 0 3px 3px;
 }
@@ -74,13 +75,7 @@
 .ast-sortable-subcontrols {
 	display: none;
 	padding: 12px 0;
-    margin-left: -12px !important;
     border-top: 1px solid #d1d5db;
-	margin-right: -3px!important;
-}
-.ast-sortable-subcontrols > * {
-	padding-right: 9px;
-	padding-bottom: 12px;
 }
 .show .ast-sortable-subcontrols {
 	display: block;
@@ -88,7 +83,6 @@
 .ast-sortable-subfields-wrap .customize-control {
 	box-sizing: border-box;
     position: relative;
-    padding-left: 9px;
 }
 /**
  * ast-list-icons inside sortable compatibility CSS.
@@ -177,8 +171,12 @@
 }
 .customize-control-ast-sortable .ast-sortable-subfields-wrap .customize-control-title {
     margin-bottom: 16px;
-    font-size: 13px;
-    margin-top: 3px;
+    font-size: 14px;
+}
+.ast-sortable-subfields-wrap .customize-control-ast-color .ast-control-wrap .astra-popover-color {
+    margin-left: -10px;
+    margin-right: 10px;
+    width: calc(100% + 15px);
 }
 
 .customize-control-ast-sortable .ast-sortable-subfields-wrap .ast-responsive-btns {
@@ -186,8 +184,7 @@
 }
 
 .ast-sortable-subfields-wrap .ast-fields-wrap {
-    margin-left: -12px;
-	padding-bottom: 10px;
+	padding-bottom: 16px;
 }
 .customize-control-content {
     width: 100%;

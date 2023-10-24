@@ -28,6 +28,7 @@
 		init: function()
 		{
 			ASTCustomizer._initToggles();
+			ASTCustomizer._initSubControlsToggle();
 		},
 
 		/**
@@ -40,7 +41,6 @@
 		 */
 		_initToggles: function()
 		{
-
 			// Trigger the Adv Tab Click trigger.
 			ASTControlTrigger.triggerHook( 'astra-toggle-control', api );
 
@@ -74,6 +74,46 @@
 					});
 				});
 
+			});
+		},
+
+		/**
+		 * Toggle sub control visibility CSS.
+		 *
+		 * @since x.x.x
+		 */
+		subControlsToggleCSS( controlValue, dependents ) {
+			$.each( dependents, function( controlOption, dependentSubControls ) {
+				$.each( dependentSubControls, function( dependentIndex, subControl ) {
+					// Remove old.
+					jQuery( 'style#ast-sub-control-' + subControl ).remove();
+					// Add new.
+					if ( controlValue !== controlOption ) {
+						// Concat and append new <style>.
+						jQuery( 'head' ).append(
+							'<style id="ast-sub-control-' + subControl + '">' +
+							'#customize-control-' + subControl + '	{ display: none; }' +
+							'</style>'
+						);
+					}
+				});
+			});
+		},
+
+		/**
+		 * Initializes the logic for showing and hiding sub controls
+		 * when a setting changes.
+		 *
+		 * @since x.x.x
+		 * @access private
+		 * @method _initSubControlsToggle
+		 * @return void
+		 */
+		_initSubControlsToggle: function()
+		{
+			document.addEventListener('AstraToggleSubControls', function (e) {
+				let subControlData = e.detail;
+				ASTCustomizer.subControlsToggleCSS( subControlData.controlValue, subControlData.dependents );
 			});
 		}
 	};

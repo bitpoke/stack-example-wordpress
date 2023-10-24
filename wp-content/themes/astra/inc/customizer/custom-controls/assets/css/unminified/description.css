@@ -4,6 +4,8 @@
   font-size: 11px;
   line-height: 16px;
   font-weight: 400;
+  text-wrap: wrap;
+  display: inline-block;
 }
 
 .customize-control-ast-description a.button {

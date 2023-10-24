@@ -127,6 +127,15 @@
 
 	}
 
+	// Slide in cart 'astra_woo_slide_in_cart' PRO shortcode compatibility.
+	if(document.querySelector('.ast-slidein-cart')){
+		document.querySelector('.ast-slidein-cart').addEventListener('click', (e)=> {
+			document.querySelector('#astra-mobile-cart-drawer').classList.add('active');
+			document.querySelector('html').classList.add('ast-mobile-cart-active');
+			e.preventDefault();
+		});		
+	}
+	
 	// Get the screen inner width.
 	var screenInnerWidth = window.innerWidth;
 

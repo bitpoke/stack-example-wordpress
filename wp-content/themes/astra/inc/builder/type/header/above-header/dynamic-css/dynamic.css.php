@@ -134,7 +134,7 @@ function astra_above_header_row_setting( $dynamic_css, $dynamic_css_filtered = '
 
 	$selector = '.site-above-header-wrap[data-section="ast_header_above"]';
 
-	$parent_selector = '.ast-above-header.ast-above-header-bar';
+	$parent_selector = '.ast-above-header.ast-above-header-bar, .ast-header-break-point #masthead.site-header .ast-above-header-bar';
 
 	$dynamic_css .= Astra_Builder_Base_Dynamic_CSS::prepare_advanced_margin_padding_css( $_section, $parent_selector );
 

@@ -605,13 +605,13 @@ function astra_builder_widget_css( builder_type = 'header' ) {
 			builder_type + '-widget-' + index + '-title-color',
 			'astra-settings[' + builder_type + '-widget-' + index + '-title-color]',
 			'color',
-			selector + ' .widget-title'
+			selector + ' .widget-title, ' + selector + ' h1, ' + selector + ' .widget-area h1, ' + selector + ' h2, ' + selector + ' .widget-area h2, ' + selector + ' h3, ' + selector + ' .widget-area h3, ' + selector + ' h4, ' + selector + ' .widget-area h4, ' + selector + ' h5, ' + selector + ' .widget-area h5, ' + selector + ' h6, ' + selector + ' .widget-area h6'
 		);
 
 		// Widget Title Typography.
 		astra_responsive_font_size(
 			'astra-settings[' + builder_type + '-widget-' + index + '-font-size]',
-			selector + ' .widget-title'
+			selector + ' .widget-title, ' + selector + ' h1, ' + selector + ' .widget-area h1, ' + selector + ' h2, ' + selector + ' .widget-area h2, ' + selector + ' h3, ' + selector + ' .widget-area h3, ' + selector + ' h4, ' + selector + ' .widget-area h4, ' + selector + ' h5, ' + selector + ' .widget-area h5, ' + selector + ' h6, ' + selector + ' .widget-area h6'
 		);
 
 		// Widget Content Typography.

@@ -52,3 +52,17 @@
 	white-space: break-spaces;
 	inline-size: max-content;
 }
+.ast-top-dotted-divider .ast-control-tooltip.dashicons-editor-help {
+    top: 22px;
+}
+.customize-control.ast-bottom-dotted-divider.customize-control-ast-toggle-control .ast-control-tooltip {
+    top: 8px;
+}
+.customize-control.customize-control-ast-select.ast-top-dotted-divider .ast-control-tooltip {
+    top: 36px;
+}
+.customize-control-ast-sortable .customize-control-ast-selector .dashicons.ast-control-tooltip {
+    top: 18%;
+    padding: 0;
+    font-size: 20px;
+}

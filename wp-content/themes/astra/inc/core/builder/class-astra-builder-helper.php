@@ -362,14 +362,14 @@ final class Astra_Builder_Helper {
 	/**
 	 * Member Variable
 	 *
-	 * @var instance
+	 * @var mixed
 	 */
 	public static $loaded_grid = null;
 
 	/**
 	 * Member Variable
 	 *
-	 * @var instance
+	 * @var null instance
 	 */
 	private static $instance = null;
 
@@ -1107,7 +1107,9 @@ final class Astra_Builder_Helper {
 
 		$loaded_components = array();
 
+		/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		if ( is_null( self::$loaded_grid ) ) {
+				/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 			$grids['header_desktop'] = astra_get_option( 'header-desktop-items', array() );
 			$grids['header_mobile']  = astra_get_option( 'header-mobile-items', array() );
@@ -1174,7 +1176,7 @@ final class Astra_Builder_Helper {
 	 */
 	public static function apply_flex_based_css() {
 		$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
-	
+
 		$astra_settings['is-flex-based-css'] = isset( $astra_settings['is-flex-based-css'] ) ? $astra_settings['is-flex-based-css'] : true;
 		return apply_filters( 'astra_apply_flex_based_css', $astra_settings['is-flex-based-css'] );
 	}

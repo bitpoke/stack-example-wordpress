@@ -719,6 +719,20 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 
 	/**
+	 * Search Advanced.
+	 */
+	$defaults['header-search-width']    = array(
+		'desktop' => '',
+		'tablet'  => '',
+		'mobile'  => '',
+	);
+	$defaults['live-search']            = false;
+	$defaults['live-search-post-types'] = array(
+		'post' => 1,
+		'page' => 1,
+	);
+
+	/**
 	 * Transparent Header > Component Configs
 	 */
 	$defaults['transparent-header-social-icons-color']      = array(

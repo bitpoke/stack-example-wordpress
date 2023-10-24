@@ -20,14 +20,14 @@ if ( ! class_exists( 'Astra_Builder_Footer' ) ) {
 		/**
 		 * Member Variable
 		 *
-		 * @var instance
+		 * @var mixed instance
 		 */
 		private static $instance = null;
 
 		/**
 		 * Dynamic Methods.
 		 *
-		 * @var dynamic methods
+		 * @var array dynamic methods
 		 */
 		private static $methods = array();
 
