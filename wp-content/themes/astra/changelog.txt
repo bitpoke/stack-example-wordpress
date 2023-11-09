@@ -1,3 +1,17 @@
+v4.4.1
+- Improvement: Compatibility with WordPress-6.4.
+- Improvement: Updated SelectWoo library to 1.0.10 to hardened the security.
+- Fix: Default colors from customizer palette are mismatch with frontend global colors & with block editor's theme colors.
+- Fix: Smooth Scroll fails to navigate by keyboard on-focus and eventually breaks Accessibility.
+- Fix: Search - Live Search - Search results dropdown goes beneath the header menu.
+- Fix: Search - Live Search results container not visible in offcanvas section.
+- Fix: Search - Live search is not working on the Safari browser.
+- Fix: Search - Live search not getting their translated post type label on the frontend.
+- Fix: WooCommerce - Duplicate 'No Products in the Cart' Message in WooCommerce Cart Widget.
+- Fix: Editor - Content Background not applying correctly in some edge cases.
+- Fix: Post Title - Behind Featured image position breaks the UI with sidebar layout.
+- Fix: Block Editor - Slow editor experience after version 4.4.0.
+
 v4.4.0
 - New: Header Builder - Search - Introducing a new feature Live Search. ( https://wpastra.com/docs/live-search/ )
 - New: Header Builder - Search - Post Types selection option to filter Live Search results within.

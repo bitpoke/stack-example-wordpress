@@ -2636,14 +2636,17 @@ span.customize-control-title.ast-group-section-title {
 
 li[ID*="-image-custom-scale-width"], li[ID*="-image-custom-scale-height"] {
     display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 li[ID*="-image-custom-scale-height"] {
 	float: none;
     padding: 0 !important;
-    width: calc(50% + 10px);
+    width: calc(50% + 12px);
 }
 li[ID*="-image-custom-scale-width"] {
-    width: calc(50% - 10px);
+    width: calc(50% - 12px);
 }
 li[ID*="-image-custom-scale-height"]:before {
     content: ':';
@@ -3438,6 +3441,7 @@ li[ID*="-image-custom-scale-height"].customize-control-ast-hidden:before {
 
 .customize-control-ast-slider .components-input-control__container, .customize-control-ast-responsive-slider .components-input-control__container {
 	margin-right: 5px;
+  width: 48px;
 }
 .customize-control-ast-slider .components-input-control__container div.components-input-control__backdrop, .customize-control-ast-responsive-slider .components-input-control__container div.components-input-control__backdrop {
   border: none;

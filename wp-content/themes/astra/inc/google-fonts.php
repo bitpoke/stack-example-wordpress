@@ -94,6 +94,12 @@ return array(
 		),
 	),
 	array(
+		'Agbalumo' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
 		'Agdasima' => array(
 			'variants' => array( 'regular', '700' ),
 			'category' => 'sans-serif',
@@ -1145,7 +1151,7 @@ return array(
 	),
 	array(
 		'BioRhyme' => array(
-			'variants' => array( '200', '300', 'regular', '700', '800' ),
+			'variants' => array( '200', '300', 'regular', '500', '600', '700', '800' ),
 			'category' => 'serif',
 		),
 	),
@@ -3862,6 +3868,12 @@ return array(
 		),
 	),
 	array(
+		'Kay Pho Du' => array(
+			'variants' => array( 'regular', '500', '600', '700' ),
+			'category' => 'serif',
+		),
+	),
+	array(
 		'Kdam Thmor Pro' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'sans-serif',
@@ -4327,6 +4339,12 @@ return array(
 		'Linden Hill' => array(
 			'variants' => array( 'regular', 'italic' ),
 			'category' => 'serif',
+		),
+	),
+	array(
+		'Linefont' => array(
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
+			'category' => 'display',
 		),
 	),
 	array(
@@ -5704,6 +5722,12 @@ return array(
 		),
 	),
 	array(
+		'Noto Sans Kawi' => array(
+			'variants' => array( 'regular', '500', '600', '700' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Noto Sans Kayah Li' => array(
 			'variants' => array( 'regular', '500', '600', '700' ),
 			'category' => 'sans-serif',
@@ -5880,7 +5904,7 @@ return array(
 	array(
 		'Noto Sans Mono' => array(
 			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
-			'category' => 'monospace',
+			'category' => 'sans-serif',
 		),
 	),
 	array(
@@ -6468,6 +6492,12 @@ return array(
 	array(
 		'Noto Serif NP Hmong' => array(
 			'variants' => array( 'regular', '500', '600', '700' ),
+			'category' => 'serif',
+		),
+	),
+	array(
+		'Noto Serif Old Uyghur' => array(
+			'variants' => array( 'regular' ),
 			'category' => 'serif',
 		),
 	),

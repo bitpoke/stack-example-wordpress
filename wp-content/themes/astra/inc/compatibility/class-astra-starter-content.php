@@ -26,7 +26,7 @@ class Astra_Starter_Content {
 		if ( ! $is_fresh_site ) {
 			return;
 		}
-		
+
 		// Adding post meta and inserting post.
 		add_action(
 			'wp_insert_post',
@@ -45,8 +45,8 @@ class Astra_Starter_Content {
 				$this,
 				'save_astra_settings',
 			),
-			10, 
-			3 
+			10,
+			3
 		);
 
 		if ( ! is_customize_preview() ) {
@@ -100,7 +100,7 @@ class Astra_Starter_Content {
 	 * @param bool     $update Is update.
 	 */
 	public function register_listener( $post_ID, $post, $update ) {
-		
+
 		if ( $update ) {
 			return;
 		}
@@ -137,7 +137,7 @@ class Astra_Starter_Content {
 		if ( is_wp_error( $request ) ) {
 			return false; // Bail early.
 		}
-		
+
 		// @codingStandardsIgnoreStart
 		/**
 		 * @psalm-suppress PossiblyNullReference
@@ -156,7 +156,7 @@ class Astra_Starter_Content {
 	 * @since 4.0.0
 	 */
 	public function save_astra_settings() {
-		
+
 		$settings = self::get_customizer_json();
 
 		// Delete existing dynamic CSS cache.
@@ -204,12 +204,12 @@ class Astra_Starter_Content {
 
 		return $json ? $json : $defaults;
 	}
-	
+
 
 	/**
 	 * Return starter content definition.
 	 *
-	 * @return mixed|void 
+	 * @return mixed|void
 	 * @since 4.0.0
 	 */
 	public function get() {

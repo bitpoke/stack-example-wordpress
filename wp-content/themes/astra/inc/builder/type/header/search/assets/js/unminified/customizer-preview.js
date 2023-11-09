@@ -64,11 +64,11 @@
 					dynamicStyle += 'width:'  + width['desktop'] + 'px;';
 					dynamicStyle += '} ';
 					dynamicStyle += '@media( max-width: ' + astColors.tablet_break_point + 'px ) {';
-					dynamicStyle += '.ast-header-search form.search-form .search-field, .ast-header-search .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field {';
+					dynamicStyle += '.ast-header-search form.search-form .search-field, .ast-header-search .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field, .ast-mobile-header-content .ast-search-menu-icon .search-form {';
 					dynamicStyle += 'width:'  + width['tablet'] + 'px;';
 					dynamicStyle += '} }';
 					dynamicStyle += '@media( max-width: ' + astColors.mobile_break_point + 'px ) {';
-					dynamicStyle += '.ast-header-search form.search-form .search-field, .ast-header-search .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field {';
+					dynamicStyle += '.ast-header-search form.search-form .search-field, .ast-header-search .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field, .ast-mobile-header-content .ast-search-menu-icon .search-form {';
 					dynamicStyle += 'width:'  + width['mobile'] + 'px;';
 					dynamicStyle += '} }';
 				astra_add_dynamic_css( 'astra-settings[header-search-width]', dynamicStyle );

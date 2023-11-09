@@ -16,7 +16,8 @@
 		let processedHtml = '';
 
 		Object.entries( resultsData ).map( ( [ postType, postsData ] ) => {
-			processedHtml += `<label class="ast-search--posttype-heading"> ${postType}s </label>`;
+			let postTypeLabel = astra_search.search_post_types_labels[postType] ? astra_search.search_post_types_labels[postType] : postType + 's';
+			processedHtml += `<label class="ast-search--posttype-heading"> ${postTypeLabel} </label>`;
 			postsData.map((post) => {
 				const searchPostTitle = decodeHTMLEntities(post.title.rendered);
 				processedHtml += `<a class="ast-search-item" role="option" target="_self" href="${post.link}"> <span> ${searchPostTitle} </span> </a>`;
@@ -29,7 +30,7 @@
 	window.addEventListener( "load", function(e) {
 		const searchInputs = document.querySelectorAll('.search-field');
 		searchInputs.forEach(searchInput => {
-			searchInput.addEventListener('input', async (event) => {
+			searchInput.addEventListener('input', function (event) {
 				const searchForm = searchInput.closest('form.search-form');
 				const searchTerm = event.target.value.trim();
 				const postTypes = astra_search.search_post_types;
@@ -48,52 +49,57 @@
 						astra_search.search_posts_per_page
 					}&search=${searchTerm}${astra_search.search_language ? `&lang=${astra_search.search_language}` : ''}`;
 
-					const response = await fetch( restRequest );
-					const postsData = await response.json();
-					let resultsContainer = '';
+					var xhr = new XMLHttpRequest();
+					xhr.open( 'GET', restRequest, true );
+					xhr.onreadystatechange = function () {
+						if ( xhr.readyState === 4 && xhr.status === 200 ) {
+							const postsData = JSON.parse(xhr.responseText);
+							let resultsContainer = '';
 
-					if (postsData.length > 0) {
-						let formattedPostsData = {}
-						postsData.map((post) => {
-							if ( post.type in formattedPostsData ) {
-								formattedPostsData[post.type].push(post);
+							if (postsData.length > 0) {
+								let formattedPostsData = {}
+								postsData.map((post) => {
+									if ( post.type in formattedPostsData ) {
+										formattedPostsData[post.type].push(post);
+									} else {
+										formattedPostsData[post.type] = [post];
+									}
+								});
+								let searchResultMarkup = getSearchResultPostMarkup(formattedPostsData);
+								resultsContainer = `
+									<div
+										class="ast-live-search-results"
+										role="listbox"
+										aria-label="Search results"
+										style="top: ${parseInt(searchForm.offsetHeight) + 10}px;"
+									>
+										${searchResultMarkup}
+									</div>
+								`;
 							} else {
-								formattedPostsData[post.type] = [post];
+								resultsContainer = `
+									<div
+										class="ast-live-search-results"
+										role="listbox"
+										aria-label="Search results"
+										style="top: ${parseInt(searchForm.offsetHeight) + 10}px;"
+									>
+										<label class="ast-search--no-results-heading"> ${astra_search.no_live_results_found} </label>
+									</div>
+								`;
 							}
-						});
-						let searchResultMarkup = getSearchResultPostMarkup(formattedPostsData);
-						resultsContainer = `
-							<div
-								class="ast-live-search-results"
-								role="listbox"
-								aria-label="Search results"
-								style="top: ${parseInt(searchForm.offsetHeight) + 10}px;"
-							>
-								${searchResultMarkup}
-							</div>
-						`;
-					} else {
-						resultsContainer = `
-							<div
-								class="ast-live-search-results"
-								role="listbox"
-								aria-label="Search results"
-								style="top: ${parseInt(searchForm.offsetHeight) + 10}px;"
-							>
-								<label class="ast-search--no-results-heading"> ${astra_search.no_live_results_found} </label>
-							</div>
-						`;
-					}
 
-					const searchResultsWrappers = document.querySelectorAll('.ast-live-search-results');
-					if ( searchResultsWrappers ) {
-						searchResultsWrappers.forEach(function(wrap) {
-							wrap.parentNode.removeChild(wrap);
-						});
-					}
+							const searchResultsWrappers = document.querySelectorAll('.ast-live-search-results');
+							if ( searchResultsWrappers ) {
+								searchResultsWrappers.forEach(function(wrap) {
+									wrap.parentNode.removeChild(wrap);
+								});
+							}
+							searchForm.insertAdjacentHTML('beforeend', resultsContainer);
+						}
+					};
 
-					searchForm.insertAdjacentHTML('beforeend', resultsContainer);
-
+					xhr.send();
 				} catch (error) {
 					console.error('Error while fetching data:', error);
 				}

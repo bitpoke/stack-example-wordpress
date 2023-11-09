@@ -34,7 +34,9 @@ function astra_hb_search_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' )
 	$selector                = '.ast-header-search';
 	$icon_size               = astra_get_option( 'header-search-icon-space' );
 	$search_width            = astra_get_option( 'header-search-width' );
-	$search_width_applicable = ( ! defined( 'ASTRA_EXT_VER' ) || ( defined( 'ASTRA_EXT_VER' ) && ( 'slide-search' === astra_get_option( 'header-search-box-type' ) || 'search-box' === astra_get_option( 'header-search-box-type' ) ) ) ) ? true : false;
+	$search_type             = astra_get_option( 'header-search-box-type' );
+	$live_search             = astra_get_option( 'live-search' );
+	$search_width_applicable = ( ! defined( 'ASTRA_EXT_VER' ) || ( defined( 'ASTRA_EXT_VER' ) && ( 'slide-search' === $search_type || 'search-box' === $search_type ) ) ) ? true : false;
 
 	$icon_size_desktop = ( isset( $icon_size ) && isset( $icon_size['desktop'] ) && ! empty( $icon_size['desktop'] ) ) ? $icon_size['desktop'] : 20;
 
@@ -86,6 +88,12 @@ function astra_hb_search_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' )
 		);
 	}
 
+	if ( $live_search && Astra_Builder_Helper::is_component_loaded( 'search', 'header' ) && ! is_customize_preview() && apply_filters( 'astra_increased_search_icon_zindex', true ) ) {
+		$css_output_desktop['.ast-search-menu-icon'] = array(
+			'z-index' => '5', // To fix search results container overlapping issue with menu (AST-3605).
+		);
+	}
+
 	$css_output_tablet = array(
 
 		$selector . ' .astra-search-icon'         => array(
@@ -105,8 +113,14 @@ function astra_hb_search_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' )
 	);
 
 	if ( $search_width_applicable ) {
-		$css_output_tablet[ $selector . ' form.search-form .search-field, ' . $selector . ' .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field' ] = array(
+		$css_output_tablet[ $selector . ' form.search-form .search-field, ' . $selector . ' .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field, .ast-mobile-header-content .ast-search-menu-icon .search-form' ] = array(
 			'width' => astra_get_css_value( astra_get_prop( $search_width, 'tablet' ), 'px' ),
+		);
+	}
+
+	if ( $live_search && Astra_Builder_Helper::is_component_loaded( 'search', 'header', 'mobile' ) ) {
+		$css_output_tablet['.ast-mobile-header-content .ast-header-search .ast-search-menu-icon .search-form'] = array(
+			'overflow' => 'visible', // To fix search results container should overflow inside offcanvas (AST-3604).
 		);
 	}
 
@@ -129,7 +143,7 @@ function astra_hb_search_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' )
 	);
 
 	if ( $search_width_applicable ) {
-		$css_output_mobile[ $selector . ' form.search-form .search-field, ' . $selector . ' .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field' ] = array(
+		$css_output_mobile[ $selector . ' form.search-form .search-field, ' . $selector . ' .ast-dropdown-active.ast-search-menu-icon.slide-search input.search-field, .ast-mobile-header-content .ast-search-menu-icon .search-form' ] = array(
 			'width' => astra_get_css_value( astra_get_prop( $search_width, 'mobile' ), 'px' ),
 		);
 	}

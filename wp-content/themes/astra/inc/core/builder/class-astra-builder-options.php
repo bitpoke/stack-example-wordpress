@@ -955,17 +955,18 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	/**
 	 * Global Color Palette.
 	 */
-	$defaults['global-color-palette'] = $apply_new_default_color_typo_values ? array(
+	$update_colors_for_starter_library = Astra_Dynamic_CSS::astra_4_4_0_compatibility();
+	$defaults['global-color-palette']  = $apply_new_default_color_typo_values ? array(
 		'palette' => array(
 			'#046bd2',
 			'#045cb4',
 			'#1e293b',
 			'#334155',
-			'#f9fafb',
+			$update_colors_for_starter_library ? '#F0F5FA' : '#f9fafb',
 			'#FFFFFF',
-			'#e2e8f0',
-			'#cbd5e1',
-			'#94a3b8',
+			$update_colors_for_starter_library ? '#ADB6BE' : '#e2e8f0',
+			$update_colors_for_starter_library ? '#111111' : '#cbd5e1',
+			$update_colors_for_starter_library ? '#111111' : '#94a3b8',
 		),
 	)
 	:

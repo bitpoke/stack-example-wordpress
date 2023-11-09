@@ -117,6 +117,13 @@ function astra_container_layout_css() {
 				max-width: 100vw;
 				width: 100vw;
 			}
+			.ast-left-sidebar .site-content .ast-article-image-container--full,
+			.ast-right-sidebar .site-content .ast-article-image-container--full {
+				margin-left: -10px;
+				margin-right: -10px;
+				max-width: inherit;
+				width: auto;
+			}
 		}
 	';
 
