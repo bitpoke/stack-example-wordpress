@@ -1,9 +1,9 @@
 # Query Monitor
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
-Requires at least: 5.5
-Tested up to: 6.3
-Stable tag: 3.14.1
+Requires at least: 5.6
+Tested up to: 6.4
+Stable tag: 3.15.0
 License: GPLv2 or later
 Requires PHP: 7.4
 Donate link: https://github.com/sponsors/johnbillion
@@ -143,6 +143,12 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
 ## Changelog ##
+
+### 3.15.0 (10 November 2023) ###
+
+* Adds [a new assertion feature via the `qm/assert` action](https://querymonitor.com/wordpress-debugging/assertions/)
+* Confirms the plugin is tested up to WordPress 6.4
+
 
 ### 3.14.1 (21 October 2023) ###
 
@@ -373,9 +379,3 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 ### 3.5.2 (2 December 2019) ###
 
 * Add support for exposing [Full Site Editing](https://github.com/WordPress/gutenberg/issues?q=label%3A%22%5BFeature%5D+Full+Site+Editing%22) blocks in the Block Editor panel.
-
-### 3.5.1 (2 December 2019) ###
-
-  * Defer population of the `found_formatted` property because this can fire before WPML has initialised its locale proxy. Fixes #485.
-  * Ensure all error types are accounted for when populating the panel menu error count. Fixes #486.
-
