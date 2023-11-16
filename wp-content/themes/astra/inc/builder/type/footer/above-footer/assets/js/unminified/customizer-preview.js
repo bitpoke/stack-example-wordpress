@@ -16,14 +16,6 @@
 	var section = 'section-above-footer-builder';
 	var selector = '.site-above-footer-wrap[data-section="section-above-footer-builder"]';
 
-	// Footer Height.
-	astra_css(
-		'astra-settings[hba-footer-height]',
-		'min-height',
-		selector,
-		'px'
-	);
-
 	// Footer Vertical Alignment.
     astra_css(
         'astra-settings[hba-footer-vertical-alignment]',

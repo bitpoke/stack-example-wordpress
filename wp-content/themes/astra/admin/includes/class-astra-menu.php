@@ -147,7 +147,7 @@ class Astra_Menu {
 		$show_custom_layout_submenu = ( defined( 'ASTRA_EXT_VER' ) && ! Astra_Ext_Extension::is_active( 'advanced-hooks' ) ) ? false : true;
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
-		if ( $show_custom_layout_submenu ) {
+		if ( $show_custom_layout_submenu && defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, '4.5.0', '<' ) ) {
 			add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
 				self::$plugin_slug,
 				__( 'Custom Layouts', 'astra' ),
@@ -536,7 +536,7 @@ class Astra_Menu {
 					),
 				),
 				'advanced-hooks'        => array(
-					'title'           => __( 'Custom Layouts', 'astra' ),
+					'title'           => ( defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, '4.5.0', '<' ) ) ? __( 'Custom Layouts', 'astra' ) : __( 'Site Builder', 'astra' ),
 					'description'     => __( 'Add content conditionally in the various hook areas of the theme.', 'astra' ),
 					'manage_settings' => true,
 					'class'           => 'ast-addon',

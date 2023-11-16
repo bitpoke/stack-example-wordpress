@@ -374,7 +374,9 @@ class Astra_Related_Posts_Markup {
 		} else {
 			$terms = get_the_category( $post_id );
 
+			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				$term_ids = wp_list_pluck( $terms, 'term_id' );
 			}
 

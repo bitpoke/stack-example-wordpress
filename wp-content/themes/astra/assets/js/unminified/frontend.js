@@ -926,7 +926,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			menu.className += ' nav-menu';
 		}
 
-		window.onload = function () {
+		document.addEventListener('DOMContentLoaded', function () {
 			if ('off-canvas' === mobileHeaderType) {
 				var popupClose = document.getElementById('menu-toggle-close');
 				if (popupClose) {
@@ -943,7 +943,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					};
 				}
 			}
-		}
+		});
 
 		button.onclick = function() {
 			if ( -1 !== containerMenu.className.indexOf( 'toggled' ) ) {
@@ -1172,7 +1172,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	 * @since x.x.x
 	 */
 	if ( astra.is_scroll_to_id ) {
-		const links = document.querySelectorAll('a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"]):not(.uagb-toc-link__trigger):not(.skip-link)');
+		const links = document.querySelectorAll('a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"]):not(.uagb-toc-link__trigger):not(.skip-link):not(.nav-links a)');
 		if (links) {
 
 			for (const link of links) {

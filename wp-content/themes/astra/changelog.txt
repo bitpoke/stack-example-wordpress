@@ -1,3 +1,11 @@
+v4.5.0
+- New: Introducing Site Builder theme preview (formerly known as Custom Layout).
+- New: Introducing fresh color presets to supercharge your site design.
+- Fix: Footer Builder - Above and Below Footer vertical alignment options are not working.
+- Fix: EDD - Mini cart widget UI broken in the RTL mode.
+- Fix: Enable Smooth Scroll to ID causes a jerk issue on the comment navigation section.
+- Fix: External JavaScript script not loading properly on frontend.
+
 v4.4.1
 - Improvement: Compatibility with WordPress-6.4.
 - Improvement: Updated SelectWoo library to 1.0.10 to hardened the security.

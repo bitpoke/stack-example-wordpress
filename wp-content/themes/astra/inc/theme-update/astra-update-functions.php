@@ -1476,3 +1476,25 @@ function astra_theme_background_updater_4_4_0() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility on version 4.5.0.
+ *
+ * @since 4.5.0
+ * @return void
+ */
+function astra_theme_background_updater_4_5_0() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['v4-5-0-backward-option'] ) ) {
+		$theme_options['v4-5-0-backward-option'] = false;
+
+		$palette_options = get_option( 'astra-color-palettes', Astra_Global_Palette::get_default_color_palette() );
+		if ( ! isset( $palette_options['presets'] ) ) {
+			$palette_options['presets'] = astra_get_palette_presets();
+			update_option( 'astra-color-palettes', $palette_options );
+		}
+
+		update_option( 'astra-settings', $theme_options );
+	}
+}

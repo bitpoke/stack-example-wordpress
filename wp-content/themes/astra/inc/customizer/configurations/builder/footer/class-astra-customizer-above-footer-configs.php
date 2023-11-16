@@ -134,7 +134,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[hba-footer-height]',
 					'section'     => $_section,
-					'transport'   => 'postMessage',
+					'transport'   => 'refresh',
 					'default'     => astra_get_option( 'hba-footer-height' ),
 					'priority'    => 30,
 					'title'       => __( 'Height', 'astra' ),

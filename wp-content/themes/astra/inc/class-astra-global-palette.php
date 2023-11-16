@@ -118,17 +118,46 @@ class Astra_Global_Palette {
 	 * @return array Palette options.
 	 */
 	public static function get_default_color_palette() {
-		/**
-		 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
-		 *
-		 * @since 4.0.0
-		 */
-		$apply_new_default_color_typo_values = Astra_Dynamic_CSS::astra_check_default_color_typo();
-		$update_colors_for_starter_library   = Astra_Dynamic_CSS::astra_4_4_0_compatibility();
+		$update_colors_for_starter_library = Astra_Dynamic_CSS::astra_4_4_0_compatibility();
+		$update_color_styles_with_presets  = Astra_Dynamic_CSS::astra_4_5_0_compatibility();
 
 		return array(
 			'currentPalette' => 'palette_1',
-			'palettes'       => $apply_new_default_color_typo_values ? array(
+			'palettes'       => $update_color_styles_with_presets ? array(
+				'palette_1' => array(
+					'#046bd2',
+					'#045cb4',
+					'#1e293b',
+					'#334155',
+					'#F0F5FA',
+					'#FFFFFF',
+					'#ADB6BE',
+					'#111111',
+					'#111111',
+				),
+				'palette_2' => array(
+					'#0067FF',
+					'#005EE9',
+					'#0F172A',
+					'#364151',
+					'#E7F6FF',
+					'#FFFFFF',
+					'#D1DAE5',
+					'#070614',
+					'#222222',
+				),
+				'palette_3' => array(
+					'#6528F7',
+					'#5511F8',
+					'#0F172A',
+					'#454F5E',
+					'#F2F0FE',
+					'#FFFFFF',
+					'#D8D8F5',
+					'#0D0614',
+					'#222222',
+				),
+			) : array(
 				'palette_1' => array(
 					'#046bd2',
 					'#045cb4',
@@ -162,41 +191,8 @@ class Astra_Global_Palette {
 					$update_colors_for_starter_library ? '#111111' : '#424242',
 					$update_colors_for_starter_library ? '#111111' : '#000000',
 				),
-			) : array(
-				'palette_1' => array(
-					'#0170B9',
-					'#3a3a3a',
-					'#3a3a3a',
-					'#4B4F58',
-					'#F5F5F5',
-					'#FFFFFF',
-					'#F2F5F7',
-					'#424242',
-					'#000000',
-				),
-				'palette_2' => array(
-					'#0170B9',
-					'#3a3a3a',
-					'#3a3a3a',
-					'#4B4F58',
-					'#F5F5F5',
-					'#FFFFFF',
-					'#F2F5F7',
-					'#424242',
-					'#000000',
-				),
-				'palette_3' => array(
-					'#0170B9',
-					'#3a3a3a',
-					'#3a3a3a',
-					'#4B4F58',
-					'#F5F5F5',
-					'#FFFFFF',
-					'#F2F5F7',
-					'#424242',
-					'#000000',
-				),
 			),
+			'presets'        => astra_get_palette_presets(),
 		);
 	}
 

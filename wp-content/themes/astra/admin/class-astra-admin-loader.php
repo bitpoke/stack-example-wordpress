@@ -64,6 +64,8 @@ class Astra_Admin_Loader {
 
 		/* Setup Menu */
 		require_once ASTRA_THEME_ADMIN_DIR . 'includes/class-astra-menu.php'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound -- Not a template file so loading in a normal way.
+		
+		require_once ASTRA_THEME_ADMIN_DIR . 'includes/class-astra-theme-builder-free.php'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound -- Not a template file so loading in a normal way.
 	}
 }
 

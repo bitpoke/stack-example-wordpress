@@ -129,6 +129,7 @@ function astra_fb_below_footer_dynamic_css( $dynamic_css, $dynamic_css_filtered 
 	if ( isset( $footer_width ) && 'content' === $footer_width ) {
 
 		$css_output_desktop[ $selector . ' .ast-builder-grid-row' ]['max-width']    = astra_get_css_value( $content_width, 'px' );
+		$css_output_desktop[ $selector . ' .ast-builder-grid-row' ]['min-height']   = astra_get_css_value( $footer_height, 'px' );
 		$css_output_desktop[ $selector . ' .ast-builder-grid-row' ]['margin-left']  = 'auto';
 		$css_output_desktop[ $selector . ' .ast-builder-grid-row' ]['margin-right'] = 'auto';
 	} else {

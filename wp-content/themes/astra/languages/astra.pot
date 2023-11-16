@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.4.1\n"
+"Project-Id-Version: Astra 4.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-07T10:47:29+00:00\n"
+"POT-Creation-Date: 2023-11-14T11:48:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
@@ -90,8 +90,6 @@ msgstr ""
 #: admin/includes/class-astra-menu.php:153
 #: admin/includes/class-astra-menu.php:154
 #: admin/includes/class-astra-menu.php:539
-#: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:65
 msgid "Custom Layouts"
 msgstr ""
 
@@ -104,6 +102,8 @@ msgid "Spectra"
 msgstr ""
 
 #: admin/includes/class-astra-menu.php:174
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/components/Breadcrumbs.js:6
 msgid "Dashboard"
 msgstr ""
 
@@ -182,8 +182,8 @@ msgstr ""
 #. translators: %s Index
 #: admin/includes/class-astra-menu.php:320
 #: inc/compatibility/edd/customizer/sections/layout/class-astra-edd-archive-layout-configs.php:154
-#: inc/core/builder/class-astra-builder-options.php:1298
-#: inc/core/builder/class-astra-builder-options.php:1410
+#: inc/core/builder/class-astra-builder-options.php:1299
+#: inc/core/builder/class-astra-builder-options.php:1411
 #: inc/core/class-astra-theme-options.php:345
 #: inc/customizer/configurations/builder/base/class-astra-button-component-configs.php:67
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:151
@@ -294,6 +294,17 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:526
 msgid "Nav Menu"
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:539
+#: admin/includes/class-astra-theme-builder-free.php:81
+#: admin/includes/class-astra-theme-builder-free.php:133
+#: admin/includes/class-astra-theme-builder-free.php:134
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:65
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/components/Breadcrumbs.js:6
+msgid "Site Builder"
 msgstr ""
 
 #: admin/includes/class-astra-menu.php:540
@@ -1412,6 +1423,9 @@ msgstr ""
 #: inc/addons/transparent-header/classes/class-astra-transparent-header-panels-and-sections.php:57
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:83
 #: inc/widgets.php:106
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/utils/layoutItems.js:5
+#: admin/assets/theme-builder/src/utils/sidebarItems.js:5
 msgid "Header"
 msgstr ""
 
@@ -1863,39 +1877,39 @@ msgstr ""
 msgid "Account Woo Navigation"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:211
+#: inc/class-astra-global-palette.php:207
 msgid "Color  1"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:212
+#: inc/class-astra-global-palette.php:208
 msgid "Color  2"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:213
+#: inc/class-astra-global-palette.php:209
 msgid "Color  3"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:214
+#: inc/class-astra-global-palette.php:210
 msgid "Color  4"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:215
+#: inc/class-astra-global-palette.php:211
 msgid "Color  5"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:216
+#: inc/class-astra-global-palette.php:212
 msgid "Color  6"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:217
+#: inc/class-astra-global-palette.php:213
 msgid "Color  7"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:218
+#: inc/class-astra-global-palette.php:214
 msgid "Color  8"
 msgstr ""
 
-#: inc/class-astra-global-palette.php:219
+#: inc/class-astra-global-palette.php:215
 msgid "Color  9"
 msgstr ""
 
@@ -3051,6 +3065,7 @@ msgstr ""
 #: inc/markup-extras.php:746
 #: searchform.php:30
 #: searchform.php:36
+#: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:57
 msgid "Search"
 msgstr ""
@@ -3069,16 +3084,16 @@ msgstr ""
 msgid "Toggle Button"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1220
+#: inc/core/builder/class-astra-builder-options.php:1221
 msgid "Log In"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1221
+#: inc/core/builder/class-astra-builder-options.php:1222
 msgid "My Account"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1530
-#: inc/core/builder/class-astra-builder-options.php:1569
+#: inc/core/builder/class-astra-builder-options.php:1531
+#: inc/core/builder/class-astra-builder-options.php:1570
 msgid "Insert HTML text here."
 msgstr ""
 
@@ -3392,6 +3407,9 @@ msgid "Primary Header Overview"
 msgstr ""
 
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:150
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/utils/layoutItems.js:29
+#: admin/assets/theme-builder/src/utils/sidebarItems.js:25
 msgid "Footer"
 msgstr ""
 
@@ -4049,7 +4067,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/class-astra-customizer-edd-cart-configs.php:108
 #: inc/customizer/configurations/builder/header/class-astra-customizer-woo-cart-configs.php:304
 #: inc/customizer/extend-custom-controls/build/index.js:1
-#: inc/customizer/extend-custom-controls/src/color-palette/color-palette.js:147
+#: inc/customizer/extend-custom-controls/src/color-palette/color-palette.js:148
 msgid "Style"
 msgstr ""
 
@@ -5312,10 +5330,16 @@ msgid "Custom Post Types"
 msgstr ""
 
 #: inc/modules/posts-structures/customizer/class-astra-posts-structures-configs.php:125
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/utils/layoutItems.js:231
+#: admin/assets/theme-builder/src/utils/sidebarItems.js:110
 msgid "Archive"
 msgstr ""
 
 #: inc/modules/posts-structures/customizer/class-astra-posts-structures-configs.php:134
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/utils/layoutItems.js:200
+#: admin/assets/theme-builder/src/utils/sidebarItems.js:89
 msgid "Single"
 msgstr ""
 
@@ -5533,6 +5557,16 @@ msgstr ""
 #: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:47
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:136
 msgid "Get access to powerful features for painless WordPress designing, without the high costs. With all the time you will save, it’s a product that pays for itself!"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:9
+msgid "Activate Now →"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:9
+msgid "Upgrade Now →"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
@@ -6056,7 +6090,7 @@ msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:69
-msgid "Upgrade to Astra Pro to get access to Custom Layouts, which allow you to create a unique header, footer, 404 pages, and custom content."
+msgid "Upgrade to Astra Pro to get access to the Site Builder, which allow you to create a unique header, footer, 404 pages, and custom content."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
@@ -6159,12 +6193,48 @@ msgstr ""
 msgid "Close "
 msgstr ""
 
-#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:9
-msgid "Activate Now →"
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/components/Sidebar.js:56
+msgid "All Layouts"
 msgstr ""
 
-#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:9
-msgid "Upgrade Now →"
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/components/Sidebar.js:78
+msgid "Website Parts"
+msgstr ""
+
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/components/Sidebar.js:116
+msgid "Help"
+msgstr ""
+
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/utils/layoutItems.js:60
+#: admin/assets/theme-builder/src/utils/sidebarItems.js:45
+msgid "Hooks"
+msgstr ""
+
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/utils/layoutItems.js:132
+#: admin/assets/theme-builder/src/utils/sidebarItems.js:67
+msgid "Inside Post/Page"
+msgstr ""
+
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/utils/layoutItems.js:309
+#: admin/assets/theme-builder/src/utils/sidebarItems.js:191
+msgid "404 Page"
+msgstr ""
+
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/components/Canvas.js:21
+#: admin/assets/theme-builder/src/components/Card.js:66
+msgid "Upgrade"
+msgstr ""
+
+#: admin/assets/theme-builder/build/index.js:1
+#: admin/assets/theme-builder/src/components/Canvas.js:11
+msgid "Start customizing every part of your website."
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/build/index.js:1
@@ -6396,6 +6466,11 @@ msgstr ""
 #: inc/customizer/extend-custom-controls/build/index.js:1
 #: inc/customizer/extend-custom-controls/src/draggable/draggable-component.js:96
 msgid "Elements used in the builder will be visible here."
+msgstr ""
+
+#: inc/customizer/extend-custom-controls/build/index.js:1
+#: inc/customizer/extend-custom-controls/src/color-palette/color-palette.js:178
+msgid "Color Preset"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/builder-layout/builder-header-control.js:28

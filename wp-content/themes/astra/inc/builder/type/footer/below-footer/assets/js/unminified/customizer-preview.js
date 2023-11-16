@@ -23,14 +23,6 @@
         selector + ' .ast-builder-grid-row, ' + selector + ' .site-footer-section'
     );
 
-	// Header Height.
-	astra_css(
-		'astra-settings[hbb-footer-height]',
-		'min-height',
-		selector,
-		'px'
-	);
-
 	// Inner Space.
 	wp.customize( 'astra-settings[hbb-inner-spacing]', function( value ) {
 		value.bind( function( spacing ) {

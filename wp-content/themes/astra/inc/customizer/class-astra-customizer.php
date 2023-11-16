@@ -1547,7 +1547,9 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 
 						$metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
 
+						/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						if ( ! is_wp_error( $metadata ) && ! empty( $metadata ) ) {
+							/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 							wp_update_attachment_metadata( $image->ID, $metadata );
 						}
 					}

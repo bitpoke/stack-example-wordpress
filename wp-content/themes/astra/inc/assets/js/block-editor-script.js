@@ -456,6 +456,21 @@ function astra_onload_function() {
 
 		}, 1 );
 	});
+
+	// Redirect to Site Builder on click of "View Posts" Icon if Site Builder layout.
+	if ( document && document.body ) {
+		const isSiteBuilderLayout = document.body.classList.contains( 'post-type-astra-advanced-hook' );
+		if ( isSiteBuilderLayout ) {
+			const viewPostsIcon = document.querySelector( '#editor .interface-navigable-region .components-button' );
+			if ( viewPostsIcon ) {
+				viewPostsIcon.addEventListener( 'click', function(e) {
+					e.preventDefault();
+					window.location.href = astraColors.site_builder_url;
+				});
+			}
+		}
+	}
+
 }
 
 /*
