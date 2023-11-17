@@ -2,10 +2,8 @@
 
 Contributors: johnbillion, scompt  
 Tags: cron, wp-cron, crontrol, debug  
-Requires at least: 4.4  
-Tested up to: 6.3  
-Stable tag: 1.16.0  
-Requires PHP: 7.4  
+Tested up to: 6.4  
+Stable tag: 1.16.1  
 Donate link: https://github.com/sponsors/johnbillion
 
 WP Crontrol enables you to view and control what's happening in the WP-Cron system.
@@ -187,6 +185,10 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 
 ## Changelog ##
 
+### 1.16.1 ###
+
+* Confirm support for WordPress 6.4
+
 ### 1.16.0 ###
 
 * Allow persistent WordPress core hooks to be cleared if there's more than one event with that hook
@@ -358,11 +360,3 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 * Don't show the `Delete` link for core's built-in cron events, as they get re-populated immediately.
 * Correct the success message after adding or editing PHP cron events.
 * Correct the translations directory name.
-
-### 1.4 ###
-
-- Switch to requiring cron event times to be input using the site's local timezone instead of UTC.
-- Add the ability for a PHP cron event to be given an optional display name.
-- Better UX for users who cannot edit files and therefore cannot add or edit PHP cron events.
-- Terminology and i18n improvements.
-
