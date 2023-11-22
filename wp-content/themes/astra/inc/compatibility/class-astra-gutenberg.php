@@ -184,7 +184,7 @@ class Astra_Gutenberg {
 			 * @return mixed          Updated content.
 			 */
 			function ( $matches ) use ( $video_url, $block_content, $block ) {
-				return Astra_After_Setup_Theme::get_instance()->responsive_oembed_wrapper( '', $video_url, array(), true );
+				return Astra_After_Setup_Theme::get_instance()->responsive_oembed_wrapper( $matches[1], $video_url, array(), true );
 			},
 			$block_content
 		);

@@ -1747,20 +1747,20 @@
 
 	Utils.Extend(SingleSelection, BaseSelection);
 
-	SingleSelection.prototype.render = function () {
-	  var $selection = SingleSelection.__super__.render.call(this);
+    SingleSelection.prototype.render = function () {
+      var $selection = SingleSelection.__super__.render.call(this);
 
-	  $selection.addClass('select2-selection--single');
+      $selection.addClass('select2-selection--single');
 
-	  $selection.html(
-		'<span class="select2-selection__rendered"></span>' +
-		'<span class="select2-selection__arrow" role="presentation">' +
-		  '<b role="presentation"></b>' +
-		'</span>'
-	  );
+      $selection.html(
+        '<span class="select2-selection__rendered"></span>' +
+        '<span class="select2-selection__arrow" role="presentation">' +
+        '<span class="dashicons dashicons-arrow-down-alt2"></span>' +
+        '</span>'
+      );
 
-	  return $selection;
-	};
+      return $selection;
+    };
 
 	SingleSelection.prototype.bind = function (container, $container) {
 	  var self = this;

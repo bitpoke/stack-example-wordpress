@@ -1,3 +1,12 @@
+v4.5.1
+- Improvement: Compatibility with WooCommerce 8.3.
+- Improvement: Introducing a new filter 'astra_embed_wrapper_class' to add a class to the iframe wrapper for embed blocks.
+- Fix: Function parameter value was wrong in 'responsive_oembed_wrapper' callback while processing embed blocks iframe. (Props: https://github.com/IngoWinter)
+- Fix: Embed block (Twitter, SoundCloud, Spotify) does not appear on the frontend.
+- Fix: Customizer - Avoid premature closing of Gradient Color Picker.
+- Fix: WooCommerce - Container related meta are settings not working on Cart & Checkout Page.
+- Fix: Submenu border width of old header footer builder causing site crashing issue.
+
 v4.5.0
 - New: Introducing Site Builder theme preview (formerly known as Custom Layout).
 - New: Introducing fresh color presets to supercharge your site design.

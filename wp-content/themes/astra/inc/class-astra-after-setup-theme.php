@@ -188,6 +188,8 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 
 			// Remove Template Editor support until WP 5.9 since more Theme Blocks are going to be introduced.
 			remove_theme_support( 'block-templates' );
+
+			add_filter( 'woocommerce_create_pages', array( $this, 'astra_enforce_woo_shortcode_pages' ), 99 );
 		}
 
 		/**
@@ -245,6 +247,7 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 		 */
 		public function responsive_oembed_wrapper( $html, $url, $attr, $core_yt_block = false ) {
 			$add_astra_oembed_wrapper = apply_filters( 'astra_responsive_oembed_wrapper_enable', true );
+			$ast_embed_wrapper_class  = apply_filters( 'astra_embed_wrapper_class', '' );
 
 			$allowed_providers = apply_filters(
 				'astra_allowed_fullwidth_oembed_providers',
@@ -254,21 +257,44 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 					'youtu.be',
 					'wistia.com',
 					'wistia.net',
+					'spotify.com',
+					'soundcloud.com',
+					'twitter.com',
 				)
 			);
 
 			if ( $core_yt_block ) {
 				if ( astra_strposa( $url, $allowed_providers ) && $add_astra_oembed_wrapper ) {
 					$embed_html = wp_oembed_get( $url );
-					$html       = false !== $embed_html ? '<div class="wp-block-embed__wrapper"> <div class="ast-oembed-container" style="height: 100%;">' . $embed_html . '</div> </div>' : '';
+					$html       = false !== $embed_html ? '<div class="wp-block-embed__wrapper"> <div class="ast-oembed-container ' . esc_attr( $ast_embed_wrapper_class ) . '" style="height: 100%;">' . $embed_html . '</div> </div>' : '';
 				}
 			} else {
 				if ( astra_strposa( $url, $allowed_providers ) && $add_astra_oembed_wrapper ) {
-					$html = ( '' !== $html ) ? '<div class="ast-oembed-container" style="height: 100%;">' . $html . '</div>' : '';
+					$html = ( '' !== $html ) ? '<div class="ast-oembed-container ' . esc_attr( $ast_embed_wrapper_class ) . '" style="height: 100%;">' . $html . '</div>' : '';
 				}
 			}
 
 			return $html;
+		}
+
+		/**
+		 * Enforce WooCommerce shortcode pages due to following reasons.
+		 *
+		 * 1. In WooCommerce 8.3 version cart & checkout pages are directly added with blocks and not with shortcodes.
+		 * 2. Due to which most of Astra extended features are not working on cart & checkout pages.
+		 *
+		 * This is temporary workaround, once Astra ready with WooCommerce 8.3 version, this will be removed.
+		 *
+		 * @since 4.5.1
+		 * @param array $pages_data Array of WooCommerce pages.
+		 *
+		 * @return array
+		 */
+		public function astra_enforce_woo_shortcode_pages( $pages_data ) {
+			$pages_data['cart']['content']     = '<!-- wp:shortcode -->[woocommerce_cart]<!-- /wp:shortcode -->';
+			$pages_data['checkout']['content'] = '<!-- wp:shortcode -->[woocommerce_checkout]<!-- /wp:shortcode -->';
+
+			return $pages_data;
 		}
 	}
 }

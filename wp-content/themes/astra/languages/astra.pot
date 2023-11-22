@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.5.0\n"
+"Project-Id-Version: Astra 4.5.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-14T11:48:53+00:00\n"
+"POT-Creation-Date: 2023-11-21T10:29:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
@@ -2615,63 +2615,76 @@ msgstr ""
 msgid "Enable Cross-sells"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:96
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:95
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:105
+msgid "Note:"
+msgstr ""
+
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:95
+msgid " Certain Cart page options may not work smoothly on the block editor based Cart page. For best results with these features, prefer using a shortcode based Cart page."
+msgstr ""
+
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:105
+msgid " Certain Checkout page options may not work smoothly on the block editor based Checkout page. For best results with these features, prefer using a shortcode-based Checkout page."
+msgstr ""
+
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:118
 msgid "Modern cart layout"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:99
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:121
 msgid "Sticky cart totals"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:102
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:124
 msgid "Real-time quantity updater"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:108
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:130
 msgid "Convert more, earn more with extensive cart conversion features"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:120
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:142
 msgid "Modern layout"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:123
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:145
 msgid "Multi-column layouts"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:126
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:148
 msgid "Modern order received layout"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:129
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:151
 msgid "Sticky order review"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:132
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:154
 msgid "Two-step checkout"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:135
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:157
 msgid "Order note, Coupon field control"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:138
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:160
 msgid "Distraction free checkout"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:141
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:163
 msgid "Persistent checkout form data"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:144
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:166
 msgid "Text form options"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:147
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:169
 msgid "Summary, Payment background"
 msgstr ""
 
-#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:153
+#: inc/compatibility/woocommerce/customizer/sections/layout/class-astra-woo-shop-cart-layout-configs.php:175
 msgid "Encourage last-minute purchases with extra conversion options at checkout"
 msgstr ""
 
