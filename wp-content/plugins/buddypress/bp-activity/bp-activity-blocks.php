@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 9.0.0
  *
+ * @global BP_Activity_Template $activities_template The Activity template loop.
+ *
  * @param array $attributes The block attributes.
  * @return string           HTML output.
  */

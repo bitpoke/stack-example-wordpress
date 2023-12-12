@@ -27,7 +27,7 @@ function bp_notifications_toolbar_menu() {
 	}
 
 	$notifications = bp_notifications_get_notifications_for_user( bp_loggedin_user_id(), 'object' );
-	$menu_link     = trailingslashit( bp_loggedin_user_domain() . bp_get_notifications_slug() );
+	$menu_link     = bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_notifications_slug() ) ) );
 
 	return bp_members_admin_bar_notifications_dropdown( $notifications, $menu_link );
 }
