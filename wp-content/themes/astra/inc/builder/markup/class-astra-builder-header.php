@@ -35,6 +35,8 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 
 		/**
 		 *  Initiator
+		 *
+		 * @return object initialized Astra_Builder_Header class
 		 */
 		public static function get_instance() {
 

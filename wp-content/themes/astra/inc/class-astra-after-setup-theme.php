@@ -189,6 +189,9 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 			// Remove Template Editor support until WP 5.9 since more Theme Blocks are going to be introduced.
 			remove_theme_support( 'block-templates' );
 
+			// Let WooCommerce know, Astra is not compatible with New Product Editor.
+			add_filter( 'option_woocommerce_feature_product_block_editor_enabled', '__return_false' );
+
 			add_filter( 'woocommerce_create_pages', array( $this, 'astra_enforce_woo_shortcode_pages' ), 99 );
 		}
 

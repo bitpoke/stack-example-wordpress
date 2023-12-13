@@ -714,6 +714,24 @@ class Astra_WP_Editor_CSS {
 			$scndry_btn_border_radius_left   = astra_responsive_spacing( $btn_border_radius_fields, 'left', 'desktop' );
 		}
 
+		// Secondary button preset compatibility.
+		$secondary_btn_preset_style = astra_get_option( 'secondary-button-preset-style' );
+
+		if ( 'button_04' === $secondary_btn_preset_style || 'button_05' === $secondary_btn_preset_style || 'button_06' === $secondary_btn_preset_style ) {
+
+			if ( empty( $scndry_btn_border_color ) ) {
+				$btn_border_color_val = $scndry_btn_bg_color;
+			}
+
+			if ( '' === astra_get_option( 'secondary-button-bg-color' ) && '' === astra_get_option( 'secondary-button-color' ) ) {
+				$btn_color_val = $theme_color;
+			} elseif ( '' === astra_get_option( 'secondary-button-color' ) ) {
+				$btn_color_val = $scndry_btn_bg_color;
+			}
+
+			$scndry_btn_bg_color = 'transparent';
+		}
+
 		/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		$secondary_btn_desktop_font_size = is_array( $scndry_theme_btn_font_size ) && isset( $scndry_theme_btn_font_size['desktop'] ) && isset( $scndry_theme_btn_font_size['desktop-unit'] ) ? astra_get_font_css_value( $scndry_theme_btn_font_size['desktop'], $scndry_theme_btn_font_size['desktop-unit'] ) : '';
 		/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
@@ -740,7 +758,7 @@ class Astra_WP_Editor_CSS {
 				'border-top-right-radius'    => esc_attr( $scndry_btn_border_radius_right ),
 				'border-bottom-right-radius' => esc_attr( $scndry_btn_border_radius_bottom ),
 				'border-bottom-left-radius'  => esc_attr( $scndry_btn_border_radius_left ),
-				'background-color'           => 'transparent',
+				'background-color'           => empty( $scndry_btn_bg_color ) ? 'transparent' : esc_attr( $scndry_btn_bg_color ),
 			),
 			'.editor-styles-wrapper .wp-block-buttons .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color), .wp-block-buttons .wp-block-button.wp-block-button__link.is-style-outline:not(.has-text-color), .ast-outline-button' => array(
 				'color' => esc_attr( $btn_color_val ),
@@ -760,13 +778,11 @@ class Astra_WP_Editor_CSS {
 		);
 
 		// Secondary button preset compatibility.
-		$btn_preset_style = astra_get_option( 'secondary-button-preset-style' );
-
-		if ( 'button_01' === $btn_preset_style || 'button_02' === $btn_preset_style || 'button_03' === $btn_preset_style ) {
+		if ( 'button_01' === $secondary_btn_preset_style || 'button_02' === $secondary_btn_preset_style || 'button_03' === $secondary_btn_preset_style ) {
 			if ( empty( $scndry_btn_text_color ) ) {
 				$scndry_btn_text_color = astra_get_foreground_color( $theme_color );
 			}
-			$outline_button_css_desktop['.editor-styles-wrapper .wp-block-button .wp-block-button__link.is-style-outline:not(.has-background), .editor-styles-wrapper .wp-block-button.is-style-outline>.wp-block-button__link:not(.has-background)'] = array(
+			$outline_button_css_desktop['.wp-block-buttons .wp-block-button .wp-block-button__link.is-style-outline:not(.has-background), .wp-block-buttons .wp-block-button.is-style-outline>.wp-block-button__link:not(.has-background)'] = array(
 				'background-color' => empty( $scndry_btn_bg_color ) ? esc_attr( $theme_color ) : esc_attr( $scndry_btn_bg_color ),
 				'color'            => esc_attr( $scndry_btn_text_color ),
 			);

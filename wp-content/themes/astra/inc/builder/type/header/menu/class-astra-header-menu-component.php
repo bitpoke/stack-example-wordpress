@@ -31,7 +31,7 @@ class Astra_Header_Menu_Component {
 		require_once ASTRA_HEADER_MENU_DIR . '/class-astra-header-menu-component-loader.php';
 
 		// Include front end files.
-		if ( ! is_admin() ) {
+		if ( ! is_admin() || Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 			require_once ASTRA_HEADER_MENU_DIR . '/dynamic-css/dynamic.css.php';
 		}
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound

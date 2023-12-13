@@ -234,7 +234,7 @@ final class Astra_Builder_Helper {
 	/**
 	 *  No. Of. Component count array.
 	 *
-	 * @var int
+	 * @var array
 	 */
 	public static $component_count_array = array();
 

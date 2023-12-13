@@ -32,7 +32,7 @@ class Astra_Header_Search_Component {
 		require_once ASTRA_HEADER_SEARCH_DIR . '/class-astra-header-search-component-loader.php';
 
 		// Include front end files.
-		if ( ! is_admin() ) {
+		if ( ! is_admin() || Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 			require_once ASTRA_HEADER_SEARCH_DIR . '/dynamic-css/dynamic.css.php';
 		}
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound

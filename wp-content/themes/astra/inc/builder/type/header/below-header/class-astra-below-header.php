@@ -32,7 +32,7 @@ class Astra_Below_Header {
 		require_once ASTRA_BELOW_HEADER_DIR . '/class-astra-below-header-loader.php';
 
 		// Include front end files.
-		if ( ! is_admin() ) {
+		if ( ! is_admin() || Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 			require_once ASTRA_BELOW_HEADER_DIR . '/dynamic-css/dynamic.css.php';
 		}
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound

@@ -25,8 +25,6 @@ if ( ! class_exists( 'Astra_Customizer_Config_Base' ) ) {
  */
 class Astra_Footer_Widget_Component_Configs extends Astra_Customizer_Config_Base {
 
-
-
 	/**
 	 * Register Builder Customizer Configurations.
 	 *
@@ -36,9 +34,7 @@ class Astra_Footer_Widget_Component_Configs extends Astra_Customizer_Config_Base
 	 * @return Array Astra Customizer Configurations with updated configurations.
 	 */
 	public function register_configuration( $configurations, $wp_customize ) {
-
-		$html_config    = Astra_Builder_Base_Configuration::prepare_widget_options( 'footer' );
-		$configurations = array_merge( $configurations, $html_config );
+		$configurations = astra_widget_footer_configuration( $configurations );
 		return $configurations;
 	}
 }

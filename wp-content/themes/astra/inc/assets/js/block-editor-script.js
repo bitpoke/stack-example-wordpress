@@ -461,7 +461,7 @@ function astra_onload_function() {
 	if ( document && document.body ) {
 		const isSiteBuilderLayout = document.body.classList.contains( 'post-type-astra-advanced-hook' );
 		if ( isSiteBuilderLayout ) {
-			const viewPostsIcon = document.querySelector( '#editor .interface-navigable-region .components-button' );
+			const viewPostsIcon = document.querySelector( '#editor .interface-navigable-region .edit-post-header > div a.components-button.edit-post-fullscreen-mode-close' );
 			if ( viewPostsIcon ) {
 				viewPostsIcon.addEventListener( 'click', function(e) {
 					e.preventDefault();

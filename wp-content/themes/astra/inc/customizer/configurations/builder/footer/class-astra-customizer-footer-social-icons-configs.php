@@ -34,9 +34,7 @@ class Astra_Customizer_Footer_Social_Icons_Configs extends Astra_Customizer_Conf
 	 * @return Array Astra Customizer Configurations with updated configurations.
 	 */
 	public function register_configuration( $configurations, $wp_customize ) {
-
-		$configurations = Astra_Social_Icon_Component_Configs::register_configuration( $configurations, 'footer', 'section-fb-social-icons-' );
-
+		$configurations = astra_social_footer_configuration( $configurations );
 		return $configurations;
 	}
 }

@@ -32,7 +32,7 @@ class Astra_Off_Canvas {
 		require_once ASTRA_OFF_CANVAS_DIR . '/class-astra-off-canvas-loader.php';
 
 		// Include front end files.
-		if ( ! is_admin() ) {
+		if ( ! is_admin() || Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 			require_once ASTRA_OFF_CANVAS_DIR . '/dynamic-css/dynamic.css.php';
 		}
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound

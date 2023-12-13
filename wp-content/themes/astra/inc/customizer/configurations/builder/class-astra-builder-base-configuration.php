@@ -162,7 +162,7 @@ final class Astra_Builder_Base_Configuration {
 					'priority'          => 15,
 					'title'             => __( 'Font Size', 'astra' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-					'suffix'            => array( 'px', 'em' ),
+					'suffix'            => array( 'px', 'em', 'vw' ),
 					'input_attrs'       => array(
 						'px' => array(
 							'min'  => 0,
@@ -173,6 +173,11 @@ final class Astra_Builder_Base_Configuration {
 							'min'  => 0,
 							'step' => 0.01,
 							'max'  => 20,
+						),
+						'vw' => array(
+							'min'  => 0,
+							'step' => 0.1,
+							'max'  => 25,
 						),
 					),
 				),
@@ -197,7 +202,7 @@ final class Astra_Builder_Base_Configuration {
 					'title'             => __( 'Font Size', 'astra' ),
 					'context'           => empty( $required_condition ) ? Astra_Builder_Helper::$design_tab : $required_condition,
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-					'suffix'            => array( 'px', 'em' ),
+					'suffix'            => array( 'px', 'em', 'vw' ),
 					'input_attrs'       => array(
 						'px' => array(
 							'min'  => 0,
@@ -208,6 +213,11 @@ final class Astra_Builder_Base_Configuration {
 							'min'  => 0,
 							'step' => 0.01,
 							'max'  => 20,
+						),
+						'vw' => array(
+							'min'  => 0,
+							'step' => 0.1,
+							'max'  => 25,
 						),
 					),
 				),
@@ -450,7 +460,7 @@ final class Astra_Builder_Base_Configuration {
 							'type'        => 'sub-control',
 							'section'     => $_section,
 							'control'     => 'ast-responsive-slider',
-							'suffix'      => array( 'px', 'em' ),
+							'suffix'      => array( 'px', 'em', 'vw' ),
 							'input_attrs' => array(
 								'px' => array(
 									'min'  => 0,
@@ -461,6 +471,11 @@ final class Astra_Builder_Base_Configuration {
 									'min'  => 0,
 									'step' => 0.01,
 									'max'  => 20,
+								),
+								'vw' => array(
+									'min'  => 0,
+									'step' => 0.1,
+									'max'  => 25,
 								),
 							),
 							'priority'    => 2,
@@ -492,7 +507,7 @@ final class Astra_Builder_Base_Configuration {
 							'type'        => 'sub-control',
 							'section'     => $_section,
 							'control'     => 'ast-responsive-slider',
-							'suffix'      => array( 'px', 'em' ),
+							'suffix'      => array( 'px', 'em', 'vw' ),
 							'input_attrs' => array(
 								'px' => array(
 									'min'  => 0,
@@ -503,6 +518,11 @@ final class Astra_Builder_Base_Configuration {
 									'min'  => 0,
 									'step' => 0.01,
 									'max'  => 20,
+								),
+								'vw' => array(
+									'min'  => 0,
+									'step' => 0.1,
+									'max'  => 25,
 								),
 							),
 							'priority'    => 2,
@@ -522,17 +542,22 @@ final class Astra_Builder_Base_Configuration {
 							'type'        => 'control',
 							'section'     => $_section,
 							'control'     => 'ast-responsive-slider',
-							'suffix'      => array( 'px', 'em' ),
+							'suffix'      => array( 'px', 'em', 'vw' ),
 							'input_attrs' => array(
 								'px' => array(
 									'min'  => 0,
 									'step' => 1,
-									'max'  => 100,
+									'max'  => 200,
 								),
 								'em' => array(
 									'min'  => 0,
 									'step' => 0.01,
 									'max'  => 20,
+								),
+								'vw' => array(
+									'min'  => 0,
+									'step' => 0.1,
+									'max'  => 25,
 								),
 							),
 							'priority'    => 90,
@@ -549,17 +574,22 @@ final class Astra_Builder_Base_Configuration {
 							'type'        => 'control',
 							'section'     => $_section,
 							'control'     => 'ast-responsive-slider',
-							'suffix'      => array( 'px', 'em' ),
+							'suffix'      => array( 'px', 'em', 'vw' ),
 							'input_attrs' => array(
 								'px' => array(
 									'min'  => 0,
 									'step' => 1,
-									'max'  => 100,
+									'max'  => 200,
 								),
 								'em' => array(
 									'min'  => 0,
 									'step' => 0.01,
 									'max'  => 20,
+								),
+								'vw' => array(
+									'min'  => 0,
+									'step' => 0.1,
+									'max'  => 25,
 								),
 							),
 							'priority'    => 91,

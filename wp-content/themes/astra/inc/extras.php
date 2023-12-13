@@ -774,6 +774,18 @@ function astra_button_default_padding_updated() {
 }
 
 /**
+ * Check whether user is existing or new to apply the updated default values for secondary button padding.
+ *
+ * @since 4.5.2
+ * @return string
+ */
+function astra_scndry_btn_default_padding() {
+	$astra_settings  = get_option( ASTRA_THEME_SETTINGS, array() );
+	$padding_updated = isset( $astra_settings['scndry-btn-default-padding'] ) ? $astra_settings['scndry-btn-default-padding'] : true;
+	return apply_filters( 'astra_update_secondary_button_padding_defaults', $padding_updated );
+}
+
+/**
  * Check is WordPress version is greater than or equal to beta 5.8 version.
  *
  * @since 3.6.5

@@ -94,6 +94,12 @@ return array(
 		),
 	),
 	array(
+		'Afacad' => array(
+			'variants' => array( 'regular', '500', '600', '700', 'italic', '500italic', '600italic', '700italic' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Agbalumo' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
@@ -3250,6 +3256,18 @@ return array(
 		),
 	),
 	array(
+		'Hedvig Letters Sans' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Hedvig Letters Serif' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'serif',
+		),
+	),
+	array(
 		'Heebo' => array(
 			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
 			'category' => 'sans-serif',
@@ -3805,6 +3823,12 @@ return array(
 		'Kalam' => array(
 			'variants' => array( '300', 'regular', '700' ),
 			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Kalnia' => array(
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700' ),
+			'category' => 'serif',
 		),
 	),
 	array(
@@ -5231,8 +5255,8 @@ return array(
 	),
 	array(
 		'Narnoor' => array(
-			'variants' => array( 'regular' ),
-			'category' => 'sans-serif',
+			'variants' => array( 'regular', '500', '600', '700', '800' ),
+			'category' => 'serif',
 		),
 	),
 	array(
@@ -5387,7 +5411,7 @@ return array(
 	),
 	array(
 		'Noto Sans' => array(
-			'variants' => array( '100', '100italic', '200', '200italic', '300', '300italic', 'regular', 'italic', '500', '500italic', '600', '600italic', '700', '700italic', '800', '800italic', '900', '900italic' ),
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900', '100italic', '200italic', '300italic', 'italic', '500italic', '600italic', '700italic', '800italic', '900italic' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -7537,6 +7561,12 @@ return array(
 		'Reggae One' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
+		),
+	),
+	array(
+		'Rethink Sans' => array(
+			'variants' => array( 'regular', '500', '600', '700', '800', 'italic', '500italic', '600italic', '700italic', '800italic' ),
+			'category' => 'sans-serif',
 		),
 	),
 	array(

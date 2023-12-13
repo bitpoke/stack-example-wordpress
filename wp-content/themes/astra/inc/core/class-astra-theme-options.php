@@ -114,6 +114,13 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 			$apply_new_default_values = astra_button_default_padding_updated();
 
 			/**
+			 * Update Astra customizer default values. To not update directly on existing users site, added backwards.
+			 *
+			 * @since 4.5.2
+			 */
+			$apply_scndry_default_padding_values = astra_scndry_btn_default_padding();
+
+			/**
 			 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
 			 *
 			 * @since 4.0.0
@@ -224,22 +231,22 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 					),
 					'secondary-theme-button-padding'       => array(
 						'desktop'      => array(
-							'top'    => '',
-							'right'  => '',
-							'bottom' => '',
-							'left'   => '',
+							'top'    => $apply_scndry_default_padding_values ? 15 : '',
+							'right'  => $apply_scndry_default_padding_values ? 30 : '',
+							'bottom' => $apply_scndry_default_padding_values ? 15 : '',
+							'left'   => $apply_scndry_default_padding_values ? 30 : '',
 						),
 						'tablet'       => array(
-							'top'    => '',
-							'right'  => '',
-							'bottom' => '',
-							'left'   => '',
+							'top'    => $apply_scndry_default_padding_values ? 14 : '',
+							'right'  => $apply_scndry_default_padding_values ? 28 : '',
+							'bottom' => $apply_scndry_default_padding_values ? 14 : '',
+							'left'   => $apply_scndry_default_padding_values ? 28 : '',
 						),
 						'mobile'       => array(
-							'top'    => '',
-							'right'  => '',
-							'bottom' => '',
-							'left'   => '',
+							'top'    => $apply_scndry_default_padding_values ? 12 : '',
+							'right'  => $apply_scndry_default_padding_values ? 24 : '',
+							'bottom' => $apply_scndry_default_padding_values ? 12 : '',
+							'left'   => $apply_scndry_default_padding_values ? 24 : '',
 						),
 						'desktop-unit' => 'px',
 						'tablet-unit'  => 'px',

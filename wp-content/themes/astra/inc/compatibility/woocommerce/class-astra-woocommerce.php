@@ -537,8 +537,10 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 			$cart_total_label_position = astra_get_option( 'woo-header-cart-icon-total-label-position' );
 			$cart_total_markup         = '';
 			$cart_total_only_markup    = '';
-			$cart_check_total          = astra_get_option( 'woo-header-cart-total-label' ) ? intval( WC()->cart->get_cart_contents_total() ) > 0 : true;
 
+			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$cart_check_total          = astra_get_option( 'woo-header-cart-total-label' ) && null !== WC()->cart ? intval( WC()->cart->get_cart_contents_total() ) > 0 : true;
+			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 			if ( null !== WC()->cart ) {
 				if ( $cart_check_total ) {
@@ -3307,6 +3309,10 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 
 			$view_shopping_cart = apply_filters( 'astra_woo_view_shopping_cart_title', __( 'View your shopping cart', 'astra' ) );
 			$woo_cart_link      = wc_get_cart_url();
+			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$cart_count         = null !== WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
+			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			$aria_label         = $cart_count > 0 ? "View Shopping Cart, {$cart_count} items" : 'View Shopping Cart, empty';
 
 			// Do not redirect to Cart Page in Customizer Preview & when 'Cart Page' option is not selected.
 			if ( is_customize_preview() && 'redirect' !== astra_get_option( 'woo-header-cart-click-action' ) ) {
@@ -3315,7 +3321,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 
 			$cart_total_label_position = astra_get_option( 'woo-header-cart-icon-total-label-position' );
 			?>
-			<a href="<?php echo esc_url( $woo_cart_link ); ?>" class="cart-container ast-cart-desktop-position-<?php echo esc_attr( $cart_total_label_position['desktop'] ); ?> ast-cart-mobile-position-<?php echo esc_attr( $cart_total_label_position['mobile'] ); ?> ast-cart-tablet-position-<?php echo esc_attr( $cart_total_label_position['tablet'] ); ?> ">
+			<a href="<?php echo esc_url( $woo_cart_link ); ?>" class="cart-container ast-cart-desktop-position-<?php echo esc_attr( $cart_total_label_position['desktop'] ); ?> ast-cart-mobile-position-<?php echo esc_attr( $cart_total_label_position['mobile'] ); ?> ast-cart-tablet-position-<?php echo esc_attr( $cart_total_label_position['tablet'] ); ?>" aria-label="<?php echo esc_attr( $aria_label ); ?>">
 
 						<?php
 						do_action( 'astra_woo_header_cart_icons_before' );

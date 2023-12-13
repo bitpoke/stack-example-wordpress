@@ -1,3 +1,22 @@
+v4.5.2
+- New: Compatibility to Import Export header-footer builder customizer layouts with the "Astra Import Export" plugin.
+- New: Introducing new "vw" unit support for font-size in customizer typography settings.
+- Improvement: Compatibility with WooCommerce 8.4.
+- Improvement: Improved accessibility by adding aria-label and title attributes to the shopping cart link.
+- Improvement: Secondary Button Styles - Padding default values updated for Page Builder button's support.
+- Fix: Preventing duplication of multiple keys in the Block Editor's post-update request by setting values for the 'astra-migrate-meta-layouts' meta key.
+- Fix: Secondary Button Styles - Background color option does not apply background color to outline button as expected.
+- Fix: Site Builder - Toggle Block Inserter redirects to Site Builder when Full-screen mode in Editor is disabled.
+- Fix: Header Builder - After resizing the GIF stops working on the frontend as a site logo.
+- Fix: Submenu animation not working while navigating site using tab key.
+- Fix: Broken UI fix for YouTube block with BorLabs cookie plugin.
+- Fix: Kadence Tabs Block scrolling issue with Astra's smooth scroll to ID option.
+- Fix: WooCommerce - Inside dropdown cart buttons are not aligned properly on WooCommerce pages.
+- Fix: WooCommerce - Shop card structure gets broken if the Add To Cart button is kept just below the title.
+- Fix: Input fields border focus did not consistently inherit the correct styling in certain scenarios.
+- Fix: WooCommerce - PHP fatal error 'Uncaught Error: Call to a member function get_cart_contents_total() on null' when cart element is added in the header and "Hide Cart Total Label" option is enabled.
+- Fix: PHP deprecated notices with PHP 8.0 and above when activating the theme.
+
 v4.5.1
 - Improvement: Compatibility with WooCommerce 8.3.
 - Improvement: Introducing a new filter 'astra_embed_wrapper_class' to add a class to the iframe wrapper for embed blocks.

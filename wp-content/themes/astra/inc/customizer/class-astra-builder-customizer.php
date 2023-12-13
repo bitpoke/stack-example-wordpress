@@ -34,6 +34,28 @@ final class Astra_Builder_Customizer {
 			return;
 		}
 
+		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/class-astra-builder-base-configuration.php';
+		// Base Config Files.
+		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/base/class-astra-social-icon-component-configs.php';
+		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/base/class-astra-html-component-configs.php';
+		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/base/class-astra-button-component-configs.php';
+
+		define( 'ASTRA_HEADER_BUILDER_CONFIGS_DIR', ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/header/configs/' );
+		foreach ( scandir( ASTRA_HEADER_BUILDER_CONFIGS_DIR ) as $config_file ) {
+			$path = ASTRA_HEADER_BUILDER_CONFIGS_DIR . $config_file;
+			if ( is_file( $path ) ) {
+				require_once $path;
+			}
+		}
+
+		define( 'ASTRA_FOOTER_BUILDER_CONFIGS_DIR', ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/footer/configs/' );
+		foreach ( scandir( ASTRA_FOOTER_BUILDER_CONFIGS_DIR ) as $config_file ) {
+			$path = ASTRA_FOOTER_BUILDER_CONFIGS_DIR . $config_file;
+			if ( is_file( $path ) ) {
+				require_once $path;
+			}
+		}
+
 		$this->load_base_components();
 
 		add_action( 'customize_register', array( $this, 'builder_configs' ), 2 );
@@ -232,14 +254,7 @@ final class Astra_Builder_Customizer {
 	public function load_base_components() {
 
 		// @codingStandardsIgnoreStart WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
-		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/class-astra-builder-base-configuration.php';
-
 		require_once ASTRA_THEME_DIR . 'inc/builder/type/class-astra-builder-base-dynamic-css.php';
-
-		// Base Config Files.
-		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/base/class-astra-social-icon-component-configs.php';
-		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/base/class-astra-html-component-configs.php';
-		require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/builder/base/class-astra-button-component-configs.php';
 
 		// Base Dynamic CSS Files.
 		require_once ASTRA_THEME_DIR . 'inc/builder/type/base/dynamic-css/html/class-astra-html-component-dynamic-css.php';
@@ -399,6 +414,16 @@ final class Astra_Builder_Customizer {
 			require_once $header_config_path . '/class-astra-customizer-edd-cart-configs.php';
 		}
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+	}
+
+	/**
+	 * Collect Customizer Builder Data to process further.
+	 *
+	 * @since 4.5.2
+	 * @return bool
+	 */
+	public static function astra_collect_customizer_builder_data() {
+		return ( ! is_customize_preview() && apply_filters( 'astra_collect_customizer_builder_data', false ) ) ? true : false;
 	}
 }
 

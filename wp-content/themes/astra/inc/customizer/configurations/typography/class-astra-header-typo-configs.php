@@ -49,7 +49,7 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 						'priority'          => 12,
 						'title'             => __( 'Font Size', 'astra' ),
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-						'suffix'            => array( 'px', 'em' ),
+						'suffix'            => array( 'px', 'em', 'vw' ),
 						'input_attrs'       => array(
 							'px' => array(
 								'min'  => 0,
@@ -60,6 +60,11 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 								'min'  => 0,
 								'step' => 0.01,
 								'max'  => 20,
+							),
+							'vw' => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 25,
 							),
 						),
 					),
@@ -79,7 +84,7 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 						'priority'          => 16,
 						'title'             => __( 'Font Size', 'astra' ),
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-						'suffix'            => array( 'px', 'em' ),
+						'suffix'            => array( 'px', 'em', 'vw' ),
 						'input_attrs'       => array(
 							'px' => array(
 								'min'  => 0,
@@ -90,6 +95,11 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 								'min'  => 0,
 								'step' => 0.01,
 								'max'  => 20,
+							),
+							'vw' => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 25,
 							),
 						),
 					),
@@ -112,17 +122,22 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 						'priority'          => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? 16 : 8,
 						'title'             => __( 'Title Font Size', 'astra' ),
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-						'suffix'            => array( 'px', 'em' ),
+						'suffix'            => array( 'px', 'em', 'vw' ),
 						'input_attrs'       => array(
 							'px' => array(
 								'min'  => 0,
 								'step' => 1,
-								'max'  => 100,
+								'max'  => 200,
 							),
 							'em' => array(
 								'min'  => 0,
 								'step' => 0.01,
 								'max'  => 20,
+							),
+							'vw' => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 25,
 							),
 						),
 						'context'           => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array(
@@ -187,20 +202,24 @@ if ( ! class_exists( 'Astra_Header_Typo_Configs' ) ) {
 						'priority'          => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? 20 : 12,
 						'title'             => __( 'Tagline Font Size', 'astra' ),
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-						'suffix'            => array( 'px', 'em' ),
+						'suffix'            => array( 'px', 'em', 'vw' ),
 						'input_attrs'       => array(
 							'px' => array(
 								'min'  => 0,
 								'step' => 1,
-								'max'  => 100,
+								'max'  => 200,
 							),
 							'em' => array(
 								'min'  => 0,
 								'step' => 0.01,
 								'max'  => 20,
 							),
+							'vw' => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 25,
+							),
 						),
-
 						'context'           => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array(
 							Astra_Builder_Helper::$design_tab_config,
 							array(

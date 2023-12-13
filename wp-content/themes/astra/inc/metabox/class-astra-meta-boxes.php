@@ -238,7 +238,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'sfwd-lessons',
 					'sfwd-topic',
 					'groups',
-				) 
+				)
 			) : '';
 			$show_meta_field         = ! self::is_bb_themer_layout();
 			$old_meta_layout         = isset( $meta['site-content-layout']['default'] ) ? $meta['site-content-layout']['default'] : '';
@@ -282,7 +282,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						break;
 				}
 			}
-				
+
 			/**
 			 * Option: Content Layout.
 			 */
@@ -539,13 +539,13 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				if ( $meta_value ) {
 					update_post_meta( $post_id, $key, $meta_value );
 
-					// Update meta key (flag) as old user migration is already completed at this point. 
+					// Update meta key (flag) as old user migration is already completed at this point.
 					update_post_meta( $post_id, 'astra-migrate-meta-layouts', 'set' );
 				} else {
 
 					/** @psalm-suppress InvalidArgument */
 					delete_post_meta( $post_id, $key );
-				}           
+				}
 			}
 
 		}
@@ -777,7 +777,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'sfwd-lessons',
 					'sfwd-topic',
 					'groups',
-				) 
+				)
 			);
 			if ( astra_with_third_party() || $exclude_cpt ) {
 				return array(
@@ -1271,6 +1271,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				array(
 					'show_in_rest'  => true,
 					'single'        => true,
+					'default'       => isset( $meta['astra-migrate-meta-layouts']['default'] ) ? $meta['astra-migrate-meta-layouts']['default'] : '',
 					'type'          => 'string',
 					'auth_callback' => '__return_true',
 				)

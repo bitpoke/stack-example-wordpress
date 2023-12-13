@@ -24,11 +24,11 @@ class Astra_Social_Icon_Component_Configs {
 	/**
 	 * Register Builder Customizer Configurations.
 	 *
-	 * @param Array  $configurations Configurations.
+	 * @param array  $configurations Configurations.
 	 * @param string $builder_type Builder Type.
 	 * @param string $section Section slug.
 	 * @since 3.0.0
-	 * @return Array Astra Customizer Configurations with updated configurations.
+	 * @return array $configurations Astra Customizer Configurations with updated configurations.
 	 */
 	public static function register_configuration( $configurations, $builder_type = 'header', $section = 'section-hb-social-icons-' ) {
 
@@ -147,7 +147,7 @@ class Astra_Social_Icon_Component_Configs {
 					'priority'   => 1,
 					'divider'    => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
 				),
-				
+
 				/**
 				 * Option: Toggle Social Icons Brand Color On Hover.
 				 */
@@ -430,7 +430,7 @@ class Astra_Social_Icon_Component_Configs {
 						'max'  => 50,
 					),
 					'context'     => Astra_Builder_Helper::$design_tab,
-				
+
 				),
 
 

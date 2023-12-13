@@ -1868,6 +1868,9 @@ if ( ! function_exists( 'astra_replace_header_attr' ) ) :
 				$existing_classes = isset( $attr['class'] ) ? $attr['class'] : '';
 				$attr['class']    = $existing_classes . ' astra-logo-svg';
 			}
+			if ( 'gif' === $file_extension ) {
+				$attr['srcset'] = $attachment->guid;
+			}
 		}
 
 		if ( apply_filters( 'astra_is_retina_logo_attachment', $is_logo_attachment, $attachment ) ) {

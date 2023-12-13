@@ -31,7 +31,7 @@ class Astra_Mobile_Trigger {
 		require_once ASTRA_MOBILE_TRIGGER_DIR . '/class-astra-mobile-trigger-loader.php';
 
 		// Include front end files.
-		if ( ! is_admin() ) {
+		if ( ! is_admin() || Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 			require_once ASTRA_MOBILE_TRIGGER_DIR . '/dynamic-css/dynamic.css.php';
 		}
 		// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound

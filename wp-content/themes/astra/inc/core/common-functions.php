@@ -168,6 +168,7 @@ if ( ! function_exists( 'astra_get_font_css_value' ) ) {
 
 		switch ( $unit ) {
 			case 'em':
+			case 'vw':
 			case '%':
 						$css_val = esc_attr( $value ) . $unit;
 				break;

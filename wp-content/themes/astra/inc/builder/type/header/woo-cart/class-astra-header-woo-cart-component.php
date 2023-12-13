@@ -34,7 +34,7 @@ if ( ! class_exists( 'Astra_Header_Woo_Cart_Component' ) ) {
 			require_once ASTRA_HEADER_WOO_CART_DIR . '/class-astra-header-woo-cart-loader.php';
 
 			// Include front end files.
-			if ( ! is_admin() ) {
+			if ( ! is_admin() || Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 				require_once ASTRA_HEADER_WOO_CART_DIR . '/dynamic-css/dynamic.css.php';
 			}
 			// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound

@@ -34,7 +34,7 @@ if ( ! class_exists( 'Astra_Footer_Copyright_Component' ) ) {
 			require_once ASTRA_BUILDER_FOOTER_COPYRIGHT_DIR . '/class-astra-footer-copyright-component-loader.php';
 
 			// Include front end files.
-			if ( ! is_admin() ) {
+			if ( ! is_admin() || Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 				require_once ASTRA_BUILDER_FOOTER_COPYRIGHT_DIR . '/dynamic-css/dynamic.css.php';
 			}
 			// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound

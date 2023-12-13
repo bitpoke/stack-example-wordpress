@@ -1498,3 +1498,18 @@ function astra_theme_background_updater_4_5_0() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility on version 4.5.2.
+ *
+ * @since 4.5.2
+ * @return void
+ */
+function astra_theme_background_updater_4_5_2() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['scndry-btn-default-padding'] ) ) {
+		$theme_options['scndry-btn-default-padding'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}
