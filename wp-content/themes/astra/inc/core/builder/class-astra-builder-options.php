@@ -22,6 +22,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 
 	$astra_options                              = Astra_Theme_Options::get_astra_options();
 	$astra_update_footer_row_vertical_alignment = Astra_Dynamic_CSS::astra_4_5_0_compatibility();
+	$blog_update                                = Astra_Dynamic_CSS::astra_4_6_0_compatibility();
 
 	/**
 	 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
@@ -541,8 +542,8 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 			'overlay-gradient'      => '',
 		),
 	);
-	$defaults['hbb-footer-top-border-color']  = $apply_new_default_color_typo_values ? 'var(--ast-global-color-6)' : '';
-	$defaults['hbb-footer-separator']         = $apply_new_default_color_typo_values ? 1 : '';
+	$defaults['hbb-footer-top-border-color']  = $blog_update ? '#eaeaea' : 'var(--ast-global-color-6)';
+	$defaults['hbb-footer-separator']         = 1;
 
 	/**
 	 * Header Margin defaults.
@@ -957,7 +958,13 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	 * Global Color Palette.
 	 */
 	$update_colors_for_starter_library = Astra_Dynamic_CSS::astra_4_4_0_compatibility();
-	$defaults['global-color-palette']  = $apply_new_default_color_typo_values ? array(
+	$update_color_for_forms_ui         = Astra_Dynamic_CSS::astra_4_6_0_compatibility();
+	if ( $update_color_for_forms_ui ) {
+		$color_palette_7 = '#D1D5DB';
+	} else {
+		$color_palette_7 = $update_colors_for_starter_library ? '#ADB6BE' : '#e2e8f0';
+	}
+	$defaults['global-color-palette'] = $apply_new_default_color_typo_values ? array(
 		'palette' => array(
 			'#046bd2',
 			'#045cb4',
@@ -965,7 +972,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 			'#334155',
 			$update_colors_for_starter_library ? '#F0F5FA' : '#f9fafb',
 			'#FFFFFF',
-			$update_colors_for_starter_library ? '#ADB6BE' : '#e2e8f0',
+			$color_palette_7,
 			$update_colors_for_starter_library ? '#111111' : '#cbd5e1',
 			$update_colors_for_starter_library ? '#111111' : '#94a3b8',
 		),

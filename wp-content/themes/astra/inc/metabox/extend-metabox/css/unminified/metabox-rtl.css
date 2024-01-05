@@ -995,11 +995,6 @@ a.ast-pro-upgrade-link {
     flex: inherit;
 }
 
-.astra-popover-color .components-circular-option-picker__option:focus::after{
-    width: auto;
-    height: auto;
-}
-
 .astra-popover-color .components-h-stack .components-circular-option-picker__option-wrapper{
     margin-left: 0;
 }
