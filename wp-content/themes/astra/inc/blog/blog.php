@@ -584,6 +584,10 @@ function astra_banner_elements_order( $structure = array() ) {
 				break;
 
 			case 'single-image':
+				if ( 'disabled' === astra_get_option_meta( 'ast-featured-img' ) ) {
+					break;
+				}
+
 				$featured_background = astra_get_option( 'ast-dynamic-single-' . $post_type . '-featured-as-background', false );
 
 				if ( 'layout-1' === $layout_type ) {
@@ -649,15 +653,36 @@ function astra_banner_elements_order( $structure = array() ) {
  */
 function astra_blog_post_per_page( $query ) {
 
-	if ( $query->is_main_query() ) {
-		$limit = apply_filters( 'astra_blog_post_per_page', astra_get_blog_posts_per_page() );
-		$query->set( 'posts_per_page', $limit );
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
 	}
+
+	if ( ! ( is_home() || is_archive() || is_search() ) ) {
+		return;
+	}
+
+	if ( function_exists( 'is_woocommerce' ) && is_woocommerce() ) {
+		return;
+	}
+
+	$exclusions = apply_filters(
+		'astra_blog_post_per_page_exclusions',
+		array(
+			'bbpress_single',
+			'courses_archive',
+			'product',
+		)
+	);
+
+	if ( in_array( $query->get( 'post_type' ), $exclusions, true ) ) {
+		return;
+	}
+
+	$limit = apply_filters( 'astra_blog_post_per_page', astra_get_blog_posts_per_page() );
+	$query->set( 'posts_per_page', $limit );
 }
 
-if ( ! is_admin() ) {
-	add_action( 'pre_get_posts', 'astra_blog_post_per_page' );
-}
+add_action( 'parse_tax_query', 'astra_blog_post_per_page' );
 
 /**
  * Add Blog Layout Class

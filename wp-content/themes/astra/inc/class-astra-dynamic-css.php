@@ -6047,5 +6047,17 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
 			return apply_filters( 'astra_get_option_v4-6-0-backward-option', isset( $astra_settings['v4-6-0-backward-option'] ) ? false : true );
 		}
+
+		/**
+		 * In 4.6.2 version we are having new stylings.
+		 * 1. Keeping meta featured image disable option useless for old users.
+		 *
+		 * @return bool true|false.
+		 * @since 4.6.2
+		 */
+		public static function astra_4_6_2_compatibility() {
+			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+			return apply_filters( 'astra_get_option_v4-6-2-backward-option', isset( $astra_settings['v4-6-2-backward-option'] ) ? false : true );
+		}
 	}
 }

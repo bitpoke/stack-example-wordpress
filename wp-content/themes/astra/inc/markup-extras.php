@@ -2137,6 +2137,16 @@ function astra_setup_article_featured_image() {
 		return;
 	}
 
+	if ( 'disabled' === astra_get_option_meta( 'ast-featured-img' ) && Astra_Dynamic_CSS::astra_4_6_2_compatibility() ) {
+
+		/**
+		 * Bail early if featured image option "Show featured image in the posts lists only, but hide it in the single post view." is enabled.
+		 *
+		 * @since 4.6.2
+		 */
+		return;
+	}
+
 	$post_type           = strval( get_post_type() );
 	$banner_title_layout = astra_get_option( 'ast-dynamic-single-' . $post_type . '-layout', 'layout-1' );
 	$single_structure    = astra_get_option( 'ast-dynamic-single-' . $post_type . '-structure', astra_get_option( 'ast-dynamic-single-' . $post_type . '-structure', 'page' === $post_type ? array( 'ast-dynamic-single-' . $post_type . '-image', 'ast-dynamic-single-' . $post_type . '-title' ) : array( 'ast-dynamic-single-' . $post_type . '-title', 'ast-dynamic-single-' . $post_type . '-meta' ) ) );

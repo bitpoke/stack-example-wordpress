@@ -911,3 +911,35 @@ function astra_theme_background_updater_4_6_0() {
 		delete_option( 'astra_docs_data' );
 	}
 }
+
+/**
+ * Handle backward compatibility on version 4.6.2.
+ *
+ * @since 4.6.2
+ * @return void
+ */
+function astra_theme_background_updater_4_6_2() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	// Unset "featured image" for pages structure.
+	if ( ! isset( $theme_options['v4-6-2-backward-option'] ) ) {
+		$theme_options['v4-6-2-backward-option'] = false;
+
+		$page_banner_layout      = isset( $theme_options['ast-dynamic-single-page-layout'] ) ? $theme_options['ast-dynamic-single-page-layout'] : 'layout-1';
+		$page_structure          = isset( $theme_options['ast-dynamic-single-page-structure'] ) ? $theme_options['ast-dynamic-single-page-structure'] : array( 'ast-dynamic-single-page-image', 'ast-dynamic-single-page-title' );
+		$layout_1_image_position = isset( $theme_options['ast-dynamic-single-page-article-featured-image-position-layout-1'] ) ? $theme_options['ast-dynamic-single-page-article-featured-image-position-layout-1'] : 'behind';
+
+		$migrated_page_structure = array();
+
+		if ( 'layout-1' === $page_banner_layout && 'none' === $layout_1_image_position && ! empty( $page_structure ) ) {
+			foreach ( $page_structure as $key ) {
+				if ( 'ast-dynamic-single-page-image' !== $key ) {
+					$migrated_page_structure[] = $key;
+				}
+			}
+			$theme_options['ast-dynamic-single-page-structure'] = $migrated_page_structure;
+		}
+
+		update_option( 'astra-settings', $theme_options );
+	}
+}

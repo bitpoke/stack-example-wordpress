@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.6.1\n"
+"Project-Id-Version: Astra 4.6.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-04T09:33:04+00:00\n"
+"POT-Creation-Date: 2024-01-05T08:09:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
@@ -322,7 +322,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/menu.php:622
 #: inc/customizer/configurations/builder/header/configs/mobile-menu.php:403
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:292
-#: inc/customizer/configurations/builder/header/configs/search.php:200
+#: inc/customizer/configurations/builder/header/configs/search.php:169
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:118
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:44
@@ -1143,7 +1143,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:267
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:317
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:235
-#: inc/customizer/configurations/builder/header/configs/search.php:225
+#: inc/customizer/configurations/builder/header/configs/search.php:194
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:143
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:464
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:551
@@ -1197,7 +1197,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:84
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:138
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:236
-#: inc/customizer/configurations/builder/header/configs/search.php:226
+#: inc/customizer/configurations/builder/header/configs/search.php:195
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:144
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:216
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:465
@@ -1252,7 +1252,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:269
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:319
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:237
-#: inc/customizer/configurations/builder/header/configs/search.php:227
+#: inc/customizer/configurations/builder/header/configs/search.php:196
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:145
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:466
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:497
@@ -1307,7 +1307,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:83
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:136
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:238
-#: inc/customizer/configurations/builder/header/configs/search.php:228
+#: inc/customizer/configurations/builder/header/configs/search.php:197
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:146
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:215
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:467
@@ -1510,7 +1510,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/base/class-astra-social-icon-component-configs.php:446
 #: inc/customizer/configurations/builder/header/configs/account.php:360
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:161
-#: inc/customizer/configurations/builder/header/configs/search.php:108
+#: inc/customizer/configurations/builder/header/configs/search.php:77
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:587
 msgid "Icon Size"
 msgstr ""
@@ -1520,7 +1520,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/base/class-astra-social-icon-component-configs.php:182
 #: inc/customizer/configurations/builder/header/configs/account.php:402
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:143
-#: inc/customizer/configurations/builder/header/configs/search.php:94
+#: inc/customizer/configurations/builder/header/configs/search.php:63
 msgid "Icon Color"
 msgstr ""
 
@@ -3266,7 +3266,7 @@ msgstr ""
 
 #: inc/core/builder/class-astra-builder-helper.php:685
 #: inc/core/builder/class-astra-builder-helper.php:747
-#: inc/customizer/configurations/builder/header/configs/search.php:65
+#: inc/customizer/configurations/builder/header/configs/search.php:34
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:150
 #: inc/markup-extras.php:770
 #: searchform.php:30
@@ -4027,7 +4027,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/menu.php:360
 #: inc/customizer/configurations/builder/header/configs/mobile-menu.php:448
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:313
-#: inc/customizer/configurations/builder/header/configs/search.php:221
+#: inc/customizer/configurations/builder/header/configs/search.php:190
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:139
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:891
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1390
@@ -4563,16 +4563,16 @@ msgstr ""
 msgid "Popup Padding"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/search.php:131
+#: inc/customizer/configurations/builder/header/configs/search.php:100
 msgid "Search Width"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/search.php:161
+#: inc/customizer/configurations/builder/header/configs/search.php:130
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:756
 msgid "Live Search"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/search.php:176
+#: inc/customizer/configurations/builder/header/configs/search.php:145
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:768
 msgid "Search Within Post Types"
 msgstr ""
