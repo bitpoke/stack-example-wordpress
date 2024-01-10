@@ -4810,8 +4810,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$dynamic_css .= astra_parse_css(
 				array(
 					'.ast-builder-menu .main-navigation > ul > li:last-child a' => array(
-						'margin-' . $ltr_right  => '0',
-						'padding-' . $ltr_right => '0',
+						'margin-' . $ltr_right => '0',
 					),
 				),
 				astra_get_tablet_breakpoint( '', 1 )

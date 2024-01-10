@@ -693,7 +693,13 @@ add_action( 'parse_tax_query', 'astra_blog_post_per_page' );
  */
 function astra_primary_class_blog_layout( $classes ) {
 
-		// Apply grid class to archive page.
+	if ( is_archive() && function_exists( 'is_bbpress' ) &&
+		( get_post_type() === 'forum' || get_post_type() === 'topic' || get_post_type() === 'reply' || get_query_var( 'post_type' ) === 'forum' || bbp_is_topic_tag() || bbp_is_topic_tag_edit() || is_bbpress() )
+	) {
+		return $classes;
+	}
+
+	// Apply grid class to archive page.
 	if ( ( is_home() ) || is_archive() || is_search() ) {
 
 		$blog_layout = astra_get_blog_layout();

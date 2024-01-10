@@ -1,3 +1,11 @@
+v4.6.3
+- Fix: BBPress - Forum - Archive items get shrink on the frontend due to inheriting blog layout configurations.
+- Fix: Single Layout - Banner - Featured image visible on the frontend if title area is disabled when image is positioned as "Behind" or "Below" for Layout-1 & Layout-2 respectively.
+- Fix: Header - Menu - Last menu item's padding missing on the frontend.
+- Fix: Single Layout - Banner - Alignment of title area not working.
+- Fix: Single Layout - Author Meta - Avatar size not working when banner layout is set as layout-2.
+- Fix: Customizer - Number control's input field UI breaking in Firefox browser.
+
 v4.6.2
 - Fix: Page: Featured Image directly show on the frontend after recent v4.6.0 update.
 - Fix: WooCommerce - "No. of Products" option not working for the Shop page and its inheriting Blog "No. of Posts" option.

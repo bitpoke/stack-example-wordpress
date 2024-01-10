@@ -62,7 +62,7 @@
   margin: 0; /* Adjust as needed */
 }
 
-/* Hide spin buttons for Firefox */`
+/* Hide spin buttons for Firefox */
 .customize-control-ast-number input[type="number"] {
   -moz-appearance: textfield;
   text-align: center;

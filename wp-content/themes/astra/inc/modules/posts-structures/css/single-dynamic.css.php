@@ -314,8 +314,8 @@ function astra_post_single_structure_dynamic_css( $dynamic_css, $dynamic_css_fil
 			$selector . ' .ast-container > *:not(:last-child), ' . $selector . ' .read-more' => array(
 				'margin-bottom' => $elements_gap . 'px',
 			),
-			'.ast-page-builder-template ' . $selector . ' .ast-container' => array(
-				'max-width' => '100%',
+			$selector . ' .ast-container'                 => array(
+				'width' => '100%',
 			),
 			$entry_title_selector                         => astra_get_font_array_css( astra_get_option( 'ast-dynamic-single-' . $current_post_type . '-title-font-family' ), astra_get_option( 'ast-dynamic-single-' . $current_post_type . '-title-font-weight', Astra_Posts_Structure_Loader::get_customizer_default( 'title-font-weight' ) ), $banner_title_font_size, 'ast-dynamic-single-' . $current_post_type . '-title-font-extras', $title_color ),
 			$selector . ' > .entry-title'                 => array(
@@ -466,7 +466,7 @@ function astra_post_single_structure_dynamic_css( $dynamic_css, $dynamic_css_fil
 		.ast-single-entry-banner + .site-content .entry-header {
 			margin-bottom: 0;
 		}
-		.ast-article-single .ast-author-avatar {
+		.site .ast-author-avatar {
 			--ast-author-avatar-size: ' . astra_get_css_value( $author_avatar_size, 'px' ) . ';
 		}
 		a.ast-underline-text {

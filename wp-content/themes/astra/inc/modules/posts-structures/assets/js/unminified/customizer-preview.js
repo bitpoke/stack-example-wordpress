@@ -118,7 +118,7 @@ function astra_refresh_customizer( control ) {
 		wp.customize( 'astra-settings[ast-dynamic-single-' + postType + '-author-avatar-size]', function( value ) {
 			value.bind( function( size ) {
 				var dynamicStyle = '';
-				dynamicStyle +=  '.ast-article-single .entry-meta .ast-author-avatar img {';
+				dynamicStyle +=  '.site .ast-author-avatar img {';
 				dynamicStyle += 'width: ' + size + 'px;';
 				dynamicStyle += 'height: ' + size + 'px;';
 				dynamicStyle += '} ';
