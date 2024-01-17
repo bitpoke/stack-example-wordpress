@@ -1926,6 +1926,25 @@ function bp_is_blog_page() {
 }
 
 /**
+ * Checks whether the requested URL is site home's one.
+ *
+ * @since 12.1.0
+ *
+ * @return boolean True if the requested URL is site home's one. False otherwise.
+ */
+function bp_is_site_home() {
+	$requested_url = bp_get_requested_url();
+	$home_url      = home_url( '/' );
+
+	if ( is_customize_preview() && ! bp_is_email_customizer() ) {
+		$requested_url = wp_parse_url( $requested_url, PHP_URL_PATH );
+		$home_url      = wp_parse_url( $home_url, PHP_URL_PATH );
+	}
+
+	return $home_url === $requested_url;
+}
+
+/**
  * Is this a BuddyPress component?
  *
  * You can tell if a page is displaying BP content by whether the
@@ -3760,6 +3779,20 @@ function bp_email_the_salutation( $settings = array() ) {
 
 		return $salutation;
 	}
+
+/**
+ * Outputs the BP Email's template footer.
+ *
+ * @since 12.1.0
+ */
+function bp_email_footer() {
+	// `the_block_template_skip_link()` was deprecated in WP 6.4.0.
+	if ( bp_is_running_wp( '6.4.0', '>=' ) && has_action( 'wp_footer', 'the_block_template_skip_link' ) ) {
+		remove_action( 'wp_footer', 'the_block_template_skip_link' );
+	}
+
+	wp_footer();
+}
 
 /**
  * Checks if a Widget/Block is active.
