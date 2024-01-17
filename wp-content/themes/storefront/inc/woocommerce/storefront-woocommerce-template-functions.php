@@ -235,7 +235,34 @@ if ( ! function_exists( 'storefront_shop_messages' ) ) {
 	 */
 	function storefront_shop_messages() {
 		if ( ! is_checkout() ) {
-			echo wp_kses_post( storefront_do_shortcode( 'woocommerce_messages' ) );
+			$kses_defaults = wp_kses_allowed_html( 'post' );
+
+			$svg_args = array(
+				'svg'   => array(
+					'class'           => true,
+					'aria-hidden'     => true,
+					'aria-labelledby' => true,
+					'role'            => true,
+					'xmlns'           => true,
+					'width'           => true,
+					'height'          => true,
+					'viewbox'         => true,
+				),
+				'g'     => array(
+					'fill' => true,
+				),
+				'title' => array(
+					'title' => true,
+				),
+				'path'  => array(
+					'd'    => true,
+					'fill' => true,
+				),
+			);
+
+			$allowed_tags = array_merge( $kses_defaults, $svg_args );
+
+			echo wp_kses( storefront_do_shortcode( 'woocommerce_messages' ), $allowed_tags );
 		}
 	}
 }
@@ -858,7 +885,7 @@ if ( ! function_exists( 'storefront_woocommerce_brands_homepage_section' ) ) {
 	 * Requires WooCommerce Brands.
 	 *
 	 * @since  2.3.0
-	 * @link   https://woocommerce.com/products/brands/
+	 * @link   https://woo.com/products/brands/
 	 * @uses   apply_filters()
 	 * @uses   storefront_do_shortcode()
 	 * @uses   wp_kses_post()
@@ -912,7 +939,7 @@ if ( ! function_exists( 'storefront_woocommerce_brands_archive' ) ) {
 	 * Requires WooCommerce Brands.
 	 *
 	 * @since  2.3.0
-	 * @link   https://woocommerce.com/products/brands/
+	 * @link   https://woo.com/products/brands/
 	 * @uses   is_tax()
 	 * @uses   wp_kses_post()
 	 * @uses   get_brand_thumbnail_image()
@@ -932,7 +959,7 @@ if ( ! function_exists( 'storefront_woocommerce_brands_single' ) ) {
 	 * Requires WooCommerce Brands.
 	 *
 	 * @since  2.3.0
-	 * @link   https://woocommerce.com/products/brands/
+	 * @link   https://woo.com/products/brands/
 	 * @uses   storefront_do_shortcode()
 	 * @uses   wp_kses_post()
 	 * @return void
