@@ -324,8 +324,9 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$btn_border_radius_fields = astra_get_option( 'button-radius-fields' );
 			$theme_btn_padding        = astra_get_option( 'theme-button-padding' );
 			$highlight_theme_color    = astra_get_foreground_color( $theme_color );
+			$button_styling_improved  = self::astra_4_6_4_compatibility();
 
-			// Submenu Bordercolor.
+			// Submenu Border color.
 			$submenu_border               = astra_get_option( 'primary-submenu-border' );
 			$primary_submenu_item_border  = astra_get_option( 'primary-submenu-item-border' );
 			$primary_submenu_b_color      = astra_get_option( 'primary-submenu-b-color', $theme_color );
@@ -898,8 +899,9 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				);
 
 				$reset_underline_from_anchors = self::unset_builder_elements_underline();
+				$buttons_exclusion_selectors  = $button_styling_improved ? '.ast-single-post .elementor-button-wrapper .elementor-button, .ast-single-post .entry-content .uagb-tab a, .ast-single-post .entry-content .uagb-ifb-cta a, .ast-single-post .entry-content .uabb-module-content a, .ast-single-post .entry-content .uagb-post-grid a, .ast-single-post .entry-content .uagb-timeline a, .ast-single-post .entry-content .uagb-toc__wrap a, .ast-single-post .entry-content .uagb-taxomony-box a, .ast-single-post .entry-content .woocommerce a, .entry-content .wp-block-latest-posts > li > a, .ast-single-post .entry-content .wp-block-file__button, li.ast-post-filter-single, .ast-single-post .ast-comment-content .comment-reply-link, .ast-single-post .ast-comment-content .comment-edit-link' : '.ast-single-post .wp-block-button .wp-block-button__link, .ast-single-post .elementor-button-wrapper .elementor-button, .ast-single-post .entry-content .uagb-tab a, .ast-single-post .entry-content .uagb-ifb-cta a, .ast-single-post .entry-content .wp-block-uagb-buttons a, .ast-single-post .entry-content .uabb-module-content a, .ast-single-post .entry-content .uagb-post-grid a, .ast-single-post .entry-content .uagb-timeline a, .ast-single-post .entry-content .uagb-toc__wrap a, .ast-single-post .entry-content .uagb-taxomony-box a, .ast-single-post .entry-content .woocommerce a, .entry-content .wp-block-latest-posts > li > a, .ast-single-post .entry-content .wp-block-file__button, li.ast-post-filter-single, .ast-single-post .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link, .ast-single-post .ast-comment-content .comment-reply-link, .ast-single-post .ast-comment-content .comment-edit-link';
 
-				$excluding_anchor_selectors = $reset_underline_from_anchors ? '.ast-single-post .wp-block-button .wp-block-button__link, .ast-single-post .elementor-button-wrapper .elementor-button, .ast-single-post .entry-content .uagb-tab a, .ast-single-post .entry-content .uagb-ifb-cta a, .ast-single-post .entry-content .wp-block-uagb-buttons a, .ast-single-post .entry-content .uabb-module-content a, .ast-single-post .entry-content .uagb-post-grid a, .ast-single-post .entry-content .uagb-timeline a, .ast-single-post .entry-content .uagb-toc__wrap a, .ast-single-post .entry-content .uagb-taxomony-box a, .ast-single-post .entry-content .woocommerce a, .entry-content .wp-block-latest-posts > li > a, .ast-single-post .entry-content .wp-block-file__button, li.ast-post-filter-single, .ast-single-post .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link, .ast-single-post .ast-comment-content .comment-reply-link, .ast-single-post .ast-comment-content .comment-edit-link' : '.ast-single-post .wp-block-button .wp-block-button__link, .ast-single-post .elementor-button-wrapper .elementor-button, li.ast-post-filter-single, .ast-single-post .wp-block-button.is-style-outline .wp-block-button__link, div.ast-custom-button, .ast-single-post .ast-comment-content .comment-reply-link, .ast-single-post .ast-comment-content .comment-edit-link';
+				$excluding_anchor_selectors = $reset_underline_from_anchors ? $buttons_exclusion_selectors : '.ast-single-post .wp-block-button .wp-block-button__link, .ast-single-post .elementor-button-wrapper .elementor-button, li.ast-post-filter-single, .ast-single-post .wp-block-button.is-style-outline .wp-block-button__link, div.ast-custom-button, .ast-single-post .ast-comment-content .comment-reply-link, .ast-single-post .ast-comment-content .comment-edit-link';
 
 				if ( class_exists( 'WooCommerce' ) ) {
 					$excluding_anchor_selectors .= ', .entry-content [CLASS*="wc-block"] .wc-block-components-button, .entry-content [CLASS*="wc-block"] .wc-block-components-totals-coupon-link, .entry-content [CLASS*="wc-block"] .wc-block-components-product-name';
@@ -950,6 +952,15 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$css_output['input'] = array(
 					'outline' => 'none',
 				);
+
+				if ( class_exists( 'WooCommerce' ) ) {
+					$css_output['.woocommerce-js input[type=text]:focus, .woocommerce-js input[type=email]:focus, .woocommerce-js textarea:focus, input[type=number]:focus, .comments-area textarea#comment:focus, .comments-area textarea#comment:active, .comments-area .ast-comment-formwrap input[type="text"]:focus, .comments-area .ast-comment-formwrap input[type="text"]:active'] = array(
+						'outline-style' => $outline_input_style ? $outline_input_style : 'inherit',
+						'outline-color' => $outline_input_color ? $outline_input_color : 'inherit',
+						'outline-width' => 'thin',
+						'border-color'  => astra_get_option( 'site-accessibility-highlight-input-color' ),
+					);
+				}
 			}
 
 			if ( false === $enable_site_accessibility ) {
@@ -1140,6 +1151,15 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					),
 				);
 			}
+
+			/**
+			 * Special case handling for pocket casts embed url.
+			 *
+			 * @since 4.6.4
+			 */
+			$oembed_wrapper['body .wp-block-embed-pocket-casts .ast-oembed-container *'] = array(
+				'position' => 'unset',
+			);
 
 			$parse_css .= astra_parse_css( $oembed_wrapper );
 
@@ -1993,12 +2013,12 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$border_right_val        = $scndry_theme_btn_right_border;
 				$border_bottom_val       = $scndry_theme_btn_bottom_border;
 				$border_left_val         = $scndry_theme_btn_left_border;
-				$outline_button_selector = '.wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link.wp-element-button, .ast-outline-button';
+				$outline_button_selector = '.wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link.wp-element-button, .ast-outline-button, .wp-block-uagb-buttons-child .uagb-buttons-repeater.ast-outline-button';
 			}
 
 			// Secondary button padding.
 			if ( $padding_top || $padding_right || $padding_bottom || $padding_left ) {
-				$outline_button_selector = '.wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link.wp-element-button, .ast-outline-button';
+				$outline_button_selector = '.wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link.wp-element-button, .ast-outline-button, .wp-block-uagb-buttons-child .uagb-buttons-repeater.ast-outline-button';
 			}
 
 			// Secondary button preset compatibility.
@@ -2045,12 +2065,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				'.wp-block-buttons .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color), .wp-block-buttons .wp-block-button.wp-block-button__link.is-style-outline:not(.has-text-color), .ast-outline-button' => array(
 					'color' => esc_attr( $btn_color_val ),
 				),
-				'.wp-block-button.is-style-outline .wp-block-button__link:hover, .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link:focus, .wp-block-buttons .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color):hover, .wp-block-buttons .wp-block-button.wp-block-button__link.is-style-outline:not(.has-text-color):hover, .ast-outline-button:hover, .ast-outline-button:focus' => array(
+				'.wp-block-button.is-style-outline .wp-block-button__link:hover, .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link:focus, .wp-block-buttons .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color):hover, .wp-block-buttons .wp-block-button.wp-block-button__link.is-style-outline:not(.has-text-color):hover, .ast-outline-button:hover, .ast-outline-button:focus, .wp-block-uagb-buttons-child .uagb-buttons-repeater.ast-outline-button:hover, .wp-block-uagb-buttons-child .uagb-buttons-repeater.ast-outline-button:focus' => array(
 					'color'            => empty( $scndry_btn_text_hover_color ) && $gutenberg_core_patterns_compat ? esc_attr( $btn_text_hover_color ) : esc_attr( $scndry_btn_text_hover_color ),
 					'background-color' => empty( $scndry_btn_bg_hover_color ) && $gutenberg_core_patterns_compat ? esc_attr( $btn_bg_hover_color ) : esc_attr( $scndry_btn_bg_hover_color ),
 					'border-color'     => esc_attr( $btn_border_h_color_val ),
 				),
 			);
+
+			if ( $content_links_underline && $button_styling_improved ) {
+				$outline_button_css_desktop['.ast-single-post .entry-content a.ast-outline-button, .ast-single-post .entry-content .is-style-outline>.wp-block-button__link'] = array(
+					'text-decoration' => '' === $scndry_theme_btn_text_decoration || 'initial' === $scndry_theme_btn_text_decoration ? 'none' : esc_attr( $scndry_theme_btn_text_decoration ),
+				);
+			}
 
 			$outline_button_css_tablet = array(
 				$outline_button_selector => array(
@@ -2098,6 +2124,11 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				);
 			}
 
+			if ( $button_styling_improved ) {
+				$outline_button_css_desktop['.uagb-buttons-repeater.ast-outline-button'] = array(
+					'border-radius' => '9999px',
+				);
+			}
 
 			/* Parse CSS from array() -> Desktop */
 			$parse_css .= astra_parse_css( $outline_button_css_desktop );
@@ -2897,6 +2928,12 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						'padding-bottom'             => astra_responsive_spacing( $theme_btn_padding, 'bottom', 'desktop' ),
 						'padding-left'               => astra_responsive_spacing( $theme_btn_padding, 'left', 'desktop' ),
 					);
+
+					if ( $content_links_underline && $button_styling_improved ) {
+						$global_button_page_builder_desktop['.ast-single-post .entry-content .wp-block-button .wp-block-button__link, .ast-single-post .entry-content .wp-block-search .wp-block-search__button, body .entry-content .wp-block-file .wp-block-file__button'] = array(
+							'text-decoration' => '' === $theme_btn_text_decoration || 'initial' === $theme_btn_text_decoration ? 'none' : esc_attr( $theme_btn_text_decoration ),
+						);
+					}
 
 					$global_button_page_builder_tablet = array(
 						$selector => array(
@@ -6057,6 +6094,17 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 		public static function astra_4_6_2_compatibility() {
 			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
 			return apply_filters( 'astra_get_option_v4-6-2-backward-option', isset( $astra_settings['v4-6-2-backward-option'] ) ? false : true );
+		}
+
+		/**
+		 * Upgrade Astra default button stylings & compatibility with Spectra buttons.
+		 *
+		 * @return bool true|false.
+		 * @since 4.6.4
+		 */
+		public static function astra_4_6_4_compatibility() {
+			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+			return apply_filters( 'astra_get_option_btn-stylings-upgrade', isset( $astra_settings['btn-stylings-upgrade'] ) ? false : true );
 		}
 	}
 }

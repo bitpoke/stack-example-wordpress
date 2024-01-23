@@ -264,7 +264,8 @@ td.ast-advanced-hook-row-heading {
 }
 .components-button:focus:not(:disabled) {
     box-shadow: none;
-    outline: 0;
+    outline: 1.5px solid transparent;
+    border: 1px solid #ccc;
 }
 .ast-advanced-hook-row-content section {
     max-width: 250px;

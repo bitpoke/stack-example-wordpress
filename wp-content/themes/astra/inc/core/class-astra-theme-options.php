@@ -119,6 +119,16 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 			 * @since 4.5.2
 			 */
 			$apply_scndry_default_padding_values = astra_scndry_btn_default_padding();
+			$update_secondary_paddings           = Astra_Dynamic_CSS::astra_4_6_4_compatibility();
+
+			$desk_sec_vertical_padding = $apply_scndry_default_padding_values ? 15 : '';
+			$desk_sec_vertical_padding = $update_secondary_paddings ? 13 : $desk_sec_vertical_padding;
+
+			$tab_sec_vertical_padding = $apply_scndry_default_padding_values ? 14 : '';
+			$tab_sec_vertical_padding = $update_secondary_paddings ? 12 : $tab_sec_vertical_padding;
+
+			$mob_sec_vertical_padding = $apply_scndry_default_padding_values ? 12 : '';
+			$mob_sec_vertical_padding = $update_secondary_paddings ? 10 : $mob_sec_vertical_padding;
 
 			/**
 			 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
@@ -342,21 +352,21 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 					),
 					'secondary-theme-button-padding'       => array(
 						'desktop'      => array(
-							'top'    => $apply_scndry_default_padding_values ? 15 : '',
+							'top'    => $apply_scndry_default_padding_values ? $desk_sec_vertical_padding : '',
 							'right'  => $apply_scndry_default_padding_values ? 30 : '',
-							'bottom' => $apply_scndry_default_padding_values ? 15 : '',
+							'bottom' => $apply_scndry_default_padding_values ? $desk_sec_vertical_padding : '',
 							'left'   => $apply_scndry_default_padding_values ? 30 : '',
 						),
 						'tablet'       => array(
-							'top'    => $apply_scndry_default_padding_values ? 14 : '',
+							'top'    => $apply_scndry_default_padding_values ? $tab_sec_vertical_padding : '',
 							'right'  => $apply_scndry_default_padding_values ? 28 : '',
-							'bottom' => $apply_scndry_default_padding_values ? 14 : '',
+							'bottom' => $apply_scndry_default_padding_values ? $tab_sec_vertical_padding : '',
 							'left'   => $apply_scndry_default_padding_values ? 28 : '',
 						),
 						'mobile'       => array(
-							'top'    => $apply_scndry_default_padding_values ? 12 : '',
+							'top'    => $apply_scndry_default_padding_values ? $mob_sec_vertical_padding : '',
 							'right'  => $apply_scndry_default_padding_values ? 24 : '',
-							'bottom' => $apply_scndry_default_padding_values ? 12 : '',
+							'bottom' => $apply_scndry_default_padding_values ? $mob_sec_vertical_padding : '',
 							'left'   => $apply_scndry_default_padding_values ? 24 : '',
 						),
 						'desktop-unit' => 'px',

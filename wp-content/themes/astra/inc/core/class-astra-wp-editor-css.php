@@ -602,6 +602,12 @@ class Astra_WP_Editor_CSS {
 			);
 		}
 
+		if ( Astra_Dynamic_CSS::astra_4_6_4_compatibility() ) {
+			$desktop_css['.uagb-buttons-repeater.ast-outline-button'] = array(
+				'border-radius' => '9999px',
+			);
+		}
+
 		// Boxed, Content-Boxed, page title alignment with Spectra Container Blocks.
 		$desktop_css['.ast-separate-container .editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .uagb-is-root-container'] = array(
 			'max-width' => 'var(--wp--custom--ast-content-width-size)',
@@ -768,10 +774,16 @@ class Astra_WP_Editor_CSS {
 				'border-bottom-left-radius'  => esc_attr( $scndry_btn_border_radius_left ),
 				'background-color'           => empty( $scndry_btn_bg_color ) ? 'transparent' : esc_attr( $scndry_btn_bg_color ),
 			),
+			'.editor-styles-wrapper .uagb-buttons-repeater.ast-outline-button' => array(
+				'border-top-left-radius'     => esc_attr( $scndry_btn_border_radius_top ),
+				'border-top-right-radius'    => esc_attr( $scndry_btn_border_radius_right ),
+				'border-bottom-right-radius' => esc_attr( $scndry_btn_border_radius_bottom ),
+				'border-bottom-left-radius'  => esc_attr( $scndry_btn_border_radius_left ),
+			),
 			'.editor-styles-wrapper .wp-block-buttons .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color), .wp-block-buttons .wp-block-button.wp-block-button__link.is-style-outline:not(.has-text-color), .ast-outline-button' => array(
 				'color' => esc_attr( $btn_color_val ),
 			),
-			'.editor-styles-wrapper .wp-block-button.is-style-outline .wp-block-button__link:hover, .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link:focus, .wp-block-buttons .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color):hover, .wp-block-buttons .wp-block-button.wp-block-button__link.is-style-outline:not(.has-text-color):hover, .ast-outline-button:hover, .ast-outline-button:focus' => array(
+			'.editor-styles-wrapper .wp-block-button.is-style-outline .wp-block-button__link:hover, .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link:focus, .wp-block-buttons .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color):hover, .wp-block-buttons .wp-block-button.wp-block-button__link.is-style-outline:not(.has-text-color):hover, .ast-outline-button:hover, .ast-outline-button:focus, .editor-styles-wrapper .uagb-buttons-repeater.ast-outline-button:hover, .editor-styles-wrapper .uagb-buttons-repeater.ast-outline-button:focus' => array(
 				'color'            => empty( $scndry_btn_text_hover_color ) ? esc_attr( $btn_text_hover_color ) : esc_attr( $scndry_btn_text_hover_color ),
 				'background-color' => empty( $scndry_btn_bg_hover_color ) ? esc_attr( $btn_bg_hover_color ) : esc_attr( $scndry_btn_bg_hover_color ),
 				'border-color'     => esc_attr( $btn_border_h_color_val ),
@@ -805,8 +817,9 @@ class Astra_WP_Editor_CSS {
 			);
 
 			$reset_underline_from_anchors = Astra_Dynamic_CSS::unset_builder_elements_underline();
+			$buttons_excluded_selectors   = Astra_Dynamic_CSS::astra_4_6_4_compatibility() ? '.edit-post-visual-editor a.uagb-tabs-list, .edit-post-visual-editor .uagb-ifb-cta a, .edit-post-visual-editor a.uagb-marketing-btn__link, .edit-post-visual-editor .uagb-post-grid a, .edit-post-visual-editor .uagb-toc__wrap a, .edit-post-visual-editor .uagb-taxomony-box a, .edit-post-visual-editor .uagb_review_block a, .editor-styles-wrapper .uagb-blockquote a, .editor-styles-wrapper .is-root-container .wc-block-components-product-name, .editor-styles-wrapper .is-root-container .wc-block-components-totals-coupon-link' : '.edit-post-visual-editor a.uagb-tabs-list, .edit-post-visual-editor .uagb-ifb-cta a, .edit-post-visual-editor a.uagb-marketing-btn__link, .edit-post-visual-editor .uagb-post-grid a, .edit-post-visual-editor .uagb-toc__wrap a, .edit-post-visual-editor .uagb-taxomony-box a, .edit-post-visual-editor .uagb_review_block a, .editor-styles-wrapper .uagb-blockquote a, .editor-styles-wrapper .wp-block-button:not(.is-style-outline) .wp-block-button__link, .editor-styles-wrapper .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link, .ast-outline-button, .editor-styles-wrapper .is-root-container .wc-block-components-product-name, .editor-styles-wrapper .is-root-container .wc-block-components-totals-coupon-link';
 
-			$excluding_anchor_selectors = $reset_underline_from_anchors ? '.edit-post-visual-editor a.uagb-tabs-list, .edit-post-visual-editor .uagb-ifb-cta a, .edit-post-visual-editor a.uagb-marketing-btn__link, .edit-post-visual-editor .uagb-post-grid a, .edit-post-visual-editor .uagb-toc__wrap a, .edit-post-visual-editor .uagb-taxomony-box a, .edit-post-visual-editor .uagb_review_block a, .editor-styles-wrapper .uagb-blockquote a, .editor-styles-wrapper .wp-block-button:not(.is-style-outline) .wp-block-button__link, .editor-styles-wrapper .wp-block-buttons .wp-block-button.is-style-outline .wp-block-button__link, .ast-outline-button, .editor-styles-wrapper .is-root-container .wc-block-components-product-name, .editor-styles-wrapper .is-root-container .wc-block-components-totals-coupon-link' : '';
+			$excluding_anchor_selectors = $reset_underline_from_anchors ? $buttons_excluded_selectors : '';
 
 			$desktop_css[ $excluding_anchor_selectors ] = array(
 				'text-decoration' => 'none',

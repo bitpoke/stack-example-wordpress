@@ -169,6 +169,7 @@ if ( ! function_exists( 'astra_get_font_css_value' ) ) {
 		switch ( $unit ) {
 			case 'em':
 			case 'vw':
+			case 'rem':
 			case '%':
 						$css_val = esc_attr( $value ) . $unit;
 				break;
@@ -1021,8 +1022,11 @@ if ( ! function_exists( 'astra_archive_page_info' ) ) {
 
 			// Author.
 			if ( is_author() ) {
-				$author_name      = get_the_author() ? get_the_author() : '';
-				$author_name_html = ( true === astra_check_is_structural_setup() && $author_name ) ? __( 'Author name: ', 'astra' ) . $author_name : $author_name;
+				$author_name        = get_the_author() ? get_the_author() : '';
+				$author_name_html   = ( true === astra_check_is_structural_setup() && $author_name ) ? __( 'Author name: ', 'astra' ) . $author_name : $author_name;
+				$author_description = get_the_author_meta( 'description' );
+				/** @psalm-suppress RedundantConditionGivenDocblockType */
+				$author_description_html = wp_kses_post( $author_description ); 
 				?>
 
 				<section class="ast-author-box ast-archive-description">
@@ -1030,7 +1034,7 @@ if ( ! function_exists( 'astra_archive_page_info' ) ) {
 						<?php do_action( 'astra_before_archive_title' ); ?>
 						<h1 class='page-title ast-archive-title'><?php echo esc_html( apply_filters( 'astra_author_page_title', $author_name_html ) ); ?></h1>
 						<?php do_action( 'astra_after_archive_title' ); ?>
-						<p><?php echo wp_kses_post( get_the_author_meta( 'description' ) ); ?></p>
+						<p><?php echo $author_description_html; ?></p>
 						<?php do_action( 'astra_after_archive_description' ); ?>
 					</div>
 					<div class="ast-author-avatar">
@@ -1041,7 +1045,9 @@ if ( ! function_exists( 'astra_archive_page_info' ) ) {
 				<?php
 
 			} else {
-				echo wp_kses_post( astra_get_taxonomy_banner_legacy_layout() );
+				$taxonomy_banner_content      = astra_get_taxonomy_banner_legacy_layout();
+				$taxonomy_banner_content_html = is_string( $taxonomy_banner_content ) ? wp_kses_post( $taxonomy_banner_content ) : '';
+				echo $taxonomy_banner_content_html;
 			}
 		}
 	}

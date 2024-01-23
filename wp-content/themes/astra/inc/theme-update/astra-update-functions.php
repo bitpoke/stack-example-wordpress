@@ -943,3 +943,18 @@ function astra_theme_background_updater_4_6_2() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility on version 4.6.4.
+ *
+ * @since 4.6.4
+ * @return void
+ */
+function astra_theme_background_updater_4_6_4() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['btn-stylings-upgrade'] ) ) {
+		$theme_options['btn-stylings-upgrade'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}

@@ -325,12 +325,18 @@ class Astra_Related_Posts_Markup {
 		}
 		$featured_image_size = astra_get_option( 'related-posts-image-size', 'large' );
 
+		$thumbnail_id = get_post_thumbnail_id( $current_post_id );
+		$alt_text     = $thumbnail_id ? get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true ) : '';
+
 		$post_thumb = apply_filters(
 			'astra_related_post_featured_image_markup',
 			get_the_post_thumbnail(
 				$current_post_id,
 				apply_filters( 'astra_related_posts_thumbnail_default_size', $featured_image_size ),
-				apply_filters( 'astra_related_posts_thumbnail_itemprop', '' )
+				array(
+					'alt'      => $alt_text ? $alt_text : get_the_title( $current_post_id ),
+					'itemprop' => apply_filters( 'astra_related_posts_thumbnail_itemprop', '' ),
+				)
 			)
 		);
 
