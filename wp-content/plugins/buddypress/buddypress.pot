@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-16T22:46:16+00:00\n"
+"POT-Creation-Date: 2024-01-23T19:44:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: buddypress\n"
@@ -3154,68 +3154,68 @@ msgstr ""
 msgid "You must log in to access the page you requested."
 msgstr ""
 
-#: bp-core/bp-core-cssjs.php:150
+#: bp-core/bp-core-cssjs.php:162
 #: bp-templates/bp-nouveau/buddypress-functions.php:493
 msgid "Are you sure?"
 msgstr ""
 
 #. Translators: %s is the relative time (eg: in a few seconds).
-#: bp-core/bp-core-cssjs.php:526
+#: bp-core/bp-core-cssjs.php:538
 msgid "in %s"
 msgstr ""
 
 #. translators: %s: the human time diff.
-#: bp-core/bp-core-cssjs.php:528
+#: bp-core/bp-core-cssjs.php:540
 #: bp-core/bp-core-functions.php:1516
 msgid "%s ago"
 msgstr ""
 
-#: bp-core/bp-core-cssjs.php:529
+#: bp-core/bp-core-cssjs.php:541
 msgid "a few seconds"
 msgstr ""
 
-#: bp-core/bp-core-cssjs.php:530
+#: bp-core/bp-core-cssjs.php:542
 msgid "a minute"
 msgstr ""
 
 #. Translators: %d is the amount of minutes.
-#: bp-core/bp-core-cssjs.php:532
+#: bp-core/bp-core-cssjs.php:544
 msgid "%d minutes"
 msgstr ""
 
-#: bp-core/bp-core-cssjs.php:533
+#: bp-core/bp-core-cssjs.php:545
 msgid "an hour"
 msgstr ""
 
 #. Translators: %d is the amount of hours.
-#: bp-core/bp-core-cssjs.php:535
+#: bp-core/bp-core-cssjs.php:547
 msgid "%d hours"
 msgstr ""
 
-#: bp-core/bp-core-cssjs.php:536
+#: bp-core/bp-core-cssjs.php:548
 msgid "a day"
 msgstr ""
 
 #. Translators: %d is the amount of days.
-#: bp-core/bp-core-cssjs.php:538
+#: bp-core/bp-core-cssjs.php:550
 msgid "%d days"
 msgstr ""
 
-#: bp-core/bp-core-cssjs.php:539
+#: bp-core/bp-core-cssjs.php:551
 msgid "a month"
 msgstr ""
 
 #. Translators: %d is the amount of months.
-#: bp-core/bp-core-cssjs.php:541
+#: bp-core/bp-core-cssjs.php:553
 msgid "%d months"
 msgstr ""
 
-#: bp-core/bp-core-cssjs.php:542
+#: bp-core/bp-core-cssjs.php:554
 msgid "a year"
 msgstr ""
 
 #. Translators: %d is the amount of years.
-#: bp-core/bp-core-cssjs.php:544
+#: bp-core/bp-core-cssjs.php:556
 msgid "%d years"
 msgstr ""
 
@@ -4356,64 +4356,64 @@ msgstr ""
 msgid "Go to website's home page."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5111
+#: bp-core/bp-core-functions.php:5105
 msgid "Discover BuddyPress Add-ons"
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5112
+#: bp-core/bp-core-functions.php:5106
 msgid "Hello BuddyPress Add-ons!"
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5113
+#: bp-core/bp-core-functions.php:5107
 msgid "Add-ons are features as Plugins or Blocks maintained by the BuddyPress development team & hosted on the WordPress.org plugins directory."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5114
+#: bp-core/bp-core-functions.php:5108
 msgid "Thanks to this new tab inside your Dashboard screen to add plugins, you’ll be able to find them faster and eventually contribute to beta features early to give the BuddyPress development team your feedbacks."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5127
-#: bp-core/bp-core-functions.php:5147
+#: bp-core/bp-core-functions.php:5121
+#: bp-core/bp-core-functions.php:5141
 msgid "Get The BP Classic Add-on"
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5128
+#: bp-core/bp-core-functions.php:5122
 msgid "Get ready for the brand-new BP Rewrites API!"
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5129
+#: bp-core/bp-core-functions.php:5123
 msgid "Our next major version (12.0.0) will introduce several large changes that could be incompatible with your site's configuration. To prevent problems, we've built the BP Classic Add-on, which you may want to proactively install if any of the following cases:"
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5130
+#: bp-core/bp-core-functions.php:5124
 msgid "Some of your BuddyPress plugins have not been updated lately."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5131
+#: bp-core/bp-core-functions.php:5125
 msgid "BuddyPress 12.0.0 introduces the BP Rewrites API, which completely changes the way BuddyPress URLs are built and routed. This fundamental change requires most BuddyPress plugins to update how they deal with BuddyPress URLs. If your BuddyPress plugins have not been updated in the last few months, they are probably not ready for BuddyPress 12.0.0."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5132
+#: bp-core/bp-core-functions.php:5126
 msgid "You are still using the BP Default theme."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5133
+#: bp-core/bp-core-functions.php:5127
 msgid "You still use a BP Legacy Widget."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5134
+#: bp-core/bp-core-functions.php:5128
 msgid "If any of the above items are true, we strongly advise you to install and activate the Classic Add-on before updating to BuddyPress 12.0.0."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5148
+#: bp-core/bp-core-functions.php:5142
 msgid "Thank you for installing BuddyPress 12.0!"
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5149
+#: bp-core/bp-core-functions.php:5143
 msgid "BuddyPress 12.0 introduces major core changes, overhauling the way that BuddyPress builds and parses URLs."
 msgstr ""
 
-#: bp-core/bp-core-functions.php:5150
+#: bp-core/bp-core-functions.php:5144
 msgid "If you find that your site is not working correctly with the new version, try installing the new BP Classic Add-on that adds backwards compatibility for plugins and themes that have not yet been updated to work with BuddyPress 12.0."
 msgstr ""
 
@@ -8671,19 +8671,19 @@ msgctxt "Members"
 msgid "Popular"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:698
+#: bp-members/bp-members-blocks.php:701
 msgid "Who's Online"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:700
+#: bp-members/bp-members-blocks.php:703
 msgid "There are no users currently online"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:723
+#: bp-members/bp-members-blocks.php:726
 msgid "Recently Active Members"
 msgstr ""
 
-#: bp-members/bp-members-blocks.php:725
+#: bp-members/bp-members-blocks.php:728
 msgid "There are no recently active members"
 msgstr ""
 
