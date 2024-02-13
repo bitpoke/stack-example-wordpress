@@ -209,6 +209,9 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$is_widget_title_support_font_weight = self::support_font_css_to_widget_and_in_editor();
 			$font_weight_prop                    = ( $is_widget_title_support_font_weight ) ? 'inherit' : 'normal';
 
+			// Elementor heading margin compatibility.
+			$elementor_heading_margin_style_comp = self::elementor_heading_margin_style_comp();
+
 			$update_customizer_strctural_defaults = astra_check_is_structural_setup();
 			$blog_layout                          = astra_get_blog_layout();
 
@@ -2187,6 +2190,17 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				),
 			);
 
+
+			// Handle backward compatibility for Elementor Pro heading's margin.
+			if ( defined( 'ELEMENTOR_PRO_VERSION' ) && $elementor_heading_margin_style_comp ) {
+				$elementor_base_css[' .content-area .elementor-widget-theme-post-content h1, .content-area .elementor-widget-theme-post-content h2, .content-area .elementor-widget-theme-post-content h3, .content-area .elementor-widget-theme-post-content h4, .content-area .elementor-widget-theme-post-content h5, .content-area .elementor-widget-theme-post-content h6'] = array(
+					'margin-top'    => '1.5em',
+					'margin-bottom' => 'calc(0.3em + 10px)',
+				);
+				$parse_css .= astra_parse_css( $elementor_base_css );
+
+			}
+
 			if ( true === $update_customizer_strctural_defaults ) {
 				$is_site_rtl               = is_rtl() ? true : false;
 				$ltr_left                  = $is_site_rtl ? esc_attr( 'right' ) : esc_attr( 'left' );
@@ -2304,7 +2318,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						$default_layout_update_css['.search .site-main .no-results .ast-search-submit'] = array(
 							'display' => 'block',
 						);
-						$default_layout_update_css['.search .ast-live-search-results']                  = array(
+						$default_layout_update_css['.search .site-main .no-results .ast-live-search-results'] = array(
 							'max-height' => '200px',
 						);
 					}
@@ -2402,6 +2416,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$static_layout_css['.ast-author-box img.avatar'] = array(
 					'margin' => '20px 0 0 0',
 				);
+			}
+
+			/**
+			 * Beaver Builder themer sticky header compatibility.
+			 */
+			if ( class_exists( 'FLBuilderModel' ) ) {
+				$default_layout_css = array(
+					'body.fl-theme-builder-header.fl-theme-builder-part.fl-theme-builder-part-part #page' => array(
+						'display' => 'block',
+					),
+				);
+				$parse_css         .= astra_parse_css( $default_layout_css );
 			}
 
 			/* Parse CSS from array() -> max-width: (tablet-breakpoint)px CSS */
@@ -4503,9 +4529,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			}
 
 			if ( astra_get_option( 'enable-comments-area', true ) ) {
-				if ( Astra_Builder_Helper::$is_header_footer_builder_active ) {
-					$parse_css .= Astra_Builder_Base_Dynamic_CSS::prepare_inner_section_advanced_css( 'ast-sub-section-comments', '.site .comments-area' );
-				}
+				$parse_css .= Astra_Extended_Base_Dynamic_CSS::prepare_inner_section_advanced_css( 'ast-sub-section-comments', '.site .comments-area' );
 
 				$comments_radius = astra_get_option(
 					'ast-sub-section-comments-border-radius',
@@ -4540,6 +4564,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 			return apply_filters( 'astra_theme_dynamic_css', $parse_css );
 
+		}
+
+		/**
+		 * Astra update default font size and font weight.
+		 *
+		 * @since 4.6.5
+		 * @return boolean
+		 */
+		public static function elementor_heading_margin_style_comp() {
+			$astra_settings                             = get_option( ASTRA_THEME_SETTINGS, array() );
+			$astra_settings['elementor-headings-style'] = isset( $astra_settings['elementor-headings-style'] ) ? false : true;
+			return apply_filters( 'elementor_heading_margin', $astra_settings['elementor-headings-style'] );
 		}
 
 		/**

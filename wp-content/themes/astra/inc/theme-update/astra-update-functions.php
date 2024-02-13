@@ -958,3 +958,17 @@ function astra_theme_background_updater_4_6_4() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility for Elementor Pro heading's margin.
+ *
+ * @since 4.6.5
+ * @return void
+ */
+function astra_theme_background_updater_4_6_5() {
+	$theme_options = get_option( 'astra-settings', array() );
+	if ( ! isset( $theme_options['elementor-headings-style'] ) ) {
+		$theme_options['elementor-headings-style'] = defined( 'ELEMENTOR_PRO_VERSION' ) ? true : false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}
