@@ -1,3 +1,12 @@
+v4.6.6
+- New: Introducing "Optimize Inline CSS" option in "Astra Dashboard > Settings > Performance tab".
+- New: Introducing a new border color option for transparent header buttons.
+- Fix: Menu dropdown arrow icon is missing if Astra Pro is enabled & nav menu addon is disabled.
+- Fix: Elementor Archive template & Loop builder extra padding issue coming from the theme side.
+- Fix: Submenu dropdown arrow not visible for menu-3 to menu-10 when nav menu pro addon is activated.
+- Fix: Block editor - List block text color does not work in the editor.
+- Fix: Post Navigation - Next post navigation link not properly aligned to right when the previous post navigation link is absent.
+
 v4.6.5
 - Improved codebase for improved security.
 - Improvement: Live Search - Results dropdown UI improved for better user experience.
