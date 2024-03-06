@@ -416,27 +416,6 @@ if ( ! function_exists( 'astra_parse_css' ) ) {
 	 */
 	function astra_parse_css( $css_output = array(), $min_media = '', $max_media = '' ) {
 
-		$admin_dashboard_settings = get_option( 'astra_admin_settings', array() );
-
-		/**
-		 * Optimization is not needed in customizer preview because:
-		 *
-		 * 1. Customizer preview is still an admin side of the website.
-		 * 2. Strict optimization can break few settings of the customizer.
-		 */
-		$enable_optimized_inline_css = ! is_customize_preview() && ! empty( $admin_dashboard_settings['enable_optimized_inline_css'] );
-
-		if ( $enable_optimized_inline_css ) {
-			if ( ! wp_is_mobile() && ( ! $min_media && $max_media ) ) {
-				/**
-				 * Do not parse css the mobile/tablet devices css if we are currently in desktop devices.
-				 *
-				 * @since 4.6.6
-				 */
-				return '';
-			}
-		}
-
 		$parse_css = '';
 		if ( is_array( $css_output ) && count( $css_output ) > 0 ) {
 
@@ -460,9 +439,7 @@ if ( ! function_exists( 'astra_parse_css' ) ) {
 					}
 
 					$properties_added++;
-
 					$temp_parse_css .= $property . ':' . $value . ';';
-
 				}
 
 				$temp_parse_css .= '}';
