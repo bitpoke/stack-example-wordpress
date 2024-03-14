@@ -4,7 +4,7 @@
  Plugin URI: https://wordpress.org/plugins/debug-bar/
  Description: Adds a debug menu to the admin bar that shows query, cache, and other helpful debugging information.
  Author: wordpressdotorg
- Version: 1.1.4
+ Version: 1.1.5
  Author URI: https://wordpress.org/
  Text Domain: debug-bar
  */
@@ -127,7 +127,7 @@ class Debug_Bar {
 	function enqueue() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.dev' : '';
 
-		$style_dependencies = array();
+		$style_dependencies = array( 'dashicons' );
 		$script_dependencies = array( 'jquery' );
 		if ( $this->is_amp() ) {
 			// Add admin-bar dependencies so AMP dev mode will stop removing debug-bar assets
@@ -279,9 +279,9 @@ class Debug_Bar {
 		<div id='querylist'>
 
 			<div id="debug-bar-actions">
-				<span class="maximize">+</span>
-				<span class="restore">&ndash;</span>
-				<span class="close">&times;</span>
+				<span class="maximize dashicons dashicons-plus-alt2"></span>
+				<span class="restore dashicons dashicons-minus"></span>
+				<span class="close dashicons dashicons-no-alt"></span>
 			</div>
 
 			<div id='debug-bar-info'>

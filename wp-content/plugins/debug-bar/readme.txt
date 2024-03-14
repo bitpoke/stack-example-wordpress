@@ -1,8 +1,8 @@
 === Debug Bar ===
-Contributors: wordpressdotorg, ryan, westi, koopersmith, duck_, mitchoyoshitaka, dd32, jrf, obenland, nacin, evansolomon, Otto42, aidvu, josephscott
+Contributors: wordpressdotorg, ryan, westi, koopersmith, duck_, mitchoyoshitaka, dd32, jrf, obenland, nacin, evansolomon, Otto42, aidvu, josephscott, eoigal
 Tags: debug
-Tested up to: 6.1
-Stable tag: 1.1.4
+Tested up to: 6.5
+Stable tag: 1.1.5
 Requires at least: 3.4
 
 Adds a debug menu to the admin bar that shows query, cache, and other helpful debugging information.
@@ -28,6 +28,10 @@ Add a PHP/MySQL console with the [Debug Bar Console plugin](https://wordpress.or
 There are numerous other add-ons available to get more insight into, for instance, the registered Post Types, Shortcodes, WP Cron, Language file loading, Actions and Filters and so on. Just [search the plugin directory for 'Debug Bar'](https://wordpress.org/plugins/search/debug+bar/).
 
 == Upgrade Notice ==
+
+= 1.1.5 =
+- Update CSS to remove gradient and shadow styles
+- Use dashicons as action buttons instead of misaligned text.
 
 = 1.1.4 =
 - Fix PHP8+ critical error if `php_uname` is disabled
@@ -121,6 +125,10 @@ Added deprecated function usage tracking
 Initial Release
 
 == Changelog ==
+
+= 1.1.5 =
+- Update CSS to remove gradient and shadow styles
+- Use dashicons as action buttons instead of misaligned text.
 
 = 1.1.4 =
 - Fix PHP8+ critical error if `php_uname` is disabled
