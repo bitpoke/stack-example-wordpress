@@ -1,3 +1,7 @@
+v4.6.9
+- Improved codebase for improved security.
+- Fix: Editor - Block's inline toolbar elements like Bold, Italic creates jerk on focus.
+
 v4.6.8
 - Fix: Duplicate sub-menu dropdown arrows visible when Menu gets created using a page builder widget.
 - Fix: Single - Blog - Post title styles not working on the frontend after parsing dynamic CSS.

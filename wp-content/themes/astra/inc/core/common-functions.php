@@ -1022,7 +1022,7 @@ if ( ! function_exists( 'astra_archive_page_info' ) ) {
 
 			// Author.
 			if ( is_author() ) {
-				$author_name        = get_the_author() ? get_the_author() : '';
+				$author_name        = get_the_author() ? esc_attr( strval( get_the_author() ) ) : '';
 				$author_name_html   = ( true === astra_check_is_structural_setup() && $author_name ) ? __( 'Author name: ', 'astra' ) . $author_name : $author_name;
 				$author_description = get_the_author_meta( 'description' );
 				/** @psalm-suppress RedundantConditionGivenDocblockType */
