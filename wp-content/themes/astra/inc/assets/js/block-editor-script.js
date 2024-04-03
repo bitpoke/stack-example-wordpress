@@ -26,6 +26,14 @@ function addTitleVisibility() {
 			editorDocument = iframe.contentWindow.document || iframe.contentDocument;
 		}
 
+		// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
+		if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
+			const _iframe = document.querySelector('.editor-canvas__iframe');
+			if ( !! _iframe ){
+				editorDocument = _iframe.contentWindow.document ;
+			}
+		}
+
 		titleVisibility = editorDocument.querySelector( '.title-visibility' );
 		titleBlock = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
 	}
@@ -134,6 +142,14 @@ function astra_onload_function() {
 				if ( iframe && devicePreview.querySelector('iframe') !== null ) {
 					editorDocument = iframe.contentWindow.document || iframe.contentDocument;
 				}
+
+		// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
+		if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
+			const _iframe = document.querySelector('.editor-canvas__iframe');
+			if ( !! _iframe ){
+				editorDocument = _iframe.contentWindow.document ;
+			}
+		}
 
 				titleBlock = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
 
@@ -326,13 +342,21 @@ function astra_onload_function() {
 
 			// Narrow + Boxed compatibility in editor.
 			if ( 'narrow-width-container' === contentLayout && ( 'boxed' === contentStyle || 'default' === contentStyle && is_content_style_boxed ) ) {
-				const editorArea = document.querySelector('.edit-post-visual-editor__content-area');
+				let editorArea = document.querySelector('.edit-post-visual-editor__content-area');
+				if ( ! editorArea ) {
+					editorArea = document.querySelector('.edit-post-visual-editor');
+				}
 				if ( editorArea ) {
 					editorArea.style.padding = '20px';
 				}
 			}
 			else {
-				const editorArea = document.querySelector('.edit-post-visual-editor__content-area');
+				let editorArea = document.querySelector('.edit-post-visual-editor__content-area');
+				
+				if ( ! editorArea ) {
+					editorArea = document.querySelector('.edit-post-visual-editor');
+				}
+				
 				if ( editorArea ) {
 					editorArea.style.padding = '0px';
 				}
@@ -479,10 +503,16 @@ function astra_onload_function() {
 const updatePageBackground = ( apply_customizer_default = false, isUnboxedContainer = false ) => {
 
 	// Document as per wp version.
-	editorDoc = document;
-	let desktopPreview = document.getElementsByClassName('is-desktop-preview'),
-		tabletPreview = document.getElementsByClassName('is-tablet-preview'),
-		mobilePreview = document.getElementsByClassName('is-mobile-preview'),
+	let editorDoc = document;
+	const _iframe = document.querySelector("#editor iframe.editor-canvas__iframe");
+
+	if (!! _iframe && astraColors.ast_wp_version_higher_6_4 ){
+	editorDoc = _iframe.contentWindow.document;
+	}
+
+	let desktopPreview = editorDoc.getElementsByClassName('is-desktop-preview'),
+		tabletPreview = editorDoc.getElementsByClassName('is-tablet-preview'),
+		mobilePreview = editorDoc.getElementsByClassName('is-mobile-preview'),
 		devicePreview = desktopPreview[0];
 	if ( astraColors.ast_wp_version_higher_6_3 ) {
 
@@ -524,7 +554,7 @@ const updatePageBackground = ( apply_customizer_default = false, isUnboxedContai
 				contentBgWrapper.style['background-size'] = '';
 				contentBgWrapper.style['background-position'] = '';
 				contentBgWrapper.style['background-repeat'] = '';
-				contentBgWrapper.style['background-attachment'] = '';				
+				contentBgWrapper.style['background-attachment'] = '';
 			}
 		}
 
@@ -677,7 +707,7 @@ const updatePageBackground = ( apply_customizer_default = false, isUnboxedContai
 /*
 * Dynamically applies styles to DOM element.
 */
-function applyStylesToElement( selector, styles, docObj ) {  
+function applyStylesToElement( selector, styles, docObj ) {
   if ( docObj ) {
 	  const element = docObj.querySelector(selector);
 	  if (element) {

@@ -487,7 +487,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[blog-post-color-divider]',
 					'section'  => 'section-blog',
-					'title'    => __( 'Post Cards', 'astra-addon' ),
+					'title'    => __( 'Post Cards', 'astra' ),
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'priority' => 1,

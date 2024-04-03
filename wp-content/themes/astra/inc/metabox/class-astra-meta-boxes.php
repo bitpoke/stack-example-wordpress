@@ -611,6 +611,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			);
 			$page_bg_dynamic_title = ( $post_type ? $bg_updated_title : __( 'Page Background', 'astra' ) );
 			$global_palette        = astra_get_option( 'global-color-palette' );
+			
+			/* Created a new array specifically designed for storing post types that don't require Astra's meta settings.*/
+			$register_astra_metabox = ! in_array( $post_type, array( 'wp_block' ), true );
 
 			wp_localize_script(
 				'astra-meta-settings',
@@ -639,7 +642,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'is_bb_themer_layout'            => ! astra_check_is_bb_themer_layout(), // Show page header option only when bb is not activated.
 					'is_addon_activated'             => defined( 'ASTRA_EXT_VER' ) ? true : false,
 					'sticky_addon_enabled'           => ( $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'sticky-header' ) ) ? true : false,
-					'register_astra_metabox'         => apply_filters( 'astra_settings_metabox_register', true ),
+					'register_astra_metabox'         => apply_filters( 'astra_settings_metabox_register', $register_astra_metabox ),
 					'is_hide_contnet_layout_sidebar' => $ast_content_layout_sidebar,
 					'upgrade_pro_link'               => ASTRA_PRO_CUSTOMIZER_UPGRADE_URL,
 					'show_upgrade_notice'            => astra_showcase_upgrade_notices(),

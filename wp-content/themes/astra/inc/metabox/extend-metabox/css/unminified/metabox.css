@@ -1096,7 +1096,7 @@ a.ast-pro-upgrade-link {
 	width: 20px;
 	padding: 4px;
 	background: transparent;
-	box-shadow: none;
+	box-shadow: none !important;
 	cursor: pointer;
 }
 .astra-color-clear-button.components-button:focus:not(:disabled) {

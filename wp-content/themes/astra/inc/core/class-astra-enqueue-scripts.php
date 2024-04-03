@@ -542,6 +542,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 				'var(--ast-global-color-7)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-7)' ),
 				'var(--ast-global-color-8)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-8)' ),
 				'ast_wp_version_higher_6_3'     => astra_wp_version_compare( '6.2.99', '>' ),
+				'ast_wp_version_higher_6_4'     => astra_wp_version_compare( '6.4.99', '>' ),
 				'apply_content_bg_fullwidth'    => astra_apply_content_background_fullwidth_layouts(),
 				'customizer_content_bg_obj'     => $content_bg_obj,
 				'customizer_site_bg_obj'        => $site_bg_obj,

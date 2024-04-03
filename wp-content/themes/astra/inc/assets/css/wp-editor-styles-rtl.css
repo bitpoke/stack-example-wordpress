@@ -317,7 +317,7 @@ html .edit-widgets-main-block-list :where(.wp-block) {
 /**
  * ast-separate-container layout compatibility.
  */
-.ast-separate-container .edit-post-visual-editor__content-area {
+.ast-separate-container .edit-post-visual-editor__content-area, .ast-separate-container .edit-post-visual-editor {
   padding: 20px !important;
 }
 
@@ -736,4 +736,10 @@ span.title-visibility svg {
   width: 16px;
   height: 40px;
   fill: var(--wp-admin-theme-color);
+}
+
+#astra_settings_meta_box .components-button.is-primary:hover:not(:disabled),
+.ast-meta-settings-content .components-button.is-primary:hover:not(:disabled) {
+  background: var(--wp-components-color-accent-darker-10, var(--wp-admin-theme-color-darker-10, #2145e6)) !important;
+  color: var(--wp-components-color-accent-inverted, #fff) !important;
 }

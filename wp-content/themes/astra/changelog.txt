@@ -1,3 +1,7 @@
+v4.6.10
+- Compatibility with WordPress 6.5.
+- Improvement: Updated elegant dashboard admin notice for Starter Template Plugin installation.
+
 v4.6.9
 - Improved codebase for improved security.
 - Fix: Editor - Block's inline toolbar elements like Bold, Italic creates jerk on focus.
