@@ -1,3 +1,7 @@
+v4.6.11
+- Improvement: Added object-fit cover styling to the featured image while the Image ratio is custom.
+- Fix: Starter Content - Handled backward compatibility for Line height UI issue with Starter Template's block patterns.
+
 v4.6.10
 - Compatibility with WordPress 6.5.
 - Improvement: Updated elegant dashboard admin notice for Starter Template Plugin installation.

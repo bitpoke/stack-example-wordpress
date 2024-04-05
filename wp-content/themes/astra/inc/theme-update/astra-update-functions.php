@@ -986,3 +986,41 @@ function astra_theme_background_updater_4_6_6() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility for Starter template library preview line height cases.
+ *
+ * @since 4.6.11
+ * @return void
+ */
+
+function astra_theme_background_updater_4_6_11() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( isset( $theme_options['global-headings-line-height-update'] ) ) {
+		return;
+	}
+
+	$headers_fonts = array(
+		'h1' => '1.4',
+		'h2' => '1.3',
+		'h3' => '1.3',
+		'h4' => '1.2',
+		'h5' => '1.2',
+		'h6' => '1.25',
+	);
+
+	foreach ( $headers_fonts as $header_tag => $header_font_value ) {
+
+		if ( empty( $theme_options[ 'font-extras-' . $header_tag ]['line-height'] ) ) {
+			$theme_options[ 'font-extras-' . $header_tag ]['line-height'] = $header_font_value;
+			if ( empty( $theme_options[ 'font-extras-' . $header_tag ]['line-height-unit'] ) ) {
+				$theme_options[ 'font-extras-' . $header_tag ]['line-height-unit'] = 'em';
+			}
+		}   
+	}
+
+	$theme_options['global-headings-line-height-update'] = true;
+	
+	update_option( 'astra-settings', $theme_options );
+}

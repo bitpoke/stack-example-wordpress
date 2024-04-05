@@ -4157,6 +4157,16 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						$parse_css          .= astra_parse_css( $blog_featured_image );
 				}
 
+				// Added cover styling for Custom image ratio.
+				if ( 'custom' === $aspect_ratio_type ) {
+					$cover_style_image = array(
+						'.ast-article-post .post-thumb-img-content img' => array(
+							'object-fit' => 'cover',
+						),
+					);
+					$parse_css        .= astra_parse_css( $cover_style_image );
+				}
+
 				$author_avatar = astra_get_option( 'blog-meta-author-avatar' );
 
 				if ( $author_avatar ) {
