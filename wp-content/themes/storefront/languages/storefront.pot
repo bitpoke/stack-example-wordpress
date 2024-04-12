@@ -2,9 +2,9 @@
 # This file is distributed under the GNU General Public License v3 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Storefront 4.5.4\n"
+"Project-Id-Version: Storefront 4.5.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/storefront\n"
-"POT-Creation-Date: 2024-01-16 06:14:02+00:00\n"
+"POT-Creation-Date: 2024-04-11 19:26:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -874,7 +874,7 @@ msgid "Storefront"
 msgstr ""
 
 #. Theme URI of the plugin/theme
-msgid "https://woo.com/products/storefront/"
+msgid "https://woocommerce.com/products/storefront/"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -894,7 +894,7 @@ msgid "Automattic"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://woo.com/"
+msgid "https://woocommerce.com/"
 msgstr ""
 
 #. Template Name of the plugin/theme
