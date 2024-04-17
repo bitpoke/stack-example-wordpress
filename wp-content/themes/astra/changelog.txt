@@ -1,3 +1,17 @@
+v4.6.12
+- Improvement: Header Builder - Account - Login popup form rendering multiple times.
+- Improvement: Added gap between the Transparent Header and the Login Password Form.
+- Improvement: Added new tooltip to single product title area's featured image option for better clarity.
+- Improvement: Fixed a performance issue caused by theme's add-to-cart-quantity-btn.min.js file.
+- Fix: WooCommerce - Resolved issue with the Store Notice's "Hang on Top" option causing a gap at the top.
+- Fix: WooCommerce - "Sticky Add To Cart" feature not working for a responsive device when Addon's WooCommerce module is enabled.
+- Fix: WooCommerce - Getting duplicate ID error for 'ast-site-header-cart'.
+- Fix: Search input bar is not properly working with old header setup.
+- Fix: Single post navigation design break on responsive devices.
+- Fix: Design issue with images and headings alignments in single posts and pages.
+- Fix: Theme's global button styling overriding Elementor's global buttons styling.
+- Fix: Post navigation alignment does not sync with container width.
+
 v4.6.11
 - Improvement: Added object-fit cover styling to the featured image while the Image ratio is custom.
 - Fix: Starter Content - Handled backward compatibility for Line height UI issue with Starter Template's block patterns.

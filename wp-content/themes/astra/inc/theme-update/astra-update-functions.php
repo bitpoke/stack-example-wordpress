@@ -1017,10 +1017,36 @@ function astra_theme_background_updater_4_6_11() {
 			if ( empty( $theme_options[ 'font-extras-' . $header_tag ]['line-height-unit'] ) ) {
 				$theme_options[ 'font-extras-' . $header_tag ]['line-height-unit'] = 'em';
 			}
-		}   
+		}
 	}
 
 	$theme_options['global-headings-line-height-update'] = true;
-	
+
 	update_option( 'astra-settings', $theme_options );
+
+}
+
+/**
+ * Handle backward compatibility for heading `clear:both` css in single posts and pages.
+ *
+ * @since 4.6.12
+ * @return void
+ */
+function astra_theme_background_updater_4_6_12() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['single_posts_pages_heading_clear_none'] ) ) {
+		$theme_options['single_posts_pages_heading_clear_none'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+
+	if ( ! isset( $theme_options['elementor-btn-styling'] ) ) {
+		$theme_options['elementor-btn-styling'] = defined( 'ELEMENTOR_VERSION' ) ? true : false;
+		update_option( 'astra-settings', $theme_options );
+	}
+
+	if ( ! isset( $theme_options['remove_single_posts_navigation_mobile_device_padding'] ) ) {
+		$theme_options['remove_single_posts_navigation_mobile_device_padding'] = true;
+		update_option( 'astra-settings', $theme_options );
+	}
 }

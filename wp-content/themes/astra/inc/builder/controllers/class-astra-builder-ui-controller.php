@@ -424,8 +424,6 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 					$logged_out_style_class = 'ast-header-account-link ast-header-account-type-' . $logged_out_style . ' ast-account-action-' . $action_type;
 					$logged_out_text        = astra_get_option( 'header-account-logged-out-text' );
 					$login_link             = astra_get_option( 'header-account-logout-link' );
-					$show_lost_password     = astra_get_option( 'header-account-login-lostpass' );
-					$show_register          = ( get_option( 'users_can_register' ) && astra_get_option( 'header-account-login-register' ) );
 
 					if ( '' !== $login_link && '' !== $login_link['url'] ) {
 
@@ -451,54 +449,14 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 							<span class="ast-header-account-text"><?php echo esc_html( $logged_out_text ); ?></span>
 						<?php } ?>
 					</a>
-					<?php if ( defined( 'ASTRA_EXT_VER' ) && 'login' === $action_type ) { ?>
-						<div id="ast-hb-account-login-wrap" class="ast-hb-account-login-wrapper">
-							<div class="ast-hb-account-login-bg"></div>
-							<div class="ast-hb-account-login">
-								<div class="ast-hb-login-header">
-									<button id="ast-hb-login-close" class="ast-hb-login-close" aria-label="Close popup">
-										<span class="ast-svg-iconset">
-											<?php echo self::fetch_svg_icon( 'close' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-										</span>
-									</button>
-								</div>
-								<div class="ast-hb-login-body">
-									<div class="ast-hb-account-login-form">
-										<?php
-										$args = array(
-											'echo'     => true,
-											'remember' => true,
-											'value_remember' => true,
-										);
-										echo wp_login_form( $args );
-										?>
-									</div>
-									<div class="ast-hb-account-login-form-footer">
-										<?php
-										if ( $show_lost_password || $show_register ) {
-											if ( $show_register ) {
-												$register_url = wp_registration_url();
-												?>
-												<a class="ast-header-account-footer-link" href="<?php echo esc_url( $register_url ); ?>" >
-													<span class="ast-header-account-register"><?php echo esc_html( __( 'Register', 'astra' ) ); ?></span>
-												</a>
-												<?php
-											}
-											if ( $show_lost_password ) {
-												$lostpass_url = wp_lostpassword_url();
-												?>
-												<a class="ast-header-account-footer-link" href="<?php echo esc_url( $lostpass_url ); ?>" >
-													<span class="ast-header-account-lostpass"><?php echo esc_html( __( 'Lost your password?', 'astra' ) ); ?></span>
-												</a>
-												<?php
-											}
-										}
-										?>
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php } ?>
+
+					<?php
+					/**
+					 * The login popup form is moved to footer from here @since 4.6.12
+					 *
+					 * @see Astra Addon -> Astra_Addon_Header_Account_Markup::login_popup_form_markup
+					 */
+					?>
 				<?php } ?>
 
 			</div>

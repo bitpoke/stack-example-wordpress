@@ -216,6 +216,9 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			// Elementor Loop block padding compatibility.
 			$elementor_container_padding_style_comp = self::elementor_container_padding_style_comp();
 
+			// Elementor button styling compatibility.
+			$add_body_class = self::elementor_btn_styling_comp();
+
 			$update_customizer_strctural_defaults = astra_check_is_structural_setup();
 			$blog_layout                          = astra_get_blog_layout();
 
@@ -563,6 +566,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$css_output                      = array(
 
 				':root'                                  => array(
+					'--ast-post-nav-space'                => 0, // Moved from inc/dynamic-css/single-post.php for the fix of post-navigation issue for the old users. @since x.x.x
 					'--ast-container-default-xlg-padding' => ( true === $update_customizer_strctural_defaults ) ? $article_space : '6.67em',
 					'--ast-container-default-lg-padding'  => ( true === $update_customizer_strctural_defaults ) ? $article_space : '5.67em',
 					'--ast-container-default-slg-padding' => ( true === $update_customizer_strctural_defaults ) ? '2em' : '4.34em',
@@ -799,7 +803,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'padding-right' => '0',
 				),
 				'.ast-search-menu-icon.slide-search input.search-field' => array(
-					'width' => '0',
+					'width' => Astra_Builder_Helper::$is_header_footer_builder_active ? '0' : '',
 				),
 				'.ast-header-search .ast-search-menu-icon.ast-dropdown-active .search-form, .ast-header-search .ast-search-menu-icon.ast-dropdown-active .search-field:focus' => array(
 					'transition'   => 'all 0.2s',
@@ -1327,6 +1331,22 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			// Paginaiton CSS.
 			require_once ASTRA_THEME_DIR . 'inc/dynamic-css/pagination.php'; // PHPCS:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 			// Related Posts Dynamic CSS.
+
+			// Navigation CSS.
+			if ( ! self::astra_4_6_0_compatibility() && is_single() ) {
+				/**
+				 * CSS for post navigation design break for the old users.
+				 */
+				$parse_css .= Astra_Enqueue_Scripts::trim_css( '
+				@media( max-width: 420px ) {
+					.single .nav-links .nav-previous,
+					.single .nav-links .nav-next {
+						width: 100%;
+						text-align: center;
+					}
+				}
+				');
+			}
 
 			// Navigation CSS.
 			if ( is_single() && self::astra_4_6_0_compatibility() ) {
@@ -2731,6 +2751,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				$btn_text_color_selectors = '.wp-block-button .wp-block-button__link';
 
+				$extra_body_class = $add_body_class ? 'body ' : '';
+
 				if ( 'color-typo' === self::elementor_default_color_font_setting() || 'color' === self::elementor_default_color_font_setting() || 'typo' === self::elementor_default_color_font_setting() ) {
 					$ele_btn_default_desktop = array(
 						'.elementor-button-wrapper .elementor-button' => array(
@@ -2741,7 +2763,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 							'border-left-width'   => ( isset( $global_custom_button_border_size['left'] ) && '' !== $global_custom_button_border_size['left'] ) ? astra_get_css_value( $global_custom_button_border_size['left'], 'px' ) : '0',
 							'border-bottom-width' => ( isset( $global_custom_button_border_size['bottom'] ) && '' !== $global_custom_button_border_size['bottom'] ) ? astra_get_css_value( $global_custom_button_border_size['bottom'], 'px' ) : '0',
 						),
-						'body .elementor-button.elementor-size-sm, body .elementor-button.elementor-size-xs, body .elementor-button.elementor-size-md, body .elementor-button.elementor-size-lg, body .elementor-button.elementor-size-xl, body .elementor-button' => array(
+						$extra_body_class . '.elementor-button.elementor-size-sm, ' . $extra_body_class . '.elementor-button.elementor-size-xs, ' . $extra_body_class . '.elementor-button.elementor-size-md, ' . $extra_body_class . '.elementor-button.elementor-size-lg, ' . $extra_body_class . '.elementor-button.elementor-size-xl, ' . $extra_body_class . '.elementor-button' => array(
 							'border-top-left-radius'     => astra_responsive_spacing( $btn_border_radius_fields, 'top', 'desktop' ),
 							'border-top-right-radius'    => astra_responsive_spacing( $btn_border_radius_fields, 'right', 'desktop' ),
 							'border-bottom-right-radius' => astra_responsive_spacing( $btn_border_radius_fields, 'bottom', 'desktop' ),
@@ -3854,6 +3876,19 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$parse_css      .= astra_parse_css( $single_blog_css, astra_get_tablet_breakpoint( '', 1 ) );
 			endif;
 
+			if ( self::astra_headings_clear_compatibility() && is_singular() ) {
+				/**
+				 * Fix with backward compatibility for single blogs heading text wrap with image issue.
+				 */
+				$parse_css .= astra_parse_css(
+					array(
+						'.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6' => array(
+							'clear' => 'none',
+						),
+					)
+				);
+			}
+
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			$blog_addon_condition = defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'blog-pro' );
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
@@ -4402,7 +4437,6 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					),
 				);
 
-
 					$widget_title_color      = astra_get_option( 'transparent-header-widget-title-color' );
 					$widget_content_color    = astra_get_option( 'transparent-header-widget-content-color' );
 					$widget_link_color       = astra_get_option( 'transparent-header-widget-link-color' );
@@ -4625,6 +4659,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			return apply_filters( 'elementor_container_padding', $astra_settings['elementor-container-padding-style'] );
 		}
 
+
+		/**
+		 * Added Elementor button styling support.
+		 *
+		 * @since 4.6.12
+		 * @return boolean
+		 */
+		public static function elementor_btn_styling_comp() {
+			$astra_settings                            = get_option( ASTRA_THEME_SETTINGS, array() );
+				$elementor_body_selector_compatibility = isset( $astra_settings['elementor-btn-styling'] ) && $astra_settings['elementor-btn-styling'] ? true : false;
+				return apply_filters( 'astra_elementor_button_body_selector_compatibility', $elementor_body_selector_compatibility );
+		}
 
 		/**
 		 * Return post meta CSS
@@ -6189,6 +6235,21 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 		public static function astra_4_6_4_compatibility() {
 			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
 			return apply_filters( 'astra_get_option_btn-stylings-upgrade', isset( $astra_settings['btn-stylings-upgrade'] ) ? false : true );
+		}
+
+		/**
+		 * Handle backward compatibility for heading `clear:both` css in single posts and pages.
+		 *
+		 * @return bool true|false If returns true then set `clear:none`.
+		 * @since 4.6.12
+		 */
+		public static function astra_headings_clear_compatibility() {
+			$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+			/**
+			 * If `single_posts_pages_heading_clear_none` is set then this user is probably old user
+			 * so in that case, we will not convert the "clear:both" to "clear:none" for old users.
+			 */
+			return apply_filters( 'astra_get_option_single_posts_pages_heading_clear_none', isset( $astra_settings['single_posts_pages_heading_clear_none'] ) ? false : true );
 		}
 	}
 }

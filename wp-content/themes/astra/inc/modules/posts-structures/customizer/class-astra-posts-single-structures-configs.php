@@ -317,6 +317,17 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 
 			$configurations = array_merge( $configurations, $this->get_layout_configuration( $parent_section, $post_type ) );
 
+			// Conditional tooltip.
+			$default_tooltip = __( "'None' respects hierarchy; 'Behind' positions the image under the article.", 'astra' );
+			$tooltip_product = __( "'None' respects hierarchy; 'Behind' position is not applicable for single product page.", 'astra' );
+
+			$second_layout_default_tooltip = __( "'None' respects hierarchy; 'Below' positions image on top of the article.", 'astra' );
+			$second_layout_tooltip_product = __( "'None' respects hierarchy; 'Below' position is not applicable for single product page.", 'astra' );
+
+			// Added check if current panel is for the single product option.
+			$tooltip_description               = ( $parent_section === 'section-woo-shop-single' ) ? $tooltip_product : $default_tooltip;
+			$second_layout_tooltip_description = ( $parent_section === 'section-woo-shop-single' ) ? $second_layout_tooltip_product : $second_layout_default_tooltip;
+
 			$_configs = array(
 
 				/**
@@ -490,7 +501,7 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 						'none'   => __( 'None', 'astra' ),
 						'behind' => __( 'Behind', 'astra' ),
 					),
-					'description' => __( "'None' respects hierarchy; 'Behind' positions the image under the article.", 'astra' ),
+					'description' => $tooltip_description,
 					'responsive'  => false,
 					'renderAs'    => 'text',
 				),
@@ -509,7 +520,7 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 						'none'  => __( 'None', 'astra' ),
 						'below' => __( 'Below', 'astra' ),
 					),
-					'description' => __( "'None' respects hierarchy; 'Below' positions image on top of the article.", 'astra' ),
+					'description' => $second_layout_tooltip_description,
 					'responsive'  => false,
 					'renderAs'    => 'text',
 				),

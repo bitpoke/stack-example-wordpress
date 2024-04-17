@@ -143,13 +143,13 @@ function astra_onload_function() {
 					editorDocument = iframe.contentWindow.document || iframe.contentDocument;
 				}
 
-		// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
-		if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
-			const _iframe = document.querySelector('.editor-canvas__iframe');
-			if ( !! _iframe ){
-				editorDocument = _iframe.contentWindow.document ;
-			}
-		}
+				// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
+				if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
+					const _iframe = document.querySelector('.editor-canvas__iframe');
+					if ( !! _iframe ){
+						editorDocument = _iframe.contentWindow.document ;
+					}
+				}
 
 				titleBlock = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
 
@@ -352,11 +352,11 @@ function astra_onload_function() {
 			}
 			else {
 				let editorArea = document.querySelector('.edit-post-visual-editor__content-area');
-				
+
 				if ( ! editorArea ) {
 					editorArea = document.querySelector('.edit-post-visual-editor');
 				}
-				
+
 				if ( editorArea ) {
 					editorArea.style.padding = '0px';
 				}

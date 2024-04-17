@@ -11,19 +11,21 @@ window.addEventListener( "load", function(e) {
 
 
 // Here we are selecting the node that will be observed for mutations.
-const astraminiCarttargetNode = document.getElementById("ast-site-header-cart");
+const astraminiCarttargetNodes = document.querySelectorAll(".ast-site-header-cart");
 
-if (astraminiCarttargetNode != null) {
-    const config = { attributes: false, childList: true, subtree: true };
-
-    const astraMinicartObserver = () => {
-        astrawpWooQuantityButtons();
-        quantityInput();
-    };
-
-    const observer = new MutationObserver(astraMinicartObserver);
-    observer.observe(astraminiCarttargetNode, config);
-}
+astraminiCarttargetNodes.forEach(function(astraminiCarttargetNode) {
+    if (astraminiCarttargetNode != null) {
+        const config = { attributes: false, childList: true, subtree: true };
+    
+        const astraMinicartObserver = () => {
+            astrawpWooQuantityButtons();
+            quantityInput();
+        };
+    
+        const observer = new MutationObserver(astraMinicartObserver);
+        observer.observe(astraminiCarttargetNode, config);
+    }
+});
 
 /**This comment explains that in order to refresh the wc_fragments_refreshed event when an AJAX call is made, jQuery is used to update the quantity button.
  * Here plain JavaScript may not be able to trigger the wc_fragments_refreshed event in the same way,
@@ -37,13 +39,16 @@ jQuery( function( $ ) {
 });
 
 (function() {
-    var send = XMLHttpRequest.prototype.send
-    XMLHttpRequest.prototype.send = function() {
-        this.addEventListener('load', function() {
-            astrawpWooQuantityButtons();
-        })
-        return send.apply(this, arguments)
-    }
+    // Delay the method override so that we do not interfere with the Metrix test.
+    setTimeout(() => {
+        var send = XMLHttpRequest.prototype.send
+        XMLHttpRequest.prototype.send = function() {
+            this.addEventListener('load', function() {
+                astrawpWooQuantityButtons();
+            })
+            return send.apply(this, arguments)
+        }
+    }, 2000);
 })();
 
 /**
