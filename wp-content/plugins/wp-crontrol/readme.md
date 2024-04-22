@@ -1,9 +1,9 @@
 # WP Crontrol
 
 Contributors: johnbillion, scompt  
-Tags: cron, wp-cron, crontrol, debug  
+Tags: cron, wp-cron, crontrol, debug, woocommerce  
 Tested up to: 6.5  
-Stable tag: 1.16.2  
+Stable tag: 1.16.3  
 Donate link: https://github.com/sponsors/johnbillion
 
 WP Crontrol enables you to take control of the cron events on your WordPress website.
@@ -45,7 +45,7 @@ WP Crontrol aims to be fully accessible to all of its users. [WP Crontrol's full
 
 ### Does this plugin work with PHP 8?
 
-Yes, it's actively tested and working up to PHP 8.2.
+Yes, it's actively tested and working up to PHP 8.3.
 
 ### I get the error "There was a problem spawning a call to the WP-Cron system on your site". How do I fix this?
 
@@ -190,6 +190,10 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 3. New cron schedules can be added, giving plugin developers more options when scheduling events<br>![](.wordpress-org/screenshot-3.png)
 
 ## Changelog ##
+
+### 1.16.3 ###
+
+* Corrects the displayed PHP cron event name if one is provided
 
 ### 1.16.2 ###
 
@@ -367,3 +371,10 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 * Improvements to help text.
 * Remove usage of `create_function()`.
 * Fix some translator comments, improve i18n, improve coding standards.
+
+### 1.5.0 ###
+
+* Show the hooked actions for each cron event.
+* Don't show the `Delete` link for core's built-in cron events, as they get re-populated immediately.
+* Correct the success message after adding or editing PHP cron events.
+* Correct the translations directory name.
