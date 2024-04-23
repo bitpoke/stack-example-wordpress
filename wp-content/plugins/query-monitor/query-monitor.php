@@ -4,19 +4,22 @@
  *
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
- * @author    John Blackbourn <john@johnblackbourn.com>
- * @copyright 2009-2023 John Blackbourn
+ * @author    John Blackbourn
+ * @copyright 2009-2024 John Blackbourn
  * @license   GPL v2 or later
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress.
- * Version:      3.15.0
+ * Version:      3.16.2
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
+ * Requires at least: 5.7
  * Requires PHP: 7.4
+ * License URI:  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * License:      GPL v2 or later
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '3.15.0' );
+define( 'QM_VERSION', '3.16.2' );
 
 $qm_dir = dirname( __FILE__ );
 
