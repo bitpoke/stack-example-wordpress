@@ -74,7 +74,7 @@ class Astra_Menu {
 	 */
 	public function initialize_hooks() {
 
-		self::$page_title  = apply_filters( 'astra_page_title', __( 'Astra', 'astra' ) );
+		self::$page_title  = apply_filters( 'astra_page_title', esc_html__( 'Astra', 'astra' ) );
 		self::$plugin_slug = self::get_theme_page_slug();
 
 		add_action( 'admin_menu', array( $this, 'setup_menu' ) );
@@ -171,7 +171,7 @@ class Astra_Menu {
 		}
 
 		// Rename to Home menu.
-		$submenu[ self::$plugin_slug ][0][0] = __( 'Dashboard', 'astra' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
+		$submenu[ self::$plugin_slug ][0][0] = esc_html__( 'Dashboard', 'astra' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to rename the home menu.
 	}
 
 	/**
@@ -272,11 +272,11 @@ class Astra_Menu {
 			'plugin_installer_nonce' => wp_create_nonce( 'updates' ),
 			'free_vs_pro_link'       => admin_url( 'admin.php?page=' . self::$plugin_slug . '&path=free-vs-pro' ),
 			'show_builder_migration' => Astra_Builder_Helper::is_header_footer_builder_active(),
-			'plugin_installing_text' => __( 'Installing', 'astra' ),
-			'plugin_installed_text'  => __( 'Installed', 'astra' ),
-			'plugin_activating_text' => __( 'Activating', 'astra' ),
-			'plugin_activated_text'  => __( 'Activated', 'astra' ),
-			'plugin_activate_text'   => __( 'Activate', 'astra' ),
+			'plugin_installing_text' => esc_html__( 'Installing', 'astra' ),
+			'plugin_installed_text'  => esc_html__( 'Installed', 'astra' ),
+			'plugin_activating_text' => esc_html__( 'Activating', 'astra' ),
+			'plugin_activated_text'  => esc_html__( 'Activated', 'astra' ),
+			'plugin_activate_text'   => esc_html__( 'Activate', 'astra' ),
 			'starter_templates_data' => self::get_starter_template_plugin_data(),
 			'astra_docs_data'        => astra_remote_docs_data(),
 			'upgrade_notice'         => astra_showcase_upgrade_notices(),

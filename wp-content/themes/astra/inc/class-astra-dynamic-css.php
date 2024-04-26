@@ -566,7 +566,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$css_output                      = array(
 
 				':root'                                  => array(
-					'--ast-post-nav-space'                => 0, // Moved from inc/dynamic-css/single-post.php for the fix of post-navigation issue for the old users. @since x.x.x
+					'--ast-post-nav-space'                => 0, // Moved from inc/dynamic-css/single-post.php for the fix of post-navigation issue for the old users. @since 4.6.13
 					'--ast-container-default-xlg-padding' => ( true === $update_customizer_strctural_defaults ) ? $article_space : '6.67em',
 					'--ast-container-default-lg-padding'  => ( true === $update_customizer_strctural_defaults ) ? $article_space : '5.67em',
 					'--ast-container-default-slg-padding' => ( true === $update_customizer_strctural_defaults ) ? '2em' : '4.34em',
@@ -1223,7 +1223,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						),
 					),
 					'',
-					astra_get_tablet_breakpoint()
+					absint( astra_get_tablet_breakpoint() ) + 0.9
 				);
 
 				$parse_css .= astra_parse_css(
@@ -1337,7 +1337,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				/**
 				 * CSS for post navigation design break for the old users.
 				 */
-				$parse_css .= Astra_Enqueue_Scripts::trim_css( '
+				$parse_css .= Astra_Enqueue_Scripts::trim_css(
+					'
 				@media( max-width: 420px ) {
 					.single .nav-links .nav-previous,
 					.single .nav-links .nav-next {
@@ -1345,7 +1346,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						text-align: center;
 					}
 				}
-				');
+				'
+				);
 			}
 
 			// Navigation CSS.

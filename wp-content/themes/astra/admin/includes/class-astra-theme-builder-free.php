@@ -78,7 +78,7 @@ if ( ! class_exists( 'Astra_Theme_Builder_Free' ) ) {
 			wp_enqueue_style( 'dashicons' );
 
 			$localized_data = array(
-				'title'                      => __( 'Site Builder', 'astra' ),
+				'title'                      => esc_html__( 'Site Builder', 'astra' ),
 				'rest_url'                   => '/wp-json/astra-addon/v1/custom-layouts/',
 				'new_custom_layout_base_url' => admin_url( 'post-new.php?post_type=astra-advanced-hook' ),
 				'astra_pricing_page_url'     => 'https://wpastra.com/pricing/',

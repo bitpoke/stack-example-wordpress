@@ -352,8 +352,9 @@ class Astra_Related_Posts_Markup {
 					'open'  => '<a %s>',
 					'echo'  => false,
 					'attrs' => array(
-						'class' => '',
-						'href'  => esc_url( get_permalink() ),
+						'class'      => '',
+						'aria-label' => sprintf( __( 'Read more about %s', 'astra' ), esc_attr( get_the_title( $current_post_id ) ) ),
+						'href'       => esc_url( get_permalink() ),
 					),
 				)
 			);

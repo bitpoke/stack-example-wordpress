@@ -583,6 +583,11 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'mobile'  => 'full',
 	);
 
+	/**
+	 * Primary Footer Default Height.
+	 */
+	$defaults['hb-primary-footer-height'] = '';
+
 	$defaults['hba-footer-layout-width'] = 'content';
 	$defaults['hb-footer-layout-width']  = 'content';
 	$defaults['hbb-footer-layout-width'] = 'content';

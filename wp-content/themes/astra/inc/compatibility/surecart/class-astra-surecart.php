@@ -54,6 +54,23 @@ class Astra_SureCart {
 		// Boxed layout support.
 		add_filter( 'astra_is_content_layout_boxed', array( $this, 'sc_shop_content_boxed_layout' ) );
 		add_filter( 'astra_is_sidebar_layout_boxed', array( $this, 'sc_shop_sidebar_boxed_layout' ) );
+		add_action( 'customize_register', array( $this, 'customize_register' ), 2 );
+	}
+
+		/**
+		 * Register Customizer sections and panel for SureCart.
+		 *
+		 * @since 4.6.13
+		 * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+		 */
+	public function customize_register( $wp_customize ) {
+
+		// @codingStandardsIgnoreStart WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+		/**
+		 * Register Sections & Panels
+		 */
+		require ASTRA_THEME_DIR . 'inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php';
+		
 	}
 
 	/**

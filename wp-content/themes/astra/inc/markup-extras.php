@@ -502,7 +502,7 @@ if ( ! function_exists( 'astra_number_pagination' ) ) {
 				'next_text'          => astra_default_strings( 'string-blog-navigation-next', false ),
 				'taxonomy'           => 'category',
 				'in_same_term'       => true,
-				'screen_reader_text' => __( 'Post pagination', 'astra' ),
+				'screen_reader_text' => esc_html__( 'Post pagination', 'astra' ),
 			)
 		);
 		/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
@@ -799,7 +799,7 @@ if ( ! function_exists( 'astra_get_custom_html' ) ) {
 		if ( ! empty( $custom_html_content ) ) {
 			$custom_html = '<div class="ast-custom-html">' . do_shortcode( wp_kses_post( $custom_html_content ) ) . '</div>';
 		} elseif ( current_user_can( 'edit_theme_options' ) ) {
-			$custom_html = '<a href="' . esc_url( admin_url( 'customize.php?autofocus[control]=' . ASTRA_THEME_SETTINGS . '[' . $option_name . ']' ) ) . '">' . __( 'Add Custom HTML', 'astra' ) . '</a>';
+			$custom_html = '<a href="' . esc_url( admin_url( 'customize.php?autofocus[control]=' . ASTRA_THEME_SETTINGS . '[' . $option_name . ']' ) ) . '">' . esc_html__( 'Add Custom HTML', 'astra' ) . '</a>';
 		}
 
 		return $custom_html;
@@ -938,7 +938,7 @@ if ( ! function_exists( 'astra_get_small_footer_custom_text' ) ) {
 			$theme_author = apply_filters(
 				'astra_theme_author',
 				array(
-					'theme_name'       => __( 'Astra WordPress Theme', 'astra' ),
+					'theme_name'       => 'Astra ' . esc_html__( 'WordPress Theme', 'astra' ),
 					'theme_author_url' => 'https://wpastra.com/',
 				)
 			);
@@ -1980,7 +1980,7 @@ if ( ! function_exists( 'astra_get_theme_name' ) ) :
 	 */
 	function astra_get_theme_name() {
 
-		$theme_name = __( 'Astra', 'astra' );
+		$theme_name = 'Astra';
 
 		return apply_filters( 'astra_theme_name', $theme_name );
 	}
@@ -1996,7 +1996,7 @@ if ( ! function_exists( 'astra_get_addon_name' ) ) :
 	 */
 	function astra_get_addon_name() {
 
-		$pro_name = __( 'Astra Pro', 'astra' );
+		$pro_name = 'Astra Pro';
 		// If addon is not updated & White Label added for Addon then show the updated addon name.
 		if ( class_exists( 'Astra_Ext_White_Label_Markup' ) ) {
 

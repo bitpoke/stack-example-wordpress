@@ -1,3 +1,15 @@
+v4.6.13
+- New: Footer Builder - Introducing a new height option for the primary footer row.
+- Improved codebase for improved security.
+- Improvement: Related Posts - Improved accessibility by adding aria-labels.
+- Improvement: Improved accessibility by adding aria-label dynamically for navigational menus.
+- Improvement: Rearranged SureCart dynamic CPT sections added in one panel in the customizer.
+- Fix: Pinterest embed block is displaying half and blurry images.
+- Fix: Header menu gets duplicates when screen resolution set to 150%.
+- Fix: Some strings in astra.pot are not available on translate.wordpress.org
+- Fix: Inconsistency in Audio-Video shortcodes block bottom spacing.
+- Fix: Submenu dropdown arrow not aligned properly when flyout is set and content alignment is set to right.
+
 v4.6.12
 - Improvement: Header Builder - Account - Login popup form rendering multiple times.
 - Improvement: Added gap between the Transparent Header and the Login Password Form.

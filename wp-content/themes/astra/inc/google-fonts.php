@@ -2879,7 +2879,7 @@ return array(
 	),
 	array(
 		'Gelasio' => array(
-			'variants' => array( 'regular', 'italic', '500', '500italic', '600', '600italic', '700', '700italic' ),
+			'variants' => array( 'regular', '500', '600', '700', 'italic', '500italic', '600italic', '700italic' ),
 			'category' => 'serif',
 		),
 	),
@@ -3664,7 +3664,25 @@ return array(
 		),
 	),
 	array(
+		'Jacquard 12 Charted' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jacquard 24' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
 		'Jacquarda Bastarda 9' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jacquarda Bastarda 9 Charted' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
 		),
@@ -3685,6 +3703,48 @@ return array(
 		'Jaldi' => array(
 			'variants' => array( 'regular', '700' ),
 			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Jersey 10' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jersey 10 Charted' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jersey 15' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jersey 15 Charted' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jersey 20' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jersey 20 Charted' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Jersey 25' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
 		),
 	),
 	array(
@@ -4925,6 +4985,12 @@ return array(
 	),
 	array(
 		'Micro 5' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Micro 5 Charted' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
 		),
@@ -6658,6 +6724,12 @@ return array(
 		),
 	),
 	array(
+		'Noto Znamenny Musical Notation' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Nova Cut' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
@@ -7156,6 +7228,12 @@ return array(
 		),
 	),
 	array(
+		'Platypi' => array(
+			'variants' => array( '300', 'regular', '500', '600', '700', '800', '300italic', 'italic', '500italic', '600italic', '700italic', '800italic' ),
+			'category' => 'serif',
+		),
+	),
+	array(
 		'Play' => array(
 			'variants' => array( 'regular', '700' ),
 			'category' => 'sans-serif',
@@ -7603,6 +7681,12 @@ return array(
 		'Redacted Script' => array(
 			'variants' => array( '300', 'regular', '700' ),
 			'category' => 'display',
+		),
+	),
+	array(
+		'Reddit Mono' => array(
+			'variants' => array( '200', '300', 'regular', '500', '600', '700', '800', '900' ),
+			'category' => 'monospace',
 		),
 	),
 	array(
@@ -8197,6 +8281,12 @@ return array(
 		'Secular One' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Sedan' => array(
+			'variants' => array( 'regular', 'italic' ),
+			'category' => 'serif',
 		),
 	),
 	array(
@@ -8842,6 +8932,12 @@ return array(
 		),
 	),
 	array(
+		'Tac One' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Tai Heritage Pro' => array(
 			'variants' => array( 'regular', '700' ),
 			'category' => 'serif',
@@ -9469,6 +9565,30 @@ return array(
 		'Yantramanav' => array(
 			'variants' => array( '100', '300', 'regular', '500', '700', '900' ),
 			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Yarndings 12' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Yarndings 12 Charted' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Yarndings 20' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
+		'Yarndings 20 Charted' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
 		),
 	),
 	array(

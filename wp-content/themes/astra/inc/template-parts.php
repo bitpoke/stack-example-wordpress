@@ -170,7 +170,7 @@ if ( ! function_exists( 'astra_masthead_toggle_buttons_primary' ) ) {
 		if ( ! $disable_primary_navigation || ( 'none' != $custom_header_section && ! $display_outside_menu ) ) {
 			$menu_title          = trim( apply_filters( 'astra_main_menu_toggle_label', astra_get_option( 'header-main-menu-label' ) ) );
 			$menu_label_class    = '';
-			$screen_reader_title = __( 'Main Menu', 'astra' );
+			$screen_reader_title = esc_html__( 'Main Menu', 'astra' );
 			if ( '' !== $menu_title ) {
 				$menu_label_class    = 'ast-menu-label';
 				$screen_reader_title = $menu_title;

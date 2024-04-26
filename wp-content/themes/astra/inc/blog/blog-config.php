@@ -488,7 +488,7 @@ if ( ! function_exists( 'astra_post_link' ) ) {
 			return $output_filter;
 		}
 
-		$more_label        = Astra_Dynamic_CSS::astra_4_6_0_compatibility() ? __( 'Read Post »', 'astra' ) : __( 'Read More »', 'astra' );
+		$more_label        = Astra_Dynamic_CSS::astra_4_6_0_compatibility() ? esc_html__( 'Read Post »', 'astra' ) : esc_html__( 'Read More »', 'astra' );
 		$read_more_text    = apply_filters( 'astra_post_read_more', $more_label );
 		$read_more_classes = apply_filters( 'astra_post_read_more_class', array() );
 

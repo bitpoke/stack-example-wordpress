@@ -427,7 +427,7 @@ function astra_get_theme_author_details() {
 	$theme_author = apply_filters(
 		'astra_theme_author',
 		array(
-			'theme_name'       => __( 'Astra WordPress Theme', 'astra' ),
+			'theme_name'       => esc_html__( 'Astra WordPress Theme', 'astra' ),
 			'theme_author_url' => 'https://wpastra.com/',
 		)
 	);
@@ -1133,11 +1133,11 @@ function astra_get_font_array_css( $font_family, $font_weight, $font_size, $font
  */
 function astra_get_site_image_sizes( $add_custom = false ) {
 	$image_sizes = array(
-		'thumbnail'    => __( 'Thumbnail', 'astra' ),
-		'medium'       => __( 'Medium', 'astra' ),
-		'medium_large' => __( 'Medium Large', 'astra' ),
-		'large'        => __( 'Large', 'astra' ),
-		'full'         => __( 'Full Size', 'astra' ),
+		'thumbnail'    => esc_html__( 'Thumbnail', 'astra' ),
+		'medium'       => esc_html__( 'Medium', 'astra' ),
+		'medium_large' => esc_html__( 'Medium Large', 'astra' ),
+		'large'        => esc_html__( 'Large', 'astra' ),
+		'full'         => esc_html__( 'Full Size', 'astra' ),
 	);
 
 	// Gets the available intermediate image size names on site.
@@ -1145,7 +1145,7 @@ function astra_get_site_image_sizes( $add_custom = false ) {
 
 
 	$refactored_sizes = array(
-		'full' => __( 'Full Size', 'astra' ),
+		'full' => esc_html__( 'Full Size', 'astra' ),
 	);
 
 	foreach ( $all_sizes as $size ) {
@@ -1159,7 +1159,7 @@ function astra_get_site_image_sizes( $add_custom = false ) {
 	/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 	if ( $add_custom && defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'blog-pro' ) ) {
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$refactored_sizes['custom'] = __( 'Custom', 'astra' );
+		$refactored_sizes['custom'] = esc_html__( 'Custom', 'astra' );
 	}
 
 	return $refactored_sizes;
@@ -1232,7 +1232,6 @@ function astra_get_queried_post_types() {
 			'astra_adv_header',
 			'elementor_library',
 			'brizy_template',
-			'sc_collection',
 
 			'course',
 			'lesson',

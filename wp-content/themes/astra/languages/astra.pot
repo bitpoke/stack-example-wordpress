@@ -2,21 +2,20 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.6.12\n"
+"Project-Id-Version: Astra 4.6.13\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-16T10:49:11+00:00\n"
+"POT-Creation-Date: 2024-04-25T04:04:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
 
 #. Theme Name of the theme
 #: admin/includes/class-astra-menu.php:77
-#: inc/markup-extras.php:1983
 msgid "Astra"
 msgstr ""
 
@@ -183,8 +182,8 @@ msgstr ""
 #. translators: %s Index
 #: admin/includes/class-astra-menu.php:320
 #: inc/compatibility/edd/customizer/sections/layout/class-astra-edd-archive-layout-configs.php:154
-#: inc/core/builder/class-astra-builder-options.php:1306
-#: inc/core/builder/class-astra-builder-options.php:1476
+#: inc/core/builder/class-astra-builder-options.php:1311
+#: inc/core/builder/class-astra-builder-options.php:1481
 #: inc/core/class-astra-theme-options.php:473
 #: inc/customizer/configurations/builder/base/class-astra-button-component-configs.php:67
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:151
@@ -409,6 +408,7 @@ msgstr ""
 #: admin/includes/class-astra-menu.php:766
 #: admin/includes/class-astra-menu.php:843
 #: admin/includes/class-astra-menu.php:914
+#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:39
 msgid "SureCart"
 msgstr ""
 
@@ -1015,7 +1015,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/footer/configs/copyright.php:143
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:263
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:288
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:132
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:152
 #: inc/customizer/configurations/builder/header/configs/account.php:512
 #: inc/customizer/configurations/builder/header/configs/header-builder.php:487
 #: inc/customizer/configurations/builder/header/configs/menu.php:271
@@ -1130,7 +1130,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/footer/configs/copyright.php:145
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:265
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:290
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:134
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:154
 #: inc/customizer/configurations/builder/header/configs/account.php:514
 #: inc/customizer/configurations/builder/header/configs/header-builder.php:489
 #: inc/customizer/configurations/builder/header/configs/menu.php:273
@@ -1510,7 +1510,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:229
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:229
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:130
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:213
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:233
 #: inc/customizer/configurations/builder/header/configs/above-header.php:77
 #: inc/customizer/configurations/builder/header/configs/below-header.php:77
 #: inc/customizer/configurations/builder/header/configs/menu.php:392
@@ -1713,7 +1713,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/base/class-astra-button-component-configs.php:239
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:209
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:209
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:189
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:209
 #: inc/customizer/configurations/builder/header/configs/menu.php:288
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:238
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:443
@@ -1935,13 +1935,16 @@ msgstr ""
 msgid "Add widgets here:"
 msgstr ""
 
-#: inc/builder/type/footer/menu/class-astra-footer-menu-component.php:84
+#: inc/builder/type/footer/menu/class-astra-footer-menu-component.php:85
+#: inc/builder/type/header/menu/class-astra-header-menu-component.php:96
+#: inc/builder/type/header/mobile-menu/class-astra-mobile-menu-component.php:81
+msgid "Site Navigation: "
+msgstr ""
+
 #: inc/builder/type/header/account/class-astra-header-account-component.php:66
 #: inc/builder/type/header/account/class-astra-header-account-component.php:136
-#: inc/builder/type/header/menu/class-astra-header-menu-component.php:95
-#: inc/builder/type/header/menu/class-astra-header-menu-component.php:144
-#: inc/builder/type/header/mobile-menu/class-astra-mobile-menu-component.php:80
-#: inc/builder/type/header/mobile-menu/class-astra-mobile-menu-component.php:127
+#: inc/builder/type/header/menu/class-astra-header-menu-component.php:145
+#: inc/builder/type/header/mobile-menu/class-astra-mobile-menu-component.php:128
 #: inc/markup-extras.php:1199
 #: inc/markup-extras.php:1235
 msgid "Site Navigation"
@@ -2143,7 +2146,7 @@ msgstr ""
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/settings/Settings.js:27
 #: inc/customizer/extend-custom-controls/src/builder-layout/builder-header-control.js:27
-#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:114
+#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:42
 msgid "General"
 msgstr ""
 
@@ -2610,6 +2613,18 @@ msgctxt "Theme starter content"
 msgid "Home"
 msgstr ""
 
+#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:48
+msgid "Products"
+msgstr ""
+
+#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:55
+msgid "Collection"
+msgstr ""
+
+#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:62
+msgid "Upsell"
+msgstr ""
+
 #: inc/compatibility/woocommerce/class-astra-woocommerce.php:303
 msgid "Sale!"
 msgstr ""
@@ -2617,6 +2632,10 @@ msgstr ""
 #: inc/compatibility/woocommerce/class-astra-woocommerce.php:362
 #: inc/compatibility/woocommerce/class-astra-woocommerce.php:1173
 msgid "WooCommerce Sidebar"
+msgstr ""
+
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:473
+msgid "This is a demo store for testing purposes &mdash; no orders shall be fulfilled."
 msgstr ""
 
 #. translators: 1: number of products
@@ -2991,7 +3010,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:172
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:172
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:83
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:152
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:172
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:412
 msgid "Inline"
 msgstr ""
@@ -3000,7 +3019,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:171
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:171
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:84
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:151
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:171
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:416
 msgid "Stack"
 msgstr ""
@@ -3190,16 +3209,16 @@ msgstr ""
 msgid "Toggle Button"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1228
+#: inc/core/builder/class-astra-builder-options.php:1233
 msgid "Log In"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1229
+#: inc/core/builder/class-astra-builder-options.php:1234
 msgid "My Account"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1652
-#: inc/core/builder/class-astra-builder-options.php:1691
+#: inc/core/builder/class-astra-builder-options.php:1657
+#: inc/core/builder/class-astra-builder-options.php:1696
 msgid "Insert HTML text here."
 msgstr ""
 
@@ -4041,6 +4060,7 @@ msgstr ""
 
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:127
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:127
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:126
 #: inc/customizer/configurations/builder/header/configs/above-header.php:55
 #: inc/customizer/configurations/builder/header/configs/below-header.php:55
 #: inc/customizer/configurations/builder/header/configs/primary-header.php:67
@@ -4052,7 +4072,7 @@ msgstr ""
 
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:150
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:150
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:130
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:150
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:515
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:940
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:283
@@ -4061,7 +4081,7 @@ msgstr ""
 
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:153
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:153
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:133
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:153
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:518
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:943
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:286
@@ -4070,20 +4090,20 @@ msgstr ""
 
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:169
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:169
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:149
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:169
 msgid "Inner Elements Layout"
 msgstr ""
 
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:186
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:186
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:168
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:188
 #: inc/customizer/configurations/layout/class-astra-footer-layout-configs.php:387
 msgid "Top Border Size"
 msgstr ""
 
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:244
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:244
-#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:227
+#: inc/customizer/configurations/builder/footer/configs/primary-footer.php:247
 msgid "Inner Column Spacing"
 msgstr ""
 
@@ -5331,7 +5351,6 @@ msgid "Customizing &#9656; %s"
 msgstr ""
 
 #: inc/extras.php:430
-#: inc/markup-extras.php:941
 msgid "Astra WordPress Theme"
 msgstr ""
 
@@ -5358,10 +5377,6 @@ msgstr ""
 msgid "Full Size"
 msgstr ""
 
-#: inc/lib/astra-notices/class-astra-notices.php:119
-msgid "WordPress Nonce not validated."
-msgstr ""
-
 #. translators: %d: Minutes interval
 #: inc/lib/batch-processing/class-astra-wp-background-process.php:425
 msgid "Every %d Minutes"
@@ -5379,6 +5394,10 @@ msgstr ""
 msgid "Add Custom HTML"
 msgstr ""
 
+#: inc/markup-extras.php:941
+msgid "WordPress Theme"
+msgstr ""
+
 #: inc/markup-extras.php:982
 msgid "Assign Footer Menu"
 msgstr ""
@@ -5389,10 +5408,6 @@ msgstr ""
 
 #: inc/markup-extras.php:1686
 msgid "Click here to assign a widget for this area."
-msgstr ""
-
-#: inc/markup-extras.php:1999
-msgid "Astra Pro"
 msgstr ""
 
 #. Translators: %s is the theme name.
@@ -5685,14 +5700,14 @@ msgstr ""
 msgid "Custom Post Types"
 msgstr ""
 
-#: inc/modules/posts-structures/customizer/class-astra-posts-structures-configs.php:125
+#: inc/modules/posts-structures/customizer/class-astra-posts-structures-configs.php:116
 #: admin/assets/theme-builder/build/index.js:1
 #: admin/assets/theme-builder/src/utils/layoutItems.js:231
 #: admin/assets/theme-builder/src/utils/sidebarItems.js:110
 msgid "Archive"
 msgstr ""
 
-#: inc/modules/posts-structures/customizer/class-astra-posts-structures-configs.php:134
+#: inc/modules/posts-structures/customizer/class-astra-posts-structures-configs.php:125
 #: admin/assets/theme-builder/build/index.js:1
 #: admin/assets/theme-builder/src/utils/layoutItems.js:200
 #: admin/assets/theme-builder/src/utils/sidebarItems.js:89
@@ -5708,6 +5723,10 @@ msgstr ""
 
 #: inc/modules/related-posts/class-astra-related-posts-markup.php:237
 msgid "Related post link"
+msgstr ""
+
+#: inc/modules/related-posts/class-astra-related-posts-markup.php:356
+msgid "Read more about %s"
 msgstr ""
 
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:51
@@ -5929,8 +5948,8 @@ msgstr ""
 #: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:54
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:129
 #: admin/assets/src/dashboard-app/pages/welcome/ExtensionCard.js:113
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:93
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:315
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:90
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:313
 msgid "PRO"
 msgstr ""
 
@@ -5946,19 +5965,19 @@ msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:112
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:309
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:307
 msgid "Priority Support"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:119
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:319
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:317
 msgid "We aim to answer all priority support requests within 2-3 hours."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:130
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:330
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:328
 msgid "Learn More →"
 msgstr ""
 
@@ -6043,13 +6062,28 @@ msgid "Deactivate all"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:75
+msgid "Welcome Banner"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:80
 msgid "Hello "
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:97
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:86
+msgid "Welcome to %s"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:94
 msgid "FREE"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:101
+msgid "%s is fast, fully customizable & beautiful WordPress theme suitable for blog, personal portfolio, business website and WooCommerce storefront. It is very lightweight and offers unparalleled speed."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
@@ -6063,6 +6097,11 @@ msgid "Watch the Quick Starter Guide"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:176
+msgid "Quick Links"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:182
 msgid "Quick Settings"
 msgstr ""
@@ -6070,6 +6109,17 @@ msgstr ""
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:190
 msgid "Go to Customizer"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:200
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:211
+msgid "Do more with %s Modules"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:207
+msgid "%s Modules"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
@@ -6081,42 +6131,65 @@ msgid "Activate Now"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:293
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:247
+msgid "Astra Integrations"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:253
+msgid "%s Integrations"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:266
+msgid "Your License"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:286
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:291
 msgid "Useful Plugins"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:343
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:301
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:336
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:363
+msgid "Section title"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:341
 msgid "Join the Community"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:346
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:344
 msgid "Got a question about the plugin, want to share your awesome project or just say hi? Join our wonderful community!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:357
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:355
 msgid "Join Now →"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:370
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:368
 msgid "Rate Us"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:390
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:388
 msgid "Based on 5k+ reviews"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:397
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:395
 msgid "We love to hear from you, we would appreciate every single review."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:408
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:406
 msgid "Submit a Review →"
 msgstr ""
 
@@ -6819,7 +6892,7 @@ msgid "Color Preset"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/builder-layout/builder-header-control.js:28
-#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:123
+#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:51
 msgid "Design"
 msgstr ""
 
@@ -6843,15 +6916,11 @@ msgstr ""
 msgid "Show Builder"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:76
+#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:22
 msgid "Clone element"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:90
-msgid "Delete element from customizer"
-msgstr ""
-
-#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:131
+#: inc/customizer/extend-custom-controls/src/builder-layout/item-component.js:59
 msgid "Remove element from grid"
 msgstr ""
 

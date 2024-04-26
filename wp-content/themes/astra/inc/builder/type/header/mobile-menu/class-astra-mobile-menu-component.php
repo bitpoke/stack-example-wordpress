@@ -71,13 +71,14 @@ class Astra_Mobile_Menu_Component {
 		 */
 		$menu_classes = apply_filters( 'astra_primary_menu_classes', array( 'main-header-menu', 'ast-nav-menu', 'ast-flex', $submenu_class, $stack_on_mobile_class ) );
 
+		$menu_name   = wp_get_nav_menu_name( $theme_location );
 		$items_wrap  = '<nav ';
 		$items_wrap .= astra_attr(
 			'site-navigation',
 			array(
 				'id'         => 'ast-' . esc_attr( $device ) . '-site-navigation',
 				'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility site-header-focus-item',
-				'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
+				'aria-label' => esc_attr__( 'Site Navigation: ', 'astra' ) . $menu_name,
 			)
 		);
 		$items_wrap .= '>';
