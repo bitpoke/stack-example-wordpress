@@ -348,7 +348,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 			?>
 
-			<div class="ast-header-account-wrap">
+			<div class="ast-header-account-wrap" tabindex="0">
 				<?php
 				if ( $is_customizer ) {
 					self::render_customizer_edit_button();

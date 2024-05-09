@@ -517,15 +517,19 @@ function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
 		'ast-hf-menu-10-sticky',
 		'ast-hf-account-menu',
 	);
-	
+
 	$is_special_menu = in_array( $args->menu_id, $special_menu_ids );
-	
+
 	if ( $is_nav_menu_extension_inactive || $is_special_menu ) {
 		$icon = Astra_Icons::get_icons( 'arrow' );
-	}   
+	}
 
-	$custom_tabindex  = true === Astra_Builder_Helper::$is_header_footer_builder_active ? 'tabindex="0"' : '';
-	$astra_arrow_icon = '<span role="' . esc_attr( $role ) . '" class="dropdown-menu-toggle ast-header-navigation-arrow" ' . $custom_tabindex . ' aria-expanded="false" aria-label="' . esc_attr__( 'Menu Toggle', 'astra' ) . '" >' . $icon . '</span>';
+	$astra_arrow_icon = '';
+	// Render arrow icon for special menu appearance or on pro deactivation or nav menu extension deactivation.
+	if ( $is_special_menu || $is_nav_menu_extension_inactive || ! defined( 'ASTRA_EXT_VER' ) ) {
+		$custom_tabindex  = true === Astra_Builder_Helper::$is_header_footer_builder_active ? 'tabindex="0"' : '';
+		$astra_arrow_icon = '<span role="' . esc_attr( $role ) . '" class="dropdown-menu-toggle ast-header-navigation-arrow" ' . $custom_tabindex . ' aria-expanded="false" aria-label="' . esc_attr__( 'Menu Toggle', 'astra' ) . '" >' . $icon . '</span>';
+	}
 
 	foreach ( $item->classes as $value ) {
 		if ( 'menu-item-has-children' === $value ) {
@@ -1177,15 +1181,13 @@ function astra_get_site_image_sizes( $add_custom = false ) {
  * @return string
  */
 function astra_get_dynamic_image_aspect_ratio( $aspect_ratio_type, $predefined_scale, $custom_scale_width, $custom_scale_height ) {
-	$aspect_ratio_css = '';
-	if ( 'default' !== $aspect_ratio_type ) {
-		if ( 'custom' === $aspect_ratio_type ) {
-			$aspect_ratio_css = absint( $custom_scale_width ) . '/' . absint( $custom_scale_height );
-		} else {
-			$aspect_ratio_css = $predefined_scale;
-		}
+	switch ( $aspect_ratio_type ) {
+		case 'predefined':
+			return $predefined_scale;
+		case 'custom':
+			return absint( $custom_scale_width ) . '/' . absint( $custom_scale_height );
 	}
-	return $aspect_ratio_css;
+	return '';
 }
 
 /**

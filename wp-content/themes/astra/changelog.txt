@@ -1,3 +1,21 @@
+v4.6.14
+- Improvement: Improved accessibility for navigational menus.
+- Improvement: Header Builder - Menu - Navigation creates duplicated identical links.
+- Improvement: Code optimization for improved performance under DRY principle. (Props [justintadlock](https://github.com/justintadlock))
+- Improvement: Typography - Clicking on active Line Height Unit, Text Decoration, Text Transform sub options can revert to default.
+- Improvement: Body line-height unit set to empty so unitless line-height can be used on fresh setup.
+- Improvement: Separate option to disable Transparent Header on 404, Search & Archives pages.
+- Improvement: Corrected Dashboard link navigation from Site Builder's UI breadcrumb.
+- Fix: Legacy Header: Search widget is not visible on mobile device as last item menu with "Full Screen" and "Header Cover" options.
+- Fix: The Blog/Archive title banner layout type 2 overrides the Search page's title banner of layout type 1.
+- Fix: Related Posts - Appearance issue with featured image aspect ratio.
+- Fix: "astra_after_archive_title" hooks is not working with the "Layout 2" option for Blog Banner Layout.
+- Fix: While using site navigation block in flyout or full screen off-canvas header type, submenu items not visible properly.
+- Fix: For mobile menu 1px top border added which not looking proper on the frontend when background color is set.
+- Fix: REM font size not working on responsive devices for headings.
+- Fix: Heading 5 and 6 having same font size typography.
+- Fix: Embed block width issue on the frontend for external embeds like Pinterest.
+
 v4.6.13
 - New: Footer Builder - Introducing a new height option for the primary footer row.
 - Improved codebase for improved security.

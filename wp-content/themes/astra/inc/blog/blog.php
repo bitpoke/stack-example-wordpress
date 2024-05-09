@@ -493,7 +493,8 @@ function astra_banner_elements_order( $structure = array() ) {
 		return;
 	}
 
-	$post_type = '';
+	// If search page.
+	$post_type = 'post';
 	if ( ! is_search() ) {
 		/** @psalm-suppress InvalidGlobal */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		global $post;
@@ -502,6 +503,11 @@ function astra_banner_elements_order( $structure = array() ) {
 			return;
 		}
 		$post_type = strval( $post->post_type );
+	}
+
+	// If 404 page.
+	if ( is_404() ) {
+		$post_type = '';
 	}
 
 	// If Blog / Latest Post page is active then looping required structural order.
@@ -621,6 +627,7 @@ function astra_banner_elements_order( $structure = array() ) {
 					astra_the_post_title( '<h1 class="page-title ast-archive-title">', '</h1>', 0, true );
 				} else {
 					astra_the_post_title( '<h1>', '</h1>', 0, true );
+					do_action( 'astra_after_archive_title' );
 				}
 				remove_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
 				do_action( 'astra_blog_archive_title_after' );

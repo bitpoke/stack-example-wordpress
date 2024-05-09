@@ -1050,3 +1050,21 @@ function astra_theme_background_updater_4_6_12() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility for following pointers.
+ *
+ * 1. unit less line-height support.
+ * 2. H5 font size case.
+ *
+ * @since 4.6.14
+ * @return void
+ */
+function astra_theme_background_updater_4_6_14() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['enable-4-6-14-compatibility'] ) ) {
+		$theme_options['enable-4-6-14-compatibility'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}

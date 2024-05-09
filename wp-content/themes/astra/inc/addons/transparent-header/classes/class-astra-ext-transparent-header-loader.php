@@ -56,16 +56,21 @@ if ( ! class_exists( 'Astra_Ext_Transparent_Header_Loader' ) ) {
 		public function theme_defaults( $defaults ) {
 
 			// Header - Transparent.
-			$defaults['transparent-header-logo']                       = '';
-			$defaults['transparent-header-retina-logo']                = '';
-			$defaults['different-transparent-logo']                    = 0;
-			$defaults['different-transparent-retina-logo']             = 0;
-			$defaults['transparent-header-logo-width']                 = array(
+			$defaults['transparent-header-logo']           = '';
+			$defaults['transparent-header-retina-logo']    = '';
+			$defaults['different-transparent-logo']        = 0;
+			$defaults['different-transparent-retina-logo'] = 0;
+			$defaults['transparent-header-logo-width']     = array(
 				'desktop' => 150,
 				'tablet'  => 120,
 				'mobile'  => 100,
 			);
-			$defaults['transparent-header-enable']                     = 0;
+			$defaults['transparent-header-enable']         = 0;
+			/**
+			 * Old option for 404, search and archive pages.
+			 *
+			 * For default value on separate option this setting is in use.
+			 */
 			$defaults['transparent-header-disable-archive']            = 1;
 			$defaults['transparent-header-disable-latest-posts-index'] = 1;
 			$defaults['transparent-header-on-devices']                 = 'both';

@@ -281,29 +281,7 @@ if ( ! function_exists( 'astra_get_css_value' ) ) {
 				break;
 
 			case 'url':
-						$css_val = $unit . '(' . esc_url( $value ) . ')';
-				break;
-
-			case 'rem':
-				if ( 'inherit' === strtolower( $value ) || 'inherit' === strtolower( $default ) ) {
-					return $value;
-				}
-				if ( is_numeric( $value ) || strpos( $value, 'px' ) ) {
-					$value          = intval( $value );
-					$body_font_size = astra_get_option( 'font-size-body' );
-					if ( is_array( $body_font_size ) ) {
-						$body_font_size_desktop = ( isset( $body_font_size['desktop'] ) && '' != $body_font_size['desktop'] ) ? $body_font_size['desktop'] : 15;
-					} else {
-						$body_font_size_desktop = ( '' != $body_font_size ) ? $body_font_size : 15;
-					}
-
-					if ( $body_font_size_desktop ) {
-						$css_val = esc_attr( $value ) . 'px;font-size:' . ( esc_attr( $value ) / esc_attr( $body_font_size_desktop ) ) . $unit;
-					}
-				} else {
-					$css_val = esc_attr( $value );
-				}
-
+				$css_val = $unit . '(' . esc_url( $value ) . ')';
 				break;
 
 			default:

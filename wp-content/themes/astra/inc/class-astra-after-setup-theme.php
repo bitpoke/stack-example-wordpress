@@ -288,9 +288,10 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 				} else {
 					$html = ( '' !== $html ) ? '<div class="ast-oembed-container ' . esc_attr( $ast_embed_wrapper_class ) . '" style="height: 100%;">' . $html . '</div>' : '';
 				}
-			} else {
-				$embed_html = wp_oembed_get( $url );
+			} elseif ( '' === $html || $url === trim( $html ) ) {
+				$embed_html = wp_oembed_get( $url, array( 'width' => 600 ) );
 				$html       = $embed_html ? $embed_html : $url;
+				wp_maybe_enqueue_oembed_host_js( $html );
 			}
 
 			return $html;

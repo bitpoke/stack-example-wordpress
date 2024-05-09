@@ -25,6 +25,13 @@ if ( ! class_exists( 'Astra_Builder_Loader' ) ) {
 		private static $instance = null;
 
 		/**
+		 * Variable to hold menu locations rendered on the site.
+		 *
+		 * @var array Menu locations array
+		 */
+		private static $menu_locations = array();
+
+		/**
 		 *  Initiator
 		 */
 		public static function get_instance() {
@@ -153,6 +160,30 @@ if ( ! class_exists( 'Astra_Builder_Loader' ) ) {
 					}
 				}
 			}
+		}
+
+		/**
+		 * Method to add rel="nofollow" for markup
+		 *
+		 * @param string $theme_location Theme location for key.
+		 * @param string $markup         Markup.
+		 * @return string Menu markup with rel="nofollow".
+		 * @since 4.6.14
+		 */
+		public function nofollow_markup( $theme_location, $markup ) {
+			$nofollow_disabled = apply_filters( 'astra_disable_nofollow_markup', false );
+
+			if ( $nofollow_disabled ) {
+				return $markup;
+			}
+
+			if ( isset( self::$menu_locations[ $theme_location ] ) ) {
+				$markup = str_replace( 'href="', 'rel="nofollow" href="', $markup );
+			} else {
+				self::$menu_locations[ $theme_location ] = true;
+			}
+
+			return $markup;
 		}
 	}
 

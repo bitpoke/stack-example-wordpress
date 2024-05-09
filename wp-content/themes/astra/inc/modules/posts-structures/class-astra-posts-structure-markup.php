@@ -80,7 +80,7 @@ class Astra_Posts_Structure_Markup {
 		}
 
 		global $post;
-		if ( is_null( $post ) ) {
+		if ( is_null( $post ) || is_search() ) {
 			return;
 		}
 

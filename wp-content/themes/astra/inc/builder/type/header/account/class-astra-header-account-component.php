@@ -44,7 +44,7 @@ if ( ! class_exists( 'Astra_Header_Account_Component' ) ) {
 		 * Account navigation markup
 		 */
 		public static function account_menu_markup() {
-
+			$astra_builder   = astra_builder();
 			$theme_location  = 'loggedin_account_menu';
 			$account_type    = astra_get_option( 'header-account-type' );
 			$enable_woo_menu = ( 'woocommerce' === $account_type && astra_get_option( 'header-account-woo-menu' ) );
@@ -81,6 +81,7 @@ if ( ! class_exists( 'Astra_Header_Account_Component' ) ) {
 				'before'         => '<ul class="' . esc_attr( implode( ' ', $menu_classes ) ) . '">',
 				'after'          => '</ul>',
 				'walker'         => new Astra_Walker_Page(),
+				'echo'           => false,
 			);
 
 			// To add default alignment for navigation which can be added through any third party plugin.
@@ -88,7 +89,7 @@ if ( ! class_exists( 'Astra_Header_Account_Component' ) ) {
 			echo '<div class="ast-hf-account-menu-wrap ast-main-header-bar-alignment">';
 
 			if ( has_nav_menu( $theme_location ) && ! $enable_woo_menu ) {
-				wp_nav_menu(
+				$account_menu_markup = wp_nav_menu(
 					array(
 						'menu_id'         => 'ast-hf-account-menu',
 						'menu_class'      => esc_attr( implode( ' ', $menu_classes ) ),
@@ -96,8 +97,13 @@ if ( ! class_exists( 'Astra_Header_Account_Component' ) ) {
 						'container_class' => 'account-main-header-bar-navigation',
 						'items_wrap'      => $items_wrap,
 						'theme_location'  => $theme_location,
+						'echo'            => false,
 					)
 				);
+
+				// Adding rel="nofollow" for duplicate menu render.
+				$account_menu_markup = $astra_builder->nofollow_markup( $theme_location, $account_menu_markup );
+				echo $account_menu_markup;
 			} elseif ( $enable_woo_menu ) {
 				echo '<div class="ast-hf-account-menu-wrap ast-main-header-bar-alignment">';
 					echo '<div class="account-main-header-bar-navigation">';
@@ -109,17 +115,24 @@ if ( ! class_exists( 'Astra_Header_Account_Component' ) ) {
 							)
 						);
 						echo ' class="ast-flex-grow-1 navigation-accessibility site-header-focus-item" aria-label="' . esc_attr__( 'Account Woo Navigation', 'astra' ) . '">';
+				
+				ob_start();
 				if ( class_exists( 'woocommerce' ) ) {
 					?>
-								<ul id="ast-hf-account-menu" class="main-header-menu ast-nav-menu ast-account-nav-menu ast-header-account-woocommerce-menu">
-							<?php foreach ( wc_get_account_menu_items() as $endpoint => $item ) { ?>
-										<li class="menu-item <?php echo esc_attr( wc_get_account_menu_item_classes( $endpoint ) ); ?>">
-											<a href="<?php echo esc_url( wc_get_account_endpoint_url( $endpoint ) ); ?>" class="menu-link"><?php echo esc_html( $item ); ?></a>
-										</li>
-									<?php } ?>
-								</ul>
-							<?php
+					<ul id="ast-hf-account-menu" class="main-header-menu ast-nav-menu ast-account-nav-menu ast-header-account-woocommerce-menu">
+						<?php foreach ( wc_get_account_menu_items() as $endpoint => $item ) { ?>
+							<li class="menu-item <?php echo esc_attr( wc_get_account_menu_item_classes( $endpoint ) ); ?>">
+								<a href="<?php echo esc_url( wc_get_account_endpoint_url( $endpoint ) ); ?>" class="menu-link"><?php echo esc_html( $item ); ?></a>
+							</li>
+						<?php } ?>
+					</ul>
+					<?php
 				}
+				$account_menu_markup = ob_get_clean();
+
+				// Adding rel="nofollow" for duplicate menu render.
+				$account_menu_markup = $astra_builder->nofollow_markup( $theme_location, $account_menu_markup );
+				echo $account_menu_markup;
 						echo '</nav>';
 					echo '</div>';
 				echo '</div>';
@@ -134,7 +147,11 @@ if ( ! class_exists( 'Astra_Header_Account_Component' ) ) {
 								)
 							);
 							echo ' class="site-navigation ast-flex-grow-1 navigation-accessibility" aria-label="' . esc_attr__( 'Site Navigation', 'astra' ) . '">';
-							wp_page_menu( $fallback_menu_args );
+							$account_menu_markup = wp_page_menu( $fallback_menu_args );
+
+							// Adding rel="nofollow" for duplicate menu render.
+							$account_menu_markup = $astra_builder->nofollow_markup( $theme_location, $account_menu_markup );
+							echo $account_menu_markup;
 						echo '</nav>';
 					echo '</div>';
 				echo '</div>';
