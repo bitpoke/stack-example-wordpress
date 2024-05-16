@@ -1,11 +1,11 @@
 === Storefront ===
 Contributors: automattic, tiagonoronha, jameskoster
 Requires at least: 5.3.4
-Tested up to: 6.3
-Stable tag: 4.5.5
-Version: 4.5.5
+Tested up to: 6.5
+Stable tag: 4.6.0
+Version: 4.6.0
 WC requires at least: 4.2
-WC tested up to: 8.1
+WC tested up to: 8.8
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: e-commerce, two-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-menu, featured-images, full-width-template, threaded-comments, accessibility-ready, rtl-language-support, footer-widgets, sticky-post, theme-options, editor-style
@@ -50,6 +50,12 @@ To the best of our knowledge, Google doesn’t track nor share end user data.
 Privacy Policy for the Google Fonts API: https://developers.google.com/fonts/faq#what_does_using_the_google_fonts_api_mean_for_the_privacy_of_my_users
 
 == Changelog ==
+
+= 4.6.0 - 2024-05-16 =
+- Enhancement - support for Appearance Tools in Classic themes. #2143. ([#2143](https://github.com/woocommerce/storefront/pull/2143))
+
+= 4.5.6 - 2024-05-15 =
+- Fix - Remove site-logo support. ([#2146](https://github.com/woocommerce/storefront/pull/2146))
 
 = 4.5.5 - 2024-04-11 =
 - Fix - Update Woo.com links to Wooommerce.com. ([#2142](https://github.com/woocommerce/storefront/pull/2142))
