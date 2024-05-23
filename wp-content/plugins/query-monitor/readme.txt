@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.5
-Stable tag: 3.16.2
+Stable tag: 3.16.3
 License: GPLv2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -141,11 +141,16 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 
 ## Changelog ##
 
-### 3.16.2 (22 April 2024) ###
+### 3.16.3 (22 May 2024) ###
+
+* Prevents an infinite loop when logging doing it wrong calls and deprecated calls.
+* Removes a global from query-monitor.php
+
+### 3.16.2 (22 May 2024) ###
 
 * Fixes another issue with the PHP autoloader in 3.16.0 and 3.16.1 that was crashing some sites
 
-### 3.16.1 (22 April 2024) ###
+### 3.16.1 (22 May 2024) ###
 
 * Fixes an issue with the PHP autoloader in 3.16.0 that was crashing some sites
 
@@ -171,7 +176,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 * Identifies drop-in plugins as a specific component instead of "other"
 * Simplifies some of the data structure used when logging queries
 * Specifies that Query Monitor supports WordPress versions up to three years old
-
 
 ### 3.13.1 (15 July 2023) ###
 
@@ -208,7 +212,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 * Switches to `sessionStorage` for the selected table column filters so they don't persist across tabs or sessions
 * Removes the "Debug Bar:" prefix on the menus for panels inherited from the Debug Bar plugin
 
-
 ### 3.12.0 (16 March 2023) ###
 
 * Clarifies and improves information in the Template panel when a block theme or full site editing (FSE) is in use
@@ -225,39 +228,9 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 * Removes QM output altogether from the Customizer
 * Ensures `wp-content/db.php` from another plugin doesn't get removed when deactivating QM
 
-
 ### 3.11.1 (3 January 2023) ###
 
 * Avoids a fatal error in PHP 8 when `posix_getpwuid()` or `posix_getgrgid()` doesn't return an expected value.
-
-### 3.11.0 (30 December 2022) ###
-
-* Adds a new "Multisite" panel that shows usage of `switch_to_blog()` and `restore_current_blog()` on Multisite installations
-* Improves the output shown for blocks and template parts when block themes or full site editing is in use
-* Introduces new `QM_Data` and `QM_Component` classes to make the data collection more structured and reliable
-* Increases the minimum supported version of PHP to 7.2
-* Improves the performance of SVG icons
-* Removes the ability to completely hide silenced PHP errors
-* Avoids some deprecated notices in PHP 8.2
-* Improves the performance of the PHP class autoloader
-
-### 3.10.1 (9 September 2022) ###
-
-* Prevents logging duplicate entries for multiple calls to load the same translation file
-* Brings the dispatcher priority back down to `9` for maximum compatibility with other plugins that use a shutdown handler
-
-
-### 3.10.0 (8 September 2022) ###
-
-* Adds information about the current language on the Languages panel
-* Reduces the chance that Query Monitor blames itself for PHP errors that don't have a stack trace
-* Replaces the use of Dashicons with inline SVGs and removes the `dashicons` dependency
-* Switches to class autoloading via Composer for reduced memory usage
-* Changes the priority of the `shutdown` dispatcher from `0` to `PHP_INT_MAX` to ensure as much data as possible is collected
-* Improves the styling of Debug Bar add-ons
-* Fixes some erroneous localisation of float values in REST API output
-* Bumps the minimum supported PHP version to 5.6
-* Improves various other bits and bobs
 
 ### Earlier versions ###
 
