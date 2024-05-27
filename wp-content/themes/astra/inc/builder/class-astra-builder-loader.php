@@ -152,6 +152,8 @@ if ( ! class_exists( 'Astra_Builder_Loader' ) ) {
 					} elseif ( isset( $layout[0] ) && 'header' == $layout[0] && 0 == $header_counter ) {
 						// Remove default site's header.
 						remove_action( 'astra_header', array( Astra_Builder_Header::get_instance(), 'header_builder_markup' ) );
+						// Prevent Off-Canvas markup on custom header rendering.
+						add_filter( 'astra_disable_mobile_popup_markup', '__return_true' );
 						$header_counter++;
 					} elseif ( isset( $layout[0] ) && 'footer' == $layout[0] && 0 == $footer_counter ) {
 						// Remove default site's footer.

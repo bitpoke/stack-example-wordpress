@@ -296,6 +296,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 						'background-type'       => '',
 						'background-media'      => '',
 						'overlay-type'          => '',
+						'overlay-opacity'       => '',
 						'overlay-color'         => '',
 						'overlay-gradient'      => '',
 					),
@@ -315,6 +316,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 						'background-media'      => '',
 						'overlay-type'          => '',
 						'overlay-color'         => '',
+						'overlay-opacity'       => '',
 						'overlay-gradient'      => '',
 					),
 					'footer-adv-text-color'                => '',
@@ -563,6 +565,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 							'background-media'      => '',
 							'overlay-type'          => '',
 							'overlay-color'         => '',
+							'overlay-opacity'       => '',
 							'overlay-gradient'      => '',
 						),
 						'tablet'  => array(
@@ -576,6 +579,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 							'background-media'      => '',
 							'overlay-type'          => '',
 							'overlay-color'         => '',
+							'overlay-opacity'       => '',
 							'overlay-gradient'      => '',
 						),
 						'mobile'  => array(
@@ -589,6 +593,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 							'background-media'      => '',
 							'overlay-type'          => '',
 							'overlay-color'         => '',
+							'overlay-opacity'       => '',
 							'overlay-gradient'      => '',
 						),
 					),
@@ -604,6 +609,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 							'background-media'      => '',
 							'overlay-type'          => '',
 							'overlay-color'         => '',
+							'overlay-opacity'       => '',
 							'overlay-gradient'      => '',
 						),
 						'tablet'  => array(
@@ -617,6 +623,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 							'background-media'      => '',
 							'overlay-type'          => '',
 							'overlay-color'         => '',
+							'overlay-opacity'       => '',
 							'overlay-gradient'      => '',
 						),
 						'mobile'  => array(
@@ -630,6 +637,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 							'background-media'      => '',
 							'overlay-type'          => '',
 							'overlay-color'         => '',
+							'overlay-opacity'       => '',
 							'overlay-gradient'      => '',
 						),
 					),

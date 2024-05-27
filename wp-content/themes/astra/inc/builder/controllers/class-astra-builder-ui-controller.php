@@ -361,6 +361,8 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 					$login_profile_type = astra_get_option( 'header-account-login-style' );
 
+					$extend_text_profile_type = astra_get_option( 'header-account-login-style-extend-text-profile-type' );
+
 					$action_type = astra_get_option( 'header-account-action-type' );
 					$link_type   = astra_get_option( 'header-account-link-type' );
 
@@ -393,10 +395,26 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 					$link_href = ( '' !== $link_url ) ? 'href=' . esc_url( $link_url ) : '';
 
-					$link_classes = 'ast-header-account-link ast-header-account-type-' . $login_profile_type . ' ast-account-action-' . $action_type;
+					$link_classes = array(
+						'ast-header-account-link',
+						'ast-account-action-' . $action_type,
+					);
+
+					if ( 'text' !== $login_profile_type ) {
+						$link_classes[] = 'ast-header-account-type-' . $login_profile_type;
+					} else {
+						if ( 'default' === $extend_text_profile_type ) {
+							$link_classes[] = 'ast-header-account-type-' . $login_profile_type;
+						} else {
+							// Make sure, we set the common class as before so that we can adapt to existing CSS styles.
+							$link_classes[] = 'ast-header-account-type-' . $extend_text_profile_type;
+							$link_classes[] = 'ast-header-account-type-extend-text-profile-type';
+						}
+					}
+
 					?>
 					<div class="ast-header-account-inner-wrap">
-						<a class="<?php echo esc_attr( $link_classes ); ?>" role="link" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
+						<a class="<?php echo esc_attr( implode( ' ', $link_classes ) ); ?>" role="link" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
 
 							<?php
 							if ( 'avatar' === $login_profile_type ) {
@@ -406,6 +424,13 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 							} elseif ( 'icon' === $login_profile_type ) {
 								echo self::fetch_svg_icon( $icon_skin ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							} elseif ( 'text' === $login_profile_type ) {
+
+								if ( 'avatar' === $extend_text_profile_type ) {
+									echo get_avatar( get_current_user_id() );
+								} elseif ( 'icon' === $extend_text_profile_type ) {
+									echo self::fetch_svg_icon( $icon_skin ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								}
+
 								?>
 								<span class="ast-header-account-text"><?php echo esc_html( $logged_in_text ); ?></span>
 							<?php } ?>
@@ -419,11 +444,28 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 				<?php } elseif ( ( 'none' !== $logged_out_style ) && ( ( ! $is_logged_in ) || ( $is_logged_in && $logout_preview && $is_customizer ) ) ) { ?>
 
 					<?php
-					$logged_out_style_class = '';
-					$action_type            = astra_get_option( 'header-account-logout-action' );
-					$logged_out_style_class = 'ast-header-account-link ast-header-account-type-' . $logged_out_style . ' ast-account-action-' . $action_type;
-					$logged_out_text        = astra_get_option( 'header-account-logged-out-text' );
-					$login_link             = astra_get_option( 'header-account-logout-link' );
+					$action_type     = astra_get_option( 'header-account-logout-action' );
+					$logged_out_text = astra_get_option( 'header-account-logged-out-text' );
+					$login_link      = astra_get_option( 'header-account-logout-link' );
+
+					$extend_text_profile_type = astra_get_option( 'header-account-logout-style-extend-text-profile-type' );
+
+					$logged_out_style_class = array(
+						'ast-header-account-link',
+						'ast-account-action-' . $action_type,
+					);
+
+					if ( 'text' !== $logged_out_style ) {
+						$logged_out_style_class[] = 'ast-header-account-type-' . $logged_out_style;
+					} else {
+						if ( 'default' === $extend_text_profile_type ) {
+							$logged_out_style_class[] = 'ast-header-account-type-' . $logged_out_style;
+						} else {
+							// Make sure, we set the common class as before so that we can adapt to existing CSS styles.
+							$logged_out_style_class[] = 'ast-header-account-type-' . $extend_text_profile_type;
+							$logged_out_style_class[] = 'ast-header-account-type-extend-text-profile-type';
+						}
+					}
 
 					if ( '' !== $login_link && '' !== $login_link['url'] ) {
 
@@ -442,10 +484,15 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 					$link_href = 'href=' . esc_url( $link_url ) . '';
 					?>
-					<a class="<?php echo esc_attr( $logged_out_style_class ); ?>" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
+					<a class="<?php echo esc_attr( implode( ' ', $logged_out_style_class ) ); ?>" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
 						<?php if ( 'icon' === $logged_out_style ) { ?>
 							<?php echo self::fetch_svg_icon( $icon_skin ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<?php } elseif ( 'text' === $logged_out_style ) { ?>
+							<?php 
+						} elseif ( 'text' === $logged_out_style ) {
+							if ( 'icon' === $extend_text_profile_type ) {
+								echo self::fetch_svg_icon( $icon_skin ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							}
+							?>
 							<span class="ast-header-account-text"><?php echo esc_html( $logged_out_text ); ?></span>
 						<?php } ?>
 					</a>

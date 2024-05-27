@@ -548,6 +548,8 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 				'customizer_site_bg_obj'        => $site_bg_obj,
 				'is_astra_pro_colors_activated' => $is_astra_pro_colors_activated,
 				'site_builder_url'              => $site_builder_url,
+				'mobile_logo'                   => astra_get_option( 'mobile-header-logo' ),
+				'mobile_logo_state'             => astra_get_option( 'different-mobile-logo' ),
 			);
 
 			wp_localize_script( 'astra-block-editor-script', 'astraColors', apply_filters( 'astra_theme_root_colors', $astra_colors ) );

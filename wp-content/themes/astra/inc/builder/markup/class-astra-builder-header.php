@@ -408,6 +408,10 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		 */
 		public function mobile_popup() {
 
+			if ( apply_filters( 'astra_disable_mobile_popup_markup', false ) ) {
+				return;
+			}
+
 			$mobile_header_type = astra_get_option( 'mobile-header-type' );
 
 			if ( 'off-canvas' === $mobile_header_type || 'full-width' === $mobile_header_type || is_customize_preview() ) {

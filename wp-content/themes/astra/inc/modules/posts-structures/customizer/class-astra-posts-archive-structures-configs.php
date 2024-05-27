@@ -131,9 +131,9 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 				'priority'    => 5,
 				'title'       => __( 'Container Style', 'astra' ),
 				'choices'     => array(
-					'default' => 'Default',
-					'unboxed' => 'Unboxed',
-					'boxed'   => 'Boxed',
+					'default' => __( 'Default', 'astra' ),
+					'unboxed' => __( 'Unboxed', 'astra' ),
+					'boxed'   => __( 'Boxed', 'astra' ),
 				),
 				'responsive'  => false,
 				'renderAs'    => 'text',

@@ -1,3 +1,21 @@
+v4.6.15
+- New: Introduced color palette for background image overlay option to sync overlay-color with Global Color Palette.
+- New: Introduced separate overlay opacity setting for background image overlay option to control opacity when overlay-color synced with Global Color Palette.
+- New: Header Builder - Account Element - Introducing a new option to show Text along with Icon / Avatar.
+- Improvement: Added aria-expanded attribute for menu items to improve accessibility.
+- Improvement: Responsive device logo support added to the Site Logo block.
+- Improvement: Off-Canvas section in Flyout/Full-Screen affecting the source code even with custom header.
+- Improvement: Replaced default Whats New section with the Whats New Library for better consistency and performance.
+- Improvement: Added object-fit cover styling to the single post featured image while the Image ratio is set to custom.
+- Fix: Changing the logo width increase the logo height inside the customizer settings.
+- Fix: Blog/Archive - Column layouts break the sizes of post structures which are built by Beaver Themer column modal.
+- Fix: The plus icons are not displaying in customizer when using Spectra's grid builder under widget area.
+- Fix: Resolved an issue where theme activation caused infinite loop on BuddyPress member login page loading login form.
+- Fix: The Post Filter design tab styling options not showing.
+- Fix: Asterisk(*) symbol visible on comment form even after disabling the settings.
+- Fix: Submenu divider adding unintended bottom border to last menu item.
+- Fix: Customizer's few controls are misaligned with the Russian language setup.
+
 v4.6.14
 - Improvement: Improved accessibility for navigational menus.
 - Improvement: Header Builder - Menu - Navigation creates duplicated identical links.

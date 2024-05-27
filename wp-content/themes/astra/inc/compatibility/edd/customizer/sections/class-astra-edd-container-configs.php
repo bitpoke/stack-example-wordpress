@@ -74,9 +74,9 @@ if ( ! class_exists( 'Astra_Edd_Container_Configs' ) ) {
 					'priority'    => 5,
 					'title'       => __( 'Container Style', 'astra' ),
 					'choices'     => array(
-						'default' => 'Default',
-						'unboxed' => 'Unboxed',
-						'boxed'   => 'Boxed',
+						'default' => __( 'Default', 'astra' ),
+						'unboxed' => __( 'Unboxed', 'astra' ),
+						'boxed'   => __( 'Boxed', 'astra' ),
 					),
 					'renderAs'    => 'text',
 					'responsive'  => false,

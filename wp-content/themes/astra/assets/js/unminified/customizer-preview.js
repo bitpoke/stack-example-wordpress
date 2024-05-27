@@ -379,8 +379,13 @@ function astra_background_obj_css( wp_customize, bg_obj, ctrl_name, style ) {
 				if ( '' !== bg_img ) {
 					if ( 'overlay-type' in bg_obj && 'none' !== bg_obj['overlay-type'] ) {
 						let overlay_color	= 'overlay-color' in bg_obj ? bg_obj['overlay-color'] : '';
+						let overlay_opacity	= 'overlay-opacity' in bg_obj ? bg_obj['overlay-opacity'] : '';
 						let overlay_gradient	= 'overlay-gradient' in bg_obj ? bg_obj['overlay-gradient'] : '';
 						if ( 'classic' === bg_obj['overlay-type'] && '' !== overlay_color ) {
+							if ( '' !== overlay_opacity ) {
+								wp.customize.preview.send( 'refresh' );
+								return;
+							}
 							gen_bg_css = 'background-image: linear-gradient(to right, ' + bg_obj['overlay-color'] + ', ' + bg_obj['overlay-color'] + '), url(' + bg_img + ');';
 						} else if ( 'gradient' === bg_obj['overlay-type'] && '' !== overlay_gradient ) {
 							gen_bg_css = 'background-image: ' + overlay_gradient + ', url(' + bg_img + ');';
@@ -713,8 +718,13 @@ function astra_apply_responsive_background_css( control, selector, device, singl
 					if ( '' !== bg_img ) {
 						if ( undefined !== bg_obj[device]['overlay-type'] && 'none' !== bg_obj[device]['overlay-type'] ) {
 							let overlay_color	= undefined !== bg_obj[device]['overlay-color'] ? bg_obj[device]['overlay-color'] : '';
+							let overlay_opacity	= undefined !== bg_obj[device]['overlay-opacity'] ? bg_obj[device]['overlay-opacity'] : '';
 							let overlay_gradient	= undefined !== bg_obj[device]['overlay-gradient'] ? bg_obj[device]['overlay-gradient'] : '';
 							if ( 'classic' === bg_obj[device]['overlay-type'] && '' !== overlay_color ) {
+								if ( '' !== overlay_opacity ) {
+									wp.customize.preview.send( 'refresh' );
+									return;
+								}
 								gen_bg_css = 'background-image: linear-gradient(to right, ' + overlay_color + ', ' + overlay_color + '), url(' + bg_img + ');';
 							} else if ( 'gradient' === bg_obj[device]['overlay-type'] && '' !== overlay_gradient ) {
 								gen_bg_css = 'background-image: ' + overlay_gradient + ', url(' + bg_img + ');';
@@ -840,7 +850,30 @@ function hasWordPressWidgetBlockEditor() {
 				mobileBreakPoint    = astraCustomizer.mobile_breakpoint || 544;
 
 			if ( logo_width['desktop'] != '' || logo_width['tablet'] != '' || logo_width['mobile'] != '' ) {
-				var dynamicStyle = '#masthead .site-logo-img .custom-logo-link img { max-width: ' + logo_width['desktop'] + 'px; height: ' + logo_width['desktop'] + 'px; width: 100%; } @media( max-width: ' + tabletBreakPoint + 'px ) { #masthead .site-logo-img .custom-logo-link img { max-width: ' + logo_width['tablet'] + 'px; height: ' + logo_width['tablet'] + 'px; width: 100%; } #masthead .site-logo-img img { max-height: ' + logo_width['tablet'] + 'px; } } @media( max-width: ' + mobileBreakPoint + 'px ) { #masthead .site-logo-img .custom-logo-link img { max-width: ' + logo_width['mobile'] + 'px; height: ' + logo_width['mobile'] + 'px; width: 100%; }' + '#masthead .site-logo-img img { max-width: ' + logo_width['mobile'] + 'px; max-height: ' + logo_width['mobile'] + 'px; width: 100%; height: 100%; } }';
+				var dynamicStyle = `#masthead .site-logo-img .custom-logo-link img {
+					max-width: ${logo_width['desktop']}px;
+					width: ${logo_width['desktop']}px;
+				}
+				@media( max-width: ${tabletBreakPoint}px ) {
+					#masthead .site-logo-img .custom-logo-link img {
+						max-width: ${logo_width['tablet']}px;
+						width: ${logo_width['tablet']}px;
+					}
+					#masthead .site-logo-img img {
+						max-width: ${logo_width['tablet']}px;
+						width: ${logo_width['tablet']}px;
+					}
+				}
+				@media( max-width: ${mobileBreakPoint}px ) {
+					#masthead .site-logo-img .custom-logo-link img {
+						max-width: ${logo_width['mobile']}px;
+						width: ${logo_width['mobile']}px;
+					}
+					#masthead .site-logo-img img {
+						max-width: ${logo_width['mobile']}px;
+						max-height: ${logo_width['mobile']}px;
+					}
+				}`;
 				astra_add_dynamic_css( 'ast-header-responsive-logo-width', dynamicStyle );
 
 				var mobileLogoStyle = '.ast-header-break-point #masthead .site-logo-img .custom-mobile-logo-link img { max-width: ' + logo_width['tablet'] + 'px; } @media( max-width: ' + tabletBreakPoint + 'px ) { .ast-header-break-point #masthead .site-logo-img .custom-mobile-logo-link img { max-width: ' + logo_width['tablet'] + 'px; }  @media( max-width: ' + mobileBreakPoint + 'px ) { .ast-header-break-point #masthead .site-logo-img .custom-mobile-logo-link img { max-width: ' + logo_width['mobile'] + 'px; }';

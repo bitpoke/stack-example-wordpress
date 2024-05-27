@@ -91,6 +91,28 @@ function addTitleVisibility() {
 	}
 }
 
+function siteLogoImageChange() {
+	let mobileLogoState = astraColors.mobile_logo_state;
+
+	if ( !mobileLogoState ){
+		return;
+	}
+
+    let mobileLogo = astraColors.mobile_logo;
+    let iframe = document.querySelector(".editor-canvas__iframe");
+	let is_desktop = iframe.contentWindow.document.querySelector(".is-desktop-preview");
+
+    if ( !is_desktop ) {
+        let iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        let logoElement = iframeDoc.querySelector(".custom-logo");
+        
+        if (logoElement) {
+            // Updating logo in the editor iframe preview with the mobile logo.
+            logoElement.setAttribute("src", mobileLogo);
+        } 
+    } 
+}
+
 function astra_onload_function() {
 
 	/* Do things after DOM has fully loaded */
@@ -124,6 +146,8 @@ function astra_onload_function() {
 			var titleBlock = document.querySelector( '.edit-post-visual-editor__post-title-wrapper' ),
 				editorDocument = document;
 
+			// Excuting responsive site logo change function. 
+			siteLogoImageChange();
 			// Adding title visibility icon on wp.data.subscribe.
 			addTitleVisibility();
 			if ( astraColors.ast_wp_version_higher_6_3 ) {

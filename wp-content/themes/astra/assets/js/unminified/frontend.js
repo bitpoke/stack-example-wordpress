@@ -1293,3 +1293,52 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	});
 
 })();
+
+// Accessibility improvement for menu items.
+document.addEventListener('DOMContentLoaded', function() {
+    let submenuToggles = document.querySelectorAll('.menu-link .dropdown-menu-toggle');
+
+    // Adding event listeners for focus and keydown 
+    submenuToggles.forEach(function(toggle) {
+        toggle.addEventListener('focus', function() {
+            updateAriaExpanded(this);
+        });
+
+        toggle.addEventListener('blur', function() {
+            updateAriaExpanded(this);
+        });
+
+        toggle.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                toggleAriaExpanded(this);
+            }
+        });
+    });
+
+    // Added event listener for Escape key press
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeAllSubmenus();
+        }
+    });
+
+    function updateAriaExpanded(toggle) {
+        let menuItemLink = toggle.closest('.menu-link');
+        let submenu = menuItemLink.nextElementSibling;
+        let isSubmenuVisible = submenu.classList.contains('toggled-on');
+        menuItemLink.setAttribute('aria-expanded', isSubmenuVisible ? 'true' : 'false');
+    }
+
+    function toggleAriaExpanded(toggle) {
+        let menuItemLink = toggle.closest('.menu-link');
+        let currentState = menuItemLink.getAttribute('aria-expanded');
+        menuItemLink.setAttribute('aria-expanded', currentState === 'true' ? 'false' : 'true');
+    }
+
+    function closeAllSubmenus() {
+        let submenuToggles = document.querySelectorAll('.menu-link .dropdown-menu-toggle');
+        submenuToggles.forEach(function(toggle) {
+            updateAriaExpanded(toggle);
+        });
+    }
+});

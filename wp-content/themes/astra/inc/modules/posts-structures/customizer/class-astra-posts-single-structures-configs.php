@@ -112,9 +112,9 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 				'title'       => __( 'Container Style', 'astra' ),
 				'description' => __( 'Container style will apply only when layout is set to either normal or narrow.', 'astra' ),
 				'choices'     => array(
-					'default' => 'Default',
-					'unboxed' => 'Unboxed',
-					'boxed'   => 'Boxed',
+					'default' => __( 'Default', 'astra' ),
+					'unboxed' => __( 'Unboxed', 'astra' ),
+					'boxed'   => __( 'Boxed', 'astra' ),
 				),
 				'renderAs'    => 'text',
 				'responsive'  => false,

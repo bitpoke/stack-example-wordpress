@@ -784,7 +784,7 @@
     box-shadow: none;
 }
 
-.dashicons-plus-alt2:before {
+.ahfb-builder-item-add-icon.dashicons-plus-alt2:before {
     content: "\f543";
     display: inline-block;
     opacity: 0;
