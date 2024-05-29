@@ -368,7 +368,7 @@ if ( ! class_exists( 'Astra_Customizer_Transparent_Header_Configs' ) ) {
 					'name'        => ASTRA_THEME_SETTINGS . '[transparent-header-main-sep]',
 					'default'     => astra_get_option( 'transparent-header-main-sep' ),
 					'type'        => 'control',
-					'transport'   => 'postMessage',
+					'transport'   => 'refresh',
 					'control'     => 'ast-slider',
 					'section'     => $_section,
 					'priority'    => 32,
@@ -390,7 +390,7 @@ if ( ! class_exists( 'Astra_Customizer_Transparent_Header_Configs' ) ) {
 					'name'              => ASTRA_THEME_SETTINGS . '[transparent-header-main-sep-color]',
 					'default'           => astra_get_option( 'transparent-header-main-sep-color' ),
 					'type'              => 'control',
-					'transport'         => 'postMessage',
+					'transport'         => 'refresh',
 					'control'           => 'ast-color',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
 					'section'           => $_section,
@@ -832,7 +832,7 @@ if ( ! class_exists( 'Astra_Customizer_Transparent_Header_Configs' ) ) {
 					 * Option: Button Border Hover Color
 					 */
 					array(
-						'name'      => 'transparent-header-button-border-h-color', 
+						'name'      => 'transparent-header-button-border-h-color',
 						'default'   => astra_get_option( 'transparent-header-button-border-h-color' ),
 						'transport' => 'postMessage',
 						'type'      => 'sub-control',

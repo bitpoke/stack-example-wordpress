@@ -178,7 +178,7 @@ function astra_post_single_structure_dynamic_css( $dynamic_css, $dynamic_css_fil
 	$custom_scale_width  = astra_get_option( 'ast-dynamic-single-' . $current_post_type . '-article-featured-image-custom-scale-width', 16 );
 	$custom_scale_height = astra_get_option( 'ast-dynamic-single-' . $current_post_type . '-article-featured-image-custom-scale-height', 9 );
 	$aspect_ratio        = astra_get_dynamic_image_aspect_ratio( $aspect_ratio_type, $predefined_scale, $custom_scale_width, $custom_scale_height );
-	$object_fit_style   = 'custom' === $aspect_ratio_type ? 'cover' : '';
+	$object_fit_style    = 'custom' === $aspect_ratio_type ? 'cover' : '';
 
 	// Remove featured image padding.
 	$remove_featured_image_padding = astra_get_option( 'ast-dynamic-single-' . $current_post_type . '-remove-featured-padding', false ) && 'layout-1' === $layout_type && 'none' === astra_get_option( 'ast-dynamic-single-' . $current_post_type . '-article-featured-image-position-layout-1' ) ? true : false;

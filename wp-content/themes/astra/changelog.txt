@@ -1,3 +1,8 @@
+v4.6.16
+- Fix: If dashboard gets white labelled from addon, screen turns blank.
+- Fix: PHP uncaught type error with in_array() due to astra_add_aria_expanded_submenu_items_attr() function.
+- Fix: Transparent Header - Bottom border logic refined for consideration of last header row as bottom border.
+
 v4.6.15
 - New: Introduced color palette for background image overlay option to sync overlay-color with Global Color Palette.
 - New: Introduced separate overlay opacity setting for background image overlay option to control opacity when overlay-color synced with Global Color Palette.

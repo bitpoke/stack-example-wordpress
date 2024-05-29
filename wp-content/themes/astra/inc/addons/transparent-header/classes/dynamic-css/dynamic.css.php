@@ -25,6 +25,29 @@ function astra_has_submenu_transperent_styling() {
 }
 
 /**
+ * Get transparent header's last active row to process bottom border design accordingly.
+ *
+ * @param string $device Device type.
+ *
+ * @since 4.6.16
+ * @return string
+ */
+function astra_get_transparent_header_last_active_row( $device ) {
+	$selector    = '';
+	$prefix_sel  = 'desktop' === $device ? '.ast-theme-transparent-header #ast-desktop-header > ' : '.ast-theme-transparent-header.ast-header-break-point #ast-mobile-header > ';
+	$header_rows = array( 'above', 'primary', 'below' );
+
+	foreach ( $header_rows as $row ) {
+		if ( ! Astra_Builder_Helper::is_row_empty( $row, 'header', $device ) ) {
+			continue;
+		}
+		$selector = 'primary' === $row ? $prefix_sel . '.ast-main-header-wrap > .main-header-bar' : $prefix_sel . '.ast-' . $row . '-header-wrap > .ast-' . $row . '-header';
+	}
+
+	return $selector;
+}
+
+/**
  * Dynamic CSS
  *
  * @param  String $dynamic_css          Astra Dynamic CSS.
@@ -442,20 +465,16 @@ function astra_ext_transparent_header_dynamic_css( $dynamic_css, $dynamic_css_fi
 		$css .= astra_parse_css( $transparent_header_mobile, '', astra_get_mobile_breakpoint() );
 	}
 
-	$mobile_header_type = astra_get_option( 'mobile-header-type' );
-
-	if ( 'dropdown' === $mobile_header_type || is_customize_preview() ) {
-		$header_child_selector = '[CLASS*="-header-wrap"]:nth-last-child(2) > [CLASS*="-header-bar"]';
-	} else {
-		$header_child_selector = '[CLASS*="-header-wrap"]:last-child > [CLASS*="-header-bar"]';
-	}
-
 	if ( 'both' === $transparent_header_devices ) {
 
-		$selector = '.ast-theme-transparent-header .main-header-bar, .ast-theme-transparent-header.ast-header-break-point .main-header-bar';
-
 		if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
-			$selector = '.ast-theme-transparent-header #ast-desktop-header > ' . $header_child_selector . ', .ast-theme-transparent-header.ast-header-break-point #ast-mobile-header > ' . $header_child_selector;
+			$desktop_selector    = astra_get_transparent_header_last_active_row( 'desktop' );
+			$responsive_selector = astra_get_transparent_header_last_active_row( 'mobile' );
+
+			// Join $desktop_selector & $responsive_selector.
+			$selector = ( ! empty( $desktop_selector ) && ! empty( $responsive_selector ) ) ? $desktop_selector . ', ' . $responsive_selector : $desktop_selector . $responsive_selector;
+		} else {
+			$selector = '.ast-theme-transparent-header .main-header-bar, .ast-theme-transparent-header.ast-header-break-point .main-header-bar';
 		}
 
 		if ( '' !== $transparent_header_separator && 'inherit' !== $transparent_header_separator ) {
@@ -481,10 +500,10 @@ function astra_ext_transparent_header_dynamic_css( $dynamic_css, $dynamic_css_fi
 
 	if ( 'mobile' === $transparent_header_devices ) {
 
-		$selector = '.ast-theme-transparent-header.ast-header-break-point .main-header-bar';
-
 		if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
-			$selector = '.ast-theme-transparent-header.ast-header-break-point #ast-mobile-header > ' . $header_child_selector;
+			$selector = astra_get_transparent_header_last_active_row( 'mobile' );
+		} else {
+			$selector = '.ast-theme-transparent-header.ast-header-break-point .main-header-bar';
 		}
 
 		if ( '' !== $transparent_header_separator && 'inherit' !== $transparent_header_separator ) {
@@ -514,10 +533,10 @@ function astra_ext_transparent_header_dynamic_css( $dynamic_css, $dynamic_css_fi
 
 	if ( 'desktop' === $transparent_header_devices ) {
 
-		$selector = '.ast-theme-transparent-header .main-header-bar';
-
 		if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
-			$selector = '.ast-theme-transparent-header #ast-desktop-header > ' . $header_child_selector;
+			$selector = astra_get_transparent_header_last_active_row( 'desktop' );
+		} else {
+			$selector = '.ast-theme-transparent-header .main-header-bar';
 		}
 
 		if ( '' !== $transparent_header_separator && 'inherit' !== $transparent_header_separator ) {

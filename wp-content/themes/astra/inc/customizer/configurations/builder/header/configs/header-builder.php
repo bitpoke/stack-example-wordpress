@@ -234,12 +234,7 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 			'priority'    => 25,
 			'default'     => astra_get_option( 'header-desktop-items' ),
 			'choices'     => Astra_Builder_Helper::$header_desktop_items,
-			'transport'   => 'postMessage',
-			'partial'     => array(
-				'selector'            => '#masthead',
-				'container_inclusive' => true,
-				'render_callback'     => array( Astra_Builder_Header::get_instance(), 'header_builder_markup' ),
-			),
+			'transport'   => 'refresh',
 			'input_attrs' => array(
 				'group'  => ASTRA_THEME_SETTINGS . '[header-desktop-items]',
 				'rows'   => array( 'popup', 'above', 'primary', 'below' ),
@@ -321,12 +316,7 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 			'priority'    => 35,
 			'default'     => astra_get_option( 'header-mobile-items' ),
 			'choices'     => Astra_Builder_Helper::$header_mobile_items,
-			'transport'   => 'postMessage',
-			'partial'     => array(
-				'selector'            => '#masthead',
-				'container_inclusive' => true,
-				'render_callback'     => array( Astra_Builder_Header::get_instance(), 'header_builder_markup' ),
-			),
+			'transport'   => 'refresh',
 			'input_attrs' => array(
 				'group'  => ASTRA_THEME_SETTINGS . '[header-mobile-items]',
 				'rows'   =>
