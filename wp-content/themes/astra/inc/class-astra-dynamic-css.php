@@ -883,8 +883,14 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				);
 			}
 
+			// Construct the selector string conditionally
+			$selectors = '.widget-title';
+			if ( ! self::astra_heading_inside_widget_font_size_comp() ) {
+				$selectors .= ', .widget .wp-block-heading';
+			}
+
 			// Default widget title color.
-			$css_output['.widget-title, .widget .wp-block-heading'] = array(
+			$css_output[ $selectors ] = array(
 				'font-size' => astra_get_font_css_value( (int) $body_font_size_desktop * 1.428571429 ),
 				'color'     => astra_has_global_color_format_support() ? esc_attr( $heading_base_color ) : esc_attr( $text_color ),
 			);
@@ -1355,6 +1361,13 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			if ( is_single() && self::astra_4_6_0_compatibility() ) {
 				require_once ASTRA_THEME_DIR . 'inc/dynamic-css/navigation.php'; // PHPCS:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 			}
+
+			/**
+			 * Load dynamic css related to logo svg icons.
+			 *
+			 * @since 4.7.0
+			 */
+			require_once ASTRA_THEME_DIR . 'inc/dynamic-css/logo-svg-icons.php'; // PHPCS:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 
 			/**
 			 *
@@ -4639,6 +4652,17 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			return apply_filters( 'elementor_heading_margin', $astra_settings['elementor-headings-style'] );
 		}
 
+		/**
+		 * Heading font size fix in footer builder compatibility.
+		 *
+		 * @since 4.7.0
+		 * @return boolean
+		 */
+		public static function astra_heading_inside_widget_font_size_comp() {
+			$astra_settings                             = get_option( ASTRA_THEME_SETTINGS, array() );
+			$astra_settings['heading-widget-font-size'] = isset( $astra_settings['heading-widget-font-size'] ) ? false : true;
+			return apply_filters( 'astra_heading_inside_widget_font_size', $astra_settings['heading-widget-font-size'] );
+		}
 
 		/**
 		 * Added Elementor post loop block padding support .

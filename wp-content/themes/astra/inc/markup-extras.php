@@ -152,6 +152,11 @@ if ( ! function_exists( 'astra_body_classes' ) ) {
 			}
 		}
 
+		// Add class for logo svg icon.
+		if ( astra_logo_svg_icon() ) {
+			$classes[] = 'has-logo-svg-icon';
+		}
+
 		return $classes;
 	}
 }
@@ -173,6 +178,11 @@ function astra_is_content_style_boxed( $post_id = false ) {
 	$meta_content_style   = astra_get_option_meta( 'site-content-style', '', true );
 	$is_boxed             = false;
 	$is_third_party_shop  = false;
+
+	// If post type is empty and is WooCommerce page. Applicable for WC category archives page having no products.
+	if ( ! $post_type && function_exists( 'is_woocommerce' ) && is_woocommerce() ) {
+		$post_type = 'product';
+	}
 
 	// Editor compatibility.
 	if ( $post_id ) {
@@ -290,6 +300,11 @@ function astra_is_sidebar_style_boxed( $post_id = false ) {
 	$meta_sidebar_style   = astra_get_option_meta( 'site-sidebar-style', '', true );
 	$is_sidebar_boxed     = false;
 	$is_third_party_shop  = false;
+
+	// If post type is empty and is WooCommerce page. Applicable for WC category archives page having no products.
+	if ( ! $post_type && function_exists( 'is_woocommerce' ) && is_woocommerce() ) {
+		$post_type = 'product';
+	}
 
 	// Editor compatibility.
 	if ( $post_id ) {
@@ -529,6 +544,7 @@ if ( ! function_exists( 'astra_logo' ) ) {
 	 */
 	function astra_logo( $device = 'desktop', $echo = true ) {
 
+		$logo_svg_icon        = astra_logo_svg_icon();
 		$site_tagline         = astra_get_option( 'display-site-tagline-responsive' );
 		$display_site_tagline = ( $site_tagline['desktop'] || $site_tagline['tablet'] || $site_tagline['mobile'] ) ? true : false;
 		$site_title           = astra_get_option( 'display-site-title-responsive' );
@@ -554,6 +570,10 @@ if ( ! function_exists( 'astra_logo' ) ) {
 			if ( apply_filters( 'astra_replace_logo_width', true ) ) {
 				remove_filter( 'wp_get_attachment_image_src', 'astra_replace_header_logo', 10 );
 			}
+		}
+
+		if ( (bool) $logo_svg_icon ) {
+			$html .= "<div class='ast-logo-svg-icon'>{$logo_svg_icon}</div>";
 		}
 
 		$html .= astra_get_site_title_tagline( $display_site_title, $display_site_tagline, $device );
@@ -584,6 +604,50 @@ function astra_add_custom_logo_attributes( $html ) {
 }
 
 add_filter( 'get_custom_logo', 'astra_add_custom_logo_attributes' );
+
+/**
+ * Provides the logo svg icon according to the user's selection.
+ *
+ * @return string
+ * @since 4.7.0
+ */
+function astra_logo_svg_icon() {
+
+	if ( ! apply_filters( 'astra_enable_logo_svg_icon', astra_get_option( 'use-logo-svg-icon' ) ) ) {
+		return '';
+	}
+
+	if ( has_custom_logo() ) {
+		return '';
+	}
+
+	$logo_svg_code = '';
+	$logo_svg_icon = astra_get_option( 'logo-svg-icon' );
+
+	if ( ! isset( $logo_svg_icon['value'] ) ) {
+		return $logo_svg_code;
+	}
+
+	switch ( $logo_svg_icon['type'] ) {
+		case 'icon-library':
+			$svg_icons = function_exists( 'astra_get_logo_svg_icons_array' ) ? astra_get_logo_svg_icons_array() : array();
+
+			if ( ! empty( $svg_icons[ $logo_svg_icon['value'] ] ) ) {
+				$logo_svg_code = $svg_icons[ $logo_svg_icon['value'] ]['rendered'];
+			}
+			break;
+
+		case 'custom':
+			$logo_svg_code = $logo_svg_icon['value'];
+			break;
+
+		default:
+			$logo_svg_code = '';
+			break;
+	}
+
+	return $logo_svg_code;
+}
 
 /**
  * Return or echo site logo markup.

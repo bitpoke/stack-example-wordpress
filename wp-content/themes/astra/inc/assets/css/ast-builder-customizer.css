@@ -888,11 +888,6 @@
     justify-content: flex-start;
 }
 
-.customize-control:not(.customize-control-ast-builder-header-control) + #customize-control-astra-settings-header-mobile-draggable-items.customize-control {
-    padding-top: 0;
-    border-top: 0;
-}
-
 .ahfb-availbile-items-title {
     padding: 10px 0;
 }

@@ -3327,18 +3327,15 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		/**
 		 * Woocommerce mini cart markup markup
 		 *
+		 * @param string $device Either 'mobile' or 'desktop' option.
+		 *
 		 * @since 1.2.2
 		 * @return html
 		 */
-		public function woo_mini_cart_markup() {
-
-			if ( is_cart() ) {
-				$class = 'current-menu-item';
-			} else {
-				$class = '';
-			}
-
-			$desktop_cart_flyout = 'flyout' === astra_get_option( 'woo-header-cart-click-action' ) ? 'ast-desktop-cart-flyout' : '';
+		public function woo_mini_cart_markup( $device = 'desktop' ) {
+			$class               = is_cart() ? 'current-menu-item' : '';
+			$cart_click_action   = astra_get_option( 'woo-header-cart-click-action', 'default' );
+			$desktop_cart_flyout = 'flyout' === $cart_click_action ? 'ast-desktop-cart-flyout' : '';
 			$cart_menu_classes   = apply_filters( 'astra_cart_in_menu_class', array( 'ast-menu-cart-with-border', $desktop_cart_flyout ) );
 			ob_start();
 			if ( is_customize_preview() && true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
@@ -3352,8 +3349,8 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 				<div class="ast-site-header-cart-data">
 
 					<?php
-					// Load 'Slide-In Cart' or 'Dropdown Cart' Widget when 'Cart Page' Option is not selected.
-					if ( 'redirect' !== astra_get_option( 'woo-header-cart-click-action' ) ) {
+					// Load 'Dropdown Cart' Widget when default option is selected and only for desktop header, for mobile flyout is loaded.
+					if ( 'default' === $cart_click_action && 'desktop' === $device ) {
 						the_widget( 'WC_Widget_Cart', 'title=' );
 					}
 					?>

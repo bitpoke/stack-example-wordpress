@@ -450,6 +450,16 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 					'footer-layout-width'                  => 'content',
 					// General.
 					'ast-header-retina-logo'               => '',
+					'use-logo-svg-icon'                    => false,
+					'logo-svg-icon'                        => array(
+						'type'  => '',
+						'value' => '',
+					),
+					'logo-svg-site-title-gap'              => array(
+						'desktop' => '5',
+						'tablet'  => '5',
+						'mobile'  => '5',
+					),
 					'ast-header-logo-width'                => '',
 					'ast-header-responsive-logo-width'     => array(
 						'desktop' => '',
@@ -899,6 +909,14 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 
 					// Misc.
 					'enable-scroll-to-id'                  => true,
+					'ast-dynamic-single-download-structure' => ( true === astra_enable_edd_featured_image_defaults() ) ? array(
+						'ast-dynamic-single-download-title',
+						'ast-dynamic-single-download-meta',
+						'ast-dynamic-single-download-image',
+					) : array(
+						'ast-dynamic-single-download-title',
+						'ast-dynamic-single-download-meta',
+					),
 				)
 			);
 

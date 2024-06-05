@@ -1076,3 +1076,26 @@ function astra_theme_background_updater_4_6_14() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility for following cases.
+ *
+ * 1. Making edd default option enable by default.
+ * 2. Handle backward compatibility for Heading font size fix.
+ *
+ * @since 4.7.0
+ * @return void
+ */
+function astra_theme_background_updater_4_7_0() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( class_exists( 'Easy_Digital_Downloads' ) && ! isset( $theme_options['can-update-edd-featured-image-default'] ) ) {
+		$theme_options['can-update-edd-featured-image-default'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+
+	if ( ! isset( $theme_options['heading-widget-font-size'] ) ) {
+		$theme_options['heading-widget-font-size'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}

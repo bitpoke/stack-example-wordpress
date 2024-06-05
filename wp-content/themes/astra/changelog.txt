@@ -1,3 +1,15 @@
+v4.7.0
+- New: Header Builder - Introducing Header Presets for a quick start with pre-designed headers. ( https://wpastra.com/docs/header-presets/ )
+- New: Header Builder - Introducing "Logo SVG Icon" option in "Header Builder > Site Title & Logo". ( https://wpastra.com/docs/logo-svg-icon/ )
+- Improvement: Updated "Useful Plugins" recommendations on the theme Dashboard for better site owner's experience.
+- Improvement: Making EDD downloadable product featured image by default enable.
+- Improvement: Switched input field to dropdown menu for Link REL, making it easier to choose options.
+- Fix: WooCommerce - The layout type not working on the categories page having 0 products.
+- Fix: Header Builder - Account element is overlapping with the header menu on responsive devices.
+- Fix: Image Block - UI misaligned issue when the alignment set as Left or Right.
+- Fix: WooCommerce - Quantity Selector - With increasing/decreasing quantity there is a violating node error.
+- Fix: All headings created by the Heading block in the widget areas had no difference in font size.
+
 v4.6.16
 - Fix: If dashboard gets white labelled from addon, screen turns blank.
 - Fix: PHP uncaught type error with in_array() due to astra_add_aria_expanded_submenu_items_attr() function.

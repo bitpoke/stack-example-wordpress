@@ -117,7 +117,7 @@ switch ( $astra_header_component_slug ) {
 		if ( class_exists( 'Astra_Woocommerce' ) ) {
 			?>
 			<div class="ast-builder-layout-element site-header-focus-item ast-header-woo-cart" data-section="section-header-woo-cart">
-				<?php do_action( 'astra_header_woo_cart' ); ?>
+				<?php do_action( 'astra_header_woo_cart', $astra_active_device ); ?>
 			</div>
 			<?php
 		}

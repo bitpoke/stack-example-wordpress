@@ -1432,6 +1432,12 @@ return array(
 		),
 	),
 	array(
+		'Cactus Classical Serif' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'serif',
+		),
+	),
+	array(
 		'Caesar Dressing' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
@@ -1741,6 +1747,12 @@ return array(
 		'Chivo Mono' => array(
 			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900', '100italic', '200italic', '300italic', 'italic', '500italic', '600italic', '700italic', '800italic', '900italic' ),
 			'category' => 'monospace',
+		),
+	),
+	array(
+		'Chocolate Classical Sans' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
 		),
 	),
 	array(
@@ -4231,6 +4243,18 @@ return array(
 		'Kurale' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'serif',
+		),
+	),
+	array(
+		'LXGW WenKai Mono TC' => array(
+			'variants' => array( '300', 'regular', '700' ),
+			'category' => 'monospace',
+		),
+	),
+	array(
+		'LXGW WenKai TC' => array(
+			'variants' => array( '300', 'regular', '700' ),
+			'category' => 'handwriting',
 		),
 	),
 	array(

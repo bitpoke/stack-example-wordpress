@@ -305,6 +305,15 @@ class Astra_Admin_Ajax {
 			/** @psalm-suppress PossiblyNullReference */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		}
 
+		/**
+		 * Added this flag as tracker to track onboarding and funnel stats for SureCart owners.
+		 *
+		 * @since 4.7.0
+		 */
+		if ( 'surecart/surecart.php' === $plugin_init ) {
+			update_option( 'surecart_source', 'astra', false );
+		}
+
 		wp_send_json_success(
 			array(
 				'success' => true,

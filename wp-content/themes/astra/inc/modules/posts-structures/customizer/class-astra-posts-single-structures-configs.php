@@ -218,9 +218,11 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 			$taxonomies = array_reverse( $taxonomies );
 			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
-			$section          = 'single-posttype-' . $post_type;
-			$title_section    = 'ast-dynamic-single-' . $post_type;
-			$post_type_object = get_post_type_object( $post_type );
+			$section                    = 'single-posttype-' . $post_type;
+			$title_section              = 'ast-dynamic-single-' . $post_type;
+			$post_type_object           = get_post_type_object( $post_type );
+			$_structure_defaults        = 'page' === $post_type ? array( $title_section . '-image', $title_section . '-title' ) : array( $title_section . '-title', $title_section . '-meta' );
+			$default_edd_featured_image = ( true === astra_enable_edd_featured_image_defaults() );
 
 			if ( 'product' === $post_type ) {
 				$parent_section = 'section-woo-shop-single';
@@ -229,10 +231,13 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 			} elseif ( 'page' === $post_type ) {
 				$parent_section = 'section-single-page';
 			} elseif ( 'download' === $post_type ) {
-				$parent_section = 'section-edd-single';
+				$parent_section        = 'section-edd-single';
+				$_structure_defaults[] = $default_edd_featured_image ? $title_section . '-image' : '';
 			} else {
 				$parent_section = $section;
 			}
+
+			$structure_defaults = astra_get_option( $title_section . '-structure', $_structure_defaults );
 
 			$meta_config_options = array();
 			$clone_limit         = 0;
@@ -472,7 +477,7 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_multi_choices' ),
 					'section'           => $title_section,
 					'context'           => Astra_Builder_Helper::$general_tab,
-					'default'           => astra_get_option( $title_section . '-structure', 'page' === $post_type ? array( $title_section . '-image', $title_section . '-title' ) : array( $title_section . '-title', $title_section . '-meta' ) ),
+					'default'           => $structure_defaults,
 					'priority'          => 20,
 					'title'             => __( 'Structure', 'astra' ),
 					'divider'           => array( 'ast_class' => 'ast-top-divider ast-bottom-spacing' ),

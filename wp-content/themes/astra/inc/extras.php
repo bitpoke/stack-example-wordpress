@@ -1444,3 +1444,14 @@ function astra_customizer_search_post_types_choices() {
 	}
 	return $post_type_choices;
 }
+
+/**
+ * Adding backward compatibility fag to manage EDD featured image by default state.
+ *
+ * @since 4.7.0
+ * @return bool
+ */
+function astra_enable_edd_featured_image_defaults() {
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	return apply_filters( 'astra_enable_edd_featured_image_defaults', isset( $astra_settings['can-update-edd-featured-image-default'] ) ? false : true );
+}

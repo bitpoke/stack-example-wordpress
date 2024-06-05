@@ -618,6 +618,18 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				case 'ast-select-multi':
 					$configuration['value'] = $val;
 					break;
+				case 'ast-logo-svg-icon':
+					if ( ! isset( $val['type'] ) ) {
+						$configuration['value'] = array(
+							'type'  => '',
+							'value' => '',
+						);
+					} else {
+						$configuration['value'] = $val;
+					}
+
+					$configuration['ast_all_svg_icons'] = function_exists( 'astra_get_logo_svg_icons_array' ) ? astra_get_logo_svg_icons_array() : array();
+					break;
 
 			} // Switch End.
 
@@ -876,6 +888,9 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					break;
 				case 'ast-responsive-slider':
 					$config ['sanitize_callback'] = array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' );
+					break;
+				case 'ast-logo-svg-icon':
+					$config ['sanitize_callback'] = array( 'Astra_Customizer_Sanitizes', 'sanitize_logo_svg_icon' );
 					break;
 				case 'ast-toggle-control':
 				case 'ast-section-toggle':
@@ -1251,6 +1266,14 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				array(
 					'callback'          => 'Astra_Control_Typography',
 					'sanitize_callback' => 'sanitize_text_field',
+				)
+			);
+
+			Astra_Customizer_Control_Base::add_control(
+				'ast-logo-svg-icon',
+				array(
+					'callback'          => 'Astra_Control_Logo_SVG_Icon',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_logo_svg_icon' ),
 				)
 			);
 

@@ -1,7 +1,7 @@
 {
   "customizer-settings": {
     "astra-settings": {
-      "theme-auto-version": "4.6.16",
+      "theme-auto-version": "4.7.0",
       "blog-single-post-structure": [
         "single-image",
         "single-title-meta"
@@ -754,6 +754,14 @@
       "font-weight-h6": "inherit",
       "font-extras-h6": {
         "line-height": "1.25",
+        "line-height-unit": "em",
+        "letter-spacing": "",
+        "letter-spacing-unit": "px",
+        "text-transform": "",
+        "text-decoration": ""
+      },
+      "header-menu1-font-extras": {
+        "line-height": "1.6",
         "line-height-unit": "em",
         "letter-spacing": "",
         "letter-spacing-unit": "px",
@@ -1849,12 +1857,12 @@
         "mobile": ""
       },
       "header-html-1link-color": {
-        "desktop": "",
+        "desktop": "rgba(242,245,247,0.76)",
         "tablet": "",
         "mobile": ""
       },
       "header-html-1link-h-color": {
-        "desktop": "",
+        "desktop": "var(--ast-global-color-5)",
         "tablet": "",
         "mobile": ""
       },

@@ -1861,3 +1861,46 @@ function astra_render_svg_mask( $id, $filter_name, $color ) {
 	/** @psalm-suppress UndefinedFunction  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 	echo astra_get_filter_svg( $id, apply_filters( 'astra_' . $filter_name, $svg_color ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
+
+
+/**
+ * Returns an array of logo svg icons.
+ *
+ * @return array
+ * @since 4.7.0
+ */
+function astra_get_logo_svg_icons_array() {
+	static $ast_all_svg_icons = array();
+
+	if ( $ast_all_svg_icons ) {
+		return $ast_all_svg_icons;
+	}
+
+	$icons_dir = ASTRA_THEME_DIR . 'assets/svg/logo-svg-icons';
+
+	for ( $i = 0; $i < 4; $i++ ) {
+
+		$icons = include_once "{$icons_dir}/icons-v6-{$i}.php";
+
+		foreach ( $icons as &$icon ) {
+			$fallback            = isset( $icon['svg']['solid'] ) ? $icon['svg']['solid'] : array();
+			$icon_brand_or_solid = isset( $icon['svg']['brands'] ) ? $icon['svg']['brands'] : $fallback;
+			$path                = isset( $icon_brand_or_solid['path'] ) ? $icon_brand_or_solid['path'] : '';
+			$width               = isset( $icon_brand_or_solid['width'] ) ? $icon_brand_or_solid['width'] : '';
+			$height              = isset( $icon_brand_or_solid['height'] ) ? $icon_brand_or_solid['height'] : '';
+			$view                = (bool) $width && (bool) $height ? "0 0 {$width} {$height}" : null;
+
+			if ( $path && $view ) {
+				ob_start();
+				?>
+				<svg xmlns="https://www.w3.org/2000/svg" viewBox= "<?php echo esc_attr( $view ); ?>"><path d="<?php echo esc_attr( $path ); ?>"></path></svg>
+				<?php
+				$icon['rendered'] = trim( ob_get_clean() );
+			}
+		}
+
+		$ast_all_svg_icons = array_merge( $ast_all_svg_icons, $icons );
+	}
+
+	return $ast_all_svg_icons;
+}

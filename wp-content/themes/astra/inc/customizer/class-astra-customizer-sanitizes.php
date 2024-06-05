@@ -50,6 +50,183 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		public function __construct() { }
 
 		/**
+		 * Sanitize Logo SVG Icon.
+		 *
+		 * @param array $input Logo SVG Icon value.
+		 * @return array Sanitized Logo SVG Icon value.
+		 * @since 4.7.0
+		 */
+		public static function sanitize_logo_svg_icon( $input ) {
+			if ( empty( $input['type'] ) ) {
+				return array(
+					'type'  => '',
+					'value' => '',
+				);
+			}
+
+			if ( 'icon-library' === $input['type'] ) {
+
+				$svg_icons = function_exists( 'astra_get_logo_svg_icons_array' ) ? astra_get_logo_svg_icons_array() : array();
+
+				return array(
+					'type'  => 'icon-library',
+					'value' => isset( $input['value'] ) && isset( $svg_icons[ $input['value'] ] ) ? $input['value'] : '',
+				);
+			}
+
+			return array(
+				'type'  => 'custom',
+				'value' => isset( $input['value'] ) ? self::sanitize_svg_code( $input['value'] ) : '',
+			);
+		}
+
+		/**
+		 * Sanitizes SVG Code string.
+		 *
+		 * @param string $original_content SVG code to sanitize.
+		 * @return string
+		 * @since 4.7.0
+		 */
+		public static function sanitize_svg_code( $original_content ) {
+
+			if ( ! $original_content ) {
+				return '';
+			}
+
+			// Define allowed tags and attributes.
+			$allowed_tags = apply_filters( 'astra_custom_svg_allowed_tags', array( 'a', 'circle', 'clippath', 'defs', 'style', 'desc', 'ellipse', 'fegaussianblur', 'filter', 'foreignobject', 'g', 'image', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'svg', 'switch', 'symbol', 'text', 'textpath', 'title', 'tspan', 'use' ) );
+
+			$allowed_attributes = apply_filters( 'astra_custom_svg_allowed_attributes', array( 'class', 'clip-path', 'clip-rule', 'fill-opacity', 'fill-rule', 'filter', 'id', 'mask', 'opacity', 'stroke', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width', 'style', 'systemlanguage', 'transform', 'href', 'xlink:href', 'xlink:title', 'cx', 'cy', 'r', 'requiredfeatures', 'clippathunits', 'type', 'rx', 'ry', 'color-interpolation-filters', 'stddeviation', 'filterres', 'filterunits', 'primitiveunits', 'x', 'y', 'font-size', 'display', 'font-family', 'font-style', 'font-weight', 'text-anchor', 'marker-end', 'marker-mid', 'marker-start', 'x1', 'x2', 'y1', 'y2', 'gradienttransform', 'gradientunits', 'spreadmethod', 'markerheight', 'markerunits', 'markerwidth', 'orient', 'preserveaspectratio', 'refx', 'refy', 'maskcontentunits', 'maskunits', 'd', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'fx', 'fy', 'offset', 'stop-color', 'stop-opacity', 'xmlns', 'xmlns:se', 'xmlns:xlink', 'xml:space', 'method', 'spacing', 'startoffset', 'dx', 'dy', 'rotate', 'textlength', 'viewbox' ) );
+
+			$is_encoded = false;
+
+			$needle = "\x1f\x8b\x08";
+			if ( function_exists( 'mb_strpos' ) ) {
+				$is_encoded = 0 === mb_strpos( $original_content, $needle );
+			} else {
+				$is_encoded = 0 === strpos( $original_content, $needle );
+			}
+
+			if ( $is_encoded ) {
+				$original_content = gzdecode( $original_content );
+				if ( $original_content === false ) {
+					return '';
+				}
+			}
+
+			// Strip php tags.
+			$content = preg_replace( '/<\?(=|php)(.+?)\?>/i', '', $original_content );
+			$content = preg_replace( '/<\?(.*)\?>/Us', '', $content );
+			$content = preg_replace( '/<\%(.*)\%>/Us', '', $content );
+
+			if ( ( false !== strpos( $content, '<?php' ) ) || ( false !== strpos( $content, '<%' ) ) ) {
+				return '';
+			}
+
+			// Strip comments.
+			$content = preg_replace( '/<!--(.*)-->/Us', '', $content );
+			$content = preg_replace( '/\/\*(.*)\*\//Us', '', $content );
+
+			if ( ( false !== strpos( $content, '<!--' ) ) || ( false !== strpos( $content, '/*' ) ) ) {
+				return '';
+			}
+
+			// Strip line breaks.
+			$content = preg_replace( '/\r|\n/', '', $content );
+
+			// Find the start and end tags so we can cut out miscellaneous garbage.
+			$start = strpos( $content, '<svg' );
+			$end   = strrpos( $content, '</svg>' );
+			if ( false === $start || false === $end ) {
+				return '';
+			}
+
+			$content = substr( $content, $start, ( $end - $start + 6 ) );
+
+			// If the server's PHP version is 8 or up, make sure to disable the ability to load external entities.
+			$php_version_under_eight = version_compare( PHP_VERSION, '8.0.0', '<' );
+			if ( $php_version_under_eight ) {
+				$libxml_disable_entity_loader = libxml_disable_entity_loader( true );
+			}
+			// Suppress the errors.
+			$libxml_use_internal_errors = libxml_use_internal_errors( true );
+
+			// Create DOMDocument instance.
+			$dom                      = new DOMDocument();
+			$dom->formatOutput        = false;
+			$dom->preserveWhiteSpace  = false;
+			$dom->strictErrorChecking = false;
+
+			$open_svg = (bool) $content ? $dom->loadXML( $content ) : false;
+			if ( ! $open_svg ) {
+				return '';
+			}
+
+			// Strip Doctype.
+			foreach ( $dom->childNodes as $child ) {
+				if ( XML_DOCUMENT_TYPE_NODE === $child->nodeType && (bool) $child->parentNode ) {
+					$child->parentNode->removeChild( $child );
+				}
+			}
+
+			// Sanitize elements.
+			$elements = $dom->getElementsByTagName( '*' );
+			for ( $index = $elements->length - 1; $index >= 0; $index-- ) {
+				$current_element = $elements->item( $index );
+				if ( ! in_array( strtolower( $current_element->tagName ), $allowed_tags ) ) {
+					$current_element->parentNode->removeChild( $current_element );
+					continue;
+				}
+
+				// Validate allowed attributes.
+				for ( $i = $current_element->attributes->length - 1; $i >= 0; $i-- ) {
+					$attr_name           = $current_element->attributes->item( $i )->name;
+					$attr_name_lowercase = strtolower( $attr_name );
+					if ( ! in_array( $attr_name_lowercase, $allowed_attributes ) &&
+						! preg_match( '/^aria-/', $attr_name_lowercase ) &&
+						! preg_match( '/^data-/', $attr_name_lowercase ) ) {
+						$current_element->removeAttribute( $attr_name );
+						continue;
+					}
+
+					$attr_value = $current_element->attributes->item( $i )->value;
+					if ( ! empty( $attr_value ) &&
+						( preg_match( '/^((https?|ftp|file):)?\/\//i', $attr_value ) ||
+						preg_match( '/base64|data|(?:java)?script|alert\(|window\.|document/i', $attr_value ) ) ) {
+						$current_element->removeAttribute( $attr_name );
+						continue;
+					}
+				}
+
+				// Strip xlink:href.
+				$xlink_href = $current_element->getAttributeNS( 'http://www.w3.org/1999/xlink', 'href' );
+				if ( $xlink_href && strpos( $xlink_href, '#' ) !== 0 ) {
+					$current_element->removeAttributeNS( 'http://www.w3.org/1999/xlink', 'href' );
+				}
+
+				// Strip use tag with external references.
+				if ( strtolower( $current_element->tagName ) === 'use' ) {
+					$xlink_href = $current_element->getAttributeNS( 'http://www.w3.org/1999/xlink', 'href' );
+					if ( $current_element->parentNode && $xlink_href && strpos( $xlink_href, '#' ) !== 0 ) {
+						$current_element->parentNode->removeChild( $current_element );
+					}
+				}
+			}
+
+			// Export sanitized SVG to string.
+			$sanitized = $dom->saveXML( $dom->documentElement, LIBXML_NOEMPTYTAG );
+
+			// Restore defaults.
+			if ( $php_version_under_eight && isset( $libxml_disable_entity_loader ) ) {
+				libxml_disable_entity_loader( $libxml_disable_entity_loader );
+			}
+			libxml_use_internal_errors( $libxml_use_internal_errors );
+
+			return $sanitized;
+		}
+
+
+		/**
 		 * Sanitize Integer
 		 *
 		 * @param  number $input Customizer setting input number.
