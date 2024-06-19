@@ -1,3 +1,19 @@
+v4.7.1
+- New: Social Icons - Introduced "Nextdoor" & "WeChat" icons in the social icons list.
+- New: Added an option to disable page structure and meta elements on the site's front page.
+- Improvement: Option to add separate background color for the transparent header's above, main and below headers.
+- Improvement: Updated Starter Templates brand logo under theme dashboard.
+- Improvement: Removed default rel="nofollow" from duplicated menu links & added filter `astra_disable_nofollow_markup` to enable it.
+- Fix: The Underline Content Links option is not working for links under WooCommerce product short description.
+- Fix: Console error related to inner block with GeoDirectory and The Events Calendar plugins.
+- Fix: Blog - Read More structure's sub-section appears to be empty if Astra Addon's Blog Pro addon is disabled.
+- Fix: Block Editor - There is inconsistency between editor & frontend Google Fonts.
+- Fix: WooCommerce - Cart - Background color not applying to dropdown style on the frontend.
+- Fix: Header Builder - Toggle button don't work when the primary header is disabled via meta setting.
+- Fix: Header Builder - Toggle button not functioning when custom header is enabled partially for display devices.
+- Fix: Site Identity - Logo image width setting fails to resize beyond original image dimensions.
+- Fix: Admin Dashboard - Activation of Recommended & Useful Plugins from dashboard skips the activation hooks.
+
 v4.7.0
 - New: Header Builder - Introducing Header Presets for a quick start with pre-designed headers. ( https://wpastra.com/docs/header-presets/ )
 - New: Header Builder - Introducing "Logo SVG Icon" option in "Header Builder > Site Title & Logo". ( https://wpastra.com/docs/logo-svg-icon/ )

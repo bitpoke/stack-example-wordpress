@@ -112,6 +112,16 @@
     color: var(--ast-customizer-color-1);
 }
 
+.customize-control.customize-control-ast-responsive-background .ast-control-tooltip {
+  top: 50%;
+  left: 36px;
+  transform: translateY(-50%);
+}
+
+.customize-control.customize-control-ast-responsive-background:has(.ast-color-btn-reset-wrap) .ast-control-tooltip {
+  left: 60px;
+}
+
 .customize-control.customize-control-ast-toggle-control .ast-control-tooltip {
   position: absolute;
   top: 50%;

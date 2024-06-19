@@ -1373,10 +1373,10 @@ function hasWordPressWidgetBlockEditor() {
 		setting.bind( function( value ) {
 			var dynamicStyle = '';
 			if ( value ) {
-				dynamicStyle = '.ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a) { text-decoration: underline; } ';
+				dynamicStyle = '.ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a), .woocommerce-js .woocommerce-product-details__short-description a { text-decoration: underline; } ';
 				astra_add_dynamic_css( 'underline-content-links', dynamicStyle );
 			} else {
-				dynamicStyle = '.ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a) { text-decoration: unset; } ';
+				dynamicStyle = '.ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a), .woocommerce-js .woocommerce-product-details__short-description a { text-decoration: unset; } ';
 				astra_add_dynamic_css( 'underline-content-links', dynamicStyle );
 			}
 		} );

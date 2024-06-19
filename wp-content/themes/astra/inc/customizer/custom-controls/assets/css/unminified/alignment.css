@@ -75,7 +75,7 @@
 .customize-control-ast-selector .ast-responsive-btns {
     position: relative;
     left: 6px;
-    top: 0px;
+    top: 1px;
 }
 .customize-control-ast-selector .ast-alignment-inner-wrap .components-button:focus:not(:disabled) {
     box-shadow: none;

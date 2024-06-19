@@ -100,6 +100,18 @@ if ( ! class_exists( 'Astra_Ext_Transparent_Header_Loader' ) ) {
 				'mobile'  => '',
 			);
 
+			$defaults['hba-transparent-header-bg-color-responsive'] = array(
+				'desktop' => '',
+				'tablet'  => '',
+				'mobile'  => '',
+			);
+
+			$defaults['hbb-transparent-header-bg-color-responsive'] = array(
+				'desktop' => '',
+				'tablet'  => '',
+				'mobile'  => '',
+			);
+
 			$defaults['transparent-header-color-site-title-responsive'] = array(
 				'desktop' => '',
 				'tablet'  => '',
@@ -208,6 +220,7 @@ if ( ! class_exists( 'Astra_Ext_Transparent_Header_Loader' ) ) {
 				array(
 					'is_astra_hf_builder_active' => Astra_Builder_Helper::$is_header_footer_builder_active,
 					'is_flex_based_css'          => Astra_Builder_Helper::apply_flex_based_css(),
+					'transparent_header_devices' => astra_get_option( 'transparent-header-on-devices' ),
 				)
 			);
 		}

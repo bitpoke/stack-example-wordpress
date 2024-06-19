@@ -61,6 +61,11 @@ class Astra_Posts_Structure_Markup {
 	 * @return void
 	 */
 	public function override_entry_header() {
+
+		if ( is_front_page() && 'page' === get_option( 'show_on_front' ) && astra_get_option( 'ast-dynamic-single-page-disable-structure-meta-on-front-page', false ) ) {
+			return;
+		}
+
 		if ( is_search() ) {
 			if ( true === astra_get_option( 'ast-search-page-title', true ) ) {
 				if ( 'layout-2' === astra_get_option( 'section-search-page-title-layout', 'layout-1' ) ) {

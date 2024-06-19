@@ -604,9 +604,6 @@
     top: 61px;
 }
 
-.ast-top-divider.customize-control-ast-responsive-color .ast-divider-title + .ast-control-wrap .ast-responsive-btns {
-    top: 70px;
-}
 .ast-color-palette.components-circular-option-picker .components-circular-option-picker__swatches{
     width: 100%;
 }

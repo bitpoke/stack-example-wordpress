@@ -9,13 +9,17 @@
  * @since       Astra 4.0.0
  */
 
-if ( apply_filters( 'astra_single_layout_one_banner_visibility', true ) ) { ?>
+if ( apply_filters( 'astra_single_layout_one_banner_visibility', true ) ) {
 
-	<header class="entry-header <?php astra_entry_header_class(); ?>">
-		<?php astra_banner_elements_order(); ?>
-	</header> <!-- .entry-header -->
-
-<?php } ?>
+	if ( ! ( is_front_page() && 'page' === get_option( 'show_on_front' ) && astra_get_option( 'ast-dynamic-single-page-disable-structure-meta-on-front-page', false ) ) ) {
+		?>
+			<header class="entry-header <?php astra_entry_header_class(); ?>">
+				<?php astra_banner_elements_order(); ?>
+			</header> <!-- .entry-header -->
+		<?php
+	}
+}
+?>
 
 <div class="entry-content clear"
 	<?php

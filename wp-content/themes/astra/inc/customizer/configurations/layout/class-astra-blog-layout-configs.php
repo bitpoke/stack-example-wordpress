@@ -282,7 +282,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 						),
 						'read-more'  => array(
 							'clone'       => false,
-							'is_parent'   => defined( 'ASTRA_EXT_VER' ) ? true : false,
+							'is_parent'   => $if_astra_addon ? true : false,
 							'main_index'  => 'read-more',
 							'clone_limit' => 1,
 							'title'       => __( 'Read More', 'astra' ),

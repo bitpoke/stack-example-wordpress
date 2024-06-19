@@ -75,7 +75,7 @@
 .customize-control-ast-selector .ast-responsive-btns {
     position: relative;
     right: 6px;
-    top: 0px;
+    top: 1px;
 }
 .customize-control-ast-selector .ast-alignment-inner-wrap .components-button:focus:not(:disabled) {
     box-shadow: none;
@@ -1468,9 +1468,6 @@ section.ast-palette-presets-inner-wrap:last-child {
     top: 61px;
 }
 
-.ast-top-divider.customize-control-ast-responsive-color .ast-divider-title + .ast-control-wrap .ast-responsive-btns {
-    top: 70px;
-}
 .ast-color-palette.components-circular-option-picker .components-circular-option-picker__swatches{
     width: 100%;
 }
@@ -1627,6 +1624,16 @@ input[type="text"], input[type="password"], input[type="color"], input[type="dat
 
 .customize-control .ast-control-tooltip:hover {
     color: var(--ast-customizer-color-1);
+}
+
+.customize-control.customize-control-ast-responsive-background .ast-control-tooltip {
+  top: 50%;
+  left: 36px;
+  transform: translateY(-50%);
+}
+
+.customize-control.customize-control-ast-responsive-background:has(.ast-color-btn-reset-wrap) .ast-control-tooltip {
+  left: 60px;
 }
 
 .customize-control.customize-control-ast-toggle-control .ast-control-tooltip {
@@ -3934,7 +3941,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 }
 .customize-control-ast-responsive-spacing .ast-spacing-responsive-btns {
     position: relative;
-    top: 2px;
+    top: 1px;
 }
 .customize-control-ast-responsive-spacing .ast-spacing-responsive-btns > li {
   display: none;

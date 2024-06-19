@@ -389,7 +389,7 @@ return array(
 	),
 	array(
 		'Anaheim' => array(
-			'variants' => array( 'regular' ),
+			'variants' => array( 'regular', '500', '600', '700', '800' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -5183,7 +5183,7 @@ return array(
 	),
 	array(
 		'Monda' => array(
-			'variants' => array( 'regular', '700' ),
+			'variants' => array( 'regular', '500', '600', '700' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -9187,6 +9187,12 @@ return array(
 		'Tinos' => array(
 			'variants' => array( 'regular', 'italic', '700', '700italic' ),
 			'category' => 'serif',
+		),
+	),
+	array(
+		'Tiny5' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
 		),
 	),
 	array(

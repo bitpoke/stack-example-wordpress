@@ -1473,6 +1473,32 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 				),
 			);
 
+			if ( 'page' === $post_type ) {
+
+				/**
+				 * Option: Disable structure and meta on the front page.
+				 */
+				$_configs[] = array(
+					'name'     => ASTRA_THEME_SETTINGS . '[' . $title_section . '-disable-structure-meta-on-front-page]',
+					'default'  => astra_get_option( $title_section . '-disable-structure-meta-on-front-page', false ),
+					'type'     => 'control',
+					'section'  => $title_section,
+					'context'  => array(
+						Astra_Builder_Helper::$general_tab_config,
+						'relation' => 'AND',
+						array(
+							'setting'  => 'show_on_front',
+							'operator' => '===',
+							'value'    => 'page',
+						),
+					),
+					'title'    => __( 'Disable on Front Page?', 'astra' ),
+					'priority' => 5,
+					'control'  => 'ast-toggle-control',
+					'divider'  => array( 'ast_class' => 'ast-top-divider ast-bottom-spacing' ),
+				);
+			}
+
 			if ( 'post' !== $post_type && 'product' !== $post_type ) {
 				$_configs[] = array(
 					'name'        => $title_section . '-parent-ast-context-tabs',

@@ -629,7 +629,6 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				),
 				'header .custom-logo-link img'           => array(
 					'max-width' => astra_get_css_value( $header_logo_width['desktop'], 'px' ),
-					'width'     => astra_get_css_value( $header_logo_width['desktop'], 'px' ),
 				),
 				'.astra-logo-svg'                        => array(
 					'width' => astra_get_css_value( $header_logo_width['desktop'], 'px' ),
@@ -912,7 +911,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			$content_links_underline = astra_get_option( 'underline-content-links' );
 
 			if ( $content_links_underline ) {
-				$css_output['.ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a)'] = array(
+				$text_decoration_selector                = class_exists( 'WooCommerce' ) ? '.ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a), .woocommerce-js .woocommerce-product-details__short-description a' : '.ast-single-post .entry-content a, .ast-comment-content a:not(.ast-comment-edit-reply-wrap a)';
+				$css_output[ $text_decoration_selector ] = array(
 					'text-decoration' => 'underline',
 				);
 
@@ -3650,7 +3650,6 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				),
 				'header .custom-logo-link img, .ast-header-break-point .site-logo-img .custom-mobile-logo-link img' => array(
 					'max-width' => astra_get_css_value( $header_logo_width['tablet'], 'px' ),
-					'width'     => astra_get_css_value( $header_logo_width['tablet'], 'px' ),
 				),
 				'body, .ast-separate-container'  => astra_get_responsive_background_obj( $box_bg_obj, 'tablet' ),
 			);
@@ -3749,7 +3748,6 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				),
 				'header .custom-logo-link img, .ast-header-break-point .site-branding img, .ast-header-break-point .custom-logo-link img' => array(
 					'max-width' => astra_get_css_value( $header_logo_width['mobile'], 'px' ),
-					'width'     => astra_get_css_value( $header_logo_width['mobile'], 'px' ),
 				),
 				'.astra-logo-svg'                => array(
 					'width' => astra_get_css_value( $header_logo_width['mobile'], 'px' ),

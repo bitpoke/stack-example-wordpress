@@ -546,7 +546,8 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				$screen     = get_current_screen();
 				$post_type  = $screen->id;
 
-				if ( in_array( $post_type, (array) $post_types ) ) {
+				// Check if block editor is enabled or not.
+				if ( null !== $post_type && is_callable( 'use_block_editor_for_post_type' ) && use_block_editor_for_post_type( $post_type ) && in_array( $post_type, (array) $post_types ) ) {
 
 					echo '<style class="astra-meta-box-style">
 						.block-editor-page #side-sortables #astra_settings_meta_box select { min-width: 84%; padding: 3px 24px 3px 8px; height: 20px; }

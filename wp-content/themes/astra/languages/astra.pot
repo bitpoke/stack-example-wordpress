@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.7.0\n"
+"Project-Id-Version: Astra 4.7.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-04T05:13:19+00:00\n"
+"POT-Creation-Date: 2024-06-18T08:39:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
@@ -382,31 +382,28 @@ msgid "Free WordPress Page Builder."
 msgstr ""
 
 #: admin/includes/class-astra-menu.php:745
-msgid "A versatile form builder plugin."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:757
-msgid "Ultimate Video Player For WordPress."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:802
-msgid "Free WordPress Page Builder Plugin."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:815
-msgid "Simplifying selling online with WordPress."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:828
+#: admin/includes/class-astra-menu.php:829
 msgid "Automate your WordPress setup."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:906
+#: admin/includes/class-astra-menu.php:758
+msgid "Ultimate Video Player For WordPress."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:803
+msgid "Free WordPress Page Builder Plugin."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:816
+msgid "Simplifying selling online with WordPress."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:907
 msgid "Thank you for using"
 msgstr ""
 
 #. translators: 1: Astra, 2: Theme rating link
-#: admin/includes/class-astra-menu.php:910
+#: admin/includes/class-astra-menu.php:911
 msgid "Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!"
 msgstr ""
 
@@ -996,7 +993,7 @@ msgid "Beer Mug Empty"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-0.php:2024
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:64
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:66
 msgid "Behance"
 msgstr ""
 
@@ -2525,7 +2522,7 @@ msgstr ""
 #: assets/svg/logo-svg-icons/icons-v6-3.php:5631
 #: assets/svg/logo-svg-icons/icons-v6-3.php:6143
 #: assets/svg/logo-svg-icons/icons-v6-3.php:6357
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:63
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:65
 msgid "Dribbble"
 msgstr ""
 
@@ -2904,7 +2901,7 @@ msgstr ""
 #: assets/svg/logo-svg-icons/icons-v6-1.php:2442
 #: inc/customizer/extend-custom-controls/src/list-icons/list-icons-component.js:45
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:50
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:84
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:86
 msgid "Facebook"
 msgstr ""
 
@@ -3394,7 +3391,7 @@ msgid "Git Alt"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4191
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:62
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:64
 msgid "GitHub"
 msgstr ""
 
@@ -4100,7 +4097,7 @@ msgid "Images"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:22
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:77
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:79
 msgid "IMDB"
 msgstr ""
 
@@ -4658,7 +4655,7 @@ msgstr ""
 #: assets/svg/logo-svg-icons/icons-v6-2.php:1944
 #: inc/extras.php:1141
 #: inc/customizer/extend-custom-controls/src/list-icons/list-icons-component.js:53
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:58
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:60
 msgid "Medium"
 msgstr ""
 
@@ -5097,7 +5094,7 @@ msgid "Paste"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:3529
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:61
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:63
 msgid "Patreon"
 msgstr ""
 
@@ -5441,7 +5438,7 @@ msgstr ""
 #: assets/svg/logo-svg-icons/icons-v6-2.php:4700
 #: inc/customizer/extend-custom-controls/src/list-icons/list-icons-component.js:51
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:56
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:86
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:88
 msgid "Pinterest"
 msgstr ""
 
@@ -6728,7 +6725,7 @@ msgid "Teeth Open"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:2805
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:74
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:76
 msgid "Telegram"
 msgstr ""
 
@@ -6857,7 +6854,7 @@ msgid "Ticket Simple"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:3256
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:78
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:80
 msgid "TikTok"
 msgstr ""
 
@@ -7058,7 +7055,7 @@ msgid "Tty"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:3943
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:88
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:91
 msgid "Tumblr"
 msgstr ""
 
@@ -7086,7 +7083,7 @@ msgstr ""
 #: assets/svg/logo-svg-icons/icons-v6-3.php:4051
 #: inc/customizer/extend-custom-controls/src/list-icons/list-icons-component.js:46
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:51
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:85
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:87
 msgid "Twitter"
 msgstr ""
 
@@ -7133,7 +7130,7 @@ msgstr ""
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:638
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:660
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:754
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1528
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1554
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:477
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:496
 msgid "Underline"
@@ -7448,8 +7445,8 @@ msgid "Viruses"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:5225
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:65
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:90
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:67
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:93
 msgid "VK"
 msgstr ""
 
@@ -7698,7 +7695,7 @@ msgid "Xbox"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:6128
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:66
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:68
 msgid "Xing"
 msgstr ""
 
@@ -7739,7 +7736,7 @@ msgid "Yarn"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:6285
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:75
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:77
 msgid "Yelp"
 msgstr ""
 
@@ -7989,16 +7986,16 @@ msgstr ""
 
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-color-configs.php:170
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-color-configs.php:172
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:95
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:96
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:131
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:132
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:148
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:185
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:133
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:134
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:169
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:170
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:186
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:202
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:239
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:223
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:224
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:240
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:277
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:278
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:531
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:537
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:569
@@ -8088,12 +8085,12 @@ msgstr ""
 
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-color-configs.php:185
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-color-configs.php:187
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:113
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:114
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:167
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:221
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:257
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:258
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:151
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:152
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:205
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:259
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:295
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:296
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:550
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:556
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:588
@@ -8217,7 +8214,7 @@ msgstr ""
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:170
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:752
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:881
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1526
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1552
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:652
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:681
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:703
@@ -8845,12 +8842,28 @@ msgid "Use it with transparent images for optimal results."
 msgstr ""
 
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:77
+#: inc/customizer/configurations/builder/header/configs/above-header.php:31
+msgid "Above Header"
+msgstr ""
+
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:83
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:511
 msgid "Background Overlay"
 msgstr ""
 
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:149
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:203
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:98
+#: inc/customizer/class-astra-customizer-register-sections-panels.php:122
+#: inc/customizer/configurations/builder/header/configs/primary-header.php:43
+msgid "Primary Header"
+msgstr ""
+
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:115
+#: inc/customizer/configurations/builder/header/configs/below-header.php:31
+msgid "Below Header"
+msgstr ""
+
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:187
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:241
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:512
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:729
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:944
@@ -8884,8 +8897,8 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:168
-#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:222
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:206
+#: inc/addons/transparent-header/classes/sections/class-astra-customizer-colors-transparent-header-configs.php:260
 msgid "Hover / Active"
 msgstr ""
 
@@ -8970,17 +8983,17 @@ msgid "Logo Width"
 msgstr ""
 
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:375
-#: inc/customizer/configurations/builder/header/configs/above-header.php:111
-#: inc/customizer/configurations/builder/header/configs/below-header.php:111
-#: inc/customizer/configurations/builder/header/configs/primary-header.php:128
+#: inc/customizer/configurations/builder/header/configs/above-header.php:112
+#: inc/customizer/configurations/builder/header/configs/below-header.php:112
+#: inc/customizer/configurations/builder/header/configs/primary-header.php:129
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:93
 msgid "Bottom Border Size"
 msgstr ""
 
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:398
-#: inc/customizer/configurations/builder/header/configs/above-header.php:93
-#: inc/customizer/configurations/builder/header/configs/below-header.php:93
-#: inc/customizer/configurations/builder/header/configs/primary-header.php:108
+#: inc/customizer/configurations/builder/header/configs/above-header.php:94
+#: inc/customizer/configurations/builder/header/configs/below-header.php:94
+#: inc/customizer/configurations/builder/header/configs/primary-header.php:109
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:120
 msgid "Bottom Border Color"
 msgstr ""
@@ -10875,11 +10888,6 @@ msgstr ""
 msgid "Site Identity Overview"
 msgstr ""
 
-#: inc/customizer/class-astra-customizer-register-sections-panels.php:122
-#: inc/customizer/configurations/builder/header/configs/primary-header.php:43
-msgid "Primary Header"
-msgstr ""
-
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:130
 msgid "Primary Header Overview"
 msgstr ""
@@ -11529,8 +11537,10 @@ msgstr ""
 msgid "Primary Footer"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/above-header.php:31
-msgid "Above Header"
+#: inc/customizer/configurations/builder/header/configs/above-header.php:78
+#: inc/customizer/configurations/builder/header/configs/below-header.php:78
+#: inc/customizer/configurations/builder/header/configs/primary-header.php:95
+msgid "It would not be effective if transparent header is enabled."
 msgstr ""
 
 #: inc/customizer/configurations/builder/header/configs/account.php:123
@@ -11588,10 +11598,6 @@ msgstr ""
 msgid "Profile Text Color"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/below-header.php:31
-msgid "Below Header"
-msgstr ""
-
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:52
 msgid "Display Cart Total"
 msgstr ""
@@ -11607,7 +11613,7 @@ msgstr ""
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:629
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:651
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:750
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1524
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1550
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:473
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:492
 #: inc/customizer/extend-custom-controls/build/index.js:1
@@ -12231,7 +12237,7 @@ msgstr ""
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:566
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:589
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:753
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1527
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1553
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:476
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:495
 msgid "Badge"
@@ -12901,7 +12907,7 @@ msgid "Archive Banner"
 msgstr ""
 
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:1007
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1557
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1583
 msgid " Title Area"
 msgstr ""
 
@@ -12985,7 +12991,7 @@ msgid "Use as Background"
 msgstr ""
 
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:736
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1511
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1537
 msgid "Taxonomy"
 msgstr ""
 
@@ -13004,7 +13010,11 @@ msgstr ""
 msgid "Meta Font"
 msgstr ""
 
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1555
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1495
+msgid "Disable on Front Page?"
+msgstr ""
+
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1581
 msgid "Single Banner"
 msgstr ""
 
@@ -14321,13 +14331,13 @@ msgid "Facebook Group"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/list-icons/list-icons-component.js:52
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:57
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:87
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:59
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:90
 msgid "Linkedin"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/list-icons/list-icons-component.js:54
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:59
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:61
 msgid "WordPress"
 msgstr ""
 
@@ -14351,58 +14361,67 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:60
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:57
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:89
+msgid "WeChat"
+msgstr ""
+
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:58
+msgid "Nextdoor"
+msgstr ""
+
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:62
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:92
 msgid "Reddit"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:67
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:69
 msgid "RSS"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:68
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:70
 msgid "Email 1"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:69
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:71
 msgid "Phone 1"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:70
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:72
 msgid "Email 2"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:71
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:73
 msgid "Phone 2"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:72
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:91
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:74
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:94
 msgid "WhatsApp"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:73
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:75
 msgid "Google Reviews"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:76
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:78
 msgid "Trip Advisor"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:79
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:81
 msgid "Threads"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:80
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:93
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:82
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:96
 msgid "Twitter / X"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:92
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:95
 msgid "SMS"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:352
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:355
 msgid "Add Social Icon"
 msgstr ""
 

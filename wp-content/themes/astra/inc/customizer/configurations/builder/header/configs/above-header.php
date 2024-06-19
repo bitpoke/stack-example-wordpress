@@ -68,16 +68,17 @@ function astra_above_header_configuration() {
 
 		// Option: Above Header Background styling.
 		array(
-			'name'      => ASTRA_THEME_SETTINGS . '[hba-header-bg-obj-responsive]',
-			'type'      => 'control',
-			'section'   => $_section,
-			'control'   => 'ast-responsive-background',
-			'transport' => 'postMessage',
-			'default'   => astra_get_option( 'hba-header-bg-obj-responsive' ),
-			'title'     => __( 'Background', 'astra' ),
-			'priority'  => 40,
-			'context'   => Astra_Builder_Helper::$design_tab,
-			'divider'   => array( 'ast_class' => 'ast-section-spacing' ),
+			'name'        => ASTRA_THEME_SETTINGS . '[hba-header-bg-obj-responsive]',
+			'type'        => 'control',
+			'section'     => $_section,
+			'control'     => 'ast-responsive-background',
+			'transport'   => 'postMessage',
+			'default'     => astra_get_option( 'hba-header-bg-obj-responsive' ),
+			'title'       => __( 'Background', 'astra' ),
+			'description' => __( 'It would not be effective if transparent header is enabled.', 'astra' ),
+			'priority'    => 40,
+			'context'     => Astra_Builder_Helper::$design_tab,
+			'divider'     => array( 'ast_class' => 'ast-section-spacing' ),
 		),
 
 		// Section: Above Header Border Color.

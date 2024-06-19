@@ -3,6 +3,39 @@ window.addEventListener( 'load', function(e) {
 	astra_onload_function();
 });
 
+// Function to add block editor dynamic styles. 
+function blockEditorDynamicStyles() {
+	setTimeout(() => {
+		const iframes = document.getElementsByTagName('iframe');
+		if (!iframes?.length) {
+			return;
+		}
+
+		const cloneLinkElement = (id) => {
+			const element = document.getElementById(id);
+			return element ? element.cloneNode(true) : null;
+		}
+
+		const googleFontsStyle = cloneLinkElement('astra-google-fonts-css');
+
+		const appendLinkIfNotExists = (iframeDoc, clonedLink, linkId) => {
+			if (!clonedLink) return;
+			const existingLink = iframeDoc.getElementById(linkId);
+			if (existingLink) return;
+			iframeDoc.head.appendChild(clonedLink);
+		}
+
+		for (const iframe of iframes) {
+			const iframeDoc = iframe?.contentWindow.document || iframe?.contentDocument;
+			if (!iframeDoc?.head) {
+				continue;
+			}
+			appendLinkIfNotExists(iframeDoc, googleFontsStyle, 'astra-google-fonts-css');
+		}
+	}, 1000);
+}
+
+
 function addTitleVisibility() {
 	let titleVisibility = document.querySelector( '.title-visibility' ),
 		titleBlock = document.querySelector( '.edit-post-visual-editor__post-title-wrapper' ),
@@ -150,6 +183,8 @@ function astra_onload_function() {
 			siteLogoImageChange();
 			// Adding title visibility icon on wp.data.subscribe.
 			addTitleVisibility();
+			// Block editor dynamic style function.
+			blockEditorDynamicStyles();
 			if ( astraColors.ast_wp_version_higher_6_3 ) {
 				let desktopPreview = document.getElementsByClassName('is-desktop-preview'),
 					tabletPreview = document.getElementsByClassName('is-tablet-preview'),

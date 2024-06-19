@@ -741,12 +741,13 @@ class Astra_Menu {
 					),
 				),
 				array(
-					'title'       => 'SureForms',
-					'subtitle'    => __( 'A versatile form builder plugin.', 'astra' ),
+					'title'       => 'SureTriggers',
+					'subtitle'    => __( 'Automate your WordPress setup.', 'astra' ),
+					'isPro'       => false,
 					'status'      => self::get_plugin_status( 'suretriggers/suretriggers.php' ),
-					'slug'        => 'sureforms',
-					'path'        => 'sureforms/sureforms.php',
-					'redirection' => admin_url( 'admin.php?page=sureforms_menu' ),
+					'slug'        => 'suretriggers',
+					'path'        => 'suretriggers/suretriggers.php',
+					'redirection' => admin_url( 'admin.php?page=suretriggers' ),
 					'logoPath'    => array(
 						'internal_icon' => true,
 						'icon_path'     => 'suretriggers',

@@ -50,11 +50,11 @@ function astra_logo_svg_icons_dynamic_css( $dynamic_css ) {
 
 	if ( isset( $logo_svg_site_title_gap['desktop'] ) ) {
 		if ( $enabled_logo_title_inline ) {
-			$desktop_css_output[ '.ast-logo-title-inline .ast-site-identity' ] = array(
+			$desktop_css_output['.ast-logo-title-inline .ast-site-identity'] = array(
 				'gap' => astra_get_css_value( $logo_svg_site_title_gap['desktop'], 'px' ),
 			);
 		} else {
-			$desktop_css_output[ '.ast-site-identity .ast-logo-svg-icon' ] = array(
+			$desktop_css_output['.ast-site-identity .ast-logo-svg-icon'] = array(
 				'margin-bottom' => astra_get_css_value( $logo_svg_site_title_gap['desktop'], 'px' ),
 			);
 		}
@@ -75,11 +75,11 @@ function astra_logo_svg_icons_dynamic_css( $dynamic_css ) {
 
 	if ( isset( $logo_svg_site_title_gap['tablet'] ) ) {
 		if ( $enabled_logo_title_inline ) {
-			$tablet_css_output[ '.ast-logo-title-inline .ast-site-identity' ] = array(
+			$tablet_css_output['.ast-logo-title-inline .ast-site-identity'] = array(
 				'gap' => astra_get_css_value( $logo_svg_site_title_gap['tablet'], 'px' ),
 			);
 		} else {
-			$tablet_css_output[ '.ast-site-identity .ast-logo-svg-icon' ] = array(
+			$tablet_css_output['.ast-site-identity .ast-logo-svg-icon'] = array(
 				'margin-bottom' => astra_get_css_value( $logo_svg_site_title_gap['tablet'], 'px' ),
 			);
 		}
@@ -99,11 +99,11 @@ function astra_logo_svg_icons_dynamic_css( $dynamic_css ) {
 
 	if ( isset( $logo_svg_site_title_gap['mobile'] ) ) {
 		if ( $enabled_logo_title_inline ) {
-			$mobile_css_output[ '.ast-logo-title-inline .ast-site-identity' ] = array(
+			$mobile_css_output['.ast-logo-title-inline .ast-site-identity'] = array(
 				'gap' => astra_get_css_value( $logo_svg_site_title_gap['mobile'], 'px' ),
 			);
 		} else {
-			$mobile_css_output[ '.ast-site-identity .ast-logo-svg-icon' ] = array(
+			$mobile_css_output['.ast-site-identity .ast-logo-svg-icon'] = array(
 				'margin-bottom' => astra_get_css_value( $logo_svg_site_title_gap['mobile'], 'px' ),
 			);
 		}

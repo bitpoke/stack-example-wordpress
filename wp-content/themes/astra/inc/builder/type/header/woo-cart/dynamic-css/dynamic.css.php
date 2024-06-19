@@ -241,7 +241,7 @@ function astra_hb_woo_cart_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 		'.ast-site-header-cart .ast-site-header-cart-data .widget_shopping_cart_content a:not(.button):hover, .astra-cart-drawer .widget_shopping_cart_content a:not(.button):hover' => array(
 			'color' => esc_attr( $cart_h_link_color_desktop ),
 		),
-		'.ast-site-header-cart .widget_shopping_cart, div.astra-cart-drawer ' => array(
+		'.ast-site-header-cart .woocommerce.widget_shopping_cart, div.astra-cart-drawer ' => array(
 			'background-color' => esc_attr( $cart_bg_color_desktop ),
 			'border-color'     => esc_attr( $cart_bg_color_desktop ),
 		),
