@@ -1147,6 +1147,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	 * Woo-Cart.
 	 */
 	$defaults['woo-header-cart-click-action']              = 'default';
+	$defaults['responsive-cart-click-action']              = 'flyout';
 	$defaults['woo-slide-in-cart-width']                   = array(
 		'desktop'      => 35,
 		'tablet'       => '',

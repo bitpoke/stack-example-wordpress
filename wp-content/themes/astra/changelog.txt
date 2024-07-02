@@ -1,3 +1,12 @@
+v4.7.2
+- New: WooCommerce - Introducing a new dedicated "Cart Click Trigger Action" option for responsive devices.
+- Fix: Header Builder - Search - Icon color not working on tablet and mobile view.
+- Fix: 'FiboSearch' plugin conflict with addon's Sticky Header and Cart Widget.
+- Fix: SureCart - Addressed a glitch in the customizer while navigating to its CPT sections.
+- Fix: Single Product - Getting duplicated review sections on the frontend.
+- Fix: Site Identity - Retina Logo & Mobile logo options dependency to the main logo option.
+- Fix: Off-Canvas Mobile Menu - The responsive dropdown icon colors are not working as set in the customizer.
+
 v4.7.1
 - New: Social Icons - Introduced "Nextdoor" & "WeChat" icons in the social icons list.
 - New: Added an option to disable page structure and meta elements on the site's front page.

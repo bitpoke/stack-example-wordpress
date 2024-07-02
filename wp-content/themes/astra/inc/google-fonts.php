@@ -7342,6 +7342,234 @@ return array(
 		),
 	),
 	array(
+		'Playwrite AU NSW' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite AU QLD' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite AU SA' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite AU TAS' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite AU VIC' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite BR' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite CA' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite CO' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite DE Grund' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite DE LA' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite DE SAS' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite DE VA' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite ES' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite ES Deco' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite FR Moderne' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite FR Trad' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite GB J' => array(
+			'variants' => array( '100', '200', '300', 'regular', '100italic', '200italic', '300italic', 'italic' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite GB S' => array(
+			'variants' => array( '100', '200', '300', 'regular', '100italic', '200italic', '300italic', 'italic' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite ID' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite IE' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite IN' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite IS' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite IT Moderna' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite IT Trad' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite MX' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite NG Modern' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite NL' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite NO' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite NZ' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite PL' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite PT' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite RO' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite SK' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite TZ' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite US Modern' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite US Trad' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite VN' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite ZA' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
 		'Plus Jakarta Sans' => array(
 			'variants' => array( '200', '300', 'regular', '500', '600', '700', '800', '200italic', '300italic', 'italic', '500italic', '600italic', '700italic', '800italic' ),
 			'category' => 'sans-serif',

@@ -122,6 +122,11 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 							'operator' => '!=',
 							'value'    => 0,
 						),
+						array(
+							'setting'  => 'custom_logo',
+							'operator' => '!=',
+							'value'    => '',
+						),
 						Astra_Builder_Helper::$general_tab_config,
 					),
 					'priority'          => 5.5,

@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.7.1\n"
+"Project-Id-Version: Astra 4.7.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-18T08:39:08+00:00\n"
+"POT-Creation-Date: 2024-07-01T10:05:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
@@ -80,7 +80,7 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:139
 #: admin/includes/class-astra-menu.php:140
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3548
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3543
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/welcome/QuickSettings.js:43
 msgid "Customize"
@@ -154,7 +154,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:115
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:828
 #: inc/customizer/configurations/buttons/class-astra-existing-button-configs.php:419
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:499
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:504
 #: inc/customizer/extend-custom-controls/build/index.js:1
 #: inc/customizer/extend-custom-controls/src/color-group/color-group-component.js:258
 #: inc/customizer/extend-custom-controls/src/color-group/color-group-component.js:300
@@ -169,8 +169,8 @@ msgstr ""
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:313
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:339
 #: inc/customizer/configurations/buttons/class-astra-existing-button-configs.php:196
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:572
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:587
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:577
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:592
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:39
 msgid "Typography"
@@ -179,8 +179,8 @@ msgstr ""
 #. translators: %s Index
 #: admin/includes/class-astra-menu.php:319
 #: inc/compatibility/edd/customizer/sections/layout/class-astra-edd-archive-layout-configs.php:154
-#: inc/core/builder/class-astra-builder-options.php:1341
-#: inc/core/builder/class-astra-builder-options.php:1511
+#: inc/core/builder/class-astra-builder-options.php:1342
+#: inc/core/builder/class-astra-builder-options.php:1512
 #: inc/core/class-astra-theme-options.php:489
 #: inc/customizer/configurations/builder/base/class-astra-button-component-configs.php:67
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:151
@@ -3084,7 +3084,7 @@ msgstr ""
 #: assets/svg/logo-svg-icons/icons-v6-1.php:3087
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:98
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:99
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:295
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:323
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:582
 msgid "Fill"
 msgstr ""
@@ -7928,7 +7928,7 @@ msgstr ""
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:272
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:662
 #: inc/customizer/configurations/buttons/class-astra-existing-button-configs.php:75
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:378
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:383
 msgid "Colors"
 msgstr ""
 
@@ -7942,7 +7942,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/base/class-astra-social-icon-component-configs.php:220
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:248
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:185
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:651
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:679
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:429
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:745
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:762
@@ -7959,7 +7959,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/base/class-astra-html-component-configs.php:115
 #: inc/customizer/configurations/builder/footer/configs/copyright.php:105
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:217
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:639
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:667
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:415
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:711
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:728
@@ -7976,7 +7976,7 @@ msgstr ""
 
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-color-configs.php:126
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:264
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:699
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:727
 msgid "Separator Color"
 msgstr ""
 
@@ -8048,14 +8048,14 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/mobile-menu.php:206
 #: inc/customizer/configurations/builder/header/configs/mobile-menu.php:208
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:93
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:337
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:390
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:668
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:728
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:803
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:819
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:910
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:926
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:365
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:418
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:696
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:756
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:831
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:847
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:938
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:954
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:463
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:492
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:519
@@ -8067,8 +8067,8 @@ msgstr ""
 #: inc/customizer/configurations/colors-background/class-astra-body-colors-configs.php:122
 #: inc/customizer/configurations/colors-background/class-astra-footer-colors-configs.php:59
 #: inc/customizer/configurations/layout/class-astra-site-container-layout-configs.php:56
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:396
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:435
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:401
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:440
 #: inc/metabox/class-astra-meta-boxes.php:290
 #: inc/metabox/class-astra-meta-boxes.php:796
 #: inc/metabox/class-astra-meta-boxes.php:802
@@ -8138,14 +8138,14 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/mobile-menu.php:236
 #: inc/customizer/configurations/builder/header/configs/mobile-menu.php:240
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:107
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:354
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:408
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:684
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:744
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:835
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:851
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:942
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:958
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:382
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:436
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:712
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:772
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:863
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:879
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:970
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:986
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:479
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:505
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:532
@@ -8156,8 +8156,8 @@ msgstr ""
 #: inc/customizer/configurations/colors-background/class-astra-advanced-footer-colors-configs.php:152
 #: inc/customizer/configurations/colors-background/class-astra-body-colors-configs.php:136
 #: inc/customizer/configurations/colors-background/class-astra-footer-colors-configs.php:72
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:461
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:488
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:466
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:493
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:1031
 #: inc/modules/related-posts/customizer/class-astra-related-posts-configs.php:1046
 msgid "Hover"
@@ -8393,7 +8393,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:235
 #: inc/customizer/configurations/builder/header/configs/search.php:194
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:143
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:464
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:492
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:551
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:576
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:598
@@ -8450,9 +8450,9 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:236
 #: inc/customizer/configurations/builder/header/configs/search.php:195
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:144
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:216
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:465
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:496
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:250
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:493
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:524
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:552
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:577
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:599
@@ -8508,8 +8508,8 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:237
 #: inc/customizer/configurations/builder/header/configs/search.php:196
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:145
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:466
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:497
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:494
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:525
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:553
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:578
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:600
@@ -8566,9 +8566,9 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:238
 #: inc/customizer/configurations/builder/header/configs/search.php:197
 #: inc/customizer/configurations/builder/header/configs/site-identity.php:146
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:215
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:467
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:249
 #: inc/customizer/configurations/builder/header/configs/woo-cart.php:495
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:523
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:554
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:579
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:601
@@ -8742,7 +8742,7 @@ msgstr ""
 
 #: inc/addons/scroll-to-top/classes/customizer/class-astra-scroll-to-top-configs.php:93
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:81
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:213
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:247
 msgid "Position"
 msgstr ""
 
@@ -8751,7 +8751,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/account.php:456
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:161
 #: inc/customizer/configurations/builder/header/configs/search.php:77
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:587
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:615
 msgid "Icon Size"
 msgstr ""
 
@@ -8770,7 +8770,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:146
 #: inc/customizer/configurations/builder/header/configs/menu.php:305
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:262
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:459
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:487
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:593
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:859
 #: inc/customizer/configurations/buttons/class-astra-existing-button-configs.php:451
@@ -8879,8 +8879,8 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:150
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:209
 #: inc/customizer/configurations/builder/header/configs/primary-header.php:94
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:786
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:893
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:814
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:921
 #: inc/customizer/configurations/colors-background/class-astra-advanced-footer-colors-configs.php:166
 #: inc/customizer/configurations/colors-background/class-astra-footer-colors-configs.php:89
 #: inc/metabox/class-astra-meta-boxes.php:610
@@ -8973,12 +8973,12 @@ msgid "Different Logo For Retina Devices?"
 msgstr ""
 
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:329
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:128
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:133
 msgid "Retina Logo"
 msgstr ""
 
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:355
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:298
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:303
 msgid "Logo Width"
 msgstr ""
 
@@ -9036,8 +9036,8 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/account.php:204
 #: inc/customizer/configurations/builder/header/configs/account.php:271
 #: inc/customizer/configurations/builder/header/configs/account.php:355
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:771
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:878
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:799
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:906
 #: inc/customizer/configurations/layout/class-astra-footer-layout-configs.php:90
 #: inc/customizer/configurations/layout/class-astra-footer-layout-configs.php:160
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:226
@@ -9146,7 +9146,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/base/class-astra-html-component-configs.php:124
 #: inc/customizer/configurations/builder/class-astra-builder-base-configuration.php:321
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:233
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:711
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:739
 #: inc/customizer/configurations/colors-background/class-astra-advanced-footer-colors-configs.php:88
 #: inc/customizer/configurations/layout/class-astra-footer-layout-configs.php:314
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:672
@@ -9825,7 +9825,7 @@ msgstr ""
 
 #: inc/compatibility/edd/customizer/sections/layout/class-astra-edd-archive-layout-configs.php:259
 #: inc/compatibility/lifterlms/customizer/sections/layout/class-astra-lifter-general-configs.php:125
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:980
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:1008
 msgid "View Astra Pro Features"
 msgstr ""
 
@@ -10062,11 +10062,11 @@ msgstr ""
 msgid "This sidebar will be used on Single Product page."
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3464
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3459
 msgid "No products in the cart."
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3468
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3463
 msgid "Continue Shopping"
 msgstr ""
 
@@ -10583,16 +10583,16 @@ msgstr ""
 msgid "Toggle Button"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1263
+#: inc/core/builder/class-astra-builder-options.php:1264
 msgid "Log In"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1264
+#: inc/core/builder/class-astra-builder-options.php:1265
 msgid "My Account"
 msgstr ""
 
-#: inc/core/builder/class-astra-builder-options.php:1687
-#: inc/core/builder/class-astra-builder-options.php:1726
+#: inc/core/builder/class-astra-builder-options.php:1688
+#: inc/core/builder/class-astra-builder-options.php:1727
 msgid "Insert HTML text here."
 msgstr ""
 
@@ -10686,15 +10686,15 @@ msgstr ""
 msgid "Details &#187;"
 msgstr ""
 
-#: inc/core/class-astra-enqueue-scripts.php:393
+#: inc/core/class-astra-enqueue-scripts.php:394
 msgid "Plus Quantity"
 msgstr ""
 
-#: inc/core/class-astra-enqueue-scripts.php:394
+#: inc/core/class-astra-enqueue-scripts.php:395
 msgid "Minus Quantity"
 msgstr ""
 
-#: inc/core/class-astra-enqueue-scripts.php:443
+#: inc/core/class-astra-enqueue-scripts.php:445
 msgid "No results found"
 msgstr ""
 
@@ -11159,7 +11159,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/base/class-astra-button-component-configs.php:296
 #: inc/customizer/configurations/builder/header/configs/menu.php:269
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:211
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:438
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:466
 #: inc/customizer/configurations/buttons/class-astra-customizer-button-configs.php:574
 msgid "Border Width"
 msgstr ""
@@ -11607,7 +11607,7 @@ msgid "Display Cart Title"
 msgstr ""
 
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:93
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:290
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:318
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:557
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:580
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:629
@@ -11623,7 +11623,7 @@ msgstr ""
 
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:97
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:100
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:294
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:322
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:583
 msgid "Outline"
 msgstr ""
@@ -11633,7 +11633,7 @@ msgid "EDD Cart Icon Color"
 msgstr ""
 
 #: inc/customizer/configurations/builder/header/configs/edd-cart.php:201
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:623
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:651
 msgid "Cart Tray"
 msgstr ""
 
@@ -11784,7 +11784,7 @@ msgid "Full-Screen"
 msgstr ""
 
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:62
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:193
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:199
 msgid "Dropdown"
 msgstr ""
 
@@ -11879,55 +11879,65 @@ msgstr ""
 msgid "Cart Click"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:189
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:195
 msgid "Cart Click Action"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:194
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:200
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:221
 msgid "Slide-In"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:195
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:201
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:222
 msgid "Cart Page"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:249
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:217
+msgid "Responsive Cart Click Action"
+msgstr ""
+
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:226
+msgid "This responsive cart click option will work for tablet and mobile in same way"
+msgstr ""
+
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:276
 msgid "Slide in Cart Width"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:275
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:303
 msgid "Cart Icon"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:311
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:339
 msgid "Cart Color"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:366
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:394
 msgid "Count Color"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:491
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:519
 msgid "Cart Label Position"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:523
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:551
 msgid "Woo Cart Icon Color"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:556
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:584
 msgid "Header Cart Icon"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:575
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:603
 msgid "WooCommerce Cart"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:759
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:787
 msgid "Cart Button"
 msgstr ""
 
-#: inc/customizer/configurations/builder/header/configs/woo-cart.php:866
+#: inc/customizer/configurations/builder/header/configs/woo-cart.php:894
 msgid "Checkout Button"
 msgstr ""
 
@@ -11966,7 +11976,7 @@ msgid "Letter Spacing"
 msgstr ""
 
 #: inc/customizer/configurations/colors-background/class-astra-advanced-footer-colors-configs.php:113
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:378
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:383
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:641
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1058
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:392
@@ -12481,78 +12491,78 @@ msgid "Use containers to their maximum potential with Astra Pro"
 msgstr ""
 
 #: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:76
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:537
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:542
 msgid "Customize Transparent Header."
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:147
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:152
 msgid "Different Logo For Mobile Devices?"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:182
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:187
 msgid "Mobile Logo (optional)"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:210
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:215
 msgid "Use Logo SVG Icon"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:232
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:237
 msgid "When using Custom SVG code, do not include few attributes such as \"width\", \"height\", and \"fill\" in your custom svg code to utilize existing customizer controls."
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:234
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:239
 msgid "Logo SVG Icon"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:263
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:268
 msgid "Logo SVG Gap"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:315
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:320
 msgid "Site Title Visibility"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:336
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:341
 msgid "Site Tagline Visibility"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:358
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:363
 msgid "Inline Logo & Site Title"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:406
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:411
 msgid "Logo SVG Icon Color"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:499
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:504
 msgid "Tagline"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:553
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:558
 msgid "Site Icon"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:572
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:577
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:707
 #: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1123
 #: inc/modules/posts-structures/customizer/class-astra-posts-special-archive-structures-configs.php:445
 msgid "Title Font"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:587
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:592
 msgid "Tagline Font"
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:624
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:629
 msgid "The Logo on this page is set from the Transparent Header Section. Please click the link below to customize Transparent Header Logo."
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:627
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:632
 msgid "The header on this page is set from the Transparent Header."
 msgstr ""
 
-#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:627
+#: inc/customizer/configurations/layout/class-astra-site-identity-configs.php:632
 msgid "Please click the link below to customize Transparent Header"
 msgstr ""
 
@@ -12722,6 +12732,10 @@ msgstr ""
 #: inc/extras.php:1144
 #: inc/extras.php:1152
 msgid "Full Size"
+msgstr ""
+
+#: inc/lib/astra-notices/class-astra-notices.php:119
+msgid "WordPress Nonce not validated."
 msgstr ""
 
 #. translators: %d: Minutes interval
@@ -13272,7 +13286,7 @@ msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/MainNav.js:152
-#: admin/assets/src/dashboard-app/MainNav.js:172
+#: admin/assets/src/dashboard-app/MainNav.js:173
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:107
 #: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:54
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:129
@@ -13346,7 +13360,7 @@ msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/MainNav.js:147
-#: admin/assets/src/dashboard-app/MainNav.js:167
+#: admin/assets/src/dashboard-app/MainNav.js:168
 msgid "CORE"
 msgstr ""
 

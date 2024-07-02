@@ -434,14 +434,19 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 		 *  Call Mobile Cart Flyout UI.
 		 */
 		public function mobile_cart_flyout() {
-
-			// Hide cart flyout only if current page is checkout/cart.
-			if ( (
-					Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' )
-					&& class_exists( 'WooCommerce' )
-					&& ! is_cart()
-					&& ! is_checkout()
-					&& 'redirect' !== astra_get_option( 'woo-header-cart-click-action' ) // Prevent flyout markup when 'redirect' option is selected.
+			// Get the responsive cart click action setting.
+			$responsive_cart_action = astra_get_option( 'responsive-cart-click-action' );
+			$desktop_cart_action    = astra_get_option( 'woo-header-cart-click-action' );
+		
+			// Hide cart flyout only if current page is checkout/cart or if redirect option is selected.
+			if (
+				(
+					Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) &&
+					class_exists( 'WooCommerce' ) &&
+					! is_cart() &&
+					! is_checkout() &&
+					( 'redirect' !== $responsive_cart_action || // Prevent flyout markup when 'redirect' option is selected.
+					'redirect' !== $desktop_cart_action )
 				) || Astra_Builder_Helper::is_component_loaded( 'edd-cart', 'header' )
 			) {
 				Astra_Builder_UI_Controller::render_mobile_cart_flyout_markup();

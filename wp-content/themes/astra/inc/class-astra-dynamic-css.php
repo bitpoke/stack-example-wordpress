@@ -3398,6 +3398,30 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				/* Parse CSS from array()*/
 				$parse_css .= astra_parse_css( $genral_global_responsive, astra_get_tablet_breakpoint( '', 1 ) );
 			}
+			
+			/* Preventing link redirection when the cart is clicked */
+			if ( 'redirect' !== astra_get_option( 'responsive-cart-click-action' ) ) {
+				$desktop_cart_link_event = array(
+					' #ast-mobile-header .ast-site-header-cart-li a' => array(
+						'pointer-events' => 'none',
+					),
+				);
+
+				/* Parse CSS from array()*/
+				$parse_css .= astra_parse_css( $desktop_cart_link_event );
+			}
+			
+			/* Preventing link redirection when the cart is clicked */
+			if ( 'redirect' !== astra_get_option( 'woo-header-cart-click-action' ) ) {
+				$responsive_cart_link_event = array(
+					' #ast-desktop-header .ast-site-header-cart-li a' => array(
+						'pointer-events' => 'none',
+					),
+				);
+
+				/* Parse CSS from array()*/
+				$parse_css .= astra_parse_css( $responsive_cart_link_event );
+			}
 
 			/* Width for Comments for Full Width / Stretched Template */
 			if ( 'page-builder' == $container_layout ) {

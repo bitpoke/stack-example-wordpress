@@ -34,8 +34,8 @@ if ( ! class_exists( 'Astra_Customizer_Register_Surecart_Section' ) ) {
 				$_configs = array(
 					array(
 						'name'     => 'ast-surecart',
-						'type'     => 'panel',
-						'priority' => 69,
+						'type'     => 'section',
+						'priority' => 68,
 						'title'    => __( 'SureCart', 'astra' ),
 					),
 				);
@@ -44,23 +44,23 @@ if ( ! class_exists( 'Astra_Customizer_Register_Surecart_Section' ) ) {
 					'sc_product'    => array(
 						'name'     => 'section-posttype-sc_product',
 						'type'     => 'section',
-						'panel'    => 'ast-surecart',
+						'section'  => 'ast-surecart',
 						'title'    => __( 'Products', 'astra' ),
-						'priority' => 68,
+						'priority' => 69,
 					),
 					'sc_collection' => array(
 						'name'     => 'section-posttype-sc_collection',
 						'type'     => 'section',
-						'panel'    => 'ast-surecart',
+						'section'  => 'ast-surecart',
 						'title'    => __( 'Collection', 'astra' ),
-						'priority' => 68,
+						'priority' => 70,
 					),
 					'sc_upsell'     => array(
 						'name'     => 'section-posttype-sc_upsell',
 						'type'     => 'section',
-						'panel'    => 'ast-surecart',
+						'section'  => 'ast-surecart',
 						'title'    => __( 'Upsell', 'astra' ),
-						'priority' => 68,
+						'priority' => 71,
 					),
 				);
 
