@@ -83,10 +83,7 @@ class BP_Nouveau extends BP_Theme_Compat {
 		$this->includes_dir   = trailingslashit( $this->dir ) . 'includes/';
 		$this->directory_nav  = new BP_Core_Nav( bp_get_root_blog_id() );
 		$this->is_block_theme = false;
-
-		if ( bp_is_running_wp( '5.9.0', '>=' ) ) {
-			$this->is_block_theme = wp_is_block_theme();
-		}
+		$this->is_block_theme = wp_is_block_theme();
 	}
 
 	/**
@@ -105,7 +102,7 @@ class BP_Nouveau extends BP_Theme_Compat {
 
 		// Load AJAX code only on AJAX requests.
 		} else {
-			add_action( 'admin_init', function() {
+			add_action( 'admin_init', function () {
 				if ( defined( 'DOING_AJAX' ) && true === DOING_AJAX ) {
 					require bp_nouveau()->includes_dir . 'ajax.php';
 				}
@@ -708,7 +705,7 @@ class BP_Nouveau extends BP_Theme_Compat {
 			return $path;
 		}
 
-		$uri = parse_url( $path );
+		$uri = wp_parse_url( $path );
 
 		if ( false === strpos( $uri['path'], 'customize.php' ) ) {
 			return $path;
