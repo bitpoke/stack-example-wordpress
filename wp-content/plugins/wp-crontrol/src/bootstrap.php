@@ -8,6 +8,7 @@ namespace Crontrol;
 use Crontrol\Event\Table;
 use stdClass;
 use WP_Error;
+use Exception;
 
 use function Crontrol\Event\check_integrity;
 
@@ -35,6 +36,7 @@ function init_hooks() {
 
 	add_filter( 'cron_schedules',        __NAMESPACE__ . '\filter_cron_schedules' );
 	add_action( 'crontrol_cron_job',     __NAMESPACE__ . '\action_php_cron_event' );
+	add_action( 'crontrol_url_cron_job', __NAMESPACE__ . '\action_url_cron_event' );
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_assets' );
 	add_action( 'crontrol/tab-header',   __NAMESPACE__ . '\show_cron_status', 20 );
 	add_action( 'activated_plugin',      __NAMESPACE__ . '\flush_status_cache', 10, 0 );
@@ -176,8 +178,66 @@ function action_handle_posts() {
 
 		$redirect = array(
 			'page'             => 'crontrol_admin_manage_page',
-			'crontrol_message' => '5',
+			'crontrol_message' => '4',
 			'crontrol_name'    => rawurlencode( $cr->hookname ),
+		);
+
+		if ( is_wp_error( $added ) ) {
+			set_message( $added->get_error_message() );
+			$redirect['crontrol_message'] = 'error';
+		}
+
+		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
+		exit;
+
+	} elseif ( isset( $_POST['crontrol_action'] ) && ( 'new_url_cron' === $_POST['crontrol_action'] ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You are not allowed to add new cron events.', 'wp-crontrol' ), 401 );
+		}
+		check_admin_referer( 'crontrol-new-cron' );
+
+		$cr = $request->init( wp_unslash( $_POST ) );
+
+		$next_run_local = ( 'custom' === $cr->next_run_date_local ) ? $cr->next_run_date_local_custom_date . ' ' . $cr->next_run_date_local_custom_time : $cr->next_run_date_local;
+		$args = array(
+			array(
+				'url' => $cr->url,
+				'method' => $cr->method,
+				'name' => $cr->eventname,
+				'hash' => wp_hash( $cr->url ),
+			),
+		);
+
+		add_filter( 'schedule_event', function( $event ) {
+			if ( ! $event ) {
+				return $event;
+			}
+
+			/**
+			 * Fires after a new URL cron event is added.
+			 *
+			 * @param stdClass $event {
+			 *     An object containing the event's data.
+			 *
+			 *     @type string       $hook      Action hook to execute when the event is run.
+			 *     @type int          $timestamp Unix timestamp (UTC) for when to next run the event.
+			 *     @type string|false $schedule  How often the event should subsequently recur.
+			 *     @type mixed[]      $args      Array containing each separate argument to pass to the hook's callback function.
+			 *     @type int          $interval  The interval time in seconds for the schedule. Only present for recurring events.
+			 * }
+			 */
+			do_action( 'crontrol/added_new_url_event', $event );
+
+			return $event;
+		}, 99 );
+
+		$added = Event\add( $next_run_local, $cr->schedule, 'crontrol_url_cron_job', $args );
+
+		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'URL Cron', 'wp-crontrol' );
+		$redirect = array(
+			'page'             => 'crontrol_admin_manage_page',
+			'crontrol_message' => '13',
+			'crontrol_name'    => rawurlencode( $hookname ),
 		);
 
 		if ( is_wp_error( $added ) ) {
@@ -234,7 +294,7 @@ function action_handle_posts() {
 		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'PHP Cron', 'wp-crontrol' );
 		$redirect = array(
 			'page'             => 'crontrol_admin_manage_page',
-			'crontrol_message' => '5',
+			'crontrol_message' => '14',
 			'crontrol_name'    => rawurlencode( $hookname ),
 		);
 
@@ -289,7 +349,7 @@ function action_handle_posts() {
 			exit;
 		}
 
-		$next_run_local = ( 'custom' === $cr->next_run_date_local ) ? $cr->next_run_date_local_custom_date . ' ' . $cr->next_run_date_local_custom_time : $cr->next_run_date_local;
+		$next_run_local = $cr->next_run_date_local_custom_date . ' ' . $cr->next_run_date_local_custom_time;
 
 		/**
 		 * Modifies an event before it is scheduled.
@@ -338,9 +398,9 @@ function action_handle_posts() {
 		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
 		exit;
 
-	} elseif ( isset( $_POST['crontrol_action'] ) && ( 'edit_php_cron' === $_POST['crontrol_action'] ) ) {
-		if ( ! current_user_can( 'edit_files' ) ) {
-			wp_die( esc_html__( 'You are not allowed to edit PHP cron events.', 'wp-crontrol' ), 401 );
+	} elseif ( isset( $_POST['crontrol_action'] ) && ( 'edit_url_cron' === $_POST['crontrol_action'] ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You are not allowed to edit cron events.', 'wp-crontrol' ), 401 );
 		}
 
 		$cr = $request->init( wp_unslash( $_POST ) );
@@ -349,15 +409,16 @@ function action_handle_posts() {
 
 		$args = array(
 			array(
-				'code' => $cr->hookcode,
+				'url' => $cr->url,
+				'method' => $cr->method,
 				'name' => $cr->eventname,
-				'hash' => wp_hash( $cr->hookcode ),
+				'hash' => wp_hash( $cr->url ),
 			),
 		);
-		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'PHP Cron', 'wp-crontrol' );
+		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'URL Cron', 'wp-crontrol' );
 		$redirect = array(
 			'page'             => 'crontrol_admin_manage_page',
-			'crontrol_message' => '4',
+			'crontrol_message' => '13',
 			'crontrol_name'    => rawurlencode( $hookname ),
 		);
 
@@ -380,6 +441,96 @@ function action_handle_posts() {
 		}
 
 		$next_run_local = ( 'custom' === $cr->next_run_date_local ) ? $cr->next_run_date_local_custom_date . ' ' . $cr->next_run_date_local_custom_time : $cr->next_run_date_local;
+
+		/**
+		 * Modifies an event before it is scheduled.
+		 *
+		 * @param stdClass|false $event An object containing the new event's data, or boolean false.
+		 */
+		add_filter( 'schedule_event', function( $event ) use ( $original ) {
+			if ( ! $event ) {
+				return $event;
+			}
+
+			/**
+			 * Fires after a URL cron event is edited.
+			 *
+			 * @param stdClass $event {
+			 *     An object containing the new event's data.
+			 *
+			 *     @type string       $hook      Action hook to execute when the event is run.
+			 *     @type int          $timestamp Unix timestamp (UTC) for when to next run the event.
+			 *     @type string|false $schedule  How often the event should subsequently recur.
+			 *     @type mixed[]      $args      Array containing each separate argument to pass to the hook's callback function.
+			 *     @type int          $interval  The interval time in seconds for the schedule. Only present for recurring events.
+			 * }
+			 * @param stdClass $original {
+			 *     An object containing the original event's data.
+			 *
+			 *     @type string       $hook      Action hook to execute when the event is run.
+			 *     @type int          $timestamp Unix timestamp (UTC) for when to next run the event.
+			 *     @type string|false $schedule  How often the event should subsequently recur.
+			 *     @type mixed[]      $args      Array containing each separate argument to pass to the hook's callback function.
+			 *     @type int          $interval  The interval time in seconds for the schedule. Only present for recurring events.
+			 * }
+			 */
+			do_action( 'crontrol/edited_url_event', $event, $original );
+
+			return $event;
+		}, 99 );
+
+		$added = Event\add( $next_run_local, $cr->schedule, 'crontrol_url_cron_job', $args );
+
+		if ( is_wp_error( $added ) ) {
+			set_message( $added->get_error_message() );
+			$redirect['crontrol_message'] = 'error';
+		}
+
+		wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
+		exit;
+
+	} elseif ( isset( $_POST['crontrol_action'] ) && ( 'edit_php_cron' === $_POST['crontrol_action'] ) ) {
+		if ( ! current_user_can( 'edit_files' ) ) {
+			wp_die( esc_html__( 'You are not allowed to edit PHP cron events.', 'wp-crontrol' ), 401 );
+		}
+
+		$cr = $request->init( wp_unslash( $_POST ) );
+
+		check_admin_referer( "crontrol-edit-cron_{$cr->original_hookname}_{$cr->original_sig}_{$cr->original_next_run_utc}" );
+
+		$args = array(
+			array(
+				'code' => $cr->hookcode,
+				'name' => $cr->eventname,
+				'hash' => wp_hash( $cr->hookcode ),
+			),
+		);
+		$hookname = ( ! empty( $cr->eventname ) ) ? $cr->eventname : __( 'PHP Cron', 'wp-crontrol' );
+		$redirect = array(
+			'page'             => 'crontrol_admin_manage_page',
+			'crontrol_message' => '14',
+			'crontrol_name'    => rawurlencode( $hookname ),
+		);
+
+		$original = Event\get_single( $cr->original_hookname, $cr->original_sig, $cr->original_next_run_utc );
+
+		if ( is_wp_error( $original ) ) {
+			set_message( $original->get_error_message() );
+			$redirect['crontrol_message'] = 'error';
+			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
+			exit;
+		}
+
+		$deleted = Event\delete( $cr->original_hookname, $cr->original_sig, $cr->original_next_run_utc );
+
+		if ( is_wp_error( $deleted ) ) {
+			set_message( $deleted->get_error_message() );
+			$redirect['crontrol_message'] = 'error';
+			wp_safe_redirect( add_query_arg( $redirect, admin_url( 'tools.php' ) ) );
+			exit;
+		}
+
+		$next_run_local = $cr->next_run_date_local_custom_date . ' ' . $cr->next_run_date_local_custom_time;
 
 		/**
 		 * Modifies an event before it is scheduled.
@@ -433,9 +584,9 @@ function action_handle_posts() {
 			wp_die( esc_html__( 'You are not allowed to add new cron schedules.', 'wp-crontrol' ), 401 );
 		}
 		check_admin_referer( 'crontrol-new-schedule' );
-		$name     = wp_unslash( $_POST['crontrol_schedule_internal_name'] );
+		$name     = sanitize_text_field( wp_unslash( $_POST['crontrol_schedule_internal_name'] ) );
 		$interval = absint( $_POST['crontrol_schedule_interval'] );
-		$display  = wp_unslash( $_POST['crontrol_schedule_display_name'] );
+		$display  = sanitize_text_field( wp_unslash( $_POST['crontrol_schedule_display_name'] ) );
 
 		Schedule\add( $name, $interval, $display );
 		$redirect = array(
@@ -568,10 +719,7 @@ function action_handle_posts() {
 			wp_die( esc_html__( 'You are not allowed to delete PHP cron events.', 'wp-crontrol' ), 401 );
 		}
 
-		if ( function_exists( 'wp_unschedule_hook' ) ) {
-			/** @var int|false */
-			$deleted = wp_unschedule_hook( $hook );
-		}
+		$deleted = wp_unschedule_hook( $hook );
 
 		if ( 0 === $deleted ) {
 			$redirect = array(
@@ -738,21 +886,21 @@ function action_handle_posts() {
 	} elseif ( isset( $_POST['crontrol_action'] ) && 'export-event-csv' === $_POST['crontrol_action'] ) {
 		check_admin_referer( 'crontrol-export-event-csv', 'crontrol_nonce' );
 
-		$type = isset( $_POST['crontrol_hooks_type'] ) ? $_POST['crontrol_hooks_type'] : 'all';
+		$type = isset( $_POST['crontrol_hooks_type'] ) ? wp_unslash( $_POST['crontrol_hooks_type'] ) : 'all';
 		$headers = array(
 			'hook',
 			'arguments',
 			'next_run',
 			'next_run_gmt',
 			'action',
-			'recurrence',
+			'schedule',
 			'interval',
 		);
-		$filename = sprintf(
+		$filename = sanitize_file_name( sprintf(
 			'cron-events-%s-%s.csv',
 			$type,
 			gmdate( 'Y-m-d-H.i.s' )
-		);
+		) );
 		$csv = fopen( 'php://output', 'w' );
 
 		if ( false === $csv ) {
@@ -798,12 +946,12 @@ function action_handle_posts() {
 				}
 
 				if ( $event->schedule ) {
-					$recurrence = Event\get_schedule_name( $event );
-					if ( is_wp_error( $recurrence ) ) {
-						$recurrence = $recurrence->get_error_message();
+					$schedule_name = Event\get_schedule_name( $event );
+					if ( is_wp_error( $schedule_name ) ) {
+						$schedule_name = $schedule_name->get_error_message();
 					}
 				} else {
-					$recurrence = __( 'Non-repeating', 'wp-crontrol' );
+					$schedule_name = __( 'Non-repeating', 'wp-crontrol' );
 				}
 
 				$row = array(
@@ -812,7 +960,7 @@ function action_handle_posts() {
 					$next_run_local,
 					$next_run_utc,
 					$action,
-					$recurrence,
+					$schedule_name,
 					(int) $event->interval,
 				);
 				fputcsv( $csv, $row );
@@ -871,7 +1019,7 @@ function admin_help_tab() {
 		sprintf(
 			/* translators: 1: URL to the documentation, 2: WP Crontrol */
 			__( '<a href="%1$s">Read the %2$s website</a> which contains information about events that have missed their schedule, problems with spawning a call to the WP-Cron system, and much more.', 'wp-crontrol' ),
-			'https://wp-crontrol.com',
+			'https://wp-crontrol.com/docs/how-to-use/',
 			'WP Crontrol'
 		),
 		array(
@@ -942,7 +1090,7 @@ function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
 		),
 		'crontrol-help' => sprintf(
 			'<a href="%s">%s</a>',
-			'https://wp-crontrol.com',
+			'https://wp-crontrol.com/docs/how-to-use/',
 			esc_html__( 'Help', 'wp-crontrol' )
 		),
 	);
@@ -960,7 +1108,7 @@ function network_plugin_action_links( $actions ) {
 	$new = array(
 		'crontrol-help' => sprintf(
 			'<a href="%s">%s</a>',
-			'https://wp-crontrol.com',
+			'https://wp-crontrol.com/docs/how-to-use/',
 			esc_html__( 'Help', 'wp-crontrol' )
 		),
 	);
@@ -1036,7 +1184,7 @@ function admin_options_page() {
 			<div class="col-wrap">
 				<div class="form-wrap">
 					<h2><?php esc_html_e( 'Add Cron Schedule', 'wp-crontrol' ); ?></h2>
-					<p><?php esc_html_e( 'Adding a new cron schedule will allow you to schedule events that re-occur at the given interval.', 'wp-crontrol' ); ?></p>
+					<p><?php esc_html_e( 'Adding a new schedule allows you to schedule recurring events at the given interval.', 'wp-crontrol' ); ?></p>
 					<form method="post" action="options-general.php?page=crontrol_admin_options_page">
 						<div class="form-field form-required">
 							<label for="crontrol_schedule_internal_name">
@@ -1198,10 +1346,13 @@ function flush_status_cache() {
 /**
  * Shows the status of WP-Cron functionality on the site. Only displays a message when there's a problem.
  *
- * @param string $tab The tab name.
  * @return void
  */
-function show_cron_status( $tab ) {
+function show_cron_status() {
+	if ( ! empty( $_GET['crontrol_action'] ) ) {
+		return;
+	}
+
 	if ( 'UTC' !== date_default_timezone_get() ) {
 		?>
 		<div id="crontrol-timezone-warning" class="notice notice-warning">
@@ -1228,7 +1379,7 @@ function show_cron_status( $tab ) {
 			<?php
 		} else {
 			?>
-			<div id="crontrol-status-error" class="error">
+			<div id="crontrol-status-error" class="notice notice-error">
 				<?php
 				printf(
 					'<p>%1$s</p><p><a href="%2$s">%3$s</a></p>',
@@ -1265,9 +1416,11 @@ function get_timezone_name() {
 		return get_utc_offset();
 	}
 
+	$parts = explode( '/', $timezone_string );
+
 	return sprintf(
-		'%s, %s',
-		str_replace( '_', ' ', $timezone_string ),
+		'%s (%s)',
+		str_replace( '_', ' ', end( $parts ) ),
 		get_utc_offset()
 	);
 }
@@ -1345,16 +1498,7 @@ function show_cron_form( $editing ) {
 	}
 
 	$is_editing_php = ( $existing && 'crontrol_cron_job' === $existing['hookname'] );
-
-	if ( $is_editing_php ) {
-		$helper_text = esc_html__( 'Cron events trigger actions in your code. Enter the schedule of the event, as well as the PHP code to execute when the action is triggered.', 'wp-crontrol' );
-	} else {
-		$helper_text = sprintf(
-			/* translators: %1$s: A file name */
-			esc_html__( 'Cron events trigger actions in your code. A cron event needs a corresponding action hook somewhere in code, e.g. the %1$s file in your theme.', 'wp-crontrol' ),
-			'<code>functions.php</code>'
-		);
-	}
+	$is_editing_url = ( $existing && 'crontrol_url_cron_job' === $existing['hookname'] );
 
 	if ( is_array( $existing ) ) {
 		$other_fields  = wp_nonce_field( "crontrol-edit-cron_{$existing['hookname']}_{$existing['sig']}_{$existing['next_run']}", '_wpnonce', true, false );
@@ -1422,13 +1566,15 @@ function show_cron_form( $editing ) {
 				esc_html( $heading )
 			);
 
-			printf(
-				'<p>%s</p>',
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				$helper_text
-			);
+			if ( $is_editing_php ) {
+				$cron_type = 'php';
+			} elseif ( $is_editing_url ) {
+				$cron_type = 'url';
+			} else {
+				$cron_type = 'standard';
+			}
 			?>
-		<form method="post" action="<?php echo esc_url( admin_url( 'tools.php?page=crontrol_admin_manage_page' ) ); ?>" class="crontrol-edit-event crontrol-edit-event-<?php echo ( $is_editing_php ) ? 'php' : 'standard'; ?>">
+		<form method="post" action="<?php echo esc_url( admin_url( 'tools.php?page=crontrol_admin_manage_page' ) ); ?>" class="crontrol-edit-event crontrol-edit-event-<?php echo esc_attr( $cron_type ); ?>">
 			<?php
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $other_fields;
@@ -1436,12 +1582,19 @@ function show_cron_form( $editing ) {
 			<table class="form-table"><tbody>
 				<?php
 				if ( $editing ) {
-					$action = $is_editing_php ? 'edit_php_cron' : 'edit_cron';
+					if ( $is_editing_php ) {
+						$action = 'edit_php_cron';
+					} elseif ( $is_editing_url ) {
+						$action = 'edit_url_cron';
+					} else {
+						$action = 'edit_cron';
+					}
+
 					printf(
 						'<input type="hidden" name="crontrol_action" value="%s"/>',
 						esc_attr( $action )
 					);
-				} elseif ( $can_add_php ) {
+				} else {
 					?>
 					<tr class="hide-if-no-js">
 						<th scope="row">
@@ -1460,17 +1613,74 @@ function show_cron_form( $editing ) {
 								</p>
 								<p>
 									<label>
-										<input type="radio" name="crontrol_action" value="new_php_cron">
-										<?php esc_html_e( 'PHP cron event', 'wp-crontrol' ); ?>
+										<input type="radio" name="crontrol_action" value="new_url_cron">
+										<?php esc_html_e( 'URL cron event', 'wp-crontrol' ); ?>
 									</label>
 								</p>
+								<?php if ( $can_add_php ) { ?>
+									<p>
+										<label>
+											<input type="radio" name="crontrol_action" value="new_php_cron">
+											<?php esc_html_e( 'PHP cron event', 'wp-crontrol' ); ?>
+										</label>
+									</p>
+								<?php } ?>
 							</fieldset>
 						</td>
 					</tr>
 					<?php
-				} else {
+				}
+
+				if ( $is_editing_url || ! $editing ) {
 					?>
-					<input type="hidden" name="crontrol_action" value="new_cron"/>
+					<tr class="crontrol-event-url">
+						<th valign="top" scope="row">
+							<label for="crontrol_url">
+								<?php esc_html_e( 'URL', 'wp-crontrol' ); ?>
+							</label>
+						</th>
+						<td>
+							<?php
+							if ( $is_editing_url && ! check_integrity( $existing['args'][0]['url'], $existing['args'][0]['hash'] ) ) {
+								printf(
+									'<div class="notice notice-error inline"><p>%1$s</p><p><a href="%2$s">%3$s</a></p></div>',
+									esc_html__( 'The URL in this event needs to be checked for integrity. This event will not run until you re-save it.', 'wp-crontrol' ),
+									'https://wp-crontrol.com/help/check-cron-events/',
+									esc_html__( 'Read what to do', 'wp-crontrol' )
+								);
+							}
+							?>
+							<input type="url" class="regular-text code" id="crontrol_url" name="crontrol_url" value="<?php echo esc_url( $is_editing_url ? $existing['args'][0]['url'] : '' ); ?>" />
+							<?php do_action( 'crontrol/manage/url', $existing ); ?>
+						</td>
+					</tr>
+					<tr class="crontrol-event-url">
+						<th valign="top" scope="row">
+							<label for="crontrol_method">
+								<?php esc_html_e( 'HTTP Method', 'wp-crontrol' ); ?>
+							</label>
+						</th>
+						<td>
+							<select id="crontrol_method" name="crontrol_method">
+								<option value="GET">GET</option>
+								<option value="POST" <?php selected( $editing ? $existing['args'][0]['method'] === 'POST' : false ); ?>>POST</option>
+								<option value="HEAD" <?php selected( $editing ? $existing['args'][0]['method'] === 'HEAD' : false ); ?>>HEAD</option>
+								<option value="DELETE" <?php selected( $editing ? $existing['args'][0]['method'] === 'DELETE' : false ); ?>>DELETE</option>
+							</select>
+							<?php do_action( 'crontrol/manage/method', $existing ); ?>
+						</td>
+					</tr>
+					<tr class="crontrol-event-url">
+						<th valign="top" scope="row">
+							<label for="crontrol_eventname">
+								<?php esc_html_e( 'Event Name (optional)', 'wp-crontrol' ); ?>
+							</label>
+						</th>
+						<td>
+							<input type="text" class="regular-text" id="crontrol_eventname" name="crontrol_eventname" value="<?php echo esc_attr( $editing ? $existing['args'][0]['name'] : '' ); ?>"/>
+							<?php do_action( 'crontrol/manage/eventname', $existing ); ?>
+						</td>
+					</tr>
 					<?php
 				}
 
@@ -1488,7 +1698,7 @@ function show_cron_form( $editing ) {
 								printf(
 									'<div class="notice notice-error inline"><p>%1$s</p><p><a href="%2$s">%3$s</a></p></div>',
 									esc_html__( 'The PHP code in this event needs to be checked for integrity. This event will not run until you re-save it.', 'wp-crontrol' ),
-									'https://wp-crontrol.com/help/check-php-cron-events/',
+									'https://wp-crontrol.com/help/check-cron-events/',
 									esc_html__( 'Read what to do', 'wp-crontrol' )
 								);
 							}
@@ -1520,7 +1730,7 @@ function show_cron_form( $editing ) {
 					<?php
 				}
 
-				if ( ! $is_editing_php ) {
+				if ( ! $is_editing_url && ! $is_editing_php ) {
 					?>
 					<tr class="crontrol-event-standard">
 						<th scope="row">
@@ -1565,41 +1775,53 @@ function show_cron_form( $editing ) {
 						</label>
 					</th>
 					<td>
-						<fieldset>
-							<legend class="screen-reader-text">
-								<?php esc_html_e( 'Next Run', 'wp-crontrol' ); ?>
-							</legend>
-							<p>
-								<label>
-									<input type="radio" name="crontrol_next_run_date_local" value="now" checked>
-									<?php esc_html_e( 'Now', 'wp-crontrol' ); ?>
-								</label>
-							</p>
-							<p>
-								<label>
-									<input type="radio" name="crontrol_next_run_date_local" value="+1 day">
-									<?php esc_html_e( 'Tomorrow', 'wp-crontrol' ); ?>
-								</label>
-							</p>
-							<p>
-								<label>
-									<input type="radio" name="crontrol_next_run_date_local" value="custom" id="crontrol_next_run_date_local_custom" <?php checked( $editing ); ?>>
-									<?php
-									printf(
-										/* translators: %s: An input field for specifying a date and time */
-										esc_html__( 'At this time: %s', 'wp-crontrol' ),
-										sprintf(
-											'<br><br>
-											<input type="date" autocorrect="off" autocapitalize="off" spellcheck="false" name="crontrol_next_run_date_local_custom_date" id="crontrol_next_run_date_local_custom_date" value="%1$s" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" />
-											<input type="time" autocorrect="off" autocapitalize="off" spellcheck="false" name="crontrol_next_run_date_local_custom_time" id="crontrol_next_run_date_local_custom_time" value="%2$s" step="1" placeholder="hh:mm:ss" pattern="\d{2}:\d{2}:\d{2}" />',
-											esc_attr( $next_run_date_local ),
-											esc_attr( $next_run_time_local )
-										)
-									);
-									?>
-								</label>
-							</p>
-						</fieldset>
+						<?php if ( $editing ) { ?>
+							<input type="hidden" name="crontrol_next_run_date_local" value="custom">
+							<?php
+							printf(
+								'<input type="date" autocorrect="off" autocapitalize="off" spellcheck="false" name="crontrol_next_run_date_local_custom_date" id="crontrol_next_run_date_local_custom_date" value="%1$s" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" />
+								<input type="time" autocorrect="off" autocapitalize="off" spellcheck="false" name="crontrol_next_run_date_local_custom_time" id="crontrol_next_run_date_local_custom_time" value="%2$s" step="1" placeholder="hh:mm:ss" pattern="\d{2}:\d{2}:\d{2}" />',
+								esc_attr( $next_run_date_local ),
+								esc_attr( $next_run_time_local )
+							);
+							?>
+						<?php } else { ?>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<?php esc_html_e( 'Next Run', 'wp-crontrol' ); ?>
+								</legend>
+								<p>
+									<label>
+										<input type="radio" name="crontrol_next_run_date_local" value="now" checked>
+										<?php esc_html_e( 'Now', 'wp-crontrol' ); ?>
+									</label>
+								</p>
+								<p>
+									<label>
+										<input type="radio" name="crontrol_next_run_date_local" value="+1 day">
+										<?php esc_html_e( 'Tomorrow', 'wp-crontrol' ); ?>
+									</label>
+								</p>
+								<p>
+									<label>
+										<input type="radio" name="crontrol_next_run_date_local" value="custom" id="crontrol_next_run_date_local_custom" <?php checked( $editing ); ?>>
+										<?php
+										printf(
+											/* translators: %s: An input field for specifying a date and time */
+											esc_html__( 'At this time: %s', 'wp-crontrol' ),
+											sprintf(
+												'<br><br>
+												<input type="date" autocorrect="off" autocapitalize="off" spellcheck="false" name="crontrol_next_run_date_local_custom_date" id="crontrol_next_run_date_local_custom_date" value="%1$s" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" />
+												<input type="time" autocorrect="off" autocapitalize="off" spellcheck="false" name="crontrol_next_run_date_local_custom_time" id="crontrol_next_run_date_local_custom_time" value="%2$s" step="1" placeholder="hh:mm:ss" pattern="\d{2}:\d{2}:\d{2}" />',
+												esc_attr( $next_run_date_local ),
+												esc_attr( $next_run_time_local )
+											)
+										);
+										?>
+									</label>
+								</p>
+							</fieldset>
+						<?php } ?>
 
 						<?php do_action( 'crontrol/manage/next_run', $existing ); ?>
 
@@ -1617,7 +1839,7 @@ function show_cron_form( $editing ) {
 				<tr>
 					<th scope="row">
 						<label for="crontrol_schedule">
-							<?php esc_html_e( 'Recurrence', 'wp-crontrol' ); ?>
+							<?php echo esc_html_x( 'Schedule', 'noun', 'wp-crontrol' ); ?>
 						</label>
 					</th>
 					<td>
@@ -1633,8 +1855,8 @@ function show_cron_form( $editing ) {
 				<?php
 					echo esc_html( sprintf(
 						/* translators: 1: Date and time, 2: Timezone */
-						__( 'Site time when page loaded: %1$s (%2$s)', 'wp-crontrol' ),
-						date_i18n( 'Y-m-d H:i:s' ),
+						__( 'Site time when page loaded: %1$s, %2$s', 'wp-crontrol' ),
+						date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
 						get_timezone_name()
 					) );
 				?>
@@ -1676,11 +1898,6 @@ function admin_manage_page() {
 			__( 'Saved the cron event %s.', 'wp-crontrol' ),
 			'success',
 		),
-		'5'  => array(
-			/* translators: %s: The name of the cron event. */
-			__( 'Created the cron event %s.', 'wp-crontrol' ),
-			'success',
-		),
 		'6'  => array(
 			/* translators: %s: The name of the cron event. */
 			__( 'Deleted the cron event %s.', 'wp-crontrol' ),
@@ -1715,6 +1932,14 @@ function admin_manage_page() {
 			__( 'Resumed the %s hook.', 'wp-crontrol' ),
 			'success',
 		),
+		'13' => array(
+			__( 'URL cron event saved.', 'wp-crontrol' ),
+			'success',
+		),
+		'14' => array(
+			__( 'PHP cron event saved.', 'wp-crontrol' ),
+			'success',
+		),
 		'error' => array(
 			__( 'An unknown error occurred.', 'wp-crontrol' ),
 			'error',
@@ -1747,17 +1972,17 @@ function admin_manage_page() {
 	}
 
 	$tabs  = get_tab_states();
-	$table = Event\get_list_table();
 
 	switch ( true ) {
 		case $tabs['events']:
+			$table = Event\get_list_table();
 			?>
 			<div class="wrap">
 				<?php do_tabs(); ?>
 
 				<h1 class="wp-heading-inline"><?php esc_html_e( 'Cron Events', 'wp-crontrol' ); ?></h1>
 
-				<?php echo '<a href="' . esc_url( admin_url( 'tools.php?page=crontrol_admin_manage_page&crontrol_action=new-cron' ) ) . '" class="page-title-action">' . esc_html__( 'Add New', 'wp-crontrol' ) . '</a>'; ?>
+				<?php echo '<a href="' . esc_url( admin_url( 'tools.php?page=crontrol_admin_manage_page&crontrol_action=new-cron' ) ) . '" class="page-title-action">' . esc_html__( 'Add New Cron Event', 'wp-crontrol' ) . '</a>'; ?>
 
 				<hr class="wp-header-end">
 
@@ -1778,8 +2003,8 @@ function admin_manage_page() {
 					<?php
 						echo esc_html( sprintf(
 							/* translators: 1: Date and time, 2: Timezone */
-							__( 'Site time when page loaded: %1$s (%2$s)', 'wp-crontrol' ),
-							date_i18n( 'Y-m-d H:i:s' ),
+							__( 'Site time when page loaded: %1$s, %2$s', 'wp-crontrol' ),
+							date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
 							get_timezone_name()
 						) );
 					?>
@@ -2140,7 +2365,7 @@ function enqueue_assets( $hook_suffix ) {
 	$vars = array();
 
 	if ( ! empty( $tab['add-event'] ) || ! empty( $tab['edit-event'] ) ) {
-		if ( function_exists( 'wp_enqueue_code_editor' ) && current_user_can( 'edit_files' ) ) {
+		if ( current_user_can( 'edit_files' ) ) {
 			$settings = wp_enqueue_code_editor( array(
 				'type' => 'text/x-php',
 			) );
@@ -2205,7 +2430,7 @@ function get_all_core_hooks() {
 			'wp_maybe_auto_update', // 3.7.0
 			'wp_split_shared_term_batch', // 4.3.0
 			'wp_update_comment_type_batch', // 5.5.0
-			'wp_delete_temp_updater_backups', // 5.9.0
+			'wp_delete_temp_updater_backups', // 6.3.0
 		)
 	);
 }
@@ -2253,6 +2478,95 @@ function json_output( $input, $pretty = true ) {
 }
 
 /**
+ * Fetches the URL in a URL cron event using the HTTP API.
+ *
+ * The URL that's saved in a URL cron event is protected with an integrity check which prevents it from being fetched
+ * if the URL is tampered with.
+ *
+ * URL cron events are secured via an integrity check that makes use of an HMAC to store a hash of the URL alongside
+ * the code when the event is saved. When the event runs, the hash is checked to ensure the integrity of the URL and
+ * confirm that it has not been tampered with. WP Crontrol will not fetch the URL if the hashes do not match or if
+ * a stored hash is not present.
+ *
+ * If an attacker with database-level access were to modify the URL in an event in an attempt to fetch an arbitrary
+ * URL (for example to perform an SSRF), the HTTP request would not be performed.
+ *
+ * @link https://wp-crontrol.com/docs/url-cron-events/
+ *
+ * @throws Exception If the request fails.
+ *
+ * @param array<string,string> $args The event args array.
+ * @phpstan-param array{
+ *   url: string,
+ *   name: string,
+ *   method: string,
+ *   hash: string,
+ * } $args
+ */
+function action_url_cron_event( array $args ): void {
+	list(
+		'url' => $url,
+		'method' => $method,
+		'hash' => $hash,
+	) = $args;
+
+	if ( empty( $hash ) ) {
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+		trigger_error(
+			sprintf(
+				'WP Crontrol: The stored hash is missing for a URL cron event; for more information see %s',
+				esc_url_raw( admin_url( 'tools.php?page=crontrol_admin_manage_page&crontrol_hooks_type=url' ) ),
+			),
+			E_USER_WARNING
+		);
+		return;
+	}
+
+	// Check the integrity of the URL.
+	if ( ! check_integrity( $url, $hash ) ) {
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+		trigger_error(
+			sprintf(
+				'WP Crontrol: The stored hash for a URL cron event is not valid; for more information see %s',
+				esc_url_raw( admin_url( 'tools.php?page=crontrol_admin_manage_page&crontrol_hooks_type=url' ) ),
+			),
+			E_USER_WARNING
+		);
+		return;
+	}
+
+	$request_args = array(
+		'timeout' => 30,
+		'method'  => $method,
+		'user-agent' => sprintf(
+			'WP Crontrol; %s',
+			home_url( '/' )
+		),
+	);
+	$response = wp_remote_request( $url, $request_args );
+
+	if ( is_wp_error( $response ) ) {
+		throw new Exception( sprintf(
+			'WP Crontrol: Failed to fetch URL %s: %s',
+			$url,
+			$response->get_error_message()
+		) );
+	}
+
+	$code = wp_remote_retrieve_response_code( $response );
+	$message = wp_remote_retrieve_response_message( $response );
+
+	if ( $code < 200 || $code >= 300 ) {
+		throw new Exception( sprintf(
+			'WP Crontrol: Unexpected response code for URL %s: HTTP %s %s',
+			$url,
+			$code,
+			$message
+		) );
+	}
+}
+
+/**
  * Evaluates the code in a PHP cron event using eval.
  *
  * Security: Only users with the `edit_files` capability can manage PHP cron events. This means if a user cannot edit
@@ -2283,9 +2597,8 @@ function json_output( $input, $pretty = true ) {
  *   name?: string,
  *   hash?: string,
  * }|string $args
- * @return void
  */
-function action_php_cron_event( $args ) {
+function action_php_cron_event( $args ): void {
 	if ( is_string( $args ) ) {
 		// Prior to WP Crontrol 1.16.2, PHP cron events were saved with the associative arguments array at the top
 		// level. This means arguments are passed as individual parameters to this function and the first parameter
@@ -2303,7 +2616,7 @@ function action_php_cron_event( $args ) {
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 		trigger_error(
 			sprintf(
-				'The stored hash is missing for a PHP cron event; for more information see %s',
+				'WP Crontrol: The stored hash is missing for a PHP cron event; for more information see %s',
 				esc_url_raw( admin_url( 'tools.php?page=crontrol_admin_manage_page&crontrol_hooks_type=php' ) ),
 			),
 			E_USER_WARNING
@@ -2316,7 +2629,7 @@ function action_php_cron_event( $args ) {
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 		trigger_error(
 			sprintf(
-				'The stored hash for a PHP cron event is not valid; for more information see %s',
+				'WP Crontrol: The stored hash for a PHP cron event is not valid; for more information see %s',
 				esc_url_raw( admin_url( 'tools.php?page=crontrol_admin_manage_page&crontrol_hooks_type=php' ) ),
 			),
 			E_USER_WARNING
