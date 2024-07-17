@@ -520,6 +520,12 @@ return array(
 		),
 	),
 	array(
+		'Anton SC' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Antonio' => array(
 			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700' ),
 			'category' => 'sans-serif',
@@ -629,6 +635,12 @@ return array(
 	),
 	array(
 		'Arsenal' => array(
+			'variants' => array( 'regular', 'italic', '700', '700italic' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Arsenal SC' => array(
 			'variants' => array( 'regular', 'italic', '700', '700italic' ),
 			'category' => 'sans-serif',
 		),
@@ -988,6 +1000,12 @@ return array(
 		),
 	),
 	array(
+		'Baskervville SC' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'serif',
+		),
+	),
+	array(
 		'Battambang' => array(
 			'variants' => array( '100', '300', 'regular', '700', '900' ),
 			'category' => 'display',
@@ -1020,6 +1038,12 @@ return array(
 	array(
 		'Bebas Neue' => array(
 			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Beiruti' => array(
+			'variants' => array( '200', '300', 'regular', '500', '600', '700', '800', '900' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -1252,6 +1276,12 @@ return array(
 		),
 	),
 	array(
+		'Bodoni Moda SC' => array(
+			'variants' => array( 'regular', '500', '600', '700', '800', '900', 'italic', '500italic', '600italic', '700italic', '800italic', '900italic' ),
+			'category' => 'serif',
+		),
+	),
+	array(
 		'Bokor' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
@@ -1259,6 +1289,12 @@ return array(
 	),
 	array(
 		'Bona Nova' => array(
+			'variants' => array( 'regular', 'italic', '700' ),
+			'category' => 'serif',
+		),
+	),
+	array(
+		'Bona Nova SC' => array(
 			'variants' => array( 'regular', 'italic', '700' ),
 			'category' => 'serif',
 		),
@@ -2812,6 +2848,12 @@ return array(
 		),
 	),
 	array(
+		'Fustat' => array(
+			'variants' => array( '200', '300', 'regular', '500', '600', '700', '800' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Fuzzy Bubbles' => array(
 			'variants' => array( 'regular', '700' ),
 			'category' => 'handwriting',
@@ -2827,6 +2869,12 @@ return array(
 		'GFS Neohellenic' => array(
 			'variants' => array( 'regular', 'italic', '700', '700italic' ),
 			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Ga Maamli' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
 		),
 	),
 	array(
@@ -4783,6 +4831,12 @@ return array(
 		'Mallanna' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Maname' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'serif',
 		),
 	),
 	array(
@@ -7342,6 +7396,18 @@ return array(
 		),
 	),
 	array(
+		'Playwrite AR' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite AT' => array(
+			'variants' => array( '100', '200', '300', 'regular', '100italic', '200italic', '300italic', 'italic' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
 		'Playwrite AU NSW' => array(
 			'variants' => array( '100', '200', '300', 'regular' ),
 			'category' => 'handwriting',
@@ -7372,6 +7438,18 @@ return array(
 		),
 	),
 	array(
+		'Playwrite BE VLG' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite BE WAL' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
 		'Playwrite BR' => array(
 			'variants' => array( '100', '200', '300', 'regular' ),
 			'category' => 'handwriting',
@@ -7384,7 +7462,25 @@ return array(
 		),
 	),
 	array(
+		'Playwrite CL' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
 		'Playwrite CO' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite CU' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite CZ' => array(
 			'variants' => array( '100', '200', '300', 'regular' ),
 			'category' => 'handwriting',
 		),
@@ -7409,6 +7505,18 @@ return array(
 	),
 	array(
 		'Playwrite DE VA' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite DK Loopet' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite DK Uloopet' => array(
 			'variants' => array( '100', '200', '300', 'regular' ),
 			'category' => 'handwriting',
 		),
@@ -7446,6 +7554,24 @@ return array(
 	array(
 		'Playwrite GB S' => array(
 			'variants' => array( '100', '200', '300', 'regular', '100italic', '200italic', '300italic', 'italic' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite HR' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite HR Lijeva' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite HU' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
 			'category' => 'handwriting',
 		),
 	),
@@ -7511,6 +7637,12 @@ return array(
 	),
 	array(
 		'Playwrite NZ' => array(
+			'variants' => array( '100', '200', '300', 'regular' ),
+			'category' => 'handwriting',
+		),
+	),
+	array(
+		'Playwrite PE' => array(
 			'variants' => array( '100', '200', '300', 'regular' ),
 			'category' => 'handwriting',
 		),
@@ -9871,6 +10003,12 @@ return array(
 		'Wire One' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Wittgenstein' => array(
+			'variants' => array( 'regular', '500', '600', '700', '800', '900', 'italic', '500italic', '600italic', '700italic', '800italic', '900italic' ),
+			'category' => 'serif',
 		),
 	),
 	array(

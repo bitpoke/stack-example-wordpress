@@ -79,6 +79,49 @@ class Astra_Menu {
 
 		add_action( 'admin_menu', array( $this, 'setup_menu' ) );
 		add_action( 'admin_init', array( $this, 'settings_admin_scripts' ) );
+
+		add_filter( 'install_plugins_tabs', array( $this, 'add_astra_woo_suggestions_link' ), 1 );
+		add_action( 'install_plugins_pre_astra-woo', array( $this, 'update_plugin_suggestions_tab_link' ) );
+	}
+
+	/**
+	 * Add Astra~Woo Suggestions plugin tab link.
+	 *
+	 * @param array $tabs Plugin tabs.
+	 * @since 4.7.3
+	 * @return array
+	 */
+	public function add_astra_woo_suggestions_link( $tabs ) {
+		if ( class_exists( 'WooCommerce' ) ) {
+			$tabs['astra-woo'] = esc_html__( 'For ', 'astra' ) . self::$page_title . '~Woo';
+		}
+		return $tabs;
+	}
+
+	/**
+	 * Update plugin suggestions tab link.
+	 *
+	 * @since 4.7.3
+	 * @return void
+	 */
+	public function update_plugin_suggestions_tab_link() {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if ( ! isset( $_GET['tab'] ) || 'astra-woo' !== $_GET['tab'] ) {
+			return;
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+		$extensions_url = add_query_arg(
+			array(
+				'page' => self::$plugin_slug,
+				'path' => 'woocommerce',
+				'ref'  => 'plugins',
+			),
+			admin_url( 'admin.php' )
+		);
+
+		wp_safe_redirect( $extensions_url );
+		exit;
 	}
 
 	/**
@@ -159,15 +202,27 @@ class Astra_Menu {
 			);
 		}
 
-		if ( ! $this->spectra_has_top_level_menu() && ! astra_is_white_labelled() ) {
-			// Add Spectra submenu.
-			add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
-				self::$plugin_slug,
-				__( 'Spectra', 'astra' ),
-				__( 'Spectra', 'astra' ),
-				$capability,
-				$this->get_spectra_page_admin_link()
-			);
+		if ( ! astra_is_white_labelled() ) {
+			// Add Astra~Woo Extensions page or Spectra submenu.
+			if ( class_exists( 'WooCommerce' ) ) {
+				add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
+					self::$plugin_slug,
+					'WooCommerce',
+					'WooCommerce',
+					$capability,
+					'admin.php?page=' . self::$plugin_slug . '&path=woocommerce'
+				);
+			} elseif ( ! $this->spectra_has_top_level_menu() ){
+				add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
+					self::$plugin_slug,
+					'Spectra',
+					'Spectra',
+					$capability,
+					$this->get_spectra_page_admin_link()
+				);
+			} else {
+				// Do nothing.
+			}
 		}
 
 		// Rename to Home menu.
@@ -280,6 +335,8 @@ class Astra_Menu {
 			'astra_docs_data'        => astra_remote_docs_data(),
 			'upgrade_notice'         => astra_showcase_upgrade_notices(),
 			'show_banner_video'      => apply_filters( 'astra_show_banner_video', true ),
+			'is_woo_active'          => class_exists( 'WooCommerce' ) ? true : false,
+			'woo_extensions'         => self::astra_get_woo_extensions( false ),
 		);
 
 		$this->settings_app_scripts( apply_filters( 'astra_react_admin_localize', $localize ) );
@@ -349,6 +406,7 @@ class Astra_Menu {
 			'description'  => is_callable( 'Astra_Ext_White_Label_Markup::get_whitelabel_string' ) ? Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra-sites', 'description', __( 'Create professional designed pixel perfect websites in minutes. Get access to 280+ pre-made full website templates for your favorite page builder.', 'astra' ) ) : __( 'Create professional designed pixel perfect websites in minutes. Get access to 280+ pre-made full website templates for your favorite page builder.', 'astra' ),
 			'is_available' => defined( 'ASTRA_PRO_SITES_VER' ) || defined( 'ASTRA_SITES_VER' ) ? true : false,
 			'redirection'  => admin_url( 'themes.php?page=starter-templates' ),
+			'icon_path'    => 'https://ps.w.org/astra-sites/assets/icon-256x256.gif',
 		);
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
@@ -565,7 +623,7 @@ class Astra_Menu {
 					),
 				),
 				'woocommerce'           => array(
-					'title'     => __( 'WooCommerce', 'astra' ),
+					'title'     => 'WooCommerce',
 					'class'     => 'ast-addon',
 					'condition' => defined( 'ASTRA_EXT_VER' ) && class_exists( 'WooCommerce' ) ? true : false,
 					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/woocommerce-module-overview/', 'dashboard', 'free-theme', 'documentation' ),
@@ -579,7 +637,7 @@ class Astra_Menu {
 					),
 				),
 				'edd'                   => array(
-					'title'     => __( 'Easy Digital Downloads', 'astra' ),
+					'title'     => 'Easy Digital Downloads',
 					'class'     => 'ast-addon',
 					'condition' => defined( 'ASTRA_EXT_VER' ) && class_exists( 'Easy_Digital_Downloads' ) ? true : false,
 					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/easy-digital-downloads-module-overview/', 'dashboard', 'free-theme', 'documentation' ),
@@ -593,7 +651,7 @@ class Astra_Menu {
 					),
 				),
 				'learndash'             => array(
-					'title'       => __( 'LearnDash', 'astra' ),
+					'title'       => 'LearnDash',
 					'condition'   => defined( 'ASTRA_EXT_VER' ) && class_exists( 'SFWD_LMS' ) ? true : false,
 					'description' => __( 'Supercharge your LearnDash website with amazing design features.', 'astra' ),
 					'class'       => 'ast-addon',
@@ -608,7 +666,7 @@ class Astra_Menu {
 					),
 				),
 				'lifterlms'             => array(
-					'title'     => __( 'LifterLMS', 'astra' ),
+					'title'     => 'LifterLMS',
 					'class'     => 'ast-addon',
 					'condition' => defined( 'ASTRA_EXT_VER' ) && class_exists( 'LifterLMS' ) ? true : false,
 					'title_url' => astra_get_pro_url( 'https://wpastra.com/docs/lifterlms-module-pro/', 'dashboard', 'free-theme', 'documentation' ),
@@ -639,6 +697,110 @@ class Astra_Menu {
 	}
 
 	/**
+	 * Get Astra's recommended WooCommerce extensions.
+	 *
+	 * @param bool $under_useful_plugins Add under useful plugins or not.
+	 *
+	 * @since 4.7.3
+	 * @return array
+	 * @access public
+	 */
+	public static function astra_get_woo_extensions( $under_useful_plugins = true ) {
+		$extensions = array(
+			array(
+				'title'       => 'CartFlows: Create Sales Funnel',
+				'subtitle'    => $under_useful_plugins ? __( '#1 Sales Funnel WordPress Builder.', 'astra' ) : __( 'Build high-converting E-Commerce stores with CartFlows, the ultimate checkout and funnel builder.', 'astra' ),
+				'status'      => self::get_plugin_status( 'cartflows/cartflows.php' ),
+				'slug'        => 'cartflows',
+				'path'        => 'cartflows/cartflows.php',
+				'redirection' => ( false === get_option( 'wcf_setup_complete', false ) && ! get_option( 'wcf_setup_skipped', false ) ) ? admin_url( 'index.php?page=cartflow-setup' ) : admin_url( 'admin.php?page=cartflows' ),
+				'ratings'     => '(380+)',
+				'activations' => '200,000+',
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/cartflows/assets/icon.svg'
+				),
+			),
+			array(
+				'title'       => 'Variations Swatches by CartFlows',
+				'subtitle'    => $under_useful_plugins ? __( 'Beautiful store variation swatches.', 'astra' ) : __( 'Convert WooCommerce variation dropdown attributes into attractive swatches instantly.', 'astra' ),
+				'status'      => self::get_plugin_status( 'variation-swatches-woo/variation-swatches-woo.php' ),
+				'slug'        => 'variation-swatches-woo',
+				'path'        => 'variation-swatches-woo/variation-swatches-woo.php',
+				'redirection' => admin_url( 'admin.php?page=cfvsw_settings' ),
+				'ratings'     => '(30+)',
+				'activations' => '200,000+',
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/variation-swatches-woo/assets/icon.svg',
+				),
+			),
+			array(
+				'title'       => 'Cart Abandonment Recovery',
+				'subtitle'    => $under_useful_plugins ? __( 'Recover lost revenue automatically.', 'astra' ) : __( 'Capture emails at checkout and send follow-up emails to recover lost revenue.', 'astra' ),
+				'status'      => self::get_plugin_status( 'woo-cart-abandonment-recovery/woo-cart-abandonment-recovery.php' ),
+				'slug'        => 'woo-cart-abandonment-recovery',
+				'path'        => 'woo-cart-abandonment-recovery/woo-cart-abandonment-recovery.php',
+				'redirection' => admin_url( 'admin.php?page=woo-cart-abandonment-recovery' ),
+				'ratings'     => '(475+)',
+				'activations' => '200,000+',
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/woo-cart-abandonment-recovery/assets/icon-128x128.png',
+				),
+			),
+		);
+
+		if ( ! $under_useful_plugins ) {
+			$extensions[] = array(
+				'title'       => 'Stripe Payment Gateway for WooCommerce',
+				'subtitle'    => __( 'Stripe Payments for WooCommerce ensures secure acceptance of credit cards, Apple Pay, and Google Pay.', 'astra' ),
+				'status'      => self::get_plugin_status( 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php' ),
+				'slug'        => 'checkout-plugins-stripe-woo',
+				'path'        => 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php',
+				'redirection' => ( false === get_option( 'cpsw_setup_status', false ) ) ? admin_url( 'index.php?page=cpsw-onboarding' ) : admin_url( 'admin.php?page=wc-settings&tab=cpsw_api_settings' ),
+				'ratings'     => '(15+)',
+				'activations' => '100,000+',
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/checkout-plugins-stripe-woo/assets/icon-128x128.gif',
+				),
+			);
+			$extensions[] = array(
+				'title'       => 'PayPal Payments For WooCommerce',
+				'subtitle'    => __( 'PayPal Payments For WooCommerce simplifies and secures PayPal transactions on your store.', 'astra' ),
+				'status'      => self::get_plugin_status( 'checkout-paypal-woo/checkout-paypal-woo.php' ),
+				'slug'        => 'checkout-paypal-woo',
+				'path'        => 'checkout-paypal-woo/checkout-paypal-woo.php',
+				'redirection' => ( false === get_option( 'cpsw_setup_status', false ) ) ? admin_url( 'index.php?page=cpsw-onboarding' ) : admin_url( 'admin.php?page=wc-settings&tab=cpsw_api_settings' ),
+				'ratings'     => '(2)',
+				'activations' => '3,000+',
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/checkout-paypal-woo/assets/icon-128x128.jpg',
+				),
+			);
+		}
+
+		$extensions[] = array(
+			'title'       => 'Spectra: Blocks Builder',
+			'subtitle'    => $under_useful_plugins ? __( 'Free WordPress Page Builder.', 'astra' ) : __( 'Power-up block editor with advanced blocks for faster and effortlessly website creation.', 'astra' ),
+			'status'      => self::get_plugin_status( 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php' ),
+			'slug'        => 'ultimate-addons-for-gutenberg',
+			'path'        => 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php',
+			'redirection' => admin_url( 'options-general.php?page=spectra' ),
+			'ratings'     => '(1400+)',
+			'activations' => '800,000+',
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon.svg',
+			),
+		);
+
+		return $extensions;
+	}
+
+	/**
 	 * Get Astra's useful plugins.
 	 * Extend this in following way -
 	 *
@@ -661,56 +823,7 @@ class Astra_Menu {
 	public static function astra_get_useful_plugins() {
 		// Making useful plugin section dynamic.
 		if ( class_exists( 'WooCommerce' ) ) {
-			$useful_plugins = array(
-				array(
-					'title'       => 'Stripe Payments For Woo',
-					'subtitle'    => __( 'Simple, secure way to accept credit card payments.', 'astra' ),
-					'status'      => self::get_plugin_status( 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php' ),
-					'slug'        => 'checkout-plugins-stripe-woo',
-					'path'        => 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php',
-					'redirection' => ( false === get_option( 'cpsw_setup_status', false ) ) ? admin_url( 'index.php?page=cpsw-onboarding' ) : admin_url( 'admin.php?page=wc-settings&tab=cpsw_api_settings' ),
-					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'stripe-checkout',
-					),
-				),
-				array(
-					'title'       => 'CartFlows',
-					'subtitle'    => __( '#1 Sales Funnel WordPress Builder.', 'astra' ),
-					'status'      => self::get_plugin_status( 'cartflows/cartflows.php' ),
-					'slug'        => 'cartflows',
-					'path'        => 'cartflows/cartflows.php',
-					'redirection' => ( false === get_option( 'wcf_setup_complete', false ) && ! get_option( 'wcf_setup_skipped', false ) ) ? admin_url( 'index.php?page=cartflow-setup' ) : admin_url( 'admin.php?page=cartflows' ),
-					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'cart-flows',
-					),
-				),
-				array(
-					'title'       => 'Variations by CartFlows',
-					'subtitle'    => __( 'Beautiful store variation swatches.', 'astra' ),
-					'status'      => self::get_plugin_status( 'variation-swatches-woo/variation-swatches-woo.php' ),
-					'slug'        => 'variation-swatches-woo',
-					'path'        => 'variation-swatches-woo/variation-swatches-woo.php',
-					'redirection' => admin_url( 'admin.php?page=cfvsw_settings' ),
-					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'variation-swatches',
-					),
-				),
-				array(
-					'title'       => 'Cart Abandonment Recovery',
-					'subtitle'    => __( 'Recover lost revenue automatically.', 'astra' ),
-					'status'      => self::get_plugin_status( 'woo-cart-abandonment-recovery/woo-cart-abandonment-recovery.php' ),
-					'slug'        => 'woo-cart-abandonment-recovery',
-					'path'        => 'woo-cart-abandonment-recovery/woo-cart-abandonment-recovery.php',
-					'redirection' => admin_url( 'admin.php?page=woo-cart-abandonment-recovery' ),
-					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'cart-abandonment',
-					),
-				),
-			);
+			$useful_plugins = self::astra_get_woo_extensions();
 		} else {
 			$sc_api_token         = get_option( 'sc_api_token', '' );
 			$surecart_redirection = empty( $sc_api_token ) ? 'sc-getting-started' : 'sc-dashboard';
@@ -724,8 +837,8 @@ class Astra_Menu {
 					'path'        => 'surecart/surecart.php',
 					'redirection' => admin_url( 'admin.php?page=' . esc_attr( $surecart_redirection ) ),
 					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'surecart',
+						'internal_icon' => false,
+						'icon_path'     => 'https://ps.w.org/surecart/assets/icon-128x128.png',
 					),
 				),
 				array(
@@ -736,8 +849,8 @@ class Astra_Menu {
 					'path'        => 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php',
 					'redirection' => admin_url( 'options-general.php?page=spectra' ),
 					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'spectra',
+						'internal_icon' => false,
+						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon.svg',
 					),
 				),
 				array(
@@ -761,8 +874,8 @@ class Astra_Menu {
 					'path'        => 'presto-player/presto-player.php',
 					'redirection' => admin_url( 'edit.php?post_type=pp_video_block' ),
 					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'presto-player',
+						'internal_icon' => false,
+						'icon_path'     => 'https://ps.w.org/presto-player/assets/icon-128x128.png',
 					),
 				),
 			);
@@ -807,8 +920,8 @@ class Astra_Menu {
 					'path'        => 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php',
 					'redirection' => admin_url( 'options-general.php?page=spectra' ),
 					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'spectra',
+						'internal_icon' => false,
+						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon.svg',
 					),
 				),
 				array(
@@ -820,8 +933,8 @@ class Astra_Menu {
 					'slug'        => 'surecart',
 					'path'        => 'surecart/surecart.php',
 					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'surecart',
+						'internal_icon' => false,
+						'icon_path'     => 'https://ps.w.org/surecart/assets/icon-128x128.png',
 					),
 				),
 				array(

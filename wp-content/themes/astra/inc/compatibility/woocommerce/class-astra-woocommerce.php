@@ -2464,7 +2464,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 					array(
 						'.widget_product_search button' => array(
 							'flex'    => '0 0 auto',
-							'padding' => '10px 20px;',
+							'padding' => '10px 20px',
 						),
 					)
 				);

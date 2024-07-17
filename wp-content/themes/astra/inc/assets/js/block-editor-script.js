@@ -59,17 +59,17 @@ function addTitleVisibility() {
 			editorDocument = iframe.contentWindow.document || iframe.contentDocument;
 		}
 
-		// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
-		if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
-			const _iframe = document.querySelector('.editor-canvas__iframe');
-			if ( !! _iframe ){
-				editorDocument = _iframe.contentWindow.document ;
-			}
-		}
+        // Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
+        if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
+            let _iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
+            editorDocument = _iframe ? _iframe.contentWindow.document : editorDocument;
 
-		titleVisibility = editorDocument.querySelector( '.title-visibility' );
-		titleBlock = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
-	}
+            if (editorDocument) {
+                titleVisibility = editorDocument.querySelector('.title-visibility');
+                titleBlock = editorDocument.querySelector('.edit-post-visual-editor__post-title-wrapper');
+            }
+        }
+    }
 
 	if( null !== titleBlock && null === titleVisibility ) {
 		let titleVisibilityTrigger = '<span class="ast-title title-visibility" data-tooltip="Disable Title"> <svg xmlns="http://www.w3.org/2000/svg" width="0px" viewBox="0 0 576 512"><path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"></path></svg> </span>';
@@ -85,11 +85,12 @@ function addTitleVisibility() {
 		let titleVisibilityTriggerElement = editorDocument.querySelector( '.title-visibility' ),
 			titleVisibilityWrapper = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
 
-		if( 'disabled' === postTitleOption && ! titleVisibilityWrapper.classList.contains( 'invisible' ) ) {
-			titleVisibilityWrapper.classList.add( 'invisible' );
-		} else {
-			titleVisibilityWrapper.classList.remove( 'invisible' );
-		}
+        if (titleVisibilityWrapper) {
+            if ('disabled' === postTitleOption && !titleVisibilityWrapper.classList.contains('invisible')) {
+                titleVisibilityWrapper.classList.add('invisible');
+            } else {
+                titleVisibilityWrapper.classList.remove('invisible');
+            }
 
 		titleVisibilityTriggerElement.addEventListener("click", function() {
 			let metaTitleOptions = postTitleOption || '';
@@ -123,27 +124,35 @@ function addTitleVisibility() {
 		});
 	}
 }
+}
 
 function siteLogoImageChange() {
 	let mobileLogoState = astraColors.mobile_logo_state;
 
-	if ( !mobileLogoState ){
+	if (!mobileLogoState) {
 		return;
 	}
 
-    let mobileLogo = astraColors.mobile_logo;
-    let iframe = document.querySelector(".editor-canvas__iframe");
-	let is_desktop = iframe.contentWindow.document.querySelector(".is-desktop-preview");
+	let mobileLogo = astraColors.mobile_logo;
+	// Added OR condtion to check iframe content from WordPress 6.6 structure.
+	let iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
 
-    if ( !is_desktop ) {
-        let iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        let logoElement = iframeDoc.querySelector(".custom-logo");
-        
-        if (logoElement) {
-            // Updating logo in the editor iframe preview with the mobile logo.
-            logoElement.setAttribute("src", mobileLogo);
-        } 
-    } 
+	if (iframe) {
+		let is_desktop = iframe.contentWindow.document.querySelector(
+			".is-desktop-preview"
+		);
+
+		if (!is_desktop) {
+			let iframeDoc =
+				iframe.contentDocument || iframe.contentWindow.document;
+			let logoElement = iframeDoc.querySelector(".custom-logo");
+
+			if (logoElement) {
+				// Updating logo in the editor iframe preview with the mobile logo.
+				logoElement.setAttribute("src", mobileLogo);
+			}
+		}
+	}
 }
 
 function astra_onload_function() {
@@ -204,7 +213,8 @@ function astra_onload_function() {
 
 				// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
 				if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
-					const _iframe = document.querySelector('.editor-canvas__iframe');
+					const _iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');					
+					
 					if ( !! _iframe ){
 						editorDocument = _iframe.contentWindow.document ;
 					}
@@ -563,10 +573,11 @@ const updatePageBackground = ( apply_customizer_default = false, isUnboxedContai
 
 	// Document as per wp version.
 	let editorDoc = document;
-	const _iframe = document.querySelector("#editor iframe.editor-canvas__iframe");
-
-	if (!! _iframe && astraColors.ast_wp_version_higher_6_4 ){
-	editorDoc = _iframe.contentWindow.document;
+	
+	let _iframe = document.querySelector("#editor iframe.editor-canvas__iframe") || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
+	
+	if (_iframe && astraColors.ast_wp_version_higher_6_4) {
+		editorDoc = _iframe.contentWindow.document;
 	}
 
 	let desktopPreview = editorDoc.getElementsByClassName('is-desktop-preview'),

@@ -346,6 +346,10 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	.wp-block-latest-posts > li > *:first-child, .wp-block-latest-posts:not(.is-grid) > li:first-child {
 		margin-top: 0;
 	}
+	.entry-content .wp-block-buttons,
+	.entry-content .wp-block-uagb-buttons {
+		margin-bottom: 1.5em;
+	}
 	';
 
 	if ( $astra_block_editor_v2_ui ) {

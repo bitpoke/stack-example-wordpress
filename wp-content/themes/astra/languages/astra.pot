@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.7.2\n"
+"Project-Id-Version: Astra 4.7.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-01T10:05:28+00:00\n"
+"POT-Creation-Date: 2024-07-16T09:42:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
@@ -78,73 +78,72 @@ msgstr ""
 msgid "Sorry, you cannot list resources."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:139
-#: admin/includes/class-astra-menu.php:140
+#: admin/includes/class-astra-menu.php:97
+msgid "For "
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:208
+#: admin/includes/class-astra-menu.php:209
 #: inc/compatibility/woocommerce/class-astra-woocommerce.php:3543
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/welcome/QuickSettings.js:43
 msgid "Customize"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:153
-#: admin/includes/class-astra-menu.php:154
-#: admin/includes/class-astra-menu.php:538
+#: admin/includes/class-astra-menu.php:222
+#: admin/includes/class-astra-menu.php:223
+#: admin/includes/class-astra-menu.php:622
 msgid "Custom Layouts"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:166
-#: admin/includes/class-astra-menu.php:167
-msgid "Spectra"
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:174
+#: admin/includes/class-astra-menu.php:255
 #: admin/assets/theme-builder/build/index.js:1
 #: admin/assets/theme-builder/src/components/Breadcrumbs.js:8
 msgid "Dashboard"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:274
+#: admin/includes/class-astra-menu.php:355
 msgid "Installing"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:275
+#: admin/includes/class-astra-menu.php:356
 msgid "Installed"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:276
+#: admin/includes/class-astra-menu.php:357
 #: inc/core/class-astra-admin-settings.php:148
 msgid "Activating"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:277
+#: admin/includes/class-astra-menu.php:358
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:83
 msgid "Activated"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:278
+#: admin/includes/class-astra-menu.php:359
 #: inc/core/class-astra-admin-settings.php:150
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:85
 msgid "Activate"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:299
+#: admin/includes/class-astra-menu.php:382
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:95
 #: inc/customizer/class-astra-customizer.php:194
 #: inc/customizer/class-astra-customizer.php:206
 msgid "Site Identity"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:303
+#: admin/includes/class-astra-menu.php:386
 msgid "Header Settings"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:307
+#: admin/includes/class-astra-menu.php:390
 msgid "Footer Settings"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:311
+#: admin/includes/class-astra-menu.php:394
 #: inc/addons/scroll-to-top/classes/customizer/class-astra-scroll-to-top-configs.php:224
 #: inc/addons/scroll-to-top/classes/customizer/class-astra-scroll-to-top-configs.php:240
 #: inc/compatibility/woocommerce/customizer/sections/class-astra-woo-store-notice-configs.php:41
@@ -164,8 +163,8 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:315
-#: admin/includes/class-astra-menu.php:421
+#: admin/includes/class-astra-menu.php:398
+#: admin/includes/class-astra-menu.php:505
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:313
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:339
 #: inc/customizer/configurations/buttons/class-astra-existing-button-configs.php:196
@@ -177,7 +176,7 @@ msgid "Typography"
 msgstr ""
 
 #. translators: %s Index
-#: admin/includes/class-astra-menu.php:319
+#: admin/includes/class-astra-menu.php:402
 #: inc/compatibility/edd/customizer/sections/layout/class-astra-edd-archive-layout-configs.php:154
 #: inc/core/builder/class-astra-builder-options.php:1342
 #: inc/core/builder/class-astra-builder-options.php:1512
@@ -187,11 +186,11 @@ msgstr ""
 msgid "Button"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:323
+#: admin/includes/class-astra-menu.php:406
 msgid "Blog Options"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:327
+#: admin/includes/class-astra-menu.php:410
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:84
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:84
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:73
@@ -204,46 +203,46 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:331
+#: admin/includes/class-astra-menu.php:414
 msgid "Menus"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:348
+#: admin/includes/class-astra-menu.php:431
 msgid "Starter Templates"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:349
+#: admin/includes/class-astra-menu.php:432
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:120
 msgid "Create professional designed pixel perfect websites in minutes. Get access to 280+ pre-made full website templates for your favorite page builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:408
+#: admin/includes/class-astra-menu.php:492
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:417
 msgid "Colors & Background"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:415
-#: admin/includes/class-astra-menu.php:428
-#: admin/includes/class-astra-menu.php:441
-#: admin/includes/class-astra-menu.php:454
-#: admin/includes/class-astra-menu.php:467
-#: admin/includes/class-astra-menu.php:480
-#: admin/includes/class-astra-menu.php:493
-#: admin/includes/class-astra-menu.php:506
-#: admin/includes/class-astra-menu.php:519
-#: admin/includes/class-astra-menu.php:532
-#: admin/includes/class-astra-menu.php:547
-#: admin/includes/class-astra-menu.php:562
-#: admin/includes/class-astra-menu.php:576
+#: admin/includes/class-astra-menu.php:499
+#: admin/includes/class-astra-menu.php:512
+#: admin/includes/class-astra-menu.php:525
+#: admin/includes/class-astra-menu.php:538
+#: admin/includes/class-astra-menu.php:551
+#: admin/includes/class-astra-menu.php:564
+#: admin/includes/class-astra-menu.php:577
 #: admin/includes/class-astra-menu.php:590
-#: admin/includes/class-astra-menu.php:605
-#: admin/includes/class-astra-menu.php:619
-#: admin/includes/class-astra-menu.php:632
+#: admin/includes/class-astra-menu.php:603
+#: admin/includes/class-astra-menu.php:616
+#: admin/includes/class-astra-menu.php:631
+#: admin/includes/class-astra-menu.php:646
+#: admin/includes/class-astra-menu.php:660
+#: admin/includes/class-astra-menu.php:674
+#: admin/includes/class-astra-menu.php:689
+#: admin/includes/class-astra-menu.php:703
+#: admin/includes/class-astra-menu.php:716
 msgid "Documentation"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:434
+#: admin/includes/class-astra-menu.php:518
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-configs.php:361
 #: inc/customizer/class-astra-extended-base-configuration.php:58
 #: inc/customizer/configurations/builder/base/class-astra-html-component-configs.php:176
@@ -261,40 +260,40 @@ msgstr ""
 msgid "Spacing"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:447
+#: admin/includes/class-astra-menu.php:531
 msgid "Blog Pro"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:460
+#: admin/includes/class-astra-menu.php:544
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:397
 msgid "Mobile Header"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:473
+#: admin/includes/class-astra-menu.php:557
 msgid "Header Sections"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:486
+#: admin/includes/class-astra-menu.php:570
 #: inc/customizer/configurations/builder/header/configs/header-builder.php:752
 #: inc/metabox/class-astra-meta-boxes.php:633
 msgid "Sticky Header"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:499
+#: admin/includes/class-astra-menu.php:583
 msgid "Site Layouts"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:512
+#: admin/includes/class-astra-menu.php:596
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:169
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:302
 msgid "Footer Widgets"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:525
+#: admin/includes/class-astra-menu.php:609
 msgid "Nav Menu"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:538
+#: admin/includes/class-astra-menu.php:622
 #: admin/includes/class-astra-theme-builder-free.php:81
 #: admin/includes/class-astra-theme-builder-free.php:133
 #: admin/includes/class-astra-theme-builder-free.php:134
@@ -305,105 +304,96 @@ msgstr ""
 msgid "Site Builder"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:539
+#: admin/includes/class-astra-menu.php:623
 msgid "Add content conditionally in the various hook areas of the theme."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:553
+#: admin/includes/class-astra-menu.php:637
 msgid "Page Headers"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:554
+#: admin/includes/class-astra-menu.php:638
 msgid "Make your header layouts look more appealing and sexy!"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:568
-#: inc/customizer/configurations/builder/header/configs/account.php:50
-#: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:189
-msgid "WooCommerce"
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:582
-#: inc/compatibility/edd/class-astra-edd.php:323
-#: inc/compatibility/edd/customizer/class-astra-customizer-register-edd-section.php:40
-#: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:204
-msgid "Easy Digital Downloads"
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:596
-#: inc/compatibility/learndash/customizer/class-astra-customizer-register-learndash-section.php:40
-#: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:199
-msgid "LearnDash"
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:598
+#: admin/includes/class-astra-menu.php:682
 msgid "Supercharge your LearnDash website with amazing design features."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:611
-#: inc/compatibility/lifterlms/customizer/class-astra-liferlms-section-configs.php:39
-#: inc/customizer/configurations/builder/header/configs/account.php:46
-#: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:194
-msgid "LifterLMS"
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:625
+#: admin/includes/class-astra-menu.php:709
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:19
 msgid "White Label"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:667
-msgid "Simple, secure way to accept credit card payments."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:679
+#: admin/includes/class-astra-menu.php:738
 msgid "#1 Sales Funnel WordPress Builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:691
+#: admin/includes/class-astra-menu.php:738
+msgid "Build high-converting E-Commerce stores with CartFlows, the ultimate checkout and funnel builder."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:752
 msgid "Beautiful store variation swatches."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:703
+#: admin/includes/class-astra-menu.php:752
+msgid "Convert WooCommerce variation dropdown attributes into attractive swatches instantly."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:766
 msgid "Recover lost revenue automatically."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:721
-msgid "The new way to sell on WordPress."
+#: admin/includes/class-astra-menu.php:766
+msgid "Capture emails at checkout and send follow-up emails to recover lost revenue."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:733
+#: admin/includes/class-astra-menu.php:783
+msgid "Stripe Payments for WooCommerce ensures secure acceptance of credit cards, Apple Pay, and Google Pay."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:797
+msgid "PayPal Payments For WooCommerce simplifies and secures PayPal transactions on your store."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:813
+#: admin/includes/class-astra-menu.php:872
 msgid "Free WordPress Page Builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:745
-#: admin/includes/class-astra-menu.php:829
+#: admin/includes/class-astra-menu.php:813
+msgid "Power-up block editor with advanced blocks for faster and effortlessly website creation."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:860
+msgid "The new way to sell on WordPress."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:884
+#: admin/includes/class-astra-menu.php:968
 msgid "Automate your WordPress setup."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:758
+#: admin/includes/class-astra-menu.php:897
 msgid "Ultimate Video Player For WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:803
+#: admin/includes/class-astra-menu.php:942
 msgid "Free WordPress Page Builder Plugin."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:816
+#: admin/includes/class-astra-menu.php:955
 msgid "Simplifying selling online with WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:907
+#: admin/includes/class-astra-menu.php:1046
 msgid "Thank you for using"
 msgstr ""
 
 #. translators: 1: Astra, 2: Theme rating link
-#: admin/includes/class-astra-menu.php:911
+#: admin/includes/class-astra-menu.php:1050
 msgid "Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!"
 msgstr ""
 
@@ -6726,6 +6716,7 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:2805
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:76
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:90
 msgid "Telegram"
 msgstr ""
 
@@ -7055,7 +7046,7 @@ msgid "Tty"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:3943
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:91
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:92
 msgid "Tumblr"
 msgstr ""
 
@@ -7446,7 +7437,7 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:5225
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:67
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:93
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:94
 msgid "VK"
 msgstr ""
 
@@ -9474,6 +9465,13 @@ msgstr ""
 msgid "Cart"
 msgstr ""
 
+#: inc/compatibility/edd/class-astra-edd.php:323
+#: inc/compatibility/edd/customizer/class-astra-customizer-register-edd-section.php:40
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:204
+msgid "Easy Digital Downloads"
+msgstr ""
+
 #: inc/compatibility/edd/class-astra-edd.php:445
 #: inc/compatibility/woocommerce/class-astra-woocommerce.php:3388
 msgid "View your shopping cart"
@@ -9833,6 +9831,12 @@ msgstr ""
 msgid "Disable Product Navigation"
 msgstr ""
 
+#: inc/compatibility/learndash/customizer/class-astra-customizer-register-learndash-section.php:40
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:199
+msgid "LearnDash"
+msgstr ""
+
 #: inc/compatibility/learndash/customizer/sections/layout/class-astra-learndash-general-configs.php:44
 msgid "Display Serial Number"
 msgstr ""
@@ -9952,6 +9956,13 @@ msgstr ""
 msgid "Full Width / Stretched"
 msgstr ""
 
+#: inc/compatibility/lifterlms/customizer/class-astra-liferlms-section-configs.php:39
+#: inc/customizer/configurations/builder/header/configs/account.php:46
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:194
+msgid "LifterLMS"
+msgstr ""
+
 #: inc/compatibility/lifterlms/customizer/sections/class-astra-lifter-sidebar-configs.php:49
 msgid "Global Sidebar Layout"
 msgstr ""
@@ -9985,20 +9996,39 @@ msgctxt "Theme starter content"
 msgid "Home"
 msgstr ""
 
-#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:39
-msgid "SureCart"
+#: inc/compatibility/surecart/class-astra-surecart.php:381
+msgid "Product"
 msgstr ""
 
+#: inc/compatibility/surecart/class-astra-surecart.php:382
 #: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:48
 msgid "Products"
 msgstr ""
 
-#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:55
+#: inc/compatibility/surecart/class-astra-surecart.php:385
 msgid "Collection"
 msgstr ""
 
-#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:62
+#: inc/compatibility/surecart/class-astra-surecart.php:386
+#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:55
+msgid "Collections"
+msgstr ""
+
+#: inc/compatibility/surecart/class-astra-surecart.php:389
 msgid "Upsell"
+msgstr ""
+
+#: inc/compatibility/surecart/class-astra-surecart.php:390
+#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:62
+msgid "Upsells"
+msgstr ""
+
+#: inc/compatibility/surecart/class-astra-surecart.php:397
+msgid "Title Area"
+msgstr ""
+
+#: inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php:39
+msgid "SureCart"
 msgstr ""
 
 #: inc/compatibility/woocommerce/class-astra-woocommerce.php:303
@@ -11543,6 +11573,12 @@ msgstr ""
 msgid "It would not be effective if transparent header is enabled."
 msgstr ""
 
+#: inc/customizer/configurations/builder/header/configs/account.php:50
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/data.js:189
+msgid "WooCommerce"
+msgstr ""
+
 #: inc/customizer/configurations/builder/header/configs/account.php:123
 msgid "Logged In View"
 msgstr ""
@@ -12734,10 +12770,6 @@ msgstr ""
 msgid "Full Size"
 msgstr ""
 
-#: inc/lib/astra-notices/class-astra-notices.php:119
-msgid "WordPress Nonce not validated."
-msgstr ""
-
 #. translators: %d: Minutes interval
 #: inc/lib/batch-processing/class-astra-wp-background-process.php:425
 msgid "Every %d Minutes"
@@ -12920,8 +12952,8 @@ msgstr ""
 msgid "Archive Banner"
 msgstr ""
 
-#: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:1007
-#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1583
+#: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:1008
+#: inc/modules/posts-structures/customizer/class-astra-posts-single-structures-configs.php:1584
 msgid " Title Area"
 msgstr ""
 
@@ -13287,12 +13319,10 @@ msgstr ""
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/MainNav.js:152
 #: admin/assets/src/dashboard-app/MainNav.js:173
-#: admin/assets/src/dashboard-app/pages/docs/Docs.js:107
 #: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:54
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:129
 #: admin/assets/src/dashboard-app/pages/welcome/ExtensionCard.js:113
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:90
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:313
 msgid "PRO"
 msgstr ""
 
@@ -13307,31 +13337,31 @@ msgid "Pro Support"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/docs/Docs.js:112
+#: admin/assets/src/dashboard-app/pages/docs/Docs.js:108
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:307
-msgid "Priority Support"
+msgid "VIP Priority Support"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/docs/Docs.js:119
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:317
-msgid "We aim to answer all priority support requests within 2-3 hours."
+#: admin/assets/src/dashboard-app/pages/docs/Docs.js:115
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:314
+msgid "Faster and exclusive support service designed for VIP assistance and benefits."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/docs/Docs.js:130
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:328
-msgid "Learn More →"
+#: admin/assets/src/dashboard-app/pages/docs/Docs.js:126
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:325
+msgid "Know More →"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/docs/Docs.js:137
-#: admin/assets/src/dashboard-app/pages/docs/Docs.js:144
+#: admin/assets/src/dashboard-app/pages/docs/Docs.js:133
+#: admin/assets/src/dashboard-app/pages/docs/Docs.js:140
 msgid "View Documentation"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/docs/Docs.js:159
+#: admin/assets/src/dashboard-app/pages/docs/Docs.js:155
 msgid "View All Documentation"
 msgstr ""
 
@@ -13501,43 +13531,43 @@ msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:301
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:336
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:363
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:333
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:360
 msgid "Section title"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:341
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:338
 msgid "Join the Community"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:344
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:341
 msgid "Got a question about the plugin, want to share your awesome project or just say hi? Join our wonderful community!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:355
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:352
 msgid "Join Now →"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:368
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:365
 msgid "Rate Us"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:388
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:385
 msgid "Based on 5k+ reviews"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:395
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:392
 msgid "We love to hear from you, we would appreciate every single review."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:406
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:403
 msgid "Submit a Review →"
 msgstr ""
 
@@ -13953,6 +13983,21 @@ msgid "Build Ultra High Performance Websites, Without Coding"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:130
+msgid "active users"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:142
+msgid "Extensions"
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:145
+msgid "WooCommerce extensions that will elevate your online store from good to exceptional."
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/SettingsSavedNotification.js:19
 msgid "Successfully imported!"
 msgstr ""
@@ -14346,7 +14391,7 @@ msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/list-icons/list-icons-component.js:52
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:59
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:90
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:91
 msgid "Linkedin"
 msgstr ""
 
@@ -14385,7 +14430,7 @@ msgid "Nextdoor"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:62
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:92
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:93
 msgid "Reddit"
 msgstr ""
 
@@ -14410,7 +14455,7 @@ msgid "Phone 2"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:74
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:94
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:95
 msgid "WhatsApp"
 msgstr ""
 
@@ -14427,15 +14472,15 @@ msgid "Threads"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:82
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:96
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:97
 msgid "Twitter / X"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:95
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:96
 msgid "SMS"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:355
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:356
 msgid "Add Social Icon"
 msgstr ""
 

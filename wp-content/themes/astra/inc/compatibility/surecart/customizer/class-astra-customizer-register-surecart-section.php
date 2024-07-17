@@ -52,14 +52,14 @@ if ( ! class_exists( 'Astra_Customizer_Register_Surecart_Section' ) ) {
 						'name'     => 'section-posttype-sc_collection',
 						'type'     => 'section',
 						'section'  => 'ast-surecart',
-						'title'    => __( 'Collection', 'astra' ),
+						'title'    => __( 'Collections', 'astra' ),
 						'priority' => 70,
 					),
 					'sc_upsell'     => array(
 						'name'     => 'section-posttype-sc_upsell',
 						'type'     => 'section',
 						'section'  => 'ast-surecart',
-						'title'    => __( 'Upsell', 'astra' ),
+						'title'    => __( 'Upsells', 'astra' ),
 						'priority' => 71,
 					),
 				);

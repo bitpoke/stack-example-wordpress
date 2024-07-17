@@ -2163,3 +2163,9 @@ li#accordion-section-ast-archive-post, li#accordion-section-ast-archive-product 
 li#customize-control-site_icon {
     margin-bottom: 16px;
 }
+/*
+ * Hide customizer scrollbar during navigation.
+ */
+ #customize-controls .wp-full-overlay-sidebar-content:has(.busy) {
+    overflow-y: hidden;
+}

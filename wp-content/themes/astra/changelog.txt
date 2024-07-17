@@ -1,5 +1,15 @@
+v4.7.3
+- Compatibility with WordPress 6.6.
+- New: Admin Dashboard - Introducing Astra ~ WooCommerce Extensions page for improvising user's store experience.
+- New: Social Icons - Introduced "Telegram" in social share icons list.
+- Improvement: Fixed redundant semicolons in CSS background properties to ensure cleaner and more efficient CSS output.
+- Improvement: Empowered Astra and SureCart integration defaults setup.
+- Fix: Editor - Hide title option from editor is not working when Spectra plugin is activated.
+- Fix: No spaces between buttons block in editor and single page.
+
 v4.7.2
 - New: WooCommerce - Introducing a new dedicated "Cart Click Trigger Action" option for responsive devices.
+- Fix: Search icon color not working on tablet and mobile view.
 - Fix: Header Builder - Search - Icon color not working on tablet and mobile view.
 - Fix: 'FiboSearch' plugin conflict with addon's Sticky Header and Cart Widget.
 - Fix: SureCart - Addressed a glitch in the customizer while navigating to its CPT sections.

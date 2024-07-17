@@ -1580,7 +1580,8 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 		} else {
 			$title = __( 'Single Banner', 'astra' );
 		}
-		return apply_filters( 'astra_single_post_title', $title . __( ' Title Area', 'astra' ) );
+		/** @psalm-suppress TooManyArguments */
+		return apply_filters( 'astra_single_post_title', $title . __( ' Title Area', 'astra' ), $post_type );
 	}
 }
 
