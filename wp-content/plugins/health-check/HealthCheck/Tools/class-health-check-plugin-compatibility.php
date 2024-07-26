@@ -128,7 +128,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		$tide_versions = get_transient( $transient_name );
 
 		if ( false === $tide_versions ) {
-			$tide_api_respone = wp_remote_get(
+			$tide_api_response = wp_remote_get(
 				sprintf(
 					'https://wptide.org/api/v1/audit/wporg/plugin/%s/%s?reports=all',
 					$slug,
@@ -136,11 +136,11 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 				)
 			);
 
-			$tide_response = wp_remote_retrieve_body( $tide_api_respone );
+			$tide_response = wp_remote_retrieve_body( $tide_api_response );
 
 			$json = json_decode( $tide_response );
 
-			if ( empty( $json ) ) {
+			if ( empty( $json ) || ! isset( $json->reports->phpcs_phpcompatibilitywp->report->compatible ) ) {
 				$tide_versions = array();
 			} else {
 				$tide_versions = $json->reports->phpcs_phpcompatibilitywp->report->compatible;

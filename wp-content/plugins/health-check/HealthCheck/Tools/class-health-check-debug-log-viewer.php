@@ -11,7 +11,7 @@ class Health_Check_Debug_Log_Viewer extends Health_Check_Tool {
 
 	private function read_debug_log() {
 		if ( ! defined( 'WP_DEBUG_LOG' ) || false === WP_DEBUG_LOG ) {
-			return null;
+			return '';
 		}
 
 		$logfile = WP_DEBUG_LOG;
@@ -25,7 +25,7 @@ class Health_Check_Debug_Log_Viewer extends Health_Check_Tool {
 		}
 
 		if ( ! file_exists( $logfile ) ) {
-			return null;
+			return '';
 		}
 
 		$debug_log = @file_get_contents( $logfile );

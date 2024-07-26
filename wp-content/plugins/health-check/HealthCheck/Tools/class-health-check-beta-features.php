@@ -26,7 +26,7 @@ class Health_Check_Beta_Features extends Health_Check_Tool {
 	}
 
 	public function toggle_beta_features() {
-		if ( ! isset( $_GET['health-check-beta-features'] ) ) {
+		if ( ! isset( $_GET['health-check-beta-features'] ) || ! current_user_can( 'view_site_health_checks' ) ) {
 			return;
 		}
 

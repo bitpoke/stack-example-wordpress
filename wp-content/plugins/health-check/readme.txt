@@ -3,8 +3,8 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.4
 Requires PHP: 5.6
-Tested up to: 6.3
-Stable tag: 1.7.0
+Tested up to: 6.6
+Stable tag: 1.7.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,17 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 == Changelog ==
 
+= 1.7.1 (2024-07-25) =
+* Security: Prevent a potential information disclosure from the screenshot beta feature, reported independently by Jarko Piironen.
+* Security hardening: Make each screenshot delete nonce unique to that image.
+* Security hardening: Add a capability check alongside the nonce validation when toggling beta features on or off.
+* General: Updated the `Tested up to` tag.
+* General: Added notice about future changes to the Troubleshooting and Tools sections.
+* Added Twenty Twenty Four as a known and valid default theme.
+* Tools: Fixed a PHP warning when checking for PHP version compatibility and no data was found.
+* Tools: Fixed a PHP warning when `WP_DEBUG` is disabled, or nothing has been written to the logfile yet.
+* Tools: Improved the description for the `robots.txt` file viewer.
+
 = 1.7.0 (2023-08-06) =
 * General: Improved styling inconsistency between the plugin and WordPress core.
 * General: Fixed an issue with plugin translations where language strings would get mixed when using third party language plugins, or a separate profile language.
@@ -69,13 +80,3 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 * Tools: Added beta feature toggle for those who wish to test new functionality that may not be fully ready yet.
 * CLI: Fixed the CLI commands, you can now `wp health-check status` to your hearts content!
 * Beta feature: Added a new beta feature, making it easier for non-technical users to grab screenshots of issues on their site, and share them.
-
-= v1.6.0 (2023-03-31) =
-* Improved the visual aspects of the Troubleshooting Mode Widget.
-* Improved security by hardening Troubleshooting Mode actions with security tokens (nonces).
-* Added a new tool to check `.htaccess` rules (where applicable).
-* Added TwentyTwenty Three to the list of default themes.
-* Added option to install the latest classic (non Site Editor-focused) default theme if no default theme exists.
-* Added a new security confirmation prompt in Troubleshooting Mode, if a security token (nonce) value is either expired, or missing.
-* Added better documentation around reporting security concerns.
-* Fixed a bug where notices from previous Troubleshooting sessions would show up in a new session, which is just confusing.

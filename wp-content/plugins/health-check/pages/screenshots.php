@@ -91,7 +91,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 								),
 								admin_url( 'site-health.php' )
 							),
-							'health-check-delete-screenshot'
+							sprintf(
+								'health-check-delete-screenshot-%d',
+								$screenshot->ID
+							)
 						)
 					),
 					esc_html__( 'Delete screenshot', 'health-check' )
