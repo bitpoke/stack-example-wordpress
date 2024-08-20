@@ -148,6 +148,38 @@ function astra_ext_transparent_header_dynamic_css( $dynamic_css, $dynamic_css_fi
 		);
 		$css       .= astra_parse_css( $css_output );
 	}
+	
+	// Handle style guide logo background cases inside the customizer.
+	if ( is_customize_preview() ) {
+		if ( Astra_Ext_Transparent_Header_Markup::is_transparent_header() ) {
+			// Fetch the header items
+			$header_items = astra_get_option( 'header-desktop-items', array() );
+	
+			$transparent_bg_colors = array(
+				'above'   => $above_transparent_bg_color_desktop,
+				'primary' => $transparent_bg_color_desktop,
+				'below'   => $below_transparent_bg_color_desktop,
+			);
+	
+			$transparent_bg_color = ! empty( $transparent_bg_color_desktop ) ? esc_attr( $transparent_bg_color_desktop ) : 'black';
+	
+			foreach ( $transparent_bg_colors as $section => $bg_color ) {
+				if ( isset( $header_items[ $section ] ) && astra_is_logo_in_section( $header_items[ $section ] ) ) {
+					$transparent_bg_color = ! empty( $bg_color ) ? esc_attr( $bg_color ) : '#d1d5db';
+					break;
+				}
+			}
+	
+			$transparent_header_desktop_bg = array(
+				'.ast-theme-transparent-header .ast-sg-element-wrap.ast-sg-logo-section' => array(
+					'background-color' => $transparent_bg_color,
+				),
+			);
+	
+			$css .= astra_parse_css( $transparent_header_desktop_bg );
+		}
+	}
+	
 
 	// Desktop Transparent Heder Logo Width.
 	$css_output = array(
@@ -157,6 +189,7 @@ function astra_ext_transparent_header_dynamic_css( $dynamic_css, $dynamic_css_fi
 		),
 		'.ast-theme-transparent-header #masthead .site-logo-img .transparent-custom-logo img' => array(
 			' max-width' => astra_get_css_value( $transparent_header_logo_width['desktop'], 'px' ),
+			' width'     => astra_get_css_value( $transparent_header_logo_width['desktop'], 'px' ),
 		),
 	);
 	$css       .= astra_parse_css( $css_output );
@@ -169,6 +202,7 @@ function astra_ext_transparent_header_dynamic_css( $dynamic_css, $dynamic_css_fi
 		),
 		'.ast-theme-transparent-header #masthead .site-logo-img .transparent-custom-logo img' => array(
 			' max-width' => astra_get_css_value( $transparent_header_logo_width['tablet'], 'px' ),
+			' width'     => astra_get_css_value( $transparent_header_logo_width['tablet'], 'px' ),
 		),
 	);
 	$css              .= astra_parse_css( $tablet_css_output, '', astra_get_tablet_breakpoint() );
@@ -181,6 +215,7 @@ function astra_ext_transparent_header_dynamic_css( $dynamic_css, $dynamic_css_fi
 		),
 		'.ast-theme-transparent-header #masthead .site-logo-img .transparent-custom-logo img' => array(
 			' max-width' => astra_get_css_value( $transparent_header_logo_width['mobile'], 'px' ),
+			' width'     => astra_get_css_value( $transparent_header_logo_width['mobile'], 'px' ),
 		),
 	);
 	$css              .= astra_parse_css( $mobile_css_output, '', astra_get_mobile_breakpoint( 1 ) );

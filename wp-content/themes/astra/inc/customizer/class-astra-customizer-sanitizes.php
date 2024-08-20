@@ -378,9 +378,13 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 				return $spacing;
 
 			} else {
-				foreach ( $val as $key => $value ) {
-					$val[ $key ] = is_numeric( $val[ $key ] ) ? $val[ $key ] : '';
+				/** @psalm-suppress DocblockTypeContradiction */
+				if ( is_array( $val ) ) {
+					foreach ( $val as $key => $value ) {
+						$val[ $key ] = is_numeric( $val[ $key ] ) ? $val[ $key ] : '';
+					}
 				}
+				/** @psalm-suppress InvalidReturnStatement */
 				return $val;
 			}
 
@@ -760,6 +764,7 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 				'bottom' => '',
 				'left'   => '',
 			);
+			/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( is_array( $val ) ) {
 				$border['top']    = is_numeric( $val['top'] ) ? $val['top'] : '';
 				$border['right']  = is_numeric( $val['right'] ) ? $val['right'] : '';

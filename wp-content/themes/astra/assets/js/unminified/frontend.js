@@ -14,7 +14,7 @@
  * @param  {String} selector Selector to match against [optional].
  * @return {Array}           The parent elements.
  */
- var astraGetParents = function ( elem, selector ) {
+var astraGetParents = function ( elem, selector ) {
 
 	// Element.matches() polyfill.
 	if ( ! Element.prototype.matches) {
@@ -1218,13 +1218,23 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				if (href) {
 					const scrollId = document.querySelector(href);
 					if (scrollId) {
-						const scrollOffsetTop = scrollId.offsetTop - offset;
+						const scrollOffsetTop = getOffsetTop(scrollId) - offset;
 						if( scrollOffsetTop ) {
 							astraSmoothScroll( e, scrollOffsetTop );
 						}
 					}
 				}
 			}
+		}
+
+		// Calculate the offset top of an element, accounting for nested elements.
+		function getOffsetTop(element) {
+			let offsetTop = 0;
+			while (element) {
+				offsetTop += element.offsetTop;
+				element = element.offsetParent;
+			}
+			return offsetTop;
 		}
 
 		window.addEventListener('DOMContentLoaded', (event) => {
@@ -1243,7 +1253,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					
 					const scrollId = document.querySelector(link.hash);
 					if (scrollId) {
-						const scrollOffsetTop = scrollId.offsetTop - offset;
+						const scrollOffsetTop = getOffsetTop(scrollId) - offset;
 						if (scrollOffsetTop) {
 							astraSmoothScroll(event, scrollOffsetTop);
 						}
@@ -1341,4 +1351,34 @@ document.addEventListener('DOMContentLoaded', function() {
             updateAriaExpanded(toggle);
         });
     }
+});
+
+// Accessibility improvement for product card quick view and add to cart buttons.
+document.addEventListener('DOMContentLoaded', () => {
+    const thumbnailWraps = document.querySelectorAll('.astra-shop-thumbnail-wrap');
+
+    thumbnailWraps.forEach(wrap => {
+        const focusableElements = wrap.querySelectorAll('a, span');
+
+        focusableElements.forEach(el => {
+            el.addEventListener('focus', () => {
+                wrap.querySelectorAll('.ast-on-card-button, .ast-quick-view-trigger').forEach(btn => {
+                    btn.style.opacity = '1';
+                    btn.style.visibility = 'visible';
+                    btn.style.borderStyle = 'none';
+                });
+            });
+
+            el.addEventListener('blur', () => {
+                // Added Check to check if child elements are still focused.
+                const isAnyFocused = Array.from(focusableElements).some(child => child === document.activeElement);
+                if (!isAnyFocused) {
+                    wrap.querySelectorAll('.ast-on-card-button, .ast-quick-view-trigger').forEach(btn => {
+                        btn.style.opacity = '';
+                        btn.style.visibility = '';
+                    });
+                }
+            });
+        });
+    });
 });

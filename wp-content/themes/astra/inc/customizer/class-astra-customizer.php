@@ -135,6 +135,8 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		 */
 		public function __construct() {
 
+			add_action( 'astra_style_guide_site_icon', array( $this, 'site_icon_update' ) );
+
 			/**
 			 * Customizer
 			 */
@@ -168,6 +170,8 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			add_action( 'customize_save_after', array( $this, 'delete_cached_partials' ) );
 			add_action( 'wp_head', array( $this, 'preview_styles' ) );
 			add_action( 'wp_ajax_astra_regenerate_fonts_folder', array( $this, 'regenerate_astra_fonts_folder' ) );
+
+			add_action( 'wp_footer', array( $this, 'style_guide_template' ) );
 		}
 
 		/**
@@ -1091,7 +1095,16 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					'isWP_5_9'                => astra_wp_version_compare( '5.8.99', '>=' ),
 					'googleFonts'             => Astra_Font_Families::get_google_fonts(),
 					'variantLabels'           => Astra_Font_Families::font_variant_labels(),
-					'upgradeUrl'              => ASTRA_PRO_CUSTOMIZER_UPGRADE_URL,
+					'upgradeUrl'              => array(
+						'default'        => ASTRA_PRO_CUSTOMIZER_UPGRADE_URL,
+						'global'         => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'global' ),
+						'header-builder' => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'header-builder' ),
+						'footer-builder' => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'footer-builder' ),
+						'sidebar'        => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'sidebar' ),
+						'woocommerce'    => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'woocommerce' ),
+						'blog-single'    => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'blog-single' ),
+						'blog-archive'   => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'blog-archive' ),
+					),
 				)
 			);
 
@@ -1238,9 +1251,19 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			$wp_customize->register_section_type( 'Astra_WP_Customize_Section' );
 			$wp_customize->register_section_type( 'Astra_WP_Customize_Separator' );
 
+			$wp_customize->selective_refresh->add_partial(
+				'site_icon',
+				array(
+					'selector'            => '.ast-sg-site-icon-wrap',
+					'container_inclusive' => true,
+					'render_callback'     => array( $this, 'site_icon_update' ),
+				)
+			);
+
 			if ( ! defined( 'ASTRA_EXT_VER' ) ) {
 				$wp_customize->register_section_type( 'Astra_Pro_Customizer' );
 			}
+
 
 			// @codingStandardsIgnoreStart WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 			require ASTRA_THEME_DIR . 'inc/customizer/extend-customizer/class-astra-wp-customize-panel.php';
@@ -1301,6 +1324,27 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			require ASTRA_THEME_DIR . 'inc/customizer/class-astra-customizer-callback.php';
 			require ASTRA_THEME_DIR . 'inc/customizer/class-astra-customizer-sanitizes.php';
 			// @codingStandardsIgnoreEnd WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+		}
+
+		/**
+		 * Render site icon.
+		 *
+		 * @since 4.8.0
+		 */
+		public function site_icon_update() {
+			$uploaded_icon_url = get_site_icon_url( 32 );
+			$site_icon_url     = empty( $uploaded_icon_url ) ? admin_url() . 'images/wordpress-logo.svg' : $uploaded_icon_url;
+			?>
+				<p class="ast-sg-site-icon-wrap">
+					<span class="ast-sg-site-icon-aside-divider"></span>
+					<span class="ast-sg-site-icon-inner-wrap">
+						<img class="ast-sg-site-icon" alt="<?php _e( 'Site Icon', 'astra' ); ?>" src="<?php echo esc_url( $site_icon_url ); ?>" />
+						<span class="ast-sg-site-title"> <?php echo get_bloginfo( 'name' ); ?> </span>
+						<span class="ast-sg-site-blogdescription"> <?php echo esc_attr( ! empty( get_bloginfo( 'description' ) ) ? ' - ' . get_bloginfo( 'description' ) : '' ); ?> </span>
+					</span>
+					<span class="ast-sg-site-icon-aside-divider"></span>
+				</p>
+			<?php
 		}
 
 		/**
@@ -1366,6 +1410,15 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			// Customizer Controls.
 			wp_enqueue_style( 'astra-customizer-controls-css', ASTRA_THEME_URI . 'assets/css/minified/customizer-controls' . $css_prefix, null, ASTRA_THEME_VERSION );
 
+			wp_enqueue_script( 'astra-customizer-style-guide-js', ASTRA_THEME_URI . 'assets/js/' . $dir . '/customizer-style-guide' . $js_prefix, array( 'jquery', 'astra-customizer-controls-toggle-js' ), ASTRA_THEME_VERSION, true );
+			wp_localize_script(
+				'astra-customizer-style-guide-js',
+				'astraStyleGuide',
+				array(
+					'title' => __( 'Style Guide', 'astra' ),
+				)
+			);
+
 			$string = $this->generate_font_dropdown();
 
 			$template = '<div class="ast-field-settings-modal">
@@ -1419,6 +1472,266 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					)
 				)
 			);
+		}
+
+		/**
+		 * Render customizer style guide shortcut pencil.
+		 *
+		 * @param string $type Section|Control.
+		 * @param string $name Section name|Control name.
+		 * @param string $context General|Design name.
+		 * @param string $extras if any other parameter to pass.
+		 *
+		 * @return string Trigger for style guide shortcut.
+		 * @since 4.8.0
+		 */
+		public function get_style_guide_shortcut_trigger( $type, $name, $context = 'general', $extras = '' ) {
+			return '<span class="ast-quick-tour-item" data-type="' . $type . '" data-name="' . $name . '" data-context="' . $context . '" ' . $extras . '> <span class="ast-sg-customizer-shortcut"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H18C21.0376 0.5 23.5 2.96243 23.5 6V18C23.5 21.0376 21.0376 23.5 18 23.5H6C2.96243 23.5 0.5 21.0376 0.5 18V6Z" fill="white" fill-opacity="0.8"/> <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H18C21.0376 0.5 23.5 2.96243 23.5 6V18C23.5 21.0376 21.0376 23.5 18 23.5H6C2.96243 23.5 0.5 21.0376 0.5 18V6Z" stroke="#E2E8F0"/> <g clip-path="url(#clip0_8460_9362)"> <path d="M14.5 7.50081C14.6273 7.35032 14.7849 7.22784 14.9625 7.14115C15.1402 7.05446 15.334 7.00547 15.5318 6.99731C15.7296 6.98915 15.9269 7.022 16.1112 7.09375C16.2955 7.1655 16.4627 7.27459 16.6022 7.41407C16.7416 7.55354 16.8503 7.72034 16.9213 7.90383C16.9922 8.08732 17.0239 8.28347 17.0143 8.4798C17.0047 8.67612 16.954 8.8683 16.8654 9.04409C16.7769 9.21988 16.6524 9.37542 16.5 9.50081L9.75 16.2508L7 17.0008L7.75 14.2508L14.5 7.50081Z" stroke="#020617" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M13.5 8.5L15.5 10.5" stroke="#020617" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </g> <defs> <clipPath id="clip0_8460_9362"> <rect width="12" height="12" fill="white" transform="translate(6 6)"/> </clipPath> </defs> </svg> </span> </span>';
+		}
+
+		/**
+		 * Get formatted font settings for headings.
+		 *
+		 * @param string $tag HTML Tag.
+		 * @return string formatted string with font, font-size, line-height.
+		 *
+		 * @since 4.8.0
+		 */
+		public function get_formatted_font_style( $tag ) {
+			$dataset   = array();
+			$dataset[] = '<span class="ast-sg-font-family">' . astra_get_option( 'font-family-' . $tag ) . '</span>';
+
+			$font_size = astra_get_option( 'font-size-' . $tag );
+			$desktop   = astra_get_css_value( $font_size['desktop'], $font_size['desktop-unit'] );
+			$tablet    = astra_get_css_value( $font_size['tablet'], $font_size['tablet-unit'] );
+			$mobile    = astra_get_css_value( $font_size['mobile'], $font_size['mobile-unit'] );
+
+			$tablet = empty( $tablet ) ? $desktop : $tablet;
+			$mobile = empty( $mobile ) ? $tablet : $mobile;
+
+			$dataset[] = '<span class="ast-sg-font-size"> <span class="ast-sg-desktop">' . $desktop . '</span> <span class="ast-sg-tablet">' . $tablet . '</span> <span class="ast-sg-mobile">' . $mobile . '</span> </span>';
+
+			$dataset[] = '<span class="ast-sg-line-height">' . astra_get_font_extras( astra_get_option( 'font-extras-' . $tag ), 'line-height', 'line-height-unit' ) . '</span>';
+
+			$formatted_data = join( ' / ', $dataset );
+			return '<p class="ast-sg-field-title ast-sg-typo-field" data-for="' . esc_attr( $tag ) . '"> ' . $formatted_data . ' </p>';
+		}
+
+		/**
+		 * Customizer Easy Navigation Tour Markup.
+		 *
+		 * @return mixed HTML Markup.
+		 * @since 4.8.0
+		 */
+		public function render_style_guide_markup() {
+			$settings = apply_filters(
+				'astra_quick_customizer_navigation_setup',
+				array(
+					'colors' => array(
+						'color-0' => array(
+							'title' => __( 'Brand', 'astra' ),
+							'code'  => 'var(--ast-global-color-0)',
+						),
+						'color-1' => array(
+							'title' => __( 'Alt Brand', 'astra' ),
+							'code'  => 'var(--ast-global-color-1)',
+						),
+						'color-2' => array(
+							'title' => __( 'Heading', 'astra' ),
+							'code'  => 'var(--ast-global-color-2)',
+						),
+						'color-3' => array(
+							'title' => __( 'Text', 'astra' ),
+							'code'  => 'var(--ast-global-color-3)',
+						),
+						'color-4' => array(
+							'title' => __( 'Primary', 'astra' ),
+							'code'  => 'var(--ast-global-color-4)',
+						),
+						'color-5' => array(
+							'title' => __( 'Secondary', 'astra' ),
+							'code'  => 'var(--ast-global-color-5)',
+						),
+						'color-6' => array(
+							'title' => __( 'Alt BG', 'astra' ),
+							'code'  => 'var(--ast-global-color-6)',
+						),
+						'color-7' => array(
+							'title' => __( 'Subtle BG', 'astra' ),
+							'code'  => 'var(--ast-global-color-7)',
+						),
+						'color-8' => array(
+							'title' => __( 'Extra', 'astra' ),
+							'code'  => 'var(--ast-global-color-8)',
+						),
+					),
+				)
+			);
+
+			ob_start();
+			?>
+				<button class="ast-close-tour" type="button">
+					<span class="screen-reader-text"><?php esc_html_e( 'Close', 'astra' ); ?></span>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"></path></svg>
+				</button>
+				<div class="ast-tour-inner-wrap">
+					<div class="ast-quick-tour-body">
+						<div class="ast-sg-2-col-grid">
+							<div class="ast-styler-card">
+								<p class="ast-sg-card-title"> <?php esc_html_e( 'Site Title & Logo', 'astra' ); ?>
+								<div class="ast-sg-element-wrap ast-sg-logo-section <?php echo esc_attr( astra_get_option( 'logo-title-inline' ) ? 'ast-logo-title-inline' : '' ); ?>">
+									<?php echo $this->get_style_guide_shortcut_trigger( 'section', 'title_tagline' ); ?>
+									<?php do_action( 'astra_site_identity' ); ?>
+								</div>
+							</div>
+							<div class="ast-sg-1-col-grid">
+								<div class="ast-styler-card">
+									<p class="ast-sg-card-title"> <?php esc_html_e( 'Site Icon', 'astra' ); ?>
+									<div class="ast-sg-element-wrap">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'section', 'astra-site-identity' ); ?>
+										<?php do_action( 'astra_style_guide_site_icon' ); ?>
+									</div>
+								</div>
+
+								<div class="ast-styler-card">
+									<p class="ast-sg-card-title"> <?php esc_html_e( 'Buttons', 'astra' ); ?>
+									<div class="ast-sg-button-element-wrap">
+										<div class="ast-sg-element-wrap">
+											<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[button-preset-style]' ); ?>
+											<button class="ast-button"> <?php esc_html_e( 'Primary', 'astra' ); ?> </button>
+										</div>
+										<div class="ast-sg-element-wrap">
+											<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[secondary-button-preset-style]', 'design' ); ?>
+											<button class="ast-outline-button"> <?php esc_html_e( 'Secondary', 'astra' ); ?> </button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="ast-sg-colors-section ast-styler-card">
+							<p class="ast-sg-card-title"> <?php esc_html_e( 'Colors', 'astra' ); ?>
+							<div class="ast-sg-colors-section-wrap">
+								<?php
+								foreach ( $settings['colors'] as $key => $data_attrs ) {
+									?>
+									<div class="ast-sg-color-item-wrap">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'control', 'astra-color-palettes', 'general', 'data-reference="ast-' . esc_attr( $key ) . '"' ); ?>
+										<span class="ast-sg-color-picker" style="background:<?php echo $data_attrs['code']; ?>"> </span>
+										<span class="ast-sg-field-title"> <?php echo esc_html( $data_attrs['title'] ); ?>
+									</div>
+									<?php
+								}
+								?>
+									</div>
+								</div>
+
+						<div class="ast-sg-content-section-wrap ast-styler-card">
+							<p class="ast-sg-card-title"> <?php esc_html_e( 'Typography', 'astra' ); ?>
+							<div class="ast-sg-content-inner-wrap">
+								<div class="ast-sg-heading-section">
+									<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-headings-font-settings]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+									<h1> <?php esc_html_e( 'Headings', 'astra' ); ?> </h1>
+									<h2 class="sub-heading"> A a B b C c D d E e F f G g H h I i J j K k L l M m N n O o P p Q q R r S s T t U u V v W w X x Y y Z z </h2>
+								</div>
+								<div class="ast-sg-content-section">
+									<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-body-font-settings]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+									<p> <?php esc_html_e( 'Here\'s how the body text will look like on your website. You can customize the typography to match your brand personality. Whether you aim for a modern and sleek appearance or a more traditional and elegant feel, the right typography sets the tone for your content.', 'astra' ); ?> </p>
+								</div>
+							</div>
+
+							<div class="ast-sg-content-inner-wrap" id="ast-sg-content-more-wrapper">
+								<div class="ast-sg-heading-more-section">
+									<div class="ast-sg-heading-card">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-heading-h1-typo]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+										<?php echo $this->get_formatted_font_style( 'h1' ); ?>
+										<h1 class="ast-sg-heading"> <?php esc_html_e( 'Heading 1', 'astra' ); ?> </h1>
+									</div>
+
+									<div class="ast-sg-heading-card">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-heading-h2-typo]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+										<?php echo $this->get_formatted_font_style( 'h2' ); ?>
+										<h2 class="ast-sg-heading"> <?php esc_html_e( 'Heading 2', 'astra' ); ?> </h2>
+									</div>
+
+									<div class="ast-sg-heading-card">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-heading-h3-typo]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+										<?php echo $this->get_formatted_font_style( 'h3' ); ?>
+										<h3 class="ast-sg-heading"> <?php esc_html_e( 'Heading 3', 'astra' ); ?> </h3>
+									</div>
+
+									<div class="ast-sg-heading-card">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-heading-h4-typo]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+										<?php echo $this->get_formatted_font_style( 'h4' ); ?>
+										<h4 class="ast-sg-heading"> <?php esc_html_e( 'Heading 4', 'astra' ); ?> </h4>
+									</div>
+
+									<div class="ast-sg-heading-card">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-heading-h5-typo]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+										<?php echo $this->get_formatted_font_style( 'h5' ); ?>
+										<h5 class="ast-sg-heading"> <?php esc_html_e( 'Heading 5', 'astra' ); ?> </h5>
+									</div>
+
+									<div class="ast-sg-heading-card">
+										<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-heading-h6-typo]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+										<?php echo $this->get_formatted_font_style( 'h6' ); ?>
+										<h6 class="ast-sg-heading"> <?php esc_html_e( 'Heading 6', 'astra' ); ?> </h6>
+									</div>
+								</div>
+
+								<div class="ast-sg-content-section">
+									<?php echo $this->get_style_guide_shortcut_trigger( 'control', ASTRA_THEME_SETTINGS . '[ast-body-font-settings]', 'general', 'data-reference="ast-toggle-desc-wrap"' ); ?>
+									<p> <?php esc_html_e( 'Explore different font families, sizes, weights, and styles to find the perfect combination that encapsulates the essence of your brand. With each adjustment, see how your message transforms, becoming a powerful reflection of your identity and vision.', 'astra' ); ?> </p>
+
+									<p class="ast-sg-card-title"> <?php esc_html_e( 'Quote', 'astra' ); ?>
+									<blockquote>
+										<p> <?php esc_html_e( 'The future will belongs to those who believe in the beauty of their dreams.', 'astra' ); ?> </p> <br/>
+										<footer> Elanor Rosevelt </footer>
+									</blockquote>
+
+									<p class="ast-sg-content-divider"></p>
+
+									<p class="ast-sg-card-title"> <?php esc_html_e( 'Unordered List', 'astra' ); ?>
+									<ul>
+										<li> <?php esc_html_e( 'List Item 1', 'astra' ); ?> </li>
+										<li> <?php esc_html_e( 'List Item 2', 'astra' ); ?> </li>
+										<li> <?php esc_html_e( 'List Item 3', 'astra' ); ?> </li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php
+			$navigation_markup = ob_get_clean();
+			return $navigation_markup;
+		}
+
+		/**
+		 * Easy navigation template.
+		 *
+		 * @since 4.8.0
+		 * @return void
+		 */
+		public function style_guide_template() {
+			if ( ! is_customize_preview() ) {
+				return;
+			}
+
+			$js_prefix = '.min.js';
+			$dir       = 'minified';
+			if ( SCRIPT_DEBUG ) {
+				$js_prefix = '.js';
+				$dir       = 'unminified';
+			}
+
+			wp_enqueue_script( 'astra-style-guide-previewer-js', ASTRA_THEME_URI . 'assets/js/' . $dir . '/style-guide-previewer' . $js_prefix, array( 'jquery' ), ASTRA_THEME_VERSION, true );
+
+			?>
+				<div class="ast-style-guide-wrapper">
+					<?php echo do_shortcode( $this->render_style_guide_markup() ); ?>
+				</div>
+			<?php
 		}
 
 		/**
@@ -1614,6 +1927,20 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		 */
 		public function preview_styles() {
 			if ( is_customize_preview() ) {
+				/** @psalm-suppress RedundantCondition */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				$is_script_debug = SCRIPT_DEBUG ? true : false;
+				/** @psalm-suppress RedundantCondition */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				$js_prefix  = '.min.js';
+				if ( $is_script_debug ) {
+					$js_prefix  = '.js';
+				}
+
+				$rtl = ( is_rtl() ) ? '-rtl' : '';
+
+				wp_enqueue_style( 'astra-style-guide-css', ASTRA_THEME_URI . 'assets/css/minified/style-guide' . $rtl . '.min.css', array(), ASTRA_THEME_VERSION );
+
+				wp_enqueue_style( 'astra-style-guide-font', 'https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500&display=swap', array(), ASTRA_THEME_VERSION ); // Styles.
+
 				echo '<style class="astra-custom-shortcut-edit-icons">
 					.customize-partial-edit-shortcut-astra-settings-footer-adv {
 						position: relative;

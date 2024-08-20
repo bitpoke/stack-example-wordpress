@@ -71,6 +71,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Misc_Layout_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[ast-woo-misc-pro-items]',
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
+					'campaign' => 'woocommerce',
 					'renderAs' => 'list',
 					'choices'  => array(
 						'two'   => array(

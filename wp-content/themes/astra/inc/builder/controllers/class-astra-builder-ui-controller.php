@@ -287,6 +287,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 			<?php
 		}
 
+
 		/**
 		 * Render Mobile Cart Flyout Markup.
 		 *

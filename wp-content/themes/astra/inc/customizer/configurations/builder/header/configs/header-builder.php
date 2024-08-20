@@ -703,6 +703,7 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 			'name'     => ASTRA_THEME_SETTINGS . '[header-builder-pro-items]',
 			'type'     => 'control',
 			'control'  => 'ast-upgrade',
+			'campaign' => 'header-builder',
 			'renderAs' => 'list',
 			'choices'  => array(
 				'one'   => array(

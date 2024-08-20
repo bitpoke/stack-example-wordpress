@@ -836,6 +836,8 @@ class Astra_WP_Editor_CSS {
 
 			$alignwide_left_negative_margin  = $astra_continer_left_spacing ? 'calc(-1 * min(' . $astra_continer_left_spacing . ', 40px))' : '-40px';
 			$alignwide_right_negative_margin = $astra_continer_right_spacing ? 'calc(-1 * min(' . $astra_continer_right_spacing . ', 40px))' : '-40px';
+			$heading_width_comp              = Astra_Dynamic_CSS::astra_4_8_0_compatibility() ? 'none' : 'var(--wp--custom--ast-content-width-size)';
+
 
 			$desktop_css['.editor-styles-wrapper .wp-block-latest-posts > li > a'] = array(
 				'text-decoration' => 'none',
@@ -852,9 +854,8 @@ class Astra_WP_Editor_CSS {
 				'max-width' => 'var(--wp--custom--ast-wide-width-size)',
 			);
 
-			$desktop_css['.ast-page-builder-template .is-root-container > .inherit-container-width > *, .ast-page-builder-template .is-root-container > * > :where(:not(.alignleft):not(.alignright)), .is-root-container .wp-block-cover .wp-block-cover__inner-container, .editor-styles-wrapper .is-root-container > .wp-block-cover .wp-block-cover__inner-container,
-			.is-root-container > .wp-block-cover .wp-block-cover__image-background'] = array(
-				'max-width'    => 'var(--wp--custom--ast-content-width-size)', // phpcs:ignore WordPress.Arrays.ArrayIndentation.ItemNotAligned
+			$desktop_css['.ast-page-builder-template .is-root-container > .inherit-container-width > *, .ast-page-builder-template .is-root-container > * > :where(:not(.alignleft):not(.alignright)), .is-root-container .wp-block-cover .wp-block-cover__inner-container, .editor-styles-wrapper .is-root-container > .wp-block-cover .wp-block-cover__inner-container, .is-root-container > .wp-block-cover .wp-block-cover__image-background'] = array(
+				'max-width'    => $heading_width_comp, // phpcs:ignore WordPress.Arrays.ArrayIndentation.ItemNotAligned
 				'margin-right' => 'auto', // phpcs:ignore WordPress.Arrays.ArrayIndentation.ItemNotAligned
 				'margin-left'  => 'auto', // phpcs:ignore WordPress.Arrays.ArrayIndentation.ItemNotAligned
 			); // phpcs:ignore WordPress.Arrays.ArrayIndentation.CloseBraceNotAligned
@@ -965,4 +966,5 @@ class Astra_WP_Editor_CSS {
 
 		return $css;
 	}
+
 }

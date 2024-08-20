@@ -61,7 +61,7 @@ function astra_header_off_canvas_configuration() {
 				'full-width' => __( 'Full-Screen', 'astra' ),
 				'dropdown'   => __( 'Dropdown', 'astra' ),
 			),
-			'transport'  => 'postMessage',
+			'transport'  => 'refresh',
 			'context'    => Astra_Builder_Helper::$general_tab,
 			'renderAs'   => 'text',
 			'responsive' => false,

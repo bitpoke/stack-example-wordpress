@@ -573,7 +573,7 @@ if ( ! function_exists( 'astra_logo' ) ) {
 		}
 
 		if ( (bool) $logo_svg_icon ) {
-			$html .= "<div class='ast-logo-svg-icon'>{$logo_svg_icon}</div>";
+			$html .= "<a href='" . esc_url( home_url() ) . "'><div class='ast-logo-svg-icon'>{$logo_svg_icon}</div></a>";
 		}
 
 		$html .= astra_get_site_title_tagline( $display_site_title, $display_site_tagline, $device );

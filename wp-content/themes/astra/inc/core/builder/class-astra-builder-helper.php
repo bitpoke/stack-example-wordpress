@@ -853,10 +853,8 @@ final class Astra_Builder_Helper {
 	 * @return boolean false if it is an existing user , true if not.
 	 */
 	public static function is_header_footer_builder_active() {
-
-		$astra_settings           = get_option( ASTRA_THEME_SETTINGS );
-		$is_header_footer_builder = isset( $astra_settings['is-header-footer-builder'] ) ? (bool) $astra_settings['is-header-footer-builder'] : true;
-		return apply_filters( 'astra_is_header_footer_builder_active', $is_header_footer_builder );
+		$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+		return apply_filters( 'astra_is_header_footer_builder_active', isset( $astra_settings['is-header-footer-builder'] ) ? (bool) $astra_settings['is-header-footer-builder'] : true );
 	}
 
 	/**
@@ -1176,9 +1174,7 @@ final class Astra_Builder_Helper {
 	 */
 	public static function apply_flex_based_css() {
 		$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
-
-		$astra_settings['is-flex-based-css'] = isset( $astra_settings['is-flex-based-css'] ) ? $astra_settings['is-flex-based-css'] : true;
-		return apply_filters( 'astra_apply_flex_based_css', $astra_settings['is-flex-based-css'] );
+		return apply_filters( 'astra_apply_flex_based_css', isset( $astra_settings['is-flex-based-css'] ) ? $astra_settings['is-flex-based-css'] : true );
 	}
 }
 

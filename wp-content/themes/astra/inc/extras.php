@@ -113,6 +113,31 @@ if ( ! function_exists( 'astra_404_page_layout' ) ) {
 add_filter( 'astra_page_layout', 'astra_404_page_layout', 10, 1 );
 
 /**
+ * Function to check logo component present in which Header section.
+ */
+if ( ! function_exists( 'astra_is_logo_in_section' ) ) {
+
+	/**
+	 * Function filter comment form arguments
+	 *
+	 * @since 4.8.0
+	 * @param array $section     Logo header.
+	 * @return array
+	 */
+	// Function to check if logo is present in a given section
+	function astra_is_logo_in_section( $section ) {
+		foreach ( $section as $components ) {
+			if ( in_array( 'logo', $components ) ) {
+				/** @psalm-suppress InvalidReturnStatement */
+				return true;
+			}
+		}
+		/** @psalm-suppress FalsableReturnStatement */
+		return false;
+	}
+}
+
+/**
  * Return current content layout.
  */
 if ( ! function_exists( 'astra_get_content_layout' ) ) {
@@ -752,10 +777,8 @@ function astra_load_preload_local_fonts( $url, $format = 'woff2' ) {
  * @since 3.6.0
  */
 function astra_get_transparent_header_default_value() {
-	$astra_settings                                      = get_option( ASTRA_THEME_SETTINGS, array() );
-	$astra_settings['transparent-header-default-border'] = isset( $astra_settings['transparent-header-default-border'] ) ? $astra_settings['transparent-header-default-border'] : true;
-
-	return apply_filters( 'astra_transparent_header_default_border', $astra_settings['transparent-header-default-border'] );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	return apply_filters( 'astra_transparent_header_default_border', isset( $astra_settings['transparent-header-default-border'] ) ? $astra_settings['transparent-header-default-border'] : true );
 }
 
 /**
@@ -777,9 +800,8 @@ function astra_has_gcp_typo_preset_compatibility() {
  * @return string
  */
 function astra_button_default_padding_updated() {
-	$astra_settings  = get_option( ASTRA_THEME_SETTINGS, array() );
-	$padding_updated = isset( $astra_settings['btn-default-padding-updated'] ) ? $astra_settings['btn-default-padding-updated'] : true;
-	return apply_filters( 'astra_update_button_padding_defaults', $padding_updated );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	return apply_filters( 'astra_update_button_padding_defaults', isset( $astra_settings['btn-default-padding-updated'] ) ? $astra_settings['btn-default-padding-updated'] : true );
 }
 
 /**
@@ -789,9 +811,8 @@ function astra_button_default_padding_updated() {
  * @return string
  */
 function astra_scndry_btn_default_padding() {
-	$astra_settings  = get_option( ASTRA_THEME_SETTINGS, array() );
-	$padding_updated = isset( $astra_settings['scndry-btn-default-padding'] ) ? $astra_settings['scndry-btn-default-padding'] : true;
-	return apply_filters( 'astra_update_secondary_button_padding_defaults', $padding_updated );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	return apply_filters( 'astra_update_secondary_button_padding_defaults', isset( $astra_settings['scndry-btn-default-padding'] ) ? $astra_settings['scndry-btn-default-padding'] : true );
 }
 
 /**
@@ -815,9 +836,8 @@ function astra_has_widgets_block_editor() {
  * @return boolean
  */
 function astra_can_remove_elementor_toc_margin_space() {
-	$astra_settings                                    = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['remove-elementor-toc-margin-css'] = isset( $astra_settings['remove-elementor-toc-margin-css'] ) ? false : true;
-	return apply_filters( 'astra_remove_elementor_toc_margin', $astra_settings['remove-elementor-toc-margin-css'] );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	return apply_filters( 'astra_remove_elementor_toc_margin', isset( $astra_settings['remove-elementor-toc-margin-css'] ) ? false : true );
 }
 
 /**
@@ -827,9 +847,8 @@ function astra_can_remove_elementor_toc_margin_space() {
  * @return boolean
  */
 function astra_can_add_styling_for_hr() {
-	$astra_settings                       = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['add-styling-for-hr'] = isset( $astra_settings['add-styling-for-hr'] ) ? false : true;
-	return apply_filters( 'astra_highlight_elementor_hr_tag', $astra_settings['add-styling-for-hr'] );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	return apply_filters( 'astra_highlight_elementor_hr_tag', isset( $astra_settings['add-styling-for-hr'] ) ? false : true );
 }
 /**
  * This will check if user is new and apply global color format. This is to manage backward compatibility for colors.
@@ -838,9 +857,8 @@ function astra_can_add_styling_for_hr() {
  * @return boolean false if it is an existing user, true for new user.
  */
 function astra_has_global_color_format_support() {
-	$astra_settings                                = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['support-global-color-format'] = isset( $astra_settings['support-global-color-format'] ) ? false : true;
-	return apply_filters( 'astra_apply_global_color_format_support', $astra_settings['support-global-color-format'] );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	return apply_filters( 'astra_apply_global_color_format_support', isset( $astra_settings['support-global-color-format'] ) ? false : true );
 }
 
 /**
@@ -912,7 +930,6 @@ function astra_check_elementor_pro_3_5_version() {
 function astra_apply_content_background_fullwidth_layouts() {
 	$astra_site_layout              = astra_get_option( 'site-layout' );
 	$astra_apply_content_background = astra_get_option( 'apply-content-background-fullwidth-layouts', true );
-
 	return ( $astra_apply_content_background && 'ast-box-layout' !== $astra_site_layout && 'ast-padded-layout' !== $astra_site_layout );
 }
 

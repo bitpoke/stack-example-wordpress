@@ -691,13 +691,23 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				if (href) {
 					const scrollId = document.querySelector(href);
 					if (scrollId) {
-						const scrollOffsetTop = scrollId.offsetTop - offset;
+						const scrollOffsetTop = getOffsetTop(scrollId) - offset;
 						if( scrollOffsetTop ) {
 							astraSmoothScroll( e, scrollOffsetTop );
 						}
 					}
 				}
 			}
+		}
+
+		// Calculate the offset top of an element, accounting for nested elements.
+		function getOffsetTop(element) {
+			let offsetTop = 0;
+			while (element) {
+				offsetTop += element.offsetTop;
+				element = element.offsetParent;
+			}
+			return offsetTop;
 		}
 
 		window.addEventListener('DOMContentLoaded', (event) => {
@@ -716,7 +726,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					
 					const scrollId = document.querySelector(link.hash);
 					if (scrollId) {
-						const scrollOffsetTop = scrollId.offsetTop - offset;
+						const scrollOffsetTop = getOffsetTop(scrollId) - offset;
 						if (scrollOffsetTop) {
 							astraSmoothScroll(event, scrollOffsetTop);
 						}

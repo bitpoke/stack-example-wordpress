@@ -1006,7 +1006,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 			'section'  => $_section,
 			'priority' => 999,
 			'title'    => __( 'View Astra Pro Features', 'astra' ),
-			'url'      => ASTRA_PRO_CUSTOMIZER_UPGRADE_URL,
+			'url'      => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'header-builder' ),
 			'settings' => array(),
 			'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 			'context'  => array(),

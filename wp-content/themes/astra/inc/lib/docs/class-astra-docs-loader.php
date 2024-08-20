@@ -398,6 +398,8 @@ class Astra_Docs_Loader {
 	 * @return \WP_Filesystem_Base
 	 */
 	protected function get_filesystem() {
+		
+		// We are using WP_Filesystem for managing local doc files which is necessary for the proper functionality of the theme -- This is an extension version of TRT webfont library.
 		global $wp_filesystem;
 
 		// If the filesystem has not been instantiated yet, do it here.

@@ -120,6 +120,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 			 */
 			$apply_scndry_default_padding_values = astra_scndry_btn_default_padding();
 			$update_secondary_paddings           = Astra_Dynamic_CSS::astra_4_6_4_compatibility();
+			$update_secondary_border             = Astra_Dynamic_CSS::astra_4_8_0_compatibility();
 
 			$desk_sec_vertical_padding = $apply_scndry_default_padding_values ? 15 : '';
 			$desk_sec_vertical_padding = $update_secondary_paddings ? 13 : $desk_sec_vertical_padding;
@@ -432,10 +433,10 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 						'left'   => '',
 					),
 					'secondary-theme-button-border-group-border-size' => array(
-						'top'    => '',
-						'right'  => '',
-						'bottom' => '',
-						'left'   => '',
+						'top'    => $update_secondary_border ? 2 : '',
+						'right'  => $update_secondary_border ? 2 : '',
+						'bottom' => $update_secondary_border ? 2 : '',
+						'left'   => $update_secondary_border ? 2 : '',
 					),
 
 					// Footer - Small.

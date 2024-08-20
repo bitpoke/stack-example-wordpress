@@ -36,14 +36,14 @@ function astra_logo_svg_icons_dynamic_css( $dynamic_css ) {
 	 * Start: Desktop related styles
 	 */
 	$desktop_css_output = array(
-		'header .ast-logo-svg-icon'           => array(
+		'.site-branding .ast-logo-svg-icon'           => array(
 			'display' => 'inline-flex', // Fix for the vertical alignment issue with the SVG logo.
 		),
-		'header .ast-logo-svg-icon svg'       => array(
+		'.site-branding .ast-logo-svg-icon svg'       => array(
 			'width' => astra_get_css_value( $header_logo_width['desktop'], 'px', '30' ),
 			'fill'  => esc_attr( $logo_svg_icon_color ),
 		),
-		'header .ast-logo-svg-icon:hover svg' => array(
+		'.site-branding .ast-logo-svg-icon:hover svg' => array(
 			'fill' => esc_attr( $logo_svg_icon_hover_color ),
 		),
 	);
@@ -68,7 +68,7 @@ function astra_logo_svg_icons_dynamic_css( $dynamic_css ) {
 	 * Start: Tablet related styles
 	 */
 	$tablet_css_output = array(
-		'header .ast-logo-svg-icon svg' => array(
+		'.site-branding .ast-logo-svg-icon svg' => array(
 			'width' => astra_get_css_value( $header_logo_width['tablet'], 'px', '30' ),
 		),
 	);
@@ -92,7 +92,7 @@ function astra_logo_svg_icons_dynamic_css( $dynamic_css ) {
 	 * Start: Mobile related styles
 	 */
 	$mobile_css_output = array(
-		'header .ast-logo-svg-icon svg' => array(
+		'.site-branding .ast-logo-svg-icon svg' => array(
 			'width' => astra_get_css_value( $header_logo_width['mobile'], 'px', '30' ),
 		),
 	);

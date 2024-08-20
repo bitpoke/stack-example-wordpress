@@ -495,6 +495,17 @@ function astra_post_single_structure_dynamic_css( $dynamic_css, $dynamic_css_fil
 		';
 	}
 
+	$margin_top = astra_responsive_spacing( $margin, 'top', 'desktop' );
+
+	// To add top spacing for SureCart shop page default title.
+	if ( class_exists( 'SureCart' ) && $margin_top && 0 === intval( $margin_top ) && get_the_ID() === intval( get_option( 'surecart_shop_page_id' ) ) ) {
+		$dynamic_css .= '
+			.page .entry-header {
+				margin-top: 3em;
+			}
+		';
+	}
+
 	/* Parse CSS from array() */
 	$dynamic_css .= astra_parse_css( $css_output_desktop );
 	$dynamic_css .= astra_parse_css( $css_output_min_tablet, astra_get_tablet_breakpoint( '', 1 ) );

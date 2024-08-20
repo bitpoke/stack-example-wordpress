@@ -206,15 +206,22 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 				 * Option: Use Logo SVG Icon.
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[use-logo-svg-icon]',
-					'default'  => astra_get_option( 'use-logo-svg-icon' ),
-					'type'     => 'control',
-					'control'  => 'ast-toggle-control',
-					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
-					'section'  => $_section,
-					'title'    => __( 'Use Logo SVG Icon', 'astra' ),
-					'priority' => 6,
-					'context'  => array(
+					'name'      => ASTRA_THEME_SETTINGS . '[use-logo-svg-icon]',
+					'default'   => astra_get_option( 'use-logo-svg-icon' ),
+					'type'      => 'control',
+					'control'   => 'ast-toggle-control',
+					'divider'   => array( 'ast_class' => 'ast-top-section-divider' ),
+					'section'   => $_section,
+					'title'     => __( 'Use Logo SVG Icon', 'astra' ),
+					'priority'  => 6,
+					'transport' => 'postMessage',
+					'partial'   => array(
+						'selector'            => '.site-branding',
+						'container_inclusive' => true,
+						'render_callback'     => 'Astra_Builder_UI_Controller::render_site_identity',
+						'fallback_refresh'    => false,
+					),
+					'context'   => array(
 						array(
 							'setting'  => 'custom_logo',
 							'operator' => '==',
@@ -238,6 +245,13 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 					'priority'          => 6,
 					'title'             => __( 'Logo SVG Icon', 'astra' ),
 					'divider'           => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'transport'         => 'postMessage',
+					'partial'           => array(
+						'selector'            => '.site-branding',
+						'container_inclusive' => true,
+						'render_callback'     => 'Astra_Builder_UI_Controller::render_site_identity',
+						'fallback_refresh'    => false,
+					),
 					'context'           => array(
 						array(
 							'setting'  => 'custom_logo',
@@ -262,7 +276,7 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 					'control'           => 'ast-responsive-slider',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
 					'section'           => $_section,
-					'transport'         => 'refresh',
+					'transport'         => 'postMessage',
 					'default'           => astra_get_option( 'logo-svg-site-title-gap' ),
 					'priority'          => 7,
 					'title'             => __( 'Logo SVG Gap', 'astra' ),

@@ -26,11 +26,15 @@ function blockEditorDynamicStyles() {
 		}
 
 		for (const iframe of iframes) {
-			const iframeDoc = iframe?.contentWindow.document || iframe?.contentDocument;
-			if (!iframeDoc?.head) {
-				continue;
+			try {
+				const iframeDoc = iframe?.contentWindow?.document || iframe?.contentDocument;
+				if (!iframeDoc?.head) {
+					continue;
+				}
+				appendLinkIfNotExists(iframeDoc, googleFontsStyle, 'astra-google-fonts-css');
+			} catch {
+				// Access denied to iframe document.
 			}
-			appendLinkIfNotExists(iframeDoc, googleFontsStyle, 'astra-google-fonts-css');
 		}
 	}, 1000);
 }

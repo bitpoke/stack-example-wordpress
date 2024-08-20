@@ -212,7 +212,7 @@ class Astra_Menu {
 					$capability,
 					'admin.php?page=' . self::$plugin_slug . '&path=woocommerce'
 				);
-			} elseif ( ! $this->spectra_has_top_level_menu() ){
+			} elseif ( ! $this->spectra_has_top_level_menu() ) {
 				add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
 					self::$plugin_slug,
 					'Spectra',
@@ -288,7 +288,7 @@ class Astra_Menu {
 			return;
 		}
 
-		wp_enqueue_style( 'astra-admin-font', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap', array(), ASTRA_THEME_VERSION ); // Styles.
+		wp_enqueue_style( 'astra-admin-font', 'https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500&display=swap', array(), ASTRA_THEME_VERSION ); // Styles.
 
 		wp_enqueue_style( 'wp-components' );
 
@@ -718,7 +718,7 @@ class Astra_Menu {
 				'activations' => '200,000+',
 				'logoPath'    => array(
 					'internal_icon' => false,
-					'icon_path'     => 'https://ps.w.org/cartflows/assets/icon.svg'
+					'icon_path'     => 'https://ps.w.org/cartflows/assets/icon.svg',
 				),
 			),
 			array(
@@ -990,18 +990,10 @@ class Astra_Menu {
 			ASTRA_THEME_VERSION
 		);
 
-		wp_register_style(
-			'astra-admin-google-fonts',
-			'https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap',
-			array(),
-			ASTRA_THEME_VERSION
-		);
-
 		wp_enqueue_script( $handle );
 
 		wp_set_script_translations( $handle, 'astra' );
 
-		wp_enqueue_style( 'astra-admin-google-fonts' );
 		wp_enqueue_style( $handle );
 
 		wp_style_add_data( $handle, 'rtl', 'replace' );

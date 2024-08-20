@@ -295,6 +295,7 @@ function astra_builder_footer_configuration( $configurations = array() ) {
 			'name'     => ASTRA_THEME_SETTINGS . '[footer-builder-pro-items]',
 			'type'     => 'control',
 			'control'  => 'ast-upgrade',
+			'campaign' => 'footer-builder',
 			'renderAs' => 'list',
 			'choices'  => array(
 				'two'   => array(

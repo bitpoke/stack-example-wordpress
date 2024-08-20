@@ -123,7 +123,7 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 						'section'  => $section,
 						'priority' => 999,
 						'title'    => __( 'View Astra Pro Features', 'astra' ),
-						'url'      => ASTRA_PRO_CUSTOMIZER_UPGRADE_URL,
+						'url'      => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'lifterlms' ),
 						'settings' => array(),
 						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 					);

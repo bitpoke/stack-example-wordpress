@@ -936,9 +936,8 @@ if ( ! function_exists( 'astra_get_the_title' ) ) {
  * @return boolean false if it is an existing user , true if not.
  */
 function astra_use_dynamic_blog_layouts() {
-	$astra_settings                         = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['dynamic-blog-layouts'] = isset( $astra_settings['dynamic-blog-layouts'] ) ? $astra_settings['dynamic-blog-layouts'] : true;
-	return apply_filters( 'astra_get_option_dynamic_blog_layouts', $astra_settings['dynamic-blog-layouts'] );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	return apply_filters( 'astra_get_option_dynamic_blog_layouts', isset( $astra_settings['dynamic-blog-layouts'] ) ? $astra_settings['dynamic-blog-layouts'] : true );
 }
 
 /**
@@ -1593,9 +1592,8 @@ function astra_check_current_post_comment_enabled() {
  * @return boolean false if it is an existing user , true if not.
  */
 function astra_zero_font_size_case() {
-	$astra_settings                                  = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['astra-zero-font-size-case-css'] = isset( $astra_settings['astra-zero-font-size-case-css'] ) ? false : true;
-	return apply_filters( 'astra_zero_font_size_case', $astra_settings['astra-zero-font-size-case-css'] );
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	return apply_filters( 'astra_zero_font_size_case', isset( $astra_settings['astra-zero-font-size-case-css'] ) ? false : true );
 }
 
 /**
@@ -1617,8 +1615,7 @@ function astra_wp_version_compare( $version, $compare ) {
  */
 function astra_block_based_legacy_setup() {
 	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
-	$legacy_setup   = ( isset( $astra_settings['blocks-legacy-setup'] ) && isset( $astra_settings['wp-blocks-ui'] ) && 'legacy' === $astra_settings['wp-blocks-ui'] ) ? true : false;
-	return $legacy_setup;
+	return ( isset( $astra_settings['blocks-legacy-setup'] ) && isset( $astra_settings['wp-blocks-ui'] ) && 'legacy' === $astra_settings['wp-blocks-ui'] ) ? true : false;
 }
 
 /**
@@ -1879,27 +1876,30 @@ function astra_get_logo_svg_icons_array() {
 	$icons_dir = ASTRA_THEME_DIR . 'assets/svg/logo-svg-icons';
 
 	for ( $i = 0; $i < 4; $i++ ) {
+		$file = "{$icons_dir}/icons-v6-{$i}.php";
+		
+		if ( file_exists( $file ) ) {
+			$icons = include_once $file;
 
-		$icons = include_once "{$icons_dir}/icons-v6-{$i}.php";
+			foreach ( $icons as &$icon ) {
+				$fallback            = isset( $icon['svg']['solid'] ) ? $icon['svg']['solid'] : array();
+				$icon_brand_or_solid = isset( $icon['svg']['brands'] ) ? $icon['svg']['brands'] : $fallback;
+				$path                = isset( $icon_brand_or_solid['path'] ) ? $icon_brand_or_solid['path'] : '';
+				$width               = isset( $icon_brand_or_solid['width'] ) ? $icon_brand_or_solid['width'] : '';
+				$height              = isset( $icon_brand_or_solid['height'] ) ? $icon_brand_or_solid['height'] : '';
+				$view                = (bool) $width && (bool) $height ? "0 0 {$width} {$height}" : null;
 
-		foreach ( $icons as &$icon ) {
-			$fallback            = isset( $icon['svg']['solid'] ) ? $icon['svg']['solid'] : array();
-			$icon_brand_or_solid = isset( $icon['svg']['brands'] ) ? $icon['svg']['brands'] : $fallback;
-			$path                = isset( $icon_brand_or_solid['path'] ) ? $icon_brand_or_solid['path'] : '';
-			$width               = isset( $icon_brand_or_solid['width'] ) ? $icon_brand_or_solid['width'] : '';
-			$height              = isset( $icon_brand_or_solid['height'] ) ? $icon_brand_or_solid['height'] : '';
-			$view                = (bool) $width && (bool) $height ? "0 0 {$width} {$height}" : null;
-
-			if ( $path && $view ) {
-				ob_start();
-				?>
+				if ( $path && $view ) {
+					ob_start();
+					?>
 				<svg xmlns="https://www.w3.org/2000/svg" viewBox= "<?php echo esc_attr( $view ); ?>"><path d="<?php echo esc_attr( $path ); ?>"></path></svg>
-				<?php
-				$icon['rendered'] = trim( ob_get_clean() );
+					<?php
+					$icon['rendered'] = trim( ob_get_clean() );
+				}
 			}
-		}
 
-		$ast_all_svg_icons = array_merge( $ast_all_svg_icons, $icons );
+			$ast_all_svg_icons = array_merge( $ast_all_svg_icons, $icons );
+		}
 	}
 
 	return $ast_all_svg_icons;

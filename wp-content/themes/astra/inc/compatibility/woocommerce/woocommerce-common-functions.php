@@ -341,8 +341,7 @@ function astra_has_pro_woocommerce_addon() {
  */
 function astra_cart_color_default_icon_old_header() {
 	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
-	$astra_settings['can-reflect-cart-color-in-old-header'] = isset( $astra_settings['can-reflect-cart-color-in-old-header'] ) ? false : true;
-	return apply_filters( 'astra_support_default_cart_color_in_old_header', $astra_settings['can-reflect-cart-color-in-old-header'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+	return apply_filters( 'astra_support_default_cart_color_in_old_header', isset( $astra_settings['can-reflect-cart-color-in-old-header'] ) ? false : true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 }
 
 /**
@@ -365,7 +364,7 @@ if ( ! function_exists( 'astra_get_wc_endpoints_title' ) ) {
 	 *
 	 * @param string $title for MyAccount title endpoint.
 	 * @return string
-	 * 
+	 *
 	 * @since 4.3.0
 	 */
 	function astra_get_wc_endpoints_title( $title ) {

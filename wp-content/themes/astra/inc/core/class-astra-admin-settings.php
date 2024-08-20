@@ -290,7 +290,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 						__( 'Astra Works Seamlessly with WooCommerce!', 'astra' ),
 						__( 'Use every tool at your disposal to optimize your online store for conversion. All the advantages you need to make more profit!', 'astra' ),
 						esc_attr( 'button button-primary' ),
-						'href="' . ASTRA_PRO_UPGRADE_URL . '" target="_blank"',
+						'href="' . astra_get_pro_url( 'https://wpastra.com/pricing/', 'dashboard', 'free-theme', 'woocommerce' ) . '" target="_blank"',
 						__( 'Upgrade Now', 'astra' )
 					),
 					'priority'                   => 5,

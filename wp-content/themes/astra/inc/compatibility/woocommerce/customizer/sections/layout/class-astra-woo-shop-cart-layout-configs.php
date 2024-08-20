@@ -112,6 +112,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[ast-woo-cart-pro-items]',
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
+					'campaign' => 'woocommerce',
 					'renderAs' => 'list',
 					'choices'  => array(
 						'two'   => array(
@@ -136,6 +137,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[ast-woo-checkout-pro-items]',
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
+					'campaign' => 'woocommerce',
 					'renderAs' => 'list',
 					'choices'  => array(
 						'two'   => array(

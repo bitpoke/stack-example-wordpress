@@ -135,6 +135,7 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[ast-sidebar-pro-items]',
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
+					'campaign' => 'sidebar',
 					'renderAs' => 'list',
 					'choices'  => array(
 						'one'   => array(

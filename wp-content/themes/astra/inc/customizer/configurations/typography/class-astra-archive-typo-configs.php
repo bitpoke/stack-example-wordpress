@@ -44,6 +44,7 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 						'name'     => ASTRA_THEME_SETTINGS . '[ast-blog-pro-items]',
 						'type'     => 'control',
 						'control'  => 'ast-upgrade',
+						'campaign' => 'blog-archive',
 						'renderAs' => 'list',
 						'choices'  => array(
 							'one'    => array(
@@ -75,9 +76,6 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 							),
 							'nine'   => array(
 								'title' => __( 'Archive excerpt options', 'astra' ),
-							),
-							'ten'    => array(
-								'title' => __( 'Extended spacing options', 'astra' ),
 							),
 						),
 						'section'  => 'section-blog',

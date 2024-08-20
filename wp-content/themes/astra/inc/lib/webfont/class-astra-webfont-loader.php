@@ -716,6 +716,8 @@ class Astra_WebFont_Loader {
 	 * @return \WP_Filesystem_Base
 	 */
 	protected function get_filesystem() {
+		
+		// Using WP_Filesystem to manage the local download of fonts. This ensures proper functionality of the theme by handling file operations securely and consistently -- This is a TRT-recommended webfont library.
 		global $wp_filesystem;
 
 		// If the filesystem has not been instantiated yet, do it here.

@@ -1438,6 +1438,12 @@ return array(
 		),
 	),
 	array(
+		'Bungee Tint' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'display',
+		),
+	),
+	array(
 		'Butcherman' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
@@ -2359,6 +2365,12 @@ return array(
 		'Eczar' => array(
 			'variants' => array( 'regular', '500', '600', '700', '800' ),
 			'category' => 'serif',
+		),
+	),
+	array(
+		'Edu AU VIC WA NT Hand' => array(
+			'variants' => array( 'regular', '500', '600', '700' ),
+			'category' => 'handwriting',
 		),
 	),
 	array(
@@ -3689,7 +3701,7 @@ return array(
 	),
 	array(
 		'Inter' => array(
-			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900' ),
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700', '800', '900', '100italic', '200italic', '300italic', 'italic', '500italic', '600italic', '700italic', '800italic', '900italic' ),
 			'category' => 'sans-serif',
 		),
 	),
@@ -4021,6 +4033,12 @@ return array(
 		'Kalnia' => array(
 			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700' ),
 			'category' => 'serif',
+		),
+	),
+	array(
+		'Kalnia Glaze' => array(
+			'variants' => array( '100', '200', '300', 'regular', '500', '600', '700' ),
+			'category' => 'display',
 		),
 	),
 	array(
@@ -4954,6 +4972,12 @@ return array(
 		),
 	),
 	array(
+		'Matemasie' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Material Icons' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'monospace',
@@ -5203,6 +5227,12 @@ return array(
 		'Modern Antiqua' => array(
 			'variants' => array( 'regular' ),
 			'category' => 'display',
+		),
+	),
+	array(
+		'Moderustic' => array(
+			'variants' => array( '300', 'regular', '500', '600', '700', '800' ),
+			'category' => 'sans-serif',
 		),
 	),
 	array(
@@ -5521,6 +5551,12 @@ return array(
 		'Neuton' => array(
 			'variants' => array( '200', '300', 'regular', 'italic', '700', '800' ),
 			'category' => 'serif',
+		),
+	),
+	array(
+		'New Amsterdam' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
 		),
 	),
 	array(
@@ -8638,6 +8674,12 @@ return array(
 		),
 	),
 	array(
+		'Sankofa Display' => array(
+			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
 		'Sansita' => array(
 			'variants' => array( 'regular', 'italic', '700', '700italic', '800', '800italic', '900', '900italic' ),
 			'category' => 'sans-serif',
@@ -10206,6 +10248,12 @@ return array(
 	array(
 		'ZCOOL XiaoWei' => array(
 			'variants' => array( 'regular' ),
+			'category' => 'sans-serif',
+		),
+	),
+	array(
+		'Zain' => array(
+			'variants' => array( '200', '300', 'regular', '700', '800', '900' ),
 			'category' => 'sans-serif',
 		),
 	),

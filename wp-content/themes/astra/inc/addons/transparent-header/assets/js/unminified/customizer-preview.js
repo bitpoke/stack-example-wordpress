@@ -43,6 +43,7 @@
 	astra_color_responsive_css( 'colors-background', 'astra-settings[primary-menu-a-bg-color-responsive]', 	'background-color', 	'.main-header-menu .current-menu-item > .menu-link, .main-header-menu .current-menu-ancestor > .menu-link,.ast-header-sections-navigation .menu-item.current-menu-item > .menu-link,.ast-header-sections-navigation .menu-item.current-menu-ancestor > .menu-link' );
 
 	astra_color_responsive_css( 'transparent-primary-header', 'astra-settings[transparent-header-bg-color-responsive]', 'background-color', '.ast-theme-transparent-header' + deviceSelector + ' .main-header-bar, .ast-theme-transparent-header.ast-header-break-point .main-header-bar-wrap .main-header-menu, .ast-theme-transparent-header' + deviceSelector + ' .main-header-bar-wrap .main-header-bar, .ast-theme-transparent-header' + ( device === 'both' ? '.ast-header-break-point' : deviceSelector ) + ' .ast-mobile-header-wrap .main-header-bar' );
+
 	astra_color_responsive_css( 'transparent-primary-header', 'astra-settings[transparent-header-color-site-title-responsive]', 'color', '.ast-theme-transparent-header .site-title a, .ast-theme-transparent-header .site-title a:focus, .ast-theme-transparent-header .site-title a:hover, .ast-theme-transparent-header .site-title a:visited, .ast-theme-transparent-header .site-header .site-description' );
 	astra_color_responsive_css( 'transparent-primary-header', 'astra-settings[transparent-header-color-h-site-title-responsive]', 'color', '.ast-theme-transparent-header .site-header .site-title a:hover' );
 
@@ -59,6 +60,13 @@
 	astra_color_responsive_css( 'transparent-primary-header', 'astra-settings[transparent-submenu-color-responsive]', 'color', '.ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item .menu-link,.ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item > .ast-menu-toggle, .astra-hfb-header.ast-theme-transparent-header [CLASS*="ast-builder-menu-"]  .main-header-menu .sub-menu .menu-item .menu-link, .astra-hfb-header.ast-theme-transparent-header [CLASS*="ast-builder-menu-"]  .main-header-menu .sub-menu .menu-item > .ast-menu-toggle, .ast-theme-transparent-header .main-header-menu .menu-item .sub-menu .menu-link, .ast-header-break-point.ast-theme-transparent-header .main-header-menu .menu-item .sub-menu .menu-link' );
 
 	astra_color_responsive_css( 'transparent-primary-header', 'astra-settings[transparent-submenu-h-color-responsive]', 'color', '.ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu a:hover,.ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item:hover > .menu-item, .ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item.focus > .menu-item, .ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item.current-menu-item > .menu-link,	.ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item.current-menu-item > .ast-menu-toggle,.ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item:hover > .ast-menu-toggle, .ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item.focus > .ast-menu-toggle, .ast-theme-transparent-header .ast-builder-menu .main-header-menu .menu-item .sub-menu .menu-item:hover > .menu-link, .ast-theme-transparent-header .main-header-menu .menu-item .sub-menu .menu-item:hover .menu-link' );
+
+	// Style guide main header logo preview.
+	var primaryHeaderWrap = document.querySelector( ".ast-main-header-wrap.main-header-bar-wrap ");
+	
+	if ( primaryHeaderWrap && primaryHeaderWrap.querySelector(".site-logo-img") ) {
+		astra_color_responsive_css( 'transparent-primary-header', 'astra-settings[transparent-header-bg-color-responsive]', 'background-color', '.ast-theme-transparent-header' + deviceSelector + ' .main-header-bar, .ast-theme-transparent-header.ast-header-break-point .main-header-bar-wrap .main-header-menu, .ast-theme-transparent-header' + deviceSelector + ' .main-header-bar-wrap .main-header-bar, .ast-theme-transparent-header' + ( device === 'both' ? '.ast-header-break-point' : deviceSelector ) + ' .ast-mobile-header-wrap .main-header-bar, .ast-theme-transparent-header .ast-sg-element-wrap.ast-sg-logo-section' );	
+	}	
 
 	// Primary Content Section text color
 	astra_color_responsive_css( 'transparent-primary-header', 'astra-settings[transparent-content-section-text-color-responsive]', 'color', '.ast-theme-transparent-header div.ast-masthead-custom-menu-items, .ast-theme-transparent-header div.ast-masthead-custom-menu-items .widget, .ast-theme-transparent-header div.ast-masthead-custom-menu-items .widget-title, .ast-theme-transparent-header .site-header-section [CLASS*="ast-header-html-"] .ast-builder-html-element' );
@@ -85,6 +93,14 @@
 	// Above Header Content Section link hover color
 	astra_color_responsive_css( 'transparent-above-header', 'astra-settings[transparent-content-section-link-h-color-responsive]', 'color', '.ast-theme-transparent-header .ast-above-header-section .user-select a:hover, .ast-theme-transparent-header .ast-above-header-section .widget a:hover' );
 
+
+	// Style guide above header logo preview.
+	var aboveHeaderWrap = document.querySelector( ".ast-above-header-wrap");
+	
+	if ( aboveHeaderWrap && aboveHeaderWrap.querySelector(".site-logo-img") ) {
+		astra_color_responsive_css( "transparent-above-header", "astra-settings[hba-transparent-header-bg-color-responsive]", "background-color", " .ast-theme-transparent-header" + deviceSelector + " .ast-above-header-wrap .ast-above-header, .ast-theme-transparent-header.ast-header-break-point .ast-above-header-wrap .main-header-menu, .ast-theme-transparent-header .ast-sg-element-wrap.ast-sg-logo-section" );
+	}	
+
 	// below Header Menu
 	astra_color_responsive_css( 'transparent-below-header', 'astra-settings[hbb-transparent-header-bg-color-responsive]', 'background-color', '.ast-theme-transparent-header' + deviceSelector + ' .ast-below-header-wrap .ast-below-header, .ast-theme-transparent-header.ast-header-break-point .ast-below-header-wrap .main-header-menu' );
 
@@ -102,6 +118,13 @@
 	astra_color_responsive_css( 'transparent-below-header', 'astra-settings[transparent-content-section-link-color-responsive]', 'color', '', '.ast-theme-transparent-header .below-header-user-select a, .ast-theme-transparent-header .below-header-user-select .widget a' );
 	// below Header Content Section link hover color
 	astra_color_responsive_css( 'below-transparent-header', 'astra-settings[transparent-content-section-link-h-color-responsive]', 'color', '.ast-theme-transparent-header .below-header-user-select a:hover, .ast-theme-transparent-header .below-header-user-select .widget a:hover' );
+
+	// Style guide below header logo preview.
+	var belowHeaderWrap = document.querySelector( ".ast-below-header-wrap  ");
+	
+	if ( belowHeaderWrap && belowHeaderWrap.querySelector(".site-logo-img") ) {
+		astra_color_responsive_css( 'transparent-below-header', 'astra-settings[hbb-transparent-header-bg-color-responsive]', 'background-color', '.ast-theme-transparent-header' + deviceSelector + ' .ast-below-header-wrap .ast-below-header, .ast-theme-transparent-header.ast-header-break-point .ast-below-header-wrap .main-header-menu, .ast-theme-transparent-header .ast-sg-element-wrap.ast-sg-logo-section' );	
+	}	
 
 	/**
 	 * Button border
