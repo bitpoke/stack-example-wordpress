@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce 9.2.1\n"
+"Project-Id-Version: WooCommerce 9.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-08-20T23:31:42+00:00\n"
+"POT-Creation-Date: 2024-08-22T14:58:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: woocommerce\n"
@@ -10645,7 +10645,7 @@ msgstr ""
 
 #: includes/admin/class-wc-admin-menus.php:123
 #: includes/admin/views/html-admin-page-status-report.php:693
-#: includes/class-wc-install.php:2181
+#: includes/class-wc-install.php:2180
 #: includes/react-admin/connect-existing-pages.php:35
 #: src/Admin/Features/Navigation/CoreMenu.php:126
 #: src/Internal/Admin/Analytics.php:305
@@ -21059,91 +21059,91 @@ msgid "Zero rate"
 msgstr ""
 
 #. translators: 1 = URL of Legacy REST API plugin page, 2 = URL of Legacy API settings in current site, 3 = URL of webhooks settings in current site, 4 = URL of logs page in current site, 5 = URL of plugins page in current site, 6 = URL of blog post about the Legacy REST API removal
-#: includes/class-wc-install.php:1317
+#: includes/class-wc-install.php:1316
 msgid "⚠️ WooCommerce installed <a href=\"%1$s\">the Legacy REST API plugin</a> because this site has <a href=\"%2$s\">the Legacy REST API enabled</a> or has <a href=\"%3$s\">legacy webhooks defined</a>, but it failed to activate it (see error details in <a href=\"%4$s\">the WooCommerce logs</a>). Please go to <a href=\"%5$s\">the plugins page</a> and activate it manually. <a href=\"%6$s\">More information</a>"
 msgstr ""
 
-#: includes/class-wc-install.php:1327
+#: includes/class-wc-install.php:1326
 msgid "WooCommerce installed the Legacy REST API plugin but failed to activate it, see context for more details."
 msgstr ""
 
 #. translators: 1 = URL of Legacy REST API plugin page, 2 = URL of Legacy API settings in current site, 3 = URL of webhooks settings in current site, 4 = URL of blog post about the Legacy REST API removal
-#: includes/class-wc-install.php:1336
+#: includes/class-wc-install.php:1335
 msgid "ℹ️ WooCommerce installed and activated <a href=\"%1$s\">the Legacy REST API plugin</a> because this site has <a href=\"%2$s\">the Legacy REST API enabled</a> or has <a href=\"%3$s\">legacy webhooks defined</a>. <a href=\"%4$s\">More information</a>"
 msgstr ""
 
 #. translators: 1 = URL of Legacy REST API plugin page, 2 = URL of Legacy API settings in current site, 3 = URL of webhooks settings in current site, 4 = URL of logs page in current site, 5 = URL of blog post about the Legacy REST API removal
-#: includes/class-wc-install.php:1350
+#: includes/class-wc-install.php:1349
 msgid "⚠️ WooCommerce attempted to install <a href=\"%1$s\">the Legacy REST API plugin</a> because this site has <a href=\"%2$s\">the Legacy REST API enabled</a> or has <a href=\"%3$s\">legacy webhooks defined</a>, but the installation failed (see error details in <a href=\"%4$s\">the WooCommerce logs</a>). Please install and activate the plugin manually. <a href=\"%5$s\">More information</a>"
 msgstr ""
 
 #. translators: user role
-#: includes/class-wc-install.php:1932
+#: includes/class-wc-install.php:1931
 msgctxt "User role"
 msgid "Customer"
 msgstr ""
 
 #. translators: user role
-#: includes/class-wc-install.php:1934
+#: includes/class-wc-install.php:1933
 msgctxt "User role"
 msgid "Shop manager"
 msgstr ""
 
-#: includes/class-wc-install.php:2181
+#: includes/class-wc-install.php:2180
 msgid "View WooCommerce settings"
 msgstr ""
 
-#: includes/class-wc-install.php:2229
+#: includes/class-wc-install.php:2228
 msgid "View WooCommerce documentation"
 msgstr ""
 
-#: includes/class-wc-install.php:2229
+#: includes/class-wc-install.php:2228
 msgid "Docs"
 msgstr ""
 
-#: includes/class-wc-install.php:2230
+#: includes/class-wc-install.php:2229
 msgid "View WooCommerce API docs"
 msgstr ""
 
-#: includes/class-wc-install.php:2230
+#: includes/class-wc-install.php:2229
 msgid "API docs"
 msgstr ""
 
-#: includes/class-wc-install.php:2231
+#: includes/class-wc-install.php:2230
 msgid "Visit community forums"
 msgstr ""
 
-#: includes/class-wc-install.php:2231
+#: includes/class-wc-install.php:2230
 msgid "Community support"
 msgstr ""
 
-#: includes/class-wc-install.php:2235
+#: includes/class-wc-install.php:2234
 msgid "Visit premium customer support"
 msgstr ""
 
-#: includes/class-wc-install.php:2235
+#: includes/class-wc-install.php:2234
 msgid "Premium support"
 msgstr ""
 
 #. translators: 1: plugin name, 2: error message, 3: URL to install plugin manually.
 #. translators: 1: theme slug, 2: error message, 3: URL to install theme manually.
-#: includes/class-wc-install.php:2363
-#: includes/class-wc-install.php:2467
+#: includes/class-wc-install.php:2362
+#: includes/class-wc-install.php:2466
 msgid "%1$s could not be installed (%2$s). <a href=\"%3$s\">Please install it manually by clicking here.</a>"
 msgstr ""
 
 #. translators: 1: plugin name, 2: URL to WP plugin page.
-#: includes/class-wc-install.php:2391
+#: includes/class-wc-install.php:2390
 msgid "%1$s was installed but could not be activated. <a href=\"%2$s\">Please activate it manually by clicking here.</a>"
 msgstr ""
 
-#: includes/class-wc-install.php:2698
+#: includes/class-wc-install.php:2697
 #: src/Blocks/BlockTypes/Cart.php:69
 #: assets/client/blocks/cart.js:12
 msgid "You may be interested in…"
 msgstr ""
 
-#: includes/class-wc-install.php:2754
+#: includes/class-wc-install.php:2753
 #: src/Blocks/BlockTypes/Cart.php:78
 #: src/Blocks/BlockTypes/MiniCart.php:590
 #: assets/client/blocks/cart.js:19
@@ -21151,7 +21151,7 @@ msgstr ""
 msgid "Your cart is currently empty!"
 msgstr ""
 
-#: includes/class-wc-install.php:2762
+#: includes/class-wc-install.php:2761
 #: src/Blocks/BlockTypes/Cart.php:88
 #: assets/client/blocks/cart.js:19
 msgid "New in store"
@@ -28475,27 +28475,27 @@ msgstr ""
 msgid "cURL installed but unable to retrieve version."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1368
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1373
 msgctxt "Page setting"
 msgid "Shop base"
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1373
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1378
 msgctxt "Page setting"
 msgid "Cart"
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1378
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1383
 msgctxt "Page setting"
 msgid "Checkout"
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1383
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1388
 msgctxt "Page setting"
 msgid "My account"
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1388
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-v2-controller.php:1393
 msgctxt "Page setting"
 msgid "Terms and conditions"
 msgstr ""
@@ -40083,12 +40083,12 @@ msgid "String processors must be an array of valid callbacks."
 msgstr ""
 
 #. translators: 1 = who installed the plugin, 2 = ISO-formatted date and time, 3 = URL
-#: src/Internal/Utilities/PluginInstaller.php:256
+#: src/Internal/Utilities/PluginInstaller.php:249
 msgid "Plugin installed by %1$s on %2$s. <a target=\"_blank\" href=\"%3$s\">More information</a>"
 msgstr ""
 
 #. translators: 1 = who installed the plugin, 2 = ISO-formatted date and time
-#: src/Internal/Utilities/PluginInstaller.php:259
+#: src/Internal/Utilities/PluginInstaller.php:252
 msgid "Plugin installed by %1$s on %2$s."
 msgstr ""
 
