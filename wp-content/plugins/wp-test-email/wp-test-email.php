@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Test Email
 Description: WP Test Email allows you to test if your WordPress installation is sending mail or not and logs all outgoing emails.
-Version: 1.1.7
+Version: 1.1.8
 Author: Boopathi Rajan
 Text Domain: wp-test-email
 Author URI: https://www.boopathirajan.com
@@ -186,11 +186,11 @@ function wp_test_email_logs() {
         <table class="widefat fixed" cellspacing="0">
             <thead>
                 <tr>
-                    <th><a href="<?php echo add_query_arg(['orderby' => 'time', 'order' => ($sort_by == 'time' && $order == 'ASC') ? 'DESC' : 'ASC']); ?>"><?php _e('Time', 'wp-test-email'); ?></a></th>
-                    <th><a href="<?php echo add_query_arg(['orderby' => 'to_email', 'order' => ($sort_by == 'to_email' && $order == 'ASC') ? 'DESC' : 'ASC']); ?>"><?php _e('To', 'wp-test-email'); ?></a></th>
-                    <th><a href="<?php echo add_query_arg(['orderby' => 'subject', 'order' => ($sort_by == 'subject' && $order == 'ASC') ? 'DESC' : 'ASC']); ?>"><?php _e('Subject', 'wp-test-email'); ?></a></th>
+                    <th><a href="<?php echo esc_url(add_query_arg(['orderby' => 'time', 'order' => ($sort_by == 'time' && $order == 'ASC') ? 'DESC' : 'ASC'])); ?>"><?php _e('Time', 'wp-test-email'); ?></a></th>
+                    <th><a href="<?php echo esc_url(add_query_arg(['orderby' => 'to_email', 'order' => ($sort_by == 'to_email' && $order == 'ASC') ? 'DESC' : 'ASC'])); ?>"><?php _e('To', 'wp-test-email'); ?></a></th>
+                    <th><a href="<?php echo esc_url(add_query_arg(['orderby' => 'subject', 'order' => ($sort_by == 'subject' && $order == 'ASC') ? 'DESC' : 'ASC'])); ?>"><?php _e('Subject', 'wp-test-email'); ?></a></th>
                     <th><?php _e('Body', 'wp-test-email'); ?></th>
-                    <th><a href="<?php echo add_query_arg(['orderby' => 'status', 'order' => ($sort_by == 'status' && $order == 'ASC') ? 'DESC' : 'ASC']); ?>"><?php _e('Status', 'wp-test-email'); ?></a></th>
+                    <th><a href="<?php echo esc_url(add_query_arg(['orderby' => 'status', 'order' => ($sort_by == 'status' && $order == 'ASC') ? 'DESC' : 'ASC'])); ?>"><?php _e('Status', 'wp-test-email'); ?></a></th>
                 </tr>
             </thead>
             <tbody>
