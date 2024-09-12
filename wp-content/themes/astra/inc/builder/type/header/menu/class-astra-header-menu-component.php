@@ -146,10 +146,12 @@ class Astra_Header_Menu_Component {
 					echo astra_attr(
 						'site-navigation',
 						array(
-							'id' => esc_attr( $theme_location ) . '-site-navigation',
+							'id'         => esc_attr( $theme_location ) . '-site-navigation',
+							'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility',
+							'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
 						)
 					);
-					echo ' class="ast-flex-grow-1 navigation-accessibility" aria-label="' . esc_attr__( 'Site Navigation', 'astra' ) . '">';
+					echo '>';
 					/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					$nav_menu_markup = wp_page_menu( $fallback_menu_args );
 

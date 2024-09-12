@@ -1347,7 +1347,8 @@ section.ast-palette-presets-inner-wrap:last-child {
 .customize-control-ast-color + .customize-control-ast-color {
     margin-top: 30px;
 }
-.astra-popover-tabs [data-wp-component="Flex"], .astra-popover-color [data-wp-component="Flex"] {
+.astra-popover-tabs .color-tab [data-wp-component="Flex"],
+.astra-popover-color .color-tab [data-wp-component="Flex"] {
     padding-right: 8px;
 }
 .astra-popover-tabs .ast-clear-btn-inside-picker.components-button, .astra-popover-color .ast-clear-btn-inside-picker.components-button {

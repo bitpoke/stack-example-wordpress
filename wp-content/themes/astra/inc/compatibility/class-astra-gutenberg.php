@@ -65,7 +65,7 @@ class Astra_Gutenberg {
 	 * @return array       Updated embed markup.
 	 */
 	public function add_ast_block_container( $attr ) {
-		$attr['ast-blocks-layout'] = 'true';
+		$attr['data-ast-blocks-layout'] = 'true';
 		return $attr;
 	}
 

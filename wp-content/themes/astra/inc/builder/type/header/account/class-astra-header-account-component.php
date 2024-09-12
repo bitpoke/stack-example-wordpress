@@ -143,10 +143,12 @@ if ( ! class_exists( 'Astra_Header_Account_Component' ) ) {
 							echo astra_attr(
 								'site-navigation',
 								array(
-									'id' => 'account-site-navigation',
+									'id'         => 'account-site-navigation',
+									'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility',
+									'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
 								)
 							);
-							echo ' class="site-navigation ast-flex-grow-1 navigation-accessibility" aria-label="' . esc_attr__( 'Site Navigation', 'astra' ) . '">';
+							echo '>';
 							$account_menu_markup = wp_page_menu( $fallback_menu_args );
 
 							// Adding rel="nofollow" for duplicate menu render.

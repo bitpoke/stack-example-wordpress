@@ -1,3 +1,15 @@
+2024-09-11 - v4.8.1
+* Improvement: Added functionality to allow the translation of strings stored in Astra's settings database.
+* Improvement: Addressed W3C Validator issues by replacing custom attributes with data attributes and corrected the SVG namespace to ensure compliance with web standards.
+* Fix: Customizer - Global typography settings not reflecting as intended, in the preview.
+* Fix: Site Identity - SVG logo is not visible inside the customizer preview for some cases.
+* Fix: Block Editor - Group block was not correctly inheriting the maximum width when set to "Inner blocks use content width.
+* Fix: Customizer - Gradient picker colour tab input box was misaligned.
+* Fix: Add to Cart icon not aligning with with other elements on a mobile header.
+* Fix: Resolved an issue where hiding the title and featured image on posts/pages resulted in unnecessary top padding.
+* Fix: WooCommerce - Store notice appears broken with hand over top option on responsive devices.
+* Fix: Style Guide close icon is not clickable in responsive device preview.
+
 2024-08-20 - v4.8.0
 * New: Introducing Astra Style Guide for improved navigation and streamlined customization in the customizer. (https://wpastra.com/docs/style-guide/)
 * Improvement: WooCommerce - Enhanced block-based cart and checkout page styling for better user experience.

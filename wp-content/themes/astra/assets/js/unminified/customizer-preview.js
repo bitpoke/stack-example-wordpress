@@ -16,7 +16,7 @@ function astra_font_size_rem( size, with_rem, device ) {
 
 	if( size != '' ) {
 
-		var device = ( typeof device != undefined ) ? device : 'desktop';
+		var device = ( typeof device !== 'undefined' ) ? device : 'desktop';
 
 		// font size with 'px'.
 		css = 'font-size: ' + size + 'px;';
@@ -197,12 +197,12 @@ function astra_responsive_spacing( control, selector, type, side ) {
 			var sidesString = "";
 			var spacingType = "padding";
 			if ( value.desktop.top || value.desktop.right || value.desktop.bottom || value.desktop.left || value.tablet.top || value.tablet.right || value.tablet.bottom || value.tablet.left || value.mobile.top || value.mobile.right || value.mobile.bottom || value.mobile.left ) {
-				if ( typeof side != undefined ) {
+				if ( typeof side !== 'undefined' ) {
 					sidesString = side + "";
 					// Replace comma character with dash, necessary to separate out spacing dimensions.
 					sidesString = sidesString.replace(/,/g , "-");
 				}
-				if ( typeof type != undefined ) {
+				if ( typeof type !== 'undefined' ) {
 					spacingType = type + "";
 				}
 				// Remove <style> first!
@@ -214,7 +214,7 @@ function astra_responsive_spacing( control, selector, type, side ) {
 					tabletPadding = '',
 					mobilePadding = '';
 
-				var paddingSide = ( typeof side != undefined ) ? side : [ 'top','bottom','right','left' ];
+				var paddingSide = ( typeof side !== 'undefined' ) ? side : [ 'top','bottom','right','left' ];
 
 				jQuery.each(paddingSide, function( index, sideValue ){
 					if ( '' != value['desktop'][sideValue] ) {
@@ -268,7 +268,7 @@ function astra_css_font_size( control, selector ) {
 				jQuery( 'style#' + control ).remove();
 
 				var fontSize = 'font-size: ' + size;
-				if ( ! isNaN( size ) || size.indexOf( 'px' ) >= 0 ) {
+				if ( ! Number.isNaN( size ) || size.indexOf( 'px' ) >= 0 ) {
 					size = size.replace( 'px', '' );
 					fontSize = astra_font_size_rem( size, true );
 				}
@@ -864,6 +864,18 @@ function hasWordPressWidgetBlockEditor() {
 }
 
 ( function( $ ) {
+
+	/*
+	 * Site Identity SVG Logo initial styling.
+	 */
+	wp.customize( 'astra-settings[logo-svg-icon]', function( setting ) {
+		setting.bind( function() {
+			astra_add_dynamic_css(
+				'ast-header-responsive-logo-svg-icon-width',
+				'.ast-logo-title-inline .ast-site-identity { gap: 5px; } #masthead .ast-logo-svg-icon svg, .ast-sg-logo-section .ast-logo-svg-icon svg { width: 30px; }'
+			);
+		} );
+	} );
 
 	/*
 	 * Site Identity Logo Width
@@ -1909,7 +1921,7 @@ function hasWordPressWidgetBlockEditor() {
 	// Site Tagline - Text Transform
 	astra_css( 'astra-settings[text-transform-site-tagline]', 'text-transform', '.ast-sg-logo-section .site-description, .site-header .site-description' );
 
-	var search_button_selector = hasWordPressWidgetBlockEditor() ? ', form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button, .woocommerce a.button' : woo_btn_normal_sector ;
+	search_button_selector = hasWordPressWidgetBlockEditor() ? ', form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button, .woocommerce a.button' : woo_btn_normal_sector ;
 	var search_button_hover_selector = hasWordPressWidgetBlockEditor() ? ', form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button:hover, form[CLASS*="wp-block-search__"].wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button:focus, .woocommerce a.button:hover' : woo_btn_hover_sector ;
 
 	//Compatibility with wordpress 6.1.1
@@ -2140,16 +2152,16 @@ function hasWordPressWidgetBlockEditor() {
 		} );
 	} );
 
-	astra_generate_outside_font_family_css( 'astra-settings[body-font-family]', '.ast-sg-content-section' );
-	astra_generate_font_weight_css( 'astra-settings[body-font-family]', 'astra-settings[body-font-weight]', 'font-weight', '.ast-sg-content-section' );
-	astra_font_extras_css( 'body-font-extras', '.ast-sg-content-section' );
+	astra_generate_outside_font_family_css( 'astra-settings[body-font-family]', 'body, button, input, select, textarea, .ast-button, .ast-custom-button' );
+	astra_generate_font_weight_css( 'astra-settings[body-font-family]', 'astra-settings[body-font-weight]', 'font-weight', 'body, button, input, select, textarea, .ast-button, .ast-custom-button' );
+	astra_font_extras_css( 'body-font-extras', 'body, button, input, select, textarea, .ast-button, .ast-custom-button' );
 	wp.customize('astra-settings[font-size-body]', function (value) {
 		value.bind(function (value) {
 			if ( value.desktop || value.mobile || value.tablet ) {
 
 				var fontSize = '',
 					control = 'astra-settings[font-size-body]',
-					selector = '.ast-sg-content-section',
+					selector = 'body, button, input, select, textarea, .ast-button, .ast-custom-button',
 					tabletFontSize = '',
 					mobileFontSize = '',
 					css_property = 'font-size',
@@ -2559,15 +2571,10 @@ function hasWordPressWidgetBlockEditor() {
 				var buttonPreset = wp.customize( 'astra-settings[secondary-button-preset-style]' ).get();
 				var themeColor = wp.customize( 'astra-settings[theme-color]' ).get();
 				var buttonTextColor = wp.customize( 'astra-settings[secondary-button-color]' ).get();
-
-				var buttonTextColor = wp.customize( 'astra-settings[secondary-button-color]' ).get();
 				var buttonBorderColor = wp.customize( 'astra-settings[secondary-theme-button-border-group-border-color]' ).get();
 
 				// If button has outline preset.
 				if( 'button_04' === buttonPreset || 'button_05' === buttonPreset || 'button_06' === buttonPreset ) {
-
-					var buttonTextColor = wp.customize( 'astra-settings[secondary-button-color]' ).get();
-					var buttonBorderColor = wp.customize( 'astra-settings[secondary-theme-button-border-group-border-color]' ).get();
 
 					if( '' === buttonBorderColor ) {
 
@@ -2623,8 +2630,6 @@ function hasWordPressWidgetBlockEditor() {
 						);
 					}
 				} else {
-					var buttonTextColor = wp.customize( 'astra-settings[secondary-button-color]' ).get();
-					var buttonBorderColor = wp.customize( 'astra-settings[secondary-theme-button-border-group-border-color]' ).get();
 
 					if ( '' === buttonBorderColor ) {
 						jQuery( 'head' ).append(

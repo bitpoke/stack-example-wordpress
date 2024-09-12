@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.8.0\n"
+"Project-Id-Version: Astra 4.8.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-08-20T06:34:17+00:00\n"
+"POT-Creation-Date: 2024-09-11T06:31:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: astra\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:182
 #: admin/includes/class-astra-menu.php:183
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3554
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3551
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/welcome/QuickSettings.js:43
 msgid "Customize"
@@ -117,14 +117,14 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:332
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:83
+#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:93
 msgid "Activated"
 msgstr ""
 
 #: admin/includes/class-astra-menu.php:333
 #: inc/core/class-astra-admin-settings.php:150
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:85
+#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:95
 msgid "Activate"
 msgstr ""
 
@@ -214,7 +214,7 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:406
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:120
+#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:130
 msgid "Create professional designed pixel perfect websites in minutes. Get access to 280+ pre-made full website templates for your favorite page builder."
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 #: admin/includes/class-astra-theme-builder-free.php:133
 #: admin/includes/class-astra-theme-builder-free.php:134
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:65
+#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:70
 #: admin/assets/theme-builder/build/index.js:1
 #: admin/assets/theme-builder/src/components/Breadcrumbs.js:8
 msgid "Site Builder"
@@ -335,66 +335,70 @@ msgstr ""
 msgid "Build high-converting E-Commerce stores with CartFlows, the ultimate checkout and funnel builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:726
-msgid "Beautiful store variation swatches."
+#: admin/includes/class-astra-menu.php:729
+msgid "Connect your WordPress plugins, WooCommerce sites, apps, and websites for powerful automations."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:726
-msgid "Convert WooCommerce variation dropdown attributes into attractive swatches instantly."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:740
-msgid "Recover lost revenue automatically."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:740
-msgid "Capture emails at checkout and send follow-up emails to recover lost revenue."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:757
-msgid "Stripe Payments for WooCommerce ensures secure acceptance of credit cards, Apple Pay, and Google Pay."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:771
-msgid "PayPal Payments For WooCommerce simplifies and secures PayPal transactions on your store."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:787
-#: admin/includes/class-astra-menu.php:846
+#: admin/includes/class-astra-menu.php:745
+#: admin/includes/class-astra-menu.php:868
 msgid "Free WordPress Page Builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:787
+#: admin/includes/class-astra-menu.php:745
 msgid "Power-up block editor with advanced blocks for faster and effortlessly website creation."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:834
+#: admin/includes/class-astra-menu.php:760
+msgid "Stripe Payments for WooCommerce."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:760
+msgid "Stripe Payments for WooCommerce securely accepts credit cards, Apple Pay, and Google Pay."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:776
+msgid "PayPal Payments For WooCommerce simplifies and secures PayPal transactions on your store."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:792
+msgid "Recover lost revenue automatically."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:792
+msgid "Capture emails at checkout and send follow-up emails to recover lost revenue."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:808
+msgid "Convert WooCommerce variation dropdown attributes into attractive swatches instantly."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:856
 msgid "The new way to sell on WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:858
-#: admin/includes/class-astra-menu.php:942
+#: admin/includes/class-astra-menu.php:880
+#: admin/includes/class-astra-menu.php:964
 msgid "Automate your WordPress setup."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:871
+#: admin/includes/class-astra-menu.php:893
 msgid "Ultimate Video Player For WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:916
+#: admin/includes/class-astra-menu.php:938
 msgid "Free WordPress Page Builder Plugin."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:929
+#: admin/includes/class-astra-menu.php:951
 msgid "Simplifying selling online with WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:1012
+#: admin/includes/class-astra-menu.php:1034
 msgid "Thank you for using"
 msgstr ""
 
 #. translators: 1: Astra, 2: Theme rating link
-#: admin/includes/class-astra-menu.php:1016
+#: admin/includes/class-astra-menu.php:1038
 msgid "Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!"
 msgstr ""
 
@@ -7824,7 +7828,7 @@ msgid "Breadcrumbs"
 msgstr ""
 
 #: inc/addons/breadcrumbs/class-astra-breadcrumb-trail.php:417
-#: inc/core/common-functions.php:896
+#: inc/core/common-functions.php:962
 msgid "Home"
 msgstr ""
 
@@ -9282,16 +9286,16 @@ msgstr ""
 msgid "Click to edit this Row."
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:306
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:307
 msgid "Close Cart Drawer"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:311
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:312
 msgid "Shopping Cart"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:418
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:488
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:419
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:489
 msgid "Account icon link"
 msgstr ""
 
@@ -9306,11 +9310,11 @@ msgid "Site Navigation: "
 msgstr ""
 
 #: inc/builder/type/header/account/class-astra-header-account-component.php:66
-#: inc/builder/type/header/account/class-astra-header-account-component.php:149
-#: inc/builder/type/header/menu/class-astra-header-menu-component.php:152
-#: inc/builder/type/header/mobile-menu/class-astra-mobile-menu-component.php:134
+#: inc/builder/type/header/account/class-astra-header-account-component.php:148
+#: inc/builder/type/header/menu/class-astra-header-menu-component.php:151
+#: inc/builder/type/header/mobile-menu/class-astra-mobile-menu-component.php:133
 #: inc/markup-extras.php:1263
-#: inc/markup-extras.php:1299
+#: inc/markup-extras.php:1298
 msgid "Site Navigation"
 msgstr ""
 
@@ -9463,7 +9467,7 @@ msgid "Primary"
 msgstr ""
 
 #: inc/compatibility/edd/class-astra-edd.php:103
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:566
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:563
 #: inc/compatibility/woocommerce/customizer/class-astra-customizer-register-woo-section.php:55
 #: inc/core/builder/class-astra-builder-helper.php:719
 #: inc/core/builder/class-astra-builder-helper.php:729
@@ -9479,7 +9483,7 @@ msgid "Easy Digital Downloads"
 msgstr ""
 
 #: inc/compatibility/edd/class-astra-edd.php:445
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3399
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3396
 msgid "View your shopping cart"
 msgstr ""
 
@@ -9499,8 +9503,8 @@ msgid "Easy Digital Downloads Sidebar"
 msgstr ""
 
 #: inc/compatibility/edd/class-astra-edd.php:928
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:364
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1187
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:365
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1184
 msgid "This sidebar will be used on Product archive, Cart, Checkout and My Account pages."
 msgstr ""
 
@@ -10038,72 +10042,72 @@ msgstr ""
 msgid "SureCart"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:303
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:304
 msgid "Sale!"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:362
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1185
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:363
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1182
 msgid "WooCommerce Sidebar"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:473
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:474
 msgid "This is a demo store for testing purposes &mdash; no orders shall be fulfilled."
 msgstr ""
 
 #. translators: 1: number of products
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:812
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:809
 msgctxt "product categories"
 msgid "%1$s Product"
 msgid_plural "%1$s Products"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:907
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:904
 msgid "& Free Shipping"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:912
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:909
 msgid "Proceed to checkout"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:950
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:947
 msgid "Guaranteed Safe Checkout"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:961
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:958
 #: inc/theme-update/astra-update-functions.php:366
 msgid "Visa"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:969
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:966
 #: inc/theme-update/astra-update-functions.php:378
 msgid "Mastercard"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:977
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:974
 #: inc/theme-update/astra-update-functions.php:390
 msgid "Amex"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:985
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:982
 #: inc/theme-update/astra-update-functions.php:402
 msgid "Discover"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1199
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1196
 msgid "Product Sidebar"
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1201
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:1198
 msgid "This sidebar will be used on Single Product page."
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3470
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3467
 msgid "No products in the cart."
 msgstr ""
 
-#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3474
+#: inc/compatibility/woocommerce/class-astra-woocommerce.php:3471
 msgid "Continue Shopping"
 msgstr ""
 
@@ -10694,7 +10698,7 @@ msgstr ""
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:12
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:18
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:82
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:95
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:27
 #: inc/customizer/extend-custom-controls/build/index.js:1
 #: inc/customizer/extend-custom-controls/src/ast-upgrade/ast-upgrade.js:79
@@ -10885,15 +10889,15 @@ msgstr ""
 msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
 msgstr ""
 
-#: inc/core/common-functions.php:902
+#: inc/core/common-functions.php:968
 msgid "This page doesn't seem to exist."
 msgstr ""
 
-#: inc/core/common-functions.php:1020
+#: inc/core/common-functions.php:1086
 msgid "Author name: "
 msgstr ""
 
-#: inc/core/common-functions.php:1238
+#: inc/core/common-functions.php:1304
 msgctxt "placeholder"
 msgid "Search..."
 msgstr ""
@@ -12477,7 +12481,7 @@ msgstr ""
 #: inc/customizer/configurations/layout/class-astra-footer-layout-configs.php:466
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:676
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:141
+#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:151
 msgid "Learn More"
 msgstr ""
 
@@ -12897,11 +12901,11 @@ msgstr ""
 msgid "Assign Footer Menu"
 msgstr ""
 
-#: inc/markup-extras.php:1721
+#: inc/markup-extras.php:1723
 msgid "Add Widget"
 msgstr ""
 
-#: inc/markup-extras.php:1761
+#: inc/markup-extras.php:1763
 msgid "Click here to assign a widget for this area."
 msgstr ""
 
@@ -13398,13 +13402,13 @@ msgid "Scroll to Top"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:44
+#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:49
 msgid "Upgrade to Astra Pro"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:47
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:136
+#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:52
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:141
 msgid "Get access to powerful features for painless WordPress designing, without the high costs. With all the time you will save, it’s a product that pays for itself!"
 msgstr ""
 
@@ -13421,10 +13425,10 @@ msgstr ""
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/MainNav.js:152
 #: admin/assets/src/dashboard-app/MainNav.js:173
-#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:54
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:129
+#: admin/assets/src/dashboard-app/pages/docs/UpgradeToPro.js:59
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:134
 #: admin/assets/src/dashboard-app/pages/welcome/ExtensionCard.js:113
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:90
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:96
 msgid "PRO"
 msgstr ""
 
@@ -13440,19 +13444,19 @@ msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:108
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:307
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:313
 msgid "VIP Priority Support"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:115
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:314
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:320
 msgid "Faster and exclusive support service designed for VIP assistance and benefits."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/docs/Docs.js:126
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:325
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:331
 msgid "Know More →"
 msgstr ""
 
@@ -13486,7 +13490,7 @@ msgstr ""
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/MainNav.js:49
 #: admin/assets/src/dashboard-app/MainNav.js:72
-#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:100
+#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:105
 msgid "Free vs Pro"
 msgstr ""
 
@@ -13502,174 +13506,174 @@ msgid "This option only available on Astra Pro."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:74
-#: admin/assets/src/dashboard-app/pages/welcome/ExtensionCard.js:144
+#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:94
+#: admin/assets/src/dashboard-app/pages/welcome/ExtensionCard.js:148
 msgid "Successfully Activated!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:33
-#: admin/assets/src/dashboard-app/pages/welcome/ExtensionCard.js:144
+#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:36
+#: admin/assets/src/dashboard-app/pages/welcome/ExtensionCard.js:149
 msgid "Successfully Deactivated!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:86
-#: admin/assets/src/dashboard-app/pages/welcome/AstraIntegration.js:98
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:91
+#: admin/assets/src/dashboard-app/pages/welcome/AstraIntegration.js:107
 msgid "Pro"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:80
-#: admin/assets/src/dashboard-app/pages/welcome/AstraIntegration.js:101
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:85
+#: admin/assets/src/dashboard-app/pages/welcome/AstraIntegration.js:110
 msgid "Free"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:45
-#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:86
+#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:52
+#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:110
 msgid "Cache Cleared!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:100
+#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:132
 msgid "Activate all"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:107
+#: admin/assets/src/dashboard-app/pages/welcome/BulkExtensionController.js:139
 msgid "Deactivate all"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:75
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:81
 msgid "Welcome Banner"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:80
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:86
 msgid "Hello "
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:86
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:92
 msgid "Welcome to %s"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:94
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:100
 msgid "FREE"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:101
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:107
 msgid "%s is fast, fully customizable & beautiful WordPress theme suitable for blog, personal portfolio, business website and WooCommerce storefront. It is very lightweight and offers unparalleled speed."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:115
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:121
 msgid "Start Customising"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:133
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:139
 msgid "Watch the Quick Starter Guide"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:176
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:182
 msgid "Quick Links"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:182
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:188
 msgid "Quick Settings"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:190
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:196
 msgid "Go to Customizer"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:200
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:211
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:206
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:217
 msgid "Do more with %s Modules"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:207
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:213
 msgid "%s Modules"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
 #: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:12
 #: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:18
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:82
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:95
 #: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:27
 msgid "Activate Now"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:247
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:253
 msgid "Astra Integrations"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:253
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:259
 msgid "%s Integrations"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:266
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:272
 msgid "Your License"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:286
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:291
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:292
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:297
 msgid "Useful Plugins"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:301
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:333
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:360
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:307
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:339
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:366
 msgid "Section title"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:338
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:344
 msgid "Join the Community"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:341
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:347
 msgid "Got a question about the plugin, want to share your awesome project or just say hi? Join our wonderful community!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:352
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:358
 msgid "Join Now →"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:365
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:371
 msgid "Rate Us"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:385
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:391
 msgid "Based on 5k+ reviews"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:392
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:398
 msgid "We love to hear from you, we would appreciate every single review."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:403
+#: admin/assets/src/dashboard-app/pages/welcome/Welcome.js:409
 msgid "Submit a Review →"
 msgstr ""
 
@@ -13866,114 +13870,126 @@ msgid "EDD Mini-Cart Shortcode"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:53
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:58
 msgid "Astra Free Vs Pro"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:56
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:61
 msgid "Astra Free vs Pro"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:74
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:79
 msgid "Features"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:113
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:118
 msgid "See all Astra Pro features"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:133
+#: admin/assets/src/dashboard-app/pages/free-vs-pro/FreeVsPro.js:138
 msgid "Do More with Astra Pro"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/LoadFontsLocally.js:48
+#: admin/assets/src/dashboard-app/pages/settings/LoadFontsLocally.js:60
 msgid "Load Google Fonts Locally"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/LoadFontsLocally.js:40
-#: admin/assets/src/dashboard-app/pages/settings/OldHeaderFooter.js:43
-#: admin/assets/src/dashboard-app/pages/settings/PreloadLocalFonts.js:42
+#: admin/assets/src/dashboard-app/pages/settings/LoadFontsLocally.js:43
+#: admin/assets/src/dashboard-app/pages/settings/OldHeaderFooter.js:46
+#: admin/assets/src/dashboard-app/pages/settings/PreloadLocalFonts.js:45
 msgid "Successfully saved!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/LoadFontsLocally.js:76
+#: admin/assets/src/dashboard-app/pages/settings/LoadFontsLocally.js:50
+#: admin/assets/src/dashboard-app/pages/settings/OldHeaderFooter.js:53
+#: admin/assets/src/dashboard-app/pages/settings/PreloadLocalFonts.js:52
+msgid "An error occurred while saving."
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/settings/LoadFontsLocally.js:88
 msgid "Enable this option to download Google fonts and save them on your server. This can be great for improving speed of your website and to comply with GDPR laws."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/PreloadLocalFonts.js:50
+#: admin/assets/src/dashboard-app/pages/settings/PreloadLocalFonts.js:62
 msgid "Preload Local Fonts"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/PreloadLocalFonts.js:78
+#: admin/assets/src/dashboard-app/pages/settings/PreloadLocalFonts.js:90
 msgid "This option will load the font files right away on page load. Preloading Local Fonts can speeds up your website even further."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:38
+#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:54
 msgid "Flush Local Fonts Cache"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:41
+#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:57
 msgid "Click the button to reset the local fonts cache."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:25
+#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:28
 msgid "Assets Regenerated!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:50
+#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:42
+msgid "An error occurred while regenerating assets."
+msgstr ""
+
+#: admin/assets/build/dashboard-app.js:1
+#: admin/assets/src/dashboard-app/pages/settings/FlushLocalFonts.js:66
 msgid "Flush Local Font Files"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/OldHeaderFooter.js:55
+#: admin/assets/src/dashboard-app/pages/settings/OldHeaderFooter.js:67
 msgid "Use New Header/Footer Builder"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/OldHeaderFooter.js:92
+#: admin/assets/src/dashboard-app/pages/settings/OldHeaderFooter.js:104
 msgid "After years of evolution and updates, the old header footer builder is at the point where it can no longer handle all of the new features. We recommend that you upgrade to the new header footer builder which has an assortment of new features and provides a more seamless experience."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:89
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:102
 msgid "Build Better Websites with Astra Pro"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:101
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:114
 msgid "Access powerful features for painless WordPress design without the high costs. Powerful tools, premium support, limitless opportunity with Pro! Toggle upgrade notices on or off "
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:42
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:43
 msgid "Deactivated!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:44
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:45
 msgid "Activated!"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:107
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:120
 msgid "updating..."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:107
+#: admin/assets/src/dashboard-app/pages/settings/UpgradeNotices.js:120
 #: inc/metabox/extend-metabox/build/index.js:1
 #: inc/metabox/extend-metabox/src/settings.js:461
 msgid "here."
@@ -13985,12 +14001,12 @@ msgid "Performance"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:87
+#: admin/assets/src/dashboard-app/pages/starter-templates/StarterTemplates.js:97
 msgid "Install & Activate"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:69
+#: admin/assets/src/dashboard-app/pages/custom-layouts/CustomLayouts.js:74
 msgid "Upgrade to Astra Pro to get access to the Site Builder, which allow you to create a unique header, footer, 404 pages, and custom content."
 msgstr ""
 
@@ -14055,47 +14071,47 @@ msgid "Loads assets dynamically on demand. Assets are loaded for only those bloc
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:95
+#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:105
 msgid "Install Spectra - It’s free"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:97
+#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:107
 msgid "Activate Spectra"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:99
+#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:109
 msgid "Explore Spectra"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:106
+#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:116
 msgid "Spectra - WordPress Free Page Builder"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:122
+#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:132
 msgid "Spectra is 100% beginner friendly and enhances the default WordPress block editor."
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:162
+#: admin/assets/src/dashboard-app/pages/spectra/SpectraScreen.js:172
 msgid "Build Ultra High Performance Websites, Without Coding"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:130
+#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:140
 msgid "active users"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:142
+#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:152
 msgid "Extensions"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:1
-#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:145
+#: admin/assets/src/dashboard-app/pages/woocommerce/ExtensionScreen.js:155
 msgid "WooCommerce extensions that will elevate your online store from good to exceptional."
 msgstr ""
 
@@ -14375,12 +14391,12 @@ msgid "Upgrade to unlock"
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/build/index.js:1
-#: inc/customizer/extend-custom-controls/src/builder-layout/add-component.js:114
+#: inc/customizer/extend-custom-controls/src/builder-layout/add-component.js:127
 msgid "Hurray! All Components Are Being Used."
 msgstr ""
 
 #: inc/customizer/extend-custom-controls/build/index.js:1
-#: inc/customizer/extend-custom-controls/src/draggable/draggable-component.js:96
+#: inc/customizer/extend-custom-controls/src/draggable/draggable-component.js:94
 msgid "Elements used in the builder will be visible here."
 msgstr ""
 
@@ -14573,7 +14589,7 @@ msgstr ""
 msgid "SMS"
 msgstr ""
 
-#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:356
+#: inc/customizer/extend-custom-controls/src/social-icons/social-component.js:369
 msgid "Add Social Icon"
 msgstr ""
 

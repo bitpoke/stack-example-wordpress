@@ -311,10 +311,14 @@ td.ast-advanced-hook-row-heading {
 .ast-pro-upgrade-cta-wrapper {
     padding: 20px;
     text-align: center;
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
 p.ast-upgrade-description {
-    margin-top: 15px;
-	margin-bottom: 15px;
+    margin: 0;
 }
 a.ast-pro-upgrade-link {
     color: #0284C7;

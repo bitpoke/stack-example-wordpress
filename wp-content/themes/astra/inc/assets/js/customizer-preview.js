@@ -276,6 +276,7 @@ wp.customize( 'astra-settings[store-notice-position]', function( setting ) {
 		if( 'hang-over-top' === position ) {
 			wp.customize.preview.send( 'refresh' );
 		} else {
+			jQuery('body').css('margin-top', 0);
 			jQuery('body').removeClass( 'ast-woocommerce-store-notice-hanged' );
 			jQuery('.woocommerce-store-notice').attr( 'data-position', position );
 		}

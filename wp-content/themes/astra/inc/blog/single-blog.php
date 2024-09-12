@@ -230,7 +230,7 @@ function astra_adjacent_post_links_title( $output, $format, $link, $post, $adjac
 	/** @psalm-suppress PossiblyInvalidPropertyFetch */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 	if ( ! empty( $post->post_title ) ) {
 		/** @psalm-suppress PossiblyInvalidPropertyFetch */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$output = str_replace( 'href="', 'title="' . esc_attr( $post->post_title ) . '"' . 'href="', $output );
+		$output = str_replace( 'href="', 'title="' . esc_attr( $post->post_title ) . '" ' . 'href="', $output );
 	}
 	return $output;
 }

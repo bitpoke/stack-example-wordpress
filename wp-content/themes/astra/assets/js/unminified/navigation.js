@@ -546,7 +546,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
             hash = '#';
 
         if( self && ! self.classList.contains('astra-search-icon') ) {
-            var link = new String( self );
+            var link = String( self );
             if( link.indexOf( hash ) !== -1 ) {
             	var link_parent = self.parentNode;
                 if ( document.body.classList.contains('ast-header-break-point') && ! ( document.querySelector("header.site-header").classList.contains("ast-menu-toggle-link") && link_parent.classList.contains("menu-item-has-children") ) ) {
@@ -656,21 +656,6 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	 * @since x.x.x
 	 */
 	if ( astra.is_scroll_to_id ) {
-		let hashLinks = [];
-		const links = document.querySelectorAll('a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"]):not(.uagb-toc-link__trigger):not(.skip-link):not(.nav-links a):not([href*="tab-"])');
-		if (links) {
-
-			for (const link of links) {
-
-				if (link.href.split('#')[0] !== location.href.split('#')[0]) {
-					// Store the hash
-					hashLinks.push({hash: link.hash, url: link.href.split('#')[0]});
-				} else if (link.hash !== "") {
-					link.addEventListener("click", scrollToIDHandler);
-				}
-			}
-		}
-
 		function scrollToIDHandler(e) {
 
 			let offset = 0;
@@ -708,6 +693,24 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				element = element.offsetParent;
 			}
 			return offsetTop;
+		}
+
+		let hashLinks = [];
+		const links = document.querySelectorAll(
+			'a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"]):not(.uagb-toc-link__trigger):not(.skip-link):not(.nav-links a):not([href*="tab-"])'
+		);
+		if (links) {
+			for (const link of links) {
+				if (link.href.split("#")[0] !== location.href.split("#")[0]) {
+					// Store the hash
+					hashLinks.push({
+						hash: link.hash,
+						url: link.href.split("#")[0],
+					});
+				} else if (link.hash !== "") {
+					link.addEventListener("click", scrollToIDHandler);
+				}
+			}
 		}
 
 		window.addEventListener('DOMContentLoaded', (event) => {

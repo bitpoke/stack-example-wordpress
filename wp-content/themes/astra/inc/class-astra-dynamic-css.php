@@ -2188,7 +2188,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			 */
 			if ( astra_wp_version_compare( '6.3', '>=' ) ) {
 				$figure_margin_bottom = array(
-					'.entry-content[ast-blocks-layout] > figure' => array(
+					'.entry-content[data-ast-blocks-layout] > figure' => array(
 						'margin-bottom' => '1em',
 					),
 				);

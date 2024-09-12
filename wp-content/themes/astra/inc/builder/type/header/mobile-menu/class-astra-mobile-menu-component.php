@@ -128,10 +128,12 @@ class Astra_Mobile_Menu_Component {
 			echo astra_attr(
 				'site-navigation',
 				array(
-					'id' => 'ast-' . esc_attr( $device ) . '-site-navigation',
+					'id'         => 'ast-' . esc_attr( $device ) . '-site-navigation',
+					'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility',
+					'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
 				)
 			);
-			echo ' class="site-navigation ast-flex-grow-1 navigation-accessibility" aria-label="' . esc_attr__( 'Site Navigation', 'astra' ) . '">';
+			echo '>';
 			$mobile_menu_markup = wp_page_menu( $fallback_menu_args );
 			// Adding rel="nofollow" for duplicate menu render.
 			$mobile_menu_markup = $astra_builder->nofollow_markup( $theme_location, $mobile_menu_markup );

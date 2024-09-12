@@ -266,11 +266,6 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 		 */
 		public static function render_site_identity( $device ) {
 			?>
-				<?php
-				if ( is_customize_preview() ) {
-					self::render_customizer_edit_button();
-				}
-				?>
 				<div
 				<?php
 					echo astra_attr(
@@ -281,7 +276,13 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 					);
 				?>
 				>
-					<?php astra_logo( $device ); ?>
+					<?php
+					// placed inside site-identity div to prevent multiple edit buttons.
+					if ( is_customize_preview() ) {
+						self::render_customizer_edit_button();
+					}
+					astra_logo( $device );
+					?>
 				</div>
 			<!-- .site-branding -->
 			<?php

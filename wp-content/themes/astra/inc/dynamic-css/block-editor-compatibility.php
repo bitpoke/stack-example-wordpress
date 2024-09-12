@@ -248,7 +248,7 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 		}
 	';
 
-	$astra_wide_particular_selector = $astra_block_editor_v2_ui ? '.entry-content[ast-blocks-layout] > .alignwide' : '.entry-content[ast-blocks-layout] > .alignwide, .entry-content[ast-blocks-layout] .wp-block-cover__inner-container, .entry-content[ast-blocks-layout] > p';
+	$astra_wide_particular_selector = $astra_block_editor_v2_ui ? '.entry-content[data-ast-blocks-layout] > .alignwide' : '.entry-content[data-ast-blocks-layout] > .alignwide, .entry-content[data-ast-blocks-layout] .wp-block-cover__inner-container, .entry-content[data-ast-blocks-layout] > p';
 	$astra_full_stretched_selector  = $astra_block_editor_v2_ui ? '.ast-plain-container.ast-no-sidebar .entry-content > .alignfull, .ast-page-builder-template .ast-no-sidebar .entry-content > .alignfull' : '.ast-plain-container.ast-no-sidebar .entry-content .alignfull, .ast-page-builder-template .ast-no-sidebar .entry-content .alignfull';
 
 	$dynamic_css .= '
@@ -271,19 +271,19 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 		margin-right: auto;
 		width: 100%;
 	}
-	[ast-blocks-layout] .wp-block-separator:not(.is-style-dots) {
+	[data-ast-blocks-layout] .wp-block-separator:not(.is-style-dots) {
 		height: 0;
 	}
-	[ast-blocks-layout] .wp-block-separator {
+	[data-ast-blocks-layout] .wp-block-separator {
 		margin: 20px auto;
 	}
-	[ast-blocks-layout] .wp-block-separator:not(.is-style-wide):not(.is-style-dots) {
+	[data-ast-blocks-layout] .wp-block-separator:not(.is-style-wide):not(.is-style-dots) {
 		max-width: 100px;
 	}
-	[ast-blocks-layout] .wp-block-separator.has-background {
+	[data-ast-blocks-layout] .wp-block-separator.has-background {
 		padding: 0;
 	}
-	.entry-content[ast-blocks-layout] > * {
+	.entry-content[data-ast-blocks-layout] > * {
 		max-width: var(--wp--custom--ast-content-width-size);
 		margin-left: auto;
 		margin-right: auto;
@@ -291,8 +291,14 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	' . $astra_wide_particular_selector . ' {
 		max-width: var(--wp--custom--ast-wide-width-size);
 	}
-	.entry-content[ast-blocks-layout] .alignfull {
+	.entry-content[data-ast-blocks-layout] .alignfull {
 		max-width: none;
+	}
+	.ast-full-width-layout .entry-content[data-ast-blocks-layout] .is-layout-constrained.wp-block-cover-is-layout-constrained > *,
+	.ast-full-width-layout .entry-content[data-ast-blocks-layout] .is-layout-constrained.wp-block-group-is-layout-constrained > * {
+		max-width: var(--wp--custom--ast-content-width-size);
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.entry-content .wp-block-columns {
 		margin-bottom: 0;
@@ -389,22 +395,22 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 				margin-top: 12px;
 				margin-bottom: 12px;
 			}
-			.ast-page-builder-template .entry-content[ast-blocks-layout] > *, .ast-page-builder-template .entry-content[ast-blocks-layout] > .alignfull > * {
+			.ast-page-builder-template .entry-content[data-ast-blocks-layout] > *, .ast-page-builder-template .entry-content[data-ast-blocks-layout] > .alignfull > * {
 				max-width: none;
 			}
-			.ast-page-builder-template .entry-content[ast-blocks-layout] > .alignwide > * {
+			.ast-page-builder-template .entry-content[data-ast-blocks-layout] > .alignwide > * {
 				max-width: var(--wp--custom--ast-wide-width-size);
 			}
-			.ast-page-builder-template .entry-content[ast-blocks-layout] > .inherit-container-width > *, .ast-page-builder-template .entry-content[ast-blocks-layout] > * > *, .entry-content[ast-blocks-layout] > .wp-block-cover .wp-block-cover__inner-container {
+			.ast-page-builder-template .entry-content[data-ast-blocks-layout] > .inherit-container-width > *, .ast-page-builder-template .entry-content[data-ast-blocks-layout] > * > *, .entry-content[data-ast-blocks-layout] > .wp-block-cover .wp-block-cover__inner-container {
 				max-width: ' . $heading_width_comp . ' ;
 				margin-left: auto;
 				margin-right: auto;
 			}
-			.entry-content[ast-blocks-layout] .wp-block-cover:not(.alignleft):not(.alignright) {
+			.entry-content[data-ast-blocks-layout] .wp-block-cover:not(.alignleft):not(.alignright) {
 				width: auto;
 			}
 			@media(max-width: 1200px) {
-				.ast-separate-container .entry-content > .alignfull, .ast-separate-container .entry-content[ast-blocks-layout] > .alignwide, .ast-plain-container .entry-content[ast-blocks-layout] > .alignwide, .ast-plain-container .entry-content .alignfull {
+				.ast-separate-container .entry-content > .alignfull, .ast-separate-container .entry-content[data-ast-blocks-layout] > .alignwide, .ast-plain-container .entry-content[data-ast-blocks-layout] > .alignwide, .ast-plain-container .entry-content .alignfull {
 					margin-left: ' . $alignwide_1200_left_negative_margin . ' ;
 					margin-right: ' . $alignwide_1200_right_negative_margin . ';
 				}
@@ -414,7 +420,7 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 					margin-left: calc(-1 * ' . $astra_continer_left_spacing . ' );
 					margin-right: calc(-1 * ' . $astra_continer_right_spacing . ' );
 				}
-				.ast-separate-container .entry-content[ast-blocks-layout] > .alignwide, .ast-plain-container .entry-content[ast-blocks-layout] > .alignwide {
+				.ast-separate-container .entry-content[data-ast-blocks-layout] > .alignwide, .ast-plain-container .entry-content[data-ast-blocks-layout] > .alignwide {
 					margin-left: calc(-1 * var(--wp--custom--ast-default-block-left-padding) );
 					margin-right: calc(-1 * var(--wp--custom--ast-default-block-right-padding) );
 				}
@@ -423,7 +429,7 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 				.ast-separate-container .entry-content .wp-block-group.alignwide:not(.inherit-container-width) > :where(:not(.alignleft):not(.alignright)), .ast-plain-container .entry-content .wp-block-group.alignwide:not(.inherit-container-width) > :where(:not(.alignleft):not(.alignright)) {
 					max-width: calc( var(--wp--custom--ast-content-width-size) + 80px );
 				}
-				.ast-plain-container.ast-right-sidebar .entry-content[ast-blocks-layout] .alignfull, .ast-plain-container.ast-left-sidebar .entry-content[ast-blocks-layout] .alignfull {
+				.ast-plain-container.ast-right-sidebar .entry-content[data-ast-blocks-layout] .alignfull, .ast-plain-container.ast-left-sidebar .entry-content[data-ast-blocks-layout] .alignfull {
 					margin-left: -60px;
 					margin-right: -60px;
 				}

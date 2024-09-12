@@ -1116,7 +1116,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			hash = '#';
 
 		if( self && ! self.classList.contains('astra-search-icon') && null === self.closest('.ast-builder-menu') ) {
-			var link = new String( self );
+			var link = String( self );
 			if( link.indexOf( hash ) !== -1 ) {
 				var link_parent = self.parentNode;
 				if ( body.classList.contains('ast-header-break-point') ) {
@@ -1183,21 +1183,6 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	 * @since x.x.x
 	 */
 	if ( astra.is_scroll_to_id ) {
-		let hashLinks = [];
-		const links = document.querySelectorAll('a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"]):not(.uagb-toc-link__trigger):not(.skip-link):not(.nav-links a):not([href*="tab-"])');
-		if (links) {
-
-			for (const link of links) {
-
-				if (link.href.split('#')[0] !== location.href.split('#')[0]) {
-					// Store the hash
-					hashLinks.push({hash: link.hash, url: link.href.split('#')[0]});
-				} else if (link.hash !== "") {
-					link.addEventListener("click", scrollToIDHandler);
-				}
-			}
-		}
-
 		function scrollToIDHandler(e) {
 
 			let offset = 0;
@@ -1235,6 +1220,24 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				element = element.offsetParent;
 			}
 			return offsetTop;
+		}
+
+		let hashLinks = [];
+		const links = document.querySelectorAll(
+			'a[href*="#"]:not([href="#"]):not([href="#0"]):not([href*="uagb-tab"]):not(.uagb-toc-link__trigger):not(.skip-link):not(.nav-links a):not([href*="tab-"])'
+		);
+		if (links) {
+			for (const link of links) {
+				if (link.href.split("#")[0] !== location.href.split("#")[0]) {
+					// Store the hash
+					hashLinks.push({
+						hash: link.hash,
+						url: link.href.split("#")[0],
+					});
+				} else if (link.hash !== "") {
+					link.addEventListener("click", scrollToIDHandler);
+				}
+			}
 		}
 
 		window.addEventListener('DOMContentLoaded', (event) => {
@@ -1291,15 +1294,31 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 	/**
 	 * To remove the blank space when the store notice gets dismissed.
+	 * To adjust the height of the store notice when hanged over top.
 	 *
 	 * @since x.x.x
 	 */
 	window.addEventListener('DOMContentLoaded', (event) => {
+		const isHangOverTopNotice = document.querySelector('.ast-woocommerce-store-notice-hanged');
+		const adjustBodyHeight = () => {
+			const storeNotice = document.querySelector('.woocommerce-store-notice[data-position="hang-over-top"]');
+			document.body.style.marginTop = `${storeNotice?.clientHeight || 0}px`;
+		}
+
+		if (isHangOverTopNotice) {	
+			window.addEventListener('resize', adjustBodyHeight);
+			setTimeout(() => adjustBodyHeight(), 0);
+		}
+
 		document
 			.querySelector('.woocommerce-store-notice__dismiss-link')
-			?.addEventListener('click', () =>
-				!wp?.customize && document.body.classList.remove('ast-woocommerce-store-notice-hanged')
-			);
+			?.addEventListener('click', () => {
+				if (!wp?.customize) {
+					document.body.classList.remove('ast-woocommerce-store-notice-hanged');
+					window.removeEventListener('resize', adjustBodyHeight);
+					document.body.style.marginTop = 0;
+				}
+			});
 	});
 
 })();
@@ -1309,7 +1328,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let submenuToggles = document.querySelectorAll('.menu-link .dropdown-menu-toggle');
 
     // Adding event listeners for focus and keydown 
-    submenuToggles.forEach(function(toggle) {
+    submenuToggles.forEach((toggle) =>  {
         toggle.addEventListener('focus', function() {
             updateAriaExpanded(this);
         });

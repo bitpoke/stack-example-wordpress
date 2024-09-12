@@ -428,8 +428,8 @@ if ( ! function_exists( 'astra_parse_css' ) ) {
 				$properties_added = 0;
 
 				foreach ( $properties as $property => $value ) {
-
-					if ( '' == $value && 0 !== $value ) {
+					// to ignore if the value is empty with just !important appended.
+					if ( ( '' == $value && 0 !== $value ) || '!important' === $value ) {
 						continue;
 					}
 
@@ -510,6 +510,72 @@ if ( ! function_exists( 'astra_get_option' ) ) {
 		 * @var Mixed.
 		 */
 		return apply_filters( "astra_get_option_{$option}", $value, $option, $default );
+	}
+}
+
+/**
+ * Return translated theme option.
+ */
+if ( ! function_exists( '__astra_get_option' ) ) {
+
+	/**
+	 * Returns translated string for strings saved in Astra settings.
+	 *
+	 * This function retrieves a theme option value and checks if it needs translation.
+	 * If the option's translation is needed, it looks it up based on the provided context.
+	 * If the translation is not available, it returns the default value.
+	 *
+	 * Usage examples:
+	 * - Retrieve translated theme option with a context description:
+	 *      $value = __astra_get_option( 'astra-option-key', esc_html_x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 * - Retrieve translated theme option with a different context:
+	 *      $value = __astra_get_option( 'astra-option-key', _x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 *
+	 * @param  string $option       Option key.
+	 * @param  string $translated   Default translation flag.
+	 * @param  mixed  $default      Option default value.
+	 * @param  string $deprecated   Option default value.
+	 *
+	 * @return string Return option value.
+	 *
+	 * @since 4.8.1
+	 */
+	function 
+	__astra_get_option( $option, $translated, $default = '', $deprecated = '' ) {
+		return '%astra%' !== $translated ? $translated : astra_get_option( $option, $default, $deprecated );
+	}
+}
+
+/**
+ * Return translated string.
+ */
+if ( ! function_exists( '__astra_get_string' ) ) {
+
+	/**
+	 * Returns translated string.
+	 *
+	 * This function checks if string has translation.
+	 * If the translation is not available, it returns the default value.
+	 *
+	 * Usage examples:
+	 * - Retrieve translated theme option with a context description:
+	 *      $value = __astra_get_string( $default, esc_html_x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 * - Retrieve translated theme option with a different context:
+	 *      $value = __astra_get_string( $default, _x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 *
+	 * @param  string $default      Default string value.
+	 * @param  string $translated   Default translation flag.
+	 *
+	 * @return string Return string value.
+	 *
+	 * @since 4.8.1
+	 */
+	function __astra_get_string( $default, $translated ) {
+		return '%astra%' !== $translated ? $translated : $default;
 	}
 }
 
@@ -1892,7 +1958,7 @@ function astra_get_logo_svg_icons_array() {
 				if ( $path && $view ) {
 					ob_start();
 					?>
-				<svg xmlns="https://www.w3.org/2000/svg" viewBox= "<?php echo esc_attr( $view ); ?>"><path d="<?php echo esc_attr( $path ); ?>"></path></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox= "<?php echo esc_attr( $view ); ?>"><path d="<?php echo esc_attr( $path ); ?>"></path></svg>
 					<?php
 					$icon['rendered'] = trim( ob_get_clean() );
 				}

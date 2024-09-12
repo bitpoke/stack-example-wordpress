@@ -183,7 +183,7 @@
 			}
 
 			var fontValue = AstTypography._cleanGoogleFonts(fontValue);
-			var weightObject = AstTypography._getWeightObject( fontValue );
+			var weightObject = AstTypography._getWeightObject(fontValue);
 
 			weightObject = $.merge( inheritWeightObject, weightObject )
 			weightMap[ 'inherit' ] = currentWeightTitle;
