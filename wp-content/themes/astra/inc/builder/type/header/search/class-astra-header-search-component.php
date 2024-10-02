@@ -62,6 +62,16 @@ class Astra_Header_Search_Component {
 				'paged'          => 1,
 				's'              => ! empty( $args['s'] ) ? $args['s'] : '',
 			);
+
+			if ( in_array( 'product', $search_post_types ) ) {
+				// Added product visibility checks, excluding hidden or shop-only visibility types.
+				$args['tax_query'][] = array(
+					'taxonomy' => 'product_visibility',
+					'field'    => 'slug',
+					'terms'    => array( 'exclude-from-search' ),
+					'operator' => 'NOT IN',
+				);
+			}
 		}
 
 		return $args;

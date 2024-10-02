@@ -160,7 +160,7 @@
 		wp.customize.preview.bind( 'active', function() {
 			var partials = $.extend({}, astraCustomizer.dynamic_partial_options), key;
 			var register_partial = async function () {
-				for ( key in partials) {
+				for ( const key in partials ) {
 					wp.customize.selectiveRefresh.partial.add(
 						new wp.customize.selectiveRefresh.Partial(
 							key,

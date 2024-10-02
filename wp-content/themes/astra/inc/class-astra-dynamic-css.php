@@ -1504,6 +1504,28 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				);
 
 				$parse_css .= astra_parse_css( $single_post_outside_spacing_css_mobile, '', astra_get_mobile_breakpoint() );
+			} 
+			
+			
+			if ( self::astra_4_8_2_compatibility() ) {
+
+				$single_post_outside_padding_css_tablet = array(
+					'.ast-separate-container.ast-single-post #primary, .ast-narrow-container.ast-single-post #primary' => array(
+						'padding-left'  => astra_responsive_spacing( $single_post_outside_spacing, 'left', 'tablet' ),
+						'padding-right' => astra_responsive_spacing( $single_post_outside_spacing, 'right', 'tablet' ),
+					),
+				);
+
+				$parse_css .= astra_parse_css( $single_post_outside_padding_css_tablet, '', astra_get_tablet_breakpoint() );
+
+				$single_post_outside_padding_css_mobile = array(
+					'.ast-separate-container.ast-single-post #primary, .ast-narrow-container.ast-single-post #primary' => array(
+						'padding-left'  => astra_responsive_spacing( $single_post_outside_spacing, 'left', 'mobile' ),
+						'padding-right' => astra_responsive_spacing( $single_post_outside_spacing, 'right', 'mobile' ),
+					),
+				);
+
+				$parse_css .= astra_parse_css( $single_post_outside_padding_css_mobile, '', astra_get_mobile_breakpoint() );
 			}
 
 			/**
@@ -6270,6 +6292,17 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			 * so in that case, we will not convert the "clear:both" to "clear:none" for old users.
 			 */
 			return apply_filters( 'astra_get_option_single_posts_pages_heading_clear_none', isset( $astra_settings['single_posts_pages_heading_clear_none'] ) ? false : true );
+		}
+
+		/**
+		 * Single post outside padding was not working.
+		 *
+		 * @return bool true|false.
+		 * @since 4.8.2
+		 */
+		public static function astra_4_8_2_compatibility() {
+			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+			return apply_filters( 'astra_get_option_v4-8-2-backward-option', isset( $astra_settings['v4-8-2-backward-option'] ) ? false : true );
 		}
 
 		/**

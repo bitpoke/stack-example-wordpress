@@ -385,3 +385,22 @@ if ( ! function_exists( 'astra_get_wc_endpoints_title' ) ) {
 
 	add_filter( 'astra_the_title', 'astra_get_wc_endpoints_title' );
 }
+
+if ( ! function_exists( 'astra_woocommerce_get_cart_url' ) ) {
+	/**
+	 * Filters and returns the WooCommerce cart URL for compatibility with WooCommerce 9.3.0.
+	 *
+	 * @param string $cart_url WooCommerce cart page URL.
+	 *
+	 * @return string Returns the filtered WooCommerce cart page URL.
+	 *
+	 * @since x.x.x
+	 */
+	function astra_woocommerce_get_cart_url( $cart_url ) {
+		// Check if WooCommerce function exists.
+		if ( function_exists( 'wc_get_page_permalink' ) ) {
+			$cart_url = wc_get_page_permalink( 'cart' );
+		}
+		return $cart_url;
+	}
+}

@@ -95,6 +95,9 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 			'4.8.0'  => array(
 				'astra_theme_background_updater_4_8_0',
 			),
+			'4.8.2'  => array(
+				'astra_theme_background_updater_4_8_2',
+			),
 		);
 
 		/**
@@ -164,12 +167,10 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 
 			if ( wp_remote_retrieve_response_code( $result ) >= 300 ) {
 				return true;
-			} else {
-				set_transient( 'astra-theme-cron-test-ok', 1, 3600 );
-				return false;
 			}
 
-			return $migration_fallback;
+			set_transient( 'astra-theme-cron-test-ok', 1, 3600 );
+			return false;
 		}
 
 		/**

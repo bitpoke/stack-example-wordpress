@@ -122,9 +122,9 @@ if ( ! function_exists( 'astra_theme_comment' ) ) {
 								astra_markup_open( 'ast-comment-meta-wrap' );
 								echo '<header ';
 								echo astra_attr(
-									'commen-meta-author',
+									'comment-meta-author',
 									array(
-										'class' => 'ast-comment-meta ast-row ast-comment-author vcard capitalize',
+										'class' => 'ast-comment-meta ast-row ast-comment-author capitalize',
 									)
 								);
 								echo '>';

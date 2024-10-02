@@ -1,3 +1,25 @@
+2024-10-01 - v4.8.2
+* Improvement: Added configure status on plugin recommendations sections.
+* Improvement: Added 'Unlock Pro Features' CTA button in the top right area of dashboard.
+* Improvement: Accessibility improved by adding aria-hidden="true" to decorative SVG icons in the multistep checkout process.
+* Improvement: Added filter support for button link redirection with subsite path for subdirectory multisite environment.
+* Improvement: Improved HTML markup rendering to prevent unnecessary wrapping of elements in custom content and shortcodes.
+* Fix: Header Builder - Broken cart page link in Astra Cart Widget when Beaver Builder plugin is active.
+* Fix: LifterLMS - Compatibility issue with button color.
+* Fix: RTL stylesheets are not loading when using the 'Consultant Firm' template.
+* Fix: Search Icon does not appear properly in the mobile Off-Canvas section.
+* Fix: Single Post outside spacing not reflecting on responsive devices.
+* Fix: Adding LearnDash shortcodes to the header would automatically disable the sidebar on single posts.
+* Fix: Text doesn't wrap image when the local font is enabled.
+* Fix: EDD - Updated EDD category display to show only categories relevant to the current product on archive pages.
+* Fix: Instagram embed breaking the single post layout.
+* Fix: Discrepancy Between Customizer and Live Preview for "Shop Archive Content Width"
+* Fix: Resolved a potential null object error when detecting active page builders to prevent warnings.
+* Fix: Live search shows the products even when the product visibility is set to 'Hidden' or 'Shop only'.
+* Fix: Issue with undefined CSS variables on the :root selector.
+* Fix: Rendered 'vcard' classes for authors only when schema is enabled.
+* Fix: SureCart - On SureCart single product page CPTs unnecessary navigation is visible.
+
 2024-09-11 - v4.8.1
 * Improvement: Added functionality to allow the translation of strings stored in Astra's settings database.
 * Improvement: Addressed W3C Validator issues by replacing custom attributes with data attributes and corrected the SVG namespace to ensure compliance with web standards.

@@ -396,10 +396,10 @@ function astra_onload_function() {
 							}
 							break;
 						default:
-							if ( 'unboxed' === contentStyle && ! is_sidebar_style_boxed ) {
-								applyContainerLayoutClasses( 'plain-container' );
-							}
-							else if ( 'default' === contentStyle && ! is_sidebar_style_boxed && ! is_content_style_boxed ) {
+							if (
+								( 'unboxed' === contentStyle && ! is_sidebar_style_boxed ) ||
+								( 'default' === contentStyle && ! is_sidebar_style_boxed && ! is_content_style_boxed )
+							) {
 								applyContainerLayoutClasses( 'plain-container' );
 							}
 							else if ( is_sidebar_style_boxed ) {
@@ -928,7 +928,7 @@ document.body.addEventListener('mousedown', function () {
 			}
 			var styleTagId = 'astra-block-editor-styles-inline-css';
 			var styleTagBlockId = 'astra-block-editor-styles-css';
-			var googleFontId = 'astra-google-fonts-css';
+			googleFontId = 'astra-google-fonts-css';
 			let preview = tabletPreview[0] || mobilePreview[0];
 
 				let iframe = preview.getElementsByTagName('iframe')[0];

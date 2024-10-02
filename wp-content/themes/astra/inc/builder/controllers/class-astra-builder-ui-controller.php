@@ -31,7 +31,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 		 * @param bool   $base if the baseline class should be added.
 		 */
 		public static function fetch_svg_icon( $icon = '', $base = true ) {
-			$output = '<span class="ahfb-svg-iconset ast-inline-flex' . ( $base ? ' svg-baseline' : '' ) . '">';
+			$output = '<span aria-hidden="true" class="ahfb-svg-iconset ast-inline-flex' . ( $base ? ' svg-baseline' : '' ) . '">';
 
 			/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( ! self::$ast_svgs ) {
@@ -127,7 +127,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 				$content = str_replace( '[current_year]', gmdate( 'Y' ), $content );
 				$content = str_replace( '[site_title]', get_bloginfo( 'name' ), $content );
 				$content = str_replace( '[theme_author]', '<a href=" ' . esc_url( $theme_author['theme_author_url'] ) . '" rel="nofollow noopener" target="_blank">' . $theme_author['theme_name'] . '</a>', $content );
-				echo do_shortcode( wp_kses_post( wpautop( $content ) ) );
+				echo do_shortcode( wp_kses_post( $content ) );
 				echo '</div>';
 				echo '</div>';
 			}

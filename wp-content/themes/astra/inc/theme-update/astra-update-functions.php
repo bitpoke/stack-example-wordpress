@@ -1001,7 +1001,6 @@ function astra_theme_background_updater_4_6_6() {
  * @since 4.6.11
  * @return void
  */
-
 function astra_theme_background_updater_4_6_11() {
 	$theme_options = get_option( 'astra-settings', array() );
 
@@ -1133,6 +1132,23 @@ function astra_theme_background_updater_4_8_0() {
 
 	if ( ! isset( $theme_options['enable-4-8-0-compatibility'] ) ) {
 		$theme_options['enable-4-8-0-compatibility'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}
+
+
+
+/**
+ * Handle backward compatibility Single post outside spacing issue.
+ *
+ * @since 4.8.2
+ * @return void
+ */
+function astra_theme_background_updater_4_8_2() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['v4-8-2-backward-option'] ) ) {
+		$theme_options['v4-8-2-backward-option'] = false;
 		update_option( 'astra-settings', $theme_options );
 	}
 }

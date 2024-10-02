@@ -1553,7 +1553,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 							'code'  => 'var(--ast-global-color-5)',
 						),
 						'color-6' => array(
-							'title' => __( 'Alt BG', 'astra' ),
+							'title' => __( 'Border', 'astra' ),
 							'code'  => 'var(--ast-global-color-6)',
 						),
 						'color-7' => array(
@@ -1823,6 +1823,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				'apply_content_bg_fullwidth_layouts'   => astra_get_option( 'apply-content-background-fullwidth-layouts', true ),
 				'astra_woo_btn_global_compatibility'   => is_callable( 'Astra_Dynamic_CSS::astra_woo_support_global_settings' ) ? Astra_Dynamic_CSS::astra_woo_support_global_settings() : false,
 				'v4_2_2_core_form_btns_styling'        => ( true === Astra_Dynamic_CSS::astra_core_form_btns_styling() ) ? ', #comments .submit, .search .search-submit' : '',
+				'isLifterLMS'                          => class_exists( 'LifterLMS' ),
 				'improved_button_selector'             => Astra_Dynamic_CSS::astra_4_6_4_compatibility() ? ', .ast-single-post .entry-content .wp-block-button .wp-block-button__link, .ast-single-post .entry-content .wp-block-search .wp-block-search__button, body .entry-content .wp-block-file .wp-block-file__button' : '',
 				'tablet_breakpoint'                    => astra_get_tablet_breakpoint(),
 				'mobile_breakpoint'                    => astra_get_mobile_breakpoint(),
@@ -1930,9 +1931,9 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				/** @psalm-suppress RedundantCondition */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				$is_script_debug = SCRIPT_DEBUG ? true : false;
 				/** @psalm-suppress RedundantCondition */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-				$js_prefix  = '.min.js';
+				$js_prefix = '.min.js';
 				if ( $is_script_debug ) {
-					$js_prefix  = '.js';
+					$js_prefix = '.js';
 				}
 
 				$rtl = ( is_rtl() ) ? '-rtl' : '';

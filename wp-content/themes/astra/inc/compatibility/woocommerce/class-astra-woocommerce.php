@@ -3439,16 +3439,20 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		 */
 		public function cart_link_fragment( $fragments ) {
 
+			// To fix the WooCommerce cart URL.
+			/** @psalm-suppress UndefinedFunction */
+			add_filter( 'woocommerce_get_cart_url', 'astra_woocommerce_get_cart_url' );
+			
 			ob_start();
 			$this->astra_get_cart_link();
 			$fragments['a.cart-container'] = ob_get_clean();
 
 			ob_start();
-
 			woocommerce_mini_cart();
-
 			$mini_cart = ob_get_clean();
 
+			remove_filter( 'woocommerce_get_cart_url', 'astra_woocommerce_get_cart_url' );
+			
 			$fragments['div.widget_shopping_cart_content'] = '<div class="widget_shopping_cart_content">' . $mini_cart . '</div>';
 			return $fragments;
 		}

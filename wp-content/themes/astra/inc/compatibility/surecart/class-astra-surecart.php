@@ -50,6 +50,7 @@ class Astra_SureCart {
 		add_action( 'astra_entry_top', array( $this, 'revert_surecart_support' ) );
 		add_filter( 'astra_page_layout', array( $this, 'sc_shop_sidebar_layout' ) );
 		add_filter( 'astra_get_content_layout', array( $this, 'sc_shop_content_layout' ) );
+		add_action( 'wp', array( $this, 'remove_navigation_for_sc_product' ) );
 
 		// Boxed layout support.
 		add_filter( 'astra_is_content_layout_boxed', array( $this, 'sc_shop_content_boxed_layout' ) );
@@ -73,8 +74,7 @@ class Astra_SureCart {
 		/**
 		 * Register Sections & Panels
 		 */
-		require ASTRA_THEME_DIR . 'inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php';
-		
+		require ASTRA_THEME_DIR . 'inc/compatibility/surecart/customizer/class-astra-customizer-register-surecart-section.php';		
 	}
 
 	/**
@@ -314,6 +314,17 @@ class Astra_SureCart {
 		add_filter( 'astra_apply_hero_header_banner', '__return_false' );
 		add_filter( 'astra_remove_entry_header_content', '__return_true' );
 		add_filter( 'astra_single_layout_one_banner_visibility', '__return_false' );
+	}
+
+	/**
+	 * Removed Astra's navigation markup from SureCart single product page.
+	 *
+	 * @since 4.8.2
+	 */
+	public function remove_navigation_for_sc_product() {
+		if ( is_singular( 'sc_product' ) ) {
+			remove_action( 'astra_entry_after', 'astra_single_post_navigation_markup' );
+		}
 	}
 
 	/**

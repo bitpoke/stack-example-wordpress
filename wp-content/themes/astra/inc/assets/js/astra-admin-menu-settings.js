@@ -75,17 +75,15 @@
 
 			var $message = jQuery(event.target);
 			var $init = $message.data('init');
-			var activatedSlug;
+			var activatedSlug = $init;
 
 			if (typeof $init === 'undefined') {
 				var $message = jQuery('.astra-install-recommended-plugin[data-slug=' + response.slug + ']');
 				activatedSlug = response.slug;
-			} else {
-				activatedSlug = $init;
 			}
 
 			// Transform the 'Install' button into an 'Activate' button.
-			var $init = $message.data('init');
+			$init = $message.data('init');
 			var activatingText = astra.recommendedPluiginActivatingText;
 			var astraSitesLink = astra.astraSitesLink;
 			var astraPluginRecommendedNonce = astra.astraPluginManagerNonce;

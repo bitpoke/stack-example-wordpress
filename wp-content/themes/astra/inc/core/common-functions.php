@@ -532,7 +532,6 @@ if ( ! function_exists( '__astra_get_option' ) ) {
 	 * - Retrieve translated theme option with a different context:
 	 *      $value = __astra_get_option( 'astra-option-key', _x( '%astra%', 'Context Description', 'astra-addon' ) );
 	 *
-	 *
 	 * @param  string $option       Option key.
 	 * @param  string $translated   Default translation flag.
 	 * @param  mixed  $default      Option default value.
@@ -542,8 +541,7 @@ if ( ! function_exists( '__astra_get_option' ) ) {
 	 *
 	 * @since 4.8.1
 	 */
-	function 
-	__astra_get_option( $option, $translated, $default = '', $deprecated = '' ) {
+	function __astra_get_option( $option, $translated, $default = '', $deprecated = '' ) {
 		return '%astra%' !== $translated ? $translated : astra_get_option( $option, $default, $deprecated );
 	}
 }
@@ -565,7 +563,6 @@ if ( ! function_exists( '__astra_get_string' ) ) {
 	 *
 	 * - Retrieve translated theme option with a different context:
 	 *      $value = __astra_get_string( $default, _x( '%astra%', 'Context Description', 'astra-addon' ) );
-	 *
 	 *
 	 * @param  string $default      Default string value.
 	 * @param  string $translated   Default translation flag.

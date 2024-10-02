@@ -274,8 +274,11 @@ class Astra_WebFont_Loader {
 		// Get the response.
 		$response = wp_remote_get( $this->remote_url, array( 'user-agent' => $user_agent ) );
 
-		// Early exit if there was an error.
-		if ( is_wp_error( $response ) ) {
+		// Get the HTTP status code.
+		$status_code = wp_remote_retrieve_response_code( $response );
+
+		// Early exit if there was an error or the font does not exists on google fonts.
+		if ( is_wp_error( $response ) || 200 !== $status_code ) {
 			return '';
 		}
 
