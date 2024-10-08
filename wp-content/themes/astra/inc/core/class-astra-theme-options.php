@@ -161,6 +161,8 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 					// Blog Single.
 					'blog-single-width'                    => 'default',
 					'blog-single-max-width'                => 1200,
+					'page-single-width'                    => 'default',
+					'page-single-max-width'                => 1200,
 					'single-content-images-shadow'         => true,
 					'single-post-ast-content-layout'       => $blog_defaults_update ? 'narrow-width-container' : 'default',
 					'single-post-sidebar-style'            => $blog_defaults_update ? 'boxed' : 'default',

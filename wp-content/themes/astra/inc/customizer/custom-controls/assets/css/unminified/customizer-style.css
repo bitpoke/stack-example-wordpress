@@ -76,11 +76,10 @@
   margin-top: 15px;
 }
 
-.components-base-control .components-base-control__field {
+#customize-controls .components-base-control .components-base-control__field {
   margin-bottom: 0;
 }
-
-.components-base-control .components-base-control__field .components-input-control__backdrop {
+#customize-controls .components-base-control .components-base-control__field .components-input-control__backdrop {
   border-color: #D1D5DB !important;
 }
 

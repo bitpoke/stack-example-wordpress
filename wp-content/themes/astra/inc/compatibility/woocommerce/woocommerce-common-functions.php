@@ -394,7 +394,7 @@ if ( ! function_exists( 'astra_woocommerce_get_cart_url' ) ) {
 	 *
 	 * @return string Returns the filtered WooCommerce cart page URL.
 	 *
-	 * @since x.x.x
+	 * @since 4.8.3
 	 */
 	function astra_woocommerce_get_cart_url( $cart_url ) {
 		// Check if WooCommerce function exists.

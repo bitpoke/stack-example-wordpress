@@ -1135,6 +1135,22 @@ function hasWordPressWidgetBlockEditor() {
 	} );
 
 	/*
+	 * Single Blog Custom Width
+	 */
+		wp.customize( 'astra-settings[page-single-max-width]', function( setting ) {
+			setting.bind( function( width ) {
+	
+					var dynamicStyle = '@media all and ( min-width: 921px ) {';
+	
+					dynamicStyle += '.page .site-content > .ast-container{ max-width: ' + ( 40 + parseInt( width ) ) + 'px } ';
+	
+					dynamicStyle += '}';
+					astra_add_dynamic_css( 'page-single-max-width', dynamicStyle );
+	
+			} );
+		} );
+
+	/*
 	 * EDD Archive Custom Width
 	 */
 	wp.customize( 'astra-settings[edd-archive-max-width]', function( setting ) {

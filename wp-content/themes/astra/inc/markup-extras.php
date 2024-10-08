@@ -1635,14 +1635,17 @@ if ( ! function_exists( 'astra_comment_form_default_fields_markup' ) ) {
 		}
 
 		$fields['author'] = '<div class="ast-comment-formwrap ast-row"><p class="comment-form-author ' . astra_attr( 'comment-form-grid-class' ) . '">' .
-					'<label for="author" class="screen-reader-text">' . esc_html( $name_label ) . '</label><input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) .
-					'" placeholder="' . esc_attr( $name_label ) . '" size="30"' . $aria_req . ' /></p>';
-		$fields['email']  = '<p class="comment-form-email ' . astra_attr( 'comment-form-grid-class' ) . '">' .
-					'<label for="email" class="screen-reader-text">' . esc_html( $email_label ) . '</label><input id="email" name="email" type="text" value="' . esc_attr( $commenter['comment_author_email'] ) .
-					'" placeholder="' . esc_attr( $email_label ) . '" size="30"' . $aria_req . ' /></p>';
-		$fields['url']    = '<p class="comment-form-url ' . astra_attr( 'comment-form-grid-class' ) . '"><label for="url">' .
-					'<label for="url" class="screen-reader-text">' . esc_html( $website_label ) . '</label><input id="url" name="url" type="text" value="' . esc_url( $commenter['comment_author_url'] ) .
-					'" placeholder="' . esc_attr( $website_label ) . '" size="30" /></label></p></div>';
+		'<label for="author" class="screen-reader-text">' . esc_html( $name_label ) . '</label><input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) .
+		'" placeholder="' . esc_attr( $name_label ) . '" size="30"' . $aria_req . ' autocomplete="name" /></p>';
+	
+		$fields['email'] = '<p class="comment-form-email ' . astra_attr( 'comment-form-grid-class' ) . '">' .
+		'<label for="email" class="screen-reader-text">' . esc_html( $email_label ) . '</label><input id="email" name="email" type="text" value="' . esc_attr( $commenter['comment_author_email'] ) .
+		'" placeholder="' . esc_attr( $email_label ) . '" size="30"' . $aria_req . ' autocomplete="email" /></p>';
+	
+		$fields['url'] = '<p class="comment-form-url ' . astra_attr( 'comment-form-grid-class' ) . '"><label for="url">' .
+		'<label for="url" class="screen-reader-text">' . esc_html( $website_label ) . '</label><input id="url" name="url" type="text" value="' . esc_url( $commenter['comment_author_url'] ) .
+		'" placeholder="' . esc_attr( $website_label ) . '" size="30" autocomplete="url" /></label></p></div>';
+	
 
 		return apply_filters( 'astra_comment_form_default_fields_markup', $fields );
 	}

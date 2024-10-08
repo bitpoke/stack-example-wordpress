@@ -175,6 +175,55 @@ class Astra_Posts_Single_Structures_Configs extends Astra_Customizer_Config_Base
 				'renderAs'   => 'text',
 				'divider'    => array( 'ast_class' => 'ast-top-divider' ),
 			),
+			/**
+			 * Option: Single Page Content Width
+			 */
+			array(
+				'name'       => ASTRA_THEME_SETTINGS . '[page-single-width]',
+				'type'       => 'control',
+				'control'    => 'ast-selector',
+				'section'    => $parent_section,
+				'default'    => astra_get_option( 'page-single-width' ),
+				'priority'   => 6,
+				'title'      => __( 'Content Width', 'astra' ),
+				'choices'    => array(
+					'default' => __( 'Default', 'astra' ),
+					'custom'  => __( 'Custom', 'astra' ),
+				),
+				'transport'  => 'postMessage',
+				'responsive' => false,
+				'divider'    => array( 'ast_class' => 'ast-top-section-divider' ),
+				'renderAs'   => 'text',
+			),
+
+			/**
+			 * Option: Enter Width
+			 */
+			array(
+				'name'        => ASTRA_THEME_SETTINGS . '[page-single-max-width]',
+				'type'        => 'control',
+				'control'     => 'ast-slider',
+				'section'     => $parent_section,
+				'transport'   => 'postMessage',
+				'default'     => astra_get_option( 'page-single-max-width' ),
+				'context'     => array(
+					Astra_Builder_Helper::$general_tab_config,
+					array(
+						'setting'  => ASTRA_THEME_SETTINGS . '[page-single-width]',
+						'operator' => '===',
+						'value'    => 'custom',
+					),
+				),
+				'priority'    => 6,
+				'title'       => __( 'Custom Width', 'astra' ),
+				'suffix'      => 'px',
+				'input_attrs' => array(
+					'min'  => 0,
+					'step' => 1,
+					'max'  => 1920,
+				),
+				'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+			),
 		);
 	}
 

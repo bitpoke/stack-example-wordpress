@@ -2074,7 +2074,7 @@ a.ast-pro-upgrade-link {
   font-weight: 400;
 }
 
-.components-base-control .components-base-control__field .components-input-control__backdrop {
+.ast-sidebar-container .components-base-control .components-base-control__field .components-input-control__backdrop {
   border-color: #D1D5DB !important;
 }
 

@@ -473,6 +473,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			// Blog Post Title Typography Options.
 			$single_post_max                        = astra_get_option( 'blog-single-width' );
 			$single_post_max_width                  = astra_get_option( 'blog-single-max-width' );
+			$single_page_max                        = astra_get_option( 'page-single-width' );
+			$single_page_max_width                  = astra_get_option( 'page-single-max-width' );
 			$blog_width                             = astra_get_option( 'blog-width' );
 			$blog_max_width                         = astra_get_option( 'blog-max-width' );
 			$mobile_header_toggle_btn_style_color   = astra_get_option( 'mobile-header-toggle-btn-style-color', $btn_bg_color );
@@ -3925,6 +3927,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					),
 				);
 				$parse_css      .= astra_parse_css( $single_blog_css, astra_get_tablet_breakpoint( '', 1 ) );
+			endif;
+
+			/* Single Page */
+			if ( 'custom' === $single_page_max ) :
+
+				/* Site width Responsive */
+				$single_page_css = array(
+					' .page .site-content > .ast-container' => array(
+						'max-width' => astra_get_css_value( $single_page_max_width, 'px' ),
+					),                      
+				);
+				$parse_css      .= astra_parse_css( $single_page_css, astra_get_tablet_breakpoint( '', 1 ) );
 			endif;
 
 			if ( self::astra_headings_clear_compatibility() && is_singular() ) {

@@ -121,6 +121,12 @@ function astra_hb_mobile_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 			'color'      => $menu_resp_color_hover_desktop,
 			'background' => $menu_resp_bg_color_hover_desktop,
 		),
+
+		'.ast-builder-menu-mobile #ast-desktop-toggle-menu .menu-item:hover > .menu-link, ' . $selector . ' .inline-on-mobile .menu-item:hover > .ast-menu-toggle' => array(
+			'color'      => $menu_resp_color_hover_desktop,
+			'background' => $menu_resp_bg_color_hover_desktop,
+		),
+		
 		$selector . ' .menu-item:hover > .ast-menu-toggle' => array(
 			'color' => $menu_resp_color_hover_desktop,
 		),
