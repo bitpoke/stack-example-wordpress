@@ -3,8 +3,6 @@
  * WooCommerce Options for Astra Theme.
  *
  * @package     Astra
- * @author      Astra
- * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 3.9.2
  */

@@ -3,8 +3,6 @@
  * Theme Batch Update
  *
  * @package     Astra
- * @author      Astra
- * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since 2.1.3
  */
@@ -97,6 +95,9 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 			),
 			'4.8.2'  => array(
 				'astra_theme_background_updater_4_8_2',
+			),
+			'4.8.4'  => array(
+				'astra_theme_background_updater_4_8_4',
 			),
 		);
 

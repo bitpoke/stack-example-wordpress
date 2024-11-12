@@ -5,8 +5,6 @@
  * Eventually, some of the functionality here could be replaced by core features.
  *
  * @package     Astra
- * @author      Astra
- * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.1.0
  */
@@ -55,7 +53,7 @@ if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) :
 				global $product;
 				$product_categories = function_exists( 'wc_get_product_category_list' ) ? wc_get_product_category_list( get_the_ID(), ';', '', '' ) : $product->get_categories( ';', '', '' );
 
-				$product_categories = htmlspecialchars_decode( wp_strip_all_tags( $product_categories ) );
+				$product_categories = wp_strip_all_tags( $product_categories );
 				if ( $product_categories ) {
 					list( $parent_cat ) = explode( ';', $product_categories );
 					echo apply_filters( 'astra_woo_shop_product_categories', esc_html( $parent_cat ), get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -369,11 +367,10 @@ if ( ! function_exists( 'astra_get_wc_endpoints_title' ) ) {
 	 */
 	function astra_get_wc_endpoints_title( $title ) {
 		if ( class_exists( 'WooCommerce' ) && is_wc_endpoint_url() && is_account_page() ) {
-			$endpoint         = WC()->query->get_current_endpoint();
-			$action           = isset( $_GET['action'] ) ? $_GET['action'] : '';
-			$sanitized_action = is_string( $action ) ? sanitize_text_field( wp_unslash( $action ) ) : '';
+			$endpoint = WC()->query->get_current_endpoint();
+			$action   = isset( $_GET['action'] ) && is_string( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 
-			$ep_title = $endpoint ? WC()->query->get_endpoint_title( $endpoint, $sanitized_action ) : '';
+			$ep_title = $endpoint ? WC()->query->get_endpoint_title( $endpoint, $action ) : '';
 
 			if ( $ep_title ) {
 				return $ep_title;

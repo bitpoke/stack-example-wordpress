@@ -449,12 +449,9 @@ function astra_get_archive_description( $post_type ) {
 	}
 
 	if ( is_search() ) {
-		if ( have_posts() ) {
-			$description = astra_get_option( 'section-search-page-title-found-custom-description' );
-		} else {
-			$description = astra_get_option( 'section-search-page-title-not-found-custom-description' );
-		}
-		return $description;
+		return have_posts()
+			? astra_get_i18n_option( 'section-search-page-title-found-custom-description', _x( '%astra%', 'Search Page Title: Subheading - When Results Found', 'astra' ) )
+			: astra_get_i18n_option( 'section-search-page-title-not-found-custom-description', _x( '%astra%', 'Search Page Title: Subheading - When Results Not Found', 'astra' ) );
 	} else {
 		$get_archive_description = get_the_archive_description();
 		$get_author_meta         = trim( get_the_author_meta( 'description' ) );
@@ -467,7 +464,7 @@ function astra_get_archive_description( $post_type ) {
 				$description = get_the_author_meta( 'description' );
 			}
 		}
-		if ( empty( $description ) && ! have_posts() ) {
+		if ( empty( $description ) && ! have_posts() && ! ( is_category() || is_tag() || is_tax() ) ) {
 			$description = esc_html( astra_default_strings( 'string-content-nothing-found-message', false ) );
 		}
 	}
@@ -493,17 +490,7 @@ function astra_banner_elements_order( $structure = array() ) {
 		return;
 	}
 
-	// If search page.
-	$post_type = 'post';
-	if ( ! is_search() ) {
-		/** @psalm-suppress InvalidGlobal */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		global $post;
-		/** @psalm-suppress InvalidGlobal */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		if ( is_null( $post ) ) {
-			return;
-		}
-		$post_type = strval( $post->post_type );
-	}
+	$post_type = is_search() ? 'post' : astra_get_post_type();
 
 	// If 404 page.
 	if ( is_404() ) {
@@ -568,6 +555,8 @@ function astra_banner_elements_order( $structure = array() ) {
 				break;
 
 			case 'single-excerpt':
+				/** @psalm-suppress InvalidGlobal */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				global $post;
 				do_action( 'astra_single_post_banner_excerpt_before' );
 				/** @psalm-suppress PossiblyUndefinedVariable */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				echo ! empty( $post ) && ! empty( $post->ID ) ? '<p>' . get_the_excerpt( $post->ID ) . '</p>' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

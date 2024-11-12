@@ -6,8 +6,6 @@
  * 2. Third party plugins compatibility functions.
  *
  * @package     Astra
- * @author      Astra
- * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
@@ -181,7 +179,7 @@ if ( ! function_exists( 'astra_get_content_layout' ) ) {
 		} else {
 
 			$content_layout = '';
-			$post_type      = strval( get_post_type() );
+			$post_type      = astra_get_post_type();
 			$content_layout = astra_toggle_layout( 'archive-' . $post_type . '-ast-content-layout', 'archive', false );
 
 			if ( is_search() ) {
@@ -393,8 +391,6 @@ if ( ! function_exists( 'astra_get_prop' ) ) :
 	 * Provide a default value if you want to return a specific value if the property is not set.
 	 *
 	 * @since  1.2.7
-	 * @access public
-	 * @author Gravity Forms - Easiest Tool to Create Advanced Forms for Your WordPress-Powered Website.
 	 * @link  https://www.gravityforms.com/
 	 *
 	 * @param array  $array   Array from which the property's value should be retrieved.
@@ -505,12 +501,12 @@ function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
 
 	if ( defined( 'ASTRA_EXT_VER' ) ) {
 		// Check whether Astra Pro is active + Nav menu addon is deactivate + menu registered by Astra only.
-		if ( ! Astra_Ext_Extension::is_active( 'nav-menu' ) && in_array( $args->menu_id, $astra_menu_locations ) ) {
+		if ( ! Astra_Ext_Extension::is_active( 'nav-menu' ) && isset( $args->menu_id ) && in_array( $args->menu_id, $astra_menu_locations ) ) {
 			$load_svg_menu_icons = true;
 		}
 	} else {
 		// Check menu registered by Astra only.
-		if ( in_array( $args->menu_id, $astra_menu_locations ) ) {
+		if ( isset( $args->menu_id ) && in_array( $args->menu_id, $astra_menu_locations ) ) {
 			$load_svg_menu_icons = true;
 		}
 	}
@@ -543,7 +539,7 @@ function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
 		'ast-hf-account-menu',
 	);
 
-	$is_special_menu = in_array( $args->menu_id, $special_menu_ids );
+	$is_special_menu = isset( $args->menu_id ) && in_array( $args->menu_id, $special_menu_ids );
 
 	if ( $is_nav_menu_extension_inactive || $is_special_menu ) {
 		$icon = Astra_Icons::get_icons( 'arrow' );

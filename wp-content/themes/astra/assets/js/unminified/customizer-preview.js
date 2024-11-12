@@ -2777,6 +2777,12 @@ function hasWordPressWidgetBlockEditor() {
 			} );
 		} );
 
+		wp.customize( 'astra-settings[shop-ratings-product-archive]', function( setting ) {
+			setting.bind( function( value ) {
+				wp.customize.preview.send( 'refresh' );
+			} );
+		} );
+
 		wp.customize( 'astra-settings[single-product-payment-text]', function( setting ) {
 			setting.bind( function( text ) {
 				const paymentText = document.querySelector('.ast-single-product-payments legend');

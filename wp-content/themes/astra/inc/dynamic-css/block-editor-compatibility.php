@@ -352,8 +352,8 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	.wp-block-latest-posts > li > *:first-child, .wp-block-latest-posts:not(.is-grid) > li:first-child {
 		margin-top: 0;
 	}
-	.entry-content .wp-block-buttons,
-	.entry-content .wp-block-uagb-buttons {
+	.entry-content > .wp-block-buttons,
+	.entry-content > .wp-block-uagb-buttons {
 		margin-bottom: 1.5em;
 	}
 	';
@@ -372,7 +372,9 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 		$alignwide_1200_left_negative_margin  = $astra_continer_left_spacing ? 'calc(-1 * min(' . $astra_continer_left_spacing . ', 20px))' : '-20px';
 		$alignwide_1200_right_negative_margin = $astra_continer_right_spacing ? 'calc(-1 * min(' . $astra_continer_right_spacing . ', 20px))' : '-20px';
 
-		$heading_width_comp = Astra_Dynamic_CSS::astra_4_8_0_compatibility() ? 'none' : 'var(--wp--custom--ast-content-width-size)';
+		$heading_width_comp          = Astra_Dynamic_CSS::astra_4_8_0_compatibility() ? 'none' : 'var(--wp--custom--ast-content-width-size)';
+		$container_margin_left_comp  = Astra_Dynamic_CSS::astra_4_8_4_compatibility() ? 'auto' : 'calc(-1 * var(--wp--custom--ast-default-block-left-padding) )';
+		$container_margin_right_comp = Astra_Dynamic_CSS::astra_4_8_4_compatibility() ? 'auto' : 'calc(-1 * var(--wp--custom--ast-default-block-right-padding) )';
 
 		$dynamic_css .= '
 			.wp-block-search__inside-wrapper .wp-block-search__input {
@@ -421,8 +423,8 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 					margin-right: calc(-1 * ' . $astra_continer_right_spacing . ' );
 				}
 				.ast-separate-container .entry-content[data-ast-blocks-layout] > .alignwide, .ast-plain-container .entry-content[data-ast-blocks-layout] > .alignwide {
-					margin-left: calc(-1 * var(--wp--custom--ast-default-block-left-padding) );
-					margin-right: calc(-1 * var(--wp--custom--ast-default-block-right-padding) );
+					margin-left: ' . $container_margin_left_comp . ';
+					margin-right: ' . $container_margin_right_comp . ';
 				}
 			}
 			@media(min-width: ' . $tablet_breakpoint . 'px) {

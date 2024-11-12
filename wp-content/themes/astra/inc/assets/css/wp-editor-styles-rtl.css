@@ -424,8 +424,8 @@ body .editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper > * + *
   margin-left: auto;
 }
 
-.editor-styles-wrapper .wp-block-buttons,
-.editor-styles-wrapper .wp-block:has(.uagb-buttons__wrap) {
+.editor-styles-wrapper .is-root-container > .wp-block-buttons,
+.editor-styles-wrapper .is-root-container > .wp-block:has(.uagb-buttons__wrap) {
   /* Spacing for WP Core and Spectra's buttons block  */
   margin-bottom: 1.5em;
 }

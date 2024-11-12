@@ -305,6 +305,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 					</div>
 					<?php
 				} else {
+					$post_id = absint( get_the_ID() );
 					?>
 					<div class="review_box" id="review_box">
 					<h3><?php esc_html_e( 'Write a Review', 'astra' ); ?></h3>
@@ -314,7 +315,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 						<h5 style="color:red; display:none" id="review_text_error"><?php esc_html_e( 'Review Text is required.', 'astra' ); ?></h5>
 						<?php wp_nonce_field( 'submit_review', 'submit_review_nonce_code' ); ?>
 						<input name="action" value="submit_review" type="hidden">
-						<input name="post_ID" value="<?php echo get_the_ID(); ?>" type="hidden" id="post_ID">
+						<input name="post_ID" value="<?php /** @psalm-suppress InvalidScalarArgument */ echo esc_attr( $post_id ); ?>" type="hidden" id="post_ID">
 						<input type="submit" class="button" value="<?php esc_attr_e( 'Leave Review', 'astra' ); ?>" id="llms_review_submit_button">
 					</div>
 					<div id="thank_you_box" style="display:none;">
@@ -624,7 +625,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 				}
 
 				$supported_post_types = Astra_Posts_Structure_Loader::get_supported_post_types();
-				$post_type            = strval( get_post_type() );
+				$post_type            = astra_get_post_type();
 
 				if ( in_array( $post_type, $supported_post_types ) ) {
 					$dynamic_sidebar_layout = '';
@@ -680,7 +681,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 				$llms_layout = astra_toggle_layout( 'lifterlms-ast-content-layout', 'global', false );
 
 				$supported_post_types = Astra_Posts_Structure_Loader::get_supported_post_types();
-				$post_type            = strval( get_post_type() );
+				$post_type            = astra_get_post_type();
 
 				if ( in_array( $post_type, $supported_post_types ) ) {
 					$dynamic_sidebar_layout = '';

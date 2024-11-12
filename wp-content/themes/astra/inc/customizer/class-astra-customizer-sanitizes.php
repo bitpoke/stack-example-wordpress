@@ -3,8 +3,6 @@
  * Astra Theme Customizer Sanitize.
  *
  * @package     Astra
- * @author      Astra
- * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
@@ -29,7 +27,6 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		/**
 		 * Instance
 		 *
-		 * @access private
 		 * @var object
 		 */
 		private static $instance;
@@ -73,13 +70,15 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 					'value' => isset( $input['value'] ) && isset( $svg_icons[ $input['value'] ] ) ? $input['value'] : '',
 				);
 			}
-
+			/* Strip code starts */
 			return array(
 				'type'  => 'custom',
 				'value' => isset( $input['value'] ) ? self::sanitize_svg_code( $input['value'] ) : '',
 			);
+			/* Strip code ends */
 		}
 
+		/* Strip code starts */
 		/**
 		 * Sanitizes SVG Code string.
 		 *
@@ -143,33 +142,26 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 
 			$content = substr( $content, $start, ( $end - $start + 6 ) );
 
-			// If the server's PHP version is 8 or up, make sure to disable the ability to load external entities.
-			$php_version_under_eight = version_compare( PHP_VERSION, '8.0.0', '<' );
-			if ( $php_version_under_eight ) {
-				$libxml_disable_entity_loader = libxml_disable_entity_loader( true );
-			}
 			// Suppress the errors.
-			$libxml_use_internal_errors = libxml_use_internal_errors( true );
+			libxml_use_internal_errors( true );
 
-			// Create DOMDocument instance.
-			$dom                      = new DOMDocument();
-			$dom->formatOutput        = false;
-			$dom->preserveWhiteSpace  = false;
-			$dom->strictErrorChecking = false;
-
-			$open_svg = (bool) $content ? $dom->loadXML( $content ) : false;
-			if ( ! $open_svg ) {
+			// Load the SVG content using SimpleXML.
+			$xml = simplexml_load_string( $content, 'SimpleXMLElement', LIBXML_NOENT );
+			if ( $xml === false ) {
 				return '';
 			}
 
-			// Strip Doctype.
-			foreach ( $dom->childNodes as $child ) {
-				if ( XML_DOCUMENT_TYPE_NODE === $child->nodeType && (bool) $child->parentNode ) {
-					$child->parentNode->removeChild( $child );
-				}
-			}
-
 			// Sanitize elements.
+			/** @psalm-suppress PossiblyNullPropertyFetch */
+			$dom = dom_import_simplexml( $xml )->ownerDocument;
+			/** @psalm-suppress PossiblyNullPropertyAssignment */
+			$dom->formatOutput = false;
+			/** @psalm-suppress PossiblyNullPropertyAssignment */
+			$dom->preserveWhiteSpace = false;
+			/** @psalm-suppress PossiblyNullPropertyAssignment */
+			$dom->strictErrorChecking = false;
+
+			/** @psalm-suppress PossiblyNullReference */
 			$elements = $dom->getElementsByTagName( '*' );
 			for ( $index = $elements->length - 1; $index >= 0; $index-- ) {
 				$current_element = $elements->item( $index );
@@ -217,14 +209,11 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 			$sanitized = $dom->saveXML( $dom->documentElement, LIBXML_NOEMPTYTAG );
 
 			// Restore defaults.
-			if ( $php_version_under_eight && isset( $libxml_disable_entity_loader ) ) {
-				libxml_disable_entity_loader( $libxml_disable_entity_loader );
-			}
-			libxml_use_internal_errors( $libxml_use_internal_errors );
+			libxml_use_internal_errors( false );
 
 			return $sanitized;
 		}
-
+		/* Strip code ends */
 
 		/**
 		 * Sanitize Integer

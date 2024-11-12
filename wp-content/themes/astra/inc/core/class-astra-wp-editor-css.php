@@ -5,8 +5,6 @@
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
  * @package     Astra
- * @author      Astra
- * @copyright   Copyright (c) 2022, Astra
  * @link        http://wpastra.com/
  * @since       Astra 3.8.0
  */
@@ -837,11 +835,15 @@ class Astra_WP_Editor_CSS {
 			$alignwide_left_negative_margin  = $astra_continer_left_spacing ? 'calc(-1 * min(' . $astra_continer_left_spacing . ', 40px))' : '-40px';
 			$alignwide_right_negative_margin = $astra_continer_right_spacing ? 'calc(-1 * min(' . $astra_continer_right_spacing . ', 40px))' : '-40px';
 			$heading_width_comp              = Astra_Dynamic_CSS::astra_4_8_0_compatibility() ? 'none' : 'var(--wp--custom--ast-content-width-size)';
+			$container_width_comp            = Astra_Dynamic_CSS::astra_4_8_4_compatibility() ? 'var(--wp--custom--ast-content-width-size)' : '';
 
 
 			$desktop_css['.editor-styles-wrapper .wp-block-latest-posts > li > a'] = array(
 				'text-decoration' => 'none',
 				'font-size'       => '1.25rem',
+			);
+			$desktop_css['.ast-plain-container.ast-no-sidebar .editor-styles-wrapper .is-root-container.block-editor-block-list__layout > .alignwide.uagb-is-root-container '] = array(
+				'max-width' => $container_width_comp,
 			);
 			$desktop_css['.ast-separate-container .editor-styles-wrapper .block-editor-block-list__layout.is-root-container .alignwide, .ast-plain-container .editor-styles-wrapper .block-editor-block-list__layout.is-root-container .alignwide'] = array(
 				'margin-left'  => $alignwide_left_negative_margin,

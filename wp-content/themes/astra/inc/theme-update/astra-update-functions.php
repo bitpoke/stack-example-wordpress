@@ -1152,3 +1152,24 @@ function astra_theme_background_updater_4_8_2() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility for Spectra container margin left and right.
+ * Handle backward compatibility for Heading font size px to em conversion cases.
+ *
+ * @since 4.8.4
+ * @return void
+ */
+function astra_theme_background_updater_4_8_4() {
+	$theme_options = get_option( 'astra-settings', array() );
+
+	if ( ! isset( $theme_options['enable-4-8-4-compatibility'] ) ) {
+		$theme_options['enable-4-8-4-compatibility'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+
+	if ( ! isset( $theme_options['astra-heading-font-size-compatibility'] ) ) {
+				$theme_options['astra-heading-font-size-compatibility'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}

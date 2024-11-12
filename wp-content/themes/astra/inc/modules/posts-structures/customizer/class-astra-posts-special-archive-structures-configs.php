@@ -5,8 +5,6 @@
  * 1. Search page.
  *
  * @package     Astra
- * @author      Brainstorm Force
- * @copyright   Copyright (c) 2023, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       Astra 4.6.0
  */

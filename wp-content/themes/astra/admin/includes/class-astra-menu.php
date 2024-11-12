@@ -20,7 +20,6 @@ class Astra_Menu {
 	/**
 	 * Instance
 	 *
-	 * @access private
 	 * @var null $instance
 	 * @since 4.0.0
 	 */
@@ -121,7 +120,7 @@ class Astra_Menu {
 		);
 
 		wp_safe_redirect( $extensions_url );
-		exit;
+		exit();
 	}
 
 	/**
@@ -204,7 +203,9 @@ class Astra_Menu {
 
 		if ( ! astra_is_white_labelled() ) {
 			// Add Astra~Woo Extensions page or Spectra submenu.
-			if ( class_exists( 'WooCommerce' ) ) {
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			if ( ASTRA_THEME_ORG_VERSION && class_exists( 'WooCommerce' ) ) {
+				/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
 					self::$plugin_slug,
 					'WooCommerce',
@@ -212,7 +213,7 @@ class Astra_Menu {
 					$capability,
 					'admin.php?page=' . self::$plugin_slug . '&path=woocommerce'
 				);
-			} elseif ( ! $this->spectra_has_top_level_menu() ) {
+			} elseif ( ASTRA_THEME_ORG_VERSION && ! $this->spectra_has_top_level_menu() ) {
 				add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
 					self::$plugin_slug,
 					'Spectra',
@@ -296,14 +297,21 @@ class Astra_Menu {
 		$show_self_branding = defined( 'ASTRA_EXT_VER' ) && is_callable( 'Astra_Ext_White_Label_Markup::show_branding' ) ? Astra_Ext_White_Label_Markup::show_branding() : true;
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		$user_firstname = wp_get_current_user()->user_firstname;
-		$localize       = array(
+		/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		$astra_addon_locale = ASTRA_THEME_ORG_VERSION ? 'astra-addon/astra-addon.php' : 'astra-pro/astra-pro.php';
+		/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		$localize = array(
 			'current_user'            => ! empty( $user_firstname ) ? ucfirst( $user_firstname ) : ucfirst( wp_get_current_user()->display_name ),
 			'admin_base_url'          => admin_url(),
 			'plugin_dir'              => ASTRA_THEME_URI,
 			'plugin_ver'              => defined( 'ASTRA_EXT_VER' ) ? ASTRA_EXT_VER : '',
 			'version'                 => ASTRA_THEME_VERSION,
 			'pro_available'           => defined( 'ASTRA_EXT_VER' ) ? true : false,
-			'pro_installed_status'    => 'installed' === self::get_plugin_status( 'astra-addon/astra-addon.php' ) ? true : false,
+			'pro_installed_status'    => 'installed' === self::get_plugin_status( $astra_addon_locale ) ? true : false,
+			'astra_addon_locale'      => $astra_addon_locale,
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			'astra_rating_url'        => ASTRA_THEME_ORG_VERSION ? 'https://wordpress.org/support/theme/astra/reviews/?rate=5#new-post' : 'https://woo.com/products/astra/#reviews',
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			'spectra_plugin_status'   => self::get_plugin_status( 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php' ),
 			'theme_name'              => astra_get_theme_name(),
 			'plugin_name'             => astra_get_addon_name(),
@@ -314,13 +322,14 @@ class Astra_Menu {
 			'admin_url'               => admin_url( 'admin.php' ),
 			'home_slug'               => self::$plugin_slug,
 			'upgrade_url'             => ASTRA_PRO_UPGRADE_URL,
-			'astra_cta_btn_url'       => astra_get_pro_url( 'https://wpastra.com/pricing/', 'dashboard', 'free-theme', 'unlock-pro-features-CTA' ),
 			'customize_url'           => admin_url( 'customize.php' ),
 			'astra_base_url'          => admin_url( 'admin.php?page=' . self::$plugin_slug ),
 			'logo_url'                => apply_filters( 'astra_admin_menu_icon', ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ),
 			'update_nonce'            => wp_create_nonce( 'astra_update_admin_setting' ),
 			'integrations'            => self::astra_get_integrations(),
-			'show_plugins'            => apply_filters( 'astra_show_free_extend_plugins', true ), // Legacy filter support.
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			'show_plugins'            => apply_filters( 'astra_show_free_extend_plugins', true ) && ASTRA_THEME_ORG_VERSION ? true : false, // Legacy filter support.
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			'useful_plugins'          => self::astra_get_useful_plugins(),
 			'extensions'              => self::astra_get_pro_extensions(),
 			'plugin_manager_nonce'    => wp_create_nonce( 'astra_plugin_manager_nonce' ),
@@ -332,13 +341,16 @@ class Astra_Menu {
 			'plugin_activating_text'  => esc_html__( 'Activating', 'astra' ),
 			'plugin_activated_text'   => esc_html__( 'Activated', 'astra' ),
 			'plugin_activate_text'    => esc_html__( 'Activate', 'astra' ),
-			'plugin_configuring_text' => esc_html__( 'Configuring', 'astra' ),
 			'starter_templates_data'  => self::get_starter_template_plugin_data(),
 			'astra_docs_data'         => astra_remote_docs_data(),
 			'upgrade_notice'          => astra_showcase_upgrade_notices(),
 			'show_banner_video'       => apply_filters( 'astra_show_banner_video', true ),
 			'is_woo_active'           => class_exists( 'WooCommerce' ) ? true : false,
 			'woo_extensions'          => self::astra_get_woo_extensions( false ),
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			'astra_cta_btn_url'       => ASTRA_THEME_ORG_VERSION ? astra_get_pro_url( 'https://wpastra.com/pricing/', 'dashboard', 'free-theme', 'unlock-pro-features-CTA' ) : 'https://woocommerce.com/products/astra-pro/',
+			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			'plugin_configuring_text' => esc_html__( 'Configuring', 'astra' ),
 		);
 
 		$this->settings_app_scripts( apply_filters( 'astra_react_admin_localize', $localize ) );
@@ -511,7 +523,6 @@ class Astra_Menu {
 	 *
 	 * @since 4.0.0
 	 * @return array
-	 * @access public
 	 */
 	public static function astra_get_pro_extensions() {
 		return apply_filters(
@@ -758,7 +769,6 @@ class Astra_Menu {
 	 *
 	 * @since 4.7.3
 	 * @return array
-	 * @access public
 	 */
 	public static function astra_get_woo_extensions( $under_useful_plugins = true ) {
 
@@ -896,7 +906,6 @@ class Astra_Menu {
 	 *
 	 * @since 4.0.0
 	 * @return array
-	 * @access public
 	 */
 	public static function astra_get_useful_plugins() {
 		// Making useful plugin section dynamic.
@@ -981,7 +990,6 @@ class Astra_Menu {
 	 *
 	 * @since 4.0.0
 	 * @return array
-	 * @access public
 	 */
 	public static function astra_get_integrations() {
 		$surecart_status      = self::get_plugin_status( 'surecart/surecart.php' );
@@ -1087,6 +1095,9 @@ class Astra_Menu {
 	 */
 	public function astra_admin_footer_link() {
 		$theme_name = astra_get_theme_name();
+		/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+		$rating_url = ASTRA_THEME_ORG_VERSION ? 'https://wordpress.org/support/theme/astra/reviews/?rate=5#new-post' : 'https://woo.com/products/astra/#reviews';
+		/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		if ( astra_is_white_labelled() ) {
 			$footer_text = '<span id="footer-thankyou">' . __( 'Thank you for using', 'astra' ) . '<span class="focus:text-astra-hover active:text-astra-hover hover:text-astra-hover"> ' . esc_html( $theme_name ) . '.</span></span>';
 		} else {
@@ -1094,7 +1105,7 @@ class Astra_Menu {
 				/* translators: 1: Astra, 2: Theme rating link */
 				__( 'Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!', 'astra' ),
 				'<span class="ast-footer-thankyou"><strong>' . esc_html( $theme_name ) . '</strong>',
-				'<a href="https://wordpress.org/support/theme/astra/reviews/?rate=5#new-post" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a></span>'
+				'<a href="' . esc_url( $rating_url ) . '" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a></span>'
 			);
 		}
 		return $footer_text;

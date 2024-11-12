@@ -28,7 +28,6 @@ class Astra_Admin_Ajax {
 	/**
 	 * Instance
 	 *
-	 * @access private
 	 * @var null $instance
 	 * @since 4.0.0
 	 */

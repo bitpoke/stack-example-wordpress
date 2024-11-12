@@ -3,8 +3,6 @@
  * Astra Theme Options
  *
  * @package     Astra
- * @author      Astra
- * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       Astra 1.0.0
  */
@@ -25,7 +23,6 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 		/**
 		 * Class instance.
 		 *
-		 * @access private
 		 * @var $instance Class instance.
 		 */
 		private static $instance;
@@ -33,7 +30,6 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 		/**
 		 * Customizer defaults.
 		 *
-		 * @access Private
 		 * @since 1.4.3
 		 * @var Array
 		 */
@@ -50,7 +46,6 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 		 * A static option variable.
 		 *
 		 * @since 1.0.0
-		 * @access private
 		 * @var mixed $db_options
 		 */
 		private static $db_options;
@@ -59,7 +54,6 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 		 * A static option variable.
 		 *
 		 * @since 1.0.0
-		 * @access private
 		 * @var mixed $db_options
 		 */
 		private static $db_options_no_defaults;
@@ -68,7 +62,6 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 		 * A static theme astra-options variable.
 		 *
 		 * @since 4.0.2
-		 * @access public
 		 * @var mixed $astra_options
 		 */
 		public static $astra_options = null;
@@ -840,24 +833,24 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 					),
 					'font-size-h1'                         => array(
 						'desktop'      => $blog_defaults_update ? 36 : 40,
-						'tablet'       => '',
-						'mobile'       => '',
+						'tablet'       => 30,
+						'mobile'       => 30,
 						'desktop-unit' => 'px',
 						'tablet-unit'  => 'px',
 						'mobile-unit'  => 'px',
 					),
 					'font-size-h2'                         => array(
 						'desktop'      => $blog_defaults_update ? 30 : 32,
-						'tablet'       => '',
-						'mobile'       => '',
+						'tablet'       => 25,
+						'mobile'       => 25,
 						'desktop-unit' => 'px',
 						'tablet-unit'  => 'px',
 						'mobile-unit'  => 'px',
 					),
 					'font-size-h3'                         => array(
 						'desktop'      => $blog_defaults_update ? 24 : 26,
-						'tablet'       => '',
-						'mobile'       => '',
+						'tablet'       => 20,
+						'mobile'       => 20,
 						'desktop-unit' => 'px',
 						'tablet-unit'  => 'px',
 						'mobile-unit'  => 'px',

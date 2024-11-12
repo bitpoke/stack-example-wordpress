@@ -3,8 +3,6 @@
  * Menu for Astra theme.
  *
  * @package     astra-builder
- * @author      Astra
- * @copyright   Copyright (c) 2020, Astra
  * @link        https://wpastra.com/
  * @since       3.0.0
  */
@@ -117,7 +115,7 @@ class Astra_Header_Menu_Component {
 
 		// To add default alignment for navigation which can be added through any third party plugin.
 		// Do not add any CSS from theme except header alignment.
-		echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>';
+		echo '<div ' . esc_html( astra_attr( 'ast-main-header-bar-alignment' ) ) . '>';
 
 		if ( is_customize_preview() ) {
 			Astra_Builder_UI_Controller::render_customizer_edit_button();
@@ -138,17 +136,19 @@ class Astra_Header_Menu_Component {
 
 			// Adding rel="nofollow" for duplicate menu render.
 			$nav_menu_markup = $astra_builder->nofollow_markup( $theme_location, $nav_menu_markup );
-			echo $nav_menu_markup;
+			echo do_shortcode( $nav_menu_markup );
 			/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		} else {
 				echo '<div class="main-header-bar-navigation ast-flex-1">';
 					echo '<nav ';
-					echo astra_attr(
-						'site-navigation',
-						array(
-							'id'         => esc_attr( $theme_location ) . '-site-navigation',
-							'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility',
-							'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
+					echo wp_kses_post(
+						astra_attr(
+							'site-navigation',
+							array(
+								'id'         => esc_attr( $theme_location ) . '-site-navigation',
+								'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility',
+								'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
+							)
 						)
 					);
 					echo '>';
@@ -158,7 +158,7 @@ class Astra_Header_Menu_Component {
 					// Adding rel="nofollow" for duplicate menu render.
 					$nav_menu_markup = $astra_builder->nofollow_markup( $theme_location, $nav_menu_markup );
 
-					echo $nav_menu_markup;
+					echo do_shortcode( $nav_menu_markup );
 					/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					echo '</nav>';
 				echo '</div>';

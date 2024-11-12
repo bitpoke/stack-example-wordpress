@@ -74,7 +74,6 @@ class Astra_Gutenberg {
 	 * to avoid the group block width from changing to full width.
 	 *
 	 * @since 3.7.1
-	 * @access public
 	 *
 	 * @param string $block_content Rendered block content.
 	 * @param array  $block         Block object.
@@ -109,7 +108,6 @@ class Astra_Gutenberg {
 	 * Add Group block custom class when "Inherit default layout" toggle enabled.
 	 *
 	 * @since 3.8.3
-	 * @access public
 	 *
 	 * @param string $block_content Rendered block content.
 	 * @param array  $block         Block object.
@@ -135,7 +133,6 @@ class Astra_Gutenberg {
 	 * Update the block content with inner div.
 	 *
 	 * @since 3.7.1
-	 * @access public
 	 *
 	 * @param mixed $matches block content.
 	 *
@@ -149,7 +146,6 @@ class Astra_Gutenberg {
 	 * Add iframe wrapper for videos.
 	 *
 	 * @since 4.4.0
-	 * @access public
 	 *
 	 * @param string $block_content Rendered block content.
 	 * @param array  $block         Block object.

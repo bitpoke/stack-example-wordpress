@@ -33,7 +33,6 @@
 		 * Initializes logic for font controls.
 		 *
 		 * @since 1.0.0
-		 * @access private
 		 * @method _initFonts
 		 */
 		_initFonts: function()
@@ -64,7 +63,6 @@
 		 * Initializes logic for a single font control.
 		 *
 		 * @since 1.0.0
-		 * @access private
 		 * @method _initFont
 		 */
 		_initFont: function()
@@ -88,7 +86,6 @@
 		 * Callback for when a font control changes.
 		 *
 		 * @since 1.0.0
-		 * @access private
 		 * @method _fontSelectChange
 		 */
 		_fontSelectChange: function()
@@ -160,7 +157,6 @@
 		 * font family control changes.
 		 *
 		 * @since 1.0.0
-		 * @access private
 		 * @method _setFontWeightOptions
 		 * @param {Boolean} init Whether or not we're initializing this font weight control.
 		 */

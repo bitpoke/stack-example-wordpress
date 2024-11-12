@@ -19,7 +19,6 @@
 		 * Binds events for the Astra Theme.
 		 *
 		 * @since 1.0.0
-		 * @access private
 		 * @method _bind
 		 */
 		_bind: function()

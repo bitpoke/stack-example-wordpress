@@ -1,5 +1,23 @@
 *** Astra Changelog ***
 
+2024-11-11 - version 4.8.4
+* New: Introduce a new control to display the product total review count on the product archive page.
+* Improvement: Added filters to allow toggling between URLs and local paths for webfont loading to resolve CORS issues.
+* Improvement: Enabled support for reordering of opened meta and structure elements within the customizer.
+* Improvement: Conversion of 'px' to 'rem' is now working for responsive devices heading as well.
+* Improvement: WooCommerce – Display the product thumbnail image on catalog pages instead of the original image when the "Swap Image" option is enabled for Product Image Hover Style.
+* Fix: Gravity forms select2 fields stylings overridden by theme style. 
+* Fix: Alignment issue of Spectra boxed container with Astra.
+* Fix: String Translations not working correctly for Astra Customizer settings.
+* Fix: Featured image not displaying on the shop page with Layout 2, while it works on product category archives.
+* Fix: Ensure global typography body text color is applied to paragraphs within the cover block.
+* Fix: Resolved an issue where header rows post meta settings were causing the header to disappear.
+* Fix: Resolved conflict with Starter Templates buttons group bottom spacing.
+* Fix: Infinite loop when `Load Google Fonts Locally` option is enabled.
+* Fix: Resolved style inconsistencies on category archive pages when no posts/items are present.
+* Fix: Resolved issue where shortcodes were wrapped in unnecessary <p> tags, ensuring proper formatting in HTML widget content.
+* Fix: Resolved issue causing warnings in Astra when WPML is active.
+
 2024-10-07 - version 4.8.3
 * New: Added a separate option to set custom page width.
 * Improvement: Implemented the "autocomplete" attribute for the comment form fields in Astra.
