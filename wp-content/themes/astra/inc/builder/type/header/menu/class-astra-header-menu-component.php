@@ -115,7 +115,7 @@ class Astra_Header_Menu_Component {
 
 		// To add default alignment for navigation which can be added through any third party plugin.
 		// Do not add any CSS from theme except header alignment.
-		echo '<div ' . esc_html( astra_attr( 'ast-main-header-bar-alignment' ) ) . '>';
+		echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>';
 
 		if ( is_customize_preview() ) {
 			Astra_Builder_UI_Controller::render_customizer_edit_button();

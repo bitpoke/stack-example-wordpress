@@ -1,11 +1,16 @@
 *** Astra Changelog ***
 
+2024-11-12 - version 4.8.5
+* Fix: Resolved blank screen on Astra Dashboard and Site Builder on staging or multisite environments.
+* Fix: Resolved fatal error for review count function when product is not found.
+
 2024-11-11 - version 4.8.4
 * New: Introduce a new control to display the product total review count on the product archive page.
 * Improvement: Added filters to allow toggling between URLs and local paths for webfont loading to resolve CORS issues.
 * Improvement: Enabled support for reordering of opened meta and structure elements within the customizer.
 * Improvement: Conversion of 'px' to 'rem' is now working for responsive devices heading as well.
 * Improvement: WooCommerce – Display the product thumbnail image on catalog pages instead of the original image when the "Swap Image" option is enabled for Product Image Hover Style.
+* Compatibility with WordPress 6.7.
 * Fix: Gravity forms select2 fields stylings overridden by theme style. 
 * Fix: Alignment issue of Spectra boxed container with Astra.
 * Fix: String Translations not working correctly for Astra Customizer settings.

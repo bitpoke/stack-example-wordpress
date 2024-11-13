@@ -682,9 +682,10 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		public function rating_markup( $html, $rating, $count ) {
 
 			/** @psalm-suppress InvalidGlobal  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-			global $product;
+			$product = wc_get_product();
 		
-			$review_count = $product->get_review_count();
+			// Get the review count if the product exists, otherwise set it to 0
+			$review_count = $product ? $product->get_review_count() : 0;
 		
 			// Check if the rating is valid
 			if ( $rating >= 0 ) {
