@@ -1,5 +1,10 @@
 *** Astra Changelog ***
 
+2024-11-15 - version 4.8.6
+* Fix: Resolved issue where certain classes were incorrectly wrapped in double quotes in the markup due to esc_html encoding.
+* Fix: Customizer - Resolved an issue where in the Astra customizer panels would get an additional spacing.
+* Fix: Incorrect `%astra%` placeholder shown in translatable version with the TranslatePress plugin.
+
 2024-11-12 - version 4.8.5
 * Fix: Resolved blank screen on Astra Dashboard and Site Builder on staging or multisite environments.
 * Fix: Resolved fatal error for review count function when product is not found.

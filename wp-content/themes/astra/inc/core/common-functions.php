@@ -540,7 +540,9 @@ if ( ! function_exists( 'astra_get_i18n_option' ) ) {
 	 * @since 4.8.1
 	 */
 	function astra_get_i18n_option( $option, $translated, $default = '', $deprecated = '' ) {
-		return '%astra%' !== $translated ? $translated : astra_get_option( $option, $default, $deprecated );
+		// #%astra%# is for TranslatePress compatibility.
+		$is_translated = '%astra%' !== $translated && ! strpos( $translated, '#%astra%#' );
+		return $is_translated ? $translated : astra_get_option( $option, $default, $deprecated );
 	}
 }
 
@@ -570,7 +572,9 @@ if ( ! function_exists( 'astra_get_i18n_string' ) ) {
 	 * @since 4.8.1
 	 */
 	function astra_get_i18n_string( $default, $translated ) {
-		return '%astra%' !== $translated ? $translated : $default;
+		// #%astra%# is for TranslatePress compatibility.
+		$is_translated = '%astra%' !== $translated && ! strpos( $translated, '#%astra%#' );
+		return $is_translated ? $translated : $default;
 	}
 }
 

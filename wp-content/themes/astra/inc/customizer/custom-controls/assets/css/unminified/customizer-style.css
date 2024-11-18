@@ -291,6 +291,11 @@ input[type="text"].select2-search__field {
   border-bottom: 1px solid var(--ast-customizer-color-7);
 }
 
+/* To remove extra spacing for customizer button */
+#customize-theme-controls .accordion-section-title button.accordion-trigger {
+  max-height: fit-content;
+}
+
 .wp-core-ui #customize-controls .control-section:hover > .accordion-section-title,
 .wp-core-ui #customize-controls .control-section .accordion-section-title:hover,
 .wp-core-ui #customize-controls .control-section .accordion-section-title:focus,
