@@ -11,7 +11,6 @@ require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
  * Cron schedule list table class.
  */
 class Schedule_List_Table extends \WP_List_Table {
-
 	/**
 	 * Array of cron event schedules that are added by WordPress core.
 	 *
@@ -122,7 +121,7 @@ class Schedule_List_Table extends \WP_List_Table {
 			$links[] = "<span class='crontrol-in-use'>" . esc_html__( 'This custom schedule is in use and cannot be deleted', 'wp-crontrol' ) . '</span>';
 		} else {
 			$link = add_query_arg( array(
-				'page'            => 'crontrol_admin_options_page',
+				'page'            => 'wp-crontrol-schedules',
 				'crontrol_action' => 'delete-schedule',
 				'crontrol_id'     => rawurlencode( $schedule['name'] ),
 			), admin_url( 'options-general.php' ) );
@@ -233,5 +232,4 @@ class Schedule_List_Table extends \WP_List_Table {
 	public function no_items() {
 		esc_html_e( 'There are no schedules.', 'wp-crontrol' );
 	}
-
 }

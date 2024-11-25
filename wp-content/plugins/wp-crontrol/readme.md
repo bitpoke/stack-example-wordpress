@@ -2,17 +2,17 @@
 
 Contributors: johnbillion, scompt  
 Tags: cron, wp-cron, crontrol, debug, woocommerce  
-Tested up to: 6.6  
-Stable tag: 1.17.0  
+Tested up to: 6.7  
+Stable tag: 1.17.1  
 Donate link: https://github.com/sponsors/johnbillion
 
 WP Crontrol enables you to take control of the cron events on your WordPress website.
 
 ## Description
 
-WP Crontrol enables you to take control of the cron events on your WordPress website. From the admin screens you can:
+WP Crontrol enables you to take control of the scheduled cron events on your WordPress website or WooCommerce store. From the admin screens you can:
 
- * View all cron events along with their arguments, schedule, callback functions, and when they are next due.
+ * View all scheduled cron events along with their arguments, schedule, callback functions, and when they are next due.
  * Edit, delete, pause, resume, and immediately run cron events.
  * Add new cron events.
  * Bulk delete cron events.
@@ -45,7 +45,7 @@ WP Crontrol aims to be fully accessible to all of its users. [WP Crontrol's full
 
 ### Does this plugin work with PHP 8?
 
-Yes, it's actively tested and working up to PHP 8.3.
+Yes, it's actively tested and working up to PHP 8.4.
 
 ### I get the error "There was a problem spawning a call to the WP-Cron system on your site". How do I fix this?
 
@@ -189,6 +189,11 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 
 ## Changelog ##
 
+### 1.17.1 (22 November 2024) ###
+
+* Confirms support for WordPress 6.7
+* Avoids some warnings when running on PHP 8.3 and 8.4
+
 ### 1.17.0 (15 July 2024) ###
 
 * Introduces [a new cron event type for sending a request to a URL](https://wp-crontrol.com/docs/url-cron-events/)
@@ -244,34 +249,6 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 * Adds the site time to the cron event editing screen
 * Implements an autoloader to reduce memory usage
 * Bumps the minimum supported version of PHP to 5.6
-
-### 1.14.0 (10 July 2022) ###
-
-* Reverts the changes introduced in version 1.13 while I look into the problem with the deployment process for wordpress.org
-
-### 1.13.2 (10 July 2022) ###
-
-* Fixes another issue with missing files in the release
-
-### 1.13.1 (10 July 2022) ###
-
-* Fixes an issue with missing files in the 1.13.0 release
-
-### 1.13.0 (10 July 2022) ###
-
-* Introduces the ability to pause and resume cron events from the event listing screen; see the FAQ for full details
-* Implements an autoloader to reduce memory usage
-* Bumps the minimum supported version of PHP to 5.6
-
-### 1.12.1 (15 April 2022) ###
-
-* Corrects an issue where an invalid hook callback isn't always identified
-* Various code quality improvements
-
-### 1.12.0 (22 November 2021) ###
-
-* Fix the PHP cron event management.
-* More "namespacing" of query variables to avoid conflicts with other cron management plugins.
 
 ### Earlier versions ###
 
