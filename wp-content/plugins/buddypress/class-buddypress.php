@@ -460,7 +460,7 @@ class BuddyPress {
 
 		/** Versions */
 
-		$this->version    = '14.2.1';
+		$this->version    = '14.3.1';
 		$this->db_version = 13906;
 
 		/** Loading */
@@ -926,7 +926,7 @@ class BuddyPress {
 		bp_register_theme_package(
 			array(
 				'id'      => 'legacy',
-				'name'    => __( 'BuddyPress Legacy', 'buddypress' ),
+				'name'    => 'BP Legacy',
 				'version' => bp_get_version(),
 				'dir'     => trailingslashit( $this->themes_dir . '/bp-legacy' ),
 				'url'     => trailingslashit( $this->themes_url . '/bp-legacy' ),
@@ -936,7 +936,7 @@ class BuddyPress {
 		bp_register_theme_package(
 			array(
 				'id'      => 'nouveau',
-				'name'    => __( 'BuddyPress Nouveau', 'buddypress' ),
+				'name'    => 'BP Nouveau',
 				'version' => bp_get_version(),
 				'dir'     => trailingslashit( $this->themes_dir . '/bp-nouveau' ),
 				'url'     => trailingslashit( $this->themes_url . '/bp-nouveau' ),
