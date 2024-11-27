@@ -954,6 +954,18 @@ class Astra_Menu {
 					),
 				),
 				array(
+					'title'       => 'SureForms',
+					'subtitle'    => __( 'A versatile form builder plugin.', 'astra' ),
+					'status'      => self::get_plugin_status( 'sureforms/sureforms.php' ),
+					'slug'        => 'sureforms',
+					'path'        => 'sureforms/sureforms.php',
+					'redirection' => admin_url( 'admin.php?page=sureforms_menu' ),
+					'logoPath'    => array(
+						'internal_icon' => true,
+						'icon_path'     => 'sureforms',
+					),
+				),
+				array(
 					'title'       => 'Presto Player',
 					'subtitle'    => __( 'Ultimate Video Player For WordPress.', 'astra' ),
 					'status'      => self::get_plugin_status( 'presto-player/presto-player.php' ),

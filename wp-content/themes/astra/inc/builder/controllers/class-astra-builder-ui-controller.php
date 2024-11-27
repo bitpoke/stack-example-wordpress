@@ -90,7 +90,11 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 								break;
 						}
 
-						echo '<a href="' . esc_url( $link ) . '"' . esc_attr( $item['label'] ? ' aria-label=' . $item['label'] . '' : ' aria-label=' . $item['id'] . '' ) . ' ' . ( 'phone' === $item['id'] || 'email' === $item['id'] ? '' : 'target="_blank" rel="noopener noreferrer" ' ) . 'style="--color: ' . esc_attr( ! empty( $item['color'] ) ? $item['color'] : '#3a3a3a' ) . '; --background-color: ' . esc_attr( ! empty( $item['background'] ) ? $item['background'] : 'transparent' ) . ';" class="ast-builder-social-element ast-inline-flex ast-' . esc_attr( $item['id'] ) . ' ' . esc_attr( $builder_type ) . '-social-item">';
+						echo '<a href="' . esc_url( $link ) . '" ' . 
+							 ( $item['label'] ? 'aria-label="' . esc_attr( $item['label'] ) . '"' : 'aria-label="' . esc_attr( $item['id'] ) . '"' ) . 
+							 ( 'phone' === $item['id'] || 'email' === $item['id'] ? '' : ' target="_blank" rel="noopener noreferrer"' ) . 
+							 ' style="--color: ' . esc_attr( ! empty( $item['color'] ) ? $item['color'] : '#3a3a3a' ) . '; --background-color: ' . esc_attr( ! empty( $item['background'] ) ? $item['background'] : 'transparent' ) . ';" ' . 
+							 'class="ast-builder-social-element ast-inline-flex ast-' . esc_attr( $item['id'] ) . ' ' . esc_attr( $builder_type ) . '-social-item">';
 						echo self::fetch_svg_icon( $item['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 						if ( $show_label ) {

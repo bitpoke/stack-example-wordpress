@@ -352,6 +352,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 				popupTriggerMobile[item].removeEventListener("click", astraNavMenuToggle, false);
 				// Open the Popup when click on trigger
+				popupTriggerMobile[item].removeEventListener("click", popupTriggerClick);
 				popupTriggerMobile[item].addEventListener("click", popupTriggerClick, false);
 				popupTriggerMobile[item].trigger_type = 'mobile';
 
@@ -360,6 +361,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 				popupTriggerDesktop[item].removeEventListener("click", astraNavMenuToggle, false);
 				// Open the Popup when click on trigger
+				popupTriggerDesktop[item].removeEventListener("click", popupTriggerClick);
 				popupTriggerDesktop[item].addEventListener("click", popupTriggerClick, false);
 				popupTriggerDesktop[item].trigger_type = 'desktop';
 
@@ -432,6 +434,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			for ( var item = 0;  item < popupTriggerMobile.length; item++ ) {
 
 				popupTriggerMobile[item].removeEventListener("click", popupTriggerClick, false);
+				popupTriggerMobile[item].removeEventListener('click', astraNavMenuToggle);
 				popupTriggerMobile[item].addEventListener('click', astraNavMenuToggle, false);
 				popupTriggerMobile[item].trigger_type = 'mobile';
 
@@ -439,6 +442,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			for ( var item = 0;  item < popupTriggerDesktop.length; item++ ) {
 
 				popupTriggerDesktop[item].removeEventListener("click", popupTriggerClick, false);
+				popupTriggerDesktop[item].removeEventListener('click', astraNavMenuToggle);
 				popupTriggerDesktop[item].addEventListener('click', astraNavMenuToggle, false);
 				popupTriggerDesktop[item].trigger_type = 'desktop';
 
@@ -724,6 +728,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 						if ( ! menu_click_listeners_nav[i] ) {
 							menu_click_listeners_nav[i] = menu_toggle_all[i];
+							menu_toggle_all[i].removeEventListener('click', astraNavMenuToggle);
 							menu_toggle_all[i].addEventListener('click', astraNavMenuToggle, false);
 						}
 					}
@@ -742,7 +747,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 							if (astra_menu_toggle.length > 0) {
 
 								for (var j = 0; j < astra_menu_toggle.length; j++) {
-
+									astra_menu_toggle[j].removeEventListener('click', AstraToggleSubMenu);
 									astra_menu_toggle[j].addEventListener('click', AstraToggleSubMenu, false);
 								}
 							}

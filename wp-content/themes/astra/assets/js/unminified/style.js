@@ -274,6 +274,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		// Add Eventlisteners for Submenu.
 		if (astra_menu_toggle.length > 0) {
 			for (var i = 0; i < astra_menu_toggle.length; i++) {
+				astra_menu_toggle[i].removeEventListener('click', AstraToggleSubMenu);
 				astra_menu_toggle[i].addEventListener('click', AstraToggleSubMenu, false);
 			}
 		}
@@ -290,6 +291,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 				if ( ! menu_click_listeners_nav[i] ) {
 					menu_click_listeners_nav[i] = menu_toggle_all[i];
+					menu_toggle_all[i].removeEventListener('click', astraNavMenuToggle);
 					menu_toggle_all[i].addEventListener('click', astraNavMenuToggle, false);
 				}
 
@@ -304,6 +306,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					// Add Eventlisteners for Submenu.
 					if (astra_menu_toggle.length > 0) {
 						for (var j = 0; j < astra_menu_toggle.length; j++) {
+							astra_menu_toggle[j].removeEventListener('click', AstraToggleSubMenu);
 							astra_menu_toggle[j].addEventListener('click', AstraToggleSubMenu, false);
 						}
 					}

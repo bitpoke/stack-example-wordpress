@@ -1173,3 +1173,13 @@ function astra_theme_background_updater_4_8_4() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Set key to show NPS survey popup immediately for old user.
+ *
+ * @since 4.8.7
+ * @return void
+ */
+function astra_theme_background_updater_4_8_7() {
+	update_option( 'astra_nps_show', true);
+}

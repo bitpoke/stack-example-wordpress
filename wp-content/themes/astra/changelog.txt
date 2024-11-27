@@ -1,5 +1,13 @@
 *** Astra Changelog ***
 
+2024-11-26 - version 4.8.7
+* New: Integrated NPS Survey library in Astra to gather user feedback.
+* Fix: Resolved submenu toggle button issue in the mobile header with Omnisend plugin active.
+* Fix: Corrected social icon labels to ensure full text appears in the aria-label.
+* Fix: Resolved an issue where the Cover block's inner content width was not functioning correctly when the Site Layouts module was enabled.
+* Fix: Inconsistent behavior for menu alignment in footer Builder when Inner Elements Layout is set to Inline.
+* Fix: Resolved an issue where font options were not displaying correctly in some browsers.
+
 2024-11-15 - version 4.8.6
 * Fix: Resolved issue where certain classes were incorrectly wrapped in double quotes in the markup due to esc_html encoding.
 * Fix: Customizer - Resolved an issue where in the Astra customizer panels would get an additional spacing.

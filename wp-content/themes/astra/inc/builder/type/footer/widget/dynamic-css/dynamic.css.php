@@ -91,6 +91,9 @@ function astra_fb_widget_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' )
 			'.footer-widget-area.widget-area.site-footer-focus-item' => array(
 				'width' => 'auto',
 			),
+			'.ast-footer-row-inline .footer-widget-area.widget-area.site-footer-focus-item' => array(
+				'width' => '100%',
+			),
 		);
 		$dynamic_css           .= astra_parse_css( $footer_area_css_output );
 	}

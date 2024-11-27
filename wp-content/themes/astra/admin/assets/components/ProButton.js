@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import apiFetch from "@wordpress/api-fetch";
-import { sanitize } from "dompurify";
+import DOMPurify from "dompurify";
 import { classNames, getAstraProTitle, getSpinner } from "@astra-utils/helpers";
 
 const ProButton = ({
@@ -18,7 +18,7 @@ const ProButton = ({
 			window.open(url, "_blank");
 		}
 
-		e.target.innerHTML = sanitize(
+		e.target.innerHTML = DOMPurify.sanitize(
 			(disableSpinner ? "" : getSpinner()) +
 				astra_admin.plugin_activating_text
 		);
