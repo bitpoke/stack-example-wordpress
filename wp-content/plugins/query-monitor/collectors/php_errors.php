@@ -203,15 +203,16 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 				$type = 'notice';
 				break;
 
-			case E_STRICT:
-				$type = 'strict';
-				break;
-
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				$type = 'deprecated';
 				break;
 
+		}
+
+		// E_STRICT is deprecated in PHP 8.4 so it needs to be behind a version check.
+		if ( null === $type && version_compare( PHP_VERSION, '8.4', '<' ) && E_STRICT === $errno ) {
+			$type = 'strict';
 		}
 
 		if ( null === $type ) {
@@ -359,9 +360,32 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 					continue;
 				}
 
+				$args = array_map( function( $value ) {
+					$type = gettype( $value );
+
+					switch ( $type ) {
+						case 'object':
+							return get_class( $value );
+						case 'boolean':
+							return $value ? 'true' : 'false';
+						case 'integer':
+						case 'double':
+							return $value;
+						case 'string':
+							if ( strlen( $value ) > 50 ) {
+								return "'" . substr( $value, 0, 20 ) . '...' . substr( $value, -20 ) . "'";
+							}
+							return "'" . $value . "'";
+					}
+
+					return $type;
+				}, $frame['args'] ?? array() );
+
+				$name = str_replace( '()', '(' . implode( ', ', $args ) . ')', $callback['name'] );
+
 				printf(
 					'<li>%s</li>',
-					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
+					QM_Output_Html::output_filename( $name, $frame['file'], $frame['line'] )
 				); // WPCS: XSS ok.
 			}
 			echo '</ol>';

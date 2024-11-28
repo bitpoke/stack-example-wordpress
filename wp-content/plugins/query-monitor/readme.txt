@@ -2,8 +2,8 @@
 
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
-Tested up to: 6.6
-Stable tag: 3.16.4
+Tested up to: 6.7
+Stable tag: 3.17.0
 License: GPLv2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -77,7 +77,7 @@ Query Monitor aims to be fully accessible to all of its users. [Query Monitor's 
 
 ### Does this plugin work with PHP 8?
 
-Yes, it's actively tested and working up to PHP 8.2.
+Yes, it's actively tested and working up to PHP 8.4.
 
 ### Who can see Query Monitor's output?
 
@@ -113,17 +113,12 @@ In addition, Query Monitor transparently supports add-ons for the Debug Bar plug
 
 Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com/johnbillion/query-monitor/issues) as it's easier to keep track of issues there, rather than on the wordpress.org support forums.
 
-### Is Query Monitor available on Altis?
+### Is Query Monitor already included with my hosting?
 
-Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
+Some WordPress hosts bundle Query Monitor as part of their hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
 
-### Is Query Monitor available on WordPress VIP?
-
-Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
-
-### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
-
-This feature was removed in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using version 3.11 if you need to make use of this feature.
+* [Altis Cloud](https://www.altis-dxp.com/resources/developer-docs/dev-tools/).
+* [WordPress VIP](https://wpvip.com/), although users need to be granted the `view_query_monitor` capability even if they're an Administrator. [See the WordPress VIP documentation for details](https://docs.wpvip.com/performance/query-monitor/enable/).
 
 ### Can I click on stack traces to open the file in my editor?
 
@@ -140,6 +135,13 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
 ## Changelog ##
+
+### 3.17.0 (27 November 2024) ###
+
+* Support for WordPress 6.7.
+* Support for PHP 8.4.
+* Inline scripts are now output using `wp_print_inline_script_tag()` so a Content Security Policy can be fully implemented.
+* Various improvements and fixes.
 
 ### 3.16.4 (25 July 2024) ###
 
@@ -186,51 +188,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 * Avoids a fatal error if a deprecated warning is triggered early on during the bootstrap process
 * Avoids a PHP warning that can be triggered during certain HTTP API requests when Curl is not in use
 * Skips loading QM during the plugin update process
-
-### 3.13.0 (9 July 2023) ###
-
-* Adds a dedicated panel for "Doing it Wrong" and deprecated functionality usage
-* Allows data in the HTTP API requests panel to be filtered by host name
-* Adds a "Type" column wherever a list of hooks can show both actions and filters
-* Improves various aspects of the "Editor" setting
-* Increases the minimum supported version of PHP to 7.4
-* Many thanks to @crstauf for the majority of the new features in this release
-
-### 3.12.3 (17 May 2023) ###
-
-* Improves theme template part data collection when the Gutenberg plugin is in use with a block theme
-* Skips attempting to resolve a block template if the theme doesn't support block templates
-* Removes the fallback to `$EZSQL_ERROR` for database query errors as it's not possible to determine if the error should be ignored
-
-### 3.12.2 (27 April 2023) ###
-
-* Adds the total count to the table footer of the PHP Errors panel
-* Improves the destination URL for links that point to the site editor
-* Implements some minor visual improvements
-* Removes unreliable information about the transport for HTTP API requests
-* Removes Query Monitor output from the interim login modal
-
-### 3.12.1 (24 March 2023) ###
-
-* Corrects some inter-panel links that point to the Queries panel and sub-panels
-* Switches to `sessionStorage` for the selected table column filters so they don't persist across tabs or sessions
-* Removes the "Debug Bar:" prefix on the menus for panels inherited from the Debug Bar plugin
-
-### 3.12.0 (16 March 2023) ###
-
-* Clarifies and improves information in the Template panel when a block theme or full site editing (FSE) is in use
-* Avoids PHP warnings if a third party plugin makes unexpected changes to language file paths
-* Implements some minor performance improvements
-* Removes misleading information about WordPress memory limits
-* Removes support for multiple instances of `wpdb` (see the FAQ for more information)
-
-### 3.11.2 (23 February 2023) ###
-
-* Implements various accessibility improvements
-* Fixes an issue where not all admin area footer scripts were shown in the Scripts panel
-* Improves output when the SQLite feature in the Performance Labs plugin is in use
-* Removes QM output altogether from the Customizer
-* Ensures `wp-content/db.php` from another plugin doesn't get removed when deactivating QM
 
 ### Earlier versions ###
 
