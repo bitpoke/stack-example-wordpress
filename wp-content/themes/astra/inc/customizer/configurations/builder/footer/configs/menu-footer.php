@@ -405,5 +405,5 @@ function astra_menu_footer_configuration() {
 }
 
 if ( Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
-	astra_menu_footer_configuration();
+	add_action( 'init', 'astra_menu_footer_configuration' );
 }

@@ -671,7 +671,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	/**
 	 * Footer Copyright.
 	 */
-	$defaults['footer-copyright-editor']              = 'Copyright [copyright] [current_year] [site_title] | Powered by [theme_author]';
+	$defaults['footer-copyright-editor']              = __( 'Copyright [copyright] [current_year] [site_title] | Powered by [theme_author]', 'astra' );
 	$defaults['footer-copyright-color']               = $apply_new_default_color_typo_values ? 'var(--ast-global-color-3)' : '';
 	$defaults['line-height-section-footer-copyright'] = 2;
 	$defaults['footer-copyright-alignment']           = array(

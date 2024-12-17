@@ -7,6 +7,8 @@
  * @since       Astra 3.3.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Icons Initial Setup
  *

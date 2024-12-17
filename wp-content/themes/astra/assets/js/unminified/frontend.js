@@ -915,30 +915,23 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	/**
 	 * Navigation Keyboard Navigation.
 	 */
-	function navigation_accessibility( containerMenu, containerButton ) {
-		if ( ! containerMenu || ! containerButton ) {
+	function navigation_accessibility(containerMenu, containerButton) {
+		if (!containerMenu || !containerButton) {
 			return;
 		}
-		var button = containerButton.getElementsByTagName( 'button' )[0];
-		if ( 'undefined' === typeof button ) {
-			button = containerButton.getElementsByTagName( 'a' )[0];
-			var search_type = button.classList.contains('astra-search-icon');
-			if ( true === search_type ) {
-				return;
-			}
-			if ( 'undefined' === typeof button ) {
-				return;
-			}
+		var button = containerButton.getElementsByTagName('button')[0] || containerButton.getElementsByTagName('a')[0];
+		if (!button || (button.classList.contains('astra-search-icon'))) {
+			return;
 		}
-		var menu = containerMenu.getElementsByTagName( 'ul' )[0];
+		var menu = containerMenu.getElementsByTagName('ul')[0];
 
 		// Hide menu toggle button if menu is empty and return early.
-		if ( 'undefined' === typeof menu ) {
+		if (!menu) {
 			button.style.display = 'none';
 			return;
 		}
 
-		if ( -1 === menu.className.indexOf( 'nav-menu' ) ) {
+		if (!menu.className.includes('nav-menu')) {
 			menu.className += ' nav-menu';
 		}
 
@@ -947,58 +940,44 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				var popupClose = document.getElementById('menu-toggle-close');
 				if (popupClose) {
 					popupClose.onclick = function () {
-						if (-1 !== containerMenu.className.indexOf('toggled')) {
-							containerMenu.className = containerMenu.className.replace(' toggled', '');
-							button.setAttribute('aria-expanded', 'false');
-							menu.setAttribute('aria-expanded', 'false');
-						} else {
-							containerMenu.className += ' toggled';
-							button.setAttribute('aria-expanded', 'true');
-							menu.setAttribute('aria-expanded', 'true');
-						}
+						var toggled = containerMenu.className.includes('toggled');
+						containerMenu.className = toggled ? containerMenu.className.replace(' toggled', '') : containerMenu.className + ' toggled';
+						button.setAttribute('aria-expanded', toggled ? 'false' : 'true');
+						menu.setAttribute('aria-expanded', toggled ? 'false' : 'true');
 					};
 				}
 			}
 		});
 
-		button.onclick = function() {
-			if ( -1 !== containerMenu.className.indexOf( 'toggled' ) ) {
-				containerMenu.className = containerMenu.className.replace( ' toggled', '' );
-				button.setAttribute( 'aria-expanded', 'false' );
-				menu.setAttribute( 'aria-expanded', 'false' );
-			} else {
-				containerMenu.className += ' toggled';
-				button.setAttribute( 'aria-expanded', 'true' );
-				menu.setAttribute( 'aria-expanded', 'true' );
-			}
+		button.onclick = function () {
+			var toggled = containerMenu.className.includes('toggled');
+			containerMenu.className = toggled ? containerMenu.className.replace(' toggled', '') : containerMenu.className + ' toggled';
+			button.setAttribute('aria-expanded', toggled ? 'false' : 'true');
+			menu.setAttribute('aria-expanded', toggled ? 'false' : 'true');
 		};
 
-		if( ! astra.is_header_footer_builder_active ) {
+		if (!astra.is_header_footer_builder_active) {
 
 			// Get all the link elements within the menu.
-			var links    = menu.getElementsByTagName( 'a' );
-			var subMenus = menu.getElementsByTagName( 'ul' );
-
+			var links = menu.getElementsByTagName('a');
+			var subMenus = menu.getElementsByTagName('ul');
 
 			// Set menu items with submenus to aria-haspopup="true".
-			for ( var i = 0, len = subMenus.length; i < len; i++ ) {
-				subMenus[i].parentNode.setAttribute( 'aria-haspopup', 'true' );
+			for (var i = 0, len = subMenus.length; i < len; i++) {
+				subMenus[i].parentNode.setAttribute('aria-haspopup', 'true');
 			}
 
 			// Each time a menu link is focused or blurred, toggle focus.
-			for ( i = 0, len = links.length; i < len; i++ ) {
-				links[i].addEventListener( 'focus', toggleFocus, true );
-				links[i].addEventListener( 'blur', toggleFocus, true );
-				links[i].addEventListener( 'click', toggleClose, true );
+			for (var i = 0, len = links.length; i < len; i++) {
+				links[i].addEventListener('focus', toggleFocus, true);
+				links[i].addEventListener('blur', toggleFocus, true);
+				links[i].addEventListener('click', toggleClose, true);
 			}
-
 		}
 
-		if( astra.is_header_footer_builder_active ) {
+		if (astra.is_header_footer_builder_active) {
 			tabNavigation();
 		}
-
-
 	}
 
 	// Tab navigation for accessibility.
@@ -1009,63 +988,42 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		const megaMenuFullWidth = document.querySelectorAll('.astra-full-megamenu-wrapper');
 
 		if (dropdownToggleLinks) {
-
 			dropdownToggleLinks.forEach(element => {
 				element.addEventListener('keydown', function (e) {
-
 					if ('Enter' === e.key) {
-						if (!e.target.closest('li').querySelector('.sub-menu').classList.contains('astra-megamenu')) {
-							setTimeout(() => {
-								e.target.closest('li').querySelector('.sub-menu').classList.toggle('toggled-on');
-								e.target.closest('li').classList.toggle('ast-menu-hover');
+						const closestLi = e.target.closest('li');
+						const subMenu = closestLi.querySelector('.sub-menu');
+						const isMegaMenu = subMenu && subMenu.classList.contains('astra-megamenu');
 
-								if ('false' === e.target.getAttribute('aria-expanded') || !e.target.getAttribute('aria-expanded')) {
-									e.target.setAttribute('aria-expanded', 'true');
-								} else {
-									e.target.setAttribute('aria-expanded', 'false');
-								}
-							}, 10);
-						} else {
-							// This is to handle mega menu
-							setTimeout(() => {
-								const subMenuTarget = e.target.closest('li').querySelector('.sub-menu');
-								const fullMegaMenuWrapper = e.target.closest('li').querySelector('.astra-full-megamenu-wrapper');
-								if( subMenuTarget ) {
-									subMenuTarget.classList.toggle('astra-megamenu-focus');
-								}
+						setTimeout(() => {
+							if (!isMegaMenu) {
+								subMenu.classList.toggle('toggled-on');
+								closestLi.classList.toggle('ast-menu-hover');
+							} else {
+								const fullMegaMenuWrapper = closestLi.querySelector('.astra-full-megamenu-wrapper');
+								if (subMenu) subMenu.classList.toggle('astra-megamenu-focus');
+								if (fullMegaMenuWrapper) fullMegaMenuWrapper.classList.toggle('astra-megamenu-wrapper-focus');
+								closestLi.classList.toggle('ast-menu-hover');
+							}
 
-								if( fullMegaMenuWrapper ) {
-									fullMegaMenuWrapper.classList.toggle('astra-megamenu-wrapper-focus');
-								}
-								e.target.closest('li').classList.toggle('ast-menu-hover');
-
-								if ('false' === e.target.getAttribute('aria-expanded') || !e.target.getAttribute('aria-expanded')) {
-									e.target.setAttribute('aria-expanded', 'true');
-								} else {
-									e.target.setAttribute('aria-expanded', 'false');
-								}
-							}, 10);
-						}
+							const ariaExpanded = e.target.getAttribute('aria-expanded');
+							e.target.setAttribute('aria-expanded', ariaExpanded === 'false' || !ariaExpanded ? 'true' : 'false');
+						}, 10);
 					}
 				});
 			});
 
 			if (siteNavigationSubMenu || menuLi) {
-				// Close sub-menus when clicking elsewhere
 				document.addEventListener('click', function (e) {
 					closeNavigationMenu(siteNavigationSubMenu, dropdownToggleLinks, menuLi, megaMenuFullWidth);
 				}, false);
-			}
 
-			if (siteNavigationSubMenu || menuLi) {
-				// Close sub-menus on escape key
 				document.addEventListener('keydown', function (e) {
 					if ('Escape' === e.key) {
 						closeNavigationMenu(siteNavigationSubMenu, dropdownToggleLinks, menuLi, megaMenuFullWidth);
 					}
 				}, false);
 			}
-
 		}
 
 		const allParentMenu = document.querySelectorAll('nav.site-navigation .ast-nav-menu > .menu-item-has-children > a .ast-header-navigation-arrow');
@@ -1329,51 +1287,53 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 })();
 
 // Accessibility improvement for menu items.
-document.addEventListener('DOMContentLoaded', function() {
-    let submenuToggles = document.querySelectorAll('.menu-link .dropdown-menu-toggle');
+document.addEventListener('DOMContentLoaded', function () {
+    const submenuToggles = document.querySelectorAll('.menu-link .dropdown-menu-toggle');
 
-    // Adding event listeners for focus and keydown 
-    submenuToggles.forEach((toggle) =>  {
-        toggle.addEventListener('focus', function() {
-            updateAriaExpanded(this);
-        });
-
-        toggle.addEventListener('blur', function() {
-            updateAriaExpanded(this);
-        });
-
-        toggle.addEventListener('keydown', function(event) {
+    // Add event listeners for focus, blur, and keydown events.
+    submenuToggles.forEach(toggle => {
+        toggle.addEventListener('focus', () => updateAriaExpanded(toggle));
+        toggle.addEventListener('blur', () => updateAriaExpanded(toggle));
+        toggle.addEventListener('keydown', event => {
             if (event.key === 'Enter') {
-                toggleAriaExpanded(this);
+                toggleAriaExpanded(toggle);
             }
         });
     });
 
-    // Added event listener for Escape key press
-    document.addEventListener('keydown', function(event) {
+    // Add event listener for Escape key press to close all submenus.
+    document.addEventListener('keydown', event => {
         if (event.key === 'Escape') {
             closeAllSubmenus();
         }
     });
 
+    /**
+     * Updates the `aria-expanded` attribute based on submenu visibility.
+     * @param {HTMLElement} toggle - The toggle element.
+     */
     function updateAriaExpanded(toggle) {
-        let menuItemLink = toggle.closest('.menu-link');
-        let submenu = menuItemLink.nextElementSibling;
-        let isSubmenuVisible = submenu.classList.contains('toggled-on');
+        const menuItemLink = toggle.closest('.menu-link');
+        const submenu = menuItemLink.nextElementSibling;
+        const isSubmenuVisible = submenu.classList.contains('toggled-on');
         menuItemLink.setAttribute('aria-expanded', isSubmenuVisible ? 'true' : 'false');
     }
 
+    /**
+     * Toggles the `aria-expanded` attribute for a given toggle element.
+     * @param {HTMLElement} toggle - The toggle element.
+     */
     function toggleAriaExpanded(toggle) {
-        let menuItemLink = toggle.closest('.menu-link');
-        let currentState = menuItemLink.getAttribute('aria-expanded');
+        const menuItemLink = toggle.closest('.menu-link');
+        const currentState = menuItemLink.getAttribute('aria-expanded');
         menuItemLink.setAttribute('aria-expanded', currentState === 'true' ? 'false' : 'true');
     }
 
+    /**
+     * Closes all submenus by updating the `aria-expanded` attribute.
+     */
     function closeAllSubmenus() {
-        let submenuToggles = document.querySelectorAll('.menu-link .dropdown-menu-toggle');
-        submenuToggles.forEach(function(toggle) {
-            updateAriaExpanded(toggle);
-        });
+        submenuToggles.forEach(toggle => updateAriaExpanded(toggle));
     }
 });
 

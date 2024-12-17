@@ -265,5 +265,5 @@ function astra_header_off_canvas_configuration() {
 }
 
 if ( Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
-	astra_header_off_canvas_configuration();
+	add_action( 'init', 'astra_header_off_canvas_configuration' );
 }

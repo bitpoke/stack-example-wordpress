@@ -618,7 +618,8 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 
 			// Get list of choices from the control
 			// associated with the setting.
-			$choices    = $setting->manager->get_control( $setting->id )->choices;
+			$choices = $setting->manager->get_control( $setting->id )->choices;
+
 			$input_keys = $input;
 
 			foreach ( $input_keys as $key => $value ) {

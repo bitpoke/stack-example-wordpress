@@ -974,10 +974,15 @@ li#customize-control-astra-settings-header-desktop-items, li#customize-control-a
 
 .components-popover__content .ahfb-popover-builder-list .ahfb-radio-container-control {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 5px;
-    width: 300px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 4px;
+    width: 420px;
     max-height: 340px;
+    overflow: auto;
+}
+
+.components-popover__content {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 0px 0px -2px, rgba(50, 50, 93, 0.25) 0px 3px 7px -3px;
 }
 
 .ahfb-popover-builder-list .ahfb-radio-container-control .components-button.is-tertiary {
@@ -985,6 +990,7 @@ li#customize-control-astra-settings-header-desktop-items, li#customize-control-a
     margin: 0;
     display: grid;
     text-transform: capitalize;
+    border: 1px solid transparent;
 }
 
 .ahfb-builder-areas.has-center-items .ahfb-builder-add-item.center-on-right {
@@ -1145,13 +1151,23 @@ li#customize-control-astra-settings-header-desktop-items, li#customize-control-a
 }
 
 .components-button.builder-add-btn .add-btn-icon {
-    padding-bottom: 12px;
+    padding-bottom: 7px;
 }
 
 .ahfb-radio-container-control .components-button.is-tertiary:not(:disabled):not([aria-disabled=true]):hover, .ahfb-radio-container-control .components-button.is-tertiary:not(:disabled):not([aria-disabled=true]):active {
     color: #191e23;
-    box-shadow: inset 0 0 0 1px #555d66, inset 0 0 0 2px #ffffff;
+    box-shadow: 0px 8px 48px -8px #00000029;
+    border-color: #E5E7EB;    
     background: transparent;
+    border-radius: 6px;
+}
+
+.ahfb-radio-container-control .components-button.pro-feature.is-tertiary:not(:disabled):not([aria-disabled=true]):hover, .ahfb-radio-container-control .components-button.is-tertiary:not(:disabled):not([aria-disabled=true]):active {
+    color: #191e23;
+    box-shadow: none;
+    border: 1px solid #E5E7EB;
+    background: transparent;
+    border-radius: 6px;
 }
 
 .ahfb-radio-container-control .components-button.is-tertiary.active-radio {
@@ -1243,7 +1259,7 @@ li#customize-control-astra-settings-header-desktop-items, li#customize-control-a
 }
 
 .components-popover__content .ahfb-radio-container-control {
-    padding: 20px 5px;
+    padding: 10px 5px;
     background: white;
 }
 
@@ -2168,4 +2184,102 @@ li#customize-control-site_icon {
  */
  #customize-controls .wp-full-overlay-sidebar-content:has(.busy) {
     overflow-y: hidden;
+}
+
+
+
+.ahfb-popover-builder-list .hfb-widgets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px;
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+.components-button-group .builder-add-btn {
+    position: relative;
+}
+
+.components-button-group .pro-feature .pro-icon {
+    position: absolute;
+    top: 2px;
+    right: 13px;
+    width: 10px;
+    height: 12px;
+    opacity: 1;
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+.components-button-group.ahfb-radio-container-control::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+}
+
+.components-button-group.ahfb-radio-container-control::-webkit-scrollbar-thumb {
+    background-color: #1615151a;
+}
+
+/* For Firefox */
+.components-button-group.ahfb-radio-container-control {
+    scrollbar-width: thin;
+    scrollbar-color: #1212121A transparent;
+}
+
+/* For IE/Edge legacy */
+.components-button-group.ahfb-radio-container-control {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.ahfb-popover-builder-list .hfb-widgets .elements-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    text-align: center;
+    color: #64748B;
+}
+
+.ahfb-popover-builder-list .hfb-widgets .elements-utm {
+    color: #0084C7;
+    text-decoration: none;
+}
+
+.react-tooltip-arrow {
+    top: 10px !important;
+}
+
+.custom-tooltip {
+    opacity: 1 !important;
+}
+
+.pro-feature .add-btn-icon .dashicon {
+    opacity: 0.2;
+}
+
+.components-popover__content {
+    padding: 4px; 
+    gap: 4px;
+    border-radius: 8px;
+}
+
+.tooltip-button{
+    color: #7DD3FC;
+}
+
+.custom-tooltip::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 8px;
+    height: 100%;
+    pointer-events: auto; 
+  }
+
+  .ahfb-popover-builder-list .bottom-shadow {
+    box-shadow: rgba(18, 18, 0, 0.2) 0px 18px 22px -10px;
+	position: relative;
+	z-index:9999;
+    margin-right: -4px;
+    margin-left: -4px;
 }

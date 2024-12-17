@@ -11,6 +11,31 @@ import apiFetch from '@wordpress/api-fetch';
 const classNames = (...classes) => classes.filter(Boolean).join(" ");
 
 /**
+ * Creates a debounced function that delays its execution until after the specified delay.
+ *
+ * The debounce() function can also be used from lodash.debounce package in future.
+ *
+ * @param {Function} func - The function to debounce.
+ * @param {number} delay - The delay in milliseconds before the function is executed.
+ *
+ * @returns {Function} A debounced function.
+ */
+const debounce = ( func, delay ) => {
+	let timer;
+	function debounced( ...args ) {
+		clearTimeout( timer );
+		timer = setTimeout( () => func( ...args ), delay );
+	};
+
+	// Attach a `cancel` method to clear the timeout.
+	debounced.cancel = () => {
+		clearTimeout( timer );
+	};
+
+	return debounced;
+};
+
+/**
  * Returns the Astra Pro title.
  *
  * @return {string} Returns the Astra Pro title.
@@ -43,35 +68,53 @@ const getSpinner = () => {
  * @param {string}   key                - Settings key.
  * @param {string}   value              - The data to send.
  * @param {Function} dispatch           - The dispatch function.
+ * @param {Object}   abortControllerRef - The ref object with to hold abort controller.
  *
- * @return {void}
+ * @return {Promise} Returns a promise representing the processed request.
  */
-const saveSetting = (key, value, dispatch) => {
-	const formData = new window.FormData();
+const saveSetting = debounce(
+	(key, value, dispatch, abortControllerRef = { current: {} }) => {
+		// Abort any previous request.
+		if (abortControllerRef.current[key]) {
+			abortControllerRef.current[key]?.abort();
+		}
 
-	formData.append("action", "astra_update_admin_setting");
-	formData.append("security", astra_admin.update_nonce);
-	formData.append("key", key);
-	formData.append("value", value);
+		// Create a new AbortController.
+		const abortController = new AbortController();
+		abortControllerRef.current[key] = abortController;
 
-	apiFetch({
-		url: astra_admin.ajax_url,
-		method: "POST",
-		body: formData,
-	})
-		.then(() => {
-			dispatch({
-				type: "UPDATE_SETTINGS_SAVED_NOTIFICATION",
-				payload: __("Successfully saved!", "astra"),
-			});
+		const formData = new window.FormData();
+
+		formData.append("action", "astra_update_admin_setting");
+		formData.append("security", astra_admin.update_nonce);
+		formData.append("key", key);
+		formData.append("value", value);
+
+		return apiFetch({
+			url: astra_admin.ajax_url,
+			method: "POST",
+			body: formData,
+			signal: abortControllerRef.current[key]?.signal, // Pass the signal to the fetch request.
 		})
-		.catch((error) => {
-			console.error("Error during API request:", error);
-			dispatch({
-				type: "UPDATE_SETTINGS_SAVED_NOTIFICATION",
-				payload: __("An error occurred while saving.", "astra"),
+			.then(() => {
+				dispatch({
+					type: "UPDATE_SETTINGS_SAVED_NOTIFICATION",
+					payload: __("Successfully saved!", "astra"),
+				});
+			})
+			.catch((error) => {
+				// Ignore if it is intentionally aborted.
+				if (error.name === "AbortError") {
+					return;
+				}
+				console.error("Error during API request:", error);
+				dispatch({
+					type: "UPDATE_SETTINGS_SAVED_NOTIFICATION",
+					payload: __("An error occurred while saving.", "astra"),
+				});
 			});
-		});
-};
+	},
+	300
+);
 
-export { classNames, getAstraProTitle, getSpinner, saveSetting };
+export { classNames, debounce, getAstraProTitle, getSpinner, saveSetting };

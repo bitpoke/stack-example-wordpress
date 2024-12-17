@@ -1120,6 +1120,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					),
 					/** @psalm-suppress RedundantCondition */
 					'is_woo_market_zip'       => ! ASTRA_THEME_ORG_VERSION,
+					'pro_active'              => defined( 'ASTRA_EXT_VER' ),
 					/** @psalm-suppress RedundantCondition */
 				)
 			);

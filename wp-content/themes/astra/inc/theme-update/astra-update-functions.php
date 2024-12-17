@@ -1181,5 +1181,12 @@ function astra_theme_background_updater_4_8_4() {
  * @return void
  */
 function astra_theme_background_updater_4_8_7() {
-	update_option( 'astra_nps_show', true);
+
+	// Bail early if the starter template is being imported.
+	if ( get_option( 'astra_sites_import_started' ) === 'yes' ) {
+		return;
+	}
+
+	update_option( 'astra_nps_show', true );
+
 }

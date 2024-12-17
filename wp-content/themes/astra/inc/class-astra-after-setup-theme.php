@@ -61,6 +61,7 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'after_setup_theme', array( $this, 'setup_theme' ), 2 );
+			add_action( 'init', array( $this, 'init' ) );
 			add_action( 'wp', array( $this, 'setup_content_width' ) );
 		}
 
@@ -72,14 +73,6 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 		public function setup_theme() {
 
 			do_action( 'astra_class_loaded' );
-
-			/**
-			 * Make theme available for translation.
-			 * Translations can be filed in the /languages/ directory.
-			 * If you're building a theme based on Next, use a find and replace
-			 * to change 'astra' to the name of your theme in all the template files.
-			 */
-			load_theme_textdomain( 'astra', ASTRA_THEME_DIR . '/languages' );
 
 			/**
 			 * Theme Support
@@ -191,6 +184,23 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 			add_filter( 'option_woocommerce_feature_product_block_editor_enabled', '__return_false' );
 
 			add_filter( 'woocommerce_create_pages', array( $this, 'astra_enforce_woo_shortcode_pages' ), 99 );
+		}
+
+		/**
+		 * Initialize theme.
+		 *
+		 * @return void
+		 *
+		 * @since 4.8.8
+		 */
+		public function init() {
+			/**
+			 * Make theme available for translation.
+			 * Translations can be filed in the /languages/ directory.
+			 * If you're building a theme based on Next, use a find and replace
+			 * to change 'astra' to the name of your theme in all the template files.
+			 */
+			load_theme_textdomain( 'astra', ASTRA_THEME_DIR . '/languages' );
 		}
 
 		/**

@@ -87,6 +87,7 @@ if ( ! class_exists( 'Astra_Theme_Builder_Free' ) ) {
 			);
 
 			wp_localize_script( 'astra-theme-builder-script', 'astra_theme_builder', $localized_data );
+			wp_set_script_translations( 'astra-theme-builder-script', 'astra' );
 		}
 
 		/**

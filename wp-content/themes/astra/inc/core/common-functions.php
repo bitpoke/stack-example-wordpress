@@ -181,8 +181,11 @@ if ( ! function_exists( 'astra_get_font_css_value' ) ) {
 					$fonts['tablet']  = ( isset( $body_font_size['tablet'] ) && '' != $body_font_size['tablet'] ) ? $body_font_size['tablet'] : $fonts['desktop'];
 					$fonts['mobile']  = ( isset( $body_font_size['mobile'] ) && '' != $body_font_size['mobile'] ) ? $body_font_size['mobile'] : $fonts['tablet'];
 
-					if ( $fonts[ $device ] ) {
-						$css_val = esc_attr( $value ) . 'px;font-size:' . ( esc_attr( $value ) / esc_attr( $fonts[ $device ] ) ) . 'rem';
+					// Construct the CSS value with the provided unit.
+					$css_val = esc_attr( $value ) . $unit . ';';
+					// If the device unit is 'px' and the device font size is set, convert the value to 'rem'.
+					if ( $body_font_size[ $device . '-unit' ] === 'px' && $fonts[ $device ] ) {
+						$css_val .= 'font-size:' . ( esc_attr( $value ) / esc_attr( $fonts[ $device ] ) ) . 'rem';
 					}
 				} else {
 					$css_val = esc_attr( $value );

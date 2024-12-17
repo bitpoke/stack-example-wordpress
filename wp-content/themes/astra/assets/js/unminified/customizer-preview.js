@@ -29,7 +29,9 @@ function astra_font_size_rem( size, with_rem, device ) {
 			body_font_size['tablet'] 	= ( body_font_size['tablet'] != '' ) ? body_font_size['tablet'] : body_font_size['desktop'];
 			body_font_size['mobile'] 	= ( body_font_size['mobile'] != '' ) ? body_font_size['mobile'] : body_font_size['tablet'];
 
-			css += 'font-size: ' + ( size / body_font_size[device] ) + 'rem;';
+			if ( body_font_size[ device + '-unit' ] === 'px' ) {
+				css += 'font-size: ' + ( size / body_font_size[device] ) + 'rem;';
+			}
 		}
 	}
 
@@ -105,25 +107,21 @@ function astra_responsive_font_size( control, selector, dispatchCustomEvent = fa
 				control = control.replace( '[', '-' );
 				control = control.replace( ']', '' );
 
-				var fontSize = '',
+				var css_property = 'font-size',
+					fontSize = value['desktop-unit'] == 'px' ? astra_font_size_rem( value.desktop, true, 'desktop' ) : '',
 					tabletFontSize = '',
-					mobileFontSize = '',
-					css_property = 'font-size';
+					mobileFontSize = '';
 
 				jQuery( 'style#' + control + '-' + css_property ).remove();
 
 				if ( '' != value.desktop ) {
-					fontSize = 'font-size: ' + value.desktop + ( undefined == value['desktop-unit'] ? 'px' : value['desktop-unit'] );
+					fontSize = fontSize || 'font-size: ' + value.desktop + ( undefined == value['desktop-unit'] ? 'px' : value['desktop-unit'] );
 				}
 				if ( '' != value.tablet ) {
 					tabletFontSize = 'font-size: ' + value.tablet + ( undefined == value['tablet-unit'] ? 'px' : value['tablet-unit'] );
 				}
 				if ( '' != value.mobile ) {
 					mobileFontSize = 'font-size: ' + value.mobile + ( undefined == value['mobile-unit'] ? 'px' : value['mobile-unit'] );
-				}
-
-				if( value['desktop-unit'] == 'px' ) {
-					fontSize = astra_font_size_rem( value.desktop, true, 'desktop' );
 				}
 
 				// Concat and append new <style>.
@@ -136,7 +134,7 @@ function astra_responsive_font_size( control, selector, dispatchCustomEvent = fa
 				);
 
 				if ( dispatchCustomEvent ) {
-					let styleGuideUpdatedEvent = new CustomEvent('AstraStyleGuideElementUpdated', {
+					let styleGuideUpdatedEvent = new CustomEvent( 'AstraStyleGuideElementUpdated', {
 						'detail': {
 							'value': {
 								'desktop': value.desktop + ( undefined == value['desktop-unit'] ? 'px' : value['desktop-unit'] ),
@@ -593,33 +591,51 @@ function astra_border_spacing_advanced_css( section, selector ) {
 	wp.customize( 'astra-settings[' + section + '-border-width]', function( setting ) {
 		setting.bind( function( border ) {
 			var dynamicStyle = selector + ' {';
-			dynamicStyle += border.top ? 'border-top-style: solid;' : '';
-			dynamicStyle += border.right ? 'border-right-style: solid;' : '';
-			dynamicStyle += border.bottom ? 'border-bottom-style: solid;' : '';
-			dynamicStyle += border.left ? 'border-left-style: solid;' : '';
-			dynamicStyle += 'border-top-width:'  + border.top + 'px;';
-			dynamicStyle += 'border-right-width:'  + border.right + 'px;';
-			dynamicStyle += 'border-left-width:'   + border.left + 'px;';
-			dynamicStyle += 'border-bottom-width:'   + border.bottom + 'px;';
+			if ( border.top ) {
+				dynamicStyle += 'border-top-style: solid;';
+				dynamicStyle += 'border-top-width: ' + border.top + 'px;';
+			}
+			if ( border.right ) {
+				dynamicStyle += 'border-right-style: solid;';
+				dynamicStyle += 'border-right-width: ' + border.right + 'px;';
+			}
+			if ( border.bottom ) {
+				dynamicStyle += 'border-bottom-style: solid;';
+				dynamicStyle += 'border-bottom-width: ' + border.bottom + 'px;';
+			}
+			if ( border.left ) {
+				dynamicStyle += 'border-left-style: solid;';
+				dynamicStyle += 'border-left-width: ' + border.left + 'px;';
+			}
 			dynamicStyle += '} ';
 			astra_add_dynamic_css( 'astra-settings[' + section + '-border-width]', dynamicStyle );
 		} );
 	} );
+
 	wp.customize( 'astra-settings[' + section + '-border-radius]', function( setting ) {
 		setting.bind( function( border ) {
-			if ( border.top === '' && border.right === '' && border.bottom === '' || border.left === '' ) {
+			if ( !border.top && !border.right && !border.bottom && !border.left ) {
 				wp.customize.preview.send( 'refresh' );
 				return;
 			}
 			var dynamicStyle = selector + ' {';
-			dynamicStyle += 'border-top-left-radius:'  + border.top + 'px;';
-			dynamicStyle += 'border-top-right-radius:'  + border.right + 'px;';
-			dynamicStyle += 'border-bottom-left-radius:'   + border.left + 'px;';
-			dynamicStyle += 'border-bottom-right-radius:'   + border.bottom + 'px;';
+			if ( border.top !== '' ) {
+				dynamicStyle += 'border-top-left-radius: ' + border.top + 'px;';
+			}
+			if ( border.right !== '' ) {
+				dynamicStyle += 'border-top-right-radius: ' + border.right + 'px;';
+			}
+			if ( border.left !== '' ) {
+				dynamicStyle += 'border-bottom-left-radius: ' + border.left + 'px;';
+			}
+			if ( border.bottom !== '' ) {
+				dynamicStyle += 'border-bottom-right-radius: ' + border.bottom + 'px;';
+			}
 			dynamicStyle += '} ';
 			astra_add_dynamic_css( 'astra-settings[' + section + '-border-radius]', dynamicStyle );
 		} );
 	} );
+
 	astra_css( 'astra-settings[' + section + '-border-color]', 'border-color', selector );
 	astra_builder_advanced_css( section, selector );
 }

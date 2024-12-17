@@ -45,6 +45,12 @@ if ( ! class_exists( 'Astra_Nps_Survey' ) ) :
 		 * @since 1.0.0
 		 */
 		private function __construct() {
+
+			// Allow users to disable NPS survey via a filter.
+			if ( apply_filters( 'astra_nps_survey_disable', false ) ) {
+				return;
+			}
+
 			$this->version_check();
 			add_action( 'init', array( $this, 'load' ), 999 );
 		}

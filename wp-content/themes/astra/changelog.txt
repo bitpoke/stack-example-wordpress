@@ -1,5 +1,15 @@
 *** Astra Changelog ***
 
+2024-12-16 - version 4.8.8
+* New: Pro header and footer elements are now visible in the Header / Footer builder, showcasing premium Astra Pro elements.
+* New: Social Icons - Added Bluesky to the list of social profile icons available in the header builder.
+* New: Introduce filter `astra_nps_survey_disable` to disable NPS.
+* Improvement: Made the default footer copyright text translatable for better localization support.
+* Fix: Resolved font size rendering issue caused by the body font size customizer setting when units other than pixels were used.
+* Fix: Resolved issue with product category names displaying encoded characters by decoding them properly.
+* Fix: Resolved translation issues with Site Builder strings.
+* Fix: Resolved an issue where `_load_textdomain_just_in_time` function was incorrectly triggered for the `astra` text domain.
+
 2024-11-26 - version 4.8.7
 * New: Integrated NPS Survey library in Astra to gather user feedback.
 * Fix: Resolved submenu toggle button issue in the mobile header with Omnisend plugin active.
