@@ -671,6 +671,7 @@
     display: inline-block;
 }
 .ast-palette-label-wrap {
+    display: inline-block;
     text-align: center;
     color: #9CA3AF;
     overflow: hidden;
@@ -685,6 +686,7 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
+
 .ast-color-palette-wrap.active {
     box-shadow: 0px 12px 20px -8px rgb(30 41 59 / 16%);
 }
@@ -810,8 +812,6 @@ section.ast-palette-presets-inner-wrap:last-child {
 
 .ast-color-picker-custom-tooltip[data-title]::after {
 	content: attr(data-title);
-    min-width: 3em;
-    max-width: 10em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -834,6 +834,10 @@ section.ast-palette-presets-inner-wrap:last-child {
     opacity: 0;
     left: 50%;
     transform: translate(-50%,-0.5em);
+}
+
+.ast-single-palette-wrap > :last-child .ast-color-picker-custom-tooltip[data-title]::after {
+    left: -16px;
 }
 
 .ast-color-picker-custom-tooltip-wrapper {
@@ -4419,7 +4423,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 }
 
 .customize-control-ast-color-palette .ast-field-settings-modal {
-	z-index: 11;
+  z-index: 11;
 }
 
 .ast-field-settings-modal .customize-control-ast-divider:first-child {
@@ -4430,7 +4434,8 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
   width: 100%;
 }
 
-.ast-group-tabs, .ast-tab-content {
+.ast-group-tabs,
+.ast-tab-content {
   position: relative;
 }
 
@@ -4439,7 +4444,8 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
   border-bottom: 1px solid #ddd;
 }
 
-.ast-group-list:before, .ast-group-list:after {
+.ast-group-list:before,
+.ast-group-list:after {
   content: "";
   display: table;
   border-collapse: collapse;
@@ -4470,7 +4476,8 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
   /*padding-top: 15px;*/
 }
 
-.ast-group-tabs .ui-widget-content.iris-slider-offset, .ast-group-tabs .ui-widget-content.iris-slider-offset-alpha {
+.ast-group-tabs .ui-widget-content.iris-slider-offset,
+.ast-group-tabs .ui-widget-content.iris-slider-offset-alpha {
   overflow: inherit;
 }
 
@@ -4565,9 +4572,10 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
   padding-right: 16px;
   box-sizing: border-box;
 }
+
 .ast-control-wrap .ast-color-picker-alpha {
-    margin-left: -5px;
-    margin-right: -5px;
+  margin-left: -5px;
+  margin-right: -5px;
 }
 
 .ast-field-settings-modal .customize-control:first-child {
@@ -4778,18 +4786,16 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
  * Divider compatibility CSS for setting group.
  */
 .ast-top-divider.customize-control-ast-settings-group .ast-toggle-desc-wrap .ast-adv-toggle-icon {
-    top: 23px;
+  top: 23px;
 }
 
 /**
  * Responsive slider control inside settings-group, case: body-font, headings-font.
  */
- .ast-fields-wrap .customize-control-ast-responsive-slider .ast-slider-wrap > label,
- .ast-fields-wrap .customize-control-ast-selector .ast-slider-wrap > label {
-    display: inline-block;
+.ast-fields-wrap .customize-control-ast-responsive-slider .ast-slider-wrap>label,
+.ast-fields-wrap .customize-control-ast-selector .ast-slider-wrap>label {
+  display: inline-block;
 }
-
-
 .customize-control-ast-slider .wrapper {
   display: flex;
 }

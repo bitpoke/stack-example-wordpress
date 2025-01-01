@@ -184,6 +184,58 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 			add_filter( 'option_woocommerce_feature_product_block_editor_enabled', '__return_false' );
 
 			add_filter( 'woocommerce_create_pages', array( $this, 'astra_enforce_woo_shortcode_pages' ), 99 );
+
+			if ( function_exists( 'wp_theme_has_theme_json' ) && wp_theme_has_theme_json() ) {
+				add_filter( 'wp_theme_json_data_theme', array( $this, 'modify_theme_palette_names' ) );
+			}
+		}
+
+		/**
+		 * Modify theme palette names.
+		 *
+		 * @param WP_Theme_JSON_Data $theme_json settings.
+		 * @return WP_Theme_JSON_Data
+		 */
+		public function modify_theme_palette_names( $theme_json ) {
+			/** @psalm-suppress UndefinedDocblockClass */
+			$json_data        = $theme_json->get_data();
+			$new_palette_data = array();
+
+			if ( ! empty( $json_data['settings']['color']['palette']['theme'] ) ) {
+				$palette      = $json_data['settings']['color']['palette']['theme'];
+				$color_labels = Astra_Global_Palette::get_palette_labels(); // Use the reusable function for labels.
+				$name_pair    = array();
+				foreach ( $color_labels as $index => $label ) {
+					$name_pair[ 'ast-global-color-' . $index ] = $label;
+				}
+
+				foreach ( $palette as $index => $color_data ) {
+					$slug                       = ! empty( $color_data['slug'] ) ? $color_data['slug'] : '';
+					$new_palette_data[ $index ] = array(
+						'name'  => $name_pair[ $slug ],
+						'slug'  => $slug,
+						'color' => $color_data['color'],
+					);
+				}
+			}
+
+			if ( ! empty( $new_palette_data ) ) {
+				$new_data = array(
+					'version'  => 1,
+					'settings' => array(
+						'color' => array(
+							'palette' => array(
+								'theme' => $new_palette_data,
+							),
+						),
+					),
+				);
+
+				/** @psalm-suppress UndefinedDocblockClass */
+				$theme_json->update_with( $new_data );
+			}
+
+			return $theme_json;
 		}
 
 		/**

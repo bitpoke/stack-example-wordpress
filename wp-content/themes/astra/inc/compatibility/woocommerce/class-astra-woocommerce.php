@@ -1491,7 +1491,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		 * @return boolean
 		 */
 		public static function astra_update_default_font_styling() {
-			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+			$astra_settings = astra_get_options();
 			return apply_filters( 'astra_default_font_style_update', isset( $astra_settings['ast-font-style-update'] ) ? false : true );
 		}
 
@@ -2755,7 +2755,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 							top: 1.5em;
 							' . esc_attr( $ltr_left ) . ': 1.5em;
 							color: var(--ast-global-color-3);
-							background-color: var(--ast-global-color-5);
+							background-color: var(--ast-global-color-primary, var(--ast-global-color-5));
 							width: fit-content;
 							border-radius: 20px;
 							padding: 0.4em 0.8em;
@@ -2807,7 +2807,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 					.ast-on-card-button .ahfb-svg-iconset {
 						border-radius: 50%;
 						color: var(--ast-global-color-2);
-						background: var(--ast-global-color-5);
+						background: var(--ast-global-color-primary, var(--ast-global-color-5));
 						opacity: 0.7;
 						width: 2em;
 						height: 2em;
@@ -2857,7 +2857,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 						white-space: nowrap;
 						padding: 8px 9px;
 						padding: 0.7em 0.9em;
-						color: var(--ast-global-color-5);
+						color: var(--ast-global-color-primary, var(--ast-global-color-5));
 						margin-' . esc_attr( $ltr_right ) . ': 10px;
 						border-radius: 3px;
 						font-size: 0.8em;
@@ -3572,7 +3572,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		 * @return boolean false if it is an existing user , true if not.
 		 */
 		public static function astra_global_btn_woo_comp() {
-			$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+			$astra_settings = astra_get_options();
 			return apply_filters( 'astra_global_btn_woo_comp', isset( $astra_settings['global-btn-woo-css'] ) ? false : true );
 		}
 

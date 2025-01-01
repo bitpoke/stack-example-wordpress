@@ -473,7 +473,58 @@ if ( ! function_exists( 'astra_parse_css' ) ) {
 }
 
 /**
- * Return Theme options.
+ * Return theme options from astra-settings option key.
+ */
+if ( ! function_exists( 'astra_get_options' ) ) {
+
+	/**
+	 * Retrieve Astra theme options array.
+	 *
+	 * @return array The theme options array.
+	 *
+	 * @since 4.8.9
+	 */
+	function astra_get_options() {
+		// Ensure we're not interfering during WordPress installation.
+		if ( wp_installing() ) {
+			return [];
+		}
+
+		/**
+		 * Filter to bypass the cached Astra options.
+		 *
+		 * Example usage:
+		 *     add_filter( 'astra_get_options_nocache', '__return_true' );
+		 *
+		 * @since 4.8.9
+		 * @return bool Whether to bypass the cache. Default is false.
+		 */
+		if ( apply_filters( 'astra_get_options_nocache', false ) ) {
+			$astra_options = get_option( ASTRA_THEME_SETTINGS );
+		} else {
+			// Use a static variable to cache the options for this request.
+			static $cached_astra_options = null;
+
+			// Fetch the options once and cache them in the static variable.
+			if ( is_null( $cached_astra_options ) || is_customize_preview() ) {
+				$cached_astra_options = Astra_Theme_Options::get_astra_options();
+			}
+
+			$astra_options = $cached_astra_options;
+		}
+
+		/**
+		 * Filter the options array for Astra Settings.
+		 *
+		 * @since 4.8.9
+		 * @return array The theme options array.
+		 */
+		return apply_filters( 'astra_get_options', $astra_options );
+	}
+}
+
+/**
+ * Return Theme option.
  */
 if ( ! function_exists( 'astra_get_option' ) ) {
 
@@ -1034,7 +1085,7 @@ if ( ! function_exists( 'astra_get_the_title' ) ) {
  * @return boolean false if it is an existing user , true if not.
  */
 function astra_use_dynamic_blog_layouts() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_get_option_dynamic_blog_layouts', isset( $astra_settings['dynamic-blog-layouts'] ) ? $astra_settings['dynamic-blog-layouts'] : true );
 }
 
@@ -1684,7 +1735,7 @@ function astra_check_current_post_comment_enabled() {
  * @return boolean false if it is an existing user , true if not.
  */
 function astra_zero_font_size_case() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_zero_font_size_case', isset( $astra_settings['astra-zero-font-size-case-css'] ) ? false : true );
 }
 
@@ -1706,7 +1757,7 @@ function astra_wp_version_compare( $version, $compare ) {
  * @return bool true|false.
  */
 function astra_block_based_legacy_setup() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return ( isset( $astra_settings['blocks-legacy-setup'] ) && isset( $astra_settings['wp-blocks-ui'] ) && 'legacy' === $astra_settings['wp-blocks-ui'] ) ? true : false;
 }
 
@@ -1716,7 +1767,7 @@ function astra_block_based_legacy_setup() {
  * @return bool true|false.
  */
 function astra_check_is_structural_setup() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_get_option_customizer-default-layout-update', isset( $astra_settings['customizer-default-layout-update'] ) ? false : true ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 }
 
@@ -1727,7 +1778,7 @@ function astra_check_is_structural_setup() {
  * @return bool true|false.
  */
 function astra_check_old_sidebar_user() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_old_global_sidebar_defaults', isset( $astra_settings['astra-old-global-sidebar-default'] ) ? false : true );
 }
 
@@ -1738,7 +1789,7 @@ function astra_check_old_sidebar_user() {
  * @return bool true|false.
  */
 function astra_load_woocommerce_login_form_password_icon() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_get_option_woo-show-password-icon', isset( $astra_settings['woo-show-password-icon'] ) ? false : true ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 }
 

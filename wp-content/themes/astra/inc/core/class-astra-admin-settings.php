@@ -163,7 +163,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 		public static function register_notices() {
 			// Return if white labeled.
 			/** @psalm-suppress RedundantCondition */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-			if ( astra_is_white_labelled() || ! ASTRA_THEME_ORG_VERSION || false === apply_filters( 'astra_showcase_starter_templates_notice', true ) ) {
+			if ( astra_is_white_labelled() || ! ASTRA_THEME_ORG_VERSION || false === apply_filters( 'astra_showcase_starter_templates_notice', true ) || ! Astra_Menu::is_promoting_starter_templates() ) {
 				/** @psalm-suppress RedundantCondition */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				return;
 			}

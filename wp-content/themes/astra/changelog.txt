@@ -1,5 +1,14 @@
 *** Astra Changelog ***
 
+2024-12-31 - version 4.8.9
+* New: Added an option to move/shift body content when the Off-Canvas menu opens.
+* Improvement: Updated color picker labels to use meaningful names like "Brand" and "Primary Color" instead of generic names like "Color 1" and "Color 2," improving usability and clarity.
+* Improvement: Enhanced performance for Astra Customizer options for faster execution.
+* Improvement: Accessibility improvements for menu navigation by addressing cross-browser compatibility fixes.
+* Fix: Resolved an issue where the quantity updater input in the mini cart failed to display correctly when the Variation Swatches plugin was active, ensuring it now appears as expected after adding products.
+* Fix: Resolved global headings font extra options not reflecting in the Customizer.
+* Fix: Resolved issue where Astra fullwidth container width overriding Spectra container width.
+
 2024-12-16 - version 4.8.8
 * New: Pro header and footer elements are now visible in the Header / Footer builder, showcasing premium Astra Pro elements.
 * New: Social Icons - Added Bluesky to the list of social profile icons available in the header builder.

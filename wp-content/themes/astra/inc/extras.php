@@ -773,7 +773,7 @@ function astra_load_preload_local_fonts( $url, $format = 'woff2' ) {
  * @since 3.6.0
  */
 function astra_get_transparent_header_default_value() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_transparent_header_default_border', isset( $astra_settings['transparent-header-default-border'] ) ? $astra_settings['transparent-header-default-border'] : true );
 }
 
@@ -796,7 +796,7 @@ function astra_has_gcp_typo_preset_compatibility() {
  * @return string
  */
 function astra_button_default_padding_updated() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_update_button_padding_defaults', isset( $astra_settings['btn-default-padding-updated'] ) ? $astra_settings['btn-default-padding-updated'] : true );
 }
 
@@ -807,7 +807,7 @@ function astra_button_default_padding_updated() {
  * @return string
  */
 function astra_scndry_btn_default_padding() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_update_secondary_button_padding_defaults', isset( $astra_settings['scndry-btn-default-padding'] ) ? $astra_settings['scndry-btn-default-padding'] : true );
 }
 
@@ -832,7 +832,7 @@ function astra_has_widgets_block_editor() {
  * @return boolean
  */
 function astra_can_remove_elementor_toc_margin_space() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_remove_elementor_toc_margin', isset( $astra_settings['remove-elementor-toc-margin-css'] ) ? false : true );
 }
 
@@ -843,7 +843,7 @@ function astra_can_remove_elementor_toc_margin_space() {
  * @return boolean
  */
 function astra_can_add_styling_for_hr() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_highlight_elementor_hr_tag', isset( $astra_settings['add-styling-for-hr'] ) ? false : true );
 }
 /**
@@ -853,7 +853,7 @@ function astra_can_add_styling_for_hr() {
  * @return boolean false if it is an existing user, true for new user.
  */
 function astra_has_global_color_format_support() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_apply_global_color_format_support', isset( $astra_settings['support-global-color-format'] ) ? false : true );
 }
 
@@ -1281,16 +1281,17 @@ function astra_get_queried_post_types() {
  * @since 4.5.0
  */
 function astra_get_palette_presets() {
+	$color_palette_reorganize = Astra_Dynamic_CSS::astra_4_8_0_compatibility();
 	return array(
 		'preset_1'  => array(
 			'#0067FF',
 			'#005EE9',
 			'#0F172A',
 			'#364151',
-			'#E7F6FF',
-			'#FFFFFF',
-			'#D1DAE5',
-			'#070614',
+			$color_palette_reorganize ? '#FFFFFF' : '#E7F6FF',
+			$color_palette_reorganize ? '#E7F6FF' : '#FFFFFF',
+			$color_palette_reorganize ? '#070614' : '#D1DAE5',
+			$color_palette_reorganize ? '#D1DAE5' : '#070614',
 			'#222222',
 		),
 		'preset_2'  => array(
@@ -1298,10 +1299,10 @@ function astra_get_palette_presets() {
 			'#5511F8',
 			'#0F172A',
 			'#454F5E',
-			'#F2F0FE',
-			'#FFFFFF',
-			'#D8D8F5',
-			'#0D0614',
+			$color_palette_reorganize ? '#FFFFFF' : '#F2F0FE',
+			$color_palette_reorganize ? '#F2F0FE' : '#FFFFFF',
+			$color_palette_reorganize ? '#0D0614' : '#D8D8F5',
+			$color_palette_reorganize ? '#D8D8F5' : '#0D0614',
 			'#222222',
 		),
 		'preset_3'  => array(
@@ -1309,10 +1310,10 @@ function astra_get_palette_presets() {
 			'#CC1939',
 			'#0F172A',
 			'#3A3A3A',
-			'#FFEDE6',
-			'#FFFFFF',
-			'#FFD1BF',
-			'#140609',
+			$color_palette_reorganize ? '#FFFFFF' : '#FFEDE6',
+			$color_palette_reorganize ? '#FFEDE6' : '#FFFFFF',
+			$color_palette_reorganize ? '#140609' : '#FFD1BF',
+			$color_palette_reorganize ? '#FFD1BF' : '#140609',
 			'#222222',
 		),
 		'preset_4'  => array(
@@ -1320,10 +1321,10 @@ function astra_get_palette_presets() {
 			'#379237',
 			'#0F172A',
 			'#2F3B40',
-			'#EDFBE2',
-			'#FFFFFF',
-			'#D5EAD8',
-			'#0C1406',
+			$color_palette_reorganize ? '#FFFFFF' : '#EDFBE2',
+			$color_palette_reorganize ? '#EDFBE2' : '#FFFFFF',
+			$color_palette_reorganize ? '#0C1406' : '#D5EAD8',
+			$color_palette_reorganize ? '#D5EAD8' : '#0C1406',
 			'#222222',
 		),
 		'preset_5'  => array(
@@ -1331,10 +1332,10 @@ function astra_get_palette_presets() {
 			'#D09A40',
 			'#0F172A',
 			'#4A4A4A',
-			'#FAF5E5',
-			'#FFFFFF',
-			'#F0E6C5',
-			'#141004',
+			$color_palette_reorganize ? '#FFFFFF' : '#FAF5E5',
+			$color_palette_reorganize ? '#FAF5E5' : '#FFFFFF',
+			$color_palette_reorganize ? '#141004' : '#F0E6C5',
+			$color_palette_reorganize ? '#F0E6C5' : '#141004',
 			'#222222',
 		),
 		'preset_6'  => array(
@@ -1342,10 +1343,10 @@ function astra_get_palette_presets() {
 			'#EA559D',
 			'#0F172A',
 			'#454F5E',
-			'#FCEEF5',
-			'#FFFFFF',
-			'#FAD8E9',
-			'#140610',
+			$color_palette_reorganize ? '#FFFFFF' : '#FCEEF5',
+			$color_palette_reorganize ? '#FCEEF5' : '#FFFFFF',
+			$color_palette_reorganize ? '#140610' : '#FAD8E9',
+			$color_palette_reorganize ? '#FAD8E9' : '#140610',
 			'#222222',
 		),
 		'preset_7'  => array(
@@ -1353,10 +1354,10 @@ function astra_get_palette_presets() {
 			'#178E79',
 			'#0F172A',
 			'#454F5E',
-			'#EDF6EE',
-			'#FFFFFF',
-			'#D4F3D7',
-			'#06140C',
+			$color_palette_reorganize ? '#FFFFFF' : '#EDF6EE',
+			$color_palette_reorganize ? '#EDF6EE' : '#FFFFFF',
+			$color_palette_reorganize ? '#06140C' : '#D4F3D7',
+			$color_palette_reorganize ? '#D4F3D7' : '#06140C',
 			'#222222',
 		),
 		'preset_8'  => array(
@@ -1364,10 +1365,10 @@ function astra_get_palette_presets() {
 			'#E98C00',
 			'#0F172A',
 			'#454F5E',
-			'#FEF9E1',
-			'#FFFFFF',
-			'#F9F0C8',
-			'#141006',
+			$color_palette_reorganize ? '#FFFFFF' : '#FEF9E1',
+			$color_palette_reorganize ? '#FEF9E1' : '#FFFFFF',
+			$color_palette_reorganize ? '#141006' : '#F9F0C8',
+			$color_palette_reorganize ? '#F9F0C8' : '#141006',
 			'#222222',
 		),
 		'preset_9'  => array(
@@ -1375,10 +1376,10 @@ function astra_get_palette_presets() {
 			'#F15808',
 			'#1C0D0A',
 			'#353535',
-			'#FEF1E4',
-			'#FFFFFF',
-			'#E5D7D1',
-			'#140B06',
+			$color_palette_reorganize ? '#FFFFFF' : '#FEF1E4',
+			$color_palette_reorganize ? '#FEF1E4' : '#FFFFFF',
+			$color_palette_reorganize ? '#140B06' : '#E5D7D1',
+			$color_palette_reorganize ? '#E5D7D1' : '#140B06',
 			'#222222',
 		),
 		'preset_10' => array(
@@ -1386,10 +1387,10 @@ function astra_get_palette_presets() {
 			'#65696F',
 			'#151616',
 			'#393C40',
-			'#F6F6F6',
-			'#FFFFFF',
-			'#F1F0F0',
-			'#232529',
+			$color_palette_reorganize ? '#FFFFFF' : '#F6F6F6',
+			$color_palette_reorganize ? '#F6F6F6' : '#FFFFFF',
+			$color_palette_reorganize ? '#232529' : '#F1F0F0',
+			$color_palette_reorganize ? '#F1F0F0' : '#232529',
 			'#222222',
 		),
 	);
@@ -1465,6 +1466,6 @@ function astra_customizer_search_post_types_choices() {
  * @return bool
  */
 function astra_enable_edd_featured_image_defaults() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_enable_edd_featured_image_defaults', isset( $astra_settings['can-update-edd-featured-image-default'] ) ? false : true );
 }

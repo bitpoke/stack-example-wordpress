@@ -1290,12 +1290,29 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 document.addEventListener('DOMContentLoaded', function () {
     const submenuToggles = document.querySelectorAll('.menu-link .dropdown-menu-toggle');
 
+	const menuItemsWithSubmenu = document.querySelectorAll('.menu-item-has-children > a');
+
+	// Ensuring the submenu toggle action is handled with appropriate CSS, with cross browser compatibility for Enter key press.
+    menuItemsWithSubmenu.forEach(item => {
+        item.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const submenu = item.nextElementSibling;
+                if (submenu && submenu.classList.contains('sub-menu')) {
+                    submenu.classList.toggle('ast-visible');
+                    const ariaExpanded = item.getAttribute('aria-expanded') === 'false' ? 'true' : 'false';
+                    item.setAttribute('aria-expanded', ariaExpanded);
+                }
+            }
+        });
+    });
+
     // Add event listeners for focus, blur, and keydown events.
     submenuToggles.forEach(toggle => {
         toggle.addEventListener('focus', () => updateAriaExpanded(toggle));
         toggle.addEventListener('blur', () => updateAriaExpanded(toggle));
         toggle.addEventListener('keydown', event => {
             if (event.key === 'Enter') {
+                event.preventDefault();
                 toggleAriaExpanded(toggle);
             }
         });

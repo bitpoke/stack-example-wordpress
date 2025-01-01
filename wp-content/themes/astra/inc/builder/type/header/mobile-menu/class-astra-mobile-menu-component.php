@@ -99,7 +99,7 @@ class Astra_Mobile_Menu_Component {
 
 		// To add default alignment for navigation which can be added through any third party plugin.
 		// Do not add any CSS from theme except header alignment.
-		echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>';
+		echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		if ( is_customize_preview() ) {
 			Astra_Builder_UI_Controller::render_customizer_edit_button();

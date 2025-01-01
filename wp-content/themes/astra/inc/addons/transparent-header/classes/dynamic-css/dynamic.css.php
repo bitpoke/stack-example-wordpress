@@ -20,7 +20,7 @@ add_filter( 'astra_dynamic_theme_css', 'astra_ext_transparent_header_dynamic_css
  * @since 4.4.0
  */
 function astra_has_submenu_transperent_styling() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_submenu_anchor_transperent_style', isset( $astra_settings['v4-3-2-anchor_transperent_style'] ) ? false : true );
 }
 

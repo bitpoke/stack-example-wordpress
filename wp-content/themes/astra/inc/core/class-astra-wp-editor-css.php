@@ -367,7 +367,8 @@ class Astra_WP_Editor_CSS {
 
 		$astra_wide_particular_selector = $astra_is_block_editor_v2_ui ? '.editor-styles-wrapper .block-editor-block-list__layout.is-root-container .block-list-appender' : '.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > p, .editor-styles-wrapper .block-editor-block-list__layout.is-root-container .block-list-appender';
 
-		$blocks_spacings = self::astra_get_block_spacings();
+		$blocks_spacings          = self::astra_get_block_spacings();
+		$color_palette_reorganize = Astra_Dynamic_CSS::astra_4_8_9_compatibility();
 
 		$desktop_top_spacing    = isset( $blocks_spacings['desktop']['top'] ) ? $blocks_spacings['desktop']['top'] : '';
 		$desktop_right_spacing  = isset( $blocks_spacings['desktop']['right'] ) ? $blocks_spacings['desktop']['right'] : '';
@@ -385,6 +386,10 @@ class Astra_WP_Editor_CSS {
 		$ast_content_width = apply_filters( 'astra_block_content_width', $astra_is_block_editor_v2_ui ? $astra_container_width : '910px' );
 		$ast_wide_width    = apply_filters( 'astra_block_wide_width', $astra_is_block_editor_v2_ui ? 'calc(' . esc_attr( $astra_container_width ) . ' + var(--wp--custom--ast-default-block-left-padding) + var(--wp--custom--ast-default-block-right-padding))' : $astra_container_width );
 		$ast_narrow_width  = astra_get_option( 'narrow-container-max-width', apply_filters( 'astra_narrow_container_width', 750 ) ) . 'px';
+		$primary_color     = $color_palette_reorganize ? 'var(--ast-global-color-4)' : 'var(--ast-global-color-5)';
+		$secondary_color   = $color_palette_reorganize ? 'var(--ast-global-color-5)' : 'var(--ast-global-color-4)';
+		$alternate_color   = $color_palette_reorganize ? 'var(--ast-global-color-6)' : 'var(--ast-global-color-7)';
+		$subtle_color      = $color_palette_reorganize ? 'var(--ast-global-color-7)' : 'var(--ast-global-color-6)';
 
 		$css = ':root, body .editor-styles-wrapper {
 			--wp--custom--ast-default-block-top-padding: ' . $desktop_top_spacing . ';
@@ -393,6 +398,10 @@ class Astra_WP_Editor_CSS {
 			--wp--custom--ast-default-block-left-padding: ' . $desktop_left_spacing . ';
 			--wp--custom--ast-content-width-size: ' . $ast_content_width . ';
 			--wp--custom--ast-wide-width-size: ' . $ast_wide_width . ';
+			--ast-global-color-primary: ' . $primary_color . ';
+			--ast-global-color-secondary: ' . $secondary_color . ';
+			--ast-global-color-alternate-background: ' . $alternate_color . ';
+			--ast-global-color-subtle-background: ' . $subtle_color . ';
 		}';
 
 		$css .= '.ast-narrow-container .editor-styles-wrapper {

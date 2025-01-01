@@ -1117,6 +1117,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 						'woocommerce'    => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'woocommerce' ),
 						'blog-single'    => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'blog-single' ),
 						'blog-archive'   => astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'blog-archive' ),
+						'hfb-pro-widget' => astra_get_pro_url( 'https://wpastra.com/pricing/', 'astra-header-footer', 'free-theme', 'unlock-pro-widget' ),
 					),
 					/** @psalm-suppress RedundantCondition */
 					'is_woo_market_zip'       => ! ASTRA_THEME_ORG_VERSION,

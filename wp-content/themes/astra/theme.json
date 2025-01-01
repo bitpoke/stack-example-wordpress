@@ -26,22 +26,22 @@
         {
           "name": "Theme Color 5",
           "slug": "ast-global-color-4",
-          "color": "var(--ast-global-color-4)"
+          "color": "var(--ast-global-color-primary)"
         },
         {
           "name": "Theme Color 6",
           "slug": "ast-global-color-5",
-          "color": "var(--ast-global-color-5)"
+          "color": "var(--ast-global-color-secondary)"
         },
         {
           "name": "Theme Color 7",
           "slug": "ast-global-color-6",
-          "color": "var(--ast-global-color-6)"
+          "color": "var(--ast-global-color-alternate-background)"
         },
         {
           "name": "Theme Color 8",
           "slug": "ast-global-color-7",
-          "color": "var(--ast-global-color-7)"
+          "color": "var(--ast-global-color-subtle-background)"
         },
         {
           "name": "Theme Color 9",

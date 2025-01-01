@@ -1,7 +1,7 @@
 {
   "customizer-settings": {
     "astra-settings": {
-      "theme-auto-version": "4.8.7",
+      "theme-auto-version": "4.8.9",
       "blog-single-post-structure": [
         "single-image",
         "single-title-meta"
@@ -10809,26 +10809,26 @@
           "#000000"
         ],
         "palette_2": [
-          "#0170B9",
-          "#3a3a3a",
-          "#3a3a3a",
-          "#4B4F58",
-          "#F5F5F5",
+          "#0067FF",
+          "#005EE9",
+          "#0F172A",
+          "#364151",
           "#FFFFFF",
-          "#F2F5F7",
-          "#424242",
-          "#000000"
+          "#E7F6FF",
+          "#070614",
+          "#D1DAE5",
+          "#222222"
         ],
         "palette_3": [
-          "#0170B9",
-          "#3a3a3a",
-          "#3a3a3a",
-          "#4B4F58",
-          "#F5F5F5",
+          "#6528F7",
+          "#5511F8",
+          "#0F172A",
+          "#454F5E",
           "#FFFFFF",
-          "#F2F5F7",
-          "#424242",
-          "#000000"
+          "#F2F0FE",
+          "#0D0614",
+          "#D8D8F5",
+          "#222222"
         ]
       },
       "presets": {

@@ -294,8 +294,20 @@ if ( ! class_exists( 'Gutenberg_Editor_CSS' ) ) :
 
 			$ast_content_width = apply_filters( 'astra_block_content_width', '910px' );
 
+			$color_palette_reorganize = Astra_Dynamic_CSS::astra_4_8_9_compatibility();
+			$primary_color            = $color_palette_reorganize ? 'var(--ast-global-color-4)' : 'var(--ast-global-color-5)';
+			$secondary_color          = $color_palette_reorganize ? 'var(--ast-global-color-5)' : 'var(--ast-global-color-4)';
+			$alternate_color          = $color_palette_reorganize ? 'var(--ast-global-color-6)' : 'var(--ast-global-color-7)';
+			$subtle_color             = $color_palette_reorganize ? 'var(--ast-global-color-7)' : 'var(--ast-global-color-6)';
+
 			$content_width_size             = ( true === $improve_gb_ui ) ? $ast_content_width : '1200px';
-			$css                            = ':root{ --wp--custom--ast-content-width-size: ' . $content_width_size . ' }';
+			$css                            = ':root{
+				--wp--custom--ast-content-width-size: ' . $content_width_size . ';
+				--ast-global-color-primary: ' . $primary_color . ';
+				--ast-global-color-secondary: ' . $secondary_color . ';
+				--ast-global-color-alternate-background: ' . $alternate_color . ';
+				--ast-global-color-subtle-background: ' . $subtle_color . ';
+			}';
 			$css                           .= '.ast-narrow-container { --wp--custom--ast-content-width-size: ' . $ast_narrow_width . ' }';
 			$astra_apply_content_background = astra_apply_content_background_fullwidth_layouts();
 

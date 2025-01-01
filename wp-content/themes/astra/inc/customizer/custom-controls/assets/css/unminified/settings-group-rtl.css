@@ -36,7 +36,7 @@
 }
 
 .customize-control-ast-color-palette .ast-field-settings-modal {
-	z-index: 11;
+  z-index: 11;
 }
 
 .ast-field-settings-modal .customize-control-ast-divider:first-child {
@@ -47,7 +47,8 @@
   width: 100%;
 }
 
-.ast-group-tabs, .ast-tab-content {
+.ast-group-tabs,
+.ast-tab-content {
   position: relative;
 }
 
@@ -56,7 +57,8 @@
   border-bottom: 1px solid #ddd;
 }
 
-.ast-group-list:before, .ast-group-list:after {
+.ast-group-list:before,
+.ast-group-list:after {
   content: "";
   display: table;
   border-collapse: collapse;
@@ -87,7 +89,8 @@
   /*padding-top: 15px;*/
 }
 
-.ast-group-tabs .ui-widget-content.iris-slider-offset, .ast-group-tabs .ui-widget-content.iris-slider-offset-alpha {
+.ast-group-tabs .ui-widget-content.iris-slider-offset,
+.ast-group-tabs .ui-widget-content.iris-slider-offset-alpha {
   overflow: inherit;
 }
 
@@ -182,9 +185,10 @@
   padding-left: 16px;
   box-sizing: border-box;
 }
+
 .ast-control-wrap .ast-color-picker-alpha {
-    margin-right: -5px;
-    margin-left: -5px;
+  margin-right: -5px;
+  margin-left: -5px;
 }
 
 .ast-field-settings-modal .customize-control:first-child {
@@ -395,14 +399,13 @@
  * Divider compatibility CSS for setting group.
  */
 .ast-top-divider.customize-control-ast-settings-group .ast-toggle-desc-wrap .ast-adv-toggle-icon {
-    top: 23px;
+  top: 23px;
 }
 
 /**
  * Responsive slider control inside settings-group, case: body-font, headings-font.
  */
- .ast-fields-wrap .customize-control-ast-responsive-slider .ast-slider-wrap > label,
- .ast-fields-wrap .customize-control-ast-selector .ast-slider-wrap > label {
-    display: inline-block;
+.ast-fields-wrap .customize-control-ast-responsive-slider .ast-slider-wrap>label,
+.ast-fields-wrap .customize-control-ast-selector .ast-slider-wrap>label {
+  display: inline-block;
 }
-

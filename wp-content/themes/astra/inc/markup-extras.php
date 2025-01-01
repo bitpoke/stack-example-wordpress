@@ -1307,12 +1307,12 @@ if ( ! function_exists( 'astra_primary_navigation_markup' ) ) {
 			if ( has_nav_menu( 'primary' ) ) {
 				// To add default alignment for navigation which can be added through any third party plugin.
 				// Do not add any CSS from theme except header alignment.
-				echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>';
+				echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					wp_nav_menu( $primary_menu_args );
 				echo '</div>';
 			} else {
 
-				echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>';
+				echo '<div ' . astra_attr( 'ast-main-header-bar-alignment' ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<div class="main-header-bar-navigation ast-flex-1">';
 						echo '<nav ';
 						echo wp_kses_post(

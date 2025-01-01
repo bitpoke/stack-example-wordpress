@@ -1120,7 +1120,6 @@ function astra_theme_background_updater_4_7_1() {
 	}
 }
 
-
 /**
  * Handle backward compatibility Spectra Heading max-width with Astra when fullwidth layout is selected.
  *
@@ -1135,8 +1134,6 @@ function astra_theme_background_updater_4_8_0() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
-
-
 
 /**
  * Handle backward compatibility Single post outside spacing issue.
@@ -1189,4 +1186,30 @@ function astra_theme_background_updater_4_8_7() {
 
 	update_option( 'astra_nps_show', true );
 
+}
+
+/**
+ * Handle backward compatibility on version 4.8.9.
+ * 1. Reorganizing color palettes.
+ *
+ * @since 4.8.9
+ * @return void
+ */
+function astra_theme_background_updater_4_8_9() {
+	// Bail early if the starter template is being imported.
+	if ( get_option( 'astra_sites_import_started' ) === 'yes' || astra_get_option( 'new-color-labels' ) ) {
+		astra_update_option( 'new-color-labels', true );
+	}
+
+	$theme_options = get_option( 'astra-settings', array() );
+	if ( ! isset( $theme_options['enable-4-8-9-compatibility'] ) ) {
+		$theme_options['enable-4-8-9-compatibility'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+
+	// Enable off canvas move body option for existing users.
+	if ( ! isset( $theme_options['off-canvas-move-body'] ) ) {
+		$theme_options['off-canvas-move-body'] = true;
+		update_option( 'astra-settings', $theme_options );
+	}
 }

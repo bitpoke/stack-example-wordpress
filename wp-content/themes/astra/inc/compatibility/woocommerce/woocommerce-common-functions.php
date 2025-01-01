@@ -338,7 +338,7 @@ function astra_has_pro_woocommerce_addon() {
  * @return boolean false if it is an existing user, true if not.
  */
 function astra_cart_color_default_icon_old_header() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_support_default_cart_color_in_old_header', isset( $astra_settings['can-reflect-cart-color-in-old-header'] ) ? false : true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 }
 

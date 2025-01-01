@@ -602,7 +602,7 @@ function astra_comments_css( $dynamic_css ) {
 					flex: 1;
 				}
 				.comments-area {
-					border-top: 1px solid var(--ast-global-color-6);
+					border-top: 1px solid var(--ast-global-color-subtle-background, var(--ast-global-color-6));
 					margin-top: 2em;
 				}
 				.ast-separate-container .comments-area {

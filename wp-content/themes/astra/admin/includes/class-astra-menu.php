@@ -407,6 +407,24 @@ class Astra_Menu {
 	}
 
 	/**
+	 * Check if Starter Templates promotions is being disabled.
+	 *
+	 * @return bool
+	 * @since 4.8.9
+	 */
+	public static function is_promoting_starter_templates() {
+		/**
+		 * Filter to disable Starter Templates promotions.
+		 * Used in the Website Learners platform: A popular YouTube channel that has been our partner since 2017.
+		 *
+		 * @param bool $disable_starter_templates_promotions Whether to disable Starter Templates promotions.
+		 *
+		 * @since 4.8.9
+		 */
+		return ! apply_filters( 'astra_disable_starter_templates_promotions', false );
+	}
+
+	/**
 	 * Get Starter Templates plugin data.
 	 *
 	 * @return array
@@ -421,6 +439,7 @@ class Astra_Menu {
 			'is_available' => defined( 'ASTRA_PRO_SITES_VER' ) || defined( 'ASTRA_SITES_VER' ) ? true : false,
 			'redirection'  => admin_url( 'themes.php?page=starter-templates' ),
 			'icon_path'    => 'https://ps.w.org/astra-sites/assets/icon-256x256.gif',
+			'is_promoting' => self::is_promoting_starter_templates(),
 		);
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 

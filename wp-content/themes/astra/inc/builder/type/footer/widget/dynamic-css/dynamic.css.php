@@ -24,7 +24,7 @@ add_filter( 'astra_dynamic_theme_css', 'astra_fb_widget_dynamic_css' );
  * @return boolean false if it is an existing user, true if not.
  */
 function astra_support_footer_widget_right_margin() {
-	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	$astra_settings = astra_get_options();
 	return apply_filters( 'astra_apply_right_margin_footer_widget_css', isset( $astra_settings['support-footer-widget-right-margin'] ) ? false : true );
 }
 

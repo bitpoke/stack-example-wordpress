@@ -190,4 +190,22 @@
 		}, 50);
 	});
 
+	// Using jQuery here because WooCommerce and the variation swatches plugin rely on jQuery for AJAX handling and DOM updates.
+	jQuery(document).ready(function ($) {
+		// Listening for WooCommerce's default 'added_to_cart' and 'cfvsw_ajax_add_to_cart' both events.
+		$(document.body).on('added_to_cart cfvsw_ajax_add_to_cart', function (event, fragments, cart_hash) {
+			// Refreshing WooCommerce cart fragments.
+			$.get(wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'get_refreshed_fragments'), function (data) {
+				if (data && data.fragments) {
+					$.each(data.fragments, function (key, value) {
+						$(key).replaceWith(value);
+					});
+				}
+			});
+		});
+
+		// Triggering the 'added_to_cart' event if needed elsewhere on page reload in the flow.
+		$(document.body).trigger('added_to_cart');
+	});
+
 })();
