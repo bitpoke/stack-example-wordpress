@@ -90,11 +90,29 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 								break;
 						}
 
-						echo '<a href="' . esc_url( $link ) . '" ' . 
-							 ( $item['label'] ? 'aria-label="' . esc_attr( $item['label'] ) . '"' : 'aria-label="' . esc_attr( $item['id'] ) . '"' ) . 
-							 ( 'phone' === $item['id'] || 'email' === $item['id'] ? '' : ' target="_blank" rel="noopener noreferrer"' ) . 
-							 ' style="--color: ' . esc_attr( ! empty( $item['color'] ) ? $item['color'] : '#3a3a3a' ) . '; --background-color: ' . esc_attr( ! empty( $item['background'] ) ? $item['background'] : 'transparent' ) . ';" ' . 
-							 'class="ast-builder-social-element ast-inline-flex ast-' . esc_attr( $item['id'] ) . ' ' . esc_attr( $builder_type ) . '-social-item">';
+						/**
+						 * Filter the social links rel attribute.
+						 *
+						 * @param string $rel  Social link's rel attribute.
+						 * @param array  $item Social icon item.
+						 *
+						 * @since 4.8.10
+						 *
+						 * @psalm-suppress TooManyArguments
+						 */
+						$rel = apply_filters( 'astra_social_icon_attribute_rel', 'noopener noreferrer', $item );
+
+						echo sprintf(
+							'<a href="%s" aria-label="%s" %s style="--color: %s; --background-color: %s;" class="ast-builder-social-element ast-inline-flex ast-%s %s-social-item">',
+							esc_url( $link ),
+							esc_attr( $item['label'] ? $item['label'] : $item['id'] ),
+							in_array( $item['id'], [ 'phone', 'email' ], true ) ? '' : sprintf( 'target="_blank" rel="%s"', esc_attr( $rel ) ),
+							esc_attr( ! empty( $item['color'] ) ? $item['color'] : '#3a3a3a' ),
+							esc_attr( ! empty( $item['background'] ) ? $item['background'] : 'transparent' ),
+							esc_attr( $item['id'] ),
+							esc_attr( $builder_type )
+						);
+
 						echo self::fetch_svg_icon( $item['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 						if ( $show_label ) {

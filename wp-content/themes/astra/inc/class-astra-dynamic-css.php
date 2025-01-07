@@ -2301,10 +2301,10 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			
 			// Added cover block paragraph tag text color compatibility.
 			if ( has_block( 'core/cover' ) ) {
-				$cover_block_style['body .wp-block-cover p'] = array(
+				$cover_block_style['body .wp-block-cover:not(.has-text-color.has-link-color) p'] = array(
 					'color' => esc_attr( $text_color ),
 				);
-				$parse_css                                  .= astra_parse_css( $cover_block_style );
+				$parse_css .= astra_parse_css( $cover_block_style );
 			}
 			
 			if ( true === $update_customizer_strctural_defaults ) {

@@ -1213,3 +1213,20 @@ function astra_theme_background_updater_4_8_9() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Handle backward compatibility on version 4.8.10.
+ *
+ * @since 4.8.10
+ * @return void
+ */
+function astra_theme_background_updater_4_8_10() {
+	$theme_options = get_option( 'astra-settings', array() );
+	/**
+	 * Enable star rating compatibility for existing users, excluding template import scenarios.
+	 */
+	if ( get_option( 'astra_sites_import_started' ) !== 'yes' ) {
+		$theme_options['star-rating-comp'] = false;
+		update_option( 'astra-settings', $theme_options );
+	}
+}

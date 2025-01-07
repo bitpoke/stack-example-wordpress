@@ -387,17 +387,45 @@ if ( ! function_exists( 'astra_woocommerce_get_cart_url' ) ) {
 	/**
 	 * Filters and returns the WooCommerce cart URL for compatibility with WooCommerce 9.3.0.
 	 *
-	 * @param string $cart_url WooCommerce cart page URL.
+	 * @param null|string $cart_url WooCommerce cart page URL.
 	 *
 	 * @return string Returns the filtered WooCommerce cart page URL.
 	 *
 	 * @since 4.8.3
 	 */
-	function astra_woocommerce_get_cart_url( $cart_url ) {
+	function astra_woocommerce_get_cart_url( $cart_url = null ) {
 		// Check if WooCommerce function exists.
 		if ( function_exists( 'wc_get_page_permalink' ) ) {
 			$cart_url = wc_get_page_permalink( 'cart' );
 		}
-		return $cart_url;
+
+		if ( $cart_url === null ) {
+			$cart_url = wc_get_cart_url();
+		}
+
+		/**
+		 * Applies filters to the WooCommerce cart URL and returns the filtered URL.
+		 *
+		 * @param string $cart_url The WooCommerce cart URL.
+		 *
+		 * @return string The filtered WooCommerce cart URL.
+		 *
+		 * @since 4.8.10
+		 */
+		return apply_filters( 'astra_woocommerce_get_cart_url', $cart_url );
+	}
+}
+
+if ( ! function_exists( 'astra_wc_is_star_rating_compatibility' ) ) {
+	/**
+	 * Checks if star rating compatibility is enabled.
+	 *
+	 * @return bool Returns true if star rating compatibility is enabled, false otherwise.
+	 *
+	 * @since 4.8.10
+	 */
+	function astra_wc_is_star_rating_compatibility() {
+		$astra_settings = astra_get_options();
+		return apply_filters( 'astra_get_option_star-rating-comp', isset( $astra_settings['star-rating-comp'] ) );
 	}
 }

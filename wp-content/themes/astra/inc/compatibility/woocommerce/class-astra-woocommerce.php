@@ -821,6 +821,21 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 				);
 			}
 
+			// Check if Dokan plugin is installed and specific pages are active.
+			if (
+				( function_exists( 'dokan_is_seller_dashboard' ) && dokan_is_seller_dashboard() ) ||
+				( function_exists( 'dokan_is_store_page' ) && dokan_is_store_page() ) ||
+				( function_exists( 'dokan_is_store_listing' ) && dokan_is_store_listing() )
+			) {
+				$styles['astra-wc-dokan-compatibility'] = array(
+					'src'     => $css_uri . 'dokan-compatibility' . $file_prefix . '.css',
+					'deps'    => '',
+					'version' => ASTRA_THEME_VERSION,
+					'media'   => 'all',
+					'has_rtl' => true,
+				);
+			}
+
 			return $styles;
 		}
 
@@ -1656,6 +1671,18 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 					'background' => $single_product_heading_tab_active_color ? $single_product_heading_tab_active_color : $link_color,
 				),
 			);
+
+			
+			// Check if star rating compatibility is not enabled and apply star rating styles.
+			if ( ! astra_wc_is_star_rating_compatibility() ) {
+				$css_desktop_output['.woocommerce .star-rating'] = [
+					'width'          => 'calc( 5.4em + 5px )',
+					'letter-spacing' => '2px',
+				];
+				$css_desktop_output['.woocommerce .star-rating, .woocommerce .comment-form-rating .stars a, .woocommerce .star-rating::before'] = [
+					'color' => '#FDA256',
+				];
+			}
 
 			if ( false === Astra_Builder_Helper::$is_header_footer_builder_active ) {
 
@@ -3394,7 +3421,9 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 		public function astra_get_cart_link() {
 
 			$view_shopping_cart = apply_filters( 'astra_woo_view_shopping_cart_title', __( 'View your shopping cart', 'astra' ) );
-			$woo_cart_link      = wc_get_cart_url();
+			// Suppress TooFewArguments warning for this line
+			/** @psalm-suppress TooFewArguments */
+			$woo_cart_link = astra_woocommerce_get_cart_url();
 			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			$cart_count = null !== WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
 			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort

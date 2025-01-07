@@ -1,7 +1,17 @@
 *** Astra Changelog ***
 
+2025-01-07 - version 4.8.10
+* Improvement: Enhanced the design of WooCommerce product rating stars for a more polished appearance.
+* Improvement: Added compatibility with the Dokan plugin.
+* Improvement: Social Icons - Introduced a new filter `astra_social_icon_attribute_rel` to modify the rel attribute for social links.
+* Improvement: Added filter to modify WooCommerce cart URL.
+* Fix: Resolved an issue where global colors were not displaying correctly in the editor and was affecting the frontend layout.
+* Fix: Ensure that the text and link colors in the Cover Block editor are applied correctly without being overridden by the theme's global text colors.
+* Fix: Resolved customizer conflict with Kadence WooCommerce Email Designer plugin.
+* Fix: Resolved color inheritance issues between off-canvas, and transparent header on responsive devices.
+
 2024-12-31 - version 4.8.9
-* New: Added an option to move/shift body content when the Off-Canvas menu opens.
+* New: Added an option to move/shift body content when the Off Canvas menu opens.
 * Improvement: Updated color picker labels to use meaningful names like "Brand" and "Primary Color" instead of generic names like "Color 1" and "Color 2," improving usability and clarity.
 * Improvement: Enhanced performance for Astra Customizer options for faster execution.
 * Improvement: Accessibility improvements for menu navigation by addressing cross-browser compatibility fixes.

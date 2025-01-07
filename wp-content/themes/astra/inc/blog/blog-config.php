@@ -178,7 +178,7 @@ if ( ! function_exists( 'astra_get_post_meta' ) ) {
 									/** @psalm-suppress PossiblyFalseOperand */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 							}
 						}
-						$output_str .= esc_html( astra_get_option( 'blog-meta-author-avatar-prefix-label' ) ) . $astra_post_author_html;
+						$output_str .= esc_html( astra_get_i18n_option( 'blog-meta-author-avatar-prefix-label', _x( '%astra%', 'Blogs: Author Prefix Label', 'astra' ) ) ) . $astra_post_author_html;
 					}
 					break;
 

@@ -466,10 +466,10 @@ class Astra_WP_Editor_CSS {
 			'.block-editor-block-list__block'  => array(
 				'color' => esc_attr( $text_color ),
 			),
-			'.has-text-color .block-editor-block-list__block' => array(
+			'.has-text-color .block-editor-block-list__block:not(.wp-block-heading)' => array(
 				'color' => 'inherit',
 			),
-			'.wp-block-cover .wp-block-cover__inner-container .block-editor-rich-text__editable.wp-block-paragraph' => array(
+			'.wp-block-cover:not(.has-text-color.has-link-color) .wp-block-cover__inner-container .block-editor-rich-text__editable.wp-block-paragraph' => array(
 				'color' => esc_attr( $text_color ),
 			),
 			// Global selection CSS.
@@ -493,7 +493,7 @@ class Astra_WP_Editor_CSS {
 			),
 			'.editor-styles-wrapper h1, .editor-styles-wrapper h2, .editor-styles-wrapper h3, .editor-styles-wrapper h4, .editor-styles-wrapper h5, .editor-styles-wrapper h6' => astra_get_font_array_css( astra_get_option( 'headings-font-family' ), astra_get_option( 'headings-font-weight' ), array(), 'headings-font-extras', $heading_base_color ),
 
-			".wp-block-cover:not([class*='background-color']) .block-editor-block-list__block" => astra_get_font_array_css( astra_get_option( 'headings-font-family' ), astra_get_option( 'headings-font-weight' ), array(), 'headings-font-extras', $heading_base_color ),
+			".wp-block-cover:not([class*='background-color']):not(.has-text-color.has-link-color):not(.wp-block-cover__inner-container .wp-block-cover ). block-editor-block-list__block" => astra_get_font_array_css( astra_get_option( 'headings-font-family' ), astra_get_option( 'headings-font-weight' ), array(), 'headings-font-extras', $heading_base_color ),
 
 			// Headings H1 - H6 typography.
 			'.editor-styles-wrapper h1'        => array(

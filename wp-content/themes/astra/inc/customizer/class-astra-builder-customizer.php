@@ -203,6 +203,10 @@ final class Astra_Builder_Customizer {
 	 * @since 3.0.0
 	 */
 	public function enqueue_customizer_preview_scripts() {
+		// Bail early if it is not astra customizer.
+		if ( ! Astra_Customizer::is_astra_customizer() ) {
+			return;
+		}
 
 		// Enqueue Builder CSS.
 		wp_enqueue_style(

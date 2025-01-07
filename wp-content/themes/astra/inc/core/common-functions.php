@@ -174,6 +174,22 @@ if ( ! function_exists( 'astra_get_font_css_value' ) ) {
 
 			case 'px':
 				if ( is_numeric( $value ) || strpos( $value, 'px' ) ) {
+					/**
+					 * Filter to disable px to rem conversion.
+					 *
+					 * This filter allows developers to disable the automatic conversion of font sizes from `px` to `rem` when calculating CSS values.
+					 *
+					 * @param bool $disable_px_to_rem Whether to disable the px to rem conversion. Default false.
+					 *
+					 * @since 4.8.10
+					 */
+					$disable_px_to_rem = apply_filters( 'astra_disable_px_to_rem_conversion', false );
+
+					if ( $disable_px_to_rem ) {
+						$css_val = esc_attr( $value ) . $unit;
+						break;
+					}
+
 					$value            = intval( $value );
 					$fonts            = array();
 					$body_font_size   = astra_get_option( 'font-size-body' );

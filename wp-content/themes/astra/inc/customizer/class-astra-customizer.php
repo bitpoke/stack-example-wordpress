@@ -120,7 +120,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 
 		/**
 		 * Check if the current customizer request belongs to Astra theme.
-		 * 
+		 *
 		 * @return bool True if it is Astra customizer, false otherwise.
 		 *
 		 * @since 4.8.3
@@ -128,12 +128,22 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		public static function is_astra_customizer() {
 
 			// Bail early if it is the Kadence WooCommerce Email Designer plugin customizer.
-			if ( class_exists( 'Kadence_Woomail_Designer' ) ) {
-				if ( Kadence_Woomail_Designer::is_own_customizer_request() || Kadence_Woomail_Designer::is_own_preview_request() ) {
-					return false;
-				}
+			if (
+				class_exists( 'Kadence_Woomail_Designer' ) &&
+				( Kadence_Woomail_Designer::is_own_customizer_request() || Kadence_Woomail_Designer::is_own_preview_request() )
+			) {
+				return false;
 			}
 
+			// Bail early if it is the Decorator - WooCommerce Email Customizer plugin customizer.
+			if (
+				class_exists( 'RP_Decorator' ) &&
+				( RP_Decorator::is_own_customizer_request() || RP_Decorator::is_own_preview_request() )
+			) {
+				return false;
+			}
+
+			// Default to Astra customizer.
 			return true;
 		}
 		/**
@@ -146,9 +156,10 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			// Hooks that are necessary even if it is not Astra's customizer.
 			if ( is_admin() || is_customize_preview() ) {
 				add_action( 'customize_register', array( $this, 'include_configurations' ), 2 );
+				add_action( 'customize_register', array( $this, 'astra_pro_upgrade_configurations' ), 2 );
 			}
 			add_action( 'customize_register', array( $this, 'customize_register_panel' ), 2 );
-			
+
 			// Bail early if it is not astra customizer.
 			if ( ! self::is_astra_customizer() ) {
 				return;
@@ -161,7 +172,6 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 
 			if ( is_admin() || is_customize_preview() ) {
 				add_action( 'customize_register', array( $this, 'prepare_customizer_javascript_configs' ) );
-				add_action( 'customize_register', array( $this, 'astra_pro_upgrade_configurations' ), 2 );
 				add_action( 'customize_register', array( $this, 'prepare_group_configs' ), 9 );
 
 				add_filter( 'customize_dynamic_setting_args', array( $this, 'filter_dynamic_setting_args' ), 10, 2 );
