@@ -1,9 +1,10 @@
 # WP Crontrol
 
-Contributors: johnbillion, scompt  
-Tags: cron, wp-cron, crontrol, debug, woocommerce  
-Tested up to: 6.7  
-Stable tag: 1.17.1  
+Contributors: johnbillion, scompt
+Tags: cron, wp-cron, crontrol, debug, woocommerce
+Tested up to: 6.7
+Stable tag: 1.18.0
+License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
 WP Crontrol enables you to take control of the cron events on your WordPress website.
@@ -25,6 +26,31 @@ WP Crontrol is aware of timezones, will alert you to events that have no actions
 
 1. Go to the `Tools → Cron Events` menu to manage cron events.
 2. Go to the `Settings → Cron Schedules` menu to manage cron schedules.
+
+### Documentation
+
+[Extensive documentation on how to use WP Crontrol and how to get help for error messages that it shows is available on the WP Crontrol website](https://wp-crontrol.com/docs/how-to-use/).
+
+### For site owners
+
+WP Crontrol is an essential tool for owners of WordPress websites and WooCommerce stores to ensure that scheduled cron events run correctly and efficiently. By providing complete control over cron events, WP Crontrol helps you:
+
+* **Improve reliability**: Quickly address missed or failed cron events, ensuring your website or WooCommerce store continues to function as expected.
+* **Enhance security**: Monitor and control cron events to ensure automatic update checks are performed as they should.
+* **Simplify management**: Add, edit, delete, and pause cron events from a user-friendly interface, without needing to write any code.
+* **Gain insights**: Export cron event data for analysis or reporting.
+* **Action Scheduler compatibility**: Full support for the Action Scheduler system in WooCommerce, which is used to process recurring payments, subscriptions, and background orders.
+* **Clarity of times and timezones**: All times are shown with a clear and accurate indication of which timezone applies. No more guesswork!
+
+### For developers
+
+WP Crontrol is an invaluable tool for developers to streamline and debug their WordPress development process:
+
+* **Enhanced debugging**: Easily identify and troubleshoot issues with scheduled tasks, ensuring your scheduled events and their callbacks run as expected.
+* **Custom schedules**: Create and manage custom cron schedules to fit the specific needs of your website, plugins, or themes, providing greater flexibility than just the core schedules.
+* **Efficient workflow**: Quickly add, edit, and delete cron events directly from the WordPress admin interface, saving time and reducing the need for manual coding.
+* **Insightful monitoring**: Gain insights into the performance and behavior of your scheduled tasks, allowing for better optimization and resource management.
+* **Accurate debugging**: WP Crontrol goes to great lengths to ensure that running an event manually does so in a manner which exactly matches how WordPress core runs schdeuled events. This ensures that you can debug events accurately and with confidence.
 
 ### Other Plugins
 
@@ -159,6 +185,8 @@ If file editing has been disabled via the `DISALLOW_FILE_MODS` or `DISALLOW_FILE
 
 Therefore, the user access level required to execute arbitrary PHP code does not change with WP Crontrol activated.
 
+If the `CRONTROL_DISALLOW_PHP_EVENTS` constant is defined and set to `true`, then PHP cron events will be disabled completely. Any existing PHP cron events will remain in place (and can be deleted if user permissions allow) but their PHP code will not be executed when the event runs, and no PHP cron events can be added, edited, or run.
+
 [You can read all about the features and security of PHP cron events on the WP Crontrol website](https://wp-crontrol.com/docs/php-cron-events/).
 
 ### Are any WP-CLI commands available?
@@ -179,15 +207,16 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 
 ## Screenshots
 
-1. Cron events can be modified, deleted, and executed<br>![](.wordpress-org/screenshot-1.png)
-
-2. New cron events can be added<br>![](.wordpress-org/screenshot-2.png)
-
-3. New cron schedules can be added, giving plugin developers more options when scheduling events<br>![](.wordpress-org/screenshot-3.png)
-
-<!-- changelog -->
+1. Cron events can be modified, deleted, and executed
+2. New cron events can be added
+3. New cron schedules can be added, giving plugin developers more options when scheduling events
 
 ## Changelog ##
+
+### 1.18.0 (13 January 2025) ###
+
+* Introduces support for a `CRONTROL_DISALLOW_PHP_EVENTS` constant to fully disable the PHP cron event functionality. [Full documentation here](https://wp-crontrol.com/docs/php-cron-events/).
+* Further improvements to how time durations and timezone information is displayed.
 
 ### 1.17.1 (22 November 2024) ###
 
@@ -243,13 +272,6 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 * Confirms the plugin is compatible with PHP 8.2
 * Increases compatibility with other plugins that include very old Composer autoloader implementations
 
-### 1.15.0 (29 November 2022) ###
-
-* Introduces the ability to pause and resume cron events from the event listing screen; see the FAQ for full details
-* Adds the site time to the cron event editing screen
-* Implements an autoloader to reduce memory usage
-* Bumps the minimum supported version of PHP to 5.6
-
 ### Earlier versions ###
 
-For the changelog of earlier versions, <a href="https://github.com/johnbillion/wp-crontrol/releases">please refer to the releases page on GitHub</a>.
+For the changelog of earlier versions, <a href="https://github.com/johnbillion/wp-crontrol/releases">refer to the releases page on GitHub</a>.

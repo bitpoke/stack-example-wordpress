@@ -189,7 +189,7 @@ class Schedule_List_Table extends \WP_List_Table {
 		$interval = sprintf(
 			'%s (%s)',
 			esc_html( "{$schedule['interval']}" ),
-			esc_html( interval( $schedule['interval'] ) )
+			esc_html( interval( $schedule['interval'], true ) )
 		);
 
 		if ( $schedule['is_too_frequent'] ) {

@@ -61,29 +61,19 @@
 			"@composer validate --strict --no-check-lock",
 			"@test:phpstan",
 			"@test:phpcs",
-			"@test:start",
+			"tests-start",
 			"@test:acceptance",
-			"@test:stop"
+			"tests-stop"
 		],
 		"test:acceptance": [
 			"acceptance-tests"
 		],
-		"test:destroy": [
-			"tests-destroy"
-		],
 		"test:phpcs": [
-			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs56.json --basepath=./ --standard=phpcs56.xml",
 			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath=./ ."
 		],
 		"test:phpstan": [
-			"codecept build",
+			"codecept build #",
 			"phpstan analyze -v --memory-limit=1024M"
-		],
-		"test:start": [
-			"tests-start"
-		],
-		"test:stop": [
-			"tests-stop"
 		]
 	},
 	"support": {

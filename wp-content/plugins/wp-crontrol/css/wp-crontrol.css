@@ -36,12 +36,15 @@ table.wp-list-table {
 	border-color: #d63638;
 }
 
+.wp-list-table tr.crontrol-inactive th,
 .wp-list-table tr.crontrol-paused th {
 	border-color: #8c8f94;
 }
 
-.wp-list-table tr.crontrol-paused:not(.crontrol-no-action) .column-crontrol_next,
-.wp-list-table tr.crontrol-paused:not(.crontrol-no-action) .column-crontrol_schedule,
+.wp-list-table tr.crontrol-inactive .column-crontrol_next,
+.wp-list-table tr.crontrol-inactive .column-crontrol_schedule,
+.wp-list-table tr.crontrol-paused .column-crontrol_next,
+.wp-list-table tr.crontrol-paused .column-crontrol_schedule,
 .wp-list-table tr.crontrol-paused:not(.crontrol-no-action) .column-crontrol_actions {
 	text-decoration: line-through;
 }
@@ -71,8 +74,7 @@ table.wp-list-table {
 	color: #d63638;
 }
 
-.status-crontrol-check .dashicons,
-.status-crontrol-paused .dashicons {
+.status-crontrol-inactive .dashicons {
 	background: #646970;
 	border-radius: 50%;
 	color: #fff;
