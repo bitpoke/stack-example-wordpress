@@ -2,8 +2,8 @@
 Contributors: automattic, tiagonoronha, jameskoster
 Requires at least: 5.3.4
 Tested up to: 6.5
-Stable tag: 4.6.0
-Version: 4.6.0
+Stable tag: 4.6.1
+Version: 4.6.1
 WC requires at least: 4.2
 WC tested up to: 8.8
 License: GPLv3 or later
@@ -50,6 +50,10 @@ To the best of our knowledge, Google doesn’t track nor share end user data.
 Privacy Policy for the Google Fonts API: https://developers.google.com/fonts/faq#what_does_using_the_google_fonts_api_mean_for_the_privacy_of_my_users
 
 == Changelog ==
+
+= 4.6.1 - 2025-01-20
+- Add style to coupon error inline message. ([#2178](https://github.com/woocommerce/storefront/pull/2178))
+- Update actions/upload-artifact from v3 to v4 to use the latest version. Also fix E2E test artifacts generation by configuring jest-html-reporters. ([#2180](https://github.com/woocommerce/storefront/pull/2180))
 
 = 4.6.0 - 2024-05-16 =
 - Enhancement - support for Appearance Tools in Classic themes. #2143. ([#2143](https://github.com/woocommerce/storefront/pull/2143))
