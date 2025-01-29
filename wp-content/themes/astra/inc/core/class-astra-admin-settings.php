@@ -119,7 +119,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 						<?php echo esc_html__( 'Astra Menu Settings', 'astra' ); ?>
 						<svg width="17" height="16" style="vertical-align: sub; opacity: 0.5;" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M12.5002 7.2001H11.7002V4.8001C11.7002 3.0401 10.2602 1.6001 8.5002 1.6001C6.7402 1.6001 5.3002 3.0401 5.3002 4.8001V7.2001H4.5002C4.1002 7.2001 3.7002 7.6001 3.7002 8.0001V13.6001C3.7002 14.0001 4.1002 14.4001 4.5002 14.4001H12.5002C12.9002 14.4001 13.3002 14.0001 13.3002 13.6001V8.0001C13.3002 7.6001 12.9002 7.2001 12.5002 7.2001ZM9.3002 12.8001H7.7002L8.0202 11.0401C7.6202 10.8801 7.3002 10.4001 7.3002 10.0001C7.3002 9.3601 7.8602 8.8001 8.5002 8.8001C9.1402 8.8001 9.7002 9.3601 9.7002 10.0001C9.7002 10.4801 9.4602 10.8801 8.9802 11.0401L9.3002 12.8001ZM10.1002 7.2001H6.9002V4.8001C6.9002 3.9201 7.6202 3.2001 8.5002 3.2001C9.3802 3.2001 10.1002 3.9201 10.1002 4.8001V7.2001Z" fill="#0284C7"></path> </svg>
 					</button>
-					<a href="<?php echo esc_url( ASTRA_PRO_UPGRADE_URL ); ?>" target="_blank" title="<?php echo esc_attr__( 'Unlock with Astra Pro', 'astra' ); ?>">
+					<a href="<?php echo esc_url( astra_get_upgrade_url( 'dashboard' ) ); ?>" target="_blank" title="<?php echo esc_attr__( 'Unlock with Astra Pro', 'astra' ); ?>">
 						<?php echo esc_html__( 'Unlock', 'astra' ); ?>
 					</a>
 				</p>
@@ -289,7 +289,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 						__( 'Astra Works Seamlessly with WooCommerce!', 'astra' ),
 						__( 'Use every tool at your disposal to optimize your online store for conversion. All the advantages you need to make more profit!', 'astra' ),
 						esc_attr( 'button button-primary' ),
-						'href="' . astra_get_pro_url( 'https://wpastra.com/pricing/', 'dashboard', 'free-theme', 'woocommerce' ) . '" target="_blank"',
+						'href="' . astra_get_pro_url( '/pricing/', 'free-theme', 'dashboard', 'woocommerce' ) . '" target="_blank"',
 						__( 'Upgrade Now', 'astra' )
 					),
 					'priority'                   => 5,

@@ -1383,3 +1383,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// This function calculates the scrollbar width and sets it as a CSS variable.
+document.addEventListener( 'DOMContentLoaded', () => {
+	const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+	if ( scrollbarWidth > 0 ) {
+		document.documentElement.style.setProperty( '--ast-scrollbar-width', scrollbarWidth + 'px' );
+	}
+} );

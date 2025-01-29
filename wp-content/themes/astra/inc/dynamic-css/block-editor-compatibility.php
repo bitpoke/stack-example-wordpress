@@ -214,6 +214,22 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	$spectra_gutenberg_compat_css = Astra_Dynamic_CSS::spectra_gutenberg_compat_css();
 	$v4_block_editor_compat       = Astra_Dynamic_CSS::v4_block_editor_compat();
 
+	// Detect the operating system and set the typical scrollbar width.
+	$user_agent       = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	$scrollbar_widths = [
+		'Win'     => '17px',
+		'Mac'     => '15px',
+		'Linux'   => '15px',
+	];
+
+	$scrollbar_width = '0';
+	foreach ( $scrollbar_widths as $platform => $width ) {
+		if ( strpos( $user_agent, $platform ) !== false ) {
+			$scrollbar_width = $width;
+			break;
+		}
+	}
+
 	$dynamic_css .= '
 		:root {
 			--wp--custom--ast-default-block-top-padding: ' . $desktop_top_spacing . ';
@@ -223,6 +239,7 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 			--wp--custom--ast-container-width: ' . $ast_container_width . ';
 			--wp--custom--ast-content-width-size: ' . $ast_content_width . ';
 			--wp--custom--ast-wide-width-size: ' . $ast_wide_width . ';
+			--ast-scrollbar-width: ' . $scrollbar_width . ';
 		}
 
 		.ast-narrow-container {
@@ -259,10 +276,10 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 		padding-left: var(--wp--custom--ast-default-block-left-padding);
 	}
 	' . $astra_full_stretched_selector . ' {
-		margin-left: calc( -50vw + 50%);
-		margin-right: calc( -50vw + 50%);
-		max-width: 100vw;
-		width: 100vw;
+		margin-left: calc( -50vw + 50% + var( --ast-scrollbar-width ) / 2 );
+		margin-right: calc( -50vw + 50% + var( --ast-scrollbar-width ) / 2 );
+		max-width: calc( 100vw - var( --ast-scrollbar-width ) );
+		width: calc( 100vw - var( --ast-scrollbar-width ) );
 	}
 	.ast-plain-container.ast-no-sidebar .entry-content .alignfull .alignfull, .ast-page-builder-template.ast-no-sidebar .entry-content .alignfull .alignfull, .ast-plain-container.ast-no-sidebar .entry-content .alignfull .alignwide, .ast-page-builder-template.ast-no-sidebar .entry-content .alignfull .alignwide, .ast-plain-container.ast-no-sidebar .entry-content .alignwide .alignfull, .ast-page-builder-template.ast-no-sidebar .entry-content .alignwide .alignfull,
 	.ast-plain-container.ast-no-sidebar .entry-content .alignwide .alignwide, .ast-page-builder-template.ast-no-sidebar .entry-content .alignwide .alignwide, .ast-plain-container.ast-no-sidebar .entry-content .wp-block-column .alignfull, .ast-page-builder-template.ast-no-sidebar .entry-content .wp-block-column .alignfull,

@@ -192,8 +192,8 @@
 
 	// Using jQuery here because WooCommerce and the variation swatches plugin rely on jQuery for AJAX handling and DOM updates.
 	jQuery(document).ready(function ($) {
-		// Listening for WooCommerce's default 'added_to_cart' and 'cfvsw_ajax_add_to_cart' both events.
-		$(document.body).on('added_to_cart cfvsw_ajax_add_to_cart', function (event, fragments, cart_hash) {
+		// Listening for WooCommerce's default 'added_to_cart' and 'astra_refresh_cart_fragments' both events.
+		$(document.body).on('added_to_cart astra_refresh_cart_fragments', function (event, fragments, cart_hash) {
 			// Refreshing WooCommerce cart fragments.
 			$.get(wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'get_refreshed_fragments'), function (data) {
 				if (data && data.fragments) {
@@ -204,8 +204,8 @@
 			});
 		});
 
-		// Triggering the 'added_to_cart' event if needed elsewhere on page reload in the flow.
-		$(document.body).trigger('added_to_cart');
+		// Triggering the 'astra_refresh_cart_fragments' event to refresh the cart fragments on page load.
+		$(document.body).trigger('astra_refresh_cart_fragments');
 	});
 
 })();

@@ -30,7 +30,7 @@ if ( ! class_exists( 'Astra_Pro_Upgrade_Link_Configs' ) ) {
 					'type'             => 'section',
 					'ast_type'         => 'astra-pro',
 					'title'            => esc_html__( 'More Options Available in Astra Pro!', 'astra' ),
-					'pro_url'          => esc_url( astra_get_upgrade_url( 'pricing' ) ),
+					'pro_url'          => astra_get_upgrade_url( 'pricing' ),
 					'priority'         => 1,
 					'section_callback' => 'Astra_Pro_Customizer',
 				),

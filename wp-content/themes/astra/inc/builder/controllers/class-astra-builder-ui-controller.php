@@ -397,6 +397,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 					$link_type   = astra_get_option( 'header-account-link-type' );
 
 					$account_link = astra_get_option( 'header-account-login-link' );
+					$show_menu    = astra_get_option( 'header-account-action-menu-display-on' );
 
 					$logged_in_text = astra_get_i18n_option( 'header-account-logged-in-text', _x( '%astra%', 'Header Builder: Account Widget - Logged In View Text', 'astra' ) );
 
@@ -423,7 +424,9 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 						$link_rel = ( ! empty( $account_link['link_rel'] ) ? 'rel=' . esc_attr( $account_link['link_rel'] ) : '' );
 					}
 
-					$link_href = ( '' !== $link_url ) ? 'href=' . esc_url( $link_url ) : '';
+					if ( 'hover' === $show_menu ) {
+						$link_href = ( '' !== $link_url ) ? 'href=' . esc_url( $link_url ) : '';
+					}
 
 					$link_classes = array(
 						'ast-header-account-link',

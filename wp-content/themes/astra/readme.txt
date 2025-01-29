@@ -5,7 +5,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: custom-menu, custom-logo, entertainment, featured-images, full-width-template, one-column, two-columns, left-sidebar, e-commerce, right-sidebar, custom-colors, editor-style, featured-images, full-width-template, microformats, post-formats, rtl-language-support, theme-options, threaded-comments, translation-ready, blog
 Tested up to: 6.7
 Requires PHP: 5.3
-Stable tag: 4.8.10
+Stable tag: 4.8.11
 
 Astra is fast, fully customizable & beautiful WordPress theme suitable for blog, personal portfolio, business website and WooCommerce storefront.
 
@@ -16,6 +16,20 @@ Astra is fast, fully customizable & beautiful WordPress theme suitable for blog,
 It offers special features and templates so it works perfectly with all page builders like Elementor, Beaver Builder, Visual Composer, SiteOrigin, Divi, etc. Some of the other features: # WooCommerce Ready # Responsive # RTL & Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force.
 
 Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and WooCommerce ready theme that you can use for building any kind of website!
+
+The Astra WordPress theme is lightning-fast and highly customizable. It has over 1 million downloads and the only theme in the world with 5,700+ five-star reviews! 
+
+It’s ideal for professional web designers, solopreneurs, small businesses, eCommerce, membership sites and any type of website.
+
+It offers special features and templates so it works perfectly with all page builders like Spectra, Elementor, Beaver Builder, etc.
+
+Fast performance, clean code, mobile-first design and schema markup are all built-in, making the theme exceptionally SEO-friendly.
+
+It’s fully compatible with WooCommerce, SureCart and other eCommerce plugins and comes with lots of store-friendly features and templates.
+
+Astra also provides expert support for free users. A dedicated team of fully trained WordPress experts are on hand to help with every aspect of the theme.
+
+<a href="https://zipwp.org/themes/astra/" target="_blank">Try it out on a free dummy site.</a>
 
 == Installation ==
 

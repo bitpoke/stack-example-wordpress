@@ -954,6 +954,12 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$outline_color = astra_get_option( 'site-accessibility-highlight-color' );
 
 				$outline_input_style = astra_get_option( 'site-accessibility-highlight-input-type' );
+
+				// If the outline input style is set to 'disable', change it to 'unset' css value.
+				if ( $outline_input_style === 'disable' ) {
+					$outline_input_style = 'unset';
+				}
+
 				$outline_input_color = astra_get_option( 'site-accessibility-highlight-input-color' );
 
 				$css_output[ $html_selectors_focus_visible ] = array(
@@ -963,7 +969,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'border-color'  => astra_get_option( 'site-accessibility-highlight-input-color' ),
 				);
 
-				if ( 'disable' !== $outline_input_style ) {
+				if ( 'unset' !== $outline_input_style ) {
 					$css_output[ $html_selectors_focus_only_inputs ] = array(
 						'border-style'  => $outline_input_style ? $outline_input_style : 'inherit',
 						'border-color'  => $outline_input_color ? $outline_input_color : 'inherit',
@@ -6203,7 +6209,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$outline_color          = astra_get_option( 'site-accessibility-highlight-color' );
 				$outline_input_style    = astra_get_option( 'site-accessibility-highlight-input-type' );
 				$outline_input_color    = astra_get_option( 'site-accessibility-highlight-input-color' );
-				$input_highlight        = ( 'disable' !== $outline_input_style );
+				$input_highlight        = ( 'unset' !== $outline_input_style );
 				$selected_outline_style = $input_highlight ? $outline_input_style : $outline_style;
 				$selected_outline_color = $input_highlight ? $outline_input_color : $outline_color;
 				$forms_default_styling_css['input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type=reset]:focus, input[type="tel"]:focus, input[type="date"]:focus, select:focus, textarea:focus'] = array(

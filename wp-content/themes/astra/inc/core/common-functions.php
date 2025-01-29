@@ -767,6 +767,8 @@ if ( ! function_exists( 'astra_get_post_id' ) ) {
 
 			if ( is_home() ) {
 				$post_id = get_option( 'page_for_posts' );
+			} elseif ( function_exists( 'is_shop' ) && is_shop() && function_exists( 'wc_get_page_id' ) ) {
+				$post_id = wc_get_page_id( 'shop' );
 			} elseif ( is_archive() ) {
 				global $wp_query;
 				$post_id = $wp_query->get_queried_object_id();
@@ -1343,24 +1345,31 @@ if ( ! function_exists( 'astra_get_pro_url' ) ) :
 	 * Returns an URL with utm tags
 	 * the admin settings page.
 	 *
-	 * @param string $url    URL fo the site.
-	 * @param string $source utm source.
-	 * @param string $medium utm medium.
-	 * @param string $campaign utm campaign.
+	 * @param string $path     Path for the Website URL.
+	 * @param string $source   UMM source.
+	 * @param string $medium   UTM medium.
+	 * @param string $campaign UTM campaign.
 	 * @return mixed
 	 */
-	function astra_get_pro_url( $url, $source = '', $medium = '', $campaign = '' ) {
-
+	function astra_get_pro_url( $path, $source = '', $medium = '', $campaign = '' ) {
+		$url           = esc_url( ASTRA_WEBSITE_BASE_URL . $path );
 		$astra_pro_url = trailingslashit( $url );
 
 		// Set up our URL if we have a source.
 		if ( ! empty( $source ) ) {
-			$astra_pro_url = add_query_arg( 'utm_source', sanitize_text_field( $source ), $url );
+			$astra_pro_url = add_query_arg( 'utm_source', sanitize_text_field( $source ), $astra_pro_url );
 		}
+
+		// Modify the utm_source parameter using the UTM ready link function to include tracking information.
+		if ( is_callable( '\BSF_UTM_Analytics\Inc\Utils::get_utm_ready_link' ) ) {
+			$astra_pro_url = \BSF_UTM_Analytics\Inc\Utils::get_utm_ready_link( $astra_pro_url, 'astra' );
+		}
+
 		// Set up our URL if we have a medium.
 		if ( ! empty( $medium ) ) {
 			$astra_pro_url = add_query_arg( 'utm_medium', sanitize_text_field( $medium ), $astra_pro_url );
 		}
+
 		// Set up our URL if we have a campaign.
 		if ( ! empty( $campaign ) ) {
 			$astra_pro_url = add_query_arg( 'utm_campaign', sanitize_text_field( $campaign ), $astra_pro_url );
@@ -2109,11 +2118,26 @@ function astra_get_post_type() {
  * @return string Upgrade URL.
  */
 function astra_get_upgrade_url( $type = 'pro' ) {
-	$upgrade_url = 'pricing' === $type ? astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'main-cta' ) : astra_get_pro_url( 'https://wpastra.com/pro/', 'dashboard', 'free-theme', 'upgrade-now' );
 	/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-	if ( false === ASTRA_THEME_ORG_VERSION ) {
+	if ( ! ASTRA_THEME_ORG_VERSION ) {
 		/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$upgrade_url = 'https://woo.com/products/astra-pro/';
+		return 'https://woo.com/products/astra-pro/';
 	}
+
+	switch ( $type ) {
+		case 'pricing':
+			$upgrade_url = astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'main-cta' );
+			break;
+		case 'dashboard':
+			$upgrade_url = astra_get_pro_url( '/pricing/', 'free-theme', 'dashboard', 'upgrade' );
+			break;
+		case 'customizer':
+			$upgrade_url = astra_get_pro_url( '/pricing/', 'free-theme', 'dashboard', 'upgrade' );
+			break;
+		default:
+			$upgrade_url = astra_get_pro_url( '/pro/', 'free-theme', 'dashboard', 'upgrade-now' );
+			break;
+	}
+
 	return $upgrade_url;
 }

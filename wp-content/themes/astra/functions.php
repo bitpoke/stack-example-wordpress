@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define Constants
  */
-define( 'ASTRA_THEME_VERSION', '4.8.10' );
+define( 'ASTRA_THEME_VERSION', '4.8.11' );
 define( 'ASTRA_THEME_SETTINGS', 'astra-settings' );
 define( 'ASTRA_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'ASTRA_THEME_URI', trailingslashit( esc_url( get_template_directory_uri() ) ) );
@@ -42,8 +42,13 @@ require_once ASTRA_THEME_DIR . 'inc/core/class-theme-strings.php';
 require_once ASTRA_THEME_DIR . 'inc/core/common-functions.php';
 require_once ASTRA_THEME_DIR . 'inc/core/class-astra-icons.php';
 
-define( 'ASTRA_PRO_UPGRADE_URL', ASTRA_THEME_ORG_VERSION ? astra_get_pro_url( 'https://wpastra.com/pricing/', 'dashboard', 'free-theme', 'dashboard' ) : 'https://woocommerce.com/products/astra-pro/' );
-define( 'ASTRA_PRO_CUSTOMIZER_UPGRADE_URL', ASTRA_THEME_ORG_VERSION ? astra_get_pro_url( 'https://wpastra.com/pricing/', 'customizer', 'free-theme', 'upgrade' ) : 'https://woocommerce.com/products/astra-pro/' );
+define( 'ASTRA_WEBSITE_BASE_URL', 'https://wpastra.com' );
+
+/**
+ * ToDo: Deprecate constants in future versions as they are no longer used in the codebase.
+ */
+define( 'ASTRA_PRO_UPGRADE_URL', ASTRA_THEME_ORG_VERSION ? astra_get_pro_url( '/pricing/', 'free-theme', 'dashboard', 'upgrade' ) : 'https://woocommerce.com/products/astra-pro/' );
+define( 'ASTRA_PRO_CUSTOMIZER_UPGRADE_URL', ASTRA_THEME_ORG_VERSION ? astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'upgrade' ) : 'https://woocommerce.com/products/astra-pro/' );
 
 /**
  * Update theme
@@ -82,6 +87,11 @@ if ( ! defined( 'ASTRA_SITES_VER' ) || version_compare( ASTRA_SITES_VER, '4.3.7'
 	require_once ASTRA_THEME_DIR . 'inc/lib/class-astra-nps-notice.php';
 	require_once ASTRA_THEME_DIR . 'inc/lib/class-astra-nps-survey.php';
 }
+
+/**
+ * UTM Analytics lib file.
+ */
+require_once ASTRA_THEME_DIR . 'inc/lib/class-astra-utm-analytics.php';
 
 /**
  * Custom template tags for this theme.

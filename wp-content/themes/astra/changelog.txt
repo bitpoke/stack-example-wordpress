@@ -1,5 +1,15 @@
 *** Astra Changelog ***
 
+2025-01-28 - version 4.8.11
+* Improvement: WooCommerce - Enhanced styling for the variation clear button and block-based cart and checkout fields to improve user experience.
+* Improvement: Adjusted container width calculations to consider scrollbar width and align with the header container.
+* Fix: Addressed a styling issue affecting custom fields added to the Address section in WooCommerce through the `woocommerce_register_additional_checkout_fields` function.
+* Fix: Resolved an issue where the outline-style was incorrectly set to `disable` when Input Highlight was disabled under Accessibility, replacing it with unset to comply with W3C standards.
+* Fix: Resolved conflict with Side Cart Woocommerce, WPC Fly Cart for WooCommerce and FooEvents plugins.
+* Fix: Account icon click showing dropdown and incorrectly redirecting to the account page.
+* Fix: Resolved issues with the `Disable Header` & `Disable Footer` page meta settings not working on the WooCommerce Shop page.
+* Fix: Resolved an issue where Single Page customizer control did not apply correctly in the preview when the Elementor plugin was active.
+
 2025-01-07 - version 4.8.10
 * Improvement: Enhanced the design of WooCommerce product rating stars for a more polished appearance.
 * Improvement: Added compatibility with the Dokan plugin.

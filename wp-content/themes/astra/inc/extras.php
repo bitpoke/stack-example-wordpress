@@ -449,7 +449,7 @@ function astra_get_theme_author_details() {
 		'astra_theme_author',
 		array(
 			'theme_name'       => esc_html__( 'Astra WordPress Theme', 'astra' ),
-			'theme_author_url' => 'https://wpastra.com/',
+			'theme_author_url' => ASTRA_WEBSITE_BASE_URL,
 		)
 	);
 
@@ -1424,7 +1424,7 @@ function astra_get_blog_posts_per_page() {
  * @since 4.6.0
  */
 function astra_remote_docs_data() {
-	$astra_docs_instance = astra_docs_loader_instance( 'https://wpastra.com/wp-json/powerful-docs/v1/get-docs', 'astra-docs' );
+	$astra_docs_instance = astra_docs_loader_instance( ASTRA_WEBSITE_BASE_URL . '/wp-json/powerful-docs/v1/get-docs', 'astra-docs' );
 	return json_decode( $astra_docs_instance->get_remote_data() );
 }
 

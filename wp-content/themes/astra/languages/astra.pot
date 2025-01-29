@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.8.10\n"
+"Project-Id-Version: Astra 4.8.11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-06T10:39:14+00:00\n"
+"POT-Creation-Date: 2025-01-28T07:35:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: astra\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 #. Description of the theme
 #: style.css
-msgid "Astra is fast, fully customizable & beautiful WordPress theme suitable for blog, personal portfolio, business website and WooCommerce storefront. It is very lightweight (less than 50KB on frontend) and offers unparalleled speed. Built with SEO in mind, Astra comes with Schema.org code integrated and is Native AMP ready so search engines will love your site. It offers special features and templates so it works perfectly with all page builders like Elementor, Beaver Builder, Visual Composer, SiteOrigin, Divi, etc. Some of the other features: # WooCommerce Ready # Responsive # RTL & Translation Ready # Extendible with premium addons # Regularly updated # Designed, Developed, Maintained & Supported by Brainstorm Force. Looking for a perfect base theme? Look no further. Astra is fast, fully customizable and WooCommerce ready theme that you can use for building any kind of website!"
+msgid "The Astra WordPress theme is lightning-fast and highly customizable. It has over 1 million downloads and the only theme in the world with 5,700+ five-star reviews! It’s ideal for professional web designers, solopreneurs, small businesses, eCommerce, membership sites and any type of website. It offers special features and templates so it works perfectly with all page builders like Spectra, Elementor, Beaver Builder, etc. Fast performance, clean code, mobile-first design and schema markup are all built-in, making the theme exceptionally SEO-friendly. It’s fully compatible with WooCommerce, SureCart and other eCommerce plugins and comes with lots of store-friendly features and templates. Astra also provides expert support for free users. A dedicated team of fully trained WordPress experts are on hand to help with every aspect of the theme. Try it out on a free dummy site: https://zipwp.org/themes/astra/"
 msgstr ""
 
 #. Author of the theme
@@ -67,16 +67,24 @@ msgstr ""
 msgid "Successfully saved data!"
 msgstr ""
 
-#: admin/includes/class-astra-admin-ajax.php:290
-#: admin/includes/class-astra-admin-ajax.php:361
+#: admin/includes/class-astra-admin-ajax.php:276
+msgid "Plugin slug is missing."
+msgstr ""
+
+#: admin/includes/class-astra-admin-ajax.php:299
+msgid "Plugin installation function not found."
+msgstr ""
+
+#: admin/includes/class-astra-admin-ajax.php:336
+#: admin/includes/class-astra-admin-ajax.php:407
 msgid "No plugin specified"
 msgstr ""
 
-#: admin/includes/class-astra-admin-ajax.php:324
+#: admin/includes/class-astra-admin-ajax.php:370
 msgid "Plugin Successfully Activated"
 msgstr ""
 
-#: admin/includes/class-astra-admin-ajax.php:384
+#: admin/includes/class-astra-admin-ajax.php:430
 msgid "Plugin Successfully Deactivated"
 msgstr ""
 
@@ -97,7 +105,7 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:195
 #: admin/includes/class-astra-menu.php:196
-#: admin/includes/class-astra-menu.php:681
+#: admin/includes/class-astra-menu.php:689
 msgid "Custom Layouts"
 msgstr ""
 
@@ -130,26 +138,26 @@ msgstr ""
 msgid "Activate"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:353
+#: admin/includes/class-astra-menu.php:361
 msgid "Configuring"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:370
+#: admin/includes/class-astra-menu.php:378
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:93
 #: inc/customizer/class-astra-customizer.php:222
 #: inc/customizer/class-astra-customizer.php:234
 msgid "Site Identity"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:374
+#: admin/includes/class-astra-menu.php:382
 msgid "Header Settings"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:378
+#: admin/includes/class-astra-menu.php:386
 msgid "Footer Settings"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:382
+#: admin/includes/class-astra-menu.php:390
 #: inc/addons/scroll-to-top/classes/customizer/class-astra-scroll-to-top-configs.php:222
 #: inc/addons/scroll-to-top/classes/customizer/class-astra-scroll-to-top-configs.php:238
 #: inc/compatibility/woocommerce/customizer/sections/class-astra-woo-store-notice-configs.php:39
@@ -165,8 +173,8 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:386
-#: admin/includes/class-astra-menu.php:564
+#: admin/includes/class-astra-menu.php:394
+#: admin/includes/class-astra-menu.php:572
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:311
 #: inc/customizer/class-astra-customizer.php:1660
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:337
@@ -178,7 +186,7 @@ msgid "Typography"
 msgstr ""
 
 #. translators: %s Index
-#: admin/includes/class-astra-menu.php:390
+#: admin/includes/class-astra-menu.php:398
 #: inc/compatibility/edd/customizer/sections/layout/class-astra-edd-archive-layout-configs.php:152
 #: inc/core/builder/class-astra-builder-options.php:1346
 #: inc/core/builder/class-astra-builder-options.php:1516
@@ -188,11 +196,11 @@ msgstr ""
 msgid "Button"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:394
+#: admin/includes/class-astra-menu.php:402
 msgid "Blog Options"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:398
+#: admin/includes/class-astra-menu.php:406
 #: inc/customizer/configurations/builder/footer/configs/above-footer.php:82
 #: inc/customizer/configurations/builder/footer/configs/below-footer.php:82
 #: inc/customizer/configurations/builder/footer/configs/menu-footer.php:71
@@ -205,45 +213,45 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:402
+#: admin/includes/class-astra-menu.php:410
 msgid "Menus"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:437
+#: admin/includes/class-astra-menu.php:445
 msgid "Starter Templates"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:438
+#: admin/includes/class-astra-menu.php:446
 #: admin/assets/build/dashboard-app.js:1
 msgid "Create professional designed pixel perfect websites in minutes. Get access to 280+ pre-made full website templates for your favorite page builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:551
+#: admin/includes/class-astra-menu.php:559
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:415
 msgid "Colors & Background"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:558
-#: admin/includes/class-astra-menu.php:571
-#: admin/includes/class-astra-menu.php:584
-#: admin/includes/class-astra-menu.php:597
-#: admin/includes/class-astra-menu.php:610
-#: admin/includes/class-astra-menu.php:623
-#: admin/includes/class-astra-menu.php:636
-#: admin/includes/class-astra-menu.php:649
-#: admin/includes/class-astra-menu.php:662
-#: admin/includes/class-astra-menu.php:675
-#: admin/includes/class-astra-menu.php:690
-#: admin/includes/class-astra-menu.php:705
-#: admin/includes/class-astra-menu.php:719
-#: admin/includes/class-astra-menu.php:733
-#: admin/includes/class-astra-menu.php:748
-#: admin/includes/class-astra-menu.php:762
-#: admin/includes/class-astra-menu.php:775
+#: admin/includes/class-astra-menu.php:566
+#: admin/includes/class-astra-menu.php:579
+#: admin/includes/class-astra-menu.php:592
+#: admin/includes/class-astra-menu.php:605
+#: admin/includes/class-astra-menu.php:618
+#: admin/includes/class-astra-menu.php:631
+#: admin/includes/class-astra-menu.php:644
+#: admin/includes/class-astra-menu.php:657
+#: admin/includes/class-astra-menu.php:670
+#: admin/includes/class-astra-menu.php:683
+#: admin/includes/class-astra-menu.php:698
+#: admin/includes/class-astra-menu.php:713
+#: admin/includes/class-astra-menu.php:727
+#: admin/includes/class-astra-menu.php:741
+#: admin/includes/class-astra-menu.php:756
+#: admin/includes/class-astra-menu.php:770
+#: admin/includes/class-astra-menu.php:783
 msgid "Documentation"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:577
+#: admin/includes/class-astra-menu.php:585
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-configs.php:359
 #: inc/customizer/class-astra-extended-base-configuration.php:58
 #: inc/customizer/configurations/builder/base/class-astra-html-component-configs.php:174
@@ -260,40 +268,40 @@ msgstr ""
 msgid "Spacing"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:590
+#: admin/includes/class-astra-menu.php:598
 msgid "Blog Pro"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:603
+#: admin/includes/class-astra-menu.php:611
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:395
 msgid "Mobile Header"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:616
+#: admin/includes/class-astra-menu.php:624
 msgid "Header Sections"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:629
+#: admin/includes/class-astra-menu.php:637
 #: inc/customizer/configurations/builder/header/configs/header-builder.php:751
 #: inc/metabox/class-astra-meta-boxes.php:638
 msgid "Sticky Header"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:642
+#: admin/includes/class-astra-menu.php:650
 msgid "Site Layouts"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:655
+#: admin/includes/class-astra-menu.php:663
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:167
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:300
 msgid "Footer Widgets"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:668
+#: admin/includes/class-astra-menu.php:676
 msgid "Nav Menu"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:681
+#: admin/includes/class-astra-menu.php:689
 #: admin/includes/class-astra-theme-builder-free.php:81
 #: admin/includes/class-astra-theme-builder-free.php:134
 #: admin/includes/class-astra-theme-builder-free.php:135
@@ -302,103 +310,103 @@ msgstr ""
 msgid "Site Builder"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:682
+#: admin/includes/class-astra-menu.php:690
 msgid "Add content conditionally in the various hook areas of the theme."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:696
+#: admin/includes/class-astra-menu.php:704
 msgid "Page Headers"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:697
+#: admin/includes/class-astra-menu.php:705
 msgid "Make your header layouts look more appealing and sexy!"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:741
+#: admin/includes/class-astra-menu.php:749
 msgid "Supercharge your LearnDash website with amazing design features."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:768
+#: admin/includes/class-astra-menu.php:776
 #: admin/assets/build/dashboard-app.js:1
 msgid "White Label"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:797
+#: admin/includes/class-astra-menu.php:805
 msgid "#1 Sales Funnel WordPress Builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:797
+#: admin/includes/class-astra-menu.php:805
 msgid "Build high-converting E-Commerce stores with CartFlows, the ultimate checkout and funnel builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:814
+#: admin/includes/class-astra-menu.php:822
 msgid "Connect your WordPress plugins, WooCommerce sites, apps, and websites for powerful automations."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:830
-#: admin/includes/class-astra-menu.php:952
+#: admin/includes/class-astra-menu.php:838
+#: admin/includes/class-astra-menu.php:960
 msgid "Free WordPress Page Builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:830
+#: admin/includes/class-astra-menu.php:838
 msgid "Power-up block editor with advanced blocks for faster and effortlessly website creation."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:845
+#: admin/includes/class-astra-menu.php:853
 msgid "Stripe Payments for WooCommerce."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:845
+#: admin/includes/class-astra-menu.php:853
 msgid "Stripe Payments for WooCommerce securely accepts credit cards, Apple Pay, and Google Pay."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:861
+#: admin/includes/class-astra-menu.php:869
 msgid "PayPal Payments For WooCommerce simplifies and secures PayPal transactions on your store."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:877
+#: admin/includes/class-astra-menu.php:885
 msgid "Recover lost revenue automatically."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:877
+#: admin/includes/class-astra-menu.php:885
 msgid "Capture emails at checkout and send follow-up emails to recover lost revenue."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:893
+#: admin/includes/class-astra-menu.php:901
 msgid "Convert WooCommerce variation dropdown attributes into attractive swatches instantly."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:940
+#: admin/includes/class-astra-menu.php:948
 msgid "The new way to sell on WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:964
-#: admin/includes/class-astra-menu.php:1060
+#: admin/includes/class-astra-menu.php:972
+#: admin/includes/class-astra-menu.php:1068
 msgid "Automate your WordPress setup."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:977
+#: admin/includes/class-astra-menu.php:985
 msgid "A versatile form builder plugin."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:989
+#: admin/includes/class-astra-menu.php:997
 msgid "Ultimate Video Player For WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:1034
+#: admin/includes/class-astra-menu.php:1042
 msgid "Free WordPress Page Builder Plugin."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:1047
+#: admin/includes/class-astra-menu.php:1055
 msgid "Simplifying selling online with WordPress."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:1133
+#: admin/includes/class-astra-menu.php:1141
 msgid "Thank you for using"
 msgstr ""
 
 #. translators: 1: Astra, 2: Theme rating link
-#: admin/includes/class-astra-menu.php:1137
+#: admin/includes/class-astra-menu.php:1145
 msgid "Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!"
 msgstr ""
 
@@ -7788,7 +7796,7 @@ msgid "Breadcrumbs"
 msgstr ""
 
 #: inc/addons/breadcrumbs/class-astra-breadcrumb-trail.php:404
-#: inc/core/common-functions.php:1062
+#: inc/core/common-functions.php:1064
 msgid "Home"
 msgstr ""
 
@@ -9266,17 +9274,17 @@ msgstr ""
 msgid "Shopping Cart"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:401
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:402
 msgctxt "Header Builder: Account Widget - Logged In View Text"
 msgid "%astra%"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:447
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:517
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:450
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:520
 msgid "Account icon link"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:478
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:481
 msgctxt "Header Builder: Account Widget - Logged Out View Text"
 msgid "%astra%"
 msgstr ""
@@ -9285,7 +9293,7 @@ msgstr ""
 msgid "Add widgets here:"
 msgstr ""
 
-#: inc/builder/markup/class-astra-builder-footer.php:230
+#: inc/builder/markup/class-astra-builder-footer.php:231
 msgctxt "Footer Builder: Copyright Editor Text"
 msgid "%astra%"
 msgstr ""
@@ -11211,30 +11219,30 @@ msgstr ""
 msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
 msgstr ""
 
-#: inc/core/common-functions.php:982
+#: inc/core/common-functions.php:984
 msgctxt "Search Page Title: Heading - Text"
 msgid "%astra%"
 msgstr ""
 
-#: inc/core/common-functions.php:1068
+#: inc/core/common-functions.php:1070
 msgid "This page doesn't seem to exist."
 msgstr ""
 
-#: inc/core/common-functions.php:1149
+#: inc/core/common-functions.php:1151
 msgctxt "Search Page Custom `When Results Found` Text"
 msgid "%astra%"
 msgstr ""
 
-#: inc/core/common-functions.php:1150
+#: inc/core/common-functions.php:1152
 msgctxt "Search Page Custom `When Results Not Found` Text"
 msgid "%astra%"
 msgstr ""
 
-#: inc/core/common-functions.php:1181
+#: inc/core/common-functions.php:1183
 msgid "Author name: "
 msgstr ""
 
-#: inc/core/common-functions.php:1397
+#: inc/core/common-functions.php:1406
 msgctxt "placeholder"
 msgid "Search..."
 msgstr ""
@@ -13237,12 +13245,12 @@ msgstr ""
 msgid "We value your input. How can we improve your experience?"
 msgstr ""
 
-#: inc/lib/nps-survey/classes/nps-survey-script.php:252
+#: inc/lib/nps-survey/classes/nps-survey-script.php:248
 msgid "Sorry, you are not allowed to do that."
 msgstr ""
 
-#: inc/lib/nps-survey/classes/nps-survey-script.php:273
-#: inc/lib/nps-survey/classes/nps-survey-script.php:354
+#: inc/lib/nps-survey/classes/nps-survey-script.php:270
+#: inc/lib/nps-survey/classes/nps-survey-script.php:376
 msgid "Nonce verification failed."
 msgstr ""
 

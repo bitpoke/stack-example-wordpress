@@ -671,7 +671,7 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 						'section'  => 'section-header',
 						'priority' => 999,
 						'title'    => '',
-						'help'     => '<p>' . __( 'More Options Available in Astra Pro!', 'astra' ) . '</p><a href="' . ASTRA_PRO_CUSTOMIZER_UPGRADE_URL . '" class="button button-secondary"  target="_blank" rel="noopener">' . __( 'Learn More', 'astra' ) . '</a>',
+						'help'     => '<p>' . __( 'More Options Available in Astra Pro!', 'astra' ) . '</p><a href="' . astra_get_upgrade_url( 'customizer' ) . '" class="button button-secondary"  target="_blank" rel="noopener">' . __( 'Learn More', 'astra' ) . '</a>',
 						'settings' => array(),
 						'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 					),

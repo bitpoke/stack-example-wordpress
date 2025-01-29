@@ -1024,7 +1024,7 @@ if ( ! function_exists( 'astra_get_small_footer_custom_text' ) ) {
 				'astra_theme_author',
 				array(
 					'theme_name'       => 'Astra ' . esc_html__( 'WordPress Theme', 'astra' ),
-					'theme_author_url' => 'https://wpastra.com/',
+					'theme_author_url' => ASTRA_WEBSITE_BASE_URL,
 				)
 			);
 
