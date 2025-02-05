@@ -1015,6 +1015,8 @@ class Akismet {
 			$comment['comment_post_modified_gmt'] = $post->post_modified_gmt;
 		}
 
+		$comment['comment_check_response'] = self::last_comment_check_response( $comment_id );
+
 		$comment = apply_filters( 'akismet_request_args', $comment, 'submit-spam' );
 
 		$response = self::http_post( self::build_query( $comment ), 'submit-spam' );
@@ -1081,6 +1083,8 @@ class Akismet {
 		if ( ! is_null( $post ) ) {
 			$comment['comment_post_modified_gmt'] = $post->post_modified_gmt;
 		}
+
+		$comment['comment_check_response'] = self::last_comment_check_response( $comment_id );
 
 		$comment = apply_filters( 'akismet_request_args', $comment, 'submit-ham' );
 
@@ -1901,20 +1905,36 @@ p {
 	}
 
 	/**
-	 * Controls the display of a privacy related notice underneath the comment form using the `akismet_comment_form_privacy_notice` option and filter respectively.
-	 * Default is top not display the notice, leaving the choice to site admins, or integrators.
+	 * Controls the display of a privacy related notice underneath the comment
+	 * form using the `akismet_comment_form_privacy_notice` option and filter
+	 * respectively.
+	 *
+	 * Default is to not display the notice, leaving the choice to site admins,
+	 * or integrators.
 	 */
 	public static function display_comment_form_privacy_notice() {
 		if ( 'display' !== apply_filters( 'akismet_comment_form_privacy_notice', get_option( 'akismet_comment_form_privacy_notice', 'hide' ) ) ) {
 			return;
 		}
+
 		echo apply_filters(
 			'akismet_comment_form_privacy_notice_markup',
-			'<p class="akismet_comment_form_privacy_notice">' . sprintf(
-				/* translators: %s: Akismet privacy URL */
-				__( 'This site uses Akismet to reduce spam. <a href="%s" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.', 'akismet' ),
-				'https://akismet.com/privacy/'
-			) . '</p>'
+			'<p class="akismet_comment_form_privacy_notice">' .
+				wp_kses(
+					sprintf(
+						/* translators: %s: Akismet privacy URL */
+						__( 'This site uses Akismet to reduce spam. <a href="%s" target="_blank" rel="nofollow noopener">Learn how your comment data is processed.</a>', 'akismet' ),
+						'https://akismet.com/privacy/'
+					),
+					array(
+						'a' => array(
+							'href' => array(),
+							'target' => array(),
+							'rel' => array(),
+						),
+					)
+				) .
+			'</p>'
 		);
 	}
 
@@ -1977,5 +1997,68 @@ p {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check the comment history to find out what the most recent comment-check
+	 * response said about this comment.
+	 *
+	 * This value is then included in submit-ham and submit-spam requests to allow
+	 * us to know whether the comment is actually a missed spam/ham or if it's
+	 * just being reclassified after either never being checked or being mistakenly
+	 * marked as ham/spam.
+	 *
+	 * @param int $comment_id The comment ID.
+	 * @return string 'true', 'false', or an empty string if we don't have a record
+	 *                of comment-check being called.
+	 */
+	public static function last_comment_check_response( $comment_id ) {
+		$history = self::get_comment_history( $comment_id );
+
+		if ( $history ) {
+			$history = array_reverse( $history );
+
+			foreach ( $history as $akismet_history_entry ) {
+				// We've always been consistent in how history entries are formatted
+				// but comment_meta is writable by everyone, so don't assume that all
+				// entries contain the expected parts.
+
+				if ( ! is_array( $akismet_history_entry ) ) {
+					continue;
+				}
+
+				if ( ! isset( $akismet_history_entry['event'] ) ) {
+					continue;
+				}
+
+				if ( in_array(
+					$akismet_history_entry['event'],
+					array(
+						'recheck-spam',
+						'check-spam',
+						'cron-retry-spam',
+						'webhook-spam',
+						'webhook-spam-noaction',
+					),
+					true
+				) ) {
+					return 'true';
+				} elseif ( in_array(
+					$akismet_history_entry['event'],
+					array(
+						'recheck-ham',
+						'check-ham',
+						'cron-retry-ham',
+						'webhook-ham',
+						'webhook-ham-noaction',
+					),
+					true
+				) ) {
+					return 'false';
+				}
+			}
+		}
+
+		return '';
 	}
 }
