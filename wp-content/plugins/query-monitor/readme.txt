@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.7
-Stable tag: 3.17.1
+Stable tag: 3.17.2
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -135,11 +135,17 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 ## Changelog ##
 
+### 3.17.2 (4 February 2025) ###
+
+* Reinstates the "Blocks" panel
+
 ### 3.17.1 (2 February 2025) ###
 
 * Prevents use of the deprecated `E_STRICT` constant in PHP 8.4.
-* Avoid use of the deprecated `setted_transient` and `setted_site_transient` actions in WordPress 6.8.
-* Skip showing the `_load_textdomain_just_in_time` notices when they're caused by Query Monitor itself.
+* Avoids use of the deprecated `setted_transient` and `setted_site_transient` actions in WordPress 6.8.
+* Skips showing the `_load_textdomain_just_in_time` notices when they're caused by Query Monitor itself.
+* Uses more appropriate formatting for a fatal error in REST API and Ajax contexts.
+
 
 ### 3.17.0 (27 November 2024) ###
 
@@ -178,15 +184,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 ### 3.14.1 (21 October 2023) ###
 
 * Improves compatibility with WordPress Playground
-
-### 3.14.0 (18 October 2023) ###
-
-* Corrects the port number handling when displaying URLs for scripts and styles
-* Improves the `db.php` handling when activating and deactivating Query Monitor on a single site within a Multisite network, and when `DISALLOW_FILE_MODS` is in use
-* Improves check for Debug Bar existence
-* Identifies drop-in plugins as a specific component instead of "other"
-* Simplifies some of the data structure used when logging queries
-* Specifies that Query Monitor supports WordPress versions up to three years old
 
 ### Earlier versions ###
 
