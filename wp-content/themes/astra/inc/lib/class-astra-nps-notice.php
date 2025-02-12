@@ -79,7 +79,7 @@ if ( ! class_exists( 'Astra_Nps_Notice' ) ) {
 		 *
 		 * @return void
 		 */
-		public function render_astra_nps_survey(): void {
+		public function render_astra_nps_survey() {
 
 			$current_screen = get_current_screen();
 		

@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Breadcrumbs_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Astra-Breadcrumbs Settings.
 		 *
@@ -117,7 +116,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 							'operator' => '==',
 							'value'    => 'none',
 						),
-						( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+						true === Astra_Builder_Helper::$is_header_footer_builder_active ?
 							Astra_Builder_Helper::$design_tab_config : Astra_Builder_Helper::$general_tab_config,
 					),
 				),
@@ -164,7 +163,6 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 					),
 					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
-
 
 				/**
 				 * Option: Disable Breadcrumb on Categories
@@ -373,7 +371,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 							'operator' => '!=',
 							'value'    => 'none',
 						),
-						( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
+						true === Astra_Builder_Helper::$is_header_footer_builder_active ?
 							Astra_Builder_Helper::$design_tab_config : Astra_Builder_Helper::$general_tab_config,
 					),
 				),
@@ -496,7 +494,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 		 * Is third-party breadcrumb active.
 		 * Decide if the Source option should be visible depending on third party plugins.
 		 *
-		 * @return boolean  True - If the option should be displayed, False - If the option should be hidden.
+		 * @return bool  True - If the option should be displayed, False - If the option should be hidden.
 		 */
 		public function is_third_party_breadcrumb_active() {
 
@@ -510,28 +508,34 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				);
 			}
 
+			// Check if breadcrumb is turned on from SEO Yoast plugin.
 			if ( function_exists( 'yoast_breadcrumb' ) && true === $wpseo_option['breadcrumbs-enable'] ) {
-				// Check if breadcrumb is turned on from SEO Yoast plugin.
 				return true;
-			} elseif ( function_exists( 'bcn_display' ) ) {
-				// Check if breadcrumb is turned on from Breadcrumb NavXT plugin.
-				return true;
-			} elseif ( function_exists( 'rank_math_the_breadcrumbs' ) ) {
-				// Check if breadcrumb is turned on from Rank Math plugin.
-				return true;
-			} elseif ( function_exists( 'seopress_display_breadcrumbs' ) ) {
-				// Check if breadcrumb is turned on from SEOPress plugin.
-				return true;
-			} else {
-				return false;
 			}
+
+			// Check if breadcrumb is turned on from Breadcrumb NavXT plugin.
+			if ( function_exists( 'bcn_display' ) ) {
+				return true;
+			}
+
+			// Check if breadcrumb is turned on from Rank Math plugin.
+			if ( function_exists( 'rank_math_the_breadcrumbs' ) ) {
+				return true;
+			}
+
+			// Check if breadcrumb is turned on from SEOPress plugin.
+			if ( function_exists( 'seopress_display_breadcrumbs' ) ) {
+				return true;
+			}
+
+			return false;
 		}
 
 		/**
 		 * Is selected third-party breadcrumb active.
 		 * Decide if the Separator option should be visible depending on third party plugins.
 		 *
-		 * @return boolean  True - If the option should be displayed, False - If the option should be hidden.
+		 * @return bool  True - If the option should be displayed, False - If the option should be hidden.
 		 */
 		public function is_selected_breadcrumb_active() {
 
@@ -547,21 +551,27 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				);
 			}
 
+			// Check if breadcrumb is turned on from SEO Yoast plugin.
 			if ( function_exists( 'yoast_breadcrumb' ) && true === $wpseo_option['breadcrumbs-enable'] && 'yoast-seo-breadcrumbs' === $selected_breadcrumb_source ) {
-				// Check if breadcrumb is turned on from SEO Yoast plugin.
 				return false;
-			} elseif ( function_exists( 'bcn_display' ) && 'breadcrumb-navxt' === $selected_breadcrumb_source ) {
-				// Check if breadcrumb is turned on from Breadcrumb NavXT plugin.
-				return false;
-			} elseif ( function_exists( 'rank_math_the_breadcrumbs' ) && 'rank-math' === $selected_breadcrumb_source ) {
-				// Check if breadcrumb is turned on from Rank Math plugin.
-				return false;
-			} elseif ( function_exists( 'seopress_display_breadcrumbs' ) ) {
-				// Check if breadcrumb is turned on from SEOPress plugin.
-				return false;
-			} else {
-				return true;
 			}
+
+			// Check if breadcrumb is turned on from Breadcrumb NavXT plugin.
+			if ( function_exists( 'bcn_display' ) && 'breadcrumb-navxt' === $selected_breadcrumb_source ) {
+				return false;
+			}
+
+			// Check if breadcrumb is turned on from Rank Math plugin.
+			if ( function_exists( 'rank_math_the_breadcrumbs' ) && 'rank-math' === $selected_breadcrumb_source ) {
+				return false;
+			}
+
+			// Check if breadcrumb is turned on from SEOPress plugin.
+			if ( function_exists( 'seopress_display_breadcrumbs' ) ) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * WordPress filter - Widget Tags
  */
-if ( ! function_exists( 'astra_widget_tag_cloud_args' ) ) :
+if ( ! function_exists( 'astra_widget_tag_cloud_args' ) ) {
 
 	/**
 	 * WordPress filter - Widget Tags
@@ -25,7 +25,7 @@ if ( ! function_exists( 'astra_widget_tag_cloud_args' ) ) :
 	function astra_widget_tag_cloud_args( $args = array() ) {
 
 		$sidebar_link_font_size            = astra_get_option( 'font-size-body' );
-		$sidebar_link_font_size['desktop'] = ( '' != $sidebar_link_font_size['desktop'] ) ? $sidebar_link_font_size['desktop'] : 15;
+		$sidebar_link_font_size['desktop'] = '' != $sidebar_link_font_size['desktop'] ? $sidebar_link_font_size['desktop'] : 15;
 
 		$args['smallest'] = intval( $sidebar_link_font_size['desktop'] ) - 2;
 		$args['largest']  = intval( $sidebar_link_font_size['desktop'] ) + 3;
@@ -35,12 +35,12 @@ if ( ! function_exists( 'astra_widget_tag_cloud_args' ) ) :
 	}
 	add_filter( 'widget_tag_cloud_args', 'astra_widget_tag_cloud_args', 90 );
 
-endif;
+}
 
 /**
  * WordPress filter - Widget Categories
  */
-if ( ! function_exists( 'astra_filter_widget_tag_cloud' ) ) :
+if ( ! function_exists( 'astra_filter_widget_tag_cloud' ) ) {
 
 	/**
 	 * WordPress filter - Widget Categories
@@ -62,12 +62,12 @@ if ( ! function_exists( 'astra_filter_widget_tag_cloud' ) ) :
 	}
 	add_filter( 'wp_generate_tag_cloud_data', 'astra_filter_widget_tag_cloud' );
 
-endif;
+}
 
 /**
  * Register widget area.
  */
-if ( ! function_exists( 'astra_widgets_init' ) ) :
+if ( ! function_exists( 'astra_widgets_init' ) ) {
 
 	/**
 	 * Register widget area.
@@ -176,4 +176,4 @@ if ( ! function_exists( 'astra_widgets_init' ) ) :
 	}
 	add_action( 'widgets_init', 'astra_widgets_init' );
 
-endif;
+}

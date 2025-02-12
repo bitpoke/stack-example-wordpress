@@ -480,6 +480,9 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 				'body .progress-bar-complete:after' => array(
 					'color' => $theme_forground_color,
 				),
+				'.fa-heart-o.llms-heart-btn' => array(
+					'color' => 'var(--ast-global-color-3)',
+				),
 			);
 
 			/* Parse CSS from array() */

@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Global palette class
  */
 class Astra_Global_Palette {
-
 	/**
 	 * Constructor
 	 *
@@ -323,7 +322,7 @@ class Astra_Global_Palette {
 			}
 		';
 
-		return $dynamic_css .= Astra_Enqueue_Scripts::trim_css( $global_border );
+		return $dynamic_css . Astra_Enqueue_Scripts::trim_css( $global_border );
 	}
 }
 

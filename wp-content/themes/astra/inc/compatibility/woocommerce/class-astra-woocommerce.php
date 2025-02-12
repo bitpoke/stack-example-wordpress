@@ -823,9 +823,15 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 
 			// Check if Dokan plugin is installed and specific pages are active.
 			if (
-				( function_exists( 'dokan_is_seller_dashboard' ) && dokan_is_seller_dashboard() ) ||
-				( function_exists( 'dokan_is_store_page' ) && dokan_is_store_page() ) ||
-				( function_exists( 'dokan_is_store_listing' ) && dokan_is_store_listing() )
+				( function_exists( 'dokan_is_seller_dashboard' ) && dokan_is_seller_dashboard() ) || // Seller dashboard.
+				( function_exists( 'dokan_is_store_page' ) && dokan_is_store_page() ) || // Store page.
+				( function_exists( 'dokan_is_store_listing' ) && dokan_is_store_listing() ) || // Store listing.
+				( function_exists( 'dokan_is_account_page' ) && dokan_is_account_page() ) || // Account pages.
+				( function_exists( 'dokan_is_order_page' ) && dokan_is_order_page() ) || // Order pages.
+				( function_exists( 'dokan_is_cart_page' ) && dokan_is_cart_page() ) || // Cart page.
+				( function_exists( 'dokan_is_checkout_page' ) && dokan_is_checkout_page() ) || // Checkout page.
+				( function_exists( 'dokan_get_option' ) && is_page( dokan_get_option( 'dashboard', 'dokan_pages' ) ) ) || // Custom Dokan dashboard page.
+				is_page( get_option( 'woocommerce_myaccount_page_id' ) ) // WooCommerce My Account page.
 			) {
 				$styles['astra-wc-dokan-compatibility'] = array(
 					'src'     => $css_uri . 'dokan-compatibility' . $file_prefix . '.css',

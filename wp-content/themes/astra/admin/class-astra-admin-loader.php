@@ -10,14 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if ( ! class_exists( 'Astra_Admin_Loader' ) ) :
+if ( ! class_exists( 'Astra_Admin_Loader' ) ) {
 	/**
 	 * Astra_Admin_Loader
 	 *
 	 * @since 4.0.0
 	 */
 	class Astra_Admin_Loader {
-
 		/**
 		 * Instance
 		 *
@@ -68,6 +67,6 @@ if ( ! class_exists( 'Astra_Admin_Loader' ) ) :
 			require_once ASTRA_THEME_ADMIN_DIR . 'includes/class-astra-theme-builder-free.php'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound -- Not a template file so loading in a normal way.
 		}
 	}
-endif;
+}
 
 Astra_Admin_Loader::get_instance();

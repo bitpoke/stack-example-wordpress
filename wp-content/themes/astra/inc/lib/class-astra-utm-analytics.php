@@ -4,7 +4,7 @@
  *
  * Loads latest UTM Analytics library in environment.
  *
- * @since x.x.x
+ * @since 4.8.11
  * @package UTM Analytics
  */
 

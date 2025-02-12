@@ -270,6 +270,16 @@ function astra_hb_woo_cart_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 			'border-color'     => esc_attr( $cart_h_link_color_desktop ),
 			'background-color' => esc_attr( $cart_h_bg_color_desktop ),
 		),
+		'.ast-icon-shopping-bag svg'                  => array(
+			'height' => '1em',
+			'width'  => '1em',
+		),
+		'.ast-site-header-cart.ast-menu-cart-outline .ast-addon-cart-wrap, .ast-site-header-cart.ast-menu-cart-fill .ast-addon-cart-wrap' => array(
+			'line-height' => '1',
+		),
+		'.ast-hfb-header .ast-addon-cart-wrap'        => array(
+			' padding' => '0.4em',
+		),
 
 		/**
 		 * Cart button color for widget

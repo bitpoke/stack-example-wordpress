@@ -646,6 +646,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					$configuration['value'] = $val;
 					break;
 				case 'ast-logo-svg-icon':
+				case 'ast-svg-icon-selector':
 					if ( ! isset( $val['type'] ) ) {
 						$configuration['value'] = array(
 							'type'  => '',

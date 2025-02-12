@@ -211,17 +211,37 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		}
 
 		if ( 'off-canvas' === mobileHeaderType ) {
-
-			for ( var item = 0;  item < popupTrigger.length; item++ ) {
-				if ( undefined !==  popupTrigger[item] && popupTrigger[item].classList.contains( 'toggled') ) {
-					popupTrigger[item].click();
+			popupTrigger.forEach(function (trigger) {
+				if (trigger && trigger.classList.contains('toggled')) {
+					trigger.click();
 				}
-			}
+			});
 		}
-
-		init( mobileHeaderType );
-
+	
+		init(mobileHeaderType);
 	}
+	
+	function syncToggledClass() {
+		const buttons = document.querySelectorAll('.menu-toggle');
+			const allToggled = Array.from(buttons).every(button => button.classList.contains('toggled'));
+	
+		buttons.forEach(button => {
+			if (allToggled) {
+				button.classList.remove('toggled');
+			} else {
+				button.classList.add('toggled');
+			}
+		});
+	}
+	
+	document.addEventListener('click', function (e) {
+		const button = e.target.closest('.menu-toggle');
+		if (button) {
+			button.classList.toggle('toggled');
+			syncToggledClass();
+		}
+	});
+	
 
 	/**
 	 * Opens the Popup when trigger is clicked.
@@ -1383,11 +1403,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-// This function calculates the scrollbar width and sets it as a CSS variable.
-document.addEventListener( 'DOMContentLoaded', () => {
-	const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-	if ( scrollbarWidth > 0 ) {
-		document.documentElement.style.setProperty( '--ast-scrollbar-width', scrollbarWidth + 'px' );
-	}
-} );

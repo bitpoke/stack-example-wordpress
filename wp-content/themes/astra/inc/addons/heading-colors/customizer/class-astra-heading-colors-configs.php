@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Heading_Colors_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Astra Heading Colors Settings.
 		 *
@@ -231,8 +230,8 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 				),
 
 				/**
-				* Option: Button Font Extras
-				*/
+				 * Option: Button Font Extras
+				 */
 				array(
 					'name'     => 'font-extras-button',
 					'type'     => 'sub-control',
@@ -244,8 +243,8 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 				),
 
 				/**
-				* Option: Outline Button Font Extras
-				*/
+				 * Option: Outline Button Font Extras
+				 */
 				array(
 					'name'     => 'secondary-font-extras-button',
 					'type'     => 'sub-control',
@@ -258,7 +257,6 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 			);
 
 			return array_merge( $configurations, $_configs );
-
 		}
 	}
 }

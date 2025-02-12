@@ -3,9 +3,9 @@ Contributors: brainstormforce
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: custom-menu, custom-logo, entertainment, featured-images, full-width-template, one-column, two-columns, left-sidebar, e-commerce, right-sidebar, custom-colors, editor-style, featured-images, full-width-template, microformats, post-formats, rtl-language-support, theme-options, threaded-comments, translation-ready, blog
-Tested up to: 6.7
+Tested up to: 6.7.1
 Requires PHP: 5.3
-Stable tag: 4.8.11
+Stable tag: 4.8.12
 
 Astra is fast, fully customizable & beautiful WordPress theme suitable for blog, personal portfolio, business website and WooCommerce storefront.
 
@@ -29,7 +29,7 @@ It’s fully compatible with WooCommerce, SureCart and other eCommerce plugins a
 
 Astra also provides expert support for free users. A dedicated team of fully trained WordPress experts are on hand to help with every aspect of the theme.
 
-<a href="https://zipwp.org/themes/astra/" target="_blank">Try it out on a free dummy site.</a>
+<a href="https://zipwp.org/themes/astra/" target="_blank">Try the live demo of Astra</a>
 
 == Installation ==
 

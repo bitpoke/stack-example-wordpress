@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.0.0
  */
 class Astra_Admin_Ajax {
-
 	/**
 	 * Ajax action prefix.
 	 *
@@ -133,7 +132,7 @@ class Astra_Admin_Ajax {
 		$migrate = isset( $_POST['status'] ) ? sanitize_key( $_POST['status'] ) : '';
 		/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
-		$migrate = ( 'true' === $migrate ) ? true : false;
+		$migrate = 'true' === $migrate ? true : false;
 		astra_update_option( 'ast-disable-upgrade-notices', $migrate );
 
 		wp_send_json_success();
@@ -168,7 +167,7 @@ class Astra_Admin_Ajax {
 		/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		$migrate = isset( $_POST['status'] ) ? sanitize_key( $_POST['status'] ) : '';
 		/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$migrate = ( 'true' === $migrate ) ? true : false;
+		$migrate = 'true' === $migrate ? true : false;
 		/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		$migration_flag = astra_get_option( 'v3-option-migration', false );
 		astra_update_option( 'is-header-footer-builder', $migrate );
@@ -262,7 +261,7 @@ class Astra_Admin_Ajax {
 	 * It checks for the plugin slug in the AJAX request, verifies the nonce, and initiates the plugin installation process.
 	 * If the plugin is successfully installed, it schedules a database update to map the plugin slug to a custom key for analytics tracking.
 	 *
-	 * @since x.x.x
+	 * @since 4.8.12
 	 */
 	public function required_plugin_install() {
 
@@ -339,7 +338,7 @@ class Astra_Admin_Ajax {
 		}
 
 		/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$plugin_init = ( isset( $_POST['init'] ) ) ? sanitize_text_field( wp_unslash( $_POST['init'] ) ) : '';
+		$plugin_init = isset( $_POST['init'] ) ? sanitize_text_field( wp_unslash( $_POST['init'] ) ) : '';
 		/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 		$activate = activate_plugin( $plugin_init );
@@ -410,7 +409,7 @@ class Astra_Admin_Ajax {
 		}
 
 		/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$plugin_init = ( isset( $_POST['init'] ) ) ? sanitize_text_field( wp_unslash( $_POST['init'] ) ) : '';
+		$plugin_init = isset( $_POST['init'] ) ? sanitize_text_field( wp_unslash( $_POST['init'] ) ) : '';
 		/** @psalm-suppress PossiblyInvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 		$deactivate = deactivate_plugins( $plugin_init );

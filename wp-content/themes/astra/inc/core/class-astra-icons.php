@@ -120,17 +120,51 @@ class Astra_Icons {
 			'icon-' . $icon,
 		);
 
-		$output = sprintf(
-			'<span class="%1$s">%2$s</span>',
-			implode( ' ', $classes ),
-			$output
+		/**
+		 * @psalm-suppress TooManyArguments
+		 */
+		$output = apply_filters(
+			'astra_svg_icon', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			sprintf(
+				'<span class="%1$s">%2$s</span>',
+				implode( ' ', $classes ),
+				$output
+			),
+			$icon
 		);
 
-		if ( ! $is_echo ) {
-			return apply_filters( 'astra_svg_icon', $output, $icon );
-		}
+		$allowed_svg_args = array(
+			'span'  => array( 'class' => array() ),
+			'svg'   => array(
+				'xmlns:xlink'       => array(),
+				'version'           => array(),
+				'id'                => array(),
+				'x'                 => array(),
+				'y'                 => array(),
+				'enable-background' => array(),
+				'xml:space'         => array(),
+				'class'             => array(),
+				'aria-hidden'       => array(),
+				'aria-labelledby'   => array(),
+				'role'              => array(),
+				'xmlns'             => array(),
+				'width'             => array(),
+				'height'            => array(),
+				'viewbox'           => array(),
+			),
+			'g'     => array( 'fill' => array() ),
+			'title' => array( 'title' => array() ),
+			'path'  => array(
+				'd'    => array(),
+				'fill' => array(),
+			),
+		);
 
-		echo apply_filters( 'astra_svg_icon', $output, $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		if ( $is_echo !== true ) {
+			return wp_kses( $output, $allowed_svg_args );
+		}
+		
+		echo wp_kses( $output, $allowed_svg_args );
 	}
 }
 new Astra_Icons();

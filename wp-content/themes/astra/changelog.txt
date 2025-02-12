@@ -1,5 +1,13 @@
 *** Astra Changelog ***
 
+2025-02-11 - version 4.8.12
+* Improvement: Improved synchronization of toggled class across menu toggle buttons to ensure consistent add/remove behavior.
+* Improvement: Added filter to use more attribute to blog post title links for improved SEO control.
+* Fix: Heart button colour is missing for students in LifterLMS lessons page to mark as favorite.
+* Fix: Resolved an issue where cart widget css not loading properly on Cartflows checkout page.
+* Fix: Resolved an issue where the theme preview was not visible on the wp.org themes page.
+* Fix: Resolved an issue where extra white space appearing on the sides of the layout on certain screen sizes after the recent update.
+
 2025-01-28 - version 4.8.11
 * Improvement: WooCommerce - Enhanced styling for the variation clear button and block-based cart and checkout fields to improve user experience.
 * Improvement: Adjusted container width calculations to consider scrollbar width and align with the header container.

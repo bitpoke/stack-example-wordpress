@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.1.0
  */
 class Astra_Menu {
-
 	/**
 	 * Instance
 	 *
@@ -118,7 +117,7 @@ class Astra_Menu {
 		);
 
 		wp_safe_redirect( $extensions_url );
-		exit();
+		exit;
 	}
 
 	/**
@@ -186,7 +185,7 @@ class Astra_Menu {
 
 		// Add Custom Layout submenu.
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$show_custom_layout_submenu = ( defined( 'ASTRA_EXT_VER' ) && ! Astra_Ext_Extension::is_active( 'advanced-hooks' ) ) ? false : true;
+		$show_custom_layout_submenu = defined( 'ASTRA_EXT_VER' ) && ! Astra_Ext_Extension::is_active( 'advanced-hooks' ) ? false : true;
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 		if ( $show_custom_layout_submenu && defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, '4.5.0', '<' ) ) {
@@ -195,9 +194,8 @@ class Astra_Menu {
 				__( 'Custom Layouts', 'astra' ),
 				__( 'Custom Layouts', 'astra' ),
 				$capability,
-				/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-				( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'advanced-hooks' ) ) ? 'edit.php?post_type=astra-advanced-hook' : 'admin.php?page=' . self::$plugin_slug . '&path=custom-layouts'
-				/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+				/* @psalm-suppress UndefinedClass */
+				defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'advanced-hooks' ) ? 'edit.php?post_type=astra-advanced-hook' : 'admin.php?page=' . self::$plugin_slug . '&path=custom-layouts'
 			);
 		}
 
@@ -221,8 +219,6 @@ class Astra_Menu {
 					$capability,
 					$this->get_spectra_page_admin_link()
 				);
-			} else {
-				// Do nothing.
 			}
 		}
 
@@ -493,6 +489,7 @@ class Astra_Menu {
 					$st_key = \SureTriggers\Controllers\OptionController::get_option( 'secret_key' );
 					return $st_key && $st_key !== 'connection-denied';
 				}
+				// Fall through: Intentional fall-through without returning.
 				return false;
 
 			case 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php':
@@ -514,7 +511,9 @@ class Astra_Menu {
 					return true;
 				} catch ( \Exception $e ) {
 					// Handle exception silently.
+					return false;
 				}
+				// Fall through: This catch block will always return false if an exception is caught.
 				return false;
 		}
 
@@ -535,14 +534,16 @@ class Astra_Menu {
 
 		if ( ! isset( $installed_plugins[ $plugin_init_file ] ) ) {
 			return 'install';
-		} elseif ( is_plugin_active( $plugin_init_file ) ) {
+		}
+
+		if ( is_plugin_active( $plugin_init_file ) ) {
 			if ( ! self::is_plugin_configured( $plugin_init_file ) ) {
 				return 'configure';
 			}
 			return 'activated';
-		} else {
-			return 'installed';
 		}
+
+		return 'installed';
 	}
 
 	/**
@@ -686,7 +687,7 @@ class Astra_Menu {
 					),
 				),
 				'advanced-hooks'        => array(
-					'title'           => ( defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, '4.5.0', '<' ) ) ? __( 'Custom Layouts', 'astra' ) : __( 'Site Builder', 'astra' ),
+					'title'           => defined( 'ASTRA_EXT_VER' ) && version_compare( ASTRA_EXT_VER, '4.5.0', '<' ) ? __( 'Custom Layouts', 'astra' ) : __( 'Site Builder', 'astra' ),
 					'description'     => __( 'Add content conditionally in the various hook areas of the theme.', 'astra' ),
 					'manage_settings' => true,
 					'class'           => 'ast-addon',
@@ -806,7 +807,7 @@ class Astra_Menu {
 				'status'      => self::get_plugin_status( 'cartflows/cartflows.php' ),
 				'slug'        => 'cartflows',
 				'path'        => 'cartflows/cartflows.php',
-				'redirection' => ( false === get_option( 'wcf_setup_complete', false ) && ! get_option( 'wcf_setup_skipped', false ) ) ? admin_url( 'index.php?page=cartflow-setup' ) : admin_url( 'admin.php?page=cartflows' ),
+				'redirection' => false === get_option( 'wcf_setup_complete', false ) && ! get_option( 'wcf_setup_skipped', false ) ? admin_url( 'index.php?page=cartflow-setup' ) : admin_url( 'admin.php?page=cartflows' ),
 				'ratings'     => '(380+)',
 				'activations' => '200,000+',
 				'logoPath'    => array(
@@ -854,7 +855,7 @@ class Astra_Menu {
 			'status'      => self::get_plugin_status( 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php' ),
 			'slug'        => 'checkout-plugins-stripe-woo',
 			'path'        => 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php',
-			'redirection' => ( false === get_option( 'cpsw_setup_status', false ) ) ? admin_url( 'index.php?page=cpsw-onboarding' ) : admin_url( 'admin.php?page=wc-settings&tab=cpsw_api_settings' ),
+			'redirection' => false === get_option( 'cpsw_setup_status', false ) ? admin_url( 'index.php?page=cpsw-onboarding' ) : admin_url( 'admin.php?page=wc-settings&tab=cpsw_api_settings' ),
 			'ratings'     => '(15+)',
 			'activations' => '100,000+',
 			'logoPath'    => array(

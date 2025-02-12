@@ -123,3 +123,16 @@ li#customize-control-astra-settings-footer-builder-pro-items .ast-upgrade-pro-wr
     padding-right: 12px;
     padding-left: 12px;
 }
+
+/* Styling for SVG Icon Control's icon lbrary picker */
+.customize-control-ast-svg-icon-selector .icon-library-picker input[type="tel"] {
+    max-width: 40px;
+  }
+  
+  /* Styling for SVG Icon Control's textarea */
+  .customize-control-ast-svg-icon-selector .custom-svg-icon-wrapper textarea {
+    width: 100%;
+    margin: 8px 0;
+    height: 100px;
+  }
+  
