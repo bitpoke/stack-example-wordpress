@@ -503,7 +503,7 @@ if ( ! function_exists( 'astra_get_options' ) ) {
 	function astra_get_options() {
 		// Ensure we're not interfering during WordPress installation.
 		if ( wp_installing() ) {
-			return [];
+			return array();
 		}
 
 		/**
@@ -1190,7 +1190,12 @@ if ( ! function_exists( 'astra_archive_page_info' ) ) {
 						<?php do_action( 'astra_before_archive_title' ); ?>
 						<h1 class='page-title ast-archive-title'><?php echo esc_html( apply_filters( 'astra_author_page_title', $author_name_html ) ); ?></h1>
 						<?php do_action( 'astra_after_archive_title' ); ?>
+						<?php
+						/** @psalm-suppress RedundantConditionGivenDocblockType */
+						if ( is_string( $author_description ) && ! empty( $author_description ) ) :
+							?>
 						<p><?php echo wp_kses_post( $author_description ); ?></p>
+						<?php endif; ?>
 						<?php do_action( 'astra_after_archive_description' ); ?>
 					</div>
 					<div class="ast-author-avatar">
@@ -1202,7 +1207,9 @@ if ( ! function_exists( 'astra_archive_page_info' ) ) {
 
 			} else {
 				$taxonomy_banner_content = astra_get_taxonomy_banner_legacy_layout();
-				echo wp_kses_post( $taxonomy_banner_content );
+				if ( is_string( $taxonomy_banner_content ) && ! empty( $taxonomy_banner_content ) ) {
+					echo wp_kses_post( $taxonomy_banner_content );
+				}
 			}
 		}
 	}

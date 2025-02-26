@@ -16,7 +16,6 @@ if ( ! class_exists( 'Astra_Builder_Footer' ) ) {
 	 * Class Astra_Builder_Footer.
 	 */
 	final class Astra_Builder_Footer {
-
 		/**
 		 * Member Variable
 		 *
@@ -113,7 +112,6 @@ if ( ! class_exists( 'Astra_Builder_Footer' ) ) {
 			}
 		}
 
-
 		/**
 		 * Remove existing Footer to load Footer Builder.
 		 *
@@ -163,7 +161,6 @@ if ( ! class_exists( 'Astra_Builder_Footer' ) ) {
 				set_query_var( 'row', 'above' );
 				get_template_part( 'template-parts/footer/builder/footer', 'row' );
 			}
-
 		}
 
 		/**
@@ -185,7 +182,6 @@ if ( ! class_exists( 'Astra_Builder_Footer' ) ) {
 				set_query_var( 'row', 'primary' );
 				get_template_part( 'template-parts/footer/builder/footer', 'row' );
 			}
-
 		}
 
 		/**
@@ -207,7 +203,6 @@ if ( ! class_exists( 'Astra_Builder_Footer' ) ) {
 				set_query_var( 'row', 'below' );
 				get_template_part( 'template-parts/footer/builder/footer', 'row' );
 			}
-
 		}
 
 		/**
@@ -238,7 +233,6 @@ if ( ! class_exists( 'Astra_Builder_Footer' ) ) {
 						echo do_shortcode( wp_kses_post( wpautop( $content ) ) );
 				echo '</div>';
 			}
-
 		}
 
 		/**

@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Body_Typo_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Body Typography Customizer Configurations.
 		 *

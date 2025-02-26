@@ -169,8 +169,6 @@ function astra_header_mobile_trigger_configuration() {
 			'divider'     => array( 'ast_class' => 'ast-top-section-divider' ),
 		),
 
-
-
 		/**
 		 * Option: Toggle Button Bg Color
 		 */
@@ -248,8 +246,8 @@ function astra_header_mobile_trigger_configuration() {
 		),
 
 		/**
-		* Option: Button Radius Fields
-		*/
+		 * Option: Button Radius Fields
+		 */
 		array(
 			'name'              => ASTRA_THEME_SETTINGS . '[mobile-header-toggle-border-radius-fields]',
 			'default'           => astra_get_option( 'mobile-header-toggle-border-radius-fields' ),
@@ -279,7 +277,6 @@ function astra_header_mobile_trigger_configuration() {
 				),
 			),
 		),
-
 
 		/**
 		 * Option: Divider

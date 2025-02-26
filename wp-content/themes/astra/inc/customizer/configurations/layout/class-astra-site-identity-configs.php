@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 	 * Register Astra Customizerr Site identity Customizer Configurations.
 	 */
 	class Astra_Site_Identity_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Astra Customizerr Site identity Customizer Configurations.
 		 *
@@ -53,8 +52,8 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 				),
 
 				/**
-				* Option: Transparent Header Section - Link.
-				*/
+				 * Option: Transparent Header Section - Link.
+				 */
 				array(
 					'name'            => ASTRA_THEME_SETTINGS . '[ast-callback-notice-header-transparent-header-logo-link]',
 					'type'            => 'control',
@@ -74,7 +73,6 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 					'link_text'       => '<u>' . __( 'Customize Transparent Header.', 'astra' ) . '</u>',
 					'active_callback' => array( $this, 'is_transparent_header_enabled' ),
 				),
-
 
 				/**
 				 * Option: Different retina logo
@@ -397,7 +395,7 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 						'responsive' => false,
 						'transport'  => 'postMessage',
 						'priority'   => 8,
-						'context'    => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array( Astra_Builder_Helper::$design_tab_config ) : '',
+						'context'    => true === Astra_Builder_Helper::$is_header_footer_builder_active ? array( Astra_Builder_Helper::$design_tab_config ) : '',
 					),
 
 					// Option: Site Title Color.
@@ -513,10 +511,10 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 						'control'   => 'ast-color',
 						'transport' => 'postMessage',
 						'default'   => astra_get_option( 'header-color-site-tagline' ),
-						'title'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? __( 'Tagline', 'astra' ) : __( 'Color', 'astra' ),
+						'title'     => true === Astra_Builder_Helper::$is_header_footer_builder_active ? __( 'Tagline', 'astra' ) : __( 'Color', 'astra' ),
 						'section'   => 'title_tagline',
-						'priority'  => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? 8 : 12,
-						'context'   => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array( Astra_Builder_Helper::$design_tab_config ) : '',
+						'priority'  => true === Astra_Builder_Helper::$is_header_footer_builder_active ? 8 : 12,
+						'context'   => true === Astra_Builder_Helper::$is_header_footer_builder_active ? array( Astra_Builder_Helper::$design_tab_config ) : '',
 						'divider'   => array( 'ast_class' => 'ast-bottom-section-divider' ),
 					),
 				)
@@ -556,8 +554,8 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 						),
 
 						/**
-						* Link to the site icon.
-						*/
+						 * Link to the site icon.
+						 */
 						array(
 							'name'           => ASTRA_THEME_SETTINGS . '[site-icon-link]',
 							'type'           => 'control',
@@ -586,11 +584,11 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 						'default'   => astra_get_option( 'site-title-typography' ),
 						'type'      => 'control',
 						'control'   => 'ast-settings-group',
-						'title'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? __( 'Title Font', 'astra' ) : __( 'Typography', 'astra' ),
+						'title'     => true === Astra_Builder_Helper::$is_header_footer_builder_active ? __( 'Title Font', 'astra' ) : __( 'Typography', 'astra' ),
 						'section'   => $_section,
 						'transport' => 'postMessage',
-						'priority'  => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? 16 : 8,
-						'context'   => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array( Astra_Builder_Helper::$design_tab_config ) : '',
+						'priority'  => true === Astra_Builder_Helper::$is_header_footer_builder_active ? 16 : 8,
+						'context'   => true === Astra_Builder_Helper::$is_header_footer_builder_active ? array( Astra_Builder_Helper::$design_tab_config ) : '',
 					),
 
 					/**
@@ -601,30 +599,29 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 						'default'   => astra_get_option( 'site-tagline-typography' ),
 						'type'      => 'control',
 						'control'   => 'ast-settings-group',
-						'title'     => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? __( 'Tagline Font', 'astra' ) : __( 'Typography', 'astra' ),
+						'title'     => true === Astra_Builder_Helper::$is_header_footer_builder_active ? __( 'Tagline Font', 'astra' ) : __( 'Typography', 'astra' ),
 						'section'   => $_section,
 						'transport' => 'postMessage',
-						'priority'  => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? 20 : 11,
-						'context'   => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array( Astra_Builder_Helper::$design_tab_config ) : '',
+						'priority'  => true === Astra_Builder_Helper::$is_header_footer_builder_active ? 20 : 11,
+						'context'   => true === Astra_Builder_Helper::$is_header_footer_builder_active ? array( Astra_Builder_Helper::$design_tab_config ) : '',
 					),
 				);
 
 				$_configs = array_merge( $_configs, $new_configs );
 			}
 
-			$configurations = array_merge( $configurations, $_configs );
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 
 		/**
 		 * Check if transparent header is enabled on the page being previewed.
 		 *
 		 * @since  2.4.5
-		 * @return boolean True - If Transparent Header is enabled, False if not.
+		 * @return bool True - If Transparent Header is enabled, False if not.
 		 */
 		public function is_transparent_header_enabled() {
 			$status = Astra_Ext_Transparent_Header_Markup::is_transparent_header();
-			return ( true === $status ? true : false );
+			return true === $status ? true : false;
 		}
 
 		/**
@@ -650,6 +647,5 @@ if ( ! class_exists( 'Astra_Site_Identity_Configs' ) ) {
 		}
 	}
 }
-
 
 new Astra_Site_Identity_Configs();

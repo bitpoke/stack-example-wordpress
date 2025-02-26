@@ -14,7 +14,7 @@ if ( ! class_exists( 'LifterLMS' ) ) {
 /**
  * Astra Lifter LMS Compatibility
  */
-if ( ! class_exists( 'Astra_LifterLMS' ) ) :
+if ( ! class_exists( 'Astra_LifterLMS' ) ) {
 
 	/**
 	 * Astra Lifter LMS Compatibility
@@ -22,7 +22,6 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 	 * @since 1.2.0
 	 */
 	class Astra_LifterLMS {
-
 		/**
 		 * Member Variable
 		 *
@@ -69,7 +68,6 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 
 			// Course builder custom fields.
 			add_filter( 'llms_builder_register_custom_fields', array( $this, 'register_builder_fields' ) );
-
 		}
 
 		/**
@@ -430,10 +428,10 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 					'background-color'           => $btn_bg_color,
 					'border-style'               => 'solid',
 					'border-color'               => $btn_border_color,
-					'border-top-width'           => ( isset( $btn_border_size['top'] ) && '' !== $btn_border_size['top'] ) ? astra_get_css_value( $btn_border_size['top'], 'px' ) : '0',
-					'border-right-width'         => ( isset( $btn_border_size['right'] ) && '' !== $btn_border_size['right'] ) ? astra_get_css_value( $btn_border_size['right'], 'px' ) : '0',
-					'border-left-width'          => ( isset( $btn_border_size['left'] ) && '' !== $btn_border_size['left'] ) ? astra_get_css_value( $btn_border_size['left'], 'px' ) : '0',
-					'border-bottom-width'        => ( isset( $btn_border_size['bottom'] ) && '' !== $btn_border_size['bottom'] ) ? astra_get_css_value( $btn_border_size['bottom'], 'px' ) : '0',
+					'border-top-width'           => isset( $btn_border_size['top'] ) && '' !== $btn_border_size['top'] ? astra_get_css_value( $btn_border_size['top'], 'px' ) : '0',
+					'border-right-width'         => isset( $btn_border_size['right'] ) && '' !== $btn_border_size['right'] ? astra_get_css_value( $btn_border_size['right'], 'px' ) : '0',
+					'border-left-width'          => isset( $btn_border_size['left'] ) && '' !== $btn_border_size['left'] ? astra_get_css_value( $btn_border_size['left'], 'px' ) : '0',
+					'border-bottom-width'        => isset( $btn_border_size['bottom'] ) && '' !== $btn_border_size['bottom'] ? astra_get_css_value( $btn_border_size['bottom'], 'px' ) : '0',
 					'font-family'                => astra_get_font_family( $theme_btn_font_family ),
 					'font-weight'                => esc_attr( $theme_btn_font_weight ),
 					'line-height'                => esc_attr( $theme_btn_line_height ),
@@ -480,7 +478,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 				'body .progress-bar-complete:after' => array(
 					'color' => $theme_forground_color,
 				),
-				'.fa-heart-o.llms-heart-btn' => array(
+				'.fa-heart-o.llms-heart-btn'        => array(
 					'color' => 'var(--ast-global-color-3)',
 				),
 			);
@@ -528,7 +526,6 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 			$css_output .= astra_parse_css( $css_global_button_mobile, '', astra_get_mobile_breakpoint() );
 
 			wp_add_inline_style( 'lifterlms-styles', apply_filters( 'astra_theme_lifterlms_dynamic_css', $css_output ) );
-
 		}
 
 		/**
@@ -583,8 +580,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 		 * @return   string
 		 */
 		public function add_sidebar( $id ) {
-			$sidebar_id = 'sidebar-1'; // replace this with theme's sidebar ID.
-			return $sidebar_id;
+			return 'sidebar-1'; // replace this with theme's sidebar ID.
 		}
 
 		/**
@@ -607,7 +603,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 		 * @return array List of updated assets.
 		 */
 		public function add_styles( $assets ) {
-			$assets['css']['astra-lifterlms'] = ( ! Astra_Builder_Helper::apply_flex_based_css() ) ? 'compatibility/lifterlms' : 'compatibility/lifterlms-flex';
+			$assets['css']['astra-lifterlms'] = ! Astra_Builder_Helper::apply_flex_based_css() ? 'compatibility/lifterlms' : 'compatibility/lifterlms-flex';
 			return $assets;
 		}
 
@@ -620,7 +616,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 		 */
 		public function sidebar_layout( $layout ) {
 
-			if ( ( is_lifterlms() ) || is_llms_account_page() || is_llms_checkout() ) {
+			if ( is_lifterlms() || is_llms_account_page() || is_llms_checkout() ) {
 
 				$llms_sidebar = astra_get_option( 'lifterlms-sidebar-layout' );
 				if ( is_lesson() || is_course() ) {
@@ -932,7 +928,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) :
 		}
 	}
 
-endif;
+}
 
 /**
  * Kicking this off by calling 'get_instance()' method

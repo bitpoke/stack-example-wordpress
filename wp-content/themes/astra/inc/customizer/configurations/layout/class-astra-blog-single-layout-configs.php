@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 	 * Register Blog Single Layout Configurations.
 	 */
 	class Astra_Blog_Single_Layout_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Blog Single Layout Configurations.
 		 *
@@ -170,9 +169,7 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 				'description' => '',
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }

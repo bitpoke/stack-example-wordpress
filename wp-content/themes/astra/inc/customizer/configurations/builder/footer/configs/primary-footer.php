@@ -134,7 +134,6 @@ function astra_primary_footer_configuration() {
 			'context'     => Astra_Builder_Helper::$general_tab,
 		),
 
-
 		/**
 		 * Option: Vertical Alignment
 		 */

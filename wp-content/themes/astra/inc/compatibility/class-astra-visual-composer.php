@@ -13,7 +13,7 @@ if ( ! class_exists( 'Vc_Manager' ) ) {
 /**
  * Astra Visual Composer Compatibility
  */
-if ( ! class_exists( 'Astra_Visual_Composer' ) ) :
+if ( ! class_exists( 'Astra_Visual_Composer' ) ) {
 
 	/**
 	 * Astra Visual Composer Compatibility
@@ -21,7 +21,6 @@ if ( ! class_exists( 'Astra_Visual_Composer' ) ) :
 	 * @since 1.0.0
 	 */
 	class Astra_Visual_Composer {
-
 		/**
 		 * Member Variable
 		 *
@@ -133,7 +132,7 @@ if ( ! class_exists( 'Astra_Visual_Composer' ) ) :
 		}
 	}
 
-endif;
+}
 
 /**
  * Kicking this off by calling 'get_instance()' method

@@ -211,9 +211,9 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 				foreach ( $palette as $index => $color_data ) {
 					$slug                       = ! empty( $color_data['slug'] ) ? $color_data['slug'] : '';
 					$new_palette_data[ $index ] = array(
-						'name'  => $name_pair[ $slug ],
+						'name'  => isset( $name_pair[ $slug ] ) ? $name_pair[ $slug ] : '', 
 						'slug'  => $slug,
-						'color' => $color_data['color'],
+						'color' => isset( $color_data['color'] ) ? $color_data['color'] : '',
 					);
 				}
 			}

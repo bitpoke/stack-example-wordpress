@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Customizer_Register_Sections_Panels extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Panels and Sections for Customizer.
 		 *
@@ -248,10 +247,10 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 				),
 
 				/**
-				* Accessibility Panel
-				*
-				* @since 4.1.0
-				*/
+				 * Accessibility Panel
+				 *
+				 * @since 4.1.0
+				 */
 				array(
 					'name'     => 'section-accessibility',
 					'type'     => 'section',
@@ -442,7 +441,6 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 		}
 	}
 }
-
 
 /**
  * Kicking this off by calling 'get_instance()' method

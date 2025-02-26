@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Footer_Layout_Configs' ) ) {
 	 * Register Footer Layout Configurations.
 	 */
 	class Astra_Footer_Layout_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Footer Layout Configurations.
 		 *
@@ -471,10 +470,8 @@ if ( ! class_exists( 'Astra_Footer_Layout_Configs' ) ) {
 			}
 
 			return $configurations;
-
 		}
 	}
 }
-
 
 new Astra_Footer_Layout_Configs();

@@ -23,7 +23,7 @@ function astra_header_menu_configuration() {
 	$component_limit = defined( 'ASTRA_EXT_VER' ) ? Astra_Builder_Helper::$component_limit : Astra_Builder_Helper::$num_of_header_menu;
 
 	/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-	$custom_req_divider = array( 'ast_class' => ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'colors-and-background' ) ) ? 'ast-bottom-dotted-divider' : '' );
+	$custom_req_divider = array( 'ast_class' => defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'colors-and-background' ) ? 'ast-bottom-dotted-divider' : '' );
 	/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 	for ( $index = 1; $index <= $component_limit; $index++ ) {
@@ -291,8 +291,8 @@ function astra_header_menu_configuration() {
 			),
 
 			/**
-			* Option: Button Radius Fields
-			*/
+			 * Option: Button Radius Fields
+			 */
 			array(
 				'name'              => ASTRA_THEME_SETTINGS . '[header-' . $_prefix . '-submenu-border-radius-fields]',
 				'default'           => astra_get_option( 'header-' . $_prefix . '-submenu-border-radius-fields' ),
@@ -559,7 +559,6 @@ function astra_header_menu_configuration() {
 				'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
 			),
 
-
 			// Option: Menu Font Size.
 			array(
 				'name'              => 'header-' . $_prefix . '-font-size',
@@ -598,7 +597,6 @@ function astra_header_menu_configuration() {
 				),
 			),
 
-
 			/**
 			 * Option: Primary Menu Font Extras
 			 */
@@ -613,10 +611,9 @@ function astra_header_menu_configuration() {
 				'title'    => __( 'Font Extras', 'astra' ),
 			),
 
-
 			/**
-			* Option: Spacing Divider
-			*/
+			 * Option: Spacing Divider
+			 */
 			array(
 				'name'     => ASTRA_THEME_SETTINGS . '[header-' . $index . '-spacing-divider]',
 				'type'     => 'control',
@@ -628,7 +625,6 @@ function astra_header_menu_configuration() {
 				'context'  => Astra_Builder_Helper::$design_tab,
 				'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 			),
-
 
 			// Option - Menu Space.
 			array(

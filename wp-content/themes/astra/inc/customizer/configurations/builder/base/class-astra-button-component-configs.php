@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 3.0.0
  */
 class Astra_Button_Component_Configs {
-
 	/**
 	 * Register Builder Customizer Configurations.
 	 *
@@ -62,7 +61,7 @@ class Astra_Button_Component_Configs {
 					'type'        => 'section',
 					'priority'    => 50,
 					/* translators: %s Index */
-					'title'       => ( 1 === $number_of_button ) ? __( 'Button', 'astra' ) : sprintf( __( 'Button %s', 'astra' ), $index ),
+					'title'       => 1 === $number_of_button ? __( 'Button', 'astra' ) : sprintf( __( 'Button %s', 'astra' ), $index ),
 					'panel'       => 'panel-' . $builder_type . '-builder-group',
 					'clone_index' => $index,
 					'clone_type'  => $builder_type . '-button',
@@ -82,8 +81,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Text
-				*/
+				 * Option: Button Text
+				 */
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-' . $_prefix . '-text]',
 					'default'   => astra_get_option( $builder_type . '-' . $_prefix . '-text' ),
@@ -103,8 +102,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Link
-				*/
+				 * Option: Button Link
+				 */
 				array(
 					'name'              => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-' . $_prefix . '-link-option]',
 					'default'           => astra_get_option( $builder_type . '-' . $_prefix . '-link-option' ),
@@ -154,8 +153,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Text Color
-				*/
+				 * Option: Button Text Color
+				 */
 				array(
 					'name'       => $builder_type . '-' . $_prefix . '-text-color',
 					'transport'  => 'postMessage',
@@ -173,8 +172,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Text Hover Color
-				*/
+				 * Option: Button Text Hover Color
+				 */
 				array(
 					'name'       => $builder_type . '-' . $_prefix . '-text-h-color',
 					'default'    => astra_get_option( $builder_type . '-' . $_prefix . '-text-h-color' ),
@@ -192,8 +191,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Background Color
-				*/
+				 * Option: Button Background Color
+				 */
 				array(
 					'name'       => $builder_type . '-' . $_prefix . '-back-color',
 					'default'    => astra_get_option( $builder_type . '-' . $_prefix . '-back-color' ),
@@ -211,8 +210,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Button Hover Color
-				*/
+				 * Option: Button Button Hover Color
+				 */
 				array(
 					'name'       => $builder_type . '-' . $_prefix . '-back-h-color',
 					'default'    => astra_get_option( $builder_type . '-' . $_prefix . '-back-h-color' ),
@@ -229,7 +228,6 @@ class Astra_Button_Component_Configs {
 					'title'      => __( 'Hover', 'astra' ),
 				),
 
-
 				array(
 					'name'       => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-' . $_prefix . '-builder-button-border-colors-group]',
 					'type'       => 'control',
@@ -244,8 +242,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Border Color
-				*/
+				 * Option: Button Border Color
+				 */
 				array(
 					'name'       => $builder_type . '-' . $_prefix . '-border-color',
 					'default'    => astra_get_option( $builder_type . '-' . $_prefix . '-border-color' ),
@@ -262,8 +260,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Border Hover Color
-				*/
+				 * Option: Button Border Hover Color
+				 */
 				array(
 					'name'       => $builder_type . '-' . $_prefix . '-border-h-color',
 					'default'    => astra_get_option( $builder_type . '-' . $_prefix . '-border-h-color' ),
@@ -280,8 +278,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Button Border Size
-				*/
+				 * Option: Button Border Size
+				 */
 				array(
 					'name'           => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-' . $_prefix . '-border-size]',
 					'default'        => astra_get_option( $builder_type . '-' . $_prefix . '-border-size' ),
@@ -422,8 +420,8 @@ class Astra_Button_Component_Configs {
 				),
 
 				/**
-				* Option: Primary Footer Button Font Extras
-				*/
+				 * Option: Primary Footer Button Font Extras
+				 */
 				array(
 					'name'     => $builder_type . '-' . $_prefix . '-font-extras',
 					'parent'   => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-' . $_prefix . '-text-typography]',
@@ -468,9 +466,7 @@ class Astra_Button_Component_Configs {
 
 		$button_config = call_user_func_array( 'array_merge', $button_config + array( array() ) );
 
-		$configurations = array_merge( $configurations, $button_config );
-
-		return $configurations;
+		return array_merge( $configurations, $button_config );
 	}
 }
 

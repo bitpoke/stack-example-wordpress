@@ -20,7 +20,6 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 	 * Meta Boxes setup
 	 */
 	class Astra_Meta_Boxes {
-
 		/**
 		 * Instance
 		 *
@@ -188,7 +187,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 
 				// Set stored and override defaults.
 				foreach ( $stored as $key => $value ) {
-					self::$meta_option[ $key ]['default'] = ( isset( $stored[ $key ][0] ) ) ? $stored[ $key ][0] : '';
+					self::$meta_option[ $key ]['default'] = isset( $stored[ $key ][0] ) ? $stored[ $key ][0] : '';
 				}
 			}
 
@@ -198,20 +197,20 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			/**
 			 * Get options
 			 */
-			$site_sidebar            = ( isset( $meta['site-sidebar-layout']['default'] ) ) ? $meta['site-sidebar-layout']['default'] : 'default';
-			$site_content_style      = ( isset( $meta['site-content-style']['default'] ) ) ? $meta['site-content-style']['default'] : 'default';
-			$site_sidebar_style      = ( isset( $meta['site-sidebar-style']['default'] ) ) ? $meta['site-sidebar-style']['default'] : 'default';
-			$new_site_content_layout = ( isset( $meta['ast-site-content-layout']['default'] ) ) ? $meta['ast-site-content-layout']['default'] : '';
-			$site_post_title         = ( isset( $meta['site-post-title']['default'] ) ) ? $meta['site-post-title']['default'] : '';
-			$footer_bar              = ( isset( $meta['footer-sml-layout']['default'] ) ) ? $meta['footer-sml-layout']['default'] : '';
-			$footer_widgets          = ( isset( $meta['footer-adv-display']['default'] ) ) ? $meta['footer-adv-display']['default'] : '';
-			$above_header            = ( isset( $meta['ast-hfb-above-header-display']['default'] ) ) ? $meta['ast-hfb-above-header-display']['default'] : 'default';
-			$primary_header          = ( isset( $meta['ast-main-header-display']['default'] ) ) ? $meta['ast-main-header-display']['default'] : '';
-			$below_header            = ( isset( $meta['ast-hfb-below-header-display']['default'] ) ) ? $meta['ast-hfb-below-header-display']['default'] : 'default';
-			$mobile_header           = ( isset( $meta['ast-hfb-mobile-header-display']['default'] ) ) ? $meta['ast-hfb-mobile-header-display']['default'] : 'default';
-			$ast_featured_img        = ( isset( $meta['ast-featured-img']['default'] ) ) ? $meta['ast-featured-img']['default'] : '';
-			$breadcrumbs_content     = ( isset( $meta['ast-breadcrumbs-content']['default'] ) ) ? $meta['ast-breadcrumbs-content']['default'] : '';
-			$ast_banner_visibility   = ( isset( $meta['ast-banner-title-visibility']['default'] ) ) ? $meta['ast-banner-title-visibility']['default'] : '';
+			$site_sidebar            = isset( $meta['site-sidebar-layout']['default'] ) ? $meta['site-sidebar-layout']['default'] : 'default';
+			$site_content_style      = isset( $meta['site-content-style']['default'] ) ? $meta['site-content-style']['default'] : 'default';
+			$site_sidebar_style      = isset( $meta['site-sidebar-style']['default'] ) ? $meta['site-sidebar-style']['default'] : 'default';
+			$new_site_content_layout = isset( $meta['ast-site-content-layout']['default'] ) ? $meta['ast-site-content-layout']['default'] : '';
+			$site_post_title         = isset( $meta['site-post-title']['default'] ) ? $meta['site-post-title']['default'] : '';
+			$footer_bar              = isset( $meta['footer-sml-layout']['default'] ) ? $meta['footer-sml-layout']['default'] : '';
+			$footer_widgets          = isset( $meta['footer-adv-display']['default'] ) ? $meta['footer-adv-display']['default'] : '';
+			$above_header            = isset( $meta['ast-hfb-above-header-display']['default'] ) ? $meta['ast-hfb-above-header-display']['default'] : 'default';
+			$primary_header          = isset( $meta['ast-main-header-display']['default'] ) ? $meta['ast-main-header-display']['default'] : '';
+			$below_header            = isset( $meta['ast-hfb-below-header-display']['default'] ) ? $meta['ast-hfb-below-header-display']['default'] : 'default';
+			$mobile_header           = isset( $meta['ast-hfb-mobile-header-display']['default'] ) ? $meta['ast-hfb-mobile-header-display']['default'] : 'default';
+			$ast_featured_img        = isset( $meta['ast-featured-img']['default'] ) ? $meta['ast-featured-img']['default'] : '';
+			$breadcrumbs_content     = isset( $meta['ast-breadcrumbs-content']['default'] ) ? $meta['ast-breadcrumbs-content']['default'] : '';
+			$ast_banner_visibility   = isset( $meta['ast-banner-title-visibility']['default'] ) ? $meta['ast-banner-title-visibility']['default'] : '';
 			$exclude_cpt             = isset( $post->post_type ) ? in_array(
 				$post->post_type,
 				array(
@@ -234,8 +233,8 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			) : '';
 			$show_meta_field         = ! self::is_bb_themer_layout();
 			$old_meta_layout         = isset( $meta['site-content-layout']['default'] ) ? $meta['site-content-layout']['default'] : '';
-			$meta_key                = ( isset( $meta['astra-migrate-meta-layouts']['default'] ) ) ? $meta['astra-migrate-meta-layouts']['default'] : '';
-			$migrated_user           = ( ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support() );
+			$meta_key                = isset( $meta['astra-migrate-meta-layouts']['default'] ) ? $meta['astra-migrate-meta-layouts']['default'] : '';
+			$migrated_user           = ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support();
 			do_action( 'astra_meta_box_markup_before', $meta );
 
 			// Migrate old user existing container layout option to new layout options.
@@ -288,7 +287,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					<option value="normal-width-container" <?php selected( $new_site_content_layout, 'normal-width-container' ); ?> > <?php esc_html_e( 'Normal', 'astra' ); ?></option>
 					<?php if ( ! $exclude_cpt ) { ?>
 						<option value="narrow-width-container" <?php selected( $new_site_content_layout, 'narrow-width-container' ); ?> > <?php esc_html_e( 'Narrow', 'astra' ); ?></option>
-						<?php } ?>
+					<?php } ?>
 						<option value="full-width-container" <?php selected( $new_site_content_layout, 'full-width-container' ); ?> > <?php esc_html_e( 'Full Width', 'astra' ); ?></option>
 					</select>
 			</div>
@@ -351,19 +350,19 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					<?php do_action( 'astra_meta_box_markup_disable_sections_before', $meta ); ?>
 
 					<?php
-						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) ) :
+					/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) ) {
 						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						?>
 					<div class="ast-hfb-above-header-display-option-wrap">
 						<input type="checkbox" id="ast-hfb-above-header-display" name="ast-hfb-above-header-display" value="disabled" <?php checked( $above_header, 'disabled' ); ?> />
 						<label for="ast-hfb-above-header-display"><?php esc_html_e( 'Disable Above Header', 'astra' ); ?></label> <br />
 					</div>
-					<?php endif; ?>
+					<?php } ?>
 
 					<?php
-						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-					if ( $show_meta_field && Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) ) :
+					/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) ) {
 						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						?>
 					<div class="ast-main-header-display-option-wrap">
@@ -372,21 +371,21 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						<?php esc_html_e( 'Disable Primary Header', 'astra' ); ?>
 						</label>
 					</div>
-					<?php endif; ?>
+					<?php } ?>
 
 					<?php
-						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) ) :
+					/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) ) {
 						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						?>
 					<div class="ast-hfb-below-header-display-option-wrap">
 						<input type="checkbox" id="ast-hfb-below-header-display" name="ast-hfb-below-header-display" value="disabled" <?php checked( $below_header, 'disabled' ); ?> />
 						<label for="ast-hfb-below-header-display"><?php esc_html_e( 'Disable Below Header', 'astra' ); ?></label> <br />
 					</div>
-					<?php endif; ?>
+					<?php } ?>
 					<?php
-						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && ( Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' ) ) ) :
+					/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					if ( $show_meta_field && true === Astra_Builder_Helper::$is_header_footer_builder_active && ( Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) || Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' ) ) ) {
 						/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						?>
 
@@ -394,7 +393,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						<input type="checkbox" id="ast-hfb-mobile-header-display" name="ast-hfb-mobile-header-display" value="disabled" <?php checked( $mobile_header, 'disabled' ); ?> />
 						<label for="ast-hfb-mobile-header-display"><?php esc_html_e( 'Disable Mobile Header', 'astra' ); ?></label> <br />
 					</div>
-					<?php endif; ?>
+					<?php } ?>
 
 					<?php do_action( 'astra_meta_box_markup_disable_sections_after_primary_header', $meta ); ?>
 					<?php if ( $show_meta_field ) { ?>
@@ -426,7 +425,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						<?php
 							$post_type            = $post->post_type;
 							$supported_post_types = Astra_Posts_Structure_Loader::get_supported_post_types();
-						if ( ( in_array( $post_type, $supported_post_types ) && true === astra_get_option( 'ast-single-' . $post_type . '-title', ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) ? false : true ) ) ) {
+						if ( ( in_array( $post_type, $supported_post_types ) && true === astra_get_option( 'ast-single-' . $post_type . '-title', class_exists( 'WooCommerce' ) && 'product' === $post_type ? false : true ) ) ) {
 							if ( ! ( class_exists( 'WooCommerce' ) && absint( astra_get_post_id() ) === wc_get_page_id( 'shop' ) ) ) {
 								?>
 							<div class="ast-banner-title-visibility-option-wrap">
@@ -488,7 +487,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			$is_autosave = wp_is_post_autosave( $post_id );
 			$is_revision = wp_is_post_revision( $post_id );
 
-			$is_valid_nonce = ( isset( $_POST['astra_settings_meta_box'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['astra_settings_meta_box'] ) ), basename( __FILE__ ) ) ) ? true : false;
+			$is_valid_nonce = isset( $_POST['astra_settings_meta_box'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['astra_settings_meta_box'] ) ), basename( __FILE__ ) ) ? true : false;
 
 			// Exits script depending on save status.
 			if ( $is_autosave || $is_revision || ! $is_valid_nonce ) {
@@ -503,7 +502,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			foreach ( $post_meta as $key => $data ) {
 
 				// Sanitize values.
-				$sanitize_filter = ( isset( $data['sanitize'] ) ) ? $data['sanitize'] : 'FILTER_SANITIZE_STRING';
+				$sanitize_filter = isset( $data['sanitize'] ) ? $data['sanitize'] : 'FILTER_SANITIZE_STRING';
 
 				switch ( $sanitize_filter ) {
 
@@ -530,7 +529,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						$meta_value = apply_filters( 'astra_php_default_filter_input', ! empty( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : '', $key );
 						/** @psalm-suppress PossiblyInvalidArgument */
 						break;
-						
+
 				}
 
 				// Store values.
@@ -545,10 +544,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					delete_post_meta( $post_id, $key );
 				}
 			}
-
 		}
-
-
 
 		/**
 		 * Register Script for Meta options
@@ -586,9 +582,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			$settings_title = $metabox_name;
 
 			/* Directory and Extension */
-			$file_prefix  = ( is_rtl() ) ? '-rtl' : '';
-			$file_prefix .= ( true === SCRIPT_DEBUG ) ? '' : '.min';
-			$dir_name     = ( true === SCRIPT_DEBUG ) ? 'unminified' : 'minified';
+			$file_prefix  = is_rtl() ? '-rtl' : '';
+			$file_prefix .= true === SCRIPT_DEBUG ? '' : '.min';
+			$dir_name     = true === SCRIPT_DEBUG ? 'unminified' : 'minified';
 			$css_uri      = ASTRA_THEME_URI . '/inc/metabox/extend-metabox/css/' . $dir_name;
 
 			wp_enqueue_style( 'astra-meta-box', $css_uri . '/metabox' . $file_prefix . '.css', array(), ASTRA_THEME_VERSION );
@@ -646,14 +642,14 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'page_header_availability'       => $this->check_page_header_availability(),
 					'is_bb_themer_layout'            => ! astra_check_is_bb_themer_layout(), // Show page header option only when bb is not activated.
 					'is_addon_activated'             => defined( 'ASTRA_EXT_VER' ) ? true : false,
-					'sticky_addon_enabled'           => ( $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'sticky-header' ) ) ? true : false,
+					'sticky_addon_enabled'           => $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'sticky-header' ) ? true : false,
 					'register_astra_metabox'         => apply_filters( 'astra_settings_metabox_register', $register_astra_metabox ),
 					'is_hide_contnet_layout_sidebar' => $ast_content_layout_sidebar,
 					'upgrade_pro_link'               => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'upgrade' ),
 					'show_upgrade_notice'            => astra_showcase_upgrade_notices(),
 					// Flag needed to check whether user is old or new, true for old user, false for new.
-					'v4_1_6_migration'               => ( ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support() ),
-					'color_addon_enabled'            => ( $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'colors-and-background' ) ) ? true : false,
+					'v4_1_6_migration'               => ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support(),
+					'color_addon_enabled'            => $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'colors-and-background' ) ? true : false,
 					'site_page_bg_meta_default'      => array(
 						'desktop' => array(
 							'background-color'      => $apply_new_default_values ? ( $reorder_color_seq ? 'var(--ast-global-color-5)' : 'var(--ast-global-color-4)' ) : '',
@@ -898,7 +894,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 
 			$post_type            = strval( get_post_type() );
 			$supported_post_types = Astra_Posts_Structure_Loader::get_supported_post_types();
-			if ( ( in_array( $post_type, $supported_post_types ) && true === astra_get_option( 'ast-single-' . $post_type . '-title', ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) ? false : true ) ) ) {
+			if ( ( in_array( $post_type, $supported_post_types ) && true === astra_get_option( 'ast-single-' . $post_type . '-title', class_exists( 'WooCommerce' ) && 'product' === $post_type ? false : true ) ) ) {
 				if ( ! ( class_exists( 'WooCommerce' ) && absint( astra_get_post_id() ) === wc_get_page_id( 'shop' ) ) ) {
 					$astra_page_meta_elements[] = array(
 						'key'   => 'ast-banner-title-visibility',
@@ -942,9 +938,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						$sticky_below_header_condition   = Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' );
 						break;
 					default:
-						$sticky_above_header_condition   = ( Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) ) ? true : false;
-						$sticky_primary_header_condition = ( Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) ) ? true : false;
-						$sticky_below_header_condition   = ( Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' ) ) ? true : false;
+						$sticky_above_header_condition   = Astra_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'above', 'header', 'mobile' ) ? true : false;
+						$sticky_primary_header_condition = Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'primary', 'header', 'mobile' ) ? true : false;
+						$sticky_below_header_condition   = Astra_Builder_Helper::is_row_empty( 'below', 'header', 'desktop' ) || Astra_Builder_Helper::is_row_empty( 'below', 'header', 'mobile' ) ? true : false;
 						break;
 				}
 			}

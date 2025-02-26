@@ -20,7 +20,6 @@ if ( ! class_exists( 'Astra_Customizer_Config_Base' ) ) {
  * Register Related Posts Configurations.
  */
 class Astra_Related_Posts_Configs extends Astra_Customizer_Config_Base {
-
 	/**
 	 * Register Related Posts Configurations.
 	 *
@@ -1123,18 +1122,17 @@ class Astra_Related_Posts_Configs extends Astra_Customizer_Config_Base {
 			),
 
 			/**
-				 * Option: Related Posts Title Font Extras
-				 */
-				array(
-					'name'    => 'related-posts-title-font-extras',
-					'type'    => 'sub-control',
-					'parent'  => ASTRA_THEME_SETTINGS . '[related-posts-title-typography-group]',
-					'control' => 'ast-font-extras',
-					'section' => 'ast-sub-section-related-posts',
-					'default' => astra_get_option( 'related-posts-title-font-extras' ),
-					'title'   => __( 'Font Extras', 'astra' ),
-				),
-
+			 * Option: Related Posts Title Font Extras
+			 */
+			array(
+				'name'    => 'related-posts-title-font-extras',
+				'type'    => 'sub-control',
+				'parent'  => ASTRA_THEME_SETTINGS . '[related-posts-title-typography-group]',
+				'control' => 'ast-font-extras',
+				'section' => 'ast-sub-section-related-posts',
+				'default' => astra_get_option( 'related-posts-title-font-extras' ),
+				'title'   => __( 'Font Extras', 'astra' ),
+			),
 
 			/**
 			 * Option: Related Posts Title Font Family
@@ -1209,17 +1207,17 @@ class Astra_Related_Posts_Configs extends Astra_Customizer_Config_Base {
 			),
 
 			/**
-				 * Option: Related Posts Title Font Extras
-				 */
-				array(
-					'name'    => 'related-posts-section-title-font-extras',
-					'type'    => 'sub-control',
-					'parent'  => ASTRA_THEME_SETTINGS . '[related-posts-section-title-typography-group]',
-					'control' => 'ast-font-extras',
-					'section' => 'ast-sub-section-related-posts',
-					'default' => astra_get_option( 'related-posts-section-title-font-extras' ),
-					'title'   => __( 'Font Extras', 'astra' ),
-				),
+			 * Option: Related Posts Title Font Extras
+			 */
+			array(
+				'name'    => 'related-posts-section-title-font-extras',
+				'type'    => 'sub-control',
+				'parent'  => ASTRA_THEME_SETTINGS . '[related-posts-section-title-typography-group]',
+				'control' => 'ast-font-extras',
+				'section' => 'ast-sub-section-related-posts',
+				'default' => astra_get_option( 'related-posts-section-title-font-extras' ),
+				'title'   => __( 'Font Extras', 'astra' ),
+			),
 
 			/**
 			 * Option: Related Posts Meta Font Family
@@ -1396,9 +1394,7 @@ class Astra_Related_Posts_Configs extends Astra_Customizer_Config_Base {
 
 		$_configs = array_merge( $_configs, Astra_Extended_Base_Configuration::prepare_section_spacing_border_options( 'ast-sub-section-related-posts' ) );
 
-		$configurations = array_merge( $configurations, $_configs );
-
-		return $configurations;
+		return array_merge( $configurations, $_configs );
 	}
 }
 

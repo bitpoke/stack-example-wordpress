@@ -1,10 +1,17 @@
 *** Astra Changelog ***
 
+2025-02-26 - version 4.8.13
+* New: Search Widget - Added an option for visible search result counts with live search.
+* Fix: Resolved "Undefined array key" warning by checking if the color key exists before using it.
+* Fix: Deprecated warning "Deprecated: preg_replace()" on search result page with PHP 8.1 or higher.
+* Fix: Resolved an issue where brand color on hover not working for Social Icons in Footer Builder in specific cases.
+* Fix: Resolved an issue where the Account icon is not clickable when Astra Pro is deactivated.
+
 2025-02-11 - version 4.8.12
 * Improvement: Improved synchronization of toggled class across menu toggle buttons to ensure consistent add/remove behavior.
-* Improvement: Added filter to use more attribute to blog post title links for improved SEO control.
-* Fix: Heart button colour is missing for students in LifterLMS lessons page to mark as favorite.
-* Fix: Resolved an issue where cart widget css not loading properly on Cartflows checkout page.
+* Improvement: Added filter to use more attributes to blog post title links for improved SEO control.
+* Fix: The heart button color is missing for students on the LifterLMS lessons page to mark as favorites.
+* Fix: Resolved an issue where the cart widget CSS is not loading properly on the Cartflows checkout page.
 * Fix: Resolved an issue where the theme preview was not visible on the wp.org themes page.
 * Fix: Resolved an issue where extra white space appearing on the sides of the layout on certain screen sizes after the recent update.
 

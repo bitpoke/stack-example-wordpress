@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Astra_Extended_Base_Configuration.
  */
 final class Astra_Extended_Base_Configuration {
-
 	/**
 	 * Member Variable
 	 *
@@ -37,7 +36,8 @@ final class Astra_Extended_Base_Configuration {
 	/**
 	 * Constructor
 	 */
-	public function __construct() { }
+	public function __construct() {
+	}
 
 	/**
 	 * Prepare Advance header configuration.

@@ -183,7 +183,6 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	$astra_block_editor_v2_ui = astra_get_option( 'wp-blocks-v2-ui', true );
 	$ast_container_width      = astra_get_option( 'site-content-width', 1200 ) . 'px';
 	$blocks_spacings          = Astra_WP_Editor_CSS::astra_get_block_spacings();
-	$list_blocks_space        = astra_get_option( 'list-blocks-spacing', true );
 
 	/** @psalm-suppress InvalidCast */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 	$tablet_breakpoint = (string) astra_get_tablet_breakpoint();
@@ -355,13 +354,10 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	if ( $astra_block_editor_v2_ui ) {
 		$single_post_continer_spacing = astra_get_option( 'single-post-inside-spacing' );
 
-		$container_lg_spacing = ( true === astra_check_is_structural_setup() ) ? '3' : '6.67';
+		$container_lg_spacing = true === astra_check_is_structural_setup() ? '3' : '6.67';
 
 		$astra_continer_left_spacing  = defined( 'ASTRA_EXT_VER' ) && astra_responsive_spacing( $single_post_continer_spacing, 'left', 'desktop' ) ? astra_responsive_spacing( $single_post_continer_spacing, 'left', 'desktop', $container_lg_spacing ) : 'var(--ast-container-default-xlg-padding)';
 		$astra_continer_right_spacing = defined( 'ASTRA_EXT_VER' ) && astra_responsive_spacing( $single_post_continer_spacing, 'right', 'desktop' ) ? astra_responsive_spacing( $single_post_continer_spacing, 'right', 'desktop', $container_lg_spacing ) : 'var(--ast-container-default-xlg-padding)';
-
-		$astra_1200_continer_left_spacing  = defined( 'ASTRA_EXT_VER' ) && astra_responsive_spacing( $single_post_continer_spacing, 'left', 'desktop' ) ? astra_responsive_spacing( $single_post_continer_spacing, 'left', 'desktop', '2.4' ) : 'var(--ast-container-default-xs-padding)';
-		$astra_1200_continer_right_spacing = defined( 'ASTRA_EXT_VER' ) && astra_responsive_spacing( $single_post_continer_spacing, 'right', 'desktop' ) ? astra_responsive_spacing( $single_post_continer_spacing, 'right', 'desktop', '2.4' ) : 'var(--ast-container-default-xs-padding)';
 
 		$alignwide_1200_left_negative_margin  = $astra_continer_left_spacing ? 'calc(-1 * min(' . $astra_continer_left_spacing . ', 20px))' : '-20px';
 		$alignwide_1200_right_negative_margin = $astra_continer_right_spacing ? 'calc(-1 * min(' . $astra_continer_right_spacing . ', 20px))' : '-20px';

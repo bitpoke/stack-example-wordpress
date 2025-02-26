@@ -20,7 +20,6 @@ define( 'ASTRA_BUILDER_MOBILE_MENU_URI', ASTRA_THEME_URI . 'inc/builder/type/hea
  * @since 3.0.0
  */
 class Astra_Mobile_Menu_Component {
-
 	/**
 	 * Constructor function that initializes required actions and hooks
 	 */
@@ -131,7 +130,7 @@ class Astra_Mobile_Menu_Component {
 						'class'      => 'site-navigation ast-flex-grow-1 navigation-accessibility',
 						'aria-label' => esc_attr__( 'Site Navigation', 'astra' ),
 					)
-				) 
+				)
 			);
 			echo '>';
 			$mobile_menu_markup = wp_page_menu( $fallback_menu_args );

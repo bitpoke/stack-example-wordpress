@@ -25,7 +25,6 @@ if ( ! class_exists( 'Astra_Customizer_Config_Base' ) ) {
  * @since 4.6.0
  */
 class Astra_Posts_Special_Archive_Structures_Configs extends Astra_Customizer_Config_Base {
-
 	/**
 	 * Register Posts Structures Customizer Configurations.
 	 *
@@ -52,11 +51,7 @@ class Astra_Posts_Special_Archive_Structures_Configs extends Astra_Customizer_Co
 			),
 		);
 
-		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-		$if_astra_addon = defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'blog-pro' );
-		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-
-		foreach ( Astra_Posts_Structure_Loader::get_special_page_types() as $index => $special_type ) {
+		foreach ( Astra_Posts_Structure_Loader::get_special_page_types() as $special_type ) {
 			$section       = 'ast-section-' . $special_type . '-page';
 			$title_section = 'section-' . $special_type . '-page-title';
 
@@ -648,19 +643,19 @@ class Astra_Posts_Special_Archive_Structures_Configs extends Astra_Customizer_Co
 					'choices'           => array(
 						'default'                => array(
 							'label' => __( 'Default', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
 						),
 						'normal-width-container' => array(
 							'label' => __( 'Normal', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'normal-width-container', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'normal-width-container', false ) : '',
 						),
 						'narrow-width-container' => array(
 							'label' => __( 'Narrow', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'narrow-width-container', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'narrow-width-container', false ) : '',
 						),
 						'full-width-container'   => array(
 							'label' => __( 'Full Width', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'full-width-container', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'full-width-container', false ) : '',
 						),
 					),
 					'divider'           => array( 'ast_class' => 'ast-top-divider ast-bottom-spacing' ),
@@ -699,19 +694,19 @@ class Astra_Posts_Special_Archive_Structures_Configs extends Astra_Customizer_Co
 					'choices'           => array(
 						'default'       => array(
 							'label' => __( 'Default', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'layout-default', false ) : '',
 						),
 						'no-sidebar'    => array(
 							'label' => __( 'No Sidebar', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'no-sidebar', false ) : '',
 						),
 						'left-sidebar'  => array(
 							'label' => __( 'Left Sidebar', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'left-sidebar', false ) : '',
 						),
 						'right-sidebar' => array(
 							'label' => __( 'Right Sidebar', 'astra' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'right-sidebar', false ) : '',
 						),
 					),
 				),

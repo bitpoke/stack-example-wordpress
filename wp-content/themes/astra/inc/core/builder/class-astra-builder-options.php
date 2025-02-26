@@ -668,6 +668,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 
 	$defaults['hb-footer-main-sep']       = 1;
 	$defaults['hb-footer-main-sep-color'] = '#e6e6e6';
+	$defaults['live-search-result-count'] = 5;
 
 	/**
 	 * Footer Copyright.

@@ -13,7 +13,6 @@ if ( ! class_exists( 'Astra_Block_Editor_Configs' ) ) {
 	 * Register Site Layout Customizer Configurations.
 	 */
 	class Astra_Block_Editor_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Site Layout Customizer Configurations.
 		 *
@@ -24,7 +23,7 @@ if ( ! class_exists( 'Astra_Block_Editor_Configs' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$is_legacy_setup = ( 'legacy' === astra_get_option( 'wp-blocks-ui', 'comfort' ) || true === astra_get_option( 'blocks-legacy-setup', false ) ) ? true : false;
+			$is_legacy_setup = 'legacy' === astra_get_option( 'wp-blocks-ui', 'comfort' ) || true === astra_get_option( 'blocks-legacy-setup', false ) ? true : false;
 
 			$preset_options = array(
 				'compact' => __( 'Compact', 'astra' ),

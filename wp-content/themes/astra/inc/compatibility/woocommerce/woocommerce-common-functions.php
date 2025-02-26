@@ -106,7 +106,7 @@ if ( ! function_exists( 'astra_woo_shop_product_short_description' ) ) :
 		<div class="ast-woo-shop-product-description">
 			<?php the_excerpt(); ?>
 		</div>
-	<?php } ?>
+		<?php } ?>
 		<?php
 	}
 endif;
@@ -296,7 +296,6 @@ if ( ! function_exists( 'astra_woocommerce_div_wrapper_close' ) ) :
 	function astra_woocommerce_div_wrapper_close() {
 
 		echo '</div>';
-
 	}
 
 endif;
@@ -335,7 +334,7 @@ function astra_has_pro_woocommerce_addon() {
  * This case is only for old header layout.
  *
  * @since 3.9.2
- * @return boolean false if it is an existing user, true if not.
+ * @return bool false if it is an existing user, true if not.
  */
 function astra_cart_color_default_icon_old_header() {
 	$astra_settings = astra_get_options();
@@ -387,7 +386,7 @@ if ( ! function_exists( 'astra_woocommerce_get_cart_url' ) ) {
 	/**
 	 * Filters and returns the WooCommerce cart URL for compatibility with WooCommerce 9.3.0.
 	 *
-	 * @param null|string $cart_url WooCommerce cart page URL.
+	 * @param string|null $cart_url WooCommerce cart page URL.
 	 *
 	 * @return string Returns the filtered WooCommerce cart page URL.
 	 *

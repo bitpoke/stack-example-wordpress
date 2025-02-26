@@ -45,8 +45,8 @@ function astra_menu_footer_configuration() {
 		),
 
 		/**
-		* Option: Theme Menu create link
-		*/
+		 * Option: Theme Menu create link
+		 */
 		array(
 			'name'      => ASTRA_THEME_SETTINGS . '[footer-create-menu-link]',
 			'default'   => astra_get_option( 'footer-create-menu-link' ),
@@ -60,7 +60,6 @@ function astra_menu_footer_configuration() {
 			'context'   => Astra_Builder_Helper::$general_tab,
 
 		),
-
 
 		// Option: Footer Menu Layout.
 		array(
@@ -265,7 +264,6 @@ function astra_menu_footer_configuration() {
 			),
 			'divider'           => array( 'ast_class' => 'ast-bottom-section-divider ast-section-spacing' ),
 		),
-
 
 		/**
 		 * Option: Margin Space

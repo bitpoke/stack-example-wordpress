@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Lifter_General_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Astra-LifterLMS General Customizer Configurations.
 		 *
@@ -129,7 +128,6 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 			}
 
 			return array_merge( $configurations, $_configs );
-
 		}
 	}
 }

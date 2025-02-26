@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 	 * Register Body Color Customizer Configurations.
 	 */
 	class Astra_Body_Colors_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Body Color Customizer Configurations.
 		 *
@@ -163,9 +162,7 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 
 			);
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }

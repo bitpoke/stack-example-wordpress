@@ -434,7 +434,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 				$astra_live_search_localize_data = array(
 					'rest_api_url'                 => get_rest_url(),
-					'search_posts_per_page'        => 5,
+					'search_posts_per_page'        => astra_get_option( 'live-search-result-count' ),
 					'search_post_types'            => $search_post_types,
 					'search_post_types_labels'     => $search_post_type_label,
 					'search_language'              => astra_get_current_language_slug(),

@@ -56,7 +56,6 @@ if ( ! class_exists( 'Astra_Nps_Notice' ) ) {
 			}
 
 			add_action( 'admin_footer', array( $this, 'render_astra_nps_survey' ), 999 );
-
 		}
 
 		/**
@@ -82,19 +81,19 @@ if ( ! class_exists( 'Astra_Nps_Notice' ) ) {
 		public function render_astra_nps_survey() {
 
 			$current_screen = get_current_screen();
-		
+
 			// Defining the astra allowed screens.
 			$allowed_screens = [
 				'toplevel_page_astra',
 				'astra_page_theme-builder-free',
 				'astra_page_theme-builder',
 			];
-		
+
 			// Checking if we're on one of the specified screens
 			if ( ! in_array( $current_screen->id, $allowed_screens ) ) {
 				return;
 			}
-		
+
 			Nps_Survey::show_nps_notice(
 				'nps-survey-astra',
 				array(

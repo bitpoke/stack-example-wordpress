@@ -202,16 +202,16 @@ if ( ! function_exists( 'astra_edd_terms_list' ) ) {
 	 * @return void
 	 */
 	function astra_edd_terms_list( $taxonomy_name ) {
-		
+
 		$product_id = get_the_ID();
-		
+
 		if ( ! $product_id ) {
 			return;
 		}
 
 		// Getting the terms related to the current products.
 		$terms = get_the_terms( $product_id, $taxonomy_name );
-		
+
 		if ( ! $terms || is_wp_error( $terms ) ) {
 			return;
 		}

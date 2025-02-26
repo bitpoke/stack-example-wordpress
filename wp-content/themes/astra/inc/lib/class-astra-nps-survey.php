@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Astra_Nps_Survey' ) ) :
+if ( ! class_exists( 'Astra_Nps_Survey' ) ) {
 
 	/**
 	 * Admin
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Astra_Nps_Survey' ) ) :
 				// Compare versions.
 				if ( version_compare( $version, $nps_survey_version, '>=' ) ) {
 					$nps_survey_version = $version;
-					$nps_survey_init = $path;
+					$nps_survey_init    = $path;
 				}
 			}
 		}
@@ -104,4 +104,4 @@ if ( ! class_exists( 'Astra_Nps_Survey' ) ) :
 	 */
 	Astra_Nps_Survey::get_instance();
 
-endif;
+}

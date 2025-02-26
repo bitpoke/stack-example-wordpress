@@ -40,9 +40,9 @@ function astra_fb_html_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 		$alignment = astra_get_option( 'footer-html-' . $index . '-alignment' );
 
-		$desktop_alignment = ( isset( $alignment['desktop'] ) ) ? $alignment['desktop'] : '';
-		$tablet_alignment  = ( isset( $alignment['tablet'] ) ) ? $alignment['tablet'] : '';
-		$mobile_alignment  = ( isset( $alignment['mobile'] ) ) ? $alignment['mobile'] : '';
+		$desktop_alignment = isset( $alignment['desktop'] ) ? $alignment['desktop'] : '';
+		$tablet_alignment  = isset( $alignment['tablet'] ) ? $alignment['tablet'] : '';
+		$mobile_alignment  = isset( $alignment['mobile'] ) ? $alignment['mobile'] : '';
 
 		/**
 		 * Copyright CSS.

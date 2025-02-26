@@ -44,8 +44,8 @@ function astra_header_mobile_menu_configuration() {
 		),
 
 		/**
-		* Option: Theme Menu create link
-		*/
+		 * Option: Theme Menu create link
+		 */
 		array(
 			'name'      => ASTRA_THEME_SETTINGS . '[header-mobile-menu-create-menu-link]',
 			'default'   => astra_get_option( 'header-mobile-menu-create-menu-link' ),
@@ -59,7 +59,6 @@ function astra_header_mobile_menu_configuration() {
 			'context'   => Astra_Builder_Helper::$general_tab,
 			'divider'   => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
 		),
-
 
 		// Option: Submenu Divider Checkbox.
 		array(
@@ -142,7 +141,6 @@ function astra_header_mobile_menu_configuration() {
 				),
 			),
 		),
-
 
 		// Option Group: Menu Color.
 		array(
@@ -382,7 +380,6 @@ function astra_header_mobile_menu_configuration() {
 			),
 		),
 
-
 		/**
 		 * Option: Font Extras
 		 */
@@ -411,7 +408,6 @@ function astra_header_mobile_menu_configuration() {
 			'context'  => Astra_Builder_Helper::$design_tab,
 			'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 		),
-
 
 		// Option - Menu Space.
 		array(

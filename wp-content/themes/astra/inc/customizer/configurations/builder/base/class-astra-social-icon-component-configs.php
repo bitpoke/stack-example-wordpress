@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 3.0.0
  */
 class Astra_Social_Icon_Component_Configs {
-
 	/**
 	 * Register Builder Customizer Configurations.
 	 *
@@ -57,7 +56,7 @@ class Astra_Social_Icon_Component_Configs {
 					'type'        => 'section',
 					'priority'    => 90,
 					/* translators: 1: index */
-					'title'       => ( 1 === $number_of_social_icons ) ? __( 'Social Icons', 'astra' ) : sprintf( __( 'Social Icons %s', 'astra' ), $index ),
+					'title'       => 1 === $number_of_social_icons ? __( 'Social Icons', 'astra' ) : sprintf( __( 'Social Icons %s', 'astra' ), $index ),
 					'panel'       => 'panel-' . $builder_type . '-builder-group',
 					'clone_index' => $index,
 					'clone_type'  => $builder_type . '-social-icons',
@@ -167,8 +166,6 @@ class Astra_Social_Icon_Component_Configs {
 					),
 				),
 
-
-
 				/**
 				 * Group: Primary Social Colors Group
 				 */
@@ -231,8 +228,8 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-				* Option: Social Text Color
-				*/
+				 * Option: Social Text Color
+				 */
 				array(
 					'name'       => $builder_type . '-social-' . $index . '-color',
 					'transport'  => 'postMessage',
@@ -250,8 +247,8 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-				* Option: Social Text Hover Color
-				*/
+				 * Option: Social Text Hover Color
+				 */
 				array(
 					'name'       => $builder_type . '-social-' . $index . '-h-color',
 					'default'    => astra_get_option( $builder_type . '-social-' . $index . '-h-color' ),
@@ -269,8 +266,8 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-				* Option: Social Label Color
-				*/
+				 * Option: Social Label Color
+				 */
 				array(
 					'name'       => $builder_type . '-social-' . $index . '-label-color',
 					'default'    => astra_get_option( $builder_type . '-social-' . $index . '-label-color' ),
@@ -288,8 +285,8 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-				* Option: Social Label Hover Color
-				*/
+				 * Option: Social Label Hover Color
+				 */
 				array(
 					'name'       => $builder_type . '-social-' . $index . '-label-h-color',
 					'default'    => astra_get_option( $builder_type . '-social-' . $index . '-label-h-color' ),
@@ -307,8 +304,8 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-				* Option: Social Background Color
-				*/
+				 * Option: Social Background Color
+				 */
 				array(
 					'name'       => $builder_type . '-social-' . $index . '-bg-color',
 					'default'    => astra_get_option( $builder_type . '-social-' . $index . '-bg-color' ),
@@ -326,8 +323,8 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-				* Option: Social Background Hover Color
-				*/
+				 * Option: Social Background Hover Color
+				 */
 				array(
 					'name'       => $builder_type . '-social-' . $index . '-bg-h-color',
 					'default'    => astra_get_option( $builder_type . '-social-' . $index . '-bg-h-color' ),
@@ -408,7 +405,6 @@ class Astra_Social_Icon_Component_Configs {
 					'context'           => Astra_Builder_Helper::$design_tab,
 				),
 
-
 				/**
 				 * Option: Social Icon Background Spacing.
 				 */
@@ -430,7 +426,6 @@ class Astra_Social_Icon_Component_Configs {
 					'context'     => Astra_Builder_Helper::$design_tab,
 
 				),
-
 
 				/**
 				 * Option: Social Icon Size
@@ -456,29 +451,29 @@ class Astra_Social_Icon_Component_Configs {
 				),
 
 				/**
-					* Option: Button Radius Fields
-					*/
-					array(
-						'name'              => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-radius-fields]',
-						'default'           => astra_get_option( $builder_type . '-social-' . $index . '-radius-fields' ),
-						'type'              => 'control',
-						'control'           => 'ast-responsive-spacing',
-						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
-						'section'           => $_section,
-						'title'             => __( 'Icon Radius', 'astra' ),
-						'linked_choices'    => true,
-						'transport'         => 'postMessage',
-						'unit_choices'      => array( 'px', 'em', '%' ),
-						'choices'           => array(
-							'top'    => __( 'Top', 'astra' ),
-							'right'  => __( 'Right', 'astra' ),
-							'bottom' => __( 'Bottom', 'astra' ),
-							'left'   => __( 'Left', 'astra' ),
-						),
-						'priority'          => 4,
-						'connected'         => false,
-						'context'           => Astra_Builder_Helper::$design_tab,
+				 * Option: Button Radius Fields
+				 */
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[' . $builder_type . '-social-' . $index . '-radius-fields]',
+					'default'           => astra_get_option( $builder_type . '-social-' . $index . '-radius-fields' ),
+					'type'              => 'control',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'section'           => $_section,
+					'title'             => __( 'Icon Radius', 'astra' ),
+					'linked_choices'    => true,
+					'transport'         => 'postMessage',
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
+						'top'    => __( 'Top', 'astra' ),
+						'right'  => __( 'Right', 'astra' ),
+						'bottom' => __( 'Bottom', 'astra' ),
+						'left'   => __( 'Left', 'astra' ),
 					),
+					'priority'          => 4,
+					'connected'         => false,
+					'context'           => Astra_Builder_Helper::$design_tab,
+				),
 
 				/**
 				 * Option: Divider
@@ -560,9 +555,7 @@ class Astra_Social_Icon_Component_Configs {
 		}
 
 		$social_configs = call_user_func_array( 'array_merge', $social_configs + array( array() ) );
-		$configurations = array_merge( $configurations, $social_configs );
-
-		return $configurations;
+		return array_merge( $configurations, $social_configs );
 	}
 }
 

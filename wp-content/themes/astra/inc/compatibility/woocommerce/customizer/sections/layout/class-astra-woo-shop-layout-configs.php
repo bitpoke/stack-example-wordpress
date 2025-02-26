@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Woo_Shop_Layout_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Astra-WooCommerce Shop Layout Customizer Configurations.
 		 *
@@ -29,13 +28,12 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-			$astra_addon_with_woo = ( astra_has_pro_woocommerce_addon() ) ? true : false;
+			$astra_addon_with_woo = astra_has_pro_woocommerce_addon() ? true : false;
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 			$add_to_cart_attr             = array();
 			$ratings                      = array();
 			$astra_shop_page_pro_features = array();
-
 
 			if ( $astra_addon_with_woo ) {
 				$astra_shop_page_pro_features = array(
@@ -70,26 +68,26 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 				$current_shop_layouts = array(
 					'shop-page-grid-style'   => array(
 						'label' => __( 'Design 1', 'astra' ),
-						'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-grid-view', false ) : '',
+						'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-grid-view', false ) : '',
 					),
 					'shop-page-modern-style' => array(
 						'label' => __( 'Design 2', 'astra' ),
-						'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-modern-view', false ) : '',
+						'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-modern-view', false ) : '',
 					),
 					'shop-page-list-style'   => array(
 						'label' => __( 'Design 3', 'astra' ),
-						'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-list-view', false ) : '',
+						'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-list-view', false ) : '',
 					),
 				);
 			} else {
 				$current_shop_layouts = array(
 					'shop-page-grid-style'   => array(
 						'label' => __( 'Design 1', 'astra' ),
-						'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-grid-view', false ) : '',
+						'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-grid-view', false ) : '',
 					),
 					'shop-page-modern-style' => array(
 						'label' => __( 'Design 2', 'astra' ),
-						'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-modern-view', false ) : '',
+						'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'shop-modern-view', false ) : '',
 					),
 				);
 			}
@@ -109,8 +107,8 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 				),
 
 				/**
-				* Option: Divider
-				*/
+				 * Option: Divider
+				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[shop-box-styling]',
 					'section'  => 'woocommerce_product_catalog',
@@ -186,7 +184,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 					),
 					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 				),
-
 
 				/**
 				 * Option: Divider
@@ -327,8 +324,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 				'control'    => 'ast-select',
 				'linked'     => 'add_cart',
 				'priority'   => 10,
-				'choices'    =>
-				array_merge(
+				'choices'    => array_merge(
 					array(
 						'default'       => __( 'Default', 'astra' ),
 						'slide_in_cart' => __( 'Slide In Cart', 'astra' ),
@@ -340,8 +336,8 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 				'transport'  => 'postMessage',
 			);
 
-			/**
-				 * Total Review count option config.   
+				/**
+				 * Total Review count option config.
 				 */
 				$_configs[] = array(
 					'name'       => 'shop-ratings-product-archive',
@@ -426,13 +422,9 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 					);
 				}
 
-				$configurations = array_merge( $configurations, $_configs );
-
-				return $configurations;
-
+				return array_merge( $configurations, $_configs );
 		}
 	}
 }
 
 new Astra_Woo_Shop_Layout_Configs();
-

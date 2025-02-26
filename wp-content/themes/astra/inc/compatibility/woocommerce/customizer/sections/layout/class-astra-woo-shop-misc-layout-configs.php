@@ -13,12 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'Astra_Woo_Shop_Misc_Layout_Configs' ) ) {
 
-
 	/**
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Woo_Shop_Misc_Layout_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Astra-WooCommerce Misc Customizer Configurations.
 		 *
@@ -28,7 +26,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Misc_Layout_Configs' ) ) {
 		 * @return Array Astra Customizer Configurations with updated configurations.
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
-
 
 			$_configs = array(
 

@@ -151,7 +151,6 @@ function astra_header_account_configuration() {
 			'divider'    => array( 'ast_class' => 'ast-bottom-dotted-divider ast-section-spacing' ),
 		),
 
-
 		/**
 		 * Option: Show Text with
 		 *
@@ -189,10 +188,9 @@ function astra_header_account_configuration() {
 			),
 		),
 
-
 		/**
-		* Option: Logged Out Text
-		*/
+		 * Option: Logged Out Text
+		 */
 		array(
 			'name'      => ASTRA_THEME_SETTINGS . '[header-account-logged-in-text]',
 			'default'   => astra_get_option( 'header-account-logged-in-text' ),
@@ -216,10 +214,9 @@ function astra_header_account_configuration() {
 			),
 		),
 
-
 		/**
-		* Option: Account Log In Link
-		*/
+		 * Option: Account Log In Link
+		 */
 		array(
 			'name'              => ASTRA_THEME_SETTINGS . '[header-account-login-link]',
 			'default'           => astra_get_option( 'header-account-login-link' ),
@@ -278,7 +275,6 @@ function astra_header_account_configuration() {
 			'divider'    => array( 'ast_class' => 'ast-section-spacing' ),
 		),
 
-
 		/**
 		 * Option: Show Text with
 		 *
@@ -315,7 +311,6 @@ function astra_header_account_configuration() {
 			),
 		),
 
-
 		// Option: Logged out options preview.
 		array(
 			'name'      => ASTRA_THEME_SETTINGS . '[header-account-logout-preview]',
@@ -342,8 +337,8 @@ function astra_header_account_configuration() {
 		),
 
 		/**
-		* Option: Logged Out Text
-		*/
+		 * Option: Logged Out Text
+		 */
 		array(
 			'name'      => ASTRA_THEME_SETTINGS . '[header-account-logged-out-text]',
 			'default'   => astra_get_option( 'header-account-logged-out-text' ),
@@ -368,8 +363,8 @@ function astra_header_account_configuration() {
 		),
 
 		/**
-		* Option: Account Log Out Link
-		*/
+		 * Option: Account Log Out Link
+		 */
 		array(
 			'name'              => ASTRA_THEME_SETTINGS . '[header-account-logout-link]',
 			'default'           => astra_get_option( 'header-account-logout-link' ),
@@ -477,7 +472,7 @@ function astra_header_account_configuration() {
 					array(
 						'setting'  => ASTRA_THEME_SETTINGS . '[header-account-logout-style]',
 						'operator' => '==',
-						'value'    => 'icon', 
+						'value'    => 'icon',
 					),
 				),
 			),
@@ -548,8 +543,8 @@ function astra_header_account_configuration() {
 		),
 
 		/**
-		* Option: account Color.
-		*/
+		 * Option: account Color.
+		 */
 		array(
 			'name'              => ASTRA_THEME_SETTINGS . '[header-account-type-text-color]',
 			'default'           => astra_get_option( 'header-account-type-text-color' ),
@@ -655,4 +650,3 @@ function astra_header_account_configuration() {
 if ( Astra_Builder_Customizer::astra_collect_customizer_builder_data() ) {
 	add_action( 'init', 'astra_header_account_configuration' );
 }
-

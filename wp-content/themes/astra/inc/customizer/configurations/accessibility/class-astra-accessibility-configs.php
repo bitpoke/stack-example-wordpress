@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register Astra Accessibility Configurations.
  */
 class Astra_Accessibility_Configs extends Astra_Customizer_Config_Base {
-
 	/**
 	 * Register Astra Accessibility Configurations.
 	 *

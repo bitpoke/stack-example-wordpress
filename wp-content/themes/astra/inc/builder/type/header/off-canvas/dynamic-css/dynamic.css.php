@@ -41,7 +41,7 @@ function astra_off_canvas_row_setting( $dynamic_css, $dynamic_css_filtered = '' 
 	$move_body                   = astra_get_option( 'off-canvas-move-body' );
 	$is_site_rtl                 = is_rtl();
 
-	$inner_spacing = ( isset( $inner_spacing ) ) ? (int) $inner_spacing : '';
+	$inner_spacing = isset( $inner_spacing ) ? (int) $inner_spacing : '';
 
 	if ( 'flex-start' === $offcanvas_content_alignment ) {
 		$menu_content_alignment = $is_site_rtl ? 'right' : 'left';

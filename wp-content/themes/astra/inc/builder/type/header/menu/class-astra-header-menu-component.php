@@ -20,7 +20,6 @@ define( 'ASTRA_HEADER_MENU_URI', ASTRA_THEME_URI . 'inc/builder/type/header/menu
  * @since 3.0.0
  */
 class Astra_Header_Menu_Component {
-
 	/**
 	 * Constructor function that initializes required actions and hooks
 	 */

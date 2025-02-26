@@ -13,7 +13,6 @@ if ( ! class_exists( 'Astra_Pro_Upgrade_Link_Configs' ) ) {
 	 * Register Button Customizer Configurations.
 	 */
 	class Astra_Pro_Upgrade_Link_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Button Customizer Configurations.
 		 *
@@ -47,7 +46,6 @@ if ( ! class_exists( 'Astra_Pro_Upgrade_Link_Configs' ) ) {
 			);
 
 			return array_merge( $configurations, $_configs );
-
 		}
 	}
 }

@@ -19,7 +19,6 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 	 * @since 1.4.3
 	 */
 	class Astra_Single_Typo_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Single Typography configurations.
 		 *
@@ -82,9 +81,7 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 				);
 			}
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }

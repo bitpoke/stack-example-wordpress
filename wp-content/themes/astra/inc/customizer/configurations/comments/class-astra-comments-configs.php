@@ -13,7 +13,6 @@ if ( ! class_exists( 'Astra_Comments_Configs' ) ) {
 	 * Register Comments Customizer Configurations.
 	 */
 	class Astra_Comments_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Comments Customizer Configurations.
 		 *

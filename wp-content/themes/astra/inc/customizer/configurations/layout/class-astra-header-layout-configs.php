@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 	 * Register Header Layout Customizer Configurations.
 	 */
 	class Astra_Header_Layout_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Header Layout Customizer Configurations.
 		 *
@@ -159,8 +158,8 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 				),
 
 				/**
-				* Option: Button Text
-				*/
+				 * Option: Button Text
+				 */
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[header-main-rt-section-button-text]',
 					'transport' => 'postMessage',
@@ -185,8 +184,8 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 				),
 
 				/**
-				* Option: Button Link
-				*/
+				 * Option: Button Link
+				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[header-main-rt-section-button-link-option]',
 					'default'  => astra_get_option( 'header-main-rt-section-button-link-option' ),
@@ -205,8 +204,8 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 				),
 
 				/**
-				* Option: Button Style
-				*/
+				 * Option: Button Style
+				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[header-main-rt-section-button-style]',
 					'default'  => astra_get_option( 'header-main-rt-section-button-style' ),
@@ -229,8 +228,8 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 				),
 
 				/**
-				* Option: Theme Button Style edit link
-				*/
+				 * Option: Theme Button Style edit link
+				 */
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[header-button-style-link]',
 					'default'   => astra_get_option( 'header-button-style-link' ),
@@ -532,7 +531,7 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 					'context'   => array(
 						'relation' => 'AND',
-						( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? Astra_Builder_Helper::$design_tab_config : Astra_Builder_Helper::$general_tab,
+						true === Astra_Builder_Helper::$is_header_footer_builder_active ? Astra_Builder_Helper::$design_tab_config : Astra_Builder_Helper::$general_tab,
 						array(
 							'relation' => 'OR',
 							array(
@@ -684,6 +683,5 @@ if ( ! class_exists( 'Astra_Header_Layout_Configs' ) ) {
 		}
 	}
 }
-
 
 new Astra_Header_Layout_Configs();

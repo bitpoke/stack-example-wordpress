@@ -17,7 +17,6 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 	 * Customizer Sanitizes Initial setup
 	 */
 	class Astra_Archive_Typo_Configs extends Astra_Customizer_Config_Base {
-
 		/**
 		 * Register Archive Typography Customizer Configurations.
 		 *
@@ -228,9 +227,7 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 				$_configs    = array_merge( $_configs, $new_configs );
 			}
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }

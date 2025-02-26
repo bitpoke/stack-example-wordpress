@@ -121,7 +121,6 @@ function astra_copyright_footer_configuration() {
 			'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 		),
 
-
 		/**
 		 * Option: Margin Space
 		 */
