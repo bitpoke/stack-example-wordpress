@@ -3,7 +3,7 @@ Contributors: boopathi0001
 Donate link: https://paypal.me/boopathirajan
 Tags: Test email, Check Mail, Mail Tester, Emal Log
 Requires at least: 4.3
-Tested up to: 6.6.2
+Tested up to: 6.6.4
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -50,6 +50,9 @@ Use the WP Test Email plugin to send a test email to an address of your choice. 
 Navigate to Tools -> Email Logs in your WordPress admin panel. You can search, sort, and view the logs of the test emails sent through the plugin.
 
 == Changelog ==
+
+= 1.1.9 =
+* Security fixes.
 
 = 1.1.8 =
 * Security fixes.
