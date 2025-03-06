@@ -15,6 +15,16 @@
   color: var(--ast-customizer-color-1);
 }
 
+#customize-control-astra-color-palettes .ast-adv-toggle-icon {
+  font-size: 12px;
+  width: auto;
+  height: auto;
+}
+
+#customize-control-astra-color-palettes .ast-adv-toggle-icon:before {
+ display: none;
+}
+
 .ast-adv-toggle-icon:before {
   content: "\f464";
 }

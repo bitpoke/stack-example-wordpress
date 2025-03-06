@@ -1,5 +1,11 @@
 *** Astra Changelog ***
 
+2025-03-06 - version 4.9.0
+* New: Added a new color palette in Astra's Global Color Palettes section which Act as a Dark palette - (Beta Feature). (https://wpastra.com/docs/dark-colour-palette/)
+* Improvement: Enhanced Smooth Scroll to ID functionality with dynamic sticky offset support for sticky headers with including slide and fade animations.
+* Fix: Resolved an issue with font size changes in Submenu links.
+* Fix: Resolved an issue where color setting not reflecting in Off-Canvas menu in Desktop.
+
 2025-02-26 - version 4.8.13
 * New: Search Widget - Added an option for visible search result counts with live search.
 * Fix: Resolved "Undefined array key" warning by checking if the color key exists before using it.

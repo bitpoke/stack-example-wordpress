@@ -22,7 +22,9 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 
 	$astra_options                              = Astra_Theme_Options::get_astra_options();
 	$astra_update_footer_row_vertical_alignment = Astra_Dynamic_CSS::astra_4_5_0_compatibility();
+	$astra_dark_mode                            = Astra_Dynamic_CSS::astra_4_9_0_compatibility();
 	$blog_update                                = Astra_Dynamic_CSS::astra_4_6_0_compatibility();
+	$palette_key                                = Astra_Global_Palette::astra_get_active_global_palette();
 
 	/**
 	 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
@@ -103,11 +105,11 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 
 	$defaults['hb-header-main-sep']          = 1;
-	$defaults['hb-header-main-sep-color']    = '#eaeaea';
+	$defaults['hb-header-main-sep-color']    = 'var( --ast-global-color-subtle-background, --ast-global-color-7 )';
 	$defaults['hb-header-main-menu-align']   = 'inline';
 	$defaults['hb-header-bg-obj-responsive'] = array(
 		'desktop' => array(
-			'background-color'      => '#ffffff',
+			'background-color'      => 'var( --ast-global-color-primary, --ast-global-color-4 )',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -183,10 +185,10 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'mobile'  => 'stack',
 	);
 	$defaults['hba-header-separator']               = 1;
-	$defaults['hba-header-bottom-border-color']     = '#eaeaea';
+	$defaults['hba-header-bottom-border-color']     = 'var( --ast-global-color-subtle-background, --ast-global-color-7 )';
 	$defaults['hba-header-bg-obj-responsive']       = array(
 		'desktop' => array(
-			'background-color'      => '#ffffff',
+			'background-color'      => 'var( --ast-global-color-primary, --ast-global-color-4 )',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -286,10 +288,10 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 
 	$defaults['hbb-header-separator']           = 1;
-	$defaults['hbb-header-bottom-border-color'] = '#eaeaea';
+	$defaults['hbb-header-bottom-border-color'] = 'var( --ast-global-color-subtle-background, --ast-global-color-7 )';
 	$defaults['hbb-header-bg-obj-responsive']   = array(
 		'desktop' => array(
-			'background-color'      => '#eeeeee',
+			'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#eeeeee',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -449,7 +451,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	 */
 	$defaults['hba-footer-bg-obj-responsive'] = array(
 		'desktop' => array(
-			'background-color'      => '#eeeeee',
+			'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#eeeeee',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -487,7 +489,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 	$defaults['hbb-footer-bg-obj-responsive'] = array(
 		'desktop' => array(
-			'background-color'      => $apply_new_default_color_typo_values ? ( $reorder_color_seq ? 'var(--ast-global-color-4)' : 'var(--ast-global-color-5)' ) : '#eeeeee',
+			'background-color'      => $apply_new_default_color_typo_values ? ( $reorder_color_seq ? 'var(--ast-global-color-4 )' : 'var(--ast-global-color-5)' ) : ( $astra_dark_mode ? '#eeeeee' : 'var( --ast-global-color-primary, --ast-global-color-4 )' ),
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -525,7 +527,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 	$defaults['hb-footer-bg-obj-responsive']  = array(
 		'desktop' => array(
-			'background-color'      => '#f9f9f9',
+			'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#f9f9f9',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -561,7 +563,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 			'overlay-gradient'      => '',
 		),
 	);
-	$defaults['hbb-footer-top-border-color']  = $blog_update ? '#eaeaea' : 'var(--ast-global-color-subtle-background, --ast-global-color-6)';
+	$defaults['hbb-footer-top-border-color']  = $blog_update ? 'var( --ast-global-color-subtle-background, --ast-global-color-7 )' : 'var(--ast-global-color-subtle-background, --ast-global-color-6)';
 	$defaults['hbb-footer-separator']         = 1;
 
 	/**
@@ -667,7 +669,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 
 	$defaults['hb-footer-main-sep']       = 1;
-	$defaults['hb-footer-main-sep-color'] = '#e6e6e6';
+	$defaults['hb-footer-main-sep-color'] = 'var( --ast-global-color-subtle-background, --ast-global-color-7 )';
 	$defaults['live-search-result-count'] = 5;
 
 	/**
@@ -808,7 +810,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	$defaults['header-builder-menu-toggle-target']  = 'icon';
 	$defaults['header-offcanvas-content-alignment'] = 'flex-start';
 	$defaults['off-canvas-background']              = array(
-		'background-color'      => '#ffffff',
+		'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#ffffff',
 		'background-image'      => '',
 		'background-repeat'     => 'repeat',
 		'background-position'   => 'center center',
@@ -1173,6 +1175,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 	$defaults['woo-header-cart-icon']                      = 'default';
 	$defaults['woo-header-cart-icon-style']                = 'outline';
+	$defaults['woo-header-cart-product-count-color-group'] = 'var( --ast-global-color-secondary, --ast-global-color-5 )';
 	$defaults['woo-desktop-cart-flyout-direction']         = 'right';
 	$defaults['header-woo-cart-icon-color']                = '';
 	$defaults['transparent-header-woo-cart-icon-color']    = '';
@@ -1280,7 +1283,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 		'mobile'  => 18,
 	);
 
-	$defaults['header-account-icon-color'] = '';
+	$defaults['header-account-icon-color'] = 'var(--ast-global-color-2)';
 
 	$defaults['header-account-login-link'] = array(
 		'url'      => '',

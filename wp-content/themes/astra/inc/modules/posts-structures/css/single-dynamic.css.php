@@ -455,7 +455,7 @@ function astra_post_single_structure_dynamic_css( $dynamic_css, $dynamic_css_fil
 			justify-content: center;
 			text-align: center;
 			position: relative;
-			background: #eeeeee;
+			background: var(--ast-title-layout-bg);
 		}
 		.ast-single-entry-banner[data-banner-layout="layout-1"] {
 			max-width: ' . astra_get_css_value( $site_content_width, 'px' ) . ';

@@ -157,6 +157,17 @@ class Astra_Global_Palette {
 					$color_palette_reorganize ? '#D8D8F5' : '#0D0614',
 					'#222222',
 				),
+				'palette_4' => array(
+					'#0085FF',
+					'#0177E3',
+					'#FFFFFF',
+					'#E7F6FF',
+					'#212A37',
+					'#0F172A',
+					'#4F5B62',
+					'#070614',
+					'#222222',
+				),
 			) : array(
 				'palette_1' => array(
 					'#046bd2',
@@ -191,11 +202,51 @@ class Astra_Global_Palette {
 					$color_palette_reorganize ? ( $update_colors_for_starter_library ? '#ADB6BE' : '#F2F5F7' ) : ( $update_colors_for_starter_library ? '#111111' : '#424242' ),
 					$update_colors_for_starter_library ? '#111111' : '#000000',
 				),
+				'palette_4' => array(
+					'#0085FF',
+					'#0177E3',
+					'#FFFFFF',
+					'#E7F6FF',
+					'#212A37',
+					'#0F172A',
+					'#4F5B62',
+					'#070614',
+					'#222222',
+				),
 			),
 			'presets'        => astra_get_palette_presets(),
 		);
 	}
 
+	/**
+	 * Get the key of the selected global color palette.
+	 *
+	 * @return string|null Palette key if found, otherwise null.
+	 */
+	public static function astra_get_active_global_palette() {
+
+		// Get the current palette option from global color palette.
+		$current_palette_option = astra_get_options();
+
+		if ( ! isset( $current_palette_option['global-color-palette']['palette'] ) ) {
+			return '';
+		}
+
+		$current_palette = $current_palette_option['global-color-palette']['palette'];
+
+		$default_palettes = self::get_default_color_palette()['palettes'] ?? [];
+
+		// Loop through the default palettes to match the selected palette.
+		foreach ( $default_palettes as $palette_key => $palette_colors ) {
+			if ( $current_palette === $palette_colors ) {
+				return $palette_key;
+			}
+		}
+
+		return '';
+	}
+
+	
 	/**
 	 * Get labels for palette colors.
 	 *

@@ -123,6 +123,8 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 
 			$mob_sec_vertical_padding = $apply_scndry_default_padding_values ? 12 : '';
 			$mob_sec_vertical_padding = $update_secondary_paddings ? 10 : $mob_sec_vertical_padding;
+			$palette_key              = Astra_Global_Palette::astra_get_active_global_palette();
+
 
 			/**
 			 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
@@ -463,7 +465,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 						'tablet'  => '',
 						'mobile'  => '',
 					),
-					'header-color-site-title'              => '',
+					'header-color-site-title'              => 'var(--ast-global-color-2)',
 					'header-color-h-site-title'            => '',
 					'header-color-site-tagline'            => '',
 					'display-site-title-responsive'        => array(

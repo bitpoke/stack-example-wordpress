@@ -300,7 +300,7 @@ function astra_special_archive_dynamic_css( $dynamic_css, $dynamic_css_filtered 
 			justify-content: center;
 			text-align: center;
 			position: relative;
-			background: #eeeeee;
+			background: var(--ast-title-layout-bg);
 		}
 		.ast-archive-entry-banner[data-banner-width-type="custom"] {
 			margin: 0 auto;

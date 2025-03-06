@@ -3,6 +3,12 @@ window.addEventListener( 'load', function(e) {
 	astra_onload_function();
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+	if (astraColors.dark_palette === 'palette_4') {
+		document.documentElement.classList.add('astra-dark-mode-enable');
+	}
+});
+
 // Function to add block editor dynamic styles. 
 function blockEditorDynamicStyles() {
 	setTimeout(() => {

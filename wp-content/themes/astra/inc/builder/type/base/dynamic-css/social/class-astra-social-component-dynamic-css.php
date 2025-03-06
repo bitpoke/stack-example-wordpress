@@ -444,18 +444,7 @@ class Astra_Social_Component_Dynamic_CSS {
 			}
 			.ast-builder-social-element {
 				line-height: 1;
-				color: #3a3a3a;
-				background: transparent;
-				vertical-align: middle;
-				transition: all 0.01s;
-				margin-left: 6px;
-				margin-right: 6px;
-				justify-content: center;
-				align-items: center;
-			}
-			.ast-builder-social-element {
-				line-height: 1;
-				color: #3a3a3a;
+				color: var(--ast-global-color-2);
 				background: transparent;
 				vertical-align: middle;
 				transition: all 0.01s;

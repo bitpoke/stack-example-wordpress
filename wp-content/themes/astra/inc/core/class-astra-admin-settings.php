@@ -187,7 +187,6 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				$image_path                          = ASTRA_THEME_URI . 'inc/assets/images/astra-banner.png';
 				$gb_image_path                       = ASTRA_THEME_URI . 'inc/assets/images/gb-logo.svg';
 				$ele_image_path                      = ASTRA_THEME_URI . 'inc/assets/images/ele-logo.svg';
-				$bb_image_path                       = ASTRA_THEME_URI . 'inc/assets/images/bb-logo.jpg';
 				$ai_image_path                       = ASTRA_THEME_URI . 'inc/assets/images/ai-logo.svg';
 				$ast_sites_notice_btn                = self::astra_sites_notice_button();
 				$ast_sites_notice_btn['button_text'] = __( 'Let’s Get Started with Starter Templates', 'astra' );
@@ -222,7 +221,6 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 										<img src="%15$s" class="ast-page-builder-ico" />
 										<img src="%16$s" class="ast-page-builder-ico" />
 										<img src="%17$s" class="ast-page-builder-ico" />
-										<img src="%18$s" class="ast-page-builder-ico" />
 									</div>
 								</div>
 							</div>',
@@ -239,10 +237,9 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 						esc_html( $ast_sites_notice_btn['button_text'] ),
 						$image_path,
 						__( 'I want to build this website from scratch', 'astra' ),
-						__( '280+ Templates', 'astra' ),
+						__( '300+ Templates', 'astra' ),
 						$gb_image_path,
 						$ele_image_path,
-						$bb_image_path,
 						$ai_image_path,
 					),
 					'priority'                   => 5,

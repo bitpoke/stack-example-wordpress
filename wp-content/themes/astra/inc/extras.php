@@ -857,7 +857,24 @@ function astra_has_global_color_format_support() {
  * @since 3.7.0
  */
 function astra_get_palette_colors() {
-	return get_option( 'astra-color-palettes', apply_filters( 'astra_global_color_palette', Astra_Global_Palette::get_default_color_palette() ) );
+	$color_palettes = get_option( 'astra-color-palettes', false );
+
+	if ( ! $color_palettes ) {
+		$color_palettes = \Astra_Global_Palette::get_default_color_palette();
+	}
+
+	if ( ! isset( $color_palettes['palettes']['palette_4'] ) ) {
+		$default_palette                         = \Astra_Global_Palette::get_default_color_palette();
+		$color_palettes['palettes']['palette_4'] = $default_palette['palettes']['palette_4'] ?? '';
+	}
+
+	$presets = astra_get_palette_presets();
+
+	$color_palettes['presets'] = $presets;
+
+	// Return the color palettes and presets together as a single array
+	return apply_filters( 'astra_global_color_palette', $color_palettes );
+
 }
 
 /**
@@ -951,7 +968,7 @@ function astra_search_static_css() {
 		opacity: 1;
 	}
 	.ast-search-menu-icon .search-form {
-		border: 1px solid #e7e7e7;
+		border: 1px solid var(--ast-search-border-color);
 		line-height: normal;
 		padding: 0 3em 0 0;
 		border-radius: 2px;
@@ -1275,7 +1292,7 @@ function astra_get_queried_post_types() {
 function astra_get_palette_presets() {
 	$color_palette_reorganize = Astra_Dynamic_CSS::astra_4_8_0_compatibility();
 	return array(
-		'preset_1'  => array(
+		'Oak'       => array(
 			'#0067FF',
 			'#005EE9',
 			'#0F172A',
@@ -1286,7 +1303,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D1DAE5' : '#070614',
 			'#222222',
 		),
-		'preset_2'  => array(
+		'Lavender'  => array(
 			'#6528F7',
 			'#5511F8',
 			'#0F172A',
@@ -1297,7 +1314,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D8D8F5' : '#0D0614',
 			'#222222',
 		),
-		'preset_3'  => array(
+		'Cedar'     => array(
 			'#DD183B',
 			'#CC1939',
 			'#0F172A',
@@ -1308,7 +1325,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#FFD1BF' : '#140609',
 			'#222222',
 		),
-		'preset_4'  => array(
+		'Willow'    => array(
 			'#54B435',
 			'#379237',
 			'#0F172A',
@@ -1319,7 +1336,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D5EAD8' : '#0C1406',
 			'#222222',
 		),
-		'preset_5'  => array(
+		'Lily'      => array(
 			'#DCA54A',
 			'#D09A40',
 			'#0F172A',
@@ -1330,7 +1347,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#F0E6C5' : '#141004',
 			'#222222',
 		),
-		'preset_6'  => array(
+		'Rose'      => array(
 			'#FB5FAB',
 			'#EA559D',
 			'#0F172A',
@@ -1341,7 +1358,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#FAD8E9' : '#140610',
 			'#222222',
 		),
-		'preset_7'  => array(
+		'Sage'      => array(
 			'#1B9C85',
 			'#178E79',
 			'#0F172A',
@@ -1352,7 +1369,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D4F3D7' : '#06140C',
 			'#222222',
 		),
-		'preset_8'  => array(
+		'Sunflower' => array(
 			'#FD9800',
 			'#E98C00',
 			'#0F172A',
@@ -1363,7 +1380,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#F9F0C8' : '#141006',
 			'#222222',
 		),
-		'preset_9'  => array(
+		'Maple'     => array(
 			'#FF6210',
 			'#F15808',
 			'#1C0D0A',
@@ -1374,7 +1391,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#E5D7D1' : '#140B06',
 			'#222222',
 		),
-		'preset_10' => array(
+		'Birch'     => array(
 			'#737880',
 			'#65696F',
 			'#151616',
@@ -1383,6 +1400,17 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#F6F6F6' : '#FFFFFF',
 			$color_palette_reorganize ? '#232529' : '#F1F0F0',
 			$color_palette_reorganize ? '#F1F0F0' : '#232529',
+			'#222222',
+		),
+		'Dark'      => array(
+			'#0085FF',
+			'#0177E3',
+			'#FFFFFF',
+			'#E7F6FF',
+			'#212A37',
+			'#0F172A',
+			'#4F5B62',
+			'#070614',
 			'#222222',
 		),
 	);

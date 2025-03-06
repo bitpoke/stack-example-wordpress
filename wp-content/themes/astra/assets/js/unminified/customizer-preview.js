@@ -1070,10 +1070,7 @@ function hasWordPressWidgetBlockEditor() {
 
 		if( 'blog-layout-1' == blog_layout && 1 != blog_grid ) {
 			dynamicSelector   += ', .ast-separate-container .ast-article-inner';
-		} else {
-			dynamicSelector   += ', .ast-separate-container .ast-article-post';
-		}
-
+		} 
 		/**
 		 * Content background color
 		 */
@@ -2102,7 +2099,7 @@ function hasWordPressWidgetBlockEditor() {
 		setting.bind( function() {
 			wp.customize.preview.send( 'refresh' );
 		} );
-	} );
+	} );	
 
 	/**
 	 * Related Posts color stylings.

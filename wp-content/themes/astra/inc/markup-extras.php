@@ -74,10 +74,17 @@ if ( ! function_exists( 'astra_body_classes' ) ) {
 	 */
 	function astra_body_classes( $classes ) {
 
+		$palette_key = Astra_Global_Palette::astra_get_active_global_palette();
+
+
 		if ( wp_is_mobile() ) {
 			$classes[] = 'ast-header-break-point';
 		} else {
 			$classes[] = 'ast-desktop';
+		}
+
+		if ( $palette_key === 'palette_4' ) {
+			$classes[] = 'astra-dark-mode-enable';
 		}
 
 		if ( astra_is_amp_endpoint() ) {

@@ -560,23 +560,24 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$h6_properties = array_merge( $h6_properties, $h6_font_properties );
 			}
 
-			$link_selector            = true === $update_customizer_strctural_defaults ? 'a' : 'a, .page-title';
-			$article_space            = self::astra_4_6_0_compatibility() ? '2.5em' : '3em';
-			$color_palette_reorganize = self::astra_4_8_9_compatibility();
-
-			$css_output = array(
+			$link_selector                   = ( true === $update_customizer_strctural_defaults ) ? 'a' : 'a, .page-title';
+			$transparent_search_box_bg_color = astra_get_option( 'transparent-header-search-box-background-color', '#fff' );
+			$article_space                   = self::astra_4_6_0_compatibility() ? '2.5em' : '3em';
+			$color_palette_reorganize        = self::astra_4_8_9_compatibility();
+			$palette_key                     = Astra_Global_Palette::astra_get_active_global_palette();
+			$css_output                      = array(
 
 				':root'                                  => array(
 					'--ast-post-nav-space'                 => 0, // Moved from inc/dynamic-css/single-post.php for the fix of post-navigation issue for the old users. @since 4.6.13
-					'--ast-container-default-xlg-padding'  => true === $update_customizer_strctural_defaults ? $article_space : '6.67em',
-					'--ast-container-default-lg-padding'   => true === $update_customizer_strctural_defaults ? $article_space : '5.67em',
-					'--ast-container-default-slg-padding'  => true === $update_customizer_strctural_defaults ? '2em' : '4.34em',
-					'--ast-container-default-md-padding'   => true === $update_customizer_strctural_defaults ? $article_space : '3.34em',
-					'--ast-container-default-sm-padding'   => true === $update_customizer_strctural_defaults ? $article_space : '6.67em',
-					'--ast-container-default-xs-padding'   => true === $update_customizer_strctural_defaults ? '2.4em' : '2.4em',
-					'--ast-container-default-xxs-padding'  => true === $update_customizer_strctural_defaults ? '1.8em' : '1.4em',
-					'--ast-code-block-background'          => true === self::astra_check_default_color_typo() ? '#ECEFF3' : '#EEEEEE',
-					'--ast-comment-inputs-background'      => true === self::astra_check_default_color_typo() ? '#F9FAFB' : '#FAFAFA',
+					'--ast-container-default-xlg-padding'  => ( true === $update_customizer_strctural_defaults ) ? $article_space : '6.67em',
+					'--ast-container-default-lg-padding'   => ( true === $update_customizer_strctural_defaults ) ? $article_space : '5.67em',
+					'--ast-container-default-slg-padding'  => ( true === $update_customizer_strctural_defaults ) ? '2em' : '4.34em',
+					'--ast-container-default-md-padding'   => ( true === $update_customizer_strctural_defaults ) ? $article_space : '3.34em',
+					'--ast-container-default-sm-padding'   => ( true === $update_customizer_strctural_defaults ) ? $article_space : '6.67em',
+					'--ast-container-default-xs-padding'   => ( true === $update_customizer_strctural_defaults ) ? '2.4em' : '2.4em',
+					'--ast-container-default-xxs-padding'  => ( true === $update_customizer_strctural_defaults ) ? '1.8em' : '1.4em',
+					'--ast-code-block-background'          => ( true === self::astra_check_default_color_typo() ) ? ( $palette_key === 'palette_4' ) ? 'var(--ast-global-color-5)' : '#ECEFF3' : '#EEEEEE',
+					'--ast-comment-inputs-background'      => ( true === self::astra_check_default_color_typo() ) ? '#F9FAFB' : '#FAFAFA',
 					'--ast-normal-container-width'         => $site_content_width . 'px',
 					'--ast-narrow-container-width'         => $narrow_container_max_width . 'px',
 					'--ast-blog-title-font-weight'         => self::astra_4_6_0_compatibility() ? '600' : 'normal',
@@ -585,6 +586,18 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'--ast-global-color-secondary'         => $color_palette_reorganize ? 'var(--ast-global-color-5)' : 'var(--ast-global-color-4)',
 					'--ast-global-color-alternate-background' => $color_palette_reorganize ? 'var(--ast-global-color-6)' : 'var(--ast-global-color-7)',
 					'--ast-global-color-subtle-background' => $color_palette_reorganize ? 'var(--ast-global-color-7)' : 'var(--ast-global-color-6)',
+					'--ast-bg-style-guide'                 => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#F8FAFC',
+					'--ast-shadow-style-guide'             => ( $palette_key === 'palette_4' ) ? '0px 0px 4px 0 #ffffff57' : '0px 0px 4px 0 #00000057',
+					'--ast-global-dark-bg-style'           => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fff',
+					'--ast-global-dark-lfs'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fbfbfb',
+					'--ast-widget-bg-color'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fafafa',
+					'--ast-wc-container-head-bg-color'     => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fbfbfb',
+					'--ast-title-layout-bg'               => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#eeeeee',
+					'--ast-search-border-color'            => ( $palette_key === 'palette_4' ) ? 'var(--ast-border-color)' : '#e7e7e7',
+					'--ast-lifter-hover-bg'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#e6e6e6',
+					'--ast-lifter-hover-bg'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#e6e6e6',
+					'--ast-gallery-block-color'            => ( $palette_key === 'palette_4' ) ? 'var(--ast-global-color-2)' : '#000',
+					'--srfm-color-input-label'             => 'var(--ast-global-color-2)',
 				),
 
 				// HTML.
@@ -842,7 +855,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Reduced specificity so that it does not override customizer background color option.
 				$css_output['.ast-header-search .slide-search .search-field'] = array(
-					'background-color' => '#fff', // Referred by main.css.
+					'background-color' => 'var(--ast-global-dark-bg-style)', // Referred by main.css.
 				);
 			}
 
@@ -1016,7 +1029,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Reduced specificity so that it does not override customizer background color option.
 				$css_output['.ast-header-search .slide-search .search-field'] = array(
-					'background-color' => '#fff', // Referred by main.css.
+					'background-color' => '(--ast-global-dark-bg-style)', // Referred by main.css.
 				);
 			}
 
@@ -5012,7 +5025,6 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						'content'                 => '"\e900"',
 						'display'                 => 'inline-block',
 						'font-family'             => 'Astra',
-						'font-size'               => '9px',
 						'font-size'               => '.6rem',
 						'font-weight'             => 'bold',
 						'text-rendering'          => 'auto',
@@ -6076,6 +6088,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 		public static function astra_default_forms_styling_dynamic_css() {
 			$css                       = '';
 			$enable_site_accessibility = astra_get_option( 'site-accessibility-toggle', false );
+			$palette_key               = Astra_Global_Palette::astra_get_active_global_palette();
 			$forms_default_styling_css = array(
 				'input[type="text"], input[type="number"], input[type="email"], input[type="url"], input[type="password"], input[type="search"], input[type=reset], input[type=tel], input[type=date], select, textarea' => array(
 					'font-size'     => '16px',
@@ -6095,6 +6108,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'border-width' => '1px',
 					'border-style' => 'solid',
 					'border-color' => 'var(--ast-border-color)',
+					'background'   => 'var( --ast-global-color-secondary, --ast-global-color-5 )', 
 				),
 				'input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type=reset]:focus, input[type="tel"]:focus, input[type="date"]:focus, select:focus, textarea:focus' => array(
 					'border-color' => 'var(--ast-global-color-0, #046BD2)',
@@ -6121,7 +6135,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'box-shadow'    => '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
 				),
 				':root'                   => array(
-					'--ast-comment-inputs-background' => '#FFF',
+					'--ast-comment-inputs-background' => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#FFF',
 				),
 				'::placeholder'           => array(
 					'color' => 'var(--ast-form-field-color, #9CA3AF)',
@@ -6282,6 +6296,17 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 		public static function astra_4_5_0_compatibility() {
 			$astra_settings = astra_get_options();
 			return apply_filters( 'astra_upgrade_color_styles', isset( $astra_settings['v4-5-0-backward-option'] ) ? false : true );
+		}
+
+		/**
+		 * Check version 4.9.0 backward compatibility.
+		 *
+		 * @since 4.9.0
+		 * @return boolean false if it is an existing user, true if not.
+		 */
+		public static function astra_4_9_0_compatibility() {
+			$astra_settings = astra_get_options();
+			return apply_filters( 'astra_dark_palette_backward', isset( $astra_settings['v4-9-0-backward-option'] ) ? false : true );
 		}
 
 		/**

@@ -116,7 +116,12 @@ if ( ! function_exists( 'astra_responsive_font' ) ) {
 	 */
 	function astra_responsive_font( $font, $device = 'desktop', $default = '' ) {
 
-		if ( isset( $font[ $device ] ) && isset( $font[ $device . '-unit' ] ) ) {
+		if ( isset( $font[ $device ] ) ) {
+			// Set default unit to 'px' if not explicitly set for the device.
+			if ( ! isset( $font[ $device . '-unit' ] ) ) {
+				$font[ $device . '-unit' ] = 'px';
+			}
+
 			if ( '' != $default ) {
 				$font_size = astra_get_css_value( $font[ $device ], $font[ $device . '-unit' ], $default );
 			} else {
