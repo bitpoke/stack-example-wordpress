@@ -683,7 +683,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 				if ( stickyHeaders.length > 0 ) {
 					stickyHeaders.forEach( ( header ) => ( offset += header.clientHeight ) );
-				} else if ( typeof astraAddon !== 'undefined' && ! Number( astraAddon.sticky_hide_on_scroll ) ) {
+				} else if ( typeof astraAddon !== 'undefined' && ! ( Number( astraAddon.sticky_hide_on_scroll ) && ! document?.querySelector( '.ast-header-sticked' ) ) ) {
 					const fixedHeader = document.querySelector( '#ast-fixed-header' );
 					if ( fixedHeader ) {
 						offset = fixedHeader?.clientHeight;
@@ -700,7 +700,12 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				if (href) {
 					const scrollId = document.querySelector(href);
 					if (scrollId) {
-						const scrollOffsetTop = getOffsetTop(scrollId) - offset;
+						const elementOffsetTop = getOffsetTop( scrollId );
+						if ( typeof astraAddon !== 'undefined' && Number( astraAddon.sticky_hide_on_scroll ) && window?.scrollY  < elementOffsetTop ) {
+							offset = 0;
+						}
+
+						const scrollOffsetTop = elementOffsetTop - offset;
 						if( scrollOffsetTop ) {
 							astraSmoothScroll( e, scrollOffsetTop );
 						}

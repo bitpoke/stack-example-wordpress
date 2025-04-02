@@ -212,7 +212,7 @@ if ( ! class_exists( 'Astra_Edd' ) ) {
 				$next_text = false;
 				if ( $next_post ) {
 					$next_text = sprintf(
-						'%s <span class="ast-right-arrow">&rarr;</span>',
+						'%s <span class="ast-right-arrow" aria-hidden="true">&rarr;</span>',
 						$next_post->post_title
 					);
 				}
@@ -220,7 +220,7 @@ if ( ! class_exists( 'Astra_Edd' ) ) {
 				$prev_text = false;
 				if ( $prev_post ) {
 					$prev_text = sprintf(
-						'<span class="ast-left-arrow">&larr;</span> %s',
+						'<span class="ast-left-arrow" aria-hidden="true">&larr;</span> %s',
 						$prev_post->post_title
 					);
 				}

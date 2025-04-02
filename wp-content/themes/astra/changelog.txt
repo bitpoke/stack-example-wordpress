@@ -1,5 +1,15 @@
 *** Astra Changelog ***
 
+2025-04-02 - version 4.9.1
+* Improvement: Enhanced accessibility by adding aria-hidden attributes to decorative navigation arrows.
+* Improvement: Replaced a deprecated Elementor class with the updated class for improved compatibility.
+* Fix: Corrected the placement of the eye icon on the WooCommerce My Account page.
+* Fix: Resolved an issue where the customizer's heading color options were not applied inside the block editor.
+* Fix: Resolved an issue where the page did not scroll to the cart after adding a cross-sell product.
+* Fix: Resolved an issue where LearnDash quizzes label text was not visible.
+* Fix: Resolved an issue where clicking on the arrow navigation for submenus was redirecting to the page instead of opening the submenu on certain tablet devices.
+* Fix: Resolved an issue where the desktop menu did not display correctly when changing orientation on certain tablet devices.
+
 2025-03-06 - version 4.9.0
 * New: Added a new color palette in Astra's Global Color Palettes section which Act as a Dark palette - (Beta Feature). (https://wpastra.com/docs/dark-colour-palette/)
 * Improvement: Enhanced Smooth Scroll to ID functionality with dynamic sticky offset support for sticky headers with including slide and fade animations.

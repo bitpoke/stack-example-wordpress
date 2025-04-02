@@ -76,7 +76,7 @@ if ( ! class_exists( 'NPS_Survey_Plugin_Loader' ) ) {
 
 			// if the file redable, include it.
 			if ( is_readable( $file ) ) {
-				// nosemgrep audit.php.lang.security.file.inclusion-arg
+				// nosemgrep audit.php.lang.security.file.inclusion-arg - To allow the theme or plugin on WooCommerce Marketplace.
 				require_once $file;
 			}
 		}

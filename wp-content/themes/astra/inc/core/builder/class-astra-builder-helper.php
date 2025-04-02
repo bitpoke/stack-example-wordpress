@@ -14,11 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Astra_Builder_Helper.
  */
 final class Astra_Builder_Helper {
-
 	/**
 	 * Config context general tab.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $general_tab = array(
 		array(
@@ -30,7 +29,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config context general tab config.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $general_tab_config = array(
 		'setting' => 'ast_selected_tab',
@@ -40,7 +39,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config context design tab.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $design_tab = array(
 		array(
@@ -52,7 +51,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config context design tab.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $design_tab_config = array(
 		'setting' => 'ast_selected_tab',
@@ -62,7 +61,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config Tablet device context.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $tablet_device = array(
 		array(
@@ -75,7 +74,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config Mobile device context.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $mobile_device = array(
 		array(
@@ -88,7 +87,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config Mobile device context.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $responsive_devices = array(
 		array(
@@ -101,7 +100,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config Mobile device context.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $responsive_general_tab = array(
 		array(
@@ -118,7 +117,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config Desktop device context.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $desktop_general_tab = array(
 		array(
@@ -135,7 +134,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Default responsive spacing control value.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $default_responsive_spacing = array(
 		'desktop'      => array(
@@ -164,7 +163,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Default button responsive spacing control value.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $default_button_responsive_spacing = array(
 		'desktop'      => array(
@@ -193,7 +192,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config Tablet device context.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $tablet_general_tab = array(
 		array(
@@ -210,7 +209,7 @@ final class Astra_Builder_Helper {
 	/**
 	 * Config Mobile device context.
 	 *
-	 * @var string[][]
+	 * @var array<array<string>>
 	 */
 	public static $mobile_general_tab = array(
 		array(
@@ -769,7 +768,7 @@ final class Astra_Builder_Helper {
 					'pro'     => true,
 				),
 			);
-		
+
 			// Merge the additional items into the existing header desktop items.
 			self::$header_desktop_items = array_merge( self::$header_desktop_items, $pro_header_desktop_items );
 		}
@@ -791,7 +790,6 @@ final class Astra_Builder_Helper {
 				),
 			)
 		);
-
 
 		// Add an additional item conditionally.
 		if ( ! defined( 'ASTRA_EXT_VER' ) ) {
@@ -827,7 +825,7 @@ final class Astra_Builder_Helper {
 					'pro'  => true,
 				),
 			);
-				
+
 			// Merge the additional items into the existing header desktop items.
 			self::$footer_desktop_items = array_merge( self::$footer_desktop_items, $pro_footer_desktop_items );
 		}
@@ -884,7 +882,6 @@ final class Astra_Builder_Helper {
 			)
 		);
 
-
 				// Add an additional item conditionally.
 		if ( ! defined( 'ASTRA_EXT_VER' ) ) {
 			$pro_header_mobile_items = array(
@@ -933,8 +930,8 @@ final class Astra_Builder_Helper {
 					'icon' => 'menu',
 					'pro'  => true,
 				),
-			);                  
-						
+			);
+
 			// Merge the additional items into the existing header desktop items.
 			self::$header_mobile_items = array_merge( self::$header_mobile_items, $pro_header_mobile_items );
 		}
@@ -1021,7 +1018,7 @@ final class Astra_Builder_Helper {
 	 * For existing users, do not load the wide/full width image CSS by default.
 	 *
 	 * @since 3.0.0
-	 * @return boolean false if it is an existing user , true if not.
+	 * @return bool false if it is an existing user , true if not.
 	 */
 	public static function is_header_footer_builder_active() {
 		$astra_settings = astra_get_options();
@@ -1059,7 +1056,6 @@ final class Astra_Builder_Helper {
 		return $mobile_sides;
 	}
 
-
 	/**
 	 * Adds a check to see if the center column should run.
 	 *
@@ -1088,8 +1084,7 @@ final class Astra_Builder_Helper {
 	public static function render_builder_markup( $row = 'primary', $column = 'left', $header = 'desktop', $builder = 'header' ) {
 		$elements = astra_get_option( $builder . '-' . $header . '-items' );
 		if ( isset( $elements ) && isset( $elements[ $row ] ) && isset( $elements[ $row ][ $row . '_' . $column ] ) && is_array( $elements[ $row ][ $row . '_' . $column ] ) && ! empty( $elements[ $row ][ $row . '_' . $column ] ) ) {
-			foreach ( $elements[ $row ][ $row . '_' . $column ] as $key => $item ) {
-
+			foreach ( $elements[ $row ][ $row . '_' . $column ] as $item ) {
 
 				if ( astra_wp_version_compare( '5.4.99', '>=' ) ) {
 
@@ -1278,8 +1273,9 @@ final class Astra_Builder_Helper {
 
 		/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		if ( is_null( self::$loaded_grid ) ) {
-				/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			/** @psalm-suppress RedundantConditionGivenDocblockType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
+			$grids                   = array();
 			$grids['header_desktop'] = astra_get_option( 'header-desktop-items', array() );
 			$grids['header_mobile']  = astra_get_option( 'header-mobile-items', array() );
 			$grids['footer_both']    = astra_get_option( 'footer-desktop-items', array() );
@@ -1341,7 +1337,7 @@ final class Astra_Builder_Helper {
 	 * For existing users, do not apply dynamic CSS chages.
 	 *
 	 * @since 3.3.0
-	 * @return boolean true if it is an existing user , false if not.
+	 * @return bool true if it is an existing user , false if not.
 	 */
 	public static function apply_flex_based_css() {
 		$astra_settings = astra_get_options();

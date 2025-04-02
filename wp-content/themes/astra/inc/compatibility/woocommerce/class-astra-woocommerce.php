@@ -3033,8 +3033,8 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 				';
 			}
 
-			// Enable Show Password Icon on Login Form on Woocommerce Account Page.
-			if ( is_account_page() && ! is_user_logged_in() && astra_load_woocommerce_login_form_password_icon() ) {
+			// Enable Show Password Icon on Login Form and Account Details form on Woocommerce Account Page.
+			if ( is_account_page() && astra_load_woocommerce_login_form_password_icon() ) {
 				$ltr_left  = $is_site_rtl ? esc_attr( 'right' ) : esc_attr( 'left' );
 				$ltr_right = $is_site_rtl ? esc_attr( 'left' ) : esc_attr( 'right' );
 
@@ -3046,10 +3046,17 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 						'position'        => 'relative',
 					),
 					'.woocommerce form .show-password-input, .woocommerce-page form .show-password-input' => array(
-						'position' => 'absolute',
-						$ltr_right => '0.7em',
-						'cursor'   => 'pointer',
-						'top'      => '0.7em',
+						'position'            => 'absolute',
+						$ltr_right            => '0.7em',
+						'cursor'              => 'pointer',
+						'top'                 => '50%',
+						'translate'           => '0 -50%',
+						'padding'             => 'initial',
+						'background'          => 'initial',
+						'color'               => 'initial',
+						'box-shadow'          => 'none',
+						'margin-' . $ltr_left => '0.618em',
+						'border'              => 'none',
 					),
 					'.woocommerce form .show-password-input::after, .woocommerce-page form .show-password-input::after' => array(
 						'font-family'            => 'WooCommerce',
@@ -3059,9 +3066,11 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 						'text-transform'         => 'none',
 						'line-height'            => '1',
 						'-webkit-font-smoothing' => 'antialiased',
-						'margin-' . $ltr_left    => '0.618em',
 						'content'                => '"\e010"',
 						'text-decoration'        => 'none',
+					),
+					'.woocommerce form .show-password-input.display-password::after, .woocommerce-page form .show-password-input.display-password::after' => array(
+						'opacity' => '0.6',
 					),
 				);
 				$css_output                   .= astra_parse_css( $css_output_show_password_icon );

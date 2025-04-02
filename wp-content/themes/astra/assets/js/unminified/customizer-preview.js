@@ -1811,9 +1811,9 @@ function hasWordPressWidgetBlockEditor() {
 
 	if ( astraCustomizer.page_builder_button_style_css ) {
 		if ( 'color-typo' == astraCustomizer.elementor_default_color_font_setting || 'color' == astraCustomizer.elementor_default_color_font_setting || 'font' == astraCustomizer.elementor_default_color_font_setting ) {
-			ele_border_radius_selector = ', .elementor-button-wrapper .elementor-button.elementor-size-sm, .elementor-button-wrapper .elementor-button.elementor-size-xs, .elementor-button-wrapper .elementor-button.elementor-size-md, .elementor-button-wrapper .elementor-button.elementor-size-lg, .elementor-button-wrapper .elementor-button.elementor-size-xl, .elementor-button-wrapper .elementor-button';
-			ele_border_width_selector = ', .elementor-button-wrapper .elementor-button, .elementor-button-wrapper .elementor-button:visited';
-			ele_padding_selector = ', .elementor-button-wrapper .elementor-button.elementor-size-sm, .elementor-button-wrapper .elementor-button.elementor-size-xs, .elementor-button-wrapper .elementor-button.elementor-size-md, .elementor-button-wrapper .elementor-button.elementor-size-lg, .elementor-button-wrapper .elementor-button.elementor-size-xl, .elementor-button-wrapper .elementor-button';
+			ele_border_radius_selector = ', .elementor-widget-button .elementor-button.elementor-size-sm, .elementor-widget-button .elementor-button.elementor-size-xs, .elementor-widget-button .elementor-button.elementor-size-md, .elementor-widget-button .elementor-button.elementor-size-lg, .elementor-widget-button .elementor-button.elementor-size-xl, .elementor-widget-button .elementor-button';
+			ele_border_width_selector = ', .elementor-widget-button .elementor-button, .elementor-widget-button .elementor-button:visited';
+			ele_padding_selector = ', .elementor-widget-button .elementor-button.elementor-size-sm, .elementor-widget-button .elementor-button.elementor-size-xs, .elementor-widget-button .elementor-button.elementor-size-md, .elementor-widget-button .elementor-button.elementor-size-lg, .elementor-widget-button .elementor-button.elementor-size-xl, .elementor-widget-button .elementor-button';
 		}
 	}
 
@@ -1974,22 +1974,22 @@ function hasWordPressWidgetBlockEditor() {
 
 		if ( 'color-typo' == astraCustomizer.elementor_default_color_font_setting || 'color' == astraCustomizer.elementor_default_color_font_setting ) {
 			// Theme Button - Text Color
-			btn_color_ele = ',.elementor-button-wrapper .elementor-button, .elementor-button-wrapper .elementor-button:visited';
+			btn_color_ele = ',.elementor-widget-button .elementor-button, .elementor-widget-button .elementor-button:visited';
 
 			// Theme Button - Background Color
-			btn_bg_color_ele = ',.elementor-button-wrapper .elementor-button, .elementor-button-wrapper .elementor-button:visited';
+			btn_bg_color_ele = ',.elementor-widget-button .elementor-button, .elementor-widget-button .elementor-button:visited';
 
 			// Theme Button - Text Hover Color
-			btn_h_color_ele = ',.elementor-button-wrapper .elementor-button:hover, .elementor-button-wrapper .elementor-button:focus';
+			btn_h_color_ele = ',.elementor-widget-button .elementor-button:hover, .elementor-widget-button .elementor-button:focus';
 
 			// Theme Button - Background Hover Color
-			btn_bg_h_color_ele = ',.elementor-button-wrapper .elementor-button:hover, .elementor-button-wrapper .elementor-button:focus';
+			btn_bg_h_color_ele = ',.elementor-widget-button .elementor-button:hover, .elementor-widget-button .elementor-button:focus';
 
 			// Theme Button - Border Color
-			btn_border_color_ele = ', .elementor-button-wrapper .elementor-button, .elementor-button-wrapper .elementor-button:visited';
+			btn_border_color_ele = ', .elementor-widget-button .elementor-button, .elementor-widget-button .elementor-button:visited';
 
 			// Theme Button - Border Hover Color
-			btn_border_h_color_ele = ',.elementor-button-wrapper .elementor-button:hover, .elementor-button-wrapper .elementor-button:focus';
+			btn_border_h_color_ele = ',.elementor-widget-button .elementor-button:hover, .elementor-widget-button .elementor-button:focus';
 		}
 
 		var btnSelector = '.menu-toggle, button, .ast-button, .button, input#submit, input[type="button"], input[type="submit"], input[type="reset"], .wp-block-button:not(.is-style-outline) .wp-block-button__link, .ast-custom-button' + astraCustomizer.v4_2_2_core_form_btns_styling + btn_bg_color_ele + search_button_selector + woo_btn_normal_sector + lifterLMSBtnSelector;

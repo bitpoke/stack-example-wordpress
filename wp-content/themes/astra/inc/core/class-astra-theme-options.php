@@ -19,11 +19,10 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 	 * Theme Options
 	 */
 	class Astra_Theme_Options {
-
 		/**
 		 * Class instance.
 		 *
-		 * @var $instance Class instance.
+		 * @var Astra_Theme_Options|null $instance Class instance.
 		 */
 		private static $instance;
 
@@ -38,7 +37,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 		/**
 		 * Post id.
 		 *
-		 * @var $instance Post id.
+		 * @var int|null $instance Post id.
 		 */
 		public static $post_id = null;
 
@@ -83,7 +82,6 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 
 			// Refresh options variables after customizer save.
 			add_action( 'after_setup_theme', array( $this, 'refresh' ) );
-
 		}
 
 		/**
@@ -140,14 +138,14 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 
 			// Update Astra heading 5 font size & handled backward case
 			$update_heading_five_font_size  = Astra_Dynamic_CSS::astra_4_6_14_compatibility();
-			$updated_heading_font_five_size = ( $blog_defaults_update && $update_heading_five_font_size ) ? 18 : 16;
+			$updated_heading_font_five_size = $blog_defaults_update && $update_heading_five_font_size ? 18 : 16;
 
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'blog-pro' ) ) {
 				/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-				$selected_layout = ( false === $blog_defaults_update ) ? 'blog-layout-1' : 'blog-layout-4';
+				$selected_layout = false === $blog_defaults_update ? 'blog-layout-1' : 'blog-layout-4';
 			} else {
-				$selected_layout = ( false === $blog_defaults_update ) ? 'blog-layout-classic' : 'blog-layout-4';
+				$selected_layout = false === $blog_defaults_update ? 'blog-layout-classic' : 'blog-layout-4';
 			}
 
 			// Defaults list of options.
@@ -908,7 +906,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 
 					// Misc.
 					'enable-scroll-to-id'                  => true,
-					'ast-dynamic-single-download-structure' => ( true === astra_enable_edd_featured_image_defaults() ) ? array(
+					'ast-dynamic-single-download-structure' => true === astra_enable_edd_featured_image_defaults() ? array(
 						'ast-dynamic-single-download-title',
 						'ast-dynamic-single-download-meta',
 						'ast-dynamic-single-download-image',

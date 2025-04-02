@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * New modern WP-Block editor experience.
  */
 class Astra_WP_Editor_CSS {
-
 	/**
 	 * Astra block editor block editor - padding preset CSS.
 	 *
@@ -165,10 +164,10 @@ class Astra_WP_Editor_CSS {
 		$theme_btn_line_height     = astra_get_font_extras( astra_get_option( 'font-extras-button' ), 'line-height', 'line-height-unit' );
 		$theme_btn_letter_spacing  = astra_get_font_extras( astra_get_option( 'font-extras-button' ), 'letter-spacing', 'letter-spacing-unit' );
 		$theme_btn_text_decoration = astra_get_font_extras( astra_get_option( 'font-extras-button' ), 'text-decoration' );
-		$theme_btn_top_border      = ( isset( $btn_border_size['top'] ) && ( '' !== $btn_border_size['top'] && '0' !== $btn_border_size['top'] ) ) ? astra_get_css_value( $btn_border_size['top'], 'px' ) : '';
-		$theme_btn_right_border    = ( isset( $btn_border_size['right'] ) && ( '' !== $btn_border_size['right'] && '0' !== $btn_border_size['right'] ) ) ? astra_get_css_value( $btn_border_size['right'], 'px' ) : '';
-		$theme_btn_left_border     = ( isset( $btn_border_size['left'] ) && ( '' !== $btn_border_size['left'] && '0' !== $btn_border_size['left'] ) ) ? astra_get_css_value( $btn_border_size['left'], 'px' ) : '';
-		$theme_btn_bottom_border   = ( isset( $btn_border_size['bottom'] ) && ( '' !== $btn_border_size['bottom'] && '0' !== $btn_border_size['bottom'] ) ) ? astra_get_css_value( $btn_border_size['bottom'], 'px' ) : '';
+		$theme_btn_top_border      = isset( $btn_border_size['top'] ) && ( '' !== $btn_border_size['top'] && '0' !== $btn_border_size['top'] ) ? astra_get_css_value( $btn_border_size['top'], 'px' ) : '';
+		$theme_btn_right_border    = isset( $btn_border_size['right'] ) && ( '' !== $btn_border_size['right'] && '0' !== $btn_border_size['right'] ) ? astra_get_css_value( $btn_border_size['right'], 'px' ) : '';
+		$theme_btn_left_border     = isset( $btn_border_size['left'] ) && ( '' !== $btn_border_size['left'] && '0' !== $btn_border_size['left'] ) ? astra_get_css_value( $btn_border_size['left'], 'px' ) : '';
+		$theme_btn_bottom_border   = isset( $btn_border_size['bottom'] ) && ( '' !== $btn_border_size['bottom'] && '0' !== $btn_border_size['bottom'] ) ? astra_get_css_value( $btn_border_size['bottom'], 'px' ) : '';
 
 		/**
 		 * Headings typography.
@@ -308,11 +307,11 @@ class Astra_WP_Editor_CSS {
 		}
 
 		if ( is_array( $body_font_size ) ) {
-			$body_font_size_desktop = ( isset( $body_font_size['desktop'] ) && '' != $body_font_size['desktop'] ) ? $body_font_size['desktop'] : 15;
+			$body_font_size_desktop = isset( $body_font_size['desktop'] ) && '' != $body_font_size['desktop'] ? $body_font_size['desktop'] : 15;
 			// Convert to appropriate pixels if the unit is 'rem'.
 			$body_font_size_desktop = ! empty( $body_font_size['desktop-unit'] ) && $body_font_size['desktop-unit'] === 'rem' ? $body_font_size_desktop * 16 : $body_font_size_desktop;
 		} else {
-			$body_font_size_desktop = ( '' != $body_font_size ) ? $body_font_size : 15;
+			$body_font_size_desktop = '' != $body_font_size ? $body_font_size : 15;
 		}
 
 		$site_background       = astra_get_option( 'site-layout-outside-bg-obj-responsive' );
@@ -340,13 +339,13 @@ class Astra_WP_Editor_CSS {
 		$site_title_spacing                  = astra_get_font_extras( astra_get_option( 'ast-dynamic-single-' . esc_attr( $post_type ) . '-title-font-extras', $site_title_font_extras ), 'letter-spacing', 'letter-spacing-unit' );
 		$site_title_decoration               = astra_get_font_extras( astra_get_option( 'ast-dynamic-single-' . esc_attr( $post_type ) . '-title-font-extras', $site_title_font_extras ), 'text-decoration' );
 		$is_widget_title_support_font_weight = Astra_Dynamic_CSS::support_font_css_to_widget_and_in_editor();
-		$font_weight_prop                    = ( $is_widget_title_support_font_weight ) ? 'inherit' : 'normal';
+		$font_weight_prop                    = $is_widget_title_support_font_weight ? 'inherit' : 'normal';
 		$btn_preset_style                    = astra_get_option( 'button-preset-style' );
 		$border_color                        = astra_get_option( 'border-color' );
 		$palette_key                         = Astra_Global_Palette::astra_get_active_global_palette();
 
 		// Fallback for Site title (Page Title).
-		if ( 'inherit' == $site_title_font_family ) {
+		if ( 'inherit' === $site_title_font_family ) {
 			$site_title_font_family = $headings_font_family;
 		}
 		if ( $font_weight_prop === $site_title_font_weight ) {
@@ -355,12 +354,12 @@ class Astra_WP_Editor_CSS {
 		if ( '' == $site_title_text_transform ) {
 			$site_title_text_transform = '' === $headings_text_transform ? astra_get_option( 'text-transform-h1' ) : $headings_text_transform;
 		}
-		if ( 'inherit' == $site_title_font_weight || '' == $site_title_font_weight ) {
+		if ( 'inherit' === $site_title_font_weight || '' == $site_title_font_weight ) {
 			$site_title_font_weight = Astra_Posts_Structure_Loader::get_customizer_default( 'title-font-weight' );
 		}
 
 		// check the selection color in-case of empty/no theme color.
-		$selection_text_color = ( 'transparent' === $highlight_theme_color ) ? '' : $highlight_theme_color;
+		$selection_text_color = 'transparent' === $highlight_theme_color ? '' : $highlight_theme_color;
 
 		$astra_is_block_editor_v2_ui = astra_get_option( 'wp-blocks-v2-ui', true );
 		$astra_container_width       = $site_content_width . 'px';
@@ -450,7 +449,6 @@ class Astra_WP_Editor_CSS {
 		if ( empty( $btn_text_hover_color ) ) {
 			$btn_text_hover_color = astra_get_foreground_color( $link_hover_color );
 		}
-
 
 		$desktop_css = array(
 			':root'                            => Astra_Global_Palette::generate_global_palette_style(),
@@ -560,7 +558,7 @@ class Astra_WP_Editor_CSS {
 
 			// Gutenberg button compatibility for default styling.
 			'.editor-styles-wrapper .wp-block-button:not(.is-style-outline) .wp-block-button__link, .block-editor-writing-flow .wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button, .block-editor-writing-flow .wp-block-file .wp-block-file__button, .editor-styles-wrapper button.wc-block-components-button' => array(
-				'border-style'               => ( $theme_btn_top_border || $theme_btn_right_border || $theme_btn_left_border || $theme_btn_bottom_border ) ? 'solid' : '',
+				'border-style'               => $theme_btn_top_border || $theme_btn_right_border || $theme_btn_left_border || $theme_btn_bottom_border ? 'solid' : '',
 				'border-top-width'           => $theme_btn_top_border,
 				'border-right-width'         => $theme_btn_right_border,
 				'border-left-width'          => $theme_btn_left_border,
@@ -617,6 +615,36 @@ class Astra_WP_Editor_CSS {
 				'box-shadow'         => '0 0 30px 0 rgba(0,0,0,.15)',
 				'-webkit-box-shadow' => '0 0 30px 0 rgba(0,0,0,.15)',
 				'-moz-box-shadow'    => '0 0 30px 0 rgba(0,0,0,.15)',
+			);
+		}
+
+		/** Pro Individual heading colors sync with editor */
+		if ( defined( 'ASTRA_EXT_VER' ) ) {
+			/** Getting all individual heading colors */
+			$h1_color = astra_get_option( 'h1-color' );             
+			$h2_color = astra_get_option( 'h2-color' );
+			$h3_color = astra_get_option( 'h3-color' );
+			$h4_color = astra_get_option( 'h4-color' );
+			$h5_color = astra_get_option( 'h5-color' );
+			$h6_color = astra_get_option( 'h6-color' );
+
+			$desktop_css['.editor-visual-editor .editor-styles-wrapper h1'] = array(
+				'color' => esc_attr( $h1_color ),
+			);
+			$desktop_css['.editor-visual-editor .editor-styles-wrapper h2'] = array(
+				'color' => esc_attr( $h2_color ),
+			);
+			$desktop_css['.editor-visual-editor .editor-styles-wrapper h3'] = array(
+				'color' => esc_attr( $h3_color ),
+			);
+			$desktop_css['.editor-visual-editor .editor-styles-wrapper h4'] = array(
+				'color' => esc_attr( $h4_color ),
+			);
+			$desktop_css['.editor-visual-editor .editor-styles-wrapper h5'] = array(
+				'color' => esc_attr( $h5_color ),
+			);
+			$desktop_css['.editor-visual-editor .editor-styles-wrapper h6'] = array(
+				'color' => esc_attr( $h6_color ),
 			);
 		}
 
@@ -713,7 +741,6 @@ class Astra_WP_Editor_CSS {
 			'text-align' => esc_attr( $ltr_left ),
 		);
 
-
 		$default_border_size = '2px';
 		if ( astra_button_default_padding_updated() ) {
 			$default_border_size = '';
@@ -724,10 +751,10 @@ class Astra_WP_Editor_CSS {
 		$scndry_btn_border_color                 = astra_get_option( 'secondary-theme-button-border-group-border-color' );
 		$scndry_btn_border_h_color               = astra_get_option( 'secondary-theme-button-border-group-border-h-color' );
 		$global_scndry_custom_button_border_size = astra_get_option( 'secondary-theme-button-border-group-border-size' );
-		$scndry_theme_btn_top_border             = ( isset( $global_scndry_custom_button_border_size['top'] ) && ( '' !== $global_scndry_custom_button_border_size['top'] && '0' !== $global_scndry_custom_button_border_size['top'] ) ) ? astra_get_css_value( $global_scndry_custom_button_border_size['top'], 'px' ) : $default_border_size;
-		$scndry_theme_btn_right_border           = ( isset( $global_scndry_custom_button_border_size['right'] ) && ( '' !== $global_scndry_custom_button_border_size['right'] && '0' !== $global_scndry_custom_button_border_size['right'] ) ) ? astra_get_css_value( $global_scndry_custom_button_border_size['right'], 'px' ) : $default_border_size;
-		$scndry_theme_btn_left_border            = ( isset( $global_scndry_custom_button_border_size['left'] ) && ( '' !== $global_scndry_custom_button_border_size['left'] && '0' !== $global_scndry_custom_button_border_size['left'] ) ) ? astra_get_css_value( $global_scndry_custom_button_border_size['left'], 'px' ) : $default_border_size;
-		$scndry_theme_btn_bottom_border          = ( isset( $global_scndry_custom_button_border_size['bottom'] ) && ( '' !== $global_scndry_custom_button_border_size['bottom'] && '0' !== $global_scndry_custom_button_border_size['bottom'] ) ) ? astra_get_css_value( $global_scndry_custom_button_border_size['bottom'], 'px' ) : $default_border_size;
+		$scndry_theme_btn_top_border             = isset( $global_scndry_custom_button_border_size['top'] ) && ( '' !== $global_scndry_custom_button_border_size['top'] && '0' !== $global_scndry_custom_button_border_size['top'] ) ? astra_get_css_value( $global_scndry_custom_button_border_size['top'], 'px' ) : $default_border_size;
+		$scndry_theme_btn_right_border           = isset( $global_scndry_custom_button_border_size['right'] ) && ( '' !== $global_scndry_custom_button_border_size['right'] && '0' !== $global_scndry_custom_button_border_size['right'] ) ? astra_get_css_value( $global_scndry_custom_button_border_size['right'], 'px' ) : $default_border_size;
+		$scndry_theme_btn_left_border            = isset( $global_scndry_custom_button_border_size['left'] ) && ( '' !== $global_scndry_custom_button_border_size['left'] && '0' !== $global_scndry_custom_button_border_size['left'] ) ? astra_get_css_value( $global_scndry_custom_button_border_size['left'], 'px' ) : $default_border_size;
+		$scndry_theme_btn_bottom_border          = isset( $global_scndry_custom_button_border_size['bottom'] ) && ( '' !== $global_scndry_custom_button_border_size['bottom'] && '0' !== $global_scndry_custom_button_border_size['bottom'] ) ? astra_get_css_value( $global_scndry_custom_button_border_size['bottom'], 'px' ) : $default_border_size;
 		$scndry_theme_btn_font_family            = astra_get_option( 'secondary-font-family-button' );
 		$scndry_theme_btn_font_size              = astra_get_option( 'secondary-font-size-button' );
 		$scndry_theme_btn_font_weight            = astra_get_option( 'secondary-font-weight-button' );
@@ -881,7 +908,6 @@ class Astra_WP_Editor_CSS {
 			$alignwide_right_negative_margin = $astra_continer_right_spacing ? 'calc(-1 * min(' . $astra_continer_right_spacing . ', 40px))' : '-40px';
 			$heading_width_comp              = Astra_Dynamic_CSS::astra_4_8_0_compatibility() ? 'none' : 'var(--wp--custom--ast-content-width-size)';
 			$container_width_comp            = Astra_Dynamic_CSS::astra_4_8_4_compatibility() ? 'var(--wp--custom--ast-content-width-size)' : '';
-
 
 			$desktop_css['.editor-styles-wrapper .wp-block-latest-posts > li > a'] = array(
 				'text-decoration' => 'none',

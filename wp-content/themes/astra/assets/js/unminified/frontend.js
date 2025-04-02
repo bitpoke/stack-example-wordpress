@@ -1011,6 +1011,12 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			dropdownToggleLinks.forEach(element => {
 				element.addEventListener('keydown', function (e) {
 					if ('Enter' === e.key) {
+						// Check if the user is on a mobile device and prevent default and stop propagation if true.
+						if ( /Mobi|Android|iPad|iPhone/i.test( navigator.userAgent ) ) {
+							e.preventDefault();
+							e.stopPropagation();
+						}
+
 						const closestLi = e.target.closest('li');
 						const subMenu = closestLi.querySelector('.sub-menu');
 						const isMegaMenu = subMenu && subMenu.classList.contains('astra-megamenu');
@@ -1190,7 +1196,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 				if ( stickyHeaders.length > 0 ) {
 					stickyHeaders.forEach( ( header ) => ( offset += header.clientHeight ) );
-				} else if ( typeof astraAddon !== 'undefined' && ! Number( astraAddon.sticky_hide_on_scroll ) ) {
+				} else if ( typeof astraAddon !== 'undefined' && ! ( Number( astraAddon.sticky_hide_on_scroll ) && ! document?.querySelector( '.ast-header-sticked' ) ) ) {
 					const fixedHeader = document.querySelector( '#ast-fixed-header' );
 					if ( fixedHeader ) {
 						offset = fixedHeader?.clientHeight;
@@ -1207,7 +1213,12 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				if (href) {
 					const scrollId = document.querySelector(href);
 					if (scrollId) {
-						const scrollOffsetTop = getOffsetTop(scrollId) - offset;
+						const elementOffsetTop = getOffsetTop( scrollId );
+						if ( typeof astraAddon !== 'undefined' && Number( astraAddon.sticky_hide_on_scroll ) && window?.scrollY  < elementOffsetTop ) {
+							offset = 0;
+						}
+
+						const scrollOffsetTop = elementOffsetTop - offset;
 						if( scrollOffsetTop ) {
 							astraSmoothScroll( e, scrollOffsetTop );
 						}
@@ -1389,6 +1400,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function closeAllSubmenus() {
         submenuToggles.forEach(toggle => updateAriaExpanded(toggle));
     }
+
+	// This event listener is triggered when the device orientation changes, and it dispatches a 'resize' event to ensure layout adjustments are made.
+	window.addEventListener( 'orientationchange', () => {
+		setTimeout( () => window.dispatchEvent( new Event( 'resize' ) ), 50 );
+	} );
 });
 
 // Accessibility improvement for product card quick view and add to cart buttons.
