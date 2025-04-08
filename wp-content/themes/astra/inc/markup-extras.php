@@ -1996,15 +1996,17 @@ if ( ! function_exists( 'astra_get_post_thumbnail' ) ) {
 				);
 
 				if ( '' != $post_thumb ) {
-					$output .= '<div class="post-thumb-img-content post-thumb">';
+					$post_title = esc_html( get_the_title() ?: __( 'Untitled Post', 'astra' ) );
+					$output    .= '<div class="post-thumb-img-content post-thumb">';
 					if ( ! $check_is_singular ) {
 						$output .= apply_filters(
 							'astra_blog_post_featured_image_link_before',
 							'<a ' . astra_attr(
 								'article-image-url',
 								array(
-									'class' => '',
-									'href'  => esc_url( get_permalink() ),
+									'class'      => '',
+									'href'       => esc_url( get_permalink() ),
+									'aria-label' => esc_attr( sprintf( __( 'Read: %s', 'astra' ), esc_html( $post_title ) ) ),
 								)
 							) . ' >'
 						);

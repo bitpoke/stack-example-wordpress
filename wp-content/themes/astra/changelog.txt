@@ -1,5 +1,10 @@
 *** Astra Changelog ***
 
+2025-04-08 - version 4.9.2
+* Improved: Added aria-label with post title to linked featured images for better accessibility.
+* Fix: Prevented the old Header widget area from displaying after enabling the new Header Builder.
+* Fix: Resolved a conflict between Astra column setting and Elementor Loop Builder, which caused shop archive breakage.
+
 2025-04-02 - version 4.9.1
 * Improvement: Enhanced accessibility by adding aria-hidden attributes to decorative navigation arrows.
 * Improvement: Replaced a deprecated Elementor class with the updated class for improved compatibility.

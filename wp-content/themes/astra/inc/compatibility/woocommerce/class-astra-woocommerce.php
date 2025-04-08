@@ -3033,8 +3033,17 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 				';
 			}
 
-			// Enable Show Password Icon on Login Form and Account Details form on Woocommerce Account Page.
-			if ( is_account_page() && astra_load_woocommerce_login_form_password_icon() ) {
+			// Enable Show Password Icon on Login Form, Checkout Login Form and Account Details form on Woocommerce Account Page.
+			if (
+				astra_load_woocommerce_login_form_password_icon()
+				&& (
+					is_account_page() ||
+					(
+						is_checkout() &&
+						get_option( 'woocommerce_enable_signup_and_login_from_checkout' ) === 'yes'
+					)
+				)
+			) {			
 				$ltr_left  = $is_site_rtl ? esc_attr( 'right' ) : esc_attr( 'left' );
 				$ltr_right = $is_site_rtl ? esc_attr( 'left' ) : esc_attr( 'right' );
 

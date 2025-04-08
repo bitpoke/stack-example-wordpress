@@ -592,7 +592,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'--ast-global-dark-lfs'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fbfbfb',
 					'--ast-widget-bg-color'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fafafa',
 					'--ast-wc-container-head-bg-color'     => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fbfbfb',
-					'--ast-title-layout-bg'               => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#eeeeee',
+					'--ast-title-layout-bg'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#eeeeee',
 					'--ast-search-border-color'            => ( $palette_key === 'palette_4' ) ? 'var(--ast-border-color)' : '#e7e7e7',
 					'--ast-lifter-hover-bg'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#e6e6e6',
 					'--ast-lifter-hover-bg'                => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#e6e6e6',
@@ -2270,6 +2270,16 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'width'          => '100%',
 				),
 			);
+
+			// Fix: Prevent layout shrink issue on the Shop page with elementor loop builder.
+			if ( defined( 'ELEMENTOR_PRO_VERSION' ) ) {
+				$elementor_shop_page_css = array(
+					'.elementor-widget-container .elementor-loop-container .e-loop-item[data-elementor-type="loop-item"]' => array(
+						'width' => '100%',
+					),
+				);
+				$parse_css              .= astra_parse_css( $elementor_shop_page_css );
+			}
 
 			// Handle backward compatibility for Elementor Pro heading's margin.
 			if ( defined( 'ELEMENTOR_PRO_VERSION' ) && $elementor_heading_margin_style_comp ) {

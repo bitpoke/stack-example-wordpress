@@ -99,15 +99,17 @@ if ( ! function_exists( 'astra_widgets_init' ) ) {
 		/**
 		 * Register Header Widgets area
 		 */
-		register_sidebar(
-			apply_filters(
-				'astra_header_widgets_init',
-				array(
-					'name' => esc_html__( 'Header', 'astra' ),
-					'id'   => 'header-widget',
-				) + $default_args
-			)
-		);
+		if ( class_exists( 'Astra_Builder_Helper' ) && false === Astra_Builder_Helper::$is_header_footer_builder_active ) {
+			register_sidebar(
+				apply_filters(
+					'astra_header_widgets_init',
+					array(
+						'name' => esc_html__( 'Header', 'astra' ),
+						'id'   => 'header-widget',
+					) + $default_args
+				)
+			);
+		}
 
 		/**
 		 * Register Footer Bar Widgets area
