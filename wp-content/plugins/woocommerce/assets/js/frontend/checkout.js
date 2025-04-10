@@ -537,11 +537,11 @@ jQuery( function( $ ) {
 					success:	function( result ) {
 						// Detach the unload handler that prevents a reload / redirect
 						wc_checkout_form.detachUnloadEventsOnSubmit();
-						
+
 						$( '.checkout-inline-error-message' ).remove();
 
 						try {
-							if ( 'success' === result.result && 
+							if ( 'success' === result.result &&
 								$form.triggerHandler( 'checkout_place_order_success', [ result, wc_checkout_form ] ) !== false ) {
 								if ( -1 === result.redirect.indexOf( 'https://' ) || -1 === result.redirect.indexOf( 'http://' ) ) {
 									window.location = result.redirect;
@@ -651,9 +651,12 @@ jQuery( function( $ ) {
 					errorMessage.className = 'checkout-inline-error-message';
 					errorMessage.textContent = msg;
 
-					$formRow.appendChild( errorMessage );
-					$field.setAttribute( 'aria-describedby', descriptionId );
-					$field.setAttribute( 'aria-invalid', 'true' );
+					if ( $formRow && errorMessage.textContent.length > 0 ) {
+						$formRow.append( errorMessage );
+					}
+
+					$field.attr( 'aria-describedby', descriptionId );
+					$field.attr( 'aria-invalid', 'true' );
 				}
 			} );
 		},
@@ -675,8 +678,17 @@ jQuery( function( $ ) {
 			$( 'form.checkout_coupon' ).hide().on( 'submit', this.submit.bind( this ) );
 		},
 		show_coupon_form: function() {
+			var $showcoupon = $( this );
+
 			$( '.checkout_coupon' ).slideToggle( 400, function() {
-				$( '.checkout_coupon' ).find( ':input:eq(0)' ).trigger( 'focus' );
+				var $coupon_form = $( this );
+
+				if ( $coupon_form.is( ':visible' ) ) {
+					$showcoupon.attr( 'aria-expanded', 'true' );
+					$coupon_form.find( ':input:eq(0)' ).trigger( 'focus' );
+				} else {
+					$showcoupon.attr( 'aria-expanded', 'false' );
+				}
 			});
 			return false;
 		},
@@ -684,13 +696,13 @@ jQuery( function( $ ) {
 			if ( $target.length === 0 ) {
 				return;
 			}
-	
+
 			var msg = $( $.parseHTML( html_element ) ).text().trim();
 
 			if ( msg === '' ) {
 				return;
 			}
-				
+
 			$target.find( '#coupon_code' )
 				.focus()
 				.addClass( 'has-error' )
@@ -748,6 +760,7 @@ jQuery( function( $ ) {
 						// Coupon errors are shown under the input.
 						if ( response.indexOf( 'woocommerce-error' ) === -1 && response.indexOf( 'is-error' ) === -1 ) {
 							$form.slideUp( 400, function() {
+								$( 'a.showcoupon' ).attr( 'aria-expanded', 'false' );
 								$form.before( response );
 							} );
 						} else {
@@ -798,7 +811,9 @@ jQuery( function( $ ) {
 
 						// Remove coupon code from coupon field
 						$( 'form.checkout_coupon' ).find( 'input[name="coupon_code"]' ).val( '' );
-						$( 'form.checkout_coupon' ).slideUp();
+						$( 'form.checkout_coupon' ).slideUp( 400, function() {
+							$( 'a.showcoupon' ).attr( 'aria-expanded', 'false' );
+						} );
 					}
 				},
 				error: function ( jqXHR ) {
