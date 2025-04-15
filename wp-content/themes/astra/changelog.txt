@@ -1,5 +1,10 @@
 *** Astra Changelog ***
 
+2025-04-15 - version 4.10.0
+* Improvement: Optimized Dark Color Palette implementation for seamless integration with the new Color Switcher widget in Astra Pro.
+* Improvement: Removed unnecessary screen reader text from post navigation template for improved markup clarity.
+* Improvement: Compatibility with WordPress 6.8.
+
 2025-04-08 - version 4.9.2
 * Improved: Added aria-label with post title to linked featured images for better accessibility.
 * Fix: Prevented the old Header widget area from displaying after enabling the new Header Builder.

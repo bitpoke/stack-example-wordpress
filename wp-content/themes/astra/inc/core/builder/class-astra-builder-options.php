@@ -24,7 +24,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	$astra_update_footer_row_vertical_alignment = Astra_Dynamic_CSS::astra_4_5_0_compatibility();
 	$astra_dark_mode                            = Astra_Dynamic_CSS::astra_4_9_0_compatibility();
 	$blog_update                                = Astra_Dynamic_CSS::astra_4_6_0_compatibility();
-	$palette_key                                = Astra_Global_Palette::astra_get_active_global_palette();
+	$is_dark_palette                            = Astra_Global_Palette::is_dark_palette();
 
 	/**
 	 * Update Astra default color and typography values. To not update directly on existing users site, added backwards.
@@ -285,7 +285,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	$defaults['hbb-header-bottom-border-color'] = 'var( --ast-global-color-subtle-background, --ast-global-color-7 )';
 	$defaults['hbb-header-bg-obj-responsive']   = array(
 		'desktop' => array(
-			'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#eeeeee',
+			'background-color'      => $is_dark_palette ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#eeeeee',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -441,7 +441,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	 */
 	$defaults['hba-footer-bg-obj-responsive'] = array(
 		'desktop' => array(
-			'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#eeeeee',
+			'background-color'      => $is_dark_palette ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#eeeeee',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -517,7 +517,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	);
 	$defaults['hb-footer-bg-obj-responsive']  = array(
 		'desktop' => array(
-			'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#f9f9f9',
+			'background-color'      => $is_dark_palette ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#f9f9f9',
 			'background-image'      => '',
 			'background-repeat'     => 'repeat',
 			'background-position'   => 'center center',
@@ -800,7 +800,7 @@ function astra_hf_builder_customizer_defaults( $defaults ) {
 	$defaults['header-builder-menu-toggle-target']  = 'icon';
 	$defaults['header-offcanvas-content-alignment'] = 'flex-start';
 	$defaults['off-canvas-background']              = array(
-		'background-color'      => ( $palette_key === 'palette_4' ) ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#ffffff',
+		'background-color'      => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#ffffff',
 		'background-image'      => '',
 		'background-repeat'     => 'repeat',
 		'background-position'   => 'center center',

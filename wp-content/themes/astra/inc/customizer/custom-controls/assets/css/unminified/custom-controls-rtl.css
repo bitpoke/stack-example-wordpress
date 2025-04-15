@@ -559,7 +559,7 @@
 
 #customize-control-astra-color-palettes .astra-color-picker-wrap {
 	position: absolute;
-	z-index: 1;
+	z-index: 999;
 	left: 0;
 	width: 100%;
 	display: none;
@@ -4900,7 +4900,8 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 }
 .customize-control-ast-slider .components-range-control__wrapper,
 .customize-control-ast-responsive-slider .components-range-control__wrapper {
-	margin-right: 0px;
+  margin-right: 0px;
+  z-index: 0;
 }
 .customize-control-ast-slider span[CLASS*="-ThumbWrapper"],
 .customize-control-ast-responsive-slider span[CLASS*="-ThumbWrapper"] {
@@ -5349,7 +5350,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
     top: 8px;
 }
 .customize-control.customize-control-ast-select.ast-top-dotted-divider .ast-control-tooltip {
-    top: 36px;
+    top: 20px;
 }
 .customize-control-ast-sortable .customize-control-ast-selector .dashicons.ast-control-tooltip {
     top: 18%;

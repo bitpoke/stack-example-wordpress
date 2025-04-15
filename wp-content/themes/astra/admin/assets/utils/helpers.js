@@ -73,7 +73,16 @@ const getSpinner = () => {
  * @return {Promise} Returns a promise representing the processed request.
  */
 const saveSetting = debounce(
-	(key, value, dispatch, abortControllerRef = { current: {} }) => {
+	(
+		{
+			action = 'astra_update_admin_setting',
+			security = astra_admin.update_nonce,
+			key = '',
+			value,
+		},
+		dispatch,
+		abortControllerRef = { current: {} }
+	) => {
 		// Abort any previous request.
 		if (abortControllerRef.current[key]) {
 			abortControllerRef.current[key]?.abort();
@@ -85,10 +94,10 @@ const saveSetting = debounce(
 
 		const formData = new window.FormData();
 
-		formData.append("action", "astra_update_admin_setting");
-		formData.append("security", astra_admin.update_nonce);
-		formData.append("key", key);
-		formData.append("value", value);
+		formData.append( 'action', action );
+		formData.append( 'security', security );
+		formData.append( 'key', key );
+		formData.append( 'value', value );
 
 		return apiFetch({
 			url: astra_admin.ajax_url,

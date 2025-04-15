@@ -1297,7 +1297,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		});
 	}
 
-	if (astra.palette_key === "palette_4"){
+	if ( astra?.is_dark_palette ) {
 		document.documentElement.classList.add("astra-dark-mode-enable");
 	} else {
 		document.documentElement.classList.remove("astra-dark-mode-enable");

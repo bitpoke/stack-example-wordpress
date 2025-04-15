@@ -13,18 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_filter( 'astra_dynamic_theme_css', 'astra_dark_palette_css', 11 );
 
 /**
- * Dark palette - Dynamic CSS
+ * Generate dynamic CSS for Dark palette.
  *
- * @param  string $dynamic_css          Astra Dynamic CSS.
- * @return String Generated dynamic CSS for Dark palette.
+ * @param string $dynamic_css Astra Dynamic CSS.
+ * @param bool   $force       Whether to forcefully bypass palette check and return the CSS. Since 4.10.0.
  *
- * @since 3.2.0
+ * @return string Generated dynamic CSS for Dark palette.
+ * @since 4.9.0
  */
-function astra_dark_palette_css( $dynamic_css ) {
+function astra_dark_palette_css( $dynamic_css, $force = false ) {
 
-	$palette_key = Astra_Global_Palette::astra_get_active_global_palette();
-
-	if ( $palette_key === 'palette_4' ) {
+	if ( Astra_Global_Palette::is_dark_palette() || $force ) {
 
 		$dark_palette_common_dynamic_css = array(
 			'.astra-dark-mode-enable .blockUI.blockOverlay' => array(

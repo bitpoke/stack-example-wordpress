@@ -1711,7 +1711,7 @@ a.ast-pro-upgrade-link {
 
 #customize-control-astra-color-palettes .astra-color-picker-wrap {
 	position: absolute;
-	z-index: 1;
+	z-index: 999;
 	left: 0;
 	width: 100%;
 	display: none;

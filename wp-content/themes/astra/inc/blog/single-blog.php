@@ -262,11 +262,11 @@ if ( ! function_exists( 'astra_single_post_navigation_markup' ) ) {
 			$post_singular_name = ! empty( $post_obj->labels->singular_name ) ? $post_obj->labels->singular_name : '';
 			/** @psalm-suppress PossiblyNullPropertyFetch */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
-			$prev_text = Astra_Dynamic_CSS::astra_4_6_0_compatibility() ? '<span class="ast-post-nav">' . Astra_Builder_UI_Controller::fetch_svg_icon( 'long-arrow-alt-left' ) . ' ' . astra_default_strings( 'string-previous-text', false ) . '</span> <p> %title </p>' : sprintf(
+			$prev_text = Astra_Dynamic_CSS::astra_4_6_0_compatibility() ? '<span class="ast-post-nav" aria-hidden="true">' . Astra_Builder_UI_Controller::fetch_svg_icon( 'long-arrow-alt-left' ) . ' ' . esc_html( astra_default_strings( 'string-previous-text', false ) ) . '</span> <p> %title </p>' : sprintf(
 				astra_default_strings( 'string-single-navigation-previous', false ),
 				$post_singular_name
 			);
-			$next_text = Astra_Dynamic_CSS::astra_4_6_0_compatibility() ? '<span class="ast-post-nav">' . astra_default_strings( 'string-next-text', false ) . ' ' . Astra_Builder_UI_Controller::fetch_svg_icon( 'long-arrow-alt-right' ) . '</span> <p> %title </p>' : sprintf(
+			$next_text = Astra_Dynamic_CSS::astra_4_6_0_compatibility() ? '<span class="ast-post-nav" aria-hidden="true">' . esc_html( astra_default_strings( 'string-next-text', false ) ) . ' ' . Astra_Builder_UI_Controller::fetch_svg_icon( 'long-arrow-alt-right' ) . '</span> <p> %title </p>' : sprintf(
 				astra_default_strings( 'string-single-navigation-next', false ),
 				$post_singular_name
 			);
@@ -281,9 +281,9 @@ if ( ! function_exists( 'astra_single_post_navigation_markup' ) ) {
 				apply_filters(
 					'astra_single_post_navigation',
 					array(
-						'next_text'          => $next_text,
-						'prev_text'          => $prev_text,
-						'screen_reader_text' => __( 'Post navigation', 'astra' ),
+						'next_text'  => $next_text,
+						'prev_text'  => $prev_text,
+						'aria_label' => __( 'Posts', 'astra' ),
 					)
 				)
 			);

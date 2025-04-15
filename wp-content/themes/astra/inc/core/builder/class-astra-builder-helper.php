@@ -767,6 +767,12 @@ final class Astra_Builder_Helper {
 					'section' => 'section-hb-menu-3',
 					'pro'     => true,
 				),
+				'color-switcher'    => array(
+					'name'    => __( 'Color Switcher', 'astra' ),
+					'icon'    => 'art',
+					'section' => 'section-header-color-switcher',
+					'pro'     => true,
+				),
 			);
 
 			// Merge the additional items into the existing header desktop items.
@@ -929,6 +935,12 @@ final class Astra_Builder_Helper {
 					'name' => __( 'Menu 3', 'astra' ),
 					'icon' => 'menu',
 					'pro'  => true,
+				),
+				'color-switcher'    => array(
+					'name'    => __( 'Color Switcher', 'astra' ),
+					'icon'    => 'art',
+					'section' => 'section-header-color-switcher',
+					'pro'     => true,
 				),
 			);
 

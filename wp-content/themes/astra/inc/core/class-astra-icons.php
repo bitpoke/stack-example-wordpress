@@ -39,6 +39,41 @@ class Astra_Icons {
 	}
 
 	/**
+	 * Returns an array of allowed SVG arguments.
+	 * 
+	 * @return array An array of allowed SVG arguments.
+	 * @since 4.10.0
+	 */
+	public static function allowed_svg_args() {
+		return array(
+			'span'  => array( 'class' => array() ),
+			'svg'   => array(
+				'xmlns:xlink'       => array(),
+				'version'           => array(),
+				'id'                => array(),
+				'x'                 => array(),
+				'y'                 => array(),
+				'enable-background' => array(),
+				'xml:space'         => array(),
+				'class'             => array(),
+				'aria-hidden'       => array(),
+				'aria-labelledby'   => array(),
+				'role'              => array(),
+				'xmlns'             => array(),
+				'width'             => array(),
+				'height'            => array(),
+				'viewbox'           => array(),
+			),
+			'g'     => array( 'fill' => array() ),
+			'title' => array( 'title' => array() ),
+			'path'  => array(
+				'd'    => array(),
+				'fill' => array(),
+			),
+		);
+	}
+
+	/**
 	 * Get SVG icons.
 	 * Returns the SVG icon you want to display.
 	 *
@@ -132,38 +167,11 @@ class Astra_Icons {
 			$icon
 		);
 
-		$allowed_svg_args = array(
-			'span'  => array( 'class' => array() ),
-			'svg'   => array(
-				'xmlns:xlink'       => array(),
-				'version'           => array(),
-				'id'                => array(),
-				'x'                 => array(),
-				'y'                 => array(),
-				'enable-background' => array(),
-				'xml:space'         => array(),
-				'class'             => array(),
-				'aria-hidden'       => array(),
-				'aria-labelledby'   => array(),
-				'role'              => array(),
-				'xmlns'             => array(),
-				'width'             => array(),
-				'height'            => array(),
-				'viewbox'           => array(),
-			),
-			'g'     => array( 'fill' => array() ),
-			'title' => array( 'title' => array() ),
-			'path'  => array(
-				'd'    => array(),
-				'fill' => array(),
-			),
-		);
-
 		if ( $is_echo !== true ) {
-			return wp_kses( $output, $allowed_svg_args );
+			return wp_kses( $output, self::allowed_svg_args() );
 		}
 
-		echo wp_kses( $output, $allowed_svg_args );
+		echo wp_kses( $output, self::allowed_svg_args() );
 	}
 }
 new Astra_Icons();

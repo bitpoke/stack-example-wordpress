@@ -122,6 +122,7 @@ class Astra_API_Init extends WP_REST_Controller {
 				'preload_local_fonts'   => self::get_admin_settings_option( 'preload_local_fonts', false ),
 				'use_old_header_footer' => astra_get_option( 'is-header-footer-builder', false ),
 				'use_upgrade_notices'   => astra_showcase_upgrade_notices(),
+				'analytics_enabled'     => get_option( 'astra_analytics_optin', 'no' ) === 'yes',
 			)
 		);
 

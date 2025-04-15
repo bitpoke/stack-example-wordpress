@@ -4,7 +4,7 @@ window.addEventListener( 'load', function(e) {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-	if (astraColors.dark_palette === 'palette_4') {
+	if ( astraColors?.is_dark_palette ) {
 		document.documentElement.classList.add('astra-dark-mode-enable');
 	}
 });

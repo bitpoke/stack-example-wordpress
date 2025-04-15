@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define Constants
  */
-define( 'ASTRA_THEME_VERSION', '4.9.2' );
+define( 'ASTRA_THEME_VERSION', '4.10.0' );
 define( 'ASTRA_THEME_SETTINGS', 'astra-settings' );
 define( 'ASTRA_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'ASTRA_THEME_URI', trailingslashit( esc_url( get_template_directory_uri() ) ) );
@@ -25,7 +25,7 @@ define( 'ASTRA_THEME_ORG_VERSION', file_exists( ASTRA_THEME_DIR . 'inc/w-org-ver
  * Minimum Version requirement of the Astra Pro addon.
  * This constant will be used to display the notice asking user to update the Astra addon to the version defined below.
  */
-define( 'ASTRA_EXT_MIN_VER', '4.9.0' );
+define( 'ASTRA_EXT_MIN_VER', '4.10.0' );
 
 /**
  * Load in-house compatibility.
@@ -88,11 +88,6 @@ if ( ! defined( 'ASTRA_SITES_VER' ) || version_compare( ASTRA_SITES_VER, '4.3.7'
 	require_once ASTRA_THEME_DIR . 'inc/lib/class-astra-nps-notice.php';
 	require_once ASTRA_THEME_DIR . 'inc/lib/class-astra-nps-survey.php';
 }
-
-/**
- * UTM Analytics lib file.
- */
-require_once ASTRA_THEME_DIR . 'inc/lib/class-astra-utm-analytics.php';
 
 /**
  * Custom template tags for this theme.

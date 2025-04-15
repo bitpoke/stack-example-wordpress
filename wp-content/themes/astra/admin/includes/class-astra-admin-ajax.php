@@ -77,6 +77,7 @@ class Astra_Admin_Ajax {
 		add_action( 'wp_ajax_astra_recommended_plugin_install', array( $this, 'required_plugin_install' ) );
 		add_action( 'wp_ajax_ast_migrate_to_builder', array( $this, 'migrate_to_builder' ) );
 		add_action( 'wp_ajax_astra_update_admin_setting', array( $this, 'astra_update_admin_setting' ) );
+		add_action( 'wp_ajax_astra_analytics_optin_status', array( $this, 'astra_analytics_optin_status' ) );
 		add_action( 'wp_ajax_astra_recommended_plugin_activate', array( $this, 'required_plugin_activate' ) );
 		add_action( 'wp_ajax_astra_recommended_plugin_deactivate', array( $this, 'required_plugin_deactivate' ) );
 	}
@@ -239,6 +240,40 @@ class Astra_Admin_Ajax {
 	}
 
 	/**
+	 * Astra Analytics Opt-in.
+	 *
+	 * @return void
+	 * @since 4.10.0
+	 */
+	public function astra_analytics_optin_status() {
+		$response_data = array( 'message' => $this->get_error_msg( 'permission' ) );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( $response_data );
+		}
+
+		if ( empty( $_POST ) ) {
+			$response_data = array( 'message' => $this->get_error_msg( 'invalid' ) );
+			wp_send_json_error( $response_data );
+		}
+
+		/* Nonce verification */
+		if ( ! check_ajax_referer( 'astra_update_admin_setting', 'security', false ) ) {
+			$response_data = array( 'message' => $this->get_error_msg( 'nonce' ) );
+			wp_send_json_error( $response_data );
+		}
+
+		$opt_in = filter_input( INPUT_POST, 'value', FILTER_VALIDATE_BOOL ) ? 'yes' : 'no';
+		update_site_option( 'astra_analytics_optin', $opt_in );
+
+		$response_data = array(
+			'message' => esc_html__( 'Successfully saved data!', 'astra' ),
+		);
+
+		wp_send_json_success( $response_data );
+	}
+
+	/**
 	 * Get ajax error message.
 	 *
 	 * @param string $type Message type.
@@ -282,9 +317,9 @@ class Astra_Admin_Ajax {
 				// Iterate through all plugins to check if the installed plugin matches the current plugin slug.
 				$all_plugins = get_plugins();
 				foreach ( $all_plugins as $plugin_file => $_ ) {
-					if ( is_callable( '\BSF_UTM_Analytics\Inc\Utils::update_referer' ) && strpos( $plugin_file, $plugin_slug . '/' ) === 0 ) {
+					if ( is_callable( 'BSF_UTM_Analytics::update_referer' ) && strpos( $plugin_file, $plugin_slug . '/' ) === 0 ) {
 						// If the plugin is found and the update_referer function is callable, update the referer with the corresponding product slug.
-						\BSF_UTM_Analytics\Inc\Utils::update_referer( 'astra', $plugin_slug );
+						BSF_UTM_Analytics::update_referer( 'astra', $plugin_slug );
 						return;
 					}
 				}

@@ -1365,8 +1365,8 @@ if ( ! function_exists( 'astra_get_pro_url' ) ) {
 		}
 
 		// Modify the utm_source parameter using the UTM ready link function to include tracking information.
-		if ( is_callable( '\BSF_UTM_Analytics\Inc\Utils::get_utm_ready_link' ) ) {
-			$astra_pro_url = \BSF_UTM_Analytics\Inc\Utils::get_utm_ready_link( $astra_pro_url, 'astra' );
+		if ( is_callable( 'BSF_UTM_Analytics::get_utm_ready_link' ) ) {
+			$astra_pro_url = BSF_UTM_Analytics::get_utm_ready_link( $astra_pro_url, 'astra' );
 		}
 
 		// Set up our URL if we have a medium.
@@ -2135,4 +2135,55 @@ function astra_get_upgrade_url( $type = 'pro' ) {
 	}
 
 	return $upgrade_url;
+}
+
+/**
+ * Renders an SVG icon for SVG Icon Selector Control.
+ *
+ * @param array  $icon    The icon to be rendered. Contains type and value keys.
+ * @param bool   $echo    Whether to echo the SVG markup directly or return it.
+ * @param string $default The default icon to use if no icon is provided.
+ *
+ * @return string|null The SVG icon markup or null if SVG icons are not enabled or no icon is provided.
+ * @since 4.10.0
+ */
+function astra_icon_selector_svg( $icon, $echo = false, $default = '' ) {
+	// Bail early if SVG icons are not enabled.
+	if ( ! Astra_Icons::is_svg_icons() || ! $icon ) {
+		return $echo ? null : '';
+	}
+
+	$svg     = '';
+	$classes = array( 'ast-icon' );
+
+	if ( isset( $icon['type'], $icon['value'] ) ) {
+		$type  = $icon['type'];
+		$value = $icon['value'];
+
+		if ( $type === 'custom' ) {
+			$svg       = do_shortcode( $value );
+			$classes[] = 'icon-' . $type;
+		} elseif ( $type !== 'none' ) {
+			$svg       = Astra_Builder_UI_Controller::fetch_svg_icon( $value );
+			$classes[] = 'icon-' . $value;
+		}
+	}
+
+	if ( ! $svg && $default ) {
+		$svg = Astra_Builder_UI_Controller::fetch_svg_icon( $default );
+	}
+
+	if ( $svg ) {
+		$svg = sprintf(
+			'<span class="%1$s">%2$s</span>',
+			implode( ' ', $classes ),
+			$svg
+		);
+	}
+
+	if ( $echo !== true ) {
+		return wp_kses( $svg, Astra_Icons::allowed_svg_args() );
+	}
+		
+	echo wp_kses( $svg, Astra_Icons::allowed_svg_args() );
 }

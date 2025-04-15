@@ -73,17 +73,13 @@ if ( ! function_exists( 'astra_body_classes' ) ) {
 	 * @return array
 	 */
 	function astra_body_classes( $classes ) {
-
-		$palette_key = Astra_Global_Palette::astra_get_active_global_palette();
-
-
 		if ( wp_is_mobile() ) {
 			$classes[] = 'ast-header-break-point';
 		} else {
 			$classes[] = 'ast-desktop';
 		}
 
-		if ( $palette_key === 'palette_4' ) {
+		if ( Astra_Global_Palette::is_dark_palette() ) {
 			$classes[] = 'astra-dark-mode-enable';
 		}
 
@@ -2181,7 +2177,6 @@ if ( ! function_exists( 'astra_get_addon_name' ) ) {
 function astra_post_navigation_template() {
 
 	return '<nav class="navigation %1$s" aria-label="%4$s">
-				<span class="screen-reader-text">%2$s</span>
 				<div class="nav-links">%3$s</div>
 		</nav>';
 }

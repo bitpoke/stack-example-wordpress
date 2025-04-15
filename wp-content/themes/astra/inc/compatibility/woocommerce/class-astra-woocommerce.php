@@ -3043,7 +3043,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) :
 						get_option( 'woocommerce_enable_signup_and_login_from_checkout' ) === 'yes'
 					)
 				)
-			) {			
+			) {
 				$ltr_left  = $is_site_rtl ? esc_attr( 'right' ) : esc_attr( 'left' );
 				$ltr_right = $is_site_rtl ? esc_attr( 'left' ) : esc_attr( 'right' );
 

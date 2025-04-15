@@ -34,7 +34,8 @@
 }
 .customize-control-ast-slider .components-range-control__wrapper,
 .customize-control-ast-responsive-slider .components-range-control__wrapper {
-	margin-left: 0px;
+  margin-left: 0px;
+  z-index: 0;
 }
 .customize-control-ast-slider span[CLASS*="-ThumbWrapper"],
 .customize-control-ast-responsive-slider span[CLASS*="-ThumbWrapper"] {
