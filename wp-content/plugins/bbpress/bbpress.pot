@@ -2,9 +2,9 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: bbPress 2.6.12\n"
+"Project-Id-Version: bbPress 2.6.13\n"
 "Report-Msgid-Bugs-To: https://bbpress.trac.wordpress.org\n"
-"POT-Creation-Date: 2025-02-26 18:24:08+00:00\n"
+"POT-Creation-Date: 2025-04-16 23:16:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2729,7 +2729,7 @@ msgstr ""
 msgid "All Topics"
 msgstr ""
 
-#: includes/admin/tools/reset.php:36 includes/replies/functions.php:2154
+#: includes/admin/tools/reset.php:36 includes/replies/functions.php:2161
 #: includes/replies/template.php:52
 msgid "All Replies"
 msgstr ""
@@ -4641,11 +4641,11 @@ msgstr ""
 msgid "<strong>Error</strong>: There was a problem deleting the reply."
 msgstr ""
 
-#: includes/replies/functions.php:2152
+#: includes/replies/functions.php:2159
 msgid "All Posts"
 msgstr ""
 
-#: includes/replies/functions.php:2198 includes/topics/functions.php:3818
+#: includes/replies/functions.php:2205 includes/topics/functions.php:3818
 msgid "Replies: %s"
 msgstr ""
 
