@@ -2282,7 +2282,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 			// Handle backward compatibility for Elementor Pro heading's margin.
 			if ( defined( 'ELEMENTOR_PRO_VERSION' ) && $elementor_heading_margin_style_comp ) {
-				$elementor_base_css = [];
+				$elementor_base_css = array();
 				$elementor_base_css[' .content-area .elementor-widget-theme-post-content h1, .content-area .elementor-widget-theme-post-content h2, .content-area .elementor-widget-theme-post-content h3, .content-area .elementor-widget-theme-post-content h4, .content-area .elementor-widget-theme-post-content h5, .content-area .elementor-widget-theme-post-content h6'] = array(
 					'margin-top'    => '1.5em',
 					'margin-bottom' => 'calc(0.3em + 10px)',
@@ -2295,7 +2295,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 			// Added Check if the tablet alignment is 'align-center'
 			if ( ( isset( $shop_product_alignment['desktop'] ) && 'align-center' === $shop_product_alignment['desktop'] ) && 'shop-page-list-style' !== astra_get_option( 'shop-style' ) ) {
-				$desktop_review_wrapper = [];
+				$desktop_review_wrapper                                = array();
 				$desktop_review_wrapper[' .ast-desktop .review-count'] = array(
 					'margin-left'  => '-40px',
 					'margin-right' => 'auto',
@@ -2306,7 +2306,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 			}
 
 			if ( class_exists( 'WooCommerce' ) && ! is_product() ) {
-				$review_rating_style = [];
+				$review_rating_style                   = array();
 				$review_rating_style['.review-rating'] = array(
 					'display'     => 'flex',
 					'align-items' => 'center',
@@ -2319,7 +2319,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 			// Added cover block paragraph tag text color compatibility.
 			if ( has_block( 'core/cover' ) ) {
-				$cover_block_style = [];
+				$cover_block_style = array();
 				$cover_block_style['body .wp-block-cover:not(.has-text-color.has-link-color) p'] = array(
 					'color' => esc_attr( $text_color ),
 				);

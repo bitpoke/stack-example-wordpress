@@ -59,7 +59,7 @@ if ( ! function_exists( 'astra_masthead_get_menu_items' ) ) {
 			?>
 			<<?php echo esc_attr( $html_element ); ?> class="<?php echo esc_attr( join( ' ', $menu_item_classes ) ); ?>">
 				<?php
-				foreach ( $sections as $key => $value ) {
+				foreach ( $sections as $value ) {
 					if ( ! empty( $value ) ) {
 						echo $value; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					}

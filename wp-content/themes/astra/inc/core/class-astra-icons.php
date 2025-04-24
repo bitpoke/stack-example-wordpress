@@ -40,7 +40,7 @@ class Astra_Icons {
 
 	/**
 	 * Returns an array of allowed SVG arguments.
-	 * 
+	 *
 	 * @return array An array of allowed SVG arguments.
 	 * @since 4.10.0
 	 */

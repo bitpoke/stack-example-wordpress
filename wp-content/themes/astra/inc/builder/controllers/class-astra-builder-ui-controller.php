@@ -105,7 +105,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 							'<a href="%s" aria-label="%s" %s style="--color: %s; --background-color: %s;" class="ast-builder-social-element ast-inline-flex ast-%s %s-social-item">',
 							esc_url( $link ),
 							esc_attr( $item['label'] ? $item['label'] : $item['id'] ),
-							in_array( $item['id'], [ 'phone', 'email' ], true ) ? '' : sprintf( 'target="_blank" rel="%s"', esc_attr( $rel ) ),
+							in_array( $item['id'], array( 'phone', 'email' ), true ) ? '' : sprintf( 'target="_blank" rel="%s"', esc_attr( $rel ) ),
 							esc_attr( ! empty( $item['color'] ) ? $item['color'] : '#3a3a3a' ),
 							esc_attr( ! empty( $item['background'] ) ? $item['background'] : 'transparent' ),
 							esc_attr( $item['id'] ),

@@ -1100,9 +1100,7 @@ if ( ! class_exists( 'Astra_AMP' ) ) {
 				);
 			}
 
-			$parse_css .= astra_parse_css( $astra_break_point_navigation, '', astra_header_break_point() );
-
-			return $parse_css;
+			return $parse_css . astra_parse_css( $astra_break_point_navigation, '', astra_header_break_point() );
 		}
 
 		/**

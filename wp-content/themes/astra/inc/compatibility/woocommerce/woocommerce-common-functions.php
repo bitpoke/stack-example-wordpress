@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Shop page - Products Title markup updated
  */
-if ( ! function_exists( 'astra_woo_shop_products_title' ) ) :
+if ( ! function_exists( 'astra_woo_shop_products_title' ) ) {
 
 	/**
 	 * Shop Page product titles with anchor
@@ -32,13 +32,12 @@ if ( ! function_exists( 'astra_woo_shop_products_title' ) ) :
 
 		echo '</a>';
 	}
-
-endif;
+}
 
 /**
  * Shop page - Parent Category
  */
-if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) :
+if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) {
 	/**
 	 * Add and/or Remove Categories from shop archive page.
 	 *
@@ -47,7 +46,7 @@ if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) :
 	 * @since 1.1.0
 	 */
 	function astra_woo_shop_parent_category() {
-		if ( apply_filters( 'astra_woo_shop_parent_category', true ) ) : ?>
+		if ( apply_filters( 'astra_woo_shop_parent_category', true ) ) { ?>
 			<span class="ast-woo-product-category">
 				<?php
 				global $product;
@@ -62,14 +61,14 @@ if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) :
 				?>
 			</span>
 			<?php
-		endif;
+		}
 	}
-endif;
+}
 
 /**
  * Shop page - Out of Stock
  */
-if ( ! function_exists( 'astra_woo_shop_out_of_stock' ) ) :
+if ( ! function_exists( 'astra_woo_shop_out_of_stock' ) ) {
 	/**
 	 * Add Out of Stock to the Shop page
 	 *
@@ -86,13 +85,12 @@ if ( ! function_exists( 'astra_woo_shop_out_of_stock' ) ) :
 			<?php
 		}
 	}
-
-endif;
+}
 
 /**
  * Shop page - Short Description
  */
-if ( ! function_exists( 'astra_woo_shop_product_short_description' ) ) :
+if ( ! function_exists( 'astra_woo_shop_product_short_description' ) ) {
 	/**
 	 * Product short description
 	 *
@@ -109,11 +107,11 @@ if ( ! function_exists( 'astra_woo_shop_product_short_description' ) ) :
 		<?php } ?>
 		<?php
 	}
-endif;
+}
 /**
  * Product page - Availability: in stock
  */
-if ( ! function_exists( 'astra_woo_product_in_stock' ) ) :
+if ( ! function_exists( 'astra_woo_product_in_stock' ) ) {
 	/**
 	 * Availability: in stock string updated
 	 *
@@ -143,7 +141,7 @@ if ( ! function_exists( 'astra_woo_product_in_stock' ) ) :
 
 		return $markup;
 	}
-endif;
+}
 
 if ( ! function_exists( 'astra_woo_woocommerce_template_loop_product_title' ) ) {
 
@@ -256,7 +254,6 @@ if ( ! function_exists( 'astra_woo_shop_thumbnail_wrap_end' ) ) {
 	}
 }
 
-
 /**
  * Woocommerce filter - Widget Products Tags
  */
@@ -271,7 +268,7 @@ if ( ! function_exists( 'astra_widget_product_tag_cloud_args' ) ) {
 	function astra_widget_product_tag_cloud_args( $args = array() ) {
 
 		$sidebar_link_font_size            = astra_get_option( 'font-size-body' );
-		$sidebar_link_font_size['desktop'] = ( '' != $sidebar_link_font_size['desktop'] ) ? $sidebar_link_font_size['desktop'] : 15;
+		$sidebar_link_font_size['desktop'] = '' != $sidebar_link_font_size['desktop'] ? $sidebar_link_font_size['desktop'] : 15;
 
 		$args['smallest'] = intval( $sidebar_link_font_size['desktop'] ) - 2;
 		$args['largest']  = intval( $sidebar_link_font_size['desktop'] ) + 3;
@@ -286,7 +283,7 @@ if ( ! function_exists( 'astra_widget_product_tag_cloud_args' ) ) {
 /**
  * Woocommerce shop/product div close tag.
  */
-if ( ! function_exists( 'astra_woocommerce_div_wrapper_close' ) ) :
+if ( ! function_exists( 'astra_woocommerce_div_wrapper_close' ) ) {
 
 	/**
 	 * Woocommerce shop/product div close tag.
@@ -297,15 +294,12 @@ if ( ! function_exists( 'astra_woocommerce_div_wrapper_close' ) ) :
 
 		echo '</div>';
 	}
-
-endif;
-
-
+}
 
 /**
  * Checking whether shop page style is selected as modern layout.
  */
-if ( ! function_exists( 'astra_is_shop_page_modern_style' ) ) :
+if ( ! function_exists( 'astra_is_shop_page_modern_style' ) ) {
 
 	/**
 	 * Checking whether shop page style is selected as modern layout.
@@ -313,10 +307,9 @@ if ( ! function_exists( 'astra_is_shop_page_modern_style' ) ) :
 	 * @return bool true|false.
 	 */
 	function astra_is_shop_page_modern_style() {
-		return ( 'shop-page-modern-style' === astra_get_option( 'shop-style' ) ) ? true : false;
+		return 'shop-page-modern-style' === astra_get_option( 'shop-style' ) ? true : false;
 	}
-
-endif;
+}
 
 /**
  * Check if Woocommerce pro addons is enabled.
@@ -325,7 +318,7 @@ endif;
  */
 function astra_has_pro_woocommerce_addon() {
 	/** @psalm-suppress UndefinedClass  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-	return ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'woocommerce' ) ) ? true : false;
+	return defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'woocommerce' ) ? true : false;
 	/** @psalm-suppress UndefinedClass  */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 }
 

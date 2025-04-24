@@ -206,8 +206,8 @@ function astra_hb_mobile_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 
 	$css_output_tablet[ $selector . ' .main-header-menu , ' . $selector . ' .main-header-menu .menu-link, ' . $selector . ' .main-header-menu .sub-menu' ] = astra_get_responsive_background_obj( $menu_resp_bg_color, 'tablet' );
 	$css_output_tablet[ $selector . ' .main-header-menu .sub-menu .menu-link' ] = array(
-		'background-color' => isset( $submenu_resp_bg_color['tablet'] ) 
-			? $submenu_resp_bg_color['tablet'] 
+		'background-color' => isset( $submenu_resp_bg_color['tablet'] )
+			? $submenu_resp_bg_color['tablet']
 			: ( isset( $submenu_resp_bg_color['desktop'] ) ? $submenu_resp_bg_color['desktop'] : '' ),
 	);
 
@@ -255,8 +255,8 @@ function astra_hb_mobile_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 
 	$css_output_mobile[ $selector . ' .main-header-menu, ' . $selector . ' .main-header-menu .menu-link, ' . $selector . ' .main-header-menu .sub-menu' ] = astra_get_responsive_background_obj( $menu_resp_bg_color, 'mobile' );
 	$css_output_mobile[ $selector . ' .main-header-menu .sub-menu .menu-link' ] = array(
-		'background-color' => isset( $submenu_resp_bg_color['mobile'] ) 
-			? $submenu_resp_bg_color['mobile'] 
+		'background-color' => isset( $submenu_resp_bg_color['mobile'] )
+			? $submenu_resp_bg_color['mobile']
 			: ( isset( $submenu_resp_bg_color['desktop'] ) ? $submenu_resp_bg_color['desktop'] : '' ),
 	);
 

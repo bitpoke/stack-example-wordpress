@@ -378,7 +378,7 @@ if ( ! class_exists( 'Astra_LearnDash' ) ) {
 						// Page Sidebar.
 						$layout = astra_get_option( 'single-page-sidebar-layout' );
 						// Default Site Sidebar.
-						if ( 'default' == $layout || empty( $layout ) ) {
+						if ( 'default' === $layout || empty( $layout ) ) {
 							// Get the global sidebar value.
 							// NOTE: Here not used `true` in the below function call.
 							$layout = astra_get_option( 'site-sidebar-layout' );

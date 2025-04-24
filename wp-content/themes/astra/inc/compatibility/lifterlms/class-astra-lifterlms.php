@@ -536,7 +536,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) {
 		 */
 		public function before_main_content_start() {
 			$site_sidebar = astra_page_layout();
-			if ( 'left-sidebar' == $site_sidebar ) {
+			if ( 'left-sidebar' === $site_sidebar ) {
 				get_sidebar();
 			}
 			?>
@@ -565,7 +565,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) {
 			</div> <!-- #primary -->
 			<?php
 			$site_sidebar = astra_page_layout();
-			if ( 'right-sidebar' == $site_sidebar ) {
+			if ( 'right-sidebar' === $site_sidebar ) {
 				get_sidebar();
 			}
 		}
@@ -786,7 +786,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) {
 					'type'      => 'switch',
 				);
 			}
-			if ( $show_meta_field && 'disabled' != astra_get_option( 'footer-adv' ) ) {
+			if ( $show_meta_field && 'disabled' !== astra_get_option( 'footer-adv' ) ) {
 				$disable_fields[] = array(
 					'attribute' => 'footer-adv-display',
 					'id'        => 'footer-adv-display',
@@ -795,7 +795,7 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) {
 					'type'      => 'switch',
 				);
 			}
-			if ( 'disabled' != astra_get_option( 'footer-sml-layout' ) ) {
+			if ( 'disabled' !== astra_get_option( 'footer-sml-layout' ) ) {
 				$disable_fields[] = array(
 					'attribute' => 'footer-sml-layout',
 					'id'        => 'footer-sml-layout',
@@ -804,6 +804,8 @@ if ( ! class_exists( 'Astra_LifterLMS' ) ) {
 					'type'      => 'switch',
 				);
 			}
+
+			$fields                         = array();
 			$fields['astra_theme_settings'] = array(
 				'title'      => __( 'Astra Settings', 'astra' ),
 				'toggleable' => true,

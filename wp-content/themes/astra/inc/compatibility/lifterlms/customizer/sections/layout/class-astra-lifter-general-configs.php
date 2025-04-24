@@ -28,11 +28,9 @@ if ( ! class_exists( 'Astra_Lifter_General_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			if ( defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'lifterlms' ) ) {
-				$divider_array = array( 'ast_class' => 'ast-bottom-divider' );
-				$section       = 'section-lifterlms-general';
+				$section = 'section-lifterlms-general';
 			} else {
-				$divider_array = array();
-				$section       = 'section-lifterlms';
+				$section = 'section-lifterlms';
 			}
 
 			$_configs = array(

@@ -621,7 +621,7 @@ class Astra_WP_Editor_CSS {
 		/** Pro Individual heading colors sync with editor */
 		if ( defined( 'ASTRA_EXT_VER' ) ) {
 			/** Getting all individual heading colors */
-			$h1_color = astra_get_option( 'h1-color' );             
+			$h1_color = astra_get_option( 'h1-color' );
 			$h2_color = astra_get_option( 'h2-color' );
 			$h3_color = astra_get_option( 'h3-color' );
 			$h4_color = astra_get_option( 'h4-color' );

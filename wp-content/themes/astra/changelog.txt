@@ -1,5 +1,10 @@
 *** Astra Changelog ***
 
+2025-04-24 - version 4.10.1
+* Fix: Resolved a dark mode styling behavior where <legend> elements were affected globally, even when dark mode was disabled.
+* Fix: Resolved an issue where toggle button styles were not being applied on the frontend.
+* Fix: Resolved an issue where focusing on Gravity Forms dropdown fields showed multiple arrows.
+
 2025-04-15 - version 4.10.0
 * Improvement: Optimized Dark Color Palette implementation for seamless integration with the new Color Switcher widget in Astra Pro.
 * Improvement: Removed unnecessary screen reader text from post navigation template for improved markup clarity.

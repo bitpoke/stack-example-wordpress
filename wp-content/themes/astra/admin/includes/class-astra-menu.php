@@ -846,7 +846,7 @@ class Astra_Menu {
 			'activations' => '10,00,000+',
 			'logoPath'    => array(
 				'internal_icon' => false,
-				'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon.svg',
+				'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon-256x256.gif',
 			),
 		);
 
@@ -966,7 +966,7 @@ class Astra_Menu {
 					'redirection' => admin_url( 'options-general.php?page=spectra' ),
 					'logoPath'    => array(
 						'internal_icon' => false,
-						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon.svg',
+						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon-256x256.gif',
 					),
 				),
 				array(
@@ -1049,7 +1049,7 @@ class Astra_Menu {
 					'redirection' => admin_url( 'options-general.php?page=spectra' ),
 					'logoPath'    => array(
 						'internal_icon' => false,
-						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon.svg',
+						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon-256x256.gif',
 					),
 				),
 				array(

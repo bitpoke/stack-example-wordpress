@@ -5,14 +5,16 @@
  * @package Astra
  */
 
-namespace Elementor; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
+// phpcs:disable PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
+
+namespace Elementor;
 
 // If plugin - 'Elementor' not exist then return.
 if ( ! class_exists( '\Elementor\Plugin' ) || ! class_exists( 'ElementorPro\Modules\ThemeBuilder\Module' ) ) {
 	return;
 }
 
-namespace ElementorPro\Modules\ThemeBuilder\ThemeSupport; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_namespaceFound, PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
+namespace ElementorPro\Modules\ThemeBuilder\ThemeSupport;
 
 // @codingStandardsIgnoreStart PHPCompatibility.Keywords.NewKeywords.t_useFound
 use ElementorPro\Modules\ThemeBuilder\Module;
@@ -275,7 +277,7 @@ if ( ! class_exists( 'Astra_Elementor_Pro' ) ) {
 		public function override_meta() {
 
 			// don't override meta for `elementor_library` post type.
-			if ( 'elementor_library' == get_post_type() ) {
+			if ( 'elementor_library' === get_post_type() ) {
 				return;
 			}
 

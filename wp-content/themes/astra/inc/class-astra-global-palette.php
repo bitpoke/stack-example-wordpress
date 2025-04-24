@@ -16,10 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Global palette class
  */
 class Astra_Global_Palette {
-
 	/**
 	 * Indicates if the current palette is dark.
-	 * 
+	 *
 	 * @var bool $is_dark_palette
 	 */
 	private static $is_dark_palette;
@@ -238,7 +237,7 @@ class Astra_Global_Palette {
 		if ( isset( $astra_options['global-color-palette']['palette'] ) ) {
 			$current_palette = $astra_options['global-color-palette']['palette'];
 
-			$default_palettes = self::get_default_color_palette()['palettes'] ?? [];
+			$default_palettes = self::get_default_color_palette()['palettes'] ?? array();
 
 			// Loop through the default palettes to match the selected palette.
 			foreach ( $default_palettes as $palette_key => $palette_colors ) {
@@ -259,7 +258,7 @@ class Astra_Global_Palette {
 		 */
 		return apply_filters( 'astra_get_active_global_palette_key', $active_global_palette_key );
 	}
-	
+
 	/**
 	 * Determines if the specified or active global palette is considered dark.
 	 *
@@ -278,11 +277,11 @@ class Astra_Global_Palette {
 			// Return the cached result for the active global palette.
 			return self::$is_dark_palette;
 		}
-		
+
 		// For a specific palette key, directly check if it's 'palette_4'.
 		return $palette_key === 'palette_4';
 	}
-	
+
 	/**
 	 * Get labels for palette colors.
 	 *

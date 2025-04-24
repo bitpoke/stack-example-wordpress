@@ -2184,6 +2184,6 @@ function astra_icon_selector_svg( $icon, $echo = false, $default = '' ) {
 	if ( $echo !== true ) {
 		return wp_kses( $svg, Astra_Icons::allowed_svg_args() );
 	}
-		
+
 	echo wp_kses( $svg, Astra_Icons::allowed_svg_args() );
 }

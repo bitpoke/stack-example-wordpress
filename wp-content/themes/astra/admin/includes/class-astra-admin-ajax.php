@@ -263,7 +263,7 @@ class Astra_Admin_Ajax {
 			wp_send_json_error( $response_data );
 		}
 
-		$opt_in = filter_input( INPUT_POST, 'value', FILTER_VALIDATE_BOOL ) ? 'yes' : 'no';
+		$opt_in = filter_input( INPUT_POST, 'value', FILTER_VALIDATE_BOOLEAN ) ? 'yes' : 'no';
 		update_site_option( 'astra_analytics_optin', $opt_in );
 
 		$response_data = array(
@@ -313,7 +313,7 @@ class Astra_Admin_Ajax {
 		// Schedule the database update if the plugin is installed successfully.
 		add_action(
 			'shutdown',
-			function () use ( $plugin_slug ) {
+			static function () use ( $plugin_slug ) {
 				// Iterate through all plugins to check if the installed plugin matches the current plugin slug.
 				$all_plugins = get_plugins();
 				foreach ( $all_plugins as $plugin_file => $_ ) {
@@ -333,7 +333,6 @@ class Astra_Admin_Ajax {
 			wp_send_json_error( array( 'message' => __( 'Plugin installation function not found.', 'astra' ) ) );
 		}
 	}
-
 
 	/**
 	 * Required Plugin Activate
