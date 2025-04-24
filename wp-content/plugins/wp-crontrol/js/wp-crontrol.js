@@ -51,4 +51,26 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	} else if ( hookCodeElement ) {
 		wp.codeEditor.initialize( 'crontrol_hookcode', window.wpCrontrol.codeEditor );
 	}
+
+	const deleteEventLinks = document.querySelectorAll( '[data-crontrol-delete-event]' );
+
+	deleteEventLinks.forEach( ( link ) => {
+		link.addEventListener( 'click', ( event ) => {
+			const result = confirm( window.wpCrontrol.confirmDeleteEvent );
+			if ( ! result ) {
+				event.preventDefault();
+			}
+		} );
+	} );
+
+	const deleteHookLinks = document.querySelectorAll( '[data-crontrol-delete-hook]' );
+
+	deleteHookLinks.forEach( ( link ) => {
+		link.addEventListener( 'click', ( event ) => {
+			const result = confirm( window.wpCrontrol.confirmDeleteHook );
+			if ( ! result ) {
+				event.preventDefault();
+			}
+		} );
+	} );
 } );
