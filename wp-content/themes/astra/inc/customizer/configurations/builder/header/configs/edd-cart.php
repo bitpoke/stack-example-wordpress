@@ -94,7 +94,7 @@ function astra_edd_cart_header_configuration( $configurations = array() ) {
 				'outline' => __( 'Outline', 'astra' ),
 				'fill'    => __( 'Fill', 'astra' ),
 			),
-			'divider'    => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+			'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 			'responsive' => false,
 			'renderAs'   => 'text',
 			'context'    => Astra_Builder_Helper::$design_tab,
@@ -278,7 +278,7 @@ function astra_edd_cart_header_configuration( $configurations = array() ) {
 				'context'    => Astra_Builder_Helper::$design_tab,
 				'responsive' => true,
 				'divider'    => array(
-					'ast_class' => 'ast-top-dotted-divider',
+					'ast_class' => 'ast-top-divider',
 					'ast_title' => __( 'Checkout', 'astra' ),
 				),
 			),

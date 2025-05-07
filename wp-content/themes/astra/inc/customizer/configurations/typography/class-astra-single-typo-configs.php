@@ -44,7 +44,6 @@ if ( ! class_exists( 'Astra_Single_Typo_Configs' ) ) {
 						'type'     => 'control',
 						'control'  => 'ast-upgrade',
 						'campaign' => 'blog-single',
-						'renderAs' => 'list',
 						'choices'  => array(
 							'one'   => array(
 								'title' => __( 'Author Box with Social Share', 'astra' ),

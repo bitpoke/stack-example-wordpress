@@ -124,7 +124,7 @@ if ( ! class_exists( 'Deactivation_Survey_Feedback' ) ) {
 						<?php } ?>
 
 						<form class="uds-feedback-form" id="uds-feedback-form" method="post">
-							<?php foreach ( $args['popup_reasons'] as $key => $value ) {
+						<?php foreach ( $args['popup_reasons'] as $key => $value ) {
 								$input_id = $product_slug . '_uds_reason_input_' . $key;
 								?>
 								<fieldset>

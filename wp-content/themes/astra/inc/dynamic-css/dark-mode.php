@@ -22,6 +22,16 @@ add_filter( 'astra_dynamic_theme_css', 'astra_dark_palette_css', 11 );
  * @since 4.9.0
  */
 function astra_dark_palette_css( $dynamic_css, $force = false ) {
+	/**
+	 * Filter to conditionally apply dark palette CSS.
+	 *
+	 * @param bool $apply_css Whether to apply dark palette CSS.
+	 * @return bool
+	 * @since 4.11.0
+	 */
+	if ( ! apply_filters( 'ast_dark_palette_css', true ) ) {
+		return $dynamic_css;
+	}
 
 	if ( Astra_Global_Palette::is_dark_palette() || $force ) {
 

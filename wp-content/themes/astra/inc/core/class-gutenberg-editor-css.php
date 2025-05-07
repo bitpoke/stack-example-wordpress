@@ -349,7 +349,7 @@ if ( ! class_exists( 'Gutenberg_Editor_CSS' ) ) {
 					'font-family' => 'inherit' === $headings_font_family ? astra_get_font_family( $body_font_family ) : astra_get_font_family( $headings_font_family ),
 					'font-weight' => 'normal',
 				),
-				'.block-editor-block-list__block'         => array(
+				'.wp-block-post-content'         => array(
 					'color' => esc_attr( $text_color ),
 				),
 

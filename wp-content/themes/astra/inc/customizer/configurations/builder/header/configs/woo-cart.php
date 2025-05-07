@@ -85,7 +85,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 			'transport'  => 'postMessage',
 			'context'    => Astra_Builder_Helper::$general_tab,
 			'responsive' => false,
-			'divider'    => true === Astra_Builder_Helper::$is_header_footer_builder_active ? array( 'ast_class' => 'ast-top-spacing ast-bottom-section-divider' ) : array( 'ast_class' => 'ast-section-spacing' ),
+			'divider'    => true === Astra_Builder_Helper::$is_header_footer_builder_active ? array( 'ast_class' => 'ast-top-spacing ast-bottom-section-divider' ) : array(),
 		),
 
 		/**
@@ -179,7 +179,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 					'value'   => 'general',
 				),
 			),
-			'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+			'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 		),
 
 		/**
@@ -257,7 +257,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 			),
 			'renderAs'   => 'text',
 			'responsive' => false,
-			'divider'    => array( 'ast_class' => 'ast-top-dotted-divider' ),
+			'divider'    => array( 'ast_class' => 'ast-top-divider' ),
 		),
 
 		/**
@@ -287,7 +287,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 					'max'  => 100,
 				),
 			),
-			'divider'           => array( 'ast_class' => 'ast-top-dotted-divider' ),
+			'divider'           => array( 'ast_class' => 'ast-top-divider' ),
 		),
 
 		/**
@@ -323,7 +323,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 			'responsive' => false,
 			'renderAs'   => 'text',
 			'context'    => Astra_Builder_Helper::$design_tab,
-			'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
+			'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 		),
 
 		/**
@@ -402,7 +402,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 				),
 			),
 			'responsive' => false,
-			'divider'    => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+			'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 		),
 
 		array(
@@ -557,7 +557,7 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 			),
 			'section'           => 'section-transparent-header',
 			'priority'          => 85,
-			'divider'           => array( 'ast_class' => 'ast-top-divider ast-top-dotted-divider' ),
+			'divider'           => array( 'ast_class' => 'ast-top-divider ast-top-divider' ),
 		),
 	);
 
@@ -786,7 +786,8 @@ function astra_header_woo_cart_configuration( $configurations = array() ) {
 				'priority' => 70,
 				'settings' => array(),
 				'context'  => Astra_Builder_Helper::$design_tab,
-				'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+				'divider'  => array( 'ast_class' => 'ast-section-spacing ast-top-divider' ),
+
 			),
 
 			array(

@@ -89,7 +89,7 @@ class Astra_Social_Icon_Component_Configs {
 					'context'    => Astra_Builder_Helper::$design_tab,
 					'responsive' => false,
 					'renderAs'   => 'text',
-					'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 				),
 
 				array(
@@ -142,7 +142,7 @@ class Astra_Social_Icon_Component_Configs {
 						),
 					),
 					'priority'   => 1,
-					'divider'    => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -401,7 +401,7 @@ class Astra_Social_Icon_Component_Configs {
 						'step' => 1,
 						'max'  => 50,
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 					'context'           => Astra_Builder_Helper::$design_tab,
 				),
 
@@ -424,6 +424,7 @@ class Astra_Social_Icon_Component_Configs {
 						'max'  => 50,
 					),
 					'context'     => Astra_Builder_Helper::$design_tab,
+					'divider'     => array( 'ast_class' => 'ast-bottom-divider' ),
 
 				),
 
@@ -446,7 +447,7 @@ class Astra_Social_Icon_Component_Configs {
 						'step' => 1,
 						'max'  => 50,
 					),
-					'divider'           => array( 'ast_class' => 'ast-bottom-dotted-divider ast-top-section-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider ast-top-section-divider' ),
 					'context'           => Astra_Builder_Helper::$design_tab,
 				),
 
@@ -487,7 +488,7 @@ class Astra_Social_Icon_Component_Configs {
 					'priority' => 49,
 					'settings' => array(),
 					'context'  => Astra_Builder_Helper::$design_tab,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**

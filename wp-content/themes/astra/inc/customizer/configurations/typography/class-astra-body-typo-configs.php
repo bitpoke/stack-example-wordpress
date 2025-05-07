@@ -42,7 +42,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 6,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-no-spacing' ),
 				),
 
 				/**
@@ -53,11 +53,11 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'ast-body-font-settings' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Body Font', 'astra' ),
 					'section'   => $typo_section,
 					'transport' => 'postMessage',
 					'priority'  => 6,
-					'divider'   => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -76,7 +76,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'title'       => __( 'Font Family', 'astra' ),
 					'connect'     => ASTRA_THEME_SETTINGS . '[body-font-weight]',
 					'variant'     => ASTRA_THEME_SETTINGS . '[body-font-variant]',
-					'divider'     => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 							'value'    => 'inherit',
 						),
 					),
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 
 				),
 
@@ -185,9 +185,10 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'Headings Font', 'astra' ),
 					'section'   => $typo_section,
+					'is_font'   => true,
 					'transport' => 'postMessage',
 					'priority'  => 10,
-					'divider'   => array( 'ast_class' => 'ast-top-dotted-divider ast-bottom-spacing' ),
+					'divider'   => array( 'ast_class' => 'ast-bottom-section-divider' ),
 				),
 
 				/**
@@ -201,7 +202,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 10,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-bottom-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-no-spacing' ),
 				),
 
 				/**
@@ -219,7 +220,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'priority'  => 26,
 					'connect'   => ASTRA_THEME_SETTINGS . '[headings-font-weight]',
 					'variant'   => ASTRA_THEME_SETTINGS . '[headings-font-variant]',
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -275,7 +276,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'priority'  => 26,
 					'default'   => astra_get_option( 'headings-font-extras' ),
 					'title'     => __( 'Font Extras', 'astra' ),
-					'divider'   => array( 'ast_class' => 'ast-sub-top-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-top-divider' ),
 				),
 
 				/**
@@ -311,7 +312,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'control'   => 'ast-toggle-control',
 					'section'   => $typo_section,
 					'priority'  => 32,
-					'divider'   => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-top-divider' ),
 					'title'     => __( 'Underline Content Links', 'astra' ),
 					'transport' => 'postMessage',
 				),
@@ -328,6 +329,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'H1 Font', 'astra' ),
+					'is_font'   => true,
 					'section'   => $typo_section,
 					'transport' => 'postMessage',
 					'priority'  => 30,
@@ -342,6 +344,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'H2 Font', 'astra' ),
+					'is_font'   => true,
 					'section'   => $typo_section,
 					'transport' => 'postMessage',
 					'priority'  => 30,
@@ -356,6 +359,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'H3 Font', 'astra' ),
+					'is_font'   => true,
 					'section'   => $typo_section,
 					'transport' => 'postMessage',
 					'priority'  => 30,
@@ -369,6 +373,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'ast-heading-h4-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'H4 Font', 'astra' ),
 					'section'   => $typo_section,
 					'transport' => 'postMessage',
@@ -384,6 +389,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'H5 Font', 'astra' ),
+					'is_font'   => true,
 					'section'   => $typo_section,
 					'transport' => 'postMessage',
 					'priority'  => 30,
@@ -398,6 +404,7 @@ if ( ! class_exists( 'Astra_Body_Typo_Configs' ) ) {
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'H6 Font', 'astra' ),
+					'is_font'   => true,
 					'section'   => $typo_section,
 					'transport' => 'postMessage',
 					'priority'  => 30,

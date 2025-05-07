@@ -193,8 +193,14 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 				array(
 					'name'     => 'section-blog-group',
 					'type'     => 'section',
-					'priority' => 40,
-					'title'    => __( 'Blog', 'astra' ),
+					'priority' => 20,
+					'title'    => __( 'Post Types', 'astra' ),
+				),
+				array(
+					'name'     => 'section-general-group',
+					'type'     => 'section',
+					'priority' => 20,
+					'title'    => __( 'General', 'astra' ),
 				),
 				array(
 					'name'     => 'section-blog',
@@ -222,7 +228,7 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 					'type'     => 'section',
 					'priority' => 10,
 					'title'    => __( 'Single Page', 'astra' ),
-					'section'  => 'section-page-dynamic-group',
+					'section'  => 'section-blog-group',
 				),
 
 				array(
@@ -231,6 +237,7 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 					'priority'           => 50,
 					'title'              => __( 'Sidebar', 'astra' ),
 					'description_hidden' => true,
+					'section'            => 'section-general-group',
 					'description'        => $this->section_get_description(
 						array(
 							'description' => '<p><b>' . __( 'Helpful Information', 'astra' ) . '</b></p>',
@@ -256,7 +263,7 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 					'type'     => 'section',
 					'priority' => 65,
 					'title'    => __( 'Accessibility', 'astra' ),
-					'panel'    => 'panel-global',
+					'section'  => 'section-general-group',
 				),
 
 				/**
@@ -396,7 +403,7 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 					'type'     => 'section',
 					'priority' => 80,
 					'title'    => __( 'Block Editor', 'astra' ),
-					'panel'    => 'panel-global',
+					'section'  => 'section-general-group',
 				),
 
 				/**
@@ -407,7 +414,7 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 					'type'     => 'section',
 					'priority' => 80,
 					'title'    => __( 'Misc', 'astra' ),
-					'panel'    => 'panel-global',
+					'section'  => 'section-general-group',
 				),
 
 				/**
@@ -417,7 +424,7 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 					'name'     => 'section-scroll-to-top',
 					'title'    => __( 'Scroll To Top', 'astra' ),
 					'type'     => 'section',
-					'panel'    => 'panel-global',
+					'section'  => 'section-general-group',
 					'priority' => 60,
 				),
 			);
@@ -433,7 +440,7 @@ if ( ! class_exists( 'Astra_Customizer_Register_Sections_Panels' ) ) {
 						esc_html__( '%s Page', 'astra' ),
 						ucfirst( $special_type )
 					),
-					'section'  => 'section-page-dynamic-group',
+					'section'  => 'section-blog-group',
 				);
 			}
 

@@ -76,7 +76,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 					'default'  => astra_get_option( 'enable-cart-upsells' ),
 					'title'    => __( 'Enable Cross-sells', 'astra' ),
 					'priority' => 2.7,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 			);
 
@@ -88,7 +87,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 					'section'  => 'section-woo-shop-cart',
 					'priority' => 1,
 					'label'    => '',
-					'help'     => '<p style="margin-bottom: 20px;>"><strong>' . __( 'Note:', 'astra' ) . '</strong>' . __( ' Certain Cart page options may not work smoothly on the block editor based Cart page. For best results with these features, prefer using a shortcode based Cart page.', 'astra' ) . '</p>',
+					'help'     => '<strong>' . __( 'Note:', 'astra' ) . '</strong>' . __( ' Certain Cart page options may not work smoothly on the block editor based Cart page. For best results with these features, prefer using a shortcode based Cart page.', 'astra' ),
 				);
 
 				$_configs[] = array(
@@ -98,7 +97,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 					'section'  => 'woocommerce_checkout',
 					'priority' => 1,
 					'label'    => '',
-					'help'     => '<p style="margin-bottom: 20px;>"><strong>' . __( 'Note:', 'astra' ) . '</strong>' . __( ' Certain Checkout page options may not work smoothly on the block editor based Checkout page. For best results with these features, prefer using a shortcode-based Checkout page.', 'astra' ) . '</p>',
+					'help'     => '<strong>' . __( 'Note:', 'astra' ) . '</strong>' . __( ' Certain Checkout page options may not work smoothly on the block editor based Checkout page. For best results with these features, prefer using a shortcode-based Checkout page.', 'astra' ),
 				);
 			}
 
@@ -109,7 +108,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
 					'campaign' => 'woocommerce',
-					'renderAs' => 'list',
 					'choices'  => array(
 						'two'   => array(
 							'title' => __( 'Modern cart layout', 'astra' ),
@@ -134,7 +132,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
 					'campaign' => 'woocommerce',
-					'renderAs' => 'list',
 					'choices'  => array(
 						'two'   => array(
 							'title' => __( 'Modern layout', 'astra' ),

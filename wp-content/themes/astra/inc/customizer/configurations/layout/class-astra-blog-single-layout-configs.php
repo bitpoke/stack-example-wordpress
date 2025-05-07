@@ -79,7 +79,7 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 						'step' => 1,
 						'max'  => 1920,
 					),
-					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/**
@@ -92,7 +92,7 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 					'section'  => 'section-blog-single',
 					'title'    => __( 'Content Images Box Shadow', 'astra' ),
 					'control'  => 'ast-toggle-control',
-					'divider'  => array( 'ast_class' => 'ast-top-section-divider ast-bottom-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 					'priority' => 9,
 					'context'  => Astra_Builder_Helper::$general_tab,
 				),
@@ -155,7 +155,7 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 						'left'   => __( 'Left', 'astra' ),
 					),
 					'priority'          => 30,
-					'divider'           => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-top-divider' ),
 					'context'           => $tab_config,
 				),
 			);

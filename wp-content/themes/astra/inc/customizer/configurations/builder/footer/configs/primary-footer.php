@@ -68,7 +68,7 @@ function astra_primary_footer_configuration() {
 			),
 			'renderAs'   => 'text',
 			'responsive' => false,
-			'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
+			'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 		),
 
 		/**
@@ -190,7 +190,7 @@ function astra_primary_footer_configuration() {
 				'max'  => 600,
 			),
 			'context'     => Astra_Builder_Helper::$design_tab,
-			'divider'     => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
+			'divider'     => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 		),
 
 		// Option: Footer Top Boder Color.

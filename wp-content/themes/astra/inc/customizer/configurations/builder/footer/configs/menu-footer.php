@@ -239,7 +239,7 @@ function astra_menu_footer_configuration() {
 			'priority' => 210,
 			'settings' => array(),
 			'context'  => Astra_Builder_Helper::$design_tab,
-			'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+			'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 		),
 
 		// Option - Menu Space.
@@ -303,6 +303,7 @@ function astra_menu_footer_configuration() {
 				'type'      => 'control',
 				'control'   => 'ast-settings-group',
 				'title'     => __( 'Menu Font', 'astra' ),
+				'is_font'   => true,
 				'section'   => $_section,
 				'context'   => Astra_Builder_Helper::$design_tab,
 				'transport' => 'postMessage',

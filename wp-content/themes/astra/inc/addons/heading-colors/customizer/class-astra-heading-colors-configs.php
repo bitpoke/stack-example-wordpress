@@ -56,11 +56,12 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'default'   => astra_get_option( 'button-text-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Font', 'astra' ),
 					'section'   => 'section-buttons',
 					'transport' => 'postMessage',
 					'priority'  => 18.5,
-					'divider'   => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -71,11 +72,12 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'default'   => astra_get_option( 'secondary-button-text-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Font', 'astra' ),
 					'section'   => 'section-buttons',
 					'transport' => 'postMessage',
 					'priority'  => 10,
-					'divider'   => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 					'context'   => Astra_Builder_Helper::$design_tab,
 				),
 
@@ -93,7 +95,7 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'default'   => astra_get_option( 'font-family-button' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-button]',
 					'priority'  => 1,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -110,7 +112,7 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'default'   => astra_get_option( 'secondary-font-family-button' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[secondary-font-weight-button]',
 					'priority'  => 1,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -128,7 +130,7 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'default'           => astra_get_option( 'font-weight-button' ),
 					'connect'           => 'font-family-button',
 					'priority'          => 2,
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -146,7 +148,7 @@ if ( ! class_exists( 'Astra_Heading_Colors_Configs' ) ) {
 					'default'           => astra_get_option( 'secondary-font-weight-button' ),
 					'connect'           => 'secondary-font-family-button',
 					'priority'          => 2,
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**

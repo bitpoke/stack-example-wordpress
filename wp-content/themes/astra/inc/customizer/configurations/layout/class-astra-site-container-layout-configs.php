@@ -62,7 +62,7 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'full-width-container', false ) : '',
 						),
 					),
-					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing ast-bottom-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 				),
 
 				/**
@@ -103,6 +103,7 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 							'content-bg-obj-responsive',
 						),
 					),
+					'divider'     => array( 'ast_class' => 'ast-top-section-spacing' ),
 				),
 
 				/**
@@ -137,7 +138,7 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 						'ignore_responsive_btns' => true,
 					),
 					'priority'    => 25,
-					'divider'     => defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'colors-and-background' ) ? array( 'ast_class' => 'ast-bottom-section-divider' ) : array(),
+					'divider'     => defined( 'ASTRA_EXT_VER' ) && Astra_Ext_Extension::is_active( 'colors-and-background' ) ? array() : array(),
 				);
 			}
 
@@ -151,7 +152,6 @@ if ( ! class_exists( 'Astra_Site_Container_Layout_Configs' ) ) {
 						'type'     => 'control',
 						'control'  => 'ast-upgrade',
 						'campaign' => 'global',
-						'renderAs' => 'list',
 						'choices'  => array(
 							'one'   => array(
 								'title' => __( 'Full Width layout', 'astra' ),

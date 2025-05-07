@@ -190,6 +190,7 @@ if ( ! class_exists( 'Astra_Existing_Button_Configs' ) ) {
 					'default'   => astra_get_option( 'primary-header-button-text-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Typography', 'astra' ),
 					'section'   => 'section-primary-menu',
 					'transport' => 'postMessage',

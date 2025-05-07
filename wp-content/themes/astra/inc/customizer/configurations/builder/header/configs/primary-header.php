@@ -31,7 +31,7 @@ function astra_primary_header_configuration() {
 			'name'     => 'panel-header-builder-group',
 			'type'     => 'panel',
 			'priority' => 20,
-			'title'    => __( 'Header Builder', 'astra' ),
+			'title'    => __( 'Header', 'astra' ),
 		),
 
 		// Section: Primary Header.

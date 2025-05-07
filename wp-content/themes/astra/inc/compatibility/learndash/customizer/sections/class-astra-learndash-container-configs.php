@@ -77,7 +77,7 @@ if ( ! class_exists( 'Astra_Learndash_Container_Configs' ) ) {
 					),
 					'renderAs'    => 'text',
 					'responsive'  => false,
-					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-top-divider' ),
 				),
 			);
 

@@ -614,7 +614,7 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 			'priority' => 44,
 			'settings' => array(),
 			'context'  => Astra_Builder_Helper::$general_tab,
-			'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+			'divider'  => array( 'ast_class' => 'ast-top-section-divider header-builder-item' ),
 		),
 
 		/**
@@ -632,7 +632,6 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 			'priority'    => 45,
 			'context'     => Astra_Builder_Helper::$general_tab,
 			'settings'    => false,
-			'divider'     => array( 'ast_class' => 'ast-section-spacing' ),
 		),
 
 		// Option: Header Width.
@@ -661,7 +660,7 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 			'transport'  => 'postMessage',
 			'renderAs'   => 'text',
 			'responsive' => false,
-			'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
+			'divider'    => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 		),
 
 		array(
@@ -696,7 +695,6 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 			'type'     => 'control',
 			'control'  => 'ast-upgrade',
 			'campaign' => 'header-builder',
-			'renderAs' => 'list',
 			'choices'  => array(
 				'one'   => array(
 					'title' => __( 'Sticky header', 'astra' ),
@@ -705,16 +703,13 @@ function astra_header_header_builder_configuration( $configurations = array() ) 
 					'title' => __( 'Divider element', 'astra' ),
 				),
 				'three' => array(
-					'title' => __( 'Language Switcher element', 'astra' ),
+					'title' => __( 'Language Switcher', 'astra' ),
 				),
 				'four'  => array(
 					'title' => __( 'Toggle Button element', 'astra' ),
 				),
 				'five'  => array(
-					'title' => __( 'Clone, Delete element options', 'astra' ),
-				),
-				'six'   => array(
-					'title' => __( 'Increased element count', 'astra' ),
+					'title' => __( 'Clone, Delete options', 'astra' ),
 				),
 				'seven' => array(
 					'title' => __( 'More design options', 'astra' ),

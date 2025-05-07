@@ -91,7 +91,7 @@ if ( ! class_exists( 'Astra_Block_Editor_Configs' ) ) {
 					'control'  => 'ast-description',
 					'section'  => 'section-block-editor',
 					'priority' => 10,
-					'help'     => '<p style="margin-top: -5px;">' . __( 'Global padding setting for WordPress Group, Column, Cover blocks, it can be overridden by respective block\'s Dimension setting.', 'astra' ) . '</p>',
+					'help'     => '<span style="margin-top: -5px;">' . __( 'Global padding setting for WordPress Group, Column, Cover blocks, it can be overridden by respective block\'s Dimension setting.', 'astra' ) . '</span>',
 					'settings' => array(),
 				),
 			);

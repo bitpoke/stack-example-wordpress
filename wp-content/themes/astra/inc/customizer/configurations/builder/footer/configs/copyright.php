@@ -118,7 +118,7 @@ function astra_copyright_footer_configuration() {
 			'priority' => 99,
 			'settings' => array(),
 			'context'  => Astra_Builder_Helper::$design_tab,
-			'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+			'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 		),
 
 		/**

@@ -334,6 +334,7 @@ class Astra_Button_Component_Configs {
 					'default'   => astra_get_option( $builder_type . '-' . $_prefix . '-text-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => __( 'Font', 'astra' ),
 					'section'   => $_section,
 					'transport' => 'postMessage',
@@ -356,7 +357,7 @@ class Astra_Button_Component_Configs {
 					'context'   => Astra_Builder_Helper::$general_tab,
 					'connect'   => $builder_type . '-' . $_prefix . '-font-weight',
 					'priority'  => 1,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -375,7 +376,7 @@ class Astra_Button_Component_Configs {
 					'connect'           => $builder_type . '-' . $_prefix . '-font-family',
 					'priority'          => 2,
 					'context'           => Astra_Builder_Helper::$general_tab,
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**

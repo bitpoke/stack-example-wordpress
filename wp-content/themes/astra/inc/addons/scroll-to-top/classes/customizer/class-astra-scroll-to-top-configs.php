@@ -65,7 +65,7 @@ class Astra_Scroll_To_Top_Configs extends Astra_Customizer_Config_Base {
 				),
 				'renderAs'   => 'text',
 				'responsive' => false,
-				'divider'    => array( 'ast_class' => 'ast-top-section-divider ast-bottom-section-divider' ),
+				'divider'    => array( 'ast_class' => 'ast-top-divider ast-bottom-divider' ),
 				'context'    => array(
 					'relation' => 'AND',
 					Astra_Builder_Helper::$general_tab_config,
@@ -95,7 +95,7 @@ class Astra_Scroll_To_Top_Configs extends Astra_Customizer_Config_Base {
 				'priority'   => 11,
 				'responsive' => false,
 				'renderAs'   => 'text',
-				'divider'    => array( 'ast_class' => 'ast-bottom-section-divider' ),
+				'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 				'context'    => array(
 					'relation' => 'AND',
 					Astra_Builder_Helper::$general_tab_config,

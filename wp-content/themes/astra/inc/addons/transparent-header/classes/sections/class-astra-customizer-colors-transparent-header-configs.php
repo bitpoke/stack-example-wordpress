@@ -55,7 +55,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Transparent_Header_Configs' ) ) {
 					'responsive'  => false,
 					'rgba'        => true,
 					'description' => __( 'Use it with transparent images for optimal results.', 'astra' ),
-					'divider'     => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'     => array( 'ast_class' => 'ast-top-section-spacing' ),
 				),
 
 				/**
@@ -74,7 +74,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Transparent_Header_Configs' ) ) {
 					'responsive' => true,
 					'rgba'       => true,
 					'divider'    => array(
-						'ast_class' => 'ast-top-divider ast-top-dotted-divider',
+						'ast_class' => 'ast-top-divider ast-top-divider',
 						'ast_title' => __( 'Background Overlay', 'astra' ),
 					),
 				),

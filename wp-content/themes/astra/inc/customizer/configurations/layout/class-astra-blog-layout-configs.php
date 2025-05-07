@@ -136,7 +136,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 						'step' => 1,
 						'max'  => 1920,
 					),
-					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'     => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/**
@@ -176,7 +176,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 14,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -212,7 +212,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 						'step' => 1,
 						'max'  => 500,
 					),
-					'divider'      => array( 'ast_class' => $if_astra_addon ? 'ast-top-dotted-divider' : 'ast-top-section-divider' ),
+					'divider'      => array( 'ast_class' => $if_astra_addon ? 'ast-sub-top-divider' : 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -226,7 +226,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 51,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider ast-bottom-spacing' ),
 				),
 
 				array(
@@ -448,7 +448,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 					'priority'   => 17,
 					'transport'  => 'postMessage',
 					'title'      => __( 'Hover Effect', 'astra' ),
-					'divider'    => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-top-divider' ),
 					'control'    => 'ast-selector',
 					'responsive' => false,
 					'renderAs'   => 'text',
@@ -472,7 +472,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 					'priority'  => 17,
 					'transport' => 'postMessage',
 					'title'     => __( 'Image Size', 'astra' ),
-					'divider'   => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-top-divider' ),
 					'control'   => 'ast-select',
 					'choices'   => astra_get_site_image_sizes(),
 				),
@@ -530,7 +530,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 					'title'          => __( 'Border Radius', 'astra' ),
 					'suffix'         => 'px',
 					'priority'       => $if_astra_addon ? 144 : 2.5,
-					'divider'        => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'        => array( 'ast_class' => 'ast-top-divider' ),
 					'context'        => Astra_Builder_Helper::$design_tab,
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),

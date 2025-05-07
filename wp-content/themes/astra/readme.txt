@@ -5,7 +5,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: custom-menu, custom-logo, entertainment, featured-images, full-width-template, one-column, two-columns, left-sidebar, e-commerce, right-sidebar, custom-colors, editor-style, featured-images, full-width-template, microformats, post-formats, rtl-language-support, theme-options, threaded-comments, translation-ready, blog
 Tested up to: 6.8
 Requires PHP: 5.3
-Stable tag: 4.10.1
+Stable tag: 4.11.0
 
 Astra is fast, fully customizable & beautiful WordPress theme suitable for blog, personal portfolio, business website and WooCommerce storefront.
 
@@ -118,3 +118,10 @@ https://underscores.me/, (C) 2012-2020 Automattic, Inc., [GPLv2 or later](https:
 
 Astra local fonts feature is based on Webfonts Loader by WordPress Themes Team (WPTT). (https://github.com/WPTT/webfont-loader)
 Licensed under MIT ( https://github.com/WPTT/webfont-loader/blob/master/LICENSE )
+
+= Privacy Policy =
+
+Astra uses a YouTube video embedded in the Astra dashboard to provide helpful information and tutorials.
+Please note that YouTube may collect user data as outlined in their Privacy Policy (https://policies.google.com/privacy).
+No personal data is collected or stored by the Astra theme itself through this video embed.
+For more details on YouTube’s data collection, please refer to their Terms of Service (https://www.youtube.com/t/terms) and Privacy Policy (https://policies.google.com/privacy).

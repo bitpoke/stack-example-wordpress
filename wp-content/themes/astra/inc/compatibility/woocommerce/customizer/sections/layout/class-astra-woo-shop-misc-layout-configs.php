@@ -41,7 +41,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Misc_Layout_Configs' ) ) {
 					'description' => __( 'Adds plus and minus buttons besides product quantity', 'astra' ),
 					'priority'    => 59,
 					'control'     => 'ast-toggle-control',
-					'divider'     => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 			);
@@ -67,7 +66,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Misc_Layout_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
 					'campaign' => 'woocommerce',
-					'renderAs' => 'list',
 					'choices'  => array(
 						'two'   => array(
 							'title' => __( 'Modern input style', 'astra' ),

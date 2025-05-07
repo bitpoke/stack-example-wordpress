@@ -61,6 +61,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'               => $_section,
 					'type'               => 'section',
+					'section'            => 'section-general-group',
 					'priority'           => 20,
 					'title'              => __( 'Breadcrumb', 'astra' ),
 					'description_hidden' => true,
@@ -139,6 +140,26 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 						),
 						Astra_Builder_Helper::$general_tab_config,
 					),
+				),
+
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'section'  => $_section,
+					'title'    => __( 'Enable on', 'astra' ),
+					'type'     => 'control',
+					'control'  => 'ast-multiselect-checkbox-group',
+					'priority' => 25,
+					'options'  => array(
+						'showAllButton' => true,
+					),
+					'context'  => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
+							'operator' => '!=',
+							'value'    => 'none',
+						),
+						Astra_Builder_Helper::$general_tab_config,
+					),
 					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
@@ -148,19 +169,12 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-home-page]',
 					'default'  => astra_get_option( 'breadcrumb-disable-home-page', '1' ),
-					'type'     => 'control',
+					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'     => 'sub-control',
 					'section'  => $_section,
-					'title'    => __( 'Enable on Home Page?', 'astra' ),
+					'title'    => __( 'Home Page?', 'astra' ),
 					'priority' => 25,
 					'control'  => 'ast-toggle-control',
-					'context'  => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
@@ -170,20 +184,13 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-blog-posts-page]',
 					'default'     => astra_get_option( 'breadcrumb-disable-blog-posts-page', '1' ),
-					'type'        => 'control',
+					'parent'      => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'        => 'sub-control',
 					'section'     => $_section,
 					'description' => __( 'Latest posts page or when any page is selected as blog page', 'astra' ),
-					'title'       => __( 'Enable on Blog / Posts Page?', 'astra' ),
+					'title'       => __( 'Blog / Posts Page?', 'astra' ),
 					'priority'    => 25,
 					'control'     => 'ast-toggle-control',
-					'context'     => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 				),
 
 				/**
@@ -192,19 +199,12 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-search]',
 					'default'  => astra_get_option( 'breadcrumb-disable-search', '1' ),
-					'type'     => 'control',
+					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'     => 'sub-control',
 					'section'  => $_section,
-					'title'    => __( 'Enable on Search?', 'astra' ),
+					'title'    => __( 'Search?', 'astra' ),
 					'priority' => 30,
 					'control'  => 'ast-toggle-control',
-					'context'  => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 				),
 
 				/**
@@ -213,19 +213,12 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-archive]',
 					'default'  => astra_get_option( 'breadcrumb-disable-archive', '1' ),
-					'type'     => 'control',
+					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'     => 'sub-control',
 					'section'  => $_section,
-					'title'    => __( 'Enable on Archive?', 'astra' ),
+					'title'    => __( 'Archive?', 'astra' ),
 					'priority' => 35,
 					'control'  => 'ast-toggle-control',
-					'context'  => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 				),
 
 				/**
@@ -234,19 +227,12 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-single-page]',
 					'default'  => astra_get_option( 'breadcrumb-disable-single-page', '1' ),
-					'type'     => 'control',
+					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'     => 'sub-control',
 					'section'  => $_section,
-					'title'    => __( 'Enable on Single Page?', 'astra' ),
+					'title'    => __( 'Single Page?', 'astra' ),
 					'priority' => 40,
 					'control'  => 'ast-toggle-control',
-					'context'  => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 				),
 
 				/**
@@ -255,19 +241,12 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-single-post]',
 					'default'  => astra_get_option( 'breadcrumb-disable-single-post', '1' ),
-					'type'     => 'control',
+					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'     => 'sub-control',
 					'section'  => $_section,
-					'title'    => __( 'Enable on Single Post?', 'astra' ),
+					'title'    => __( 'Single Post?', 'astra' ),
 					'priority' => 45,
 					'control'  => 'ast-toggle-control',
-					'context'  => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 				),
 
 				/**
@@ -276,20 +255,13 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-singular]',
 					'default'     => astra_get_option( 'breadcrumb-disable-singular', '1' ),
-					'type'        => 'control',
+					'parent'      => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'        => 'sub-control',
 					'section'     => $_section,
 					'description' => __( 'All Pages, All Posts, All Attachments', 'astra' ),
-					'title'       => __( 'Enable on Singular?', 'astra' ),
+					'title'       => __( 'Singular?', 'astra' ),
 					'priority'    => 50,
 					'control'     => 'ast-toggle-control',
-					'context'     => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 				),
 
 				/**
@@ -298,20 +270,12 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-404-page]',
 					'default'  => astra_get_option( 'breadcrumb-disable-404-page', '1' ),
-					'type'     => 'control',
+					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
+					'type'     => 'sub-control',
 					'section'  => $_section,
-
-					'title'    => __( 'Enable on 404 Page?', 'astra' ),
+					'title'    => __( '404 Page?', 'astra' ),
 					'priority' => 55,
 					'control'  => 'ast-toggle-control',
-					'context'  => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[breadcrumb-position]',
-							'operator' => '!=',
-							'value'    => 'none',
-						),
-						Astra_Builder_Helper::$general_tab_config,
-					),
 				),
 
 				/**

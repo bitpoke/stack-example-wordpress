@@ -398,7 +398,7 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 						),
 						'priority'  => 18,
 						'transport' => 'postMessage',
-						'divider'   => array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
+						'divider'   => array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 					),
 
 					/**
@@ -441,7 +441,7 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 						'section'   => 'section-buttons',
 						'transport' => 'postMessage',
 						'priority'  => 18.5,
-						'divider'   => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
+						'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 					),
 
 					/**
@@ -552,7 +552,6 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 						),
 						'priority'          => 19,
 						'connected'         => false,
-						'divider'           => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
 					),
 
 					/**
@@ -575,6 +574,7 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 							'bottom' => __( 'Bottom', 'astra' ),
 							'left'   => __( 'Left', 'astra' ),
 						),
+						'divider'        => array( 'ast_class' => 'ast-top-divider ast-bottom-divider' ),
 					),
 
 					/**
@@ -599,7 +599,6 @@ if ( ! class_exists( 'Astra_Customizer_Button_Configs' ) ) {
 						),
 						'priority'          => 19,
 						'connected'         => false,
-						'divider'           => array( 'ast_class' => 'ast-top-dotted-divider' ),
 					),
 				);
 

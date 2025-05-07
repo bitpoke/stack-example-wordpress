@@ -68,6 +68,7 @@ class Astra_Posts_Structures_Configs extends Astra_Customizer_Config_Base {
 				array(
 					'name'     => 'section-posts-structure',
 					'type'     => 'section',
+					'section'  => 'section-blog-group',
 					'priority' => 69,
 					'title'    => __( 'Custom Post Types', 'astra' ),
 				),

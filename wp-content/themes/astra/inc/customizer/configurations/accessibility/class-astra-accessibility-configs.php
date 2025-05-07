@@ -62,7 +62,7 @@ class Astra_Accessibility_Configs extends Astra_Customizer_Config_Base {
 						'path'  => 'minus',
 					),
 				),
-				'divider'  => array( 'ast_class' => 'ast-top-dotted-divider' ),
+				'divider'  => array( 'ast_class' => 'ast-top-divider' ),
 				'context'  => array(
 					array(
 						'setting'  => ASTRA_THEME_SETTINGS . '[site-accessibility-toggle]',
@@ -83,7 +83,6 @@ class Astra_Accessibility_Configs extends Astra_Customizer_Config_Base {
 				'priority' => 1,
 				'title'    => __( 'Color', 'astra' ),
 				'section'  => 'section-accessibility',
-				'divider'  => array( 'ast_class' => 'ast-bottom-dotted-divider' ),
 				'context'  => array(
 					array(
 						'setting'  => ASTRA_THEME_SETTINGS . '[site-accessibility-toggle]',
@@ -118,6 +117,7 @@ class Astra_Accessibility_Configs extends Astra_Customizer_Config_Base {
 						'path'  => 'minus',
 					),
 				),
+				'divider'  => array( 'ast_class' => 'ast-top-divider' ),
 				'context'  => array(
 					array(
 						'setting'  => ASTRA_THEME_SETTINGS . '[site-accessibility-toggle]',

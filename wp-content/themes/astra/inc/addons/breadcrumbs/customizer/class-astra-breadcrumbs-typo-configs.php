@@ -48,6 +48,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'section-breadcrumb-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
+					'is_font'   => true,
 					'title'     => esc_html__( 'Content Font', 'astra' ),
 					'section'   => 'section-breadcrumb',
 					'transport' => 'postMessage',
@@ -78,7 +79,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Typo_Configs' ) ) {
 					'title'     => esc_html__( 'Font Family', 'astra' ),
 					'connect'   => 'breadcrumb-font-weight',
 					'priority'  => 5,
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -96,7 +97,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Typo_Configs' ) ) {
 					'title'             => esc_html__( 'Font Weight', 'astra' ),
 					'connect'           => 'breadcrumb-font-family',
 					'priority'          => 10,
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**

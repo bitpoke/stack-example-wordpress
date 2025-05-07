@@ -133,7 +133,6 @@ if ( ! class_exists( 'Astra_Sidebar_Layout_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-upgrade',
 					'campaign' => 'sidebar',
-					'renderAs' => 'list',
 					'choices'  => array(
 						'one'   => array(
 							'title' => __( 'Sidebar spacing', 'astra' ),

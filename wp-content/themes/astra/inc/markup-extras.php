@@ -872,7 +872,7 @@ if ( ! function_exists( 'astra_get_search' ) ) {
 		<div class="ast-search-menu-icon slide-search" <?php echo apply_filters( 'astra_search_slide_toggle_data_attrs', '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php astra_get_search_form(); ?>
 			<div class="ast-search-icon">
-				<a class="slide-search astra-search-icon" aria-label="<?php esc_attr_e( 'Search icon link', 'astra' ); ?>" href="#">
+				<a class="slide-search astra-search-icon" role="button" tabindex="0" aria-label="<?php esc_attr_e( 'Search button', 'astra' ); ?>" href="#">
 					<span class="screen-reader-text"><?php esc_html_e( 'Search', 'astra' ); ?></span>
 					<?php echo do_shortcode( astra_get_search_icon( $option, $device ) ); ?>
 				</a>
@@ -958,9 +958,13 @@ if ( ! function_exists( 'astra_get_custom_button' ) ) {
 		$outside_menu_item = apply_filters( 'astra_convert_link_to_button', $outside_menu );
 
 		if ( '1' == $outside_menu_item ) {
-			$custom_html = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '><div class=' . esc_attr( $button_classes ) . '>' . esc_html( do_shortcode( wp_kses_post( $button_text ) ) ) . '</div></a>';
+			$custom_html = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . ' role="button" aria-label="' . esc_attr( $button_text ) . '">
+				<div class="' . esc_attr( $button_classes ) . '">' . esc_html( do_shortcode( wp_kses_post( $button_text ) ) ) . '</div>
+			</a>';
 		} else {
-			$custom_html  = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '><div class=' . esc_attr( $button_classes ) . '>' . esc_html( do_shortcode( wp_kses_post( $button_text ) ) ) . '</div></a>';
+			$custom_html  = '<a class="ast-custom-button-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . ' role="button" aria-label="' . esc_attr( $button_text ) . '" >
+				<div class="' . esc_attr( $button_classes ) . '">' . esc_html( do_shortcode( wp_kses_post( $button_text ) ) ) . '</div>
+			</a>';
 			$custom_html .= '<a class="menu-link" href="' . esc_url( do_shortcode( $header_button['url'] ) ) . '" ' . $new_tab . ' ' . $link_rel . '>' . esc_html( do_shortcode( wp_kses_post( $button_text ) ) ) . '</a>';
 		}
 

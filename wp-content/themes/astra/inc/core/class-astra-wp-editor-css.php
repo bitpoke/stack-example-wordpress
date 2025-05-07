@@ -462,7 +462,7 @@ class Astra_WP_Editor_CSS {
 			'.editor-styles-wrapper a'         => array(
 				'color' => esc_attr( $link_color ),
 			),
-			'.block-editor-block-list__block'  => array(
+			'.wp-block-post-content'  => array(
 				'color' => esc_attr( $text_color ),
 			),
 			'.has-text-color .block-editor-block-list__block:not(.wp-block-heading)' => array(

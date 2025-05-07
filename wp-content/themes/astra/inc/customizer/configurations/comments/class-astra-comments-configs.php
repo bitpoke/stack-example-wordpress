@@ -48,6 +48,7 @@ if ( ! class_exists( 'Astra_Comments_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'title'    => __( 'Comments', 'astra' ),
 					'priority' => 20,
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[enable-comments-area]',

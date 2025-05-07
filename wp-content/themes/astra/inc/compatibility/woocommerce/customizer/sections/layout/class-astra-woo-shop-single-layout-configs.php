@@ -94,7 +94,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 15,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -122,7 +122,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 						),
 						$clonning_attr
 					),
-					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -136,7 +135,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 16,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -150,7 +149,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 					'default'  => astra_get_option( 'single-product-breadcrumb-disable' ),
 					'title'    => __( 'Enable Breadcrumb', 'astra' ),
 					'priority' => 16,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -194,19 +192,12 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 				 * Option: Disable Transparent Header on WooCommerce Product pages
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[transparent-header-disable-woo-products]',
+					'name'     => 'transparent-header-disable-woo-products',
+					'parent'   => ASTRA_THEME_SETTINGS . '[transparent-header-disable-on]',
 					'default'  => astra_get_option( 'transparent-header-disable-woo-products' ),
-					'type'     => 'control',
+					'type'     => 'sub-control',
 					'section'  => 'section-transparent-header',
-					'title'    => __( 'Disable on WooCommerce Product Pages?', 'astra' ),
-					'context'  => array(
-						Astra_Builder_Helper::$general_tab_config,
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[transparent-header-enable]',
-							'operator' => '==',
-							'value'    => '1',
-						),
-					),
+					'title'    => __( 'WooCommerce Product Pages', 'astra' ),
 					'priority' => 26,
 					'control'  => 'ast-toggle-control',
 				),
@@ -244,7 +235,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 76,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 				),
 
 				/**
@@ -258,7 +249,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 					'title'    => __( 'Enable Sticky Add to Cart', 'astra' ),
 					'control'  => 'ast-toggle-control',
 					'priority' => 76,
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -287,7 +277,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 							'value'    => true,
 						),
 					),
-					'divider'    => array( 'ast_class' => 'ast-top-dotted-divider' ),
+					'divider'    => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/**
@@ -621,7 +611,6 @@ if ( ! class_exists( 'Astra_Woo_Shop_Single_Layout_Configs' ) ) {
 						'type'     => 'control',
 						'control'  => 'ast-upgrade',
 						'campaign' => 'woocommerce',
-						'renderAs' => 'list',
 						'choices'  => array(
 							'two'   => array(
 								'title' => __( 'More product galleries', 'astra' ),

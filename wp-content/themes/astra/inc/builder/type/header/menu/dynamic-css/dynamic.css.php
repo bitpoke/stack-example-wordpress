@@ -323,6 +323,32 @@ function astra_hb_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 		$css_output_mobile[ $selector . ' .main-header-menu, ' . $selector . ' .main-header-menu .sub-menu' ] = astra_get_responsive_background_obj( $menu_resp_bg_color, 'mobile' );
 
+		// Submenu border radius inner items fix.
+		$sub_menu_border = strval( $sub_menu_border_top );
+		$devices         = array( 'desktop', 'tablet', 'mobile' );
+		foreach ( $devices as $device ) {
+			$border_top_left_radius     = astra_responsive_spacing( $sub_menu_border_radius_fields, 'top', $device );
+			$border_top_right_radius    = astra_responsive_spacing( $sub_menu_border_radius_fields, 'right', $device );
+			$border_bottom_right_radius = astra_responsive_spacing( $sub_menu_border_radius_fields, 'bottom', $device );
+			$border_bottom_left_radius  = astra_responsive_spacing( $sub_menu_border_radius_fields, 'left', $device );
+
+			// determine the variable.
+			$css_output_var = 'css_output_' . $device;
+			if ( ! isset( $$css_output_var ) || ! is_array( $$css_output_var ) ) {
+				continue;
+			}
+
+			$$css_output_var[ $selector . ' .sub-menu .menu-item:first-of-type > .menu-link, ' . $selector . ' .inline-on-mobile .sub-menu .menu-item:first-of-type > .menu-link' ] = array(
+				'border-top-left-radius'  => $border_top_left_radius ? 'calc(' . $border_top_left_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
+				'border-top-right-radius' => $border_top_right_radius ? 'calc(' . $border_top_right_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
+			);
+
+			$$css_output_var[ $selector . ' .sub-menu .menu-item:last-of-type > .menu-link, ' . $selector . ' .inline-on-mobile .sub-menu .menu-item:last-of-type > .menu-link' ] = array(
+				'border-bottom-right-radius' => $border_bottom_right_radius ? 'calc(' . $border_bottom_right_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
+				'border-bottom-left-radius'  => $border_bottom_left_radius ? 'calc(' . $border_bottom_left_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
+			);
+		}
+
 		if ( true === $sub_menu_divider_toggle ) {
 			// Sub Menu Divider.
 			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu .menu-link' ]                           = array(

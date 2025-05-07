@@ -104,7 +104,7 @@ function astra_header_search_configuration() {
 				'step' => 1,
 				'max'  => 1000,
 			),
-			'divider'     => defined( 'ASTRA_EXT_VER' ) ? array( 'ast_class' => 'ast-top-dotted-divider' ) : array( 'ast_class' => 'ast-section-spacing ast-bottom-dotted-divider' ),
+			'divider'     => defined( 'ASTRA_EXT_VER' ) ? array( 'ast_class' => 'ast-top-divider' ) : array( 'ast_class' => 'ast-section-spacing ast-bottom-divider' ),
 			'context'     => defined( 'ASTRA_EXT_VER' ) ? array(
 				Astra_Builder_Helper::$general_tab_config,
 				array(
@@ -151,7 +151,7 @@ function astra_header_search_configuration() {
 			),
 			'transport'   => 'refresh',
 			'choices'     => astra_customizer_search_post_types_choices(),
-			'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+			'divider'     => array( 'ast_class' => 'ast-top-divider' ),
 			'renderAs'    => 'text',
 			'input_attrs' => array(
 				'stack_after' => 2, // Currently stack options supports after 2 & 3.
@@ -198,7 +198,7 @@ function astra_header_search_configuration() {
 			'priority' => 220,
 			'settings' => array(),
 			'context'  => Astra_Builder_Helper::$design_tab,
-			'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+			'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 		),
 
 		/**

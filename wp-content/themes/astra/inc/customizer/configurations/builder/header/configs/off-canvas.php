@@ -85,7 +85,7 @@ function astra_header_off_canvas_configuration() {
 					'value'    => 'dropdown',
 				),
 			),
-			'divider'     => array( 'ast_class' => 'ast-top-dotted-divider ast-section-spacing' ),
+			'divider'     => array( 'ast_class' => 'ast-top-divider ast-section-spacing' ),
 		),
 
 		array(
@@ -131,7 +131,7 @@ function astra_header_off_canvas_configuration() {
 			),
 			'renderAs'   => 'text',
 			'responsive' => false,
-			'divider'    => array( 'ast_class' => 'ast-top-dotted-divider ast-bottom-dotted-divider' ),
+			'divider'    => array( 'ast_class' => 'ast-top-divider ast-bottom-divider' ),
 		),
 
 		/**

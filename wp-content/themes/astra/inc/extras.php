@@ -1329,7 +1329,7 @@ function astra_get_queried_post_types() {
 function astra_get_palette_presets() {
 	$color_palette_reorganize = Astra_Dynamic_CSS::astra_4_8_0_compatibility();
 	return array(
-		'Oak'       => array(
+		'Oak'    => array(
 			'#0067FF',
 			'#005EE9',
 			'#0F172A',
@@ -1340,7 +1340,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D1DAE5' : '#070614',
 			'#222222',
 		),
-		'Lavender'  => array(
+		'Viola'  => array(
 			'#6528F7',
 			'#5511F8',
 			'#0F172A',
@@ -1351,7 +1351,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D8D8F5' : '#0D0614',
 			'#222222',
 		),
-		'Cedar'     => array(
+		'Cedar'  => array(
 			'#DD183B',
 			'#CC1939',
 			'#0F172A',
@@ -1362,7 +1362,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#FFD1BF' : '#140609',
 			'#222222',
 		),
-		'Willow'    => array(
+		'Willow' => array(
 			'#54B435',
 			'#379237',
 			'#0F172A',
@@ -1373,7 +1373,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D5EAD8' : '#0C1406',
 			'#222222',
 		),
-		'Lily'      => array(
+		'Lily'   => array(
 			'#DCA54A',
 			'#D09A40',
 			'#0F172A',
@@ -1384,7 +1384,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#F0E6C5' : '#141004',
 			'#222222',
 		),
-		'Rose'      => array(
+		'Rose'   => array(
 			'#FB5FAB',
 			'#EA559D',
 			'#0F172A',
@@ -1395,7 +1395,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#FAD8E9' : '#140610',
 			'#222222',
 		),
-		'Sage'      => array(
+		'Sage'   => array(
 			'#1B9C85',
 			'#178E79',
 			'#0F172A',
@@ -1406,7 +1406,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#D4F3D7' : '#06140C',
 			'#222222',
 		),
-		'Sunflower' => array(
+		'Flare'  => array(
 			'#FD9800',
 			'#E98C00',
 			'#0F172A',
@@ -1417,7 +1417,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#F9F0C8' : '#141006',
 			'#222222',
 		),
-		'Maple'     => array(
+		'Maple'  => array(
 			'#FF6210',
 			'#F15808',
 			'#1C0D0A',
@@ -1428,7 +1428,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#E5D7D1' : '#140B06',
 			'#222222',
 		),
-		'Birch'     => array(
+		'Birch'  => array(
 			'#737880',
 			'#65696F',
 			'#151616',
@@ -1439,7 +1439,7 @@ function astra_get_palette_presets() {
 			$color_palette_reorganize ? '#F1F0F0' : '#232529',
 			'#222222',
 		),
-		'Dark'      => array(
+		'Dark'   => array(
 			'#0085FF',
 			'#0177E3',
 			'#FFFFFF',

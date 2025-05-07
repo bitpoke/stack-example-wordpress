@@ -95,7 +95,7 @@ if ( ! class_exists( 'Astra_Woo_Shop_Sidebar_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'priority' => 9.5,
 					'settings' => array(),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+					'divider'  => array( 'ast_class' => 'ast-top-section-divider ast-bottom-spacing' ),
 				),
 
 			);

@@ -1,5 +1,11 @@
 *** Astra Changelog ***
 
+2025-05-07 - version 4.11.0
+* New: Introducing a new polished UI for the Astra Customizer, offering an improved user experience and refreshed design. (https://wpastra.com/docs/astra-customizer-refined-ui/)
+* Improvement: Enhanced accessibility in post grid and search input markup.
+* Improvement: Added a filter to control the loading of Dark Mode compatibility CSS.
+* Fix: Resolved an issue where the submenu border radius was not applying correctly for inner menu links on hover.
+
 2025-04-24 - version 4.10.1
 * Fix: Resolved a dark mode styling behavior where <legend> elements were affected globally, even when dark mode was disabled.
 * Fix: Resolved an issue where toggle button styles were not being applied on the frontend.

@@ -112,7 +112,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 				'title'             => __( 'Container Layout', 'astra' ),
 				'choices'           => $this->get_new_content_layout_choices( $post_type ),
 				'transport'         => 'refresh',
-				'divider'           => array( 'ast_class' => 'ast-top-divider ast-bottom-spacing' ),
+				'divider'           => array( 'ast_class' => 'ast-top-divider' ),
 			),
 
 			/**
@@ -134,7 +134,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 				'responsive'  => false,
 				'renderAs'    => 'text',
 				'description' => __( 'Container style will apply only when layout is set to either normal or narrow.', 'astra' ),
-				'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+				'divider'     => array( 'ast_class' => 'ast-top-divider' ),
 			),
 
 			/**
@@ -314,15 +314,15 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					'priority'          => 5,
 					'context'           => Astra_Builder_Helper::$general_tab,
 					'title'             => __( 'Banner Layout', 'astra' ),
-					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-spacing' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 					'choices'           => array(
 						'layout-1' => array(
 							'label' => __( 'Layout 1', 'astra' ),
-							'path'  => Astra_Builder_UI_Controller::fetch_svg_icon( 'post-layout' ),
+							'path'  => Astra_Builder_UI_Controller::fetch_svg_icon( 'banner-layout-1' ),
 						),
 						'layout-2' => array(
 							'label' => __( 'Layout 2', 'astra' ),
-							'path'  => '<span class="ahfb-svg-iconset ast-inline-flex"><svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M10 12C10 10.8954 10.8954 10 12 10H88C89.1046 10 90 10.8954 90 12V70H10V12Z" fill="white"></path> <mask id="' . esc_attr( $title_section ) . '-masking" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="10" y="10" width="80" height="60"> <path d="M10 12C10 10.8954 10.8954 10 12 10H88C89.1046 10 90 10.8954 90 12V70H10V12Z" fill="white"></path> </mask> <g mask="url(#' . esc_attr( $title_section ) . '-masking)"> <path d="M2 9H95V35H2V9Z" fill="#DADDE2"></path> </g> <path fill-rule="evenodd" clip-rule="evenodd" d="M83 58H16V56H83V58Z" fill="#E9EAEE"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M83 64H16V62H83V64Z" fill="#E9EAEE"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M61 21H41V19H61V21Z" fill="white"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M53.4 25H33V23H53.4V25Z" fill="white"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M67 25H54.76V23H67V25Z" fill="white"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M42.4783 29H40V28H42.4783V29Z" fill="white"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M50.7391 29H47.4348V28H50.7391V29Z" fill="white"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M46.6087 29H43.3044V28H46.6087V29Z" fill="white"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M54.8696 29H51.5652V28H54.8696V29Z" fill="white"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M59 29H55.6956V28H59V29Z" fill="white"></path> <rect x="16" y="40" width="67" height="12" fill="#E9EAEE"></rect> </svg></span>',
+							'path'  => Astra_Builder_UI_Controller::fetch_svg_icon( 'banner-layout-2' ),
 						),
 					),
 				),
@@ -403,7 +403,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					'default'           => astra_get_option( $title_section . '-structure', array( $title_section . '-title', $title_section . '-description' ) ),
 					'priority'          => 20,
 					'title'             => __( 'Structure', 'astra' ),
-					'divider'           => 'post' !== $post_type ? array( 'ast_class' => 'ast-top-divider ast-bottom-spacing' ) : array( 'ast_class' => 'ast-bottom-spacing' ),
+					'divider'           => 'post' !== $post_type ? array( 'ast_class' => 'ast-top-divider' ) : array(),
 					'choices'           => array_merge(
 						array(
 							$title_section . '-breadcrumb' => __( 'Breadcrumb', 'astra' ),
@@ -700,6 +700,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					),
 					'divider'   => array( 'ast_class' => 'ast-top-divider' ),
 					'title'     => __( 'Title Font', 'astra' ),
+					'is_font'   => true,
 					'section'   => $title_section,
 					'transport' => 'postMessage',
 				),
@@ -711,6 +712,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					'control'   => 'ast-settings-group',
 					'context'   => Astra_Builder_Helper::$design_tab,
 					'title'     => __( 'Text Font', 'astra' ),
+					'is_font'   => true,
 					'divider'   => array( 'ast_class' => 'ast-bottom-spacing' ),
 					'section'   => $title_section,
 					'transport' => 'postMessage',
@@ -729,7 +731,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					'default'   => astra_get_option( $title_section . '-text-font-family', 'inherit' ),
 					'title'     => __( 'Font Family', 'astra' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[' . $title_section . '-text-font-weight]',
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -746,7 +748,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					'default'           => astra_get_option( $title_section . '-text-font-weight', 'inherit' ),
 					'title'             => __( 'Font Weight', 'astra' ),
 					'connect'           => $title_section . '-text-font-family',
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -813,7 +815,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					'default'   => astra_get_option( $title_section . '-title-font-family', 'inherit' ),
 					'title'     => __( 'Font Family', 'astra' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[' . $title_section . '-title-font-weight]',
-					'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**
@@ -830,7 +832,7 @@ class Astra_Posts_Archive_Structures_Configs extends Astra_Customizer_Config_Bas
 					'default'           => astra_get_option( $title_section . '-title-font-weight', Astra_Posts_Structure_Loader::get_customizer_default( 'title-font-weight' ) ),
 					'title'             => __( 'Font Weight', 'astra' ),
 					'connect'           => $title_section . '-title-font-family',
-					'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 				),
 
 				/**

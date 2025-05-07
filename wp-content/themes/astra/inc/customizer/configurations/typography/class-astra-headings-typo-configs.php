@@ -49,7 +49,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'  => 28,
 				'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-h1]',
 				'transport' => 'postMessage',
-				'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -68,7 +68,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'          => 28,
 				'connect'           => 'font-family-h1',
 				'transport'         => 'postMessage',
-				'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -139,7 +139,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'  => 28,
 				'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-h2]',
 				'transport' => 'postMessage',
-				'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -158,7 +158,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'          => 28,
 				'connect'           => 'font-family-h2',
 				'transport'         => 'postMessage',
-				'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -229,7 +229,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'  => 28,
 				'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-h3]',
 				'transport' => 'postMessage',
-				'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -248,7 +248,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'          => 28,
 				'connect'           => 'font-family-h3',
 				'transport'         => 'postMessage',
-				'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -319,7 +319,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'  => 28,
 				'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-h4]',
 				'transport' => 'postMessage',
-				'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -338,7 +338,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'          => 28,
 				'connect'           => 'font-family-h4',
 				'transport'         => 'postMessage',
-				'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -409,7 +409,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'  => 28,
 				'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-h5]',
 				'transport' => 'postMessage',
-				'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -428,7 +428,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'          => 28,
 				'connect'           => 'font-family-h5',
 				'transport'         => 'postMessage',
-				'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -498,7 +498,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'  => 28,
 				'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-h6]',
 				'transport' => 'postMessage',
-				'divider'   => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'   => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**
@@ -517,7 +517,7 @@ class Astra_Headings_Typo_Configs extends Astra_Customizer_Config_Base {
 				'priority'          => 28,
 				'connect'           => 'font-family-h6',
 				'transport'         => 'postMessage',
-				'divider'           => array( 'ast_class' => 'ast-sub-bottom-dotted-divider' ),
+				'divider'           => array( 'ast_class' => 'ast-sub-bottom-divider' ),
 			),
 
 			/**

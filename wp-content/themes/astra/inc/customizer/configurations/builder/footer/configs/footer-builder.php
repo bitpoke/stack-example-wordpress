@@ -135,7 +135,7 @@ function astra_builder_footer_configuration( $configurations = array() ) {
 			'name'     => 'panel-footer-builder-group',
 			'type'     => 'panel',
 			'priority' => 60,
-			'title'    => __( 'Footer Builder', 'astra' ),
+			'title'    => __( 'Footer', 'astra' ),
 		),
 
 		/**
@@ -168,7 +168,7 @@ function astra_builder_footer_configuration( $configurations = array() ) {
 			'name'     => 'section-footer-builder',
 			'type'     => 'section',
 			'priority' => 5,
-			'title'    => __( 'Footer Builder', 'astra' ),
+			'title'    => __( 'Footer', 'astra' ),
 			'panel'    => 'panel-footer-builder-group',
 			'context'  => array(
 				array(
@@ -294,7 +294,6 @@ function astra_builder_footer_configuration( $configurations = array() ) {
 			'type'     => 'control',
 			'control'  => 'ast-upgrade',
 			'campaign' => 'footer-builder',
-			'renderAs' => 'list',
 			'choices'  => array(
 				'two'   => array(
 					'title' => __( 'Divider element', 'astra' ),
