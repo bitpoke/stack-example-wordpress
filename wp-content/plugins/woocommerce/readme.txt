@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 9.8.2
+Stable tag: 9.8.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -169,12 +169,11 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 9.8.3 2025-04-30 =
+= 9.8.4 2025-05-06 =
 
 **WooCommerce**
 
-* Fix - Add static cache and queue search to prevent duplicate scheduling of the wc_delete_related_product_transients_async action in wc_delete_product_transients(). [#57592](https://github.com/woocommerce/woocommerce/pull/57592)
-* Fix - Don't run postcode validation for hidden postcodes. [#57594](https://github.com/woocommerce/woocommerce/pull/57594)
+* Fix - PTK Pattern: Ensure that fatal is not triggered if categories is null. [#57759](https://github.com/woocommerce/woocommerce/pull/57759)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
