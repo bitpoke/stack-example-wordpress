@@ -1313,7 +1313,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		const isHangOverTopNotice = document.querySelector('.ast-woocommerce-store-notice-hanged');
 		const adjustBodyHeight = () => {
 			const storeNotice = document.querySelector('.woocommerce-store-notice[data-position="hang-over-top"]');
-			document.body.style.marginTop = `${storeNotice?.clientHeight || 0}px`;
+			document.body.style.paddingTop = `${storeNotice?.clientHeight || 0}px`;
 		}
 
 		if (isHangOverTopNotice) {	
@@ -1324,10 +1324,10 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		document
 			.querySelector('.woocommerce-store-notice__dismiss-link')
 			?.addEventListener('click', () => {
-				if (!wp?.customize) {
+				if ( typeof wp === 'undefined' || ! wp?.customize ) {
 					document.body.classList.remove('ast-woocommerce-store-notice-hanged');
 					window.removeEventListener('resize', adjustBodyHeight);
-					document.body.style.marginTop = 0;
+					document.body.style.paddingTop = 0;
 				}
 			});
 	});

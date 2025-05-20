@@ -196,6 +196,9 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			add_action( 'wp_ajax_astra_regenerate_fonts_folder', array( $this, 'regenerate_astra_fonts_folder' ) );
 
 			add_action( 'wp_footer', array( $this, 'style_guide_template' ) );
+
+			// Handles the AJAX request for astra SVG icons.
+			add_action( 'wp_ajax_astra_logo_svg_icons', array( $this, 'logo_svg_icons' ) );
 		}
 
 		/**
@@ -642,6 +645,16 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					$configuration['value'] = $val;
 					break;
 				case 'ast-logo-svg-icon':
+					if ( ! isset( $val['type'] ) ) {
+						$configuration['value'] = array(
+							'type'  => '',
+							'value' => '',
+						);
+					} else {
+						$configuration['value'] = $val;
+					}
+					break;
+
 				case 'ast-svg-icon-selector':
 					if ( ! isset( $val['type'] ) ) {
 						$configuration['value'] = array(
@@ -651,8 +664,6 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					} else {
 						$configuration['value'] = $val;
 					}
-
-					$configuration['ast_all_svg_icons'] = function_exists( 'astra_get_logo_svg_icons_array' ) ? astra_get_logo_svg_icons_array() : array();
 					break;
 
 			} // Switch End.
@@ -677,6 +688,30 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			}
 
 			return $configuration;
+		}
+
+		/**
+		 * Handles the AJAX request for logo SVG icons.
+		 * The main purpose of handling this via AJAX is to improve Customizer performance.
+		 *
+		 * @return array The array of logo SVG icons.
+		 */
+		public function logo_svg_icons() {
+			// Check if the current user has the capability to edit theme options.
+			if ( ! current_user_can( 'edit_theme_options' ) ) {
+				wp_send_json_error( __( 'You are not allowed to access this resource.', 'astra' ) );
+			}
+
+			// Check if the current request is an AJAX request and if it is being done in the Customizer screen.
+			if ( ! is_admin() || ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+				wp_send_json_error( __( 'This request is only allowed in the Customizer screen.', 'astra' ) );
+			}
+
+			wp_send_json_success(
+				array(
+					'icons' => function_exists( 'astra_get_logo_svg_icons_array' ) ? astra_get_logo_svg_icons_array() : array(),
+				)
+			);
 		}
 
 		/**

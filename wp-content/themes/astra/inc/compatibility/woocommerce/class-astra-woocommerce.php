@@ -475,7 +475,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 
 			if ( ! $notice_hidden && 'hang-over-top' === astra_get_option( 'store-notice-position' ) ) {
 				$css_output_desktop['.ast-woocommerce-store-notice-hanged'] = array(
-					'margin-top' => '57px',
+					'padding-top' => '57px',
 				);
 			}
 

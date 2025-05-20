@@ -67,6 +67,7 @@ class Astra_BSF_Analytics {
 					'path'                => ASTRA_THEME_DIR . 'inc/lib/bsf-analytics',
 					'author'              => 'brainstormforce',
 					'time_to_display'     => '+24 hours',
+					'hide_optin_checkbox' => true,
 
 					/* Deactivation Survey */
 					'deactivation_survey' => apply_filters(

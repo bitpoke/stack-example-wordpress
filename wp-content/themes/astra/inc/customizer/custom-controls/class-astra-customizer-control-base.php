@@ -93,16 +93,16 @@ if ( ! class_exists( 'Astra_Customizer_Control_Base' ) ) {
 						wp.customize.state('astra-customizer-tab').bind(function(state) {
 
 							if ( 'general' === state ) {
-								wp.customize.control('astra-settings[header-account-icon-size]').container.hide();
-								wp.customize.control('astra-settings[header-account-icon-color]').container.hide();
+								wp.customize.control('astra-settings[header-account-icon-size]')?.container.hide();
+								wp.customize.control('astra-settings[header-account-icon-color]')?.container.hide();
 								return;
 							}
 
-							var loginStyleIsText = 'text' === wp.customize('astra-settings[header-account-login-style]').get();
-							var logoutStyleIsText = 'text' === wp.customize('astra-settings[header-account-logout-style]').get();
+							var loginStyleIsText = 'text' === wp.customize('astra-settings[header-account-login-style]')?.get();
+							var logoutStyleIsText = 'text' === wp.customize('astra-settings[header-account-logout-style]')?.get();
 
-							var loginIsIconExtend = 'icon' === wp.customize('astra-settings[header-account-login-style-extend-text-profile-type]').get();
-							var logoutIsIconExtend = 'icon' === wp.customize('astra-settings[header-account-logout-style-extend-text-profile-type]').get();
+							var loginIsIconExtend = 'icon' === wp.customize('astra-settings[header-account-login-style-extend-text-profile-type]')?.get();
+							var logoutIsIconExtend = 'icon' === wp.customize('astra-settings[header-account-logout-style-extend-text-profile-type]')?.get();
 
 							if ( ( loginStyleIsText && loginIsIconExtend ) || ( logoutStyleIsText && logoutIsIconExtend ) ) {
 								wp.customize.control('astra-settings[header-account-icon-size]').container.show();

@@ -944,10 +944,10 @@ class Astra_Menu {
 			$surecart_status      = self::get_plugin_status( 'surecart/surecart.php' );
 			$surecart_redirection = 'activated' === $surecart_status ? 'sc-dashboard' : 'sc-getting-started';
 
-			$useful_plugins = array(
-				array(
+			$plugins = array(
+				'surecart'      => array(
 					'title'       => 'SureCart',
-					'subtitle'    => __( 'The new way to sell on WordPress.', 'astra' ),
+					'subtitle'    => __( 'Sell products, services, subscriptions & more.', 'astra' ),
 					'status'      => $surecart_status,
 					'slug'        => 'surecart',
 					'path'        => 'surecart/surecart.php',
@@ -957,7 +957,7 @@ class Astra_Menu {
 						'icon_path'     => 'https://ps.w.org/surecart/assets/icon-128x128.png',
 					),
 				),
-				array(
+				'spectra'       => array(
 					'title'       => 'Spectra',
 					'subtitle'    => __( 'Free WordPress Page Builder.', 'astra' ),
 					'status'      => self::get_plugin_status( 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php' ),
@@ -969,7 +969,7 @@ class Astra_Menu {
 						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon-256x256.gif',
 					),
 				),
-				array(
+				'suretriggers'  => array(
 					'title'       => 'OttoKit',
 					'subtitle'    => __( 'Automate your WordPress setup.', 'astra' ),
 					'isPro'       => false,
@@ -982,7 +982,7 @@ class Astra_Menu {
 						'icon_path'     => 'ottokit',
 					),
 				),
-				array(
+				'sureforms'     => array(
 					'title'       => 'SureForms',
 					'subtitle'    => __( 'A versatile form builder plugin.', 'astra' ),
 					'status'      => self::get_plugin_status( 'sureforms/sureforms.php' ),
@@ -994,7 +994,7 @@ class Astra_Menu {
 						'icon_path'     => 'sureforms',
 					),
 				),
-				array(
+				'presto-player' => array(
 					'title'       => 'Presto Player',
 					'subtitle'    => __( 'Ultimate Video Player For WordPress.', 'astra' ),
 					'status'      => self::get_plugin_status( 'presto-player/presto-player.php' ),
@@ -1006,7 +1006,26 @@ class Astra_Menu {
 						'icon_path'     => 'https://ps.w.org/presto-player/assets/icon-128x128.png',
 					),
 				),
+				'uael'          => array(
+					'title'       => 'Ultimate Addons for Elementor',
+					'subtitle'    => __( 'Extend Elementor with premium widgets.', 'astra' ),
+					'status'      => self::get_plugin_status( 'header-footer-elementor/header-footer-elementor.php' ),
+					'slug'        => 'header-footer-elementor',
+					'path'        => 'header-footer-elementor/header-footer-elementor.php',
+					'redirection' => admin_url( 'admin.php?page=hfe#onboarding' ),
+					'logoPath'    => array(
+						'internal_icon' => false,
+						'icon_path'     => 'https://ps.w.org/header-footer-elementor/assets/icon-256x256.gif',
+					),
+				),
 			);
+
+			// Pick useful plugins depending on Elementor status.
+			$useful_plugins_keys = defined( 'ELEMENTOR_VERSION' )
+				? array( 'uael', 'sureforms', 'spectra', 'suretriggers', 'presto-player' )
+				: array( 'sureforms', 'spectra', 'suretriggers', 'surecart', 'presto-player' );
+
+			$useful_plugins = array_map( fn( $key ) => $plugins[ $key ], $useful_plugins_keys );
 		}
 
 		return apply_filters( 'astra_useful_plugins', $useful_plugins );
