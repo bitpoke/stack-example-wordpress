@@ -1781,7 +1781,7 @@ function astra_wp_version_compare( $version, $compare ) {
  */
 function astra_block_based_legacy_setup() {
 	$astra_settings = astra_get_options();
-	return isset( $astra_settings['blocks-legacy-setup'] ) && isset( $astra_settings['wp-blocks-ui'] ) && 'legacy' === $astra_settings['wp-blocks-ui'] ? true : false;
+	return apply_filters( 'astra_block_based_legacy_setup', isset( $astra_settings['blocks-legacy-setup'] ) && isset( $astra_settings['wp-blocks-ui'] ) && 'legacy' === $astra_settings['wp-blocks-ui'] ? true : false );
 }
 
 /**

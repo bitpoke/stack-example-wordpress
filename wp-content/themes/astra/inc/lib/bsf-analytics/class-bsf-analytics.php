@@ -236,8 +236,7 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 				/* translators: %s product name */
 				$notice_string = sprintf(
 					__(
-						'Help us improve %1$s and our other products!<br><br>With your permission, we\'d like to collect <strong>non-sensitive information</strong> from your website — like your PHP version and which features you use — so we can fix bugs faster, make smarter decisions, and build features that actually matter to you. <em>No personal info. Ever.</em>',
-						'astra'
+						'Help us improve %1$s and our other products!<br><br>With your permission, we\'d like to collect <strong>non-sensitive information</strong> from your website — like your PHP version and which features you use — so we can fix bugs faster, make smarter decisions, and build features that actually matter to you. <em>No personal info. Ever.</em>', 'astra'
 					),
 					'<strong>' . esc_html( $data['product_name'] ) . '</strong>'
 				);

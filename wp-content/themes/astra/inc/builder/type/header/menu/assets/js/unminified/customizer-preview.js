@@ -252,7 +252,7 @@
 
 								var dynamicStyle = '';
 
-								dynamicStyle += '.ast-desktop .ast-builder-menu-'+ index +' .main-header-menu .menu-item .sub-menu .menu-link';
+								dynamicStyle += '.ast-desktop .ast-builder-menu-'+ index +' .main-header-menu .menu-item .sub-menu .menu-link, .ast-header-break-point .main-navigation ul .menu-item .menu-link';
 								dynamicStyle += '{';
 								dynamicStyle += 'border-bottom-width:' + ( ( borderSize ) ? borderSize + 'px;' : '0px;' );
 								dynamicStyle += 'border-color:' + color + ';';
@@ -273,7 +273,7 @@
 					value.bind( function( borderSize ) {
 						var selector = '.ast-desktop .ast-builder-menu-'+ index + ' .main-header-menu';
 						var dynamicStyle = '';
-						dynamicStyle += selector + ' .menu-item .sub-menu .menu-link {';
+						dynamicStyle += selector + ' .menu-item .sub-menu:last-child > .menu-item > .menu-link, .ast-header-break-point .main-navigation ul .menu-item .menu-link {';
 						dynamicStyle += 'border-bottom-width: ' + borderSize + 'px;';
 						dynamicStyle += '} ';
 						dynamicStyle += selector + ' .menu-item .sub-menu .menu-item:last-child .menu-link {';

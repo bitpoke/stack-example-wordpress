@@ -76,6 +76,8 @@ if ( ! class_exists( 'Astra_Theme_Builder_Free' ) ) {
 
 			wp_enqueue_style( 'dashicons' );
 
+			$astra_addon_locale = ASTRA_THEME_ORG_VERSION ? 'astra-addon/astra-addon.php' : 'astra-pro/astra-pro.php';
+
 			$localized_data = array(
 				'title'                      => esc_html__( 'Site Builder', 'astra' ),
 				'rest_url'                   => '/wp-json/astra-addon/v1/custom-layouts/',
@@ -87,6 +89,23 @@ if ( ! class_exists( 'Astra_Theme_Builder_Free' ) ) {
 
 			wp_localize_script( 'astra-theme-builder-script', 'astra_theme_builder', $localized_data );
 			wp_set_script_translations( 'astra-theme-builder-script', 'astra' );
+
+			$localize = array(
+				'pro_installed_status'   => 'installed' === Astra_Menu::get_plugin_status( $astra_addon_locale ) ? true : false,
+				'ajax_url'               => admin_url( 'admin-ajax.php' ),
+				'upgrade_url'            => astra_get_upgrade_url( 'dashboard' ),
+				'astra_base_url'         => admin_url( 'admin.php?page=' . Astra_Menu::get_theme_page_slug() ),
+				'update_nonce'           => wp_create_nonce( 'astra_update_admin_setting' ),
+				'plugin_manager_nonce'   => wp_create_nonce( 'astra_plugin_manager_nonce' ),
+				'plugin_installer_nonce' => wp_create_nonce( 'updates' ),
+				'plugin_installing_text' => esc_html__( 'Installing', 'astra' ),
+				'plugin_installed_text'  => esc_html__( 'Installed', 'astra' ),
+				'plugin_activating_text' => esc_html__( 'Activating', 'astra' ),
+				'plugin_activated_text'  => esc_html__( 'Activated', 'astra' ),
+				'plugin_activate_text'   => esc_html__( 'Activate', 'astra' ),
+			);
+
+			wp_localize_script( 'astra-theme-builder-script', 'astra_admin', $localize );
 		}
 
 		/**

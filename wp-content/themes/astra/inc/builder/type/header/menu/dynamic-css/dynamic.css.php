@@ -351,15 +351,15 @@ function astra_hb_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 		if ( true === $sub_menu_divider_toggle ) {
 			// Sub Menu Divider.
-			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu .menu-link' ]                           = array(
+			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu .menu-link, .ast-header-break-point .main-navigation ul .menu-item .menu-link' ]                           = array(
 				'border-bottom-width' => $sub_menu_divider_size . 'px',
 				'border-color'        => $sub_menu_divider_color,
 				'border-style'        => 'solid',
 			);
-			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu:last-child > .menu-item > .menu-link' ] = array(
+			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item .sub-menu:last-child > .menu-item > .menu-link, .ast-header-break-point .main-navigation ul .menu-item .menu-link' ] = array(
 				'border-bottom-width' => $sub_menu_divider_size . 'px',
 			);
-			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item:last-child > .menu-item > .menu-link' ]           = array(
+			$css_output_desktop[ '.ast-desktop ' . $selector . ' .menu-item:last-child > .menu-item > .menu-link' ] = array(
 				'border-bottom-width' => 0,
 			);
 		} else {

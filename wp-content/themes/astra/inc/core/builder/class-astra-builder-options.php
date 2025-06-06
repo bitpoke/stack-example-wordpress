@@ -2079,7 +2079,7 @@ function astra_prepare_widget_defaults( $defaults, $index ) {
 	);
 
 	$defaults[ 'footer-widget-alignment-' . $index ] = array(
-		'desktop' => 'left',
+		'desktop' => is_rtl() ? 'right' : 'left',
 		'tablet'  => $apply_new_default_color_typo_values ? '' : 'center',
 		'mobile'  => $apply_new_default_color_typo_values ? '' : 'center',
 	);
