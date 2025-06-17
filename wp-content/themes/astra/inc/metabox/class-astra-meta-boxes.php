@@ -36,6 +36,8 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 
 		/**
 		 * Initiator
+		 *
+		 * @return self Class instance.
 		 */
 		public static function get_instance() {
 			if ( ! isset( self::$instance ) ) {
@@ -971,6 +973,8 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 
 		/**
 		 * Get all transparet and sticky header options.
+		 *
+		 * @return array<string>
 		 */
 		public function get_header_enabled_options() {
 			return array(
@@ -1718,7 +1722,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						'sanitize' => 'FILTER_SANITIZE_STRING',
 					),
 					'ast-site-content-layout'       => array(
-						'default'  => '',
+						'default'  => 'default',
 						'sanitize' => 'FILTER_DEFAULT',
 					),
 					'site-content-style'            => array(

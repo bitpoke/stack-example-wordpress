@@ -21,7 +21,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 		 *
 		 * @var mixed ast_svgs
 		 */
-		private static $ast_svgs = null;
+		public static $ast_svgs = null;
 
 		/**
 		 * Get an SVG Icon

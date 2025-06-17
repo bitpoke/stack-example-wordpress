@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define Constants
  */
-define( 'ASTRA_THEME_VERSION', '4.11.2' );
+define( 'ASTRA_THEME_VERSION', '4.11.3' );
 define( 'ASTRA_THEME_SETTINGS', 'astra-settings' );
 define( 'ASTRA_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'ASTRA_THEME_URI', trailingslashit( esc_url( get_template_directory_uri() ) ) );
@@ -142,8 +142,8 @@ if ( is_admin() ) {
  * Metabox additions.
  */
 require_once ASTRA_THEME_DIR . 'inc/metabox/class-astra-meta-boxes.php';
-
 require_once ASTRA_THEME_DIR . 'inc/metabox/class-astra-meta-box-operations.php';
+require_once ASTRA_THEME_DIR . 'inc/metabox/class-astra-elementor-editor-settings.php';
 
 /**
  * Customizer additions.

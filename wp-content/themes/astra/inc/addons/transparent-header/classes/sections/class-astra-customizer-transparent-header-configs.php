@@ -240,6 +240,7 @@ if ( ! class_exists( 'Astra_Customizer_Transparent_Header_Configs' ) ) {
 					),
 					'priority'          => 30.1,
 					'title'             => __( 'Logo', 'astra' ),
+					'description'       => __( 'Note: A subtle shadow is added in this preview so white logos remain visible.', 'astra' ),
 					'library_filter'    => array( 'gif', 'jpg', 'jpeg', 'png', 'ico' ),
 					'partial'           => array(
 						'selector'            => '.ast-replace-site-logo-transparent .site-branding .site-logo-img',
@@ -294,6 +295,7 @@ if ( ! class_exists( 'Astra_Customizer_Transparent_Header_Configs' ) ) {
 					),
 					'priority'          => 30.3,
 					'title'             => __( 'Retina Logo', 'astra' ),
+					'description'       => __( 'Note: A subtle shadow is added in this preview so white logos remain visible.', 'astra' ),
 					'library_filter'    => array( 'gif', 'jpg', 'jpeg', 'png', 'ico' ),
 					'divider'           => array( 'ast_class' => 'ast-top-divider' ),
 				),

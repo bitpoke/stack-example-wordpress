@@ -167,7 +167,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on Categories
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-home-page]',
+					'name'     => 'breadcrumb-disable-home-page',
 					'default'  => astra_get_option( 'breadcrumb-disable-home-page', '1' ),
 					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'     => 'sub-control',
@@ -182,7 +182,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on Categories
 				 */
 				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-blog-posts-page]',
+					'name'        => 'breadcrumb-disable-blog-posts-page',
 					'default'     => astra_get_option( 'breadcrumb-disable-blog-posts-page', '1' ),
 					'parent'      => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'        => 'sub-control',
@@ -197,7 +197,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on Search
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-search]',
+					'name'     => 'breadcrumb-disable-search',
 					'default'  => astra_get_option( 'breadcrumb-disable-search', '1' ),
 					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'     => 'sub-control',
@@ -211,7 +211,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on Archive
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-archive]',
+					'name'     => 'breadcrumb-disable-archive',
 					'default'  => astra_get_option( 'breadcrumb-disable-archive', '1' ),
 					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'     => 'sub-control',
@@ -225,7 +225,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on Single Page
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-single-page]',
+					'name'     => 'breadcrumb-disable-single-page',
 					'default'  => astra_get_option( 'breadcrumb-disable-single-page', '1' ),
 					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'     => 'sub-control',
@@ -239,7 +239,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on Single Post
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-single-post]',
+					'name'     => 'breadcrumb-disable-single-post',
 					'default'  => astra_get_option( 'breadcrumb-disable-single-post', '1' ),
 					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'     => 'sub-control',
@@ -253,7 +253,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on Singular
 				 */
 				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-singular]',
+					'name'        => 'breadcrumb-disable-singular',
 					'default'     => astra_get_option( 'breadcrumb-disable-singular', '1' ),
 					'parent'      => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'        => 'sub-control',
@@ -268,7 +268,7 @@ if ( ! class_exists( 'Astra_Breadcrumbs_Configs' ) ) {
 				 * Option: Disable Breadcrumb on 404 Page
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-404-page]',
+					'name'     => 'breadcrumb-disable-404-page',
 					'default'  => astra_get_option( 'breadcrumb-disable-404-page', '1' ),
 					'parent'   => ASTRA_THEME_SETTINGS . '[breadcrumb-disable-on]',
 					'type'     => 'sub-control',

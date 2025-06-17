@@ -1448,3 +1448,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+ /*
+    * Close any open mobile navigation when a menu link is clicked.
+	* This is to ensure that the mobile navigation is closed when a menu link is clicked
+	* Used Jquery here as a exception becase plane js will not work due to Missing delegation.
+    */
+	jQuery( document ).on( 'click', '.main-header-bar-navigation a', function() {
+		if ( jQuery( 'body' ).hasClass( 'ast-main-header-nav-open' ) ) {
+				jQuery( '.main-header-menu-toggle.toggled' ).removeClass( 'toggled' );
+				jQuery( '.main-header-bar-navigation.toggle-on' ).removeClass( 'toggle-on' ).css( 'display', '' );
+				jQuery( 'body' ).removeClass( 'ast-main-header-nav-open' );
+		}
+	} );

@@ -591,6 +591,9 @@ class Astra_WP_Editor_CSS {
 				'color'            => esc_attr( $btn_h_color ),
 				'background-color' => esc_attr( $btn_bg_h_color ),
 			),
+			'.editor-styles-wrapper .block-editor-block-list__layout  .is-layout-grid.wp-block-group-is-layout-grid p, .editor-styles-wrapper .block-editor-block-list__layout .is-layout-flex.wp-block-group-is-layout-flex p' => array(
+				'margin-bottom' => '0',
+			),
 			'.wp-block-button.is-style-outline > .wp-block-button__link.has-text-color' => array(
 				'border-color' => 'initial',
 			),

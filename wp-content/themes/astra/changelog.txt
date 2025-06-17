@@ -1,5 +1,13 @@
 *** Astra Changelog ***
 
+2025-06-17 - version 4.11.3
+* New: Enabled access to Astra Meta Settings inside the Elementor Editor under the Page Settings panel.
+* Fix: Social Sharing icons aligned uniformly with transparent backgrounds.
+* Fix: Off-Canvas menu dropdown not closing when using Sticky Header animation or on scroll-down behavior.
+* Fix: Resolved an issue with saving the Footer Builder layout in Customizer draft mode.
+* Fix: Resolved an issue where the new multiselect control was not saving the subsection value properly.
+* Fix: Resolved an issue where extra bottom margin CSS was being applied to Stack and Group blocks inside the editor.
+
 2025-06-05 - version 4.11.2
 * New: We've completely redesigned the Astra Dashboard with our new Force UI components, delivering a modern interface & enhanced user experience.
 * Improvement: Improvised Accessibility of the Off-canvas menu section by ensuring consistent toggle behavior during keyboard navigation and interaction.

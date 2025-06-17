@@ -911,7 +911,7 @@ class Astra_Menu {
 
 		$extensions[] = array(
 			'title'       => 'Google Analytics for WooCommerce',
-			'subtitle'    => __( 'Understand your customers and increase revenue with world’s leading analytics platform - integrated with WooCommerce for free.', 'astra' ),
+			'subtitle'    => __( 'Boost sales with WooCommerce analytics.', 'astra' ),
 			'status'      => self::get_plugin_status( 'woocommerce-google-analytics-integration/woocommerce-google-analytics-integration.php' ),
 			'slug'        => 'woocommerce-google-analytics-integration',
 			'path'        => 'woocommerce-google-analytics-integration/woocommerce-google-analytics-integration.php',
@@ -963,8 +963,8 @@ class Astra_Menu {
 					'path'        => 'surecart/surecart.php',
 					'redirection' => admin_url( 'admin.php?page=' . esc_attr( $surecart_redirection ) ),
 					'logoPath'    => array(
-						'internal_icon' => false,
-						'icon_path'     => 'https://ps.w.org/surecart/assets/icon-128x128.png',
+						'internal_icon' => true,
+						'icon_path'     => 'surecart_logo',
 					),
 				),
 				'spectra'       => array(
