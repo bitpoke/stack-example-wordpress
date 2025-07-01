@@ -288,6 +288,12 @@
      width: 100px;
      margin-right: auto
  }
+
+ .ahfb-sorter-item-panel-content .rfipdropdown .rfipicons__num {
+     display: inline-flex;
+     align-items: center;
+     gap: 4px;
+ }
  
  .rfipicons__cp {
      width: 32px;

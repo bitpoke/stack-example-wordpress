@@ -1,5 +1,13 @@
 *** Astra Changelog ***
 
+2025-07-01 - version 4.11.4
+* Improvement: Improved anchor link behavior across pages to prevent content from being hidden behind the sticky header.
+* Improvement: Made Cart flyout navigation and WooCommerce product gallery image slider keyboard accessible with proper focus indicators.
+* Improvement: Ensured feature image, category, tag, and post filter buttons are focusable with visible input highlight for better navigation.
+* Fix: Resolved warning in breadcrumb trail by adding proper checks for post type rewrite rules and slug access.
+* Fix: Corrected tooltip icon positioning in WooCommerce Customizer settings.
+* Fix: Footer row layout change button is not updating properly.
+
 2025-06-17 - version 4.11.3
 * New: Enabled access to Astra Meta Settings inside the Elementor Editor under the Page Settings panel.
 * Fix: Social Sharing icons aligned uniformly with transparent backgrounds.

@@ -332,18 +332,18 @@ function astra_hb_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 			$border_bottom_right_radius = astra_responsive_spacing( $sub_menu_border_radius_fields, 'bottom', $device );
 			$border_bottom_left_radius  = astra_responsive_spacing( $sub_menu_border_radius_fields, 'left', $device );
 
-			// determine the variable.
-			$css_output_var = 'css_output_' . $device;
-			if ( ! isset( $$css_output_var ) || ! is_array( $$css_output_var ) ) {
+			// Determine the variable.
+			$css_output_var = &${ 'css_output_' . $device };
+			if ( ! is_array( $css_output_var ) ) {
 				continue;
 			}
 
-			$$css_output_var[ $selector . ' .sub-menu .menu-item:first-of-type > .menu-link, ' . $selector . ' .inline-on-mobile .sub-menu .menu-item:first-of-type > .menu-link' ] = array(
+			$css_output_var[ $selector . ' .sub-menu .menu-item:first-of-type > .menu-link, ' . $selector . ' .inline-on-mobile .sub-menu .menu-item:first-of-type > .menu-link' ] = array(
 				'border-top-left-radius'  => $border_top_left_radius ? 'calc(' . $border_top_left_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
 				'border-top-right-radius' => $border_top_right_radius ? 'calc(' . $border_top_right_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
 			);
 
-			$$css_output_var[ $selector . ' .sub-menu .menu-item:last-of-type > .menu-link, ' . $selector . ' .inline-on-mobile .sub-menu .menu-item:last-of-type > .menu-link' ] = array(
+			$css_output_var[ $selector . ' .sub-menu .menu-item:last-of-type > .menu-link, ' . $selector . ' .inline-on-mobile .sub-menu .menu-item:last-of-type > .menu-link' ] = array(
 				'border-bottom-right-radius' => $border_bottom_right_radius ? 'calc(' . $border_bottom_right_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
 				'border-bottom-left-radius'  => $border_bottom_left_radius ? 'calc(' . $border_bottom_left_radius . ' - ' . astra_get_css_value( $sub_menu_border, 'px' ) . ')' : '',
 			);

@@ -1173,8 +1173,13 @@ class Astra_Breadcrumb_Trail {
 		$post_types = get_post_types( array(), 'objects' );
 
 		foreach ( $post_types as $type ) {
+			$has_archive = $type->has_archive;
+			$rewrite_slug = isset( $type->rewrite['slug'] ) ? $type->rewrite['slug'] : '';
 
-			if ( $slug === $type->has_archive || ( true === $type->has_archive && $slug === $type->rewrite['slug'] ) ) {
+			// Convert has_archive to string for comparison if it's a boolean
+			$has_archive_str = is_bool( $has_archive ) ? ( $has_archive ? '1' : '0' ) : $has_archive;
+
+			if ( (string) $slug === $has_archive_str || ( true === $has_archive && (string) $slug === $rewrite_slug ) ) {
 				$return[] = $type;
 			}
 		}

@@ -669,7 +669,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			return offsetTop;
 		}
 
-		const scrollToIDHandler = (e) => {
+		const scrollToIDHandler = ( e, hash = null ) => {
 
 			let offset = 0;
 			const siteHeader = document.querySelector('.site-header');
@@ -696,7 +696,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					}
 				}
 
-				const href = e.target.closest('a').hash;
+				const href = hash ? hash : e.target?.closest( 'a' ).hash;
 				if (href) {
 					const scrollId = document.querySelector(href);
 					if (scrollId) {
@@ -745,7 +745,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 							offset += single.clientHeight;
 						});
 					}
-					
+
 					const scrollId = document.querySelector(link.hash);
 					if (scrollId) {
 						const scrollOffsetTop = getOffsetTop(scrollId) - offset;
@@ -754,6 +754,11 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 						}
 					}
 				}
+			}
+
+			// If there is a hash in the URL when the page loads, scroll to that element after a short delay.
+			if ( location.hash ) {
+				setTimeout( () => scrollToIDHandler( new Event( 'click' ), location.hash ), 750 );
 			}
 		});
 	}

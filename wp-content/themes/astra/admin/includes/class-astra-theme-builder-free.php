@@ -84,7 +84,7 @@ if ( ! class_exists( 'Astra_Theme_Builder_Free' ) ) {
 				'new_custom_layout_base_url' => admin_url( 'post-new.php?post_type=astra-advanced-hook' ),
 				'astra_pricing_page_url'     => astra_get_pro_url( '/pricing/', 'free-theme', 'site-builder', 'upgrade' ),
 				'astra_docs_page_url'        => astra_get_pro_url( '/docs/custom-layouts-pro/', 'free-theme', 'site-builder', 'documentation' ),
-				'admin_url'                  => admin_url(),
+				'astra_base_url'             => admin_url( 'admin.php?page=' . Astra_Menu::get_theme_page_slug() ),
 			);
 
 			wp_localize_script( 'astra-theme-builder-script', 'astra_theme_builder', $localized_data );

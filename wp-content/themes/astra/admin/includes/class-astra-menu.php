@@ -808,7 +808,7 @@ class Astra_Menu {
 				'activations' => '200,000 +',
 				'logoPath'    => array(
 					'internal_icon' => false,
-					'icon_path'     => 'https://ps.w.org/cartflows/assets/icon.svg',
+					'icon_path'     => 'https://ps.w.org/cartflows/assets/icon-256x256.gif',
 				),
 			),
 		);

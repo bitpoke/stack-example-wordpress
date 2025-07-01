@@ -42,7 +42,7 @@ if ( ! class_exists( 'Astra_Body_Colors_Configs' ) ) {
 					'priority'  => 5,
 					'title'     => __( 'Global Palette', 'astra' ),
 					'default'   => astra_get_option( 'global-color-palette' ),
-					'transport' => 'refresh',
+					'transport' => 'postMessage',
 				),
 
 				array(
