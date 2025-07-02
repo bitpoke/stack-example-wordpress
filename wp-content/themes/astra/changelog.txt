@@ -1,5 +1,8 @@
 *** Astra Changelog ***
 
+2025-07-01 - version 4.11.5
+* This version includes an updated package to ensure compatibility with Astra UTM links on wp.org.
+
 2025-07-01 - version 4.11.4
 * Improvement: Improved anchor link behavior across pages to prevent content from being hidden behind the sticky header.
 * Improvement: Made Cart flyout navigation and WooCommerce product gallery image slider keyboard accessible with proper focus indicators.
