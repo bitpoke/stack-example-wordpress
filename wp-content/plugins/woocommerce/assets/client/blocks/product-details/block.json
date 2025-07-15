@@ -1,26 +1,17 @@
 {
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
 	"name": "woocommerce/product-details",
-	"icon": "info",
 	"title": "Product Details",
-	"description": "Display a product's description, attributes, and reviews.",
-	"category": "woocommerce-product-elements",
-	"attributes": {
-		"hideTabTitle": {
-			"type": "boolean",
-			"default": false
-		}
-	},
-	"keywords": [ "WooCommerce" ],
+	"description": "Display a product's description, attributes, and reviews",
+	"category": "woocommerce",
+	"textdomain": "woocommerce",
 	"supports": {
 		"interactivity": {
 			"clientNavigation": true
 		},
-		"align": true,
-		"spacing": {
-			"margin": true
-		}
+		"align": [ "wide", "full" ]
 	},
-	"textdomain": "woocommerce",
-	"apiVersion": 3,
-	"$schema": "https://schemas.wp.org/trunk/block.json"
+	"attributes": {},
+	"usesContext": [ "query", "queryId", "postId", "postType" ]
 }
