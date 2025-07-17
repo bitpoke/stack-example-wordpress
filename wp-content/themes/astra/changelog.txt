@@ -1,5 +1,15 @@
 *** Astra Changelog ***
 
+2025-07-16 - version 4.11.6
+* Improvement: Updated live search results background to use a dynamic color variable for better dark mode support.
+* Improvement: Improved accessibility by assigning explicit roles to the header and footer widget areas to ensure proper landmark structure.
+* Improvement: Added a filter to exclude specific post types (such as SureForms) from Astra meta key registration to avoid errors.
+* Improvement: Prevented WooCommerce-related CSS selectors from dynamic CSS when WooCommerce is not installed or activated, reducing unnecessary output and improving code cleanliness.
+* Improvement: Added consistent button styling across the editor and frontend on a fresh setup.
+* Fix: Resolved a quantity update button conflict with Beaver Themer.
+* Fix: Resolved an issue where WPForms styling incorrectly applied dark mode CSS when the File Generation option was enabled.
+* Fix: Resolved a layout conflict between the WooPack Off-Canvas Cart module and the Beaver Themer header in Astra.
+
 2025-07-01 - version 4.11.5
 * This version includes an updated package to ensure compatibility with Astra UTM links on wp.org.
 

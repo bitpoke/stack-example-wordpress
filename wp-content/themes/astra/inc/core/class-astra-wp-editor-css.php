@@ -465,7 +465,7 @@ class Astra_WP_Editor_CSS {
 			'.wp-block-post-content'           => array(
 				'color' => esc_attr( $text_color ),
 			),
-			'.has-text-color .block-editor-block-list__block:not(.wp-block-heading)' => array(
+			'.has-text-color .block-editor-block-list__block:not(:is(.wp-block-heading, .wp-block-button))' => array(
 				'color' => 'inherit',
 			),
 			'.wp-block-cover:not(.has-text-color.has-link-color) .wp-block-cover__inner-container .block-editor-rich-text__editable.wp-block-paragraph' => array(
@@ -557,7 +557,7 @@ class Astra_WP_Editor_CSS {
 			),
 
 			// Gutenberg button compatibility for default styling.
-			'.editor-styles-wrapper .wp-block-button:not(.is-style-outline) .wp-block-button__link, .block-editor-writing-flow .wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button, .block-editor-writing-flow .wp-block-file .wp-block-file__button, .editor-styles-wrapper button.wc-block-components-button' => array(
+			':where(.editor-styles-wrapper .wp-block-button:not(.is-style-outline)) :is(div, button).wp-block-button__link, .block-editor-writing-flow .wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button, .block-editor-writing-flow .wp-block-file .wp-block-file__button, .editor-styles-wrapper button.wc-block-components-button' => array(
 				'border-style'               => $theme_btn_top_border || $theme_btn_right_border || $theme_btn_left_border || $theme_btn_bottom_border ? 'solid' : '',
 				'border-top-width'           => $theme_btn_top_border,
 				'border-right-width'         => $theme_btn_right_border,
@@ -591,7 +591,7 @@ class Astra_WP_Editor_CSS {
 				'color'            => esc_attr( $btn_h_color ),
 				'background-color' => esc_attr( $btn_bg_h_color ),
 			),
-			'.editor-styles-wrapper .block-editor-block-list__layout  .is-layout-grid.wp-block-group-is-layout-grid p, .editor-styles-wrapper .block-editor-block-list__layout .is-layout-flex.wp-block-group-is-layout-flex p' => array(
+			'.editor-styles-wrapper .block-editor-block-list__layout  .is-layout-grid.wp-block-group-is-layout-grid p, .editor-styles-wrapper .block-editor-block-list__layout .is-layout-flex:is(.wp-block-group-is-layout-flex, [class*="wp-block-spectra-"]) p' => array(
 				'margin-bottom' => '0',
 			),
 			'.wp-block-button.is-style-outline > .wp-block-button__link.has-text-color' => array(
@@ -618,6 +618,11 @@ class Astra_WP_Editor_CSS {
 				'box-shadow'         => '0 0 30px 0 rgba(0,0,0,.15)',
 				'-webkit-box-shadow' => '0 0 30px 0 rgba(0,0,0,.15)',
 				'-moz-box-shadow'    => '0 0 30px 0 rgba(0,0,0,.15)',
+			);
+
+			// To apply the default button border radius in the editor to make the consistency with the frontend.
+			$desktop_css[ 'button, .ast-button, .button, input[type="button"], input[type="reset"], input[type="submit"]' . ( astra_button_consistency_compatibility() ? ', .wp-block-button__link' : '' ) ] = array(
+				'border-radius' => '4px',
 			);
 		}
 
@@ -866,7 +871,7 @@ class Astra_WP_Editor_CSS {
 			),
 
 			// Primary hover styles.
-			'.editor-styles-wrapper .wp-block-button:not(.is-style-outline) .wp-block-button__link:hover, .block-editor-writing-flow .wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button:hover, .block-editor-writing-flow .wp-block-file .wp-block-file__button:hover' => array(
+			':where(.editor-styles-wrapper .wp-block-button):not(.is-style-outline) .wp-block-button__link:hover, .block-editor-writing-flow .wp-block-search .wp-block-search__inside-wrapper .wp-block-search__button:hover, .block-editor-writing-flow .wp-block-file .wp-block-file__button:hover' => array(
 				'color'            => esc_attr( $btn_text_hover_color ),
 				'background-color' => esc_attr( $btn_bg_hover_color ),
 				'border-color'     => empty( $btn_border_h_color ) ? esc_attr( $btn_bg_hover_color ) : esc_attr( $btn_border_h_color ),

@@ -533,7 +533,7 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 							esc_url( ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ),
 							__( 'Unlock your full design potential and build a website to be proud of with Astra Pro.', 'astra' ),
 							astra_get_pro_url( '/pricing/', 'free-theme', 'elementor-editor', 'upgrade' ),
-							__( 'Upgrade Now', 'astra' ),
+							__( 'Upgrade Now', 'astra' )
 						),
 					)
 				);

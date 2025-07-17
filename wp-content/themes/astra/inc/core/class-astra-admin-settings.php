@@ -239,7 +239,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 						__( '300+ Templates', 'astra' ),
 						$gb_image_path,
 						$ele_image_path,
-						$ai_image_path,
+						$ai_image_path
 					),
 					'priority'                   => 5,
 					'display-with-other-notices' => false,
