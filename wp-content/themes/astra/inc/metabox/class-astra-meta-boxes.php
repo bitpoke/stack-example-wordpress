@@ -499,7 +499,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			}
 
 			// Added Check if current post type is excluded from Astra meta settings.
-			$post_type = get_post_type( $post_id );
+			$post_type           = get_post_type( $post_id );
 			$excluded_post_types = self::get_excluded_meta_post_types();
 			if ( $post_type && in_array( $post_type, $excluded_post_types, true ) ) {
 				return;
@@ -1071,7 +1071,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			if ( isset( $_REQUEST['post_type'] ) && is_string( $_REQUEST['post_type'] ) ) {
 				$post_type = sanitize_key( $_REQUEST['post_type'] );
 			} elseif ( isset( $_REQUEST['post'] ) ) {
-				$post_id = absint( $_REQUEST['post'] );
+				$post_id   = absint( $_REQUEST['post'] );
 				$post_type = get_post_type( $post_id );
 			} elseif ( function_exists( 'get_current_screen' ) ) {
 				$screen = get_current_screen();

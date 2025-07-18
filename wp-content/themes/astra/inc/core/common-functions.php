@@ -2207,11 +2207,11 @@ if ( ! function_exists( 'astra_parse_selector' ) ) {
 	 * $filtered  = astra_parse_selector( $selectors, 'wc' );
 	 * ```
 	 *
-	 * @param string $selectors       Full selector string (comma-separated).
+	 * @param string       $selectors       Full selector string (comma-separated).
 	 * @param string|array $keywords  Keywords to filter out selectors. If a string is provided, it will be converted to an array.
 	 *
 	 * @return string Final selector string.
-	 * @since x.x.x
+	 * @since 4.11.7
 	 */
 	function astra_parse_selector( $selectors, $keywords = '' ) {
 		$selector_array     = explode( ',', $selectors );
@@ -2223,8 +2223,8 @@ if ( ! function_exists( 'astra_parse_selector' ) ) {
 		}
 
 		foreach ( $selector_array as $selector ) {
-			$selector         = trim( $selector );
-			$ignore_selector  = false;
+			$selector        = trim( $selector );
+			$ignore_selector = false;
 
 			foreach ( $keywords as $keyword ) {
 				switch ( $keyword ) {

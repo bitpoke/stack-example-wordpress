@@ -1286,8 +1286,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				require_once ASTRA_THEME_DIR . 'inc/dynamic-css/live-search.php'; // PHPCS:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 			}
 
-			if ( 
-				( Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) && defined( 'WC_VERSION' ) ) ||
+			if ( ( Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) && defined( 'WC_VERSION' ) ) ||
 				( Astra_Builder_Helper::is_component_loaded( 'edd-cart', 'header' ) && defined( 'EDD_VERSION' ) )
 			) {
 				$parse_css .= Astra_Enqueue_Scripts::trim_css( self::load_cart_static_css() );

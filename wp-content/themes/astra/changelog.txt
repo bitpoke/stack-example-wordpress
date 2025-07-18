@@ -1,5 +1,8 @@
 *** Astra Changelog ***
 
+2025-07-17 - version 4.11.7
+* Updated the NPS Survey library to incorporate the latest enhancements.
+
 2025-07-16 - version 4.11.6
 * Improvement: Updated live search results background to use a dynamic color variable for better dark mode support.
 * Improvement: Improved accessibility by assigning explicit roles to the header and footer widget areas to ensure proper landmark structure.
