@@ -12,6 +12,14 @@
 		},
 		"align": [ "wide", "full" ]
 	},
-	"attributes": {},
+	"attributes": {
+		"align": {
+			"type": "string"
+		},
+		"hideTabTitle": {
+			"type": "boolean",
+			"default": false
+		}
+	},
 	"usesContext": [ "query", "queryId", "postId", "postType" ]
 }

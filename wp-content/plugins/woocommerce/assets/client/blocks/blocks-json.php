@@ -3011,7 +3011,13 @@ return array(
 			)
 		),
 		'attributes' => array(
-			
+			'align' => array(
+				'type' => 'string'
+			),
+			'hideTabTitle' => array(
+				'type' => 'boolean',
+				'default' => false
+			)
 		),
 		'usesContext' => array(
 			'query',
