@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 6.7
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 10.0.2
+Stable tag: 10.0.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -169,12 +169,11 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 10.0.3 2025-07-21 =
+= 10.0.4 2025-07-23 =
 
 **WooCommerce**
 
-* Fix - Product Details: prevent the default template to be auto applied for existing blocks. [#59698](https://github.com/woocommerce/woocommerce/pull/59698)
-* Tweak - Filter tooltip content in jQuery tipTip tooltips [#59830](https://github.com/woocommerce/woocommerce/pull/59830)
+* Fix - Possible fatal error with Gutenberg 21.2.0, in particular in Analytics reports. [#59846](https://github.com/woocommerce/woocommerce/pull/59846)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
