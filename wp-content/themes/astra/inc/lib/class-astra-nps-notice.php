@@ -110,7 +110,7 @@ if ( ! class_exists( 'Astra_Nps_Notice' ) ) {
 
 						// Step 2A i.e. positive.
 						'feedback_title' => __( 'Thanks a lot for your feedback! 😍', 'astra' ),
-						'feedback_content' => __( 'Could you please do us a favor and give us a 5-star rating on WordPress? It would help others choose Astra with confidence. Thank you!', 'astra' ),
+						'feedback_content' => __( 'Thanks for using Astra! Got feedback or suggestions to make it even better? We’d love to hear from you.', 'astra' ),
 						'plugin_rating_link' => esc_url( 'https://wordpress.org/support/theme/astra/reviews/#new-post' ),
 						'plugin_rating_button_string' => __( 'Rate the Theme', 'astra' ),
 

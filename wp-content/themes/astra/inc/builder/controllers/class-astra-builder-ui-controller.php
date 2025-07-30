@@ -112,10 +112,18 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 							esc_attr( $builder_type )
 						);
 
-						echo self::fetch_svg_icon( $item['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						// Handle custom SVG or icon library
+						if ( isset( $item['icon_type'] ) && 'custom' === $item['icon_type'] && ! empty( $item['custom_svg'] ) ) {
+							// Use custom SVG
+							echo '<span aria-hidden="true" class="ahfb-svg-iconset ast-inline-flex svg-baseline">' . $item['custom_svg'] . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						} else {
+							// Use icon library
+							echo self::fetch_svg_icon( $item['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						}
 
 						if ( $show_label ) {
-							echo '<span class="social-item-label">' . esc_html( $item['label'] ) . '</span>';
+							/** @psalm-suppress PossiblyUndefinedStringArrayOffset */
+							echo '<span class="social-item-label">' . esc_html( isset( $item['label'] ) ? $item['label'] : '' ) . '</span>';
 						}
 
 						echo '</a>';

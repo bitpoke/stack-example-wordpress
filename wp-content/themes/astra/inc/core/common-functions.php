@@ -2211,7 +2211,7 @@ if ( ! function_exists( 'astra_parse_selector' ) ) {
 	 * @param string|array $keywords  Keywords to filter out selectors. If a string is provided, it will be converted to an array.
 	 *
 	 * @return string Final selector string.
-	 * @since 4.11.7
+	 * @since 4.11.6
 	 */
 	function astra_parse_selector( $selectors, $keywords = '' ) {
 		$selector_array     = explode( ',', $selectors );
