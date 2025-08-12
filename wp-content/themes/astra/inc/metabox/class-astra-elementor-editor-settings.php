@@ -67,7 +67,7 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 		private function init_hooks() {
 			// Registering actions for Elementor editor assets, document controls, and custom control styles.
 			add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_editor_assets' ) );
-			add_action( 'elementor/documents/register_controls', array( $this, 'register_document_controls' ) );
+			add_action( 'elementor/documents/register_controls', array( $this, 'register_document_controls' ), 20 );
 			add_action( 'elementor/editor/after_enqueue_styles', array( $this, 'add_custom_control_style' ) );
 
 			// Hook into Elementor's document saving process to persist Astra-specific settings.
@@ -75,6 +75,25 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 
 			// Hook into the template redirect action to handle Elementor preview.
 			add_action( 'template_redirect', array( $this, 'handle_preview' ) );
+
+			// Hook into wp_after_insert_post to sync site-post-title with Elementor hide_title.
+			add_action( 'wp_after_insert_post', array( $this, 'sync_site_post_title_to_elementor' ) );
+		}
+
+		/**
+		 * Check if in Elementor editor mode.
+		 *
+		 * @since 4.11.9
+		 * @return bool
+		 */
+		public static function is_elementor_editor() {
+			// Check if in Elementor editor mode.
+			/** @psalm-suppress UndefinedClass */
+			if ( ! class_exists( '\Elementor\Plugin' ) || ! \Elementor\Plugin::$instance->editor || ! \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+				return false;
+			}
+
+			return true;
 		}
 
 		/**
@@ -86,6 +105,7 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 		 */
 		public static function get_astra_elementor_setting_keys() {
 			$settings = array(
+				'site-post-title', // Astra Disable Title.
 				'ast-site-content-layout', // Container Layout.
 				'site-content-style', // Container Style.
 				'site-sidebar-layout', // Sidebar Layout.
@@ -122,8 +142,7 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 		 */
 		public function enqueue_editor_assets() {
 			// Check if in Elementor editor mode.
-			/** @psalm-suppress UndefinedClass */
-			if ( ! class_exists( '\Elementor\Plugin' ) || ! \Elementor\Plugin::$instance->editor || ! \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+			if ( ! self::is_elementor_editor() ) {
 				return;
 			}
 
@@ -655,6 +674,7 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 
 			$css_rules .= '</style>';
 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is inline CSS and does not require escaping.
 			echo class_exists( 'Astra_Minify' ) ? Astra_Minify::trim_css( $css_rules ) : $css_rules;
 		}
 
@@ -711,6 +731,9 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 					3
 				);
 			}
+
+			// Ensure the title is enabled for Elementor preview so that Hide Title toggle works correctly.
+			add_action( 'astra_the_title_enabled', '__return_true', 999 );
 		}
 
 		/**
@@ -737,6 +760,14 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 			// Get fresh saved settings directly from the meta.
 			$page_settings = $document->get_meta( '_elementor_page_settings' );
 
+			// If the settings are not an array, initialize it as an empty array.
+			if ( ! is_array( $page_settings ) ) {
+				$page_settings = array();
+			}
+
+			// Sync astra site-post-title with elementor hide_title.
+			$page_settings['site-post-title'] = isset( $page_settings['hide_title'] ) ? $page_settings['hide_title'] : '';
+
 			$keys = array(
 				'ast-site-content-layout', // Container Layout.
 				'site-content-style', // Container Style.
@@ -761,6 +792,7 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 			}
 
 			$keys = array(
+				'site-post-title', // Astra Disable Title.
 				'ast-global-header-display', // Disable Header.
 				'footer-sml-layout', // Disable Footer.
 				'ast-banner-title-visibility', // Disable Banner Area.
@@ -844,6 +876,62 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 
 			// URL-encode the SVG for embedding as a background-image.
 			return rawurlencode( $svg );
+		}
+
+		/**
+		 * Sync site-post-title meta to Elementor hide_title when post is saved via WP editor.
+		 *
+		 * @param int $post_id Post id.
+		 *
+		 * @since 4.11.9
+		 */
+		public function sync_site_post_title_to_elementor( $post_id ) {
+			// Skip if this is a revision or autosave.
+			if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+				return;
+			}
+
+			// Bail early if this is an Elementor AJAX request.
+			if ( ( isset( $_REQUEST['action'] ) && 'elementor_ajax' === $_REQUEST['action'] ) ) {
+				return true;
+			}
+
+			// Skip if saving from Elementor to avoid conflicts.
+			if ( did_action( 'elementor/document/after_save' ) ) {
+				return;
+			}
+
+			// Skip if post builder is not Elementor.
+			if ( 'builder' !== get_post_meta( $post_id, '_elementor_edit_mode', true ) ) {
+				return;
+			}
+
+			// Get the site-post-title meta value.
+			$site_post_title = get_post_meta( $post_id, 'site-post-title', true );
+
+			// Get current Elementor page settings.
+			$elementor_settings = get_post_meta( $post_id, '_elementor_page_settings', true );
+			if ( ! is_array( $elementor_settings ) ) {
+				$elementor_settings = array();
+			}
+
+			// Check if we need to update the hide_title setting.
+			$current_hide_title = isset( $elementor_settings['hide_title'] ) ? $elementor_settings['hide_title'] : '';
+			$new_hide_title     = 'disabled' === $site_post_title ? 'yes' : '';
+
+			// Only update if the value has changed.
+			if ( $current_hide_title !== $new_hide_title ) {
+				if ( 'yes' === $new_hide_title ) {
+					$elementor_settings['hide_title'] = 'yes';
+				} else {
+					unset( $elementor_settings['hide_title'] );
+				}
+
+				// Update the Elementor page settings meta.
+				empty( $elementor_settings )
+					? delete_post_meta( $post_id, '_elementor_page_settings' )
+					: update_post_meta( $post_id, '_elementor_page_settings', $elementor_settings );
+			}
 		}
 
 	}

@@ -1,5 +1,11 @@
 *** Astra Changelog ***
 
+2025-08-11 - version 4.11.9
+* Improvement: Compatibility with Spectra V3.
+* Improvement: Improved accessibility of Header Builder elements, particularly the toggle menu.
+* Improvement: Improved compatibility with the GenerateBlocks plugin to ensure proper styling from block settings.
+* Fix: Resolved syncing issue between Astra meta settings in the WP and the Elementor editor for newly created pages.
+
 2025-07-30 - version 4.11.8
 * New: Added an option to use custom SVG code in the Social Icons widget.
 * Improvement: Enhanced off-canvas menu keyboard navigation with proper focus management and ESC key support (WCAG 2.1 compliance).

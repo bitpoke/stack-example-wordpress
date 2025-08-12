@@ -82,6 +82,7 @@ if ( ! class_exists( 'Astra_Walker_Page' ) ) {
 							array(
 								'aria-expanded' => 'false',
 								'aria-haspopup' => 'true',
+								'aria-label'    => 'Toggle menu',
 							),
 							$page
 						) . '><span class="screen-reader-text">' . __( 'Menu Toggle', 'astra' ) . '</span>' . Astra_Icons::get_icons( 'arrow' ) . '</button>';
@@ -93,6 +94,7 @@ if ( ! class_exists( 'Astra_Walker_Page' ) ) {
 							array(
 								'aria-expanded' => 'false',
 								'aria-haspopup' => 'true',
+								'aria-label'    => 'Toggle menu',
 							),
 							$page
 						) . '><span class="screen-reader-text">' . __( 'Menu Toggle', 'astra' ) . '</span>' . Astra_Icons::get_icons( 'arrow' ) . '</button>';

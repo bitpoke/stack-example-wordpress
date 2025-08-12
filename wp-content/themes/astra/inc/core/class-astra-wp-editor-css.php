@@ -144,6 +144,8 @@ class Astra_WP_Editor_CSS {
 
 		$link_color   = astra_get_option( 'link-color', $theme_color );
 		$link_h_color = astra_get_option( 'link-h-color' );
+		/** @psalm-suppress PossiblyNullPropertyFetch */
+		$post_type = get_current_screen() ? get_current_screen()->post_type : '';
 
 		/**
 		 * Button theme compatibility.
@@ -603,15 +605,22 @@ class Astra_WP_Editor_CSS {
 			'.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color)' => array(
 				'color' => empty( $btn_border_color ) ? esc_attr( $btn_bg_color ) : esc_attr( $btn_border_color ),
 			),
-
-			// Margin bottom same as applied on frontend.
-			'.editor-styles-wrapper .is-root-container.block-editor-block-list__layout > .wp-block-heading' => array(
-				'margin-bottom' => '20px',
-			),
-			'.editor-styles-wrapper p'         => array(
+			':where(.editor-styles-wrapper) p'         => array(
 				'line-height' => esc_attr( $body_line_height ),
 			),
 		);
+
+		// Margin bottom same as applied on frontend.
+		if ( 'post' === $post_type && apply_filters( 'astra_improvise_single_post_design', Astra_Dynamic_CSS::astra_4_6_0_compatibility() ) ) {
+			$desktop_css['.editor-styles-wrapper :where(.is-root-container.block-editor-block-list__layout) > :is(.wp-block-heading, h1, h2, h3, h4, h5, h6)'] = array(
+				'margin-top'    => '1.5em',
+				'margin-bottom' => 'calc(0.3em + 10px);',
+			);
+		} else {
+			$desktop_css['.editor-styles-wrapper .is-root-container.block-editor-block-list__layout > :is(.wp-block-heading, [class*="wp-block-spectra"]:where(h1, h2 ,h3 ,h4 ,h5 ,h6))'] = array(
+				'margin-bottom' => '20px',
+			);
+		}
 
 		if ( Astra_Dynamic_CSS::astra_4_6_0_compatibility() && astra_get_option( 'single-content-images-shadow', false ) ) {
 			$desktop_css['.wp-block-image img'] = array(

@@ -188,7 +188,7 @@ if ( ! function_exists( 'astra_get_font_css_value' ) ) {
 					 *
 					 * @since 4.8.10
 					 */
-					$disable_px_to_rem = apply_filters( 'astra_disable_px_to_rem_conversion', false );
+					$disable_px_to_rem = apply_filters( 'astra_disable_px_to_rem_conversion', astra_get_option( 'disable-px-to-rem-conversion', false ) );
 
 					if ( $disable_px_to_rem ) {
 						$css_val = esc_attr( $value ) . $unit;

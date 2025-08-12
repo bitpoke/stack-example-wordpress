@@ -232,7 +232,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 			}
 			?>
 			<div class="ast-button-wrap">
-				<button type="button" class="menu-toggle main-header-menu-toggle ast-mobile-menu-trigger-<?php echo esc_attr( $toggle_btn_style ); ?>" <?php echo apply_filters( 'astra_nav_toggle_data_attrs', '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_attr( $aria_controls ); ?> aria-expanded="false">
+				<button type="button" class="menu-toggle main-header-menu-toggle ast-mobile-menu-trigger-<?php echo esc_attr( $toggle_btn_style ); ?>" <?php echo apply_filters( 'astra_nav_toggle_data_attrs', '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_attr( $aria_controls ); ?> aria-expanded="false" aria-label="Main menu toggle">
 					<span class="screen-reader-text">Main Menu</span>
 					<span class="mobile-menu-toggle-icon">
 						<?php
@@ -414,6 +414,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 					if ( $action_type === 'link' || 'hover' === $show_menu ) {
 						$link_href = '' !== $link_url ? 'href=' . esc_url( $link_url ) : '';
 					}
+					$role = $action_type === 'link' ? 'link' : 'button';
 
 					$link_classes = array(
 						'ast-header-account-link',
@@ -434,7 +435,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 					?>
 					<div class="ast-header-account-inner-wrap">
-						<a class="<?php echo esc_attr( implode( ' ', $link_classes ) ); ?>" role="link" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
+						<a class="<?php echo esc_attr( implode( ' ', $link_classes ) ); ?>" role="<?php echo esc_attr( $role ); ?>" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
 
 							<?php
 							if ( 'avatar' === $login_profile_type ) {

@@ -627,8 +627,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h1, .entry-content h1, .entry-content h1 a, h2, .entry-content h2, .entry-content h2 a, h3, .entry-content h3, .entry-content h3 a, h4, .entry-content h4, .entry-content h4 a, h5, .entry-content h5, .entry-content h5 a, h6, .entry-content h6, .entry-content h6 a, .site-title, .site-title a',
-					'h1, .entry-content h1, h2, .entry-content h2, h3, .entry-content h3, h4, .entry-content h4, h5, .entry-content h5, h6, .entry-content h6, .site-title, .site-title a'
+					'h1, h2, h3, h4, h5, h6, .entry-content :where(h1, h2, h3, h4, h5, h6), .entry-content :where(h1, h2, h3, h4, h5, h6) a, .site-title, .site-title a',
+					'h1, h2, h3, h4, h5, h6, .entry-content :where(h1, h2, h3, h4, h5, h6), .site-title, .site-title a'
 				)                                        => astra_get_font_array_css( astra_get_option( 'headings-font-family' ), astra_get_option( 'headings-font-weight' ), array(), 'headings-font-extras' ),
 
 				'.ast-site-identity .site-title a'       => array(
@@ -675,8 +675,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select the css selectors with or without anchors.
 				self::conditional_headings_css_selectors(
-					'h1, .entry-content h1, .entry-content h1 a',
-					'h1, .entry-content h1'
+					'h1, .entry-content :where(h1), .entry-content :where(h1) a',
+					'h1, .entry-content :where(h1)'
 				)                                        => array(
 					'font-size'       => astra_responsive_font( $heading_h1_font_size, 'desktop' ),
 					'font-weight'     => astra_get_css_value( $h1_font_weight, 'font' ),
@@ -689,8 +689,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h2, .entry-content h2, .entry-content h2 a',
-					'h2, .entry-content h2'
+					'h2, .entry-content :where(h2), .entry-content :where(h2) a',
+					'h2, .entry-content :where(h2)'
 				)                                        => array(
 					'font-size'       => astra_responsive_font( $heading_h2_font_size, 'desktop' ),
 					'font-weight'     => astra_get_css_value( $h2_font_weight, 'font' ),
@@ -703,8 +703,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h3, .entry-content h3, .entry-content h3 a',
-					'h3, .entry-content h3'
+					'h3, .entry-content :where(h3), .entry-content :where(h3) a',
+					'h3, .entry-content :where(h3)'
 				)                                        => array(
 					'font-size'       => astra_responsive_font( $heading_h3_font_size, 'desktop' ),
 					'font-weight'     => astra_get_css_value( $h3_font_weight, 'font' ),
@@ -717,20 +717,20 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h4, .entry-content h4, .entry-content h4 a',
-					'h4, .entry-content h4'
+					'h4, .entry-content :where(h4), .entry-content :where(h4) a',
+					'h4, .entry-content :where(h4)'
 				)                                        => $h4_properties,
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h5, .entry-content h5, .entry-content h5 a',
-					'h5, .entry-content h5'
+					'h5, .entry-content :where(h5), .entry-content :where(h5) a',
+					'h5, .entry-content :where(h5)'
 				)                                        => $h5_properties,
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h6, .entry-content h6, .entry-content h6 a',
-					'h6, .entry-content h6'
+					'h6, .entry-content :where(h6), .entry-content :where(h6) a',
+					'h6, .entry-content :where(h6)'
 				)                                        => $h6_properties,
 
 				// Global CSS.
@@ -741,8 +741,8 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select selectors with annchors or withour anchors for text color.
 				self::conditional_headings_css_selectors(
-					'body, h1, .entry-title a, .entry-content h1, .entry-content h1 a, h2, .entry-content h2, .entry-content h2 a, h3, .entry-content h3, .entry-content h3 a, h4, .entry-content h4, .entry-content h4 a, h5, .entry-content h5, .entry-content h5 a, h6, .entry-content h6, .entry-content h6 a',
-					'body, h1, .entry-title a, .entry-content h1, h2, .entry-content h2, h3, .entry-content h3, h4, .entry-content h4, h5, .entry-content h5, h6, .entry-content h6'
+					'body, h1, h2, h3, h4, h5, h6, .entry-title a, .entry-content :where(h1, h2, h3, h4, h5, h6), .entry-content :where(h1, h2, h3, h4, h5, h6) a',
+					'body, h1, h2, h3, h4, h5, h6, .entry-title a, .entry-content :where(h1, h2, h3, h4, h5, h6)'
 				)                                        => array(
 					'color' => esc_attr( $text_color ),
 				),
@@ -3712,48 +3712,48 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h1, .entry-content h1, .entry-content h1 a',
-					'h1, .entry-content h1'
+					'h1, .entry-content :where(h1), .entry-content :where(h1) a',
+					'h1, .entry-content :where(h1)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h1_font_size, 'tablet', $heading_font_size_comp ? '' : 30 ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h2, .entry-content h2, .entry-content h2 a',
-					'h2, .entry-content h2'
+					'h2, .entry-content :where(h2), .entry-content :where(h2) a',
+					'h2, .entry-content :where(h2)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h2_font_size, 'tablet', $heading_font_size_comp ? '' : 25 ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h3, .entry-content h3, .entry-content h3 a',
-					'h3, .entry-content h3'
+					'h3, .entry-content :where(h3), .entry-content :where(h3) a',
+					'h3, .entry-content :where(h3)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h3_font_size, 'tablet', $heading_font_size_comp ? '' : 20 ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h4, .entry-content h4, .entry-content h4 a',
-					'h4, .entry-content h4'
+					'h4, .entry-content :where(h4), .entry-content :where(h4) a',
+					'h4, .entry-content :where(h4)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h4_font_size, 'tablet' ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h5, .entry-content h5, .entry-content h5 a',
-					'h5, .entry-content h5'
+					'h5, .entry-content :where(h5), .entry-content :where(h5) a',
+					'h5, .entry-content :where(h5)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h5_font_size, 'tablet' ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h6, .entry-content h6, .entry-content h6 a',
-					'h6, .entry-content h6'
+					'h6, .entry-content :where(h6), .entry-content :where(h6) a',
+					'h6, .entry-content :where(h6)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h6_font_size, 'tablet' ),
 				),
@@ -3817,48 +3817,48 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h1, .entry-content h1, .entry-content h1 a',
-					'h1, .entry-content h1'
+					'h1, .entry-content :where(h1), .entry-content :where(h1) a',
+					'h1, .entry-content :where(h1)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h1_font_size, 'mobile', $heading_font_size_comp ? '' : 30 ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h2, .entry-content h2, .entry-content h2 a',
-					'h2, .entry-content h2'
+					'h2, .entry-content :where(h2), .entry-content :where(h2) a',
+					'h2, .entry-content :where(h2)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h2_font_size, 'mobile', $heading_font_size_comp ? '' : 25 ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h3, .entry-content h3, .entry-content h3 a',
-					'h3, .entry-content h3'
+					'h3, .entry-content :where(h3), .entry-content :where(h3) a',
+					'h3, .entry-content :where(h3)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h3_font_size, 'mobile', $heading_font_size_comp ? '' : 20 ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h4, .entry-content h4, .entry-content h4 a',
-					'h4, .entry-content h4'
+					'h4, .entry-content :where(h4), .entry-content :where(h4) a',
+					'h4, .entry-content :where(h4)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h4_font_size, 'mobile' ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h5, .entry-content h5, .entry-content h5 a',
-					'h5, .entry-content h5'
+					'h5, .entry-content :where(h5), .entry-content :where(h5) a',
+					'h5, .entry-content :where(h5)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h5_font_size, 'mobile' ),
 				),
 
 				// Conditionally select the css selectors with or without achors.
 				self::conditional_headings_css_selectors(
-					'h6, .entry-content h6, .entry-content h6 a',
-					'h6, .entry-content h6'
+					'h6, .entry-content :where(h6), .entry-content :where(h6) a',
+					'h6, .entry-content :where(h6)'
 				)                                => array(
 					'font-size' => astra_responsive_font( $heading_h6_font_size, 'mobile' ),
 				),
@@ -4015,7 +4015,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				 */
 				$parse_css .= astra_parse_css(
 					array(
-						'.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6' => array(
+						'.entry-content :where(h1, h2, h3, h4, h5, h6)' => array(
 							'clear' => 'none',
 						),
 					)
