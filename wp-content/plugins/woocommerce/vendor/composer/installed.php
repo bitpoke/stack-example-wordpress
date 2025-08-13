@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'woocommerce/woocommerce',
-        'pretty_version' => '10.0.4',
-        'version' => '10.0.4.0',
+        'pretty_version' => '10.1.0',
+        'version' => '10.1.0.0',
         'reference' => null,
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -10,6 +10,15 @@
         'dev' => false,
     ),
     'versions' => array(
+        'automattic/block-delimiter' => array(
+            'pretty_version' => 'v0.2.1',
+            'version' => '0.2.1.0',
+            'reference' => 'b303cdc29656df4efbd0753adb8c284d8b986f04',
+            'type' => 'jetpack-library',
+            'install_path' => __DIR__ . '/../automattic/block-delimiter',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'automattic/jetpack-a8c-mc-stats' => array(
             'pretty_version' => 'v3.0.5',
             'version' => '3.0.5.0',
@@ -203,9 +212,9 @@
             'dev_requirement' => false,
         ),
         'woocommerce/action-scheduler' => array(
-            'pretty_version' => '3.9.2',
-            'version' => '3.9.2.0',
-            'reference' => 'efbb7953f72a433086335b249292f280dd43ddfe',
+            'pretty_version' => '3.9.3',
+            'version' => '3.9.3.0',
+            'reference' => 'c58cdbab17651303d406cd3b22cf9d75c71c986c',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../packages/action-scheduler',
             'aliases' => array(),
@@ -230,8 +239,8 @@
             'dev_requirement' => false,
         ),
         'woocommerce/woocommerce' => array(
-            'pretty_version' => '10.0.4',
-            'version' => '10.0.4.0',
+            'pretty_version' => '10.1.0',
+            'version' => '10.1.0.0',
             'reference' => null,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
