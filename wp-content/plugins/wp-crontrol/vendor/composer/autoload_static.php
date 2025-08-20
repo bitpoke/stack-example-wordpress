@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2faf325c22909c96932683ab1c2f3ce2
+class ComposerStaticInit619d2176f520a800f099913fcd367b2e
 {
     public static $classMap = array (
         'Crontrol\\Event\\Table' => __DIR__ . '/../..' . '/src/event-list-table.php',
@@ -15,7 +15,7 @@ class ComposerStaticInit2faf325c22909c96932683ab1c2f3ce2
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit2faf325c22909c96932683ab1c2f3ce2::$classMap;
+            $loader->classMap = ComposerStaticInit619d2176f520a800f099913fcd367b2e::$classMap;
 
         }, null, ClassLoader::class);
     }

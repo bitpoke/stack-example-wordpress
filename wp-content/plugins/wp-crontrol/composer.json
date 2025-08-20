@@ -26,6 +26,7 @@
 		}
 	},
 	"require-dev": {
+		"behat/gherkin": "< 4.13.0",
 		"codeception/module-asserts": "^1.0",
 		"codeception/module-db": "^1.0",
 		"codeception/module-webdriver": "^1.0",
@@ -69,7 +70,7 @@
 			"acceptance-tests"
 		],
 		"test:phpcs": [
-			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath=./ ."
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --basepath=./ ."
 		],
 		"test:phpstan": [
 			"codecept build #",
