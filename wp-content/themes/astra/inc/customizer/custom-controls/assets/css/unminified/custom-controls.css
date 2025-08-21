@@ -1624,9 +1624,6 @@ section.ast-palette-presets-inner-wrap {
 	margin-top: 0px;
 }
 
-.astra-popover-color div[data-wp-component="Flex"] {
-	padding-left: 10px;
-}
 @media ( max-width: 1845px ) {
 	/** Responsive Devices - Compatibility CSS */
 	.ast-color-palette .components-circular-option-picker__option-wrapper {
@@ -2026,8 +2023,7 @@ textarea {
 }
 
 .customize-control .ast-sortable-subfields-wrap .ast-control-tooltip {
-	position: absolute !important;
-	top: 40%;
+	top: 32%;
 	right: 0px;
 	transform: translateY( -50% );
 	z-index: 1;
@@ -2065,7 +2061,6 @@ textarea {
 #customize-control-ast-dynamic-single-product-article-featured-image-position-layout-1 .ast-tooltip {
     top: 100px;
 }
-
 
 #customize-control-ast-dynamic-single-product-article-featured-image-position-layout-1 .dashicons-editor-help[data-title]+.ast-tooltip[data-title]::before{
 	right: 4px;
@@ -2960,7 +2955,7 @@ li.customize-control.ast-top-section-spacing {
 }
 
 .ast-top-section-divider .ast-control-tooltip {
-	top: 30px;
+	top: 15px;
 }
 
 #customize-control-astra-settings-archive-post-content-style .ast-control-tooltip {
@@ -4229,7 +4224,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 
 .customize-control-ast-row-layout .ast-responsive-btns {
 	position: relative;
-	top: 1px;
+	top: 2px;
 }
 
 .customize-control-ast-radio-image label {
@@ -4917,6 +4912,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 .customize-control-ast-slider .ast-slider-wrap,
 .customize-control-ast-responsive-slider .ast-slider-wrap {
 	position: relative;
+	z-index: 1;
 }
 
 .components-range-control__wrapper .components-range-control__track {
@@ -5255,6 +5251,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 	background: none;
 	border: none;
 	outline: none;
+	height: auto;
 }
 
 .ast-responsive-btns button[type="button"] > i {
@@ -5399,6 +5396,11 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 .customize-control-textarea textarea {
 	min-height: 80px;
 }
+
+.ast-title-bold .customize-control-title {
+	font-weight: 600;
+}
+
 .ast-adv-toggle-icon {
 	right: 2px;
 	position: absolute;
@@ -5502,10 +5504,6 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 .ast-group-tabs .ui-widget-content.iris-slider-offset,
 .ast-group-tabs .ui-widget-content.iris-slider-offset-alpha {
 	overflow: inherit;
-}
-
-.ast-fields-wrap {
-	overflow: hidden;
 }
 
 .ast-field-settings-wrap {
@@ -6082,7 +6080,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 
 .ast-sortable-subfields-wrap .customize-control-ast-list-icons .components-button {
 	padding: 6px 8px;
-	height: 40px;
+	height: 30px;
 	background: white;
 }
 
@@ -6109,7 +6107,6 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 }
 
 .customize-control-ast-sortable .ast-sortable-subfields-wrap .customize-control-ast-list-icons .ahfb-sorter-item-panel-header {
-	border: 1px solid #ddd;
 	border-left: 0;
 	border-bottom: 0;
 	overflow: hidden;
@@ -6140,8 +6137,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 }
 
 .ast-sortable-subfields-wrap .customize-control-ast-list-icons .ahfb-sorter-item {
-	border: 1px solid #ddd;
-	border-top: 0;
+	padding: 0;
 }
 
 .ahfb-sorter-row .ahfb-sorter-item {
@@ -6485,9 +6481,11 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 	mask: url( "data:image/svg+xml,%3Csvg width='12' height='5' viewBox='0 0 12 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 5.00012L12 0.00012207H0L6 5.00012Z' fill='%23000000'/%3E%3C/svg%3E" );
 }
 
-.dashicons-editor-help[data-title] + .ast-tooltip[data-title]::before {
+.dashicons-editor-help[data-title] + .ast-tooltip[data-title]::before,
+.dashicons-editor-help[data-title] + .ast-tooltip[data-title]::after {
 	right: -2px;
 	left: initial;
+	transform: translate( 0, -0.5em );
 }
 
 .customize-control-ast-toggle-control .dashicons-editor-help[data-title] + .ast-tooltip[data-title]::before {
@@ -6520,7 +6518,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 	white-space: break-spaces;
 	opacity: 1;
 }
-
+	
 .ast-top-dotted-divider .ast-control-tooltip.dashicons-editor-help {
 	top: 22px;
 }
@@ -6534,7 +6532,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 }
 
 .customize-control-ast-sortable .customize-control-ast-selector .dashicons.ast-control-tooltip {
-	top: 18%;
+	top: 12%;
 	padding: 0;
 	font-size: 20px;
 }

@@ -30,6 +30,10 @@ if ( ! class_exists( 'Astra_Nps_Notice' ) ) {
 		 * @since 1.0.0
 		 */
 		private function __construct() {
+			// Bail early if not in admin area.
+			if ( ! is_admin() ) {
+				return;
+			}
 
 			// Allow users to disable NPS survey via a filter && return early if the user does not have admin access.
 			if ( ! current_user_can( 'manage_options' ) || apply_filters( 'astra_nps_survey_disable', false ) ) {
@@ -106,7 +110,10 @@ if ( ! class_exists( 'Astra_Nps_Notice' ) ) {
 						// Step 1 i.e rating input.
 						'logo' => esc_url( ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg'),
 						'plugin_name' => __( 'Astra', 'astra' ),
-						'nps_rating_message' => __( 'How likely are you to recommend #pluginname to your friends or colleagues?', 'astra' ),
+						'nps_rating_title' => __( 'Quick Question', 'astra' ),
+						'nps_rating_message' => __( 'How would you rate Astra? Love it, hate it, or somewhere in between? Your honest answer helps us understand how were doing.', 'astra' ),
+						'rating_min_label' => __( 'Hate it', 'astra' ),
+						'rating_max_label' => __( 'Love it', 'astra' ),
 
 						// Step 2A i.e. positive.
 						'feedback_title' => __( 'Thanks a lot for your feedback! 😍', 'astra' ),

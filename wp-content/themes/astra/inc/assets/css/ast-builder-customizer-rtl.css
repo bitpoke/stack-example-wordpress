@@ -1065,16 +1065,7 @@ li#customize-control-astra-settings-header-desktop-items, li#customize-control-a
     box-shadow: none;
 }
 
-.ahfb-responsive-control-bar .floating-controls .components-button {
-    height: 18px;
-    padding-top: 0;
-    padding-bottom: 0;
-    box-shadow: none;
-}
-
 .ahfb-responsive-control-bar .floating-controls .components-button svg {
-    height: 13px;
-    width: 16px;
     fill: none;
 }
 
@@ -1448,7 +1439,6 @@ li#customize-control-astra-settings-header-desktop-items, li#customize-control-a
 }
 
 .ahfb-sorter-item-panel-header .ahfb-sorter-visiblity {
-    border-radius: 0;
     border-left: 1px solid #A0AEC0;
 }
 

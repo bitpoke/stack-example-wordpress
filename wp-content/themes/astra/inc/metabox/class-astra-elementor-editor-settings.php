@@ -177,6 +177,7 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 				array(
 					'themeName'    => astra_get_theme_name(),
 					'themeIconUrl' => esc_url( apply_filters( 'astra_admin_menu_icon', ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ) ),
+					'postTitle'    => get_post_meta( intval( get_the_ID() ), 'site-post-title', true ),
 				)
 			);
 
@@ -303,14 +304,6 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 				)
 			);
 
-			// $document->start_controls_section(
-			// 'ast_container_section',
-			// [
-			// 'label' => __('Container', 'astra'),
-			// 'tab' => \Elementor\Controls_Manager::TAB_SETTINGS,
-			// ]
-			// );
-
 			// Container Section Title.
 			$document->add_control(
 				'ast-container-heading',
@@ -347,17 +340,6 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 				)
 			);
 
-			// $document->end_controls_section();
-
-			// Sidebar Section.
-			// $document->start_controls_section(
-			// 'sidebar_section',
-			// [
-			// 'label' => __( 'Sidebar', 'astra' ),
-			// 'tab'   => \Elementor\Controls_Manager::TAB_SETTINGS,
-			// ]
-			// );
-
 			// Sidebar Section Title.
 			$document->add_control(
 				'ast-sidebar-heading',
@@ -392,17 +374,6 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 					'toggle'  => false,
 				)
 			);
-
-			// $document->end_controls_section();
-
-			// Disable Elements Section.
-			// $document->start_controls_section(
-			// 'disable_elements_section',
-			// [
-			// 'label' => __( 'Disable Elements', 'astra' ),
-			// 'tab'   => \Elementor\Controls_Manager::TAB_SETTINGS,
-			// ]
-			// );
 
 			// Disable Elements Section Title.
 			$document->add_control(
@@ -559,6 +530,27 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 			}
 
 			$document->end_controls_section();
+
+			// Add a info notice below the Hide Title control.
+			$document->start_injection(
+				array(
+					'of'       => 'post_status',
+					'fallback' => array(
+						'of' => 'post_title',
+					),
+				)
+			);
+
+			$document->add_control(
+				'ast-hide-title-notice',
+				array(
+					'type'        => \Elementor\Controls_Manager::NOTICE,
+					'notice_type' => 'info',
+					'content'     => __( "Changes to 'Hide Title' will automatically sync with Astra’s 'Disable Title' option.", 'astra' ),
+				)
+			);
+
+			$document->end_injection();
 		}
 
 		/**

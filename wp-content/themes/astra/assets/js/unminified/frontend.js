@@ -251,16 +251,9 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		var triggerType = event.currentTarget.trigger_type;
 		var popupWrap = document.getElementById( 'ast-mobile-popup' );
 
-		const menuToggleClose = document.getElementById('menu-toggle-close');
-
-		if( menuToggleClose ) {
-			menuToggleClose.focus();
-		}
-
         if ( ! body.classList.contains( 'ast-popup-nav-open' ) ) {
 			body.classList.add( 'ast-popup-nav-open' );
         }
-
 
 		if ( ! body.classList.contains( 'ast-main-header-nav-open' ) && 'mobile' !== triggerType ) {
 			body.classList.add( 'ast-main-header-nav-open' );
@@ -285,6 +278,9 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		}
 
 		popupWrap.classList.add( 'active', 'show' );
+
+		const menuToggleClose = document.getElementById( 'menu-toggle-close' );
+		menuToggleClose?.focus();
 	}
 
 	/**
