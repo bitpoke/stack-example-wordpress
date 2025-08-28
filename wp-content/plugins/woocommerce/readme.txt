@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 6.7
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 10.1.0
+Stable tag: 10.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -170,17 +170,12 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 10.1.1 2025-08-20 =
+= 10.1.2 2025-08-27 =
 
 **WooCommerce**
 
-* Fix - Ensure recurring actions are registered and dependent classes are loaded as needed [#60417](https://github.com/woocommerce/woocommerce/pull/60417)
-* Fix - Fix filtering offline payment methods settings pages to be rendered in legacy mode. [#60432](https://github.com/woocommerce/woocommerce/pull/60432)
-* Fix - Fix spacing in tax line in the order summary [#60469](https://github.com/woocommerce/woocommerce/pull/60469)
-* Fix - Prevent skeleton display when an express payment method is active to avoid unmounting express buttons [#60394](https://github.com/woocommerce/woocommerce/pull/60394)
-* Fix - Use dynamically-generated URLs for resetting accounts and switching to live accounts in the Payments NOX. [#60329](https://github.com/woocommerce/woocommerce/pull/60329)
-* Fix - Fix flat shipping rate validation breaking advanced shipping rate formula input [#60348](https://github.com/woocommerce/woocommerce/pull/60348)
-* Enhancement - Set the ‘Set up payments’ task to in-progress state upon starting live WooPayments onboarding. [#60329](https://github.com/woocommerce/woocommerce/pull/60329)
+* Fix - Prevent woocommerce_cancel_unpaid_orders being queued as unique so it recurs after the stock hold limit [#60626](https://github.com/woocommerce/woocommerce/pull/60626)
+* Fix - Revert to using usermeta to store persistent carts [#60605](https://github.com/woocommerce/woocommerce/pull/60605)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).

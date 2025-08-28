@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce 10.1.1\n"
+"Project-Id-Version: WooCommerce 10.1.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-20T09:55:44+00:00\n"
+"POT-Creation-Date: 2025-08-27T10:15:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woocommerce\n"
@@ -26,7 +26,7 @@ msgstr ""
 #: includes/class-wc-privacy.php:54
 #: includes/customizer/class-wc-shop-customizer.php:39
 #: includes/react-admin/connect-existing-pages.php:64
-#: includes/wc-order-functions.php:1161
+#: includes/wc-order-functions.php:1165
 #: src/Admin/Features/ProductBlockEditor/BlockRegistry.php:135
 #: src/Admin/PageController.php:208
 #: src/Blocks/BlockTypesController.php:226
@@ -9258,7 +9258,7 @@ msgid "via %s"
 msgstr ""
 
 #: includes/abstracts/abstract-wc-order.php:2268
-#: includes/class-wc-cart.php:1713
+#: includes/class-wc-cart.php:1720
 #: includes/class-wc-product-grouped.php:122
 msgid "Free!"
 msgstr ""
@@ -21183,26 +21183,26 @@ msgid "Fee has already been added."
 msgstr ""
 
 #. translators: %s: product name
-#: includes/class-wc-cart-session.php:180
+#: includes/class-wc-cart-session.php:186
 #, php-format
 msgid "%s has been removed from your cart because it can no longer be purchased. Please contact us if you need assistance."
 msgstr ""
 
 #. translators: %1$s: product name. %2$s product permalink
-#: includes/class-wc-cart-session.php:204
+#: includes/class-wc-cart-session.php:208
 #, php-format
 msgid "%1$s has been removed from your cart because it has since been modified. You can add it back to your cart <a href=\"%2$s\">here</a>."
 msgstr ""
 
 #. translators: %d item count
-#: includes/class-wc-cart-session.php:583
+#: includes/class-wc-cart-session.php:629
 #, php-format
 msgid "%d item from your previous order is currently unavailable and could not be added to your cart."
 msgid_plural "%d items from your previous order are currently unavailable and could not be added to your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-wc-cart-session.php:596
+#: includes/class-wc-cart-session.php:642
 msgid "The cart has been filled with the items from your previous order."
 msgstr ""
 
@@ -21210,19 +21210,19 @@ msgstr ""
 msgid "Get cart should not be called before the wp_loaded action."
 msgstr ""
 
-#: includes/class-wc-cart.php:778
+#: includes/class-wc-cart.php:785
 msgid "An item which is no longer available was removed from your cart."
 msgstr ""
 
 #. translators: %s: product name
-#: includes/class-wc-cart.php:801
+#: includes/class-wc-cart.php:808
 #, php-format
 msgid "Sorry, \"%s\" is not in stock. Please edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
 #. translators: 1: product name 2: quantity in stock
 #. translators: %s: product name
-#: includes/class-wc-cart.php:824
+#: includes/class-wc-cart.php:831
 #: includes/shortcodes/class-wc-shortcode-checkout.php:170
 #: src/StoreApi/Utilities/OrderController.php:756
 #, php-format
@@ -21230,24 +21230,24 @@ msgid "Sorry, we do not have enough \"%1$s\" in stock to fulfill your order (%2$
 msgstr ""
 
 #. translators: 1: product link, 2: product name
-#: includes/class-wc-cart.php:1076
+#: includes/class-wc-cart.php:1083
 #: includes/class-wc-form-handler.php:961
 #, php-format
 msgid "Please choose product options by visiting <a href=\"%1$s\" title=\"%2$s\">%2$s</a>."
 msgstr ""
 
-#: includes/class-wc-cart.php:1121
+#: includes/class-wc-cart.php:1128
 msgid "Please choose product options&hellip;"
 msgstr ""
 
 #. translators: %s: Attribute name.
-#: includes/class-wc-cart.php:1153
+#: includes/class-wc-cart.php:1160
 #, php-format
 msgid "Invalid value posted for %s"
 msgstr ""
 
 #. translators: %s: Attribute name.
-#: includes/class-wc-cart.php:1163
+#: includes/class-wc-cart.php:1170
 #: src/StoreApi/Utilities/CartController.php:1361
 #, php-format
 msgid "%s is a required field"
@@ -21255,24 +21255,24 @@ msgid_plural "%s are required fields"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-wc-cart.php:1177
+#: includes/class-wc-cart.php:1184
 msgid "The selected product is invalid."
 msgstr ""
 
 #. translators: 1: product link, 2: product name
-#: includes/class-wc-cart.php:1181
+#: includes/class-wc-cart.php:1188
 #, php-format
 msgid "The selected product isn't a variation of %2$s, please choose product options by visiting <a href=\"%1$s\" title=\"%2$s\">%2$s</a>."
 msgstr ""
 
 #. translators: %s: product name
-#: includes/class-wc-cart.php:1200
+#: includes/class-wc-cart.php:1207
 #, php-format
 msgid "You cannot add another \"%s\" to your cart."
 msgstr ""
 
-#: includes/class-wc-cart.php:1215
-#: includes/class-wc-cart.php:1285
+#: includes/class-wc-cart.php:1222
+#: includes/class-wc-cart.php:1292
 #: includes/class-wc-frontend-scripts.php:641
 #: includes/wc-cart-functions.php:133
 #: includes/wc-template-functions.php:2446
@@ -21281,32 +21281,32 @@ msgstr ""
 msgid "View cart"
 msgstr ""
 
-#: includes/class-wc-cart.php:1223
+#: includes/class-wc-cart.php:1230
 msgid "Sorry, this product cannot be purchased."
 msgstr ""
 
 #. translators: %s: product name
-#: includes/class-wc-cart.php:1238
+#: includes/class-wc-cart.php:1245
 #: src/StoreApi/Utilities/CartController.php:291
 #, php-format
 msgid "You cannot add &quot;%s&quot; to the cart because the product is out of stock."
 msgstr ""
 
 #. translators: 1: product name 2: quantity in stock
-#: includes/class-wc-cart.php:1255
+#: includes/class-wc-cart.php:1262
 #: src/StoreApi/Utilities/CartController.php:308
 #, php-format
 msgid "You cannot add that amount of &quot;%1$s&quot; to the cart because there is not enough stock (%2$s remaining)."
 msgstr ""
 
 #. translators: 1: quantity in stock 2: current quantity
-#: includes/class-wc-cart.php:1282
 #: includes/class-wc-cart.php:1289
+#: includes/class-wc-cart.php:1296
 #, php-format
 msgid "You cannot add that amount to the cart &mdash; we have %1$s in stock and you already have %2$s in your cart."
 msgstr ""
 
-#: includes/class-wc-cart.php:1804
+#: includes/class-wc-cart.php:1811
 msgid "This method has been deprecated and will be removed soon. Use Automattic\\WooCommerce\\Utilities\\DiscountsUtil::is_coupon_emails_allowed instead."
 msgstr ""
 
@@ -25310,7 +25310,7 @@ msgstr ""
 #: includes/gateways/bacs/class-wc-gateway-bacs.php:63
 #: includes/gateways/bacs/class-wc-gateway-bacs.php:115
 #: src/Admin/Features/PaymentGatewaySuggestions/DefaultPaymentGateways.php:183
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:346
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:375
 #: assets/client/admin/wp-admin-scripts/settings-embed.js:2
 #: assets/client/blocks/wc-payment-method-bacs.js:1
 #: client/blocks/assets/js/extensions/payment-methods/bacs/index.js:17
@@ -26950,7 +26950,7 @@ msgstr ""
 #: includes/rest-api/Controllers/Version3/class-wc-rest-order-refunds-controller.php:46
 #: includes/wc-core-functions.php:150
 #: includes/wc-order-functions.php:573
-#: includes/wc-order-functions.php:1269
+#: includes/wc-order-functions.php:1273
 #: src/Internal/Fulfillments/OrderFulfillmentsRestController.php:173
 #: src/Internal/Fulfillments/OrderFulfillmentsRestController.php:600
 msgid "Invalid order ID."
@@ -29895,68 +29895,69 @@ msgstr ""
 msgid "Terms successfully recounted"
 msgstr ""
 
-#. translators: %d: amount of sessions
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:553
-msgid "Deleted all active sessions"
+#. translators: %d: number of saved carts
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:555
+#, php-format
+msgid "Deleted all active sessions, and %d saved carts."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:558
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:560
 msgid "All missing WooCommerce pages successfully installed"
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:570
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:572
 msgid "Tax rates successfully deleted"
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:575
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:577
 msgid "Thumbnail regeneration has been scheduled to run in the background."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:583
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:585
 msgid "Database upgrade routine has been scheduled to run in the background."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:589
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:591
 msgid "Template cache cleared."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:591
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:593
 msgid "The active version of WooCommerce does not support template cache clearing."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:598
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:600
 msgid "System status theme info cache cleared."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:603
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:605
 msgid "You need WooCommerce 4.2 or newer to run this tool."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:610
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:612
 msgid "Database verified successfully."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:612
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:614
 msgid "Verifying database... One or more tables are still missing: "
 msgstr ""
 
 #. translators: %1$s: callback string, %2$s: error message
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:638
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:640
 #, php-format
 msgid "There was an error calling %1$s: %2$s"
 msgstr ""
 
 #. translators: %s: callback string
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:660
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:662
 #, php-format
 msgid "There was an error calling %s"
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:662
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:664
 msgid "Tool ran."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:666
+#: includes/rest-api/Controllers/Version2/class-wc-rest-system-status-tools-v2-controller.php:668
 msgid "There was an error calling this tool. There is no callback present."
 msgstr ""
 
@@ -31034,7 +31035,7 @@ msgstr ""
 #: includes/shipping/flat-rate/class-wc-shipping-flat-rate.php:45
 #: includes/shipping/flat-rate/includes/settings-flat-rate.php:20
 #: includes/shipping/legacy-flat-rate/includes/settings-flat-rate.php:30
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:354
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:383
 msgid "Flat rate"
 msgstr ""
 
@@ -32462,7 +32463,7 @@ msgstr ""
 msgid "Order status set to refunded. To return funds to the customer you will need to issue a refund through your payment gateway."
 msgstr ""
 
-#: includes/wc-order-functions.php:1117
+#: includes/wc-order-functions.php:1121
 msgid "Unpaid order cancelled - time limit reached."
 msgstr ""
 
@@ -39689,22 +39690,22 @@ msgstr ""
 msgid "Product attributes' functionality meets my needs."
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:348
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:377
 msgid ""
 "This is a customer note. Customers can add a note to their order on checkout.\n"
 "\n"
 "It can be multiple lines. If there's no note, this section is hidden."
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:384
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:413
 msgid "Dummy Product"
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:405
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:434
 msgid "Dummy Product Variation"
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:409
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:438
 #: assets/client/blocks/active-filters-frontend.js:6
 #: assets/client/blocks/active-filters-wrapper-frontend.js:6
 #: assets/client/blocks/active-filters.js:6
@@ -39721,7 +39722,7 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:409
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:438
 #: assets/client/blocks/add-to-cart-with-options-variation-selector-attribute.js:1
 #: assets/client/blocks/add-to-cart-with-options-variation-selector.js:1
 #: assets/client/blocks/product-filter-active.js:1
@@ -39729,7 +39730,7 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:410
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:439
 #: assets/client/blocks/active-filters-frontend.js:6
 #: assets/client/blocks/active-filters-wrapper-frontend.js:6
 #: assets/client/blocks/active-filters.js:6
@@ -39744,7 +39745,7 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:410
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:439
 #: assets/client/blocks/active-filters-frontend.js:6
 #: assets/client/blocks/active-filters-wrapper-frontend.js:6
 #: assets/client/blocks/active-filters.js:6
@@ -39758,7 +39759,7 @@ msgstr ""
 msgid "Small"
 msgstr ""
 
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:577
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:606
 msgid "There was an error rendering the email editor placeholder content."
 msgstr ""
 
