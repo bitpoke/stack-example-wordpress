@@ -1,7 +1,7 @@
 === Jetpack - WP Security, Backup, Speed, & Growth ===
 Contributors: automattic, adamkheckler, adrianmoldovanwp, aduth, akirk, allendav, alternatekev, andy, annamcphee, annezazu, apeatling, arcangelini, arsihasi, azaozz, barry, batmoo, beaulebens, bindlegirl, biskobe, bjorsch, blobaugh, brbrr, brileyhooper, cainm, cena, cfinke, cgastrell, chaselivingston, chellycat, clickysteve, csonnek, danielbachhuber, daniloercoli, davoraltman, delawski, designsimply, dkmyta, dllh, drawmyface, dsmart, dun2mis, dzver, ebinnion, egregor, eliorivero, enej, eoigal, erania-pinnera, ethitter, fgiannar, gcorne, georgestephanis, gibrown, goldsounds, hew, hugobaeta, hypertextranch, iammattthomas, iandunn, joen, jblz, jeffgolenski, jeherve, jenhooks, jenia, jessefriedman, jgs, jkudish, jmdodd, joanrho, johnjamesjacoby, jshreve, kbrownkd, keoshi, koke, kraftbj, lancewillett, leogermani, lhkowalski, lschuyler, macmanx, martinremy, matt, mattwiebe, matveb, maverick3x6, mcsf, mdawaffe, mdbitz, MichaelArestad, migueluy, miguelxavierpenha, mikeyarce, mkaz, nancythanki, nickmomrik, njweller, nunyvega, obenland, oskosk, pento, professor44, rachelsquirrel, rdcoll, renatoagds, retrofox, richardmtl, richardmuscat, robertbpugh, roccotripaldi, ryancowles, samhotchkiss, samiff, scarstocea, scottsweb, sdixon194, sdquirk, sermitr, simison, stephdau, thehenridev, tmoorewp, tyxla, Viper007Bond, westi, williamvianas, wpkaren, yoavf, zinigor
 Tags: Security, backup, malware, scan, performance
-Stable tag: 14.9.1
+Stable tag: 15.0
 Requires at least: 6.7
 Requires PHP: 7.2
 Tested up to: 6.8
@@ -326,68 +326,51 @@ Jetpack Backup can do a full website migration to a new host, migrate theme file
 
 
 == Changelog ==
-### 14.9.1 - 2025-08-06
-#### Bug fixes
-- Open Graph Meta tags: Do not attempt to generate a fallback image when the site is not connected to WordPress.com. [#44661]
-
-### 14.9 - 2025-08-05
+### 15.0 - 2025-09-04
 #### Enhancements
-- Add new PayPal Payment block (beta).
-- Forms: Add "Empty trash" button.
-- Forms: Add Gravatars in form responses.
-- Forms: Add link to disconnect Google.
-- Forms: Add slider field block.
-- Forms: Add tip that spam will automatically be deleted after 15 days.
-- Forms: Improve email copy-to-clipboard visually and make it less hidden.
-- Forms: Make phone fields clickable
-- Forms: Refresh look of responses in dashboard.
-- Forms: Submit forms without page reload.
-- Forms: Update integration links.
-- Forms: Update the date picker to remove jQuery and add a more performant version with keyboard navigation.
-- Forms: Use sentence case in default consent text.
-- My Jetpack: Enable access to My Jetpack on WP Multisite.
-- My Jetpack: Unify the user connection flow with a unified screen.
-- Open Graph Meta tags: Add a new fallback image to display on the home page.
-- Open Graph meta tags: Support site logos when generating fallback Image Meta tags.
-- Performance: Improve processing of blocks with the Blogging Prompt feature.
-- Podcast player block: Improve page load performance by removing use of `lodash`.
-- Sitemap: Reduce memory usage when generating sitemaps.
-- Social: Improve performance when sanitizing OpenGraph tags.
-- Social: Improve performance when selecting images for OpenGraph tags.
-- Story block: Improve page load performance by removing use of `lodash`.
-- Subscriptions: Improve performance of the legacy Subscriptions widget.
-- Update PayPal Payment Buttons block to support rendering previews.
-- Use the `view_stats` cap for the Jetpack Stats menu item instead of `manage_options`.
-- Widget Conditions Module: Improve performance of block processing during conditional checking.
-- WooCommerce Analytics Module: Improve performance of block processing during Analytics gathering.
+- Add LaTeX block (Beta) to render mathematical formula.
+- Blocks: Update JavaScript to be non-render blocking.
+- Carousel: Fix crashes on large galleries and reduce server requests by preloading only adjacent images instead of all at once.
+- Disallow inserting Simple Payments block via inserter.
+- Enable Settings > Sharing WP Admin page and ensure all relevant links point to this page.
+- Forms: Add MailPoet integration.
+- Forms: Add new Time field.
+- Forms: Add `has_field_type` method to Feedback.
+- Forms: Defer JavaScript loading for more responsive page loading.
+- Forms: Improve the checkbox style.
+- Forms: Preserve HTML IDs when processing feedback.
+- Forms: Save feedback entries in a new format.
+- Forms: Show trash action alongside view action in inbox.
+- Related Posts block: Update placeholder text for the site editor, and update the demo date.
+- Remove CRM installation nudge for Complete plan users
+- Shortcodes: Update embed reversal code to only run when content is inserted in the admin.
+- Site Accelerator: Ignore images from openlibrary.org.
+- Sitemaps: Add filter to allow suspending object cache addition during generation.
+- Social: Add font option for Social Image Generator.
+- Subscription block: Defer JavaScript loading.
 
 #### Improved compatibility
-- Blocks: Prevent PHP errors when `jetpack_set_available_extensions` filter returns an unexpected data type.
-- Sync: Ignore the ActivityPub Outbox CPT.
+- Open Graph Meta tags: Add new filter allowing one to define a custom site representative image.
 
 #### Bug fixes
-- Accessibility: Remove deprecated `clip` property from screen reader text with `clip-path`.
-- Blocks: Return an error when a filter returns a non-array.
-- Carousel: Fix disabling all photon args when opening an image in a lightbox.
-- Clear PayPal Payment button block parameters when changing block type.
-- Dashboard: Use UTC for Jetpack Stats chart.
-- Forms: Enqueue view script only when the form is rendered.
-- Forms: Fix padding on input and textarea fields.
-- Forms: Fix the way forms are submitted.
-- Forms: Fix the way forms are submitted.
-- JITM: Remove jQuery dependency.
-- Mailchimp block: Fix links to accommodate for a bug in Gutenberg.
-- My Jetpack: Fix footer alignment for disconnected accounts.
-- My Jetpack: Prevent expiration alerts for products covered by active bundles.
-- My Jetpack: Restore plan purchase link.
-- Newsletter: Fix bug in category settings.
-- Related Posts: Ensure results are available via REST API directly.
-- Sharing: Display correct Open Graph meta tags when a page uses a Query Loop block.
-- Social: Fix image validation when images sizes are customised.
-- Social Image Generator: Do not use the latest post's Social Image as Open Graph Image tag on the home page.
-- Subscriptions: Avoid enqueuing the legacy widget's stylesheet in block-based themes.
-- Subscriptions: Display floating subscription button on mobile devices as well when enabled.
-- VideoPress: Fix video row action button clickability by properly hiding stats on hover.
+- Carousel: Improve image size processing to return higher quality images in additional situations.
+- Crowdsignal: Improve escaping.
+- Forms: Fix default checkboxes styles, and allow for "browser" styles as a choice.
+- Forms: Fix error wrapper when placing button inside a group block.
+- Forms: Fix phone validation for responses.
+- Forms: Improve checkbox validation for older checkboxes.
+- Forms: Show the form variation picker if you only have the submit button.
+- Image CDN: Prevent errors attempting to filter null.
+- Improve escaping for recurring payment buttons.
+- Infinite Scroll: Prevent PHP warnings in various edge cases.
+- My Jetpack: Fix multisite availability check for restricted products and modules.
+- Prevent PHP fatals when handling unexpected data types.
+- Search: Ensure images are loaded efficiently when on https sites.
+- SEO settings: Update the default Open Graph image tag to match the one in use on the site.
+- Shortcodes: Improve embed detection.
+- Sitemaps: Fix PHP warning during generation if there are no posts or pages on the website.
+- Social: Allow default image to be cleared.
+- Social: Fix image generator token reset on save resulting in font not being saved.
 
 --------
 

@@ -2,6 +2,88 @@
 
 ### This is a list detailing changes for all Jetpack releases.
 
+## 15.0 - 2025-09-04
+### Enhancements
+- Add LaTeX block (Beta) to render mathematical formula. [#44895]
+- Blocks: Update JavaScript to be non-render blocking. [#44791]
+- Carousel: Fix crashes on large galleries and reduce server requests by preloading only adjacent images instead of all at once. [#44612]
+- Disallow inserting Simple Payments block via inserter. [#44724]
+- Enable Settings > Sharing WP Admin page and ensure all relevant links point to this page. [#44706]
+- Forms: Add MailPoet integration. [#44831] [#44930]
+- Forms: Add new Time field. [#44272]
+- Forms: Add `has_field_type` method to Feedback. [#44759]
+- Forms: Defer JavaScript loading for more responsive page loading. [#44752]
+- Forms: Improve the checkbox style. [#44743]
+- Forms: Preserve HTML IDs when processing feedback. [#44760]
+- Forms: Save feedback entries in a new format. [#44821]
+- Forms: Show trash action alongside view action in inbox. [#44882]
+- Related Posts block: Update placeholder text for the site editor, and update the demo date. [#44937]
+- Remove CRM installation nudge for Complete plan users [#45026]
+- Shortcodes: Update embed reversal code to only run when content is inserted in the admin. [#44741]
+- Site Accelerator: Ignore images from openlibrary.org. [#44627]
+- Sitemaps: Add filter to allow suspending object cache addition during generation. [#44732]
+- Social: Add font option for Social Image Generator. [#44514]
+- Subscription block: Defer JavaScript loading. [#44734]
+
+### Improved compatibility
+- Open Graph Meta tags: Add new filter allowing one to define a custom site representative image. [#44708]
+
+### Bug fixes
+- Carousel: Improve image size processing to return higher quality images in additional situations. [#44900]
+- Crowdsignal: Improve escaping.
+- Forms: Fix default checkboxes styles, and allow for "browser" styles as a choice. [#44408]
+- Forms: Fix error wrapper when placing button inside a group block. [#44939]
+- Forms: Fix phone validation for responses. [#44806]
+- Forms: Improve checkbox validation for older checkboxes. [#44931]
+- Forms: Show the form variation picker if you only have the submit button. [#42479]
+- Image CDN: Prevent errors attempting to filter null. [#44874]
+- Improve escaping for recurring payment buttons.
+- Infinite Scroll: Prevent PHP warnings in various edge cases. [#44642]
+- My Jetpack: Fix multisite availability check for restricted products and modules. [#44710]
+- Prevent PHP fatals when handling unexpected data types. [#44765]
+- Search: Ensure images are loaded efficiently when on https sites. [#44851]
+- SEO settings: Update the default Open Graph image tag to match the one in use on the site. [#44800]
+- Shortcodes: Improve embed detection.
+- Sitemaps: Fix PHP warning during generation if there are no posts or pages on the website. [#44656]
+- Social: Allow default image to be cleared. [#44994]
+- Social: Fix image generator token reset on save resulting in font not being saved. [#44634]
+
+### Other changes <!-- Non-user-facing changes go here. This section will not be copied to readme.txt. -->
+- Add MCP settings to settings endpoint. [#44921]
+- AI Assistant: Track generation time on suggestion request. [#44716]
+- AI Excerpt: Add tracking event on generation request. [#44668]
+- E2E: Add typecheck support. [#44788]
+- E2E: Fix broken tests. [#44727]
+- E2E: Fix onboarding tests. [#44745]
+- Editor assets endpoint: Disallow the VideoPress block type. [#44848]
+- Editor assets endpoint: Expand allowed block types. [#44616]
+- Fix JavaScript in one-image Slideshow shortcodes. [#44643]
+- Fix LaTex Block selector. [#44920]
+- I18n: Improve context hints in comments for translators. [#44686]
+- Image CDN: Prevent PHP warnings when handling malformed data. [#45015]
+- Memberships: Fix JSON parsing error. [#44812]
+- My Jetpack: Prevent PHP error when using WP-CLI. [#45045]
+- Open Help Center modal for WordPress.com sites and update the support link. [#44774]
+- Podcast player block: Add email rendering. [#45003]
+- Prevent PHP errors when directly accessing various files. [#44646]
+- Prevent PHP error when checking for available Gutenberg extensions. [#45046]
+- Prevent PHP warnings when constants are already defined. [#44957]
+- Prevent PHP warnings when handling unexpected data types. [#44804]
+- Related Posts: Prevent PHP warnings when handling malformed data. [#44946]
+- Resolve `PhanImpossibleCondition` violations. [#44869]
+- Send JSON with built-in WordPress functions. [#45002]
+- Shortcodes: Move Slideshow dependencies into pnpm. [#44685]
+- Slideshow block: Add additional sanitization and validation. [#44917]
+- Slideshow block: Add email rendering. [#44835]
+- Tiled Gallery: Add initial state tests. [#44591]
+- Tiled gallery block: Add email rendering. [#44943]
+- Update package dependencies. [#44677]
+- Update package dependencies. [#44701] [#44725]
+- Update package dependencies. [#44870] [#44894] [#44899]
+- Update package dependencies. [#44948]
+- Use `wp_rand()` instead of `rand()` and `mt_rand()`. [#44964]
+- Writing Settings: Add Instagram connection. [#44936]
+
 ## 14.9.1 - 2025-08-06
 ### Bug fixes
 - Open Graph Meta tags: Do not attempt to generate a fallback image when the site is not connected to WordPress.com. [#44661]
