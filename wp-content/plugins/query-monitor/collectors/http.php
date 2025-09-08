@@ -124,7 +124,14 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	public function get_concerned_filters() {
 		return array(
 			'block_local_requests',
+			'http_allowed_safe_ports',
+			'http_headers_useragent',
 			'http_request_args',
+			'http_request_host_is_external',
+			'http_request_redirection_count',
+			'http_request_reject_unsafe_urls',
+			'http_request_timeout',
+			'http_request_version',
 			'http_response',
 			'https_local_ssl_verify',
 			'https_ssl_verify',
@@ -287,11 +294,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			/** @var string */
 			$original_key = $args['_qm_original_key'];
 			$this->http_responses[ $original_key ]['end'] = $this->http_requests[ $original_key ]['start'];
-			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
-				/* translators: %s: Hook name */
-				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
-				'pre_http_request'
-			) );
+			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed' );
 		}
 
 		$this->http_responses[ $key ] = $http_response;
@@ -328,7 +331,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 			if ( empty( $response['response'] ) ) {
 				// Timed out
-				$response['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
+				$response['response'] = new WP_Error( 'http_request_timed_out' );
 				$response['end'] = floatval( $request['start'] + $response['args']['timeout'] );
 			}
 
@@ -390,7 +393,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * Log a Guzzle HTTP request.
 	 *
-	 * @since 3.18.1
+	 * @since 3.19.0
 	 *
 	 * @param \Psr\Http\Message\RequestInterface $request    The Guzzle request object.
 	 * @param \Psr\Http\Message\ResponseInterface|null $response The Guzzle response object, or null if an exception occurred.
@@ -474,7 +477,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 *   $stack->push( QM_Collector_HTTP::guzzle_middleware() );
 	 *   $client = new Client( [ 'handler' => $stack ] );
 	 *
-	 * @since 3.18.1
+	 * @since 3.19.0
 	 *
 	 * @return callable Guzzle middleware callable.
 	 */

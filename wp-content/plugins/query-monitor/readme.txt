@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.8
-Stable tag: 3.19.0
+Stable tag: 3.20.0
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -135,6 +135,11 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 ## Changelog ##
 
+### 3.20.0 (7 September 2025) ###
+
+* Defers loading of translation files as late as possible to minimise the chance of triggering the `Translation loading for the query-monitor domain was triggered too early` error
+* Implements some initial compatibility tweaks for the upcoming PHP 8.5
+
 ### 3.19.0 (23 July 2025) ###
 
 * Adds Guzzle middleware support for logging HTTP client requests.
@@ -182,10 +187,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 ### 3.16.1 (22 May 2024) ###
 
 * Fixes an issue with the PHP autoloader in 3.16.0 that was crashing some sites
-
-### 3.16.0 (22 April 2024) ###
-
-* Adds full support for debugging new features in WordPress 6.5: JavaScript modules and PHP translation files
 
 ### Earlier versions ###
 
