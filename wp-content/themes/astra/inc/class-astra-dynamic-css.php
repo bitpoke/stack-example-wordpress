@@ -4199,9 +4199,12 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 					$blog_layout_list_css_responsive = array();
 
-					$blog_layout_list_css_responsive[ '.ast-separate-container ' . $bl_selector . ' .post-content' ] = array(
-						'padding' => '0',
-					);
+					// Apply responsive CSS only if Astra Pro is active.
+					if ( defined( 'ASTRA_EXT_VER' ) ) {
+						$blog_layout_list_css_responsive[ '.ast-separate-container ' . $bl_selector . ' .post-content' ] = array(
+							'padding' => '0',
+						);
+					}
 
 					$blog_layout_list_css_responsive[ $bl_selector . ' .ast-blog-featured-section' ] = array(
 						'margin-bottom' => '1.5em',

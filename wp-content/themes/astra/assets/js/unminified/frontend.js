@@ -443,7 +443,10 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 			popupClose.addEventListener( 'click', function ( e ) {
 				document.getElementById( 'ast-mobile-popup' ).classList.remove( 'active', 'show' );
 				updateTrigger( this );
-				menuToggleButton?.focus();
+				// Don't focus if we're in an iframe (e.g., Beaver Builder editor)
+				if ( window.self === window.top ) {
+					menuToggleButton?.focus();
+				}
 			} );
 
 			// Close Popup if esc is pressed.
