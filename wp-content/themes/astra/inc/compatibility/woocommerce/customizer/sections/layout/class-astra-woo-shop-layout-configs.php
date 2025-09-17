@@ -383,43 +383,56 @@ if ( ! class_exists( 'Astra_Woo_Shop_Layout_Configs' ) ) {
 						'control'  => 'ast-upgrade',
 						'campaign' => 'woocommerce',
 						'choices'  => array(
+							// 'two'   => array(
+							// 	'title' => __( 'More shop design layouts', 'astra' ),
+							// ),
+							// 'three' => array(
+							// 	'title' => __( 'Shop toolbar structure', 'astra' ),
+							// ),
+							// 'five'  => array(
+							// 	'title' => __( 'Offcanvas product filters', 'astra' ),
+							// ),
+							// 'six'   => array(
+							// 	'title' => __( 'Products quick view', 'astra' ),
+							// ),
+							// 'seven' => array(
+							// 	'title' => __( 'Shop pagination', 'astra' ),
+							// ),
+							// 'eight' => array(
+							// 	'title' => __( 'More typography options', 'astra' ),
+							// ),
+							// 'nine'  => array(
+							// 	'title' => __( 'More color options', 'astra' ),
+							// ),
+							// 'ten'   => array(
+							// 	'title' => __( 'More spacing options', 'astra' ),
+							// ),
+							// 'four'  => array(
+							// 	'title' => __( 'Box shadow design options', 'astra' ),
+							// ),
+							// 'one'   => array(
+							// 	'title' => __( 'More design controls', 'astra' ),
+							// ),
+							'one'   => array(
+								'title' => __( 'Multiple Shop Card Designs', 'astra' ),
+							),
 							'two'   => array(
-								'title' => __( 'More shop design layouts', 'astra' ),
+								'title' => __( 'Flexible Toolbar & Filter Layouts', 'astra' ),
 							),
 							'three' => array(
-								'title' => __( 'Shop toolbar structure', 'astra' ),
-							),
-							'five'  => array(
-								'title' => __( 'Offcanvas product filters', 'astra' ),
-							),
-							'six'   => array(
-								'title' => __( 'Products quick view', 'astra' ),
-							),
-							'seven' => array(
-								'title' => __( 'Shop pagination', 'astra' ),
-							),
-							'eight' => array(
-								'title' => __( 'More typography options', 'astra' ),
-							),
-							'nine'  => array(
-								'title' => __( 'More color options', 'astra' ),
-							),
-							'ten'   => array(
-								'title' => __( 'More spacing options', 'astra' ),
+								'title' => __( 'Customizable Shop Structure Options', 'astra' ),
 							),
 							'four'  => array(
-								'title' => __( 'Box shadow design options', 'astra' ),
-							),
-							'one'   => array(
-								'title' => __( 'More design controls', 'astra' ),
+								'title' => __( 'Stylish Pagination Options', 'astra' ),
 							),
 						),
 						'section'  => 'woocommerce_product_catalog',
 						'default'  => '',
 						'priority' => 999,
-						'title'    => __( 'Optimize your WooCommerce store for maximum profit with enhanced features', 'astra' ),
+						'title'    => __( 'Get advanced product catalog controls', 'astra' ),
 						'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
 						'context'  => array(),
+						'thumbnail' => ASTRA_THEME_URI . 'inc/assets/images/customizer/woo-catalog.png',
 					);
 				}
 

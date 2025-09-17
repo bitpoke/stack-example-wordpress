@@ -1,5 +1,15 @@
 *** Astra Changelog ***
 
+2025-09-16 - version 4.11.12
+* New: Streamlined onboarding flow for quicker setup and an easier path to building websites with Astra and Starter Templates.
+* Improvement: Added LifterLMS compatibility on the course catalog page.
+* Improvement: Optimized mobile menu initialization to use DOMContentLoaded instead of window.load for faster responsiveness on content-heavy pages.
+* Improvement: Added consistency for empty cart button styling in WooCommerce mini cart.
+* Fix: Resolved issue where the logo disappeared when the primary menu was empty by ensuring the custom logo remains visible regardless of menu state.
+* Fix: Corrected the aria-expanded attribute not updating for mobile menu toggle buttons in flyout and fullscreen header types.
+* Fix: Resolved issue with padding not applying on single and archive pages.
+* Fix: Corrected misaligned color picker in Related Posts → Design → Content Colors options.
+
 2025-09-09 - version 4.11.11
 * Improvement: Enhanced the loading performance of the Quantity Plus and Minus buttons by using placeholders.
 * Improvement: Updated archive, special, and single pages to automatically swap left/right positioning for full RTL compatibility.

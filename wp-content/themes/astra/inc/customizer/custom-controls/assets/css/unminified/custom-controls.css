@@ -419,7 +419,7 @@
 	display: block;
 	padding: 8px 18px;
 	border-radius: 30px;
-	border: 1px solid var( --ast-customizer-color-1 );
+	border: 1px solid #5c2ede;
 	background-color: #5c2ede;
 	color: var( --ast-customizer-color-9 );
 	font-size: 13px !important;
@@ -1768,6 +1768,14 @@ li#customize-control-astra-settings-transparent-content-section-text-color-respo
 .customize-control.customize-control-ast-color-group + .customize-control.customize-control-ast-responsive-color,
 .customize-control.customize-control-ast-color-group + .customize-control.customize-control-ast-color-group:not( :has( .ast-divider-title ) ) {
 	margin-top: 8px;
+}
+
+#astra-settings-related-posts-colors-group-tabs .ast-control-wrap {
+    display: block;
+}
+
+#astra-settings-related-posts-colors-group-tabs .astra-color-picker-wrap.picker-open .astra-popover-color {
+    margin: 5px -5px 0;
 }
 
 /* Global customizer color palette */
@@ -6755,18 +6763,34 @@ a.ast-upgrade-trigger:active {
 }
 
 .ast-upgrade-list-items {
-	margin-bottom: 1.8em;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin: 2em 0;
 }
 
-.ast-upgrade-list-wrapper .ast-upgrade-list-section-title {
-	margin: 0.5em auto 1.8em;
-	max-width: 240px;
+.ast-upgrade-list-items .ast-upgrade-list-items-title-wrapper {
+	display: flex;
+	gap: 7px;
+}
+
+.ast-upgrade-list-items .ast-upgrade-list-items-title-wrapper svg {
+	flex: none;
+}
+
+.ast-upgrade-list-items .ast-upgrade-list-items-title {
+	font-size: 14px;
+	line-height: 18px;
+	font-weight: 500;
+	color: #4E26BF;
+	margin: 0;
 }
 
 .ast-pro-upgrade-item {
 	display: flex;
 	align-items: center;
 	gap: 5px;
+	margin: 0;
 }
 
 .ast-pro-upgrade-item svg {
@@ -6775,6 +6799,7 @@ a.ast-upgrade-trigger:active {
 
 .ast-pro-upgrade-item span {
 	display: inline;
+	font-size: 12px;
 }
 
 .ast-pro-upgrade-item > span:first-child {
@@ -6819,10 +6844,6 @@ a.ast-upgrade-trigger:active {
 	margin-top: 13px;
 	margin-bottom: 8px;
 	line-height: 1;
-}
-
-.ast-upgrade-list-items .ast-pro-upgrade-item:not( :last-child ) {
-	border-bottom: 1px dashed #d4d4d4;
 }
 
 li#customize-control-astra-settings-header-builder-pro-items .ast-upgrade-pro-wrap:not( :has( .ast-upgrade-modal-view-wrapper ) ),
