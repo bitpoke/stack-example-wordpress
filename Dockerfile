@@ -1,4 +1,4 @@
-ARG TAG=6.8.2
+ARG TAG=6.8.3
 FROM docker.io/bitpoke/wordpress-runtime:${TAG}
 # to add files to the webroot, place them in the `webroot` folder and uncomment
 # the following line
