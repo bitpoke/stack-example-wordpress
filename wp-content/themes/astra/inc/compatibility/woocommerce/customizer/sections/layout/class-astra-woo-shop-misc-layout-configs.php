@@ -62,31 +62,31 @@ if ( ! class_exists( 'Astra_Woo_Shop_Misc_Layout_Configs' ) ) {
 			if ( astra_showcase_upgrade_notices() ) {
 				// Learn More link if Astra Pro is not activated.
 				$_configs[] = array(
-					'name'     => ASTRA_THEME_SETTINGS . '[ast-woo-misc-pro-items]',
-					'type'     => 'control',
-					'control'  => 'ast-upgrade',
-					'campaign' => 'woocommerce',
-					'choices'  => array(
+					'name'      => ASTRA_THEME_SETTINGS . '[ast-woo-misc-pro-items]',
+					'type'      => 'control',
+					'control'   => 'ast-upgrade',
+					'campaign'  => 'woocommerce',
+					'choices'   => array(
 						// 'two'   => array(
-						// 	'title' => __( 'Modern input style', 'astra' ),
+						// 'title' => __( 'Modern input style', 'astra' ),
 						// ),
 						// 'one'   => array(
-						// 	'title' => __( 'Sale badge modifications', 'astra' ),
+						// 'title' => __( 'Sale badge modifications', 'astra' ),
 						// ),
 						// 'three' => array(
-						// 	'title' => __( 'Ecommerce steps navigation', 'astra' ),
+						// 'title' => __( 'Ecommerce steps navigation', 'astra' ),
 						// ),
 						// 'four'  => array(
-						// 	'title' => __( 'Quantity updater designs', 'astra' ),
+						// 'title' => __( 'Quantity updater designs', 'astra' ),
 						// ),
 						// 'five'  => array(
-						// 	'title' => __( 'Modern my-account page', 'astra' ),
+						// 'title' => __( 'Modern my-account page', 'astra' ),
 						// ),
 						// 'six'   => array(
-						// 	'title' => __( 'Downloads, Orders grid view', 'astra' ),
+						// 'title' => __( 'Downloads, Orders grid view', 'astra' ),
 						// ),
 						// 'seven' => array(
-						// 	'title' => __( 'Modern thank-you page design', 'astra' ),
+						// 'title' => __( 'Modern thank-you page design', 'astra' ),
 						// ),
 						'one'   => array(
 							'title' => __( 'Advanced Input Field Styles & Border Radius', 'astra' ),
@@ -98,12 +98,12 @@ if ( ! class_exists( 'Astra_Woo_Shop_Misc_Layout_Configs' ) ) {
 							'title' => __( 'Quantity Plus and Minus Buttons', 'astra' ),
 						),
 					),
-					'section'  => 'section-woo-misc',
-					'default'  => '',
-					'priority' => 999,
-					'title'    => __( 'Get Sleek Storefront. Better UX', 'astra' ),
-					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
-					'context'  => array(),
+					'section'   => 'section-woo-misc',
+					'default'   => '',
+					'priority'  => 999,
+					'title'     => __( 'Get Sleek Storefront. Better UX', 'astra' ),
+					'divider'   => array( 'ast_class' => 'ast-top-section-divider' ),
+					'context'   => array(),
 					'thumbnail' => ASTRA_THEME_URI . 'inc/assets/images/customizer/woo-misc.png',
 				);
 			}

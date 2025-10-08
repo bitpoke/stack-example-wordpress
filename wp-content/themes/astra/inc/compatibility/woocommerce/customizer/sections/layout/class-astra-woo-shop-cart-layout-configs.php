@@ -104,74 +104,74 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 			if ( astra_showcase_upgrade_notices() ) {
 				// Learn More link if Astra Pro is not activated.
 				$_configs[] = array(
-					'name'     => ASTRA_THEME_SETTINGS . '[ast-woo-cart-pro-items]',
-					'type'     => 'control',
-					'control'  => 'ast-upgrade',
-					'campaign' => 'woocommerce',
-					'choices'  => array(
+					'name'      => ASTRA_THEME_SETTINGS . '[ast-woo-cart-pro-items]',
+					'type'      => 'control',
+					'control'   => 'ast-upgrade',
+					'campaign'  => 'woocommerce',
+					'choices'   => array(
 						// 'two'   => array(
-						// 	'title' => __( 'Modern cart layout', 'astra' ),
+						// 'title' => __( 'Modern cart layout', 'astra' ),
 						// ),
 						// 'one'   => array(
-						// 	'title' => __( 'Sticky cart totals', 'astra' ),
+						// 'title' => __( 'Sticky cart totals', 'astra' ),
 						// ),
 						// 'three' => array(
-						// 	'title' => __( 'Real-time quantity updater', 'astra' ),
+						// 'title' => __( 'Real-time quantity updater', 'astra' ),
 						// ),
-						'one' => array(
+						'one'   => array(
 							'title' => __( 'Real-Time Quantity Updates', 'astra' ),
 						),
-						'two' => array(
+						'two'   => array(
 							'title' => __( 'Sticky Cart Totals for Better UX', 'astra' ),
 						),
 						'three' => array(
 							'title' => __( 'Modern, Clean Cart Layout', 'astra' ),
 						),
 					),
-					'section'  => 'section-woo-shop-cart',
-					'default'  => '',
-					'priority' => 999,
-					'title'    => __( 'Optimize Your Cart for Sales', 'astra' ),
-					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
-					'context'  => array(),
+					'section'   => 'section-woo-shop-cart',
+					'default'   => '',
+					'priority'  => 999,
+					'title'     => __( 'Optimize Your Cart for Sales', 'astra' ),
+					'divider'   => array( 'ast_class' => 'ast-top-section-divider' ),
+					'context'   => array(),
 					'thumbnail' => ASTRA_THEME_URI . 'inc/assets/images/customizer/woo-cart.png',
 				);
 
 				$_configs[] = array(
-					'name'     => ASTRA_THEME_SETTINGS . '[ast-woo-checkout-pro-items]',
-					'type'     => 'control',
-					'control'  => 'ast-upgrade',
-					'campaign' => 'woocommerce',
-					'choices'  => array(
+					'name'      => ASTRA_THEME_SETTINGS . '[ast-woo-checkout-pro-items]',
+					'type'      => 'control',
+					'control'   => 'ast-upgrade',
+					'campaign'  => 'woocommerce',
+					'choices'   => array(
 						// 'two'   => array(
-						// 	'title' => __( 'Modern layout', 'astra' ),
+						// 'title' => __( 'Modern layout', 'astra' ),
 						// ),
 						// 'one'   => array(
-						// 	'title' => __( 'Multi-column layouts', 'astra' ),
+						// 'title' => __( 'Multi-column layouts', 'astra' ),
 						// ),
 						// 'three' => array(
-						// 	'title' => __( 'Modern order received layout', 'astra' ),
+						// 'title' => __( 'Modern order received layout', 'astra' ),
 						// ),
 						// 'four'  => array(
-						// 	'title' => __( 'Sticky order review', 'astra' ),
+						// 'title' => __( 'Sticky order review', 'astra' ),
 						// ),
 						// 'five'  => array(
-						// 	'title' => __( 'Two-step checkout', 'astra' ),
+						// 'title' => __( 'Two-step checkout', 'astra' ),
 						// ),
 						// 'six'   => array(
-						// 	'title' => __( 'Order note, Coupon field control', 'astra' ),
+						// 'title' => __( 'Order note, Coupon field control', 'astra' ),
 						// ),
 						// 'seven' => array(
-						// 	'title' => __( 'Distraction free checkout', 'astra' ),
+						// 'title' => __( 'Distraction free checkout', 'astra' ),
 						// ),
 						// 'eight' => array(
-						// 	'title' => __( 'Persistent checkout form data', 'astra' ),
+						// 'title' => __( 'Persistent checkout form data', 'astra' ),
 						// ),
 						// 'nine'  => array(
-						// 	'title' => __( 'Text form options', 'astra' ),
+						// 'title' => __( 'Text form options', 'astra' ),
 						// ),
 						// 'ten'   => array(
-						// 	'title' => __( 'Summary, Payment background', 'astra' ),
+						// 'title' => __( 'Summary, Payment background', 'astra' ),
 						// ),
 						'one'   => array(
 							'title' => __( 'Sticky Totals & Saved Form Data', 'astra' ),
@@ -183,12 +183,12 @@ if ( ! class_exists( 'Astra_Woo_Shop_Cart_Layout_Configs' ) ) {
 							'title' => __( 'Full Control Over Notes, Coupons & Layouts', 'astra' ),
 						),
 					),
-					'section'  => 'woocommerce_checkout',
-					'default'  => '',
-					'priority' => 999,
-					'title'    => __( 'Smarter Checkout. More Conversions', 'astra' ),
-					'divider'  => array( 'ast_class' => 'ast-top-section-divider' ),
-					'context'  => array(),
+					'section'   => 'woocommerce_checkout',
+					'default'   => '',
+					'priority'  => 999,
+					'title'     => __( 'Smarter Checkout. More Conversions', 'astra' ),
+					'divider'   => array( 'ast_class' => 'ast-top-section-divider' ),
+					'context'   => array(),
 					'thumbnail' => ASTRA_THEME_URI . 'inc/assets/images/customizer/woo-checkout.png',
 				);
 			}

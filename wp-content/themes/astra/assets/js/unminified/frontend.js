@@ -578,7 +578,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		}
 	}
 
-	document.addEventListener( 'DOMContentLoaded', function() {
+	window.addEventListener( 'load', function() {
 		init();
 	} );
 	document.addEventListener( 'astLayoutWidthChanged', function() {

@@ -115,7 +115,7 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				require_once ABSPATH . '/wp-admin/includes/plugin.php';
 			}
 
-			$onboarding_link = '';
+			$onboarding_link = admin_url( 'admin.php?page=astra-onboarding' );
 			$st_version      = '';
 
 			$all_plugins = get_plugins();
@@ -129,9 +129,9 @@ if ( ! class_exists( 'Astra_Admin_Settings' ) ) {
 				$st_version = isset( $all_plugins['astra-sites/astra-sites.php']['Version'] ) ? $all_plugins['astra-sites/astra-sites.php']['Version'] : '';
 			}
 
-			// If version is 4.4.38 or higher, return onboarding link.
-			if ( $st_version && version_compare( $st_version, '4.4.38', '>=' ) ) {
-				$onboarding_link = admin_url( 'admin.php?page=astra-onboarding' );
+			// If version is lower than 4.4.38, return empty.
+			if ( $st_version && version_compare( $st_version, '4.4.38', '<' ) ) {
+				return '';
 			}
 
 			return $onboarding_link;

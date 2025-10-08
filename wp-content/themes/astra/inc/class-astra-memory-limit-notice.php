@@ -170,14 +170,14 @@ class Astra_Memory_Limit_Notice {
 		$message .= '</div>';
 
 		$notice_args = array(
-			'id'                    => 'astra-memory-limit-warning',
-			'type'                  => 'warning',
-			'message'               => $message,
-			'show_if'               => true,
-			'repeat-notice-after'   => false, // Don't repeat notice after a certain time.
-			'is_dismissible'        => true,
-			'capability'            => 'manage_options',
-			'class'                 => 'astra-memory-notice',
+			'id'                  => 'astra-memory-limit-warning',
+			'type'                => 'warning',
+			'message'             => $message,
+			'show_if'             => true,
+			'repeat-notice-after' => false, // Don't repeat notice after a certain time.
+			'is_dismissible'      => true,
+			'capability'          => 'manage_options',
+			'class'               => 'astra-memory-notice',
 		);
 
 		Astra_Notices::add_notice( $notice_args );

@@ -2990,6 +2990,11 @@ li.customize-control.ast-top-section-spacing {
 #customize-control-astra-settings-blog-filter-taxonomy-text-colors {
 	margin-top: 0;
 }
+
+#customize-control-astra-settings-blog-filter-taxonomy-bg-colors{
+	margin-top: 0;
+	margin-bottom: 16px;
+}
 .ast-typo-presets {
 	width: 100%;
 	display: flex;

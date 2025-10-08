@@ -1,5 +1,13 @@
 *** Astra Changelog ***
 
+2025-10-07 - version 4.11.13
+* Improvement: Added lazy-loading for Google Fonts in Customizer to improve performance and reduce extra PHP memory consume by loading fonts via AJAX only when needed.
+* Improvement: Added LifterLMS compatibility on course catalog page.
+* Improvement: Improved post filter color settings spacing.
+* Fix: Fixed incorrect aspect ratios for Vimeo and YouTube embeds.
+* Fix: Fixed JavaScript error 'wc_add_to_cart_params is not defined' when using EDD cart widget in header builder.
+* Fix: Resolved an issue where the Off-Canvas Menu did not work correctly with the Sticky Header.
+
 2025-09-16 - version 4.11.12
 * New: Streamlined onboarding flow for quicker setup and an easier path to building websites with Astra and Starter Templates.
 * Improvement: Added LifterLMS compatibility on the course catalog page.
