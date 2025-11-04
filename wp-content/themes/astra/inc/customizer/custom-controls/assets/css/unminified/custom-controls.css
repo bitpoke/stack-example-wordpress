@@ -1390,8 +1390,8 @@ section.ast-palette-presets-inner-wrap {
 }
 
 .ast-field-settings-modal .astra-color-picker-wrap {
-	position: relative;
-	top: 10px;
+	position: absolute;
+	top: 25px;
 }
 
 .ast-color-palette .components-circular-option-picker__option-wrapper {
@@ -4925,7 +4925,6 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 .customize-control-ast-slider .ast-slider-wrap,
 .customize-control-ast-responsive-slider .ast-slider-wrap {
 	position: relative;
-	z-index: 1;
 }
 
 .components-range-control__wrapper .components-range-control__track {
@@ -5510,7 +5509,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 }
 
 .ast-group-tabs .ui-widget-content {
-	overflow: hidden;
+	overflow: visible;
 	/*padding-top: 15px;*/
 }
 
