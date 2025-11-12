@@ -420,7 +420,7 @@
 	padding: 8px 18px;
 	border-radius: 30px;
 	border: 1px solid #5c2ede;
-	background-color: #5c2ede;
+	background: linear-gradient(90deg, #EB1B99 -23.83%, #321978 28.86%, #321978 49.67%, #321978 74.52%, #5810FF 109.73%);
 	color: var( --ast-customizer-color-9 );
 	font-size: 13px !important;
 	font-weight: 400;
@@ -428,6 +428,12 @@
 	text-align: center;
 	cursor: pointer;
 	gap: 12px;
+}
+
+.ast-upgrade-pro-heading{
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
 }
 
 .customize-control-ast-button-link .ast-button-link:hover,
@@ -6786,8 +6792,12 @@ a.ast-upgrade-trigger:active {
 	font-size: 14px;
 	line-height: 18px;
 	font-weight: 500;
-	color: #4E26BF;
+	color: #8843E1;
 	margin: 0;
+}
+
+.ast-brand-logo img{
+	width:100% !important;
 }
 
 .ast-pro-upgrade-item {
