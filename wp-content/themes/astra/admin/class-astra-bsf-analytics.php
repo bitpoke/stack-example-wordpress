@@ -274,11 +274,13 @@ class Astra_BSF_Analytics {
 			}
 
 			$is_current_server = true;
-			$ip                = $_SERVER['SERVER_ADDR'] ?? null;
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$ip = $_SERVER['SERVER_ADDR'] ?? null;
 		}
 
 		// Fallback: resolve server name.
 		if ( ! $ip || $ip === '127.0.0.1' || $ip === '::1' ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$hostname = $_SERVER['SERVER_NAME'] ?? 'localhost';
 			$ip       = gethostbyname( $hostname );
 		}

@@ -291,7 +291,6 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			// Flexibility.js for flexbox IE10 support.
 			wp_enqueue_script( 'astra-flexibility', $js_uri . 'flexibility' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );
 			wp_add_inline_script( 'astra-flexibility', 'flexibility(document.documentElement);' );
-			wp_script_add_data( 'astra-flexibility', 'conditional', 'IE' );
 
 			// Polyfill for CustomEvent for IE.
 			wp_register_script( 'astra-customevent', $js_uri . 'custom-events-polyfill' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );

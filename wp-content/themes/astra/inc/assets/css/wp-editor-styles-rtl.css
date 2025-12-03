@@ -192,7 +192,7 @@ html {
   border: none;
 }
 
-.ast-highlight-wpblock-onhover .block-editor-block-list__layout .block-editor-block-list__block {
+.ast-highlight-wpblock-onhover .block-editor-block-list__layout .block-editor-block-list__block:not(.has-fit-text) {
   transition: all 0.2s;
 }
 
