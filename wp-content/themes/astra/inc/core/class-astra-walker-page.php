@@ -82,10 +82,10 @@ if ( ! class_exists( 'Astra_Walker_Page' ) ) {
 							array(
 								'aria-expanded' => 'false',
 								'aria-haspopup' => 'true',
-								'aria-label'    => 'Toggle menu',
+								'aria-label'    => __( 'Toggle menu', 'astra' ),
 							),
 							$page
-						) . '><span class="screen-reader-text">' . __( 'Menu Toggle', 'astra' ) . '</span>' . Astra_Icons::get_icons( 'arrow' ) . '</button>';
+						) . Astra_Icons::get_icons( 'arrow' ) . '</button>';
 					}
 				} else {
 					if ( isset( $page->post_parent ) && 0 === $page->post_parent ) {
@@ -94,10 +94,10 @@ if ( ! class_exists( 'Astra_Walker_Page' ) ) {
 							array(
 								'aria-expanded' => 'false',
 								'aria-haspopup' => 'true',
-								'aria-label'    => 'Toggle menu',
+								'aria-label'    => __( 'Toggle menu', 'astra' ),
 							),
 							$page
-						) . '><span class="screen-reader-text">' . __( 'Menu Toggle', 'astra' ) . '</span>' . Astra_Icons::get_icons( 'arrow' ) . '</button>';
+						) . Astra_Icons::get_icons( 'arrow' ) . '</button>';
 					}
 				}
 			}

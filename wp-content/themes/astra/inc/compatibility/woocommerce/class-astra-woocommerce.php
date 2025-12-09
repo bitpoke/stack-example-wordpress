@@ -3919,9 +3919,34 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function init_quantity_placeholder_buttons() {
 			if ( astra_add_to_cart_quantity_btn_enabled() ) {
-				add_action( 'woocommerce_before_quantity_input_field', array( $this, 'render_placeholder_minus_button' ), 5 );
-				add_action( 'woocommerce_after_quantity_input_field', array( $this, 'render_placeholder_plus_button' ), 15 );
+				add_filter( 'woocommerce_quantity_input_args', array( $this, 'maybe_add_quantity_buttons' ), 10, 2 );
 			}
+		}
+
+		/**
+		 * Hook quantity placeholder buttons based on product type and stock.
+		 *
+		 * @since 4.11.16
+		 *
+		 * @param array      $args    Quantity input arguments.
+		 * @param WC_Product $product Product object.
+		 * @return array Modified quantity input arguments.
+		 */
+		public function maybe_add_quantity_buttons( $args, $product ) {
+			// Skip buttons for sold individually products.
+			if ( $product->is_sold_individually() ) {
+				return $args;
+			}
+
+			// Skip buttons for products with stock less than or equal to 1, only on single product pages.
+			if ( is_product() && $product->managing_stock() && $product->get_stock_quantity() <= 1 ) {
+				return $args;
+			}
+
+			add_action( 'woocommerce_before_quantity_input_field', array( $this, 'render_placeholder_minus_button' ), 5 );
+			add_action( 'woocommerce_after_quantity_input_field', array( $this, 'render_placeholder_plus_button' ), 15 );
+
+			return $args;
 		}
 
 		/**
@@ -3956,6 +3981,9 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 			$btn_class = $this->get_quantity_btn_class();
 
 			echo '<a href="javascript:void(0)" class="ast-qty-placeholder minus' . esc_attr( $btn_class ) . '">-</a>';
+
+			// Remove action to prevent buttons on further quantity inputs in the cart area.
+			remove_action( 'woocommerce_before_quantity_input_field', array( $this, 'render_placeholder_minus_button' ), 5 );
 		}
 
 		/**
@@ -3967,6 +3995,9 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 			$btn_class = $this->get_quantity_btn_class();
 
 			echo '<a href="javascript:void(0)" class="ast-qty-placeholder plus' . esc_attr( $btn_class ) . '">+</a>';
+
+			// Remove action to prevent buttons on further quantity inputs in the cart area.
+			remove_action( 'woocommerce_after_quantity_input_field', array( $this, 'render_placeholder_plus_button' ), 15 );
 		}
 	}
 

@@ -287,8 +287,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 			}
 			?>
 			<div class="ast-button-wrap">
-				<button type="button" class="menu-toggle main-header-menu-toggle ast-mobile-menu-trigger-<?php echo esc_attr( $toggle_btn_style ); ?>" <?php echo apply_filters( 'astra_nav_toggle_data_attrs', '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_attr( $aria_controls ); ?> aria-expanded="false" aria-label="Main menu toggle">
-					<span class="screen-reader-text">Main Menu</span>
+				<button type="button" class="menu-toggle main-header-menu-toggle ast-mobile-menu-trigger-<?php echo esc_attr( $toggle_btn_style ); ?>" <?php echo apply_filters( 'astra_nav_toggle_data_attrs', '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_attr( $aria_controls ); ?> aria-expanded="false" aria-label="<?php echo esc_attr__( 'Main menu toggle', 'astra' ); ?>">
 					<span class="mobile-menu-toggle-icon">
 						<?php
 							echo self::fetch_svg_icon( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

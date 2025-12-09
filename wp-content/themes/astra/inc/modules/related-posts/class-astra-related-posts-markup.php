@@ -55,6 +55,14 @@ class Astra_Related_Posts_Markup {
 	 */
 	public function astra_related_posts_markup() {
 		if ( astra_target_rules_for_related_posts() ) {
+			$disable_related_posts = get_post_meta( absint( astra_get_post_id() ), 'ast-disable-related-posts', true );
+			$disable_related_posts = apply_filters( 'astra_disable_related_posts', $disable_related_posts );
+
+			// Return early if disabled for this post.
+			if ( 'disabled' === $disable_related_posts ) {
+				return;
+			}
+
 			$this->astra_get_related_posts();
 		}
 	}

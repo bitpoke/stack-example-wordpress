@@ -215,6 +215,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			$ast_featured_img        = isset( $meta['ast-featured-img']['default'] ) ? $meta['ast-featured-img']['default'] : '';
 			$breadcrumbs_content     = isset( $meta['ast-breadcrumbs-content']['default'] ) ? $meta['ast-breadcrumbs-content']['default'] : '';
 			$ast_banner_visibility   = isset( $meta['ast-banner-title-visibility']['default'] ) ? $meta['ast-banner-title-visibility']['default'] : '';
+			$disable_related_posts   = isset( $meta['ast-disable-related-posts']['default'] ) ? $meta['ast-disable-related-posts']['default'] : '';
 			$exclude_cpt             = isset( $post->post_type ) ? in_array(
 				$post->post_type,
 				array(
@@ -440,6 +441,20 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 							</div>
 								<?php
 							}
+						}
+						?>
+
+						<?php
+						/** @psalm-suppress RedundantCondition */
+						if ( $show_meta_field && true === astra_get_option( 'enable-related-posts' ) ) {
+							?>
+					<div class="ast-disable-related-posts-option-wrap">
+						<label for="ast-disable-related-posts">
+							<input type="checkbox" id="ast-disable-related-posts" name="ast-disable-related-posts" value="disabled" <?php checked( $disable_related_posts, 'disabled' ); ?> />
+							<?php esc_html_e( 'Disable Related Posts', 'astra' ); ?>
+						</label>
+					</div>
+							<?php
 						}
 						?>
 
@@ -928,6 +943,13 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				);
 			}
 
+			if ( true === astra_get_option( 'enable-related-posts' ) ) {
+				$astra_page_meta_elements[] = array(
+					'key'   => 'ast-disable-related-posts',
+					'label' => __( 'Disable Related Posts', 'astra' ),
+				);
+			}
+
 			return $astra_page_meta_elements;
 		}
 
@@ -1247,6 +1269,17 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'show_in_rest'  => true,
 					'single'        => true,
 					'default'       => isset( $meta['footer-sml-layout']['default'] ) ? $meta['footer-sml-layout']['default'] : '',
+					'type'          => 'string',
+					'auth_callback' => '__return_true',
+				)
+			);
+			register_post_meta(
+				'',
+				'ast-disable-related-posts',
+				array(
+					'show_in_rest'  => true,
+					'single'        => true,
+					'default'       => isset( $meta['ast-disable-related-posts']['default'] ) ? $meta['ast-disable-related-posts']['default'] : '',
 					'type'          => 'string',
 					'auth_callback' => '__return_true',
 				)
@@ -1745,6 +1778,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 						'sanitize' => 'FILTER_SANITIZE_STRING',
 					),
 					'footer-sml-layout'             => array(
+						'sanitize' => 'FILTER_SANITIZE_STRING',
+					),
+					'ast-disable-related-posts'     => array(
 						'sanitize' => 'FILTER_SANITIZE_STRING',
 					),
 					'footer-adv-display'            => array(

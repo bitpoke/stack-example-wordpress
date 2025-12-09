@@ -1,5 +1,14 @@
 *** Astra Changelog ***
 
+2025-12-08 - version 4.11.17
+* New: Added a new “Disable Related Posts” option in the single post meta settings to hide related posts for specific posts.
+* Improvement: Full Width Container now applies correctly on WooCommerce Product Category and Tag pages.
+* Improvement: Added translations for ARIA labels to improve accessibility and removed redundant screen reader text.
+* Improvement: Added Email Customizer Pro compatibility check and extensible filter to prevent customizer conflicts.
+* Improvement: Enhanced Header/Footer Builder widgets popover positioning to ensure they remain fully visible within the viewport.
+* Improvement: Resolved alignment issue with product single in SureCart.
+* Fix: Resolved an issue where quantity plus/minus buttons glitched for products with stock quantity of 1 or less.
+
 2025-12-02 - version 4.11.16
 * Improvement: Compatibility with WordPress 6.9.
 

@@ -770,7 +770,14 @@ if ( ! function_exists( 'astra_get_post_id' ) ) {
 
 			if ( is_home() ) {
 				$post_id = get_option( 'page_for_posts' );
-			} elseif ( function_exists( 'is_shop' ) && is_shop() && function_exists( 'wc_get_page_id' ) ) {
+			} elseif (
+				function_exists( 'wc_get_page_id' ) &&
+				(
+					( function_exists( 'is_shop' ) && is_shop() ) ||
+					( function_exists( 'is_product_category' ) && is_product_category() ) ||
+					( function_exists( 'is_product_tag' ) && is_product_tag() )
+				)
+			) {
 				$post_id = wc_get_page_id( 'shop' );
 			} elseif ( is_archive() ) {
 				global $wp_query;

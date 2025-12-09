@@ -142,8 +142,20 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				return false;
 			}
 
-			// Default to Astra customizer.
-			return true;
+			// Bail early if it is the Email Customizer Pro plugin customizer.
+			if ( isset( $_GET['sa_email_customizer'] ) && true == $_GET['sa_email_customizer'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+				return false;
+			}
+
+			/**
+			 * Allow third-party plugins to bail early from Astra customizer.
+			 *
+			 * @param bool $is_astra_customizer Whether the current request is for Astra customizer.
+			 *
+			 * @return bool True if it is Astra customizer, false otherwise.
+			 * @since 4.11.16
+			 */
+			return apply_filters( 'astra_is_astra_customizer', true );
 		}
 		/**
 		 * Constructor

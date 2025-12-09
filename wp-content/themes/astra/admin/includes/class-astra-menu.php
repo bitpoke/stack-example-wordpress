@@ -848,34 +848,17 @@ class Astra_Menu {
 		$extensions[] = array(
 			'title'       => 'Modern Cart for WooCommerce',
 			'subtitle'    => $under_useful_plugins ? __( 'Modern Cart: A smarter way to sell', 'astra' ) : __( 'Say goodbye to slow checkouts – boost sales with a smooth, hassle-free experience.', 'astra' ),
-			'status'      => 'visit',
-			'slug'        => '',
-			'path'        => '',
-			'redirection' => esc_url( 'https://cartflows.com/modern-cart-for-woocommerce/?utm_source=cross_promotions&utm_medium=referral&utm_campaign=astra_dashboard' ),
+			'status'      => self::get_plugin_status( 'modern-cart/modern-cart.php' ),
+			'slug'        => 'modern-cart',
+			'path'        => 'modern-cart/modern-cart.php',
+			'redirection' => admin_url( 'admin.php?page=moderncart_settings' ),
 			'ratings'     => '(25+)',
-			'activations' => '100 +',
+			'activations' => '10,000 +',
 			'logoPath'    => array(
 				'internal_icon' => true,
 				'icon_path'     => 'moderncart',
 			),
 		);
-
-		if ( ! $under_useful_plugins ) {
-			$extensions[] = array(
-				'title'       => 'PayPal Payments For WooCommerce',
-				'subtitle'    => __( 'PayPal Payments For WooCommerce simplifies and secures PayPal transactions on your store.', 'astra' ),
-				'status'      => self::get_plugin_status( 'checkout-paypal-woo/checkout-paypal-woo.php' ),
-				'slug'        => 'checkout-paypal-woo',
-				'path'        => 'checkout-paypal-woo/checkout-paypal-woo.php',
-				'redirection' => admin_url( 'admin.php?page=wc-settings&tab=cppw_api_settings' ),
-				'ratings'     => '(2)',
-				'activations' => '6,000 +',
-				'logoPath'    => array(
-					'internal_icon' => false,
-					'icon_path'     => 'https://ps.w.org/checkout-paypal-woo/assets/icon-128x128.jpg',
-				),
-			);
-		}
 
 		$extensions[] = array(
 			'title'       => 'Cart Abandonment Recovery',
