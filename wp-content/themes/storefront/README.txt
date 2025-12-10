@@ -2,8 +2,8 @@
 Contributors: automattic, tiagonoronha, jameskoster
 Requires at least: 5.3.4
 Tested up to: 6.5
-Stable tag: 4.6.1
-Version: 4.6.1
+Stable tag: 4.6.2
+Version: 4.6.2
 WC requires at least: 4.2
 WC tested up to: 8.8
 License: GPLv3 or later
@@ -50,6 +50,12 @@ To the best of our knowledge, Google doesn’t track nor share end user data.
 Privacy Policy for the Google Fonts API: https://developers.google.com/fonts/faq#what_does_using_the_google_fonts_api_mean_for_the_privacy_of_my_users
 
 == Changelog ==
+
+= 4.6.2 - 2025-12-09
+- Fix – Filter by Price slider now consistently uses the theme's accent color in both LTR and RTL languages. ([#2186](https://github.com/woocommerce/storefront/pull/2186))
+- Fix - Editor now respects browser default font size for consistency with frontend display. ([#2189](https://github.com/woocommerce/storefront/pull/2189))
+- Fix – Ensures an AAA-compliant contrast ratio for original price when products are on sale. ([#2198](https://github.com/woocommerce/storefront/pull/2198))
+- Fix – Adjust the adjacent product query to address the change in WordPress 6.9, so identical publish dates with hidden products no longer cause timeouts. ([#2202](https://github.com/woocommerce/storefront/pull/2202))
 
 = 4.6.1 - 2025-01-20
 - Add style to coupon error inline message. ([#2178](https://github.com/woocommerce/storefront/pull/2178))
