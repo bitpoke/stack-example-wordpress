@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.9
-Stable tag: 3.20.1
+Stable tag: 3.20.2
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -135,6 +135,10 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 ## Changelog ##
 
+### 3.20.2 (11 December 2025) ###
+
+- Prevents a PHP error being triggered under certain conditions and when no database queries are performed.
+
 ### 3.20.1 (8 December 2025) ###
 
 * Confirms support for WordPress 6.9.
@@ -185,10 +189,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 
 * Prevents an infinite loop when logging doing it wrong calls and deprecated calls.
 * Removes a global from query-monitor.php
-
-### 3.16.2 (22 May 2024) ###
-
-* Fixes another issue with the PHP autoloader in 3.16.0 and 3.16.1 that was crashing some sites
 
 ### Earlier versions ###
 
