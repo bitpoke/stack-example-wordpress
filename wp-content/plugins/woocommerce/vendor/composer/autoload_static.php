@@ -1541,7 +1541,6 @@ class ComposerStaticInite25de9ccfb8c86529a8560065c4e7d09
         'Automattic\\WooCommerce\\Internal\\Utilities\\HtmlSanitizer' => __DIR__ . '/../..' . '/src/Internal/Utilities/HtmlSanitizer.php',
         'Automattic\\WooCommerce\\Internal\\Utilities\\LegacyRestApiStub' => __DIR__ . '/../..' . '/src/Internal/Utilities/LegacyRestApiStub.php',
         'Automattic\\WooCommerce\\Internal\\Utilities\\PluginInstaller' => __DIR__ . '/../..' . '/src/Internal/Utilities/PluginInstaller.php',
-        'Automattic\\WooCommerce\\Internal\\Utilities\\PostMetaUtil' => __DIR__ . '/../..' . '/src/Internal/Utilities/PostMetaUtil.php',
         'Automattic\\WooCommerce\\Internal\\Utilities\\ProductUtil' => __DIR__ . '/../..' . '/src/Internal/Utilities/ProductUtil.php',
         'Automattic\\WooCommerce\\Internal\\Utilities\\Types' => __DIR__ . '/../..' . '/src/Internal/Utilities/Types.php',
         'Automattic\\WooCommerce\\Internal\\Utilities\\URL' => __DIR__ . '/../..' . '/src/Internal/Utilities/URL.php',

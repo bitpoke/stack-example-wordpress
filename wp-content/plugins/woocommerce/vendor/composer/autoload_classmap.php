@@ -1449,7 +1449,6 @@ return array(
     'Automattic\\WooCommerce\\Internal\\Utilities\\HtmlSanitizer' => $baseDir . '/src/Internal/Utilities/HtmlSanitizer.php',
     'Automattic\\WooCommerce\\Internal\\Utilities\\LegacyRestApiStub' => $baseDir . '/src/Internal/Utilities/LegacyRestApiStub.php',
     'Automattic\\WooCommerce\\Internal\\Utilities\\PluginInstaller' => $baseDir . '/src/Internal/Utilities/PluginInstaller.php',
-    'Automattic\\WooCommerce\\Internal\\Utilities\\PostMetaUtil' => $baseDir . '/src/Internal/Utilities/PostMetaUtil.php',
     'Automattic\\WooCommerce\\Internal\\Utilities\\ProductUtil' => $baseDir . '/src/Internal/Utilities/ProductUtil.php',
     'Automattic\\WooCommerce\\Internal\\Utilities\\Types' => $baseDir . '/src/Internal/Utilities/Types.php',
     'Automattic\\WooCommerce\\Internal\\Utilities\\URL' => $baseDir . '/src/Internal/Utilities/URL.php',

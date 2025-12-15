@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce 10.4.0\n"
+"Project-Id-Version: WooCommerce 10.4.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-10T07:51:21+00:00\n"
+"POT-Creation-Date: 2025-12-12T13:34:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woocommerce\n"
@@ -10104,7 +10104,6 @@ msgid "Product types define available product details and attributes, such as do
 msgstr ""
 
 #: includes/admin/class-wc-admin-assets.php:647
-#: assets/client/admin/product-editor/index.js:2
 msgid "Describe this product. What makes it unique? What are its most important features?"
 msgstr ""
 
@@ -16164,7 +16163,6 @@ msgstr ""
 #: assets/client/admin/components/index.js:2
 #: assets/client/admin/email-editor/index.js:2
 #: assets/client/admin/onboarding/index.js:1
-#: assets/client/admin/product-editor/index.js:2
 #: assets/client/admin/wp-admin-scripts/email-editor-integration.js:2
 #: assets/client/admin/wp-admin-scripts/settings-embed.js:2
 #: assets/client/blocks/all-products.js:13
@@ -21993,7 +21991,7 @@ msgstr ""
 
 #: includes/class-wc-download-handler.php:164
 #: includes/class-wc-form-handler.php:805
-#: includes/data-stores/abstract-wc-order-data-store-cpt.php:150
+#: includes/data-stores/abstract-wc-order-data-store-cpt.php:149
 #: includes/shortcodes/class-wc-shortcode-checkout.php:253
 #: includes/shortcodes/class-wc-shortcode-my-account.php:140
 #: includes/wc-order-functions.php:767
@@ -22658,7 +22656,7 @@ msgstr ""
 
 #. translators: %s: Order date
 #: includes/class-wc-order-refund.php:85
-#: includes/data-stores/abstract-wc-order-data-store-cpt.php:402
+#: includes/data-stores/abstract-wc-order-data-store-cpt.php:401
 #: includes/data-stores/class-wc-order-refund-data-store-cpt.php:152
 #: src/Internal/DataStores/Orders/OrdersTableRefundDataStore.php:207
 msgctxt "Order date parsed by DateTime::format"
@@ -24628,14 +24626,14 @@ msgstr ""
 
 #. translators: %1$s = order ID, %2$s = order id, %3$s = error message.
 #. translators: %1$d = peoperty name, %2$d = order ID, %3$s = error message.
-#: includes/data-stores/abstract-wc-order-data-store-cpt.php:199
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1780
+#: includes/data-stores/abstract-wc-order-data-store-cpt.php:198
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1767
 #, php-format
 msgid "Error when setting property '%1$s' for order %2$d: %3$s"
 msgstr ""
 
 #. translators: %s: Order date
-#: includes/data-stores/abstract-wc-order-data-store-cpt.php:402
+#: includes/data-stores/abstract-wc-order-data-store-cpt.php:401
 #, php-format
 msgid "Order &ndash; %s"
 msgstr ""
@@ -39775,7 +39773,7 @@ msgid "Wrong response received from the Patterns Toolkit API: try again later."
 msgstr ""
 
 #. translators: %s is a generated error message.
-#: src/Blocks/Patterns/PTKPatternsStore.php:232
+#: src/Blocks/Patterns/PTKPatternsStore.php:247
 #, php-format
 msgid "Failed to get WooCommerce patterns from the PTK: \"%s\""
 msgstr ""
@@ -43950,12 +43948,12 @@ msgstr ""
 msgid "%d is not an order or has an invalid order type."
 msgstr ""
 
-#: src/Internal/DataStores/Orders/LegacyDataHandler.php:390
+#: src/Internal/DataStores/Orders/LegacyDataHandler.php:383
 msgid "The backup datastore does not support updating orders."
 msgstr ""
 
 #. translators: %s is a comma separated list of metakey names.
-#: src/Internal/DataStores/Orders/LegacyDataHandler.php:541
+#: src/Internal/DataStores/Orders/LegacyDataHandler.php:534
 #, php-format
 msgid "%s is an internal meta key. Use --props to set it."
 msgid_plural "%s are internal meta keys. Use --props to set them."
@@ -43963,7 +43961,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s is a list of order property names.
-#: src/Internal/DataStores/Orders/LegacyDataHandler.php:567
+#: src/Internal/DataStores/Orders/LegacyDataHandler.php:560
 #, php-format
 msgid "%s is not a valid order property."
 msgid_plural "%s are not valid order properties."
@@ -43971,57 +43969,57 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d is an order ID.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:674
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:673
 #, php-format
 msgid "Unable to create backup post for order %d."
 msgstr ""
 
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1350
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1349
 msgid "Invalid order IDs in call to read_multiple()"
 msgstr ""
 
 #. translators: %1$d order ID.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1597
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1594
 #, php-format
 msgid "Unable to load the post record for order %1$d"
 msgstr ""
 
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2105
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2092
 msgid "Could not create order in posts table."
 msgstr ""
 
 #. translators: %s is a table name.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2124
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2111
 #, php-format
 msgid "Could not persist order to database table \"%s\"."
 msgstr ""
 
 #. translators: %s: Taxonomy name.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2272
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2259
 #, php-format
 msgid "Invalid taxonomy: %s."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2699
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2686
 #, php-format
 msgid "Order %1$d cannot be restored from the trash: it has already been restored to status \"%2$s\"."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2717
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2704
 #, php-format
 msgid "The previous status of order %1$d (\"%2$s\") is invalid. It has been restored to \"pending\" status instead."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2729
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2716
 #, php-format
 msgid "The previous status of order %1$d (\"%2$s\") is invalid. It could not be restored."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2765
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2752
 #, php-format
 msgid "Something went wrong when trying to restore order %d from the trash. It could not be restored."
 msgstr ""
@@ -59152,66 +59150,6 @@ msgid "F j %s"
 msgstr ""
 
 #: assets/client/admin/product-editor/index.js:2
-msgid "Edit product link"
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Create a unique link for this product. Use simple, descriptive words and numbers. We'll replace spaces with hyphens (-)."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Preview: <link />"
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Product link successfully updated."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Product link already existed, updated to "
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Failed to update product link."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Product successfully created."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Product successfully updated."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Failed to update product."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Successfully moved product to Trash."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Failed to move product to Trash."
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Name <required />"
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "(required)"
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Feature this product"
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
-msgid "Include this product in a featured section on your website with a widget or shortcode. <moreLink />"
-msgstr ""
-
-#: assets/client/admin/product-editor/index.js:2
 msgid "Preview in new tab"
 msgstr ""
 
@@ -59401,6 +59339,26 @@ msgid "Here's a detailed guide."
 msgstr ""
 
 #: assets/client/admin/product-editor/index.js:2
+msgid "Product successfully created."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Product successfully updated."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Failed to update product."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Successfully moved product to Trash."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Failed to move product to Trash."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
 msgid "Increment"
 msgstr ""
 
@@ -59447,11 +59405,43 @@ msgid "Manage download limits"
 msgstr ""
 
 #: assets/client/admin/product-editor/index.js:2
+msgid "Edit product link"
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Create a unique link for this product. Use simple, descriptive words and numbers. We'll replace spaces with hyphens (-)."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Preview: <link />"
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Product link successfully updated."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Product link already existed, updated to "
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Failed to update product link."
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
 msgid "View helper text"
 msgstr ""
 
 #: assets/client/admin/product-editor/index.js:2
 msgid "e.g. Fragile products"
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "Name <required />"
+msgstr ""
+
+#: assets/client/admin/product-editor/index.js:2
+msgid "(required)"
 msgstr ""
 
 #: assets/client/admin/product-editor/index.js:2
