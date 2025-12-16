@@ -351,7 +351,13 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 * @return string $string Close button html.
 		 */
 		public function change_cart_close_icon( $string ) {
-			return str_replace( '&times;', Astra_Builder_UI_Controller::fetch_svg_icon( 'close', false ), $string );
+			return preg_replace_callback(
+				'/(>)(\s*&times;\s*)(<)/',
+				static function( $matches ) {
+					return $matches[1] . Astra_Builder_UI_Controller::fetch_svg_icon( 'close', false ) . $matches[3];
+				},
+				$string
+			);
 		}
 
 		/**
@@ -686,7 +692,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 			$review_count = $product ? $product->get_review_count() : 0;
 
 			// Check if the rating is valid
-			if ( $rating >= 0 ) {
+			if ( $rating > 0 ) {
 				$html  = '<div class="review-rating">';
 				$html .= '<div class="star-rating">';
 				$html .= wc_get_star_rating_html( $rating, $count );

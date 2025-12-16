@@ -1,5 +1,14 @@
 *** Astra Changelog ***
 
+2025-12-16 - version 4.11.18
+* Improvement: Added support for the BuddyPress plugin.
+* Improvement: Resolved duplicate ID issue in the search form markup when the sticky header is active.
+* Improvement: Updated the CSS selector from .woocommerce-js to .woocommerce to prevent unintended styling on non-WooCommerce pages.
+* Improvement: Fixed embed aspect ratio issues in the Classic Editor.
+* Improvement: Enhanced dark color compatibility in the Style Guide.
+* Fix: Resolved an issue where the close icon was not displaying correctly when using change_cart_close_icon, which caused broken HTML.
+* Fix: Resolved an issue where products without ratings were incorrectly displaying empty star ratings.
+
 2025-12-08 - version 4.11.17
 * New: Added a new “Disable Related Posts” option in the single post meta settings to hide related posts for specific posts.
 * Improvement: Full Width Container now applies correctly on WooCommerce Product Category and Tag pages.

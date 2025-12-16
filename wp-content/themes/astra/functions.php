@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define Constants
  */
-define( 'ASTRA_THEME_VERSION', '4.11.17' );
+define( 'ASTRA_THEME_VERSION', '4.11.18' );
 define( 'ASTRA_THEME_SETTINGS', 'astra-settings' );
 define( 'ASTRA_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'ASTRA_THEME_URI', trailingslashit( esc_url( get_template_directory_uri() ) ) );
@@ -179,6 +179,7 @@ require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-amp.php';
 require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-yoast-seo.php';
 require_once ASTRA_THEME_DIR . 'inc/compatibility/surecart/class-astra-surecart.php';
 require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-starter-content.php';
+require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-buddypress.php';
 require_once ASTRA_THEME_DIR . 'inc/addons/transparent-header/class-astra-ext-transparent-header.php';
 require_once ASTRA_THEME_DIR . 'inc/addons/breadcrumbs/class-astra-breadcrumbs.php';
 require_once ASTRA_THEME_DIR . 'inc/addons/scroll-to-top/class-astra-scroll-to-top.php';

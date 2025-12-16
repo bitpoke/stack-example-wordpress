@@ -213,7 +213,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 					/** @psalm-suppress UndefinedFunction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					$astra_add_to_cart_quantity_btn_enabled = apply_filters( 'astra_add_to_cart_quantity_btn_enabled', astra_get_option( 'single-product-plus-minus-button' ) );
-					if ( $astra_add_to_cart_quantity_btn_enabled ) {
+					if ( $astra_add_to_cart_quantity_btn_enabled && self::should_load_add_to_cart_quantity_btn_script() ) {
 						$default_assets['js']['astra-add-to-cart-quantity-btn'] = 'add-to-cart-quantity-btn';
 					}
 				}
@@ -254,7 +254,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 		 * @since 4.11.13
 		 */
 		public static function should_load_woocommerce_js() {
-			// Allow users to disable WooCommerce JS loading on specific pages/posts/post types
+			// Allow users to disable WooCommerce JS loading on specific pages/posts/post types.
 			return apply_filters( 'astra_load_woocommerce_js', true );
 		}
 
@@ -265,8 +265,227 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 		 * @since 4.11.13
 		 */
 		public static function should_load_woocommerce_css() {
-			// Allow users to disable WooCommerce CSS loading on specific pages/posts/post types
+			// Allow users to disable WooCommerce CSS loading on specific pages/posts/post types.
 			return apply_filters( 'astra_load_woocommerce_css', true );
+		}
+
+		/**
+		 * Check if add to cart quantity button script should be loaded based on specific conditions
+		 *
+		 * @since 4.11.18
+		 *
+		 * @return bool Whether add to cart quantity button script should be loaded
+		 */
+		public static function should_load_add_to_cart_quantity_btn_script() {
+			// 1. Check if the Cart Widget is present in the header.
+			if ( self::has_cart_widget_in_header() ) {
+				return true;
+			}
+
+			// 2. Check for Product Block or Shortcode.
+			if ( self::has_product_block_or_shortcode() ) {
+				return true;
+			}
+
+			// 3. Check if we are on the Single Product or the Cart Page.
+			if ( is_product() || is_cart() || is_shop() ) {
+				return true;
+			}
+
+			// 4. Check with Elementor's product widget.
+			if ( self::has_elementor_product_widget() ) {
+				return true;
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check if cart widget is present in header.
+		 *
+		 * @since 4.11.18
+		 *
+		 * @return bool
+		 */
+		public static function has_cart_widget_in_header() {
+			// Check if header footer builder is active.
+			if ( ! Astra_Builder_Helper::$is_header_footer_builder_active ) {
+				return false;
+			}
+
+			// Check if woo-cart component is loaded in header.
+			if ( class_exists( 'Astra_Builder_Helper' ) && Astra_Builder_Helper::is_component_loaded( 'woo-cart', 'header' ) ) {
+				return true;
+			}
+
+			// Check for legacy cart widget.
+			if ( is_active_widget( false, false, 'woocommerce_widget_cart', true ) ) {
+				return true;
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check if page has product block or shortcode.
+		 *
+		 * @since 4.11.18
+		 *
+		 * @return bool
+		 */
+		public static function has_product_block_or_shortcode() {
+			// Check for WooCommerce blocks.
+			if ( function_exists( 'has_block' ) && (
+				has_block( 'woocommerce/product-collection' ) ||
+				has_block( 'woocommerce/all-products' ) ||
+				has_block( 'woocommerce/products' ) )
+			) {
+				return true;
+			}
+
+			// Check for product shortcodes in post content.
+			if ( is_singular() ) {
+				$post = get_post();
+				if ( $post ) {
+					// For single posts, check the post content directly.
+					return self::has_woocommerce_shortcode( $post->post_content );
+				}
+			}
+
+			if ( is_archive() || is_home() ) {
+				// For archive pages, check for shortcodes more efficiently.
+				// without loading all post content into memory.
+				return self::has_woocommerce_shortcode_in_archive();
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check if content has WooCommerce shortcodes.
+		 *
+		 * @since 4.11.18
+		 *
+		 * @param string $content Post content to check.
+		 * @return bool
+		 */
+		private static function has_woocommerce_shortcode( $content ) {
+			// Check for common WooCommerce shortcodes.
+			$shortcodes = array(
+				'products',
+				'product_page',
+				'product_category',
+				'recent_products',
+				'sale_products',
+				'best_selling_products',
+				'top_rated_products',
+				'featured_products',
+				'product_attribute',
+			);
+
+			foreach ( $shortcodes as $shortcode ) {
+				if ( has_shortcode( $content, $shortcode ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check for WooCommerce shortcodes in archive pages efficiently.
+		 *
+		 * @since 4.11.18
+		 *
+		 * @return bool
+		 */
+		private static function has_woocommerce_shortcode_in_archive() {
+			// Access the global $wp_query variable in a Psalm-compliant way.
+			$wp_query = isset( $GLOBALS['wp_query'] ) ? $GLOBALS['wp_query'] : null;
+
+			// If no posts, return false early.
+			if ( ! $wp_query || empty( $wp_query->posts ) ) {
+				return false;
+			}
+
+			// Limit the number of posts to check to prevent memory issues.
+			$posts_to_check = array_slice( $wp_query->posts, 0, 5 ); // Check only first 5 posts.
+
+			// Check each post individually instead of concatenating all content.
+			foreach ( $posts_to_check as $post ) {
+				if ( ! $post ) {
+					continue; // Skip if post is empty.
+				}
+				if ( self::has_woocommerce_shortcode( $post->post_content ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check if page has Elementor product widget.
+		 *
+		 * @since 4.11.18
+		 *
+		 * @return bool
+		 */
+		public static function has_elementor_product_widget() {
+			// Check if Elementor is active.
+			if ( ! defined( 'ELEMENTOR_VERSION' ) ) {
+				return false;
+			}
+
+			// Check if we're on a page that might have Elementor product widgets.
+			if ( ! is_singular() ) {
+				return false;
+			}
+
+			// Check for Elementor data with product-related widgets.
+			$post_id = get_the_ID();
+			if ( ! $post_id ) {
+				return false;
+			}
+
+			// Check if post is built with Elementor.
+			if ( ! get_post_meta( $post_id, '_elementor_version', true ) ) {
+				return false;
+			}
+
+			// Get Elementor data.
+			$elementor_data = get_post_meta( $post_id, '_elementor_data', true );
+			if ( ! $elementor_data ) {
+				return false;
+			}
+
+			// Check for WooCommerce-related Elementor widgets.
+			$woo_widgets = array(
+				'woocommerce-menu-cart',
+				'woocommerce-product-images',
+				'woocommerce-product-meta',
+				'woocommerce-product-price',
+				'woocommerce-product-rating',
+				'woocommerce-product-short-description',
+				'woocommerce-product-stock',
+				'woocommerce-product-tabs',
+				'woocommerce-product-title',
+				'woocommerce-product-additional-information',
+				'woocommerce-product-data-tabs',
+				'woocommerce-products',
+				'woocommerce-categories',
+				'wc-archive-products',
+				'wc-single-product',
+			);
+
+			// Check if any WooCommerce widgets exist in Elementor data.
+			foreach ( $woo_widgets as $widget ) {
+				if ( strpos( $elementor_data, $widget ) !== false ) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		/**
@@ -413,13 +632,16 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 			wp_localize_script( 'astra-theme-js', 'astra', apply_filters( 'astra_theme_js_localize', $astra_localize ) );
 
-			$astra_qty_btn_localize = array(
-				'plus_qty'   => __( 'Plus Quantity', 'astra' ),
-				'minus_qty'  => __( 'Minus Quantity', 'astra' ),
-				'style_type' => $quantity_type,    // Quantity button type.
-			);
+			// Only localize the quantity button script if it should be loaded.
+			if ( class_exists( 'WooCommerce' ) && self::should_load_add_to_cart_quantity_btn_script() ) {
+				$astra_qty_btn_localize = array(
+					'plus_qty'   => __( 'Plus Quantity', 'astra' ),
+					'minus_qty'  => __( 'Minus Quantity', 'astra' ),
+					'style_type' => $quantity_type,    // Quantity button type.
+				);
 
-			wp_localize_script( 'astra-add-to-cart-quantity-btn', 'astra_qty_btn', apply_filters( 'astra_qty_btn_js_localize', $astra_qty_btn_localize ) );
+				wp_localize_script( 'astra-add-to-cart-quantity-btn', 'astra_qty_btn', apply_filters( 'astra_qty_btn_js_localize', $astra_qty_btn_localize ) );
+			}
 
 			$astra_cart_localize_data = array(
 				'desktop_layout'        => astra_get_option( 'woo-header-cart-click-action' ),    // WooCommerce sidebar flyout desktop.

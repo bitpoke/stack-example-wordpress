@@ -585,7 +585,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'--ast-global-color-secondary'         => $color_palette_reorganize ? 'var(--ast-global-color-5)' : 'var(--ast-global-color-4)',
 					'--ast-global-color-alternate-background' => $color_palette_reorganize ? 'var(--ast-global-color-6)' : 'var(--ast-global-color-7)',
 					'--ast-global-color-subtle-background' => $color_palette_reorganize ? 'var(--ast-global-color-7)' : 'var(--ast-global-color-6)',
-					'--ast-bg-style-guide'                 => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#F8FAFC',
+					'--ast-bg-style-guide'                 => 'var( --ast-global-color-secondary, --ast-global-color-5 )',
 					'--ast-shadow-style-guide'             => $is_dark_palette ? '0px 0px 4px 0 #ffffff57' : '0px 0px 4px 0 #00000057',
 					'--ast-global-dark-bg-style'           => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fff',
 					'--ast-global-dark-lfs'                => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fbfbfb',
@@ -2431,7 +2431,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					);
 				} else {
 					if ( is_single() && astra_get_option( 'single-content-images-shadow', false ) ) {
-						$default_layout_update_css['.ast-article-single img'] = array(
+						$default_layout_update_css['.ast-article-single figure, .ast-article-single img:not(figure img)'] = array(
 							'box-shadow'         => '0 0 30px 0 rgba(0,0,0,.15)',
 							'-webkit-box-shadow' => '0 0 30px 0 rgba(0,0,0,.15)',
 							'-moz-box-shadow'    => '0 0 30px 0 rgba(0,0,0,.15)',
