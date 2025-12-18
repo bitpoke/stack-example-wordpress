@@ -2,8 +2,8 @@
 
 Contributors: johnbillion, scompt
 Tags: cron, wp-cron, crontrol, debug, woocommerce
-Tested up to: 6.8
-Stable tag: 1.19.3
+Tested up to: 6.9
+Stable tag: 1.20.0
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -143,7 +143,7 @@ There are two steps to getting a functioning cron event that executes regularly.
 
 *Step One: Adding the event*
 
-From the Tools → Cron Events menu, click on Add New Cron Event. Fill out the details of the event. You're best off using a hook name that conforms to normal PHP variable naming conventions. The schedule is how often the event will be executed. If you don't see a good interval, then add one in the Settings → Cron Schedules menu.
+From the Tools → Cron Events menu, click on Add Cron Event. Fill out the details of the event. You're best off using a hook name that conforms to normal PHP variable naming conventions. The schedule is how often the event will be executed. If you don't see a good interval, then add one in the Settings → Cron Schedules menu.
 
 *Step Two: Writing the function*
 
@@ -163,13 +163,13 @@ function my_function() {
 
 ### How can I create a cron event that requests a URL?
 
-From the Tools → Cron Events menu, click on Add New Cron Event. Select the "URL cron event" option, fill out the details, and press the "Add Event" button.
+From the Tools → Cron Events menu, click on Add Cron Event. Select the "URL cron event" option, fill out the details, and press the "Add Event" button.
 
 [You can read all about the features and security of URL cron events on the WP Crontrol website](https://wp-crontrol.com/docs/url-cron-events/).
 
 ### How do I create a new PHP cron event?
 
-From the Tools → Cron Events menu, click on Add New Cron Event. Select the "PHP cron event" option and enter the schedule and next run time. The event schedule is how often your event will be executed. If you don't see a good interval, then add one in the Settings → Cron Schedules menu. In the "PHP Code" area, enter the PHP code that should be run when your cron event is executed. You don't need to provide the PHP opening tag (`<?php`).
+From the Tools → Cron Events menu, click on Add Cron Event. Select the "PHP cron event" option and enter the schedule and next run time. The event schedule is how often your event will be executed. If you don't see a good interval, then add one in the Settings → Cron Schedules menu. In the "PHP Code" area, enter the PHP code that should be run when your cron event is executed. You don't need to provide the PHP opening tag (`<?php`).
 
 Creating, editing, and running PHP cron events is subject to restrictive security permissions. [You can read all about the features and security of PHP cron events on the WP Crontrol website](https://wp-crontrol.com/docs/php-cron-events/).
 
@@ -211,6 +211,13 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 2. New cron events can be added
 3. New cron schedules can be added, giving plugin developers more options when scheduling events
 ## Changelog ##
+
+### 1.20.0 (17 December 2025) ###
+
+* Confirms support for WordPress 6.9
+* Minor UI and UX improvements
+* Some architectural changes to prepare for future enhancements
+
 
 ### 1.19.3 (23 October 2025) ###
 
@@ -261,10 +268,6 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 * Removes the dependency on jQuery
 * Confirms support for WordPress 6.5
 
-
-### 1.16.1 (16 November 2023) ###
-
-* Confirms support for WordPress 6.4
 
 ### Earlier versions ###
 
