@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce 10.4.2\n"
+"Project-Id-Version: WooCommerce 10.4.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-12T13:34:32+00:00\n"
+"POT-Creation-Date: 2025-12-22T12:00:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woocommerce\n"
@@ -24627,7 +24627,7 @@ msgstr ""
 #. translators: %1$s = order ID, %2$s = order id, %3$s = error message.
 #. translators: %1$d = peoperty name, %2$d = order ID, %3$s = error message.
 #: includes/data-stores/abstract-wc-order-data-store-cpt.php:198
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1767
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1783
 #, php-format
 msgid "Error when setting property '%1$s' for order %2$d: %3$s"
 msgstr ""
@@ -27472,6 +27472,8 @@ msgstr ""
 #: src/Internal/Fulfillments/OrderFulfillmentsRestController.php:593
 #: src/Internal/RestApi/Routes/V4/Fulfillments/Controller.php:140
 #: src/Internal/RestApi/Routes/V4/Fulfillments/Controller.php:171
+#: src/StoreApi/Utilities/OrderAuthorizationTrait.php:29
+#: src/StoreApi/Utilities/OrderAuthorizationTrait.php:69
 msgid "Invalid order ID."
 msgstr ""
 
@@ -43969,57 +43971,57 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d is an order ID.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:673
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:681
 #, php-format
 msgid "Unable to create backup post for order %d."
 msgstr ""
 
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1349
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1357
 msgid "Invalid order IDs in call to read_multiple()"
 msgstr ""
 
 #. translators: %1$d order ID.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1594
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:1606
 #, php-format
 msgid "Unable to load the post record for order %1$d"
 msgstr ""
 
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2092
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2108
 msgid "Could not create order in posts table."
 msgstr ""
 
 #. translators: %s is a table name.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2111
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2127
 #, php-format
 msgid "Could not persist order to database table \"%s\"."
 msgstr ""
 
 #. translators: %s: Taxonomy name.
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2259
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2275
 #, php-format
 msgid "Invalid taxonomy: %s."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2686
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2702
 #, php-format
 msgid "Order %1$d cannot be restored from the trash: it has already been restored to status \"%2$s\"."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2704
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2720
 #, php-format
 msgid "The previous status of order %1$d (\"%2$s\") is invalid. It has been restored to \"pending\" status instead."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2716
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2732
 #, php-format
 msgid "The previous status of order %1$d (\"%2$s\") is invalid. It could not be restored."
 msgstr ""
 
 #. translators: 1: order ID, 2: order status
-#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2752
+#: src/Internal/DataStores/Orders/OrdersTableDataStore.php:2768
 #, php-format
 msgid "Something went wrong when trying to restore order %d from the trash. It could not be restored."
 msgstr ""
@@ -49160,11 +49162,15 @@ msgstr ""
 msgid "Invalid payment result received from payment method."
 msgstr ""
 
-#: src/StoreApi/Utilities/OrderAuthorizationTrait.php:31
+#: src/StoreApi/Utilities/OrderAuthorizationTrait.php:40
 msgid "This order belongs to a different customer."
 msgstr ""
 
-#: src/StoreApi/Utilities/OrderAuthorizationTrait.php:59
+#: src/StoreApi/Utilities/OrderAuthorizationTrait.php:76
+msgid "No billing email provided."
+msgstr ""
+
+#: src/StoreApi/Utilities/OrderAuthorizationTrait.php:83
 msgid "Invalid billing email provided."
 msgstr ""
 
