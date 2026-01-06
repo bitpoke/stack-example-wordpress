@@ -298,7 +298,7 @@ function get_hexdec( hex ) {
 /**
  * Apply CSS for the element
  */
-function astra_css( control, css_property, selector, unit, important = false ) {
+function astra_css( control, css_property, selector, unit, important = false, additionalCss = '' ) {
 
 	wp.customize( control, function( value ) {
 		value.bind( function( new_value ) {
@@ -332,7 +332,7 @@ function astra_css( control, css_property, selector, unit, important = false ) {
 				// Concat and append new <style>.
 				jQuery( 'head' ).append(
 					'<style id="' + control + '-' + css_property + '">'
-					+ selector + '	{ ' + css_property + ': ' + new_value + imp_css_prop + ' }'
+					+ selector + '	{ ' + css_property + ': ' + new_value + imp_css_prop + ';' + additionalCss + ' }'
 					+ '</style>'
 				);
 
@@ -1431,8 +1431,6 @@ function hasWordPressWidgetBlockEditor() {
 			astra_add_dynamic_css( 'post-card-border-radius', dynamicStyle );
 		} );
 	} );
-
-	astra_css( 'astra-settings[post-card-featured-overlay]', 'background-color', '.ast-blog-layout-6-grid .ast-article-inner .post-thumb::after' );
 
 	// Check if anchors should be loaded in the CSS for headings.
 	if (true == astraCustomizer.includeAnchorsInHeadindsCss) {

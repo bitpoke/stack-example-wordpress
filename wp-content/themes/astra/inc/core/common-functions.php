@@ -1364,6 +1364,11 @@ if ( ! function_exists( 'astra_get_pro_url' ) ) {
 	 * @return mixed
 	 */
 	function astra_get_pro_url( $path, $source = '', $medium = '', $campaign = '' ) {
+
+		if ( '/pricing/' === $path && ! ASTRA_THEME_ORG_VERSION ) {
+			return 'https://woocommerce.com/products/astra-pro/';
+		}
+
 		$url           = esc_url( ASTRA_WEBSITE_BASE_URL . $path );
 		$astra_pro_url = trailingslashit( $url );
 

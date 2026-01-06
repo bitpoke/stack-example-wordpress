@@ -170,6 +170,9 @@ class Astra_BSF_Analytics {
 		// Add onboarding analytics data.
 		self::add_astra_onboarding_analytics_data( $astra_stats );
 
+		// Add learn progress analytics data.
+		self::add_learn_progress_analytics_data( $astra_stats );
+
 		$stats_data['plugin_data']['astra'] = array_merge_recursive( $stats_data['plugin_data']['astra'], $astra_stats );
 
 		return $stats_data;
@@ -247,6 +250,95 @@ class Astra_BSF_Analytics {
 		// Onboarding Exit Status.
 		if ( isset( $onboarding_data['exited_early'] ) ) {
 			$astra_stats['boolean_values']['onboarding_exited_early'] = (bool) $onboarding_data['exited_early'];
+		}
+	}
+
+	/**
+	 * Add Astra learn progress analytics data.
+	 *
+	 * This function retrieves the astra_learn_progress user meta from ALL users
+	 * and returns an array of chapter IDs that have been completed by at least one user.
+	 * A chapter is considered complete only when ALL its steps are marked as true in the database.
+	 *
+	 * @param array $astra_stats Reference to the astra stats data.
+	 *
+	 * @since 4.12.0
+	 * @return void
+	 */
+	public static function add_learn_progress_analytics_data( &$astra_stats ) {
+		global $wpdb;
+
+		// Get all users who have learn progress data.
+		/** @psalm-suppress UndefinedConstant */
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT user_id, meta_value FROM {$wpdb->usermeta} WHERE meta_key = %s",
+				'astra_learn_progress'
+			),
+			ARRAY_A
+		);
+
+		// Return if no data found.
+		if ( empty( $results ) ) {
+			return;
+		}
+
+		// Get the actual chapters structure to validate against.
+		$chapters = Astra_Learn::get_chapters_structure();
+
+		// Initialize array to store unique completed chapter IDs across all users.
+		$completed_chapters = array();
+
+		// Process each user's progress data.
+		foreach ( $results as $row ) {
+			$progress_data = maybe_unserialize( $row['meta_value'] );
+
+			// Skip if data is not an array.
+			if ( ! is_array( $progress_data ) ) {
+				continue;
+			}
+
+			// Check each chapter from the actual structure.
+			foreach ( $chapters as $chapter ) {
+				$chapter_id = $chapter['id'];
+
+				// Skip if already recorded as completed.
+				if ( in_array( $chapter_id, $completed_chapters, true ) ) {
+					continue;
+				}
+
+				// Skip if this chapter has no steps defined.
+				if ( ! isset( $chapter['steps'] ) || ! is_array( $chapter['steps'] ) || empty( $chapter['steps'] ) ) {
+					continue;
+				}
+
+				// Skip if this chapter doesn't exist in this user's progress data.
+				if ( ! isset( $progress_data[ $chapter_id ] ) || ! is_array( $progress_data[ $chapter_id ] ) ) {
+					continue;
+				}
+
+				// Check if ALL steps from the chapter definition are completed for this user.
+				$all_steps_completed = true;
+				foreach ( $chapter['steps'] as $step ) {
+					$step_id = $step['id'];
+
+					// If step is not in progress data or not completed, chapter is incomplete.
+					if ( ! isset( $progress_data[ $chapter_id ][ $step_id ] ) || ! $progress_data[ $chapter_id ][ $step_id ] ) {
+						$all_steps_completed = false;
+						break;
+					}
+				}
+
+				// If all steps are completed for this user, add chapter ID to the array.
+				if ( $all_steps_completed ) {
+					$completed_chapters[] = $chapter_id;
+				}
+			}
+		}
+
+		// Add to astra stats if we have completed chapters.
+		if ( ! empty( $completed_chapters ) ) {
+			$astra_stats['learn_chapters_completed'] = array_values( array_unique( $completed_chapters ) );
 		}
 	}
 

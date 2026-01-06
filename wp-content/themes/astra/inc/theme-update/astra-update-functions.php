@@ -1294,3 +1294,21 @@ function astra_theme_background_updater_4_11_12() {
 		update_option( 'astra-settings', $theme_options );
 	}
 }
+
+/**
+ * Background updater function for addon v4.12.0
+ *
+ * @since 4.12.0
+ * @return void
+ */
+function astra_theme_background_updater_4_12_0() {
+	$theme_options = astra_get_options();
+	// Migrate post card featured overlay color to background overlay setting which supports gradients.
+	if ( isset( $theme_options['post-card-featured-overlay'] ) ) {
+		$theme_options['post-card-background-overlay'] = array(
+			'background-type'  => 'color',
+			'background-color' => $theme_options['post-card-featured-overlay'],
+		);
+		update_option( 'astra-settings', $theme_options );
+	}
+}

@@ -20,7 +20,7 @@ $astra_search_input_value       = isset( $args['input_value'] ) ? $args['input_v
 // Check if live search is enabled & accordingly disabling browser search suggestion.
 $live_search       = astra_get_option( 'live-search' );
 $autocomplete_attr = $live_search ? 'autocomplete="off"' : '';
-$search_id = 'search-field';
+$search_id         = 'search-field';
 if ( did_action( 'astra_sticky_header_markup' ) > 0 ) {
 	$search_id .= '-sticky';
 }

@@ -1685,6 +1685,12 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 				),
 			);
 
+			if ( get_option( 'woocommerce_coming_soon' ) === 'yes' ) {
+				$css_desktop_output['.site-content .ast-container .wp-site-blocks'] = array(
+					'flex-grow' => 1,
+				);
+			}
+
 			// Check if star rating compatibility is not enabled and apply star rating styles.
 			if ( ! astra_wc_is_star_rating_compatibility() ) {
 				$css_desktop_output['.woocommerce .star-rating'] = array(
@@ -1936,6 +1942,33 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 			$css_desktop_output['.ast-site-header-cart i.astra-icon:after'] = array(
 				' background' => $header_cart_count_color,
 			);
+
+			$sidebars_widgets = wp_get_sidebars_widgets();
+			if ( is_shop() && isset( $sidebars_widgets['astra-woo-product-off-canvas-sidebar'] ) ) {
+				$css_output .= '
+					@media ( max-width: 601px ) {
+						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters .wc-block-product-filters__open-overlay {
+							display: none;
+						}
+						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters .wc-block-product-filters__overlay {
+							pointer-events: auto;
+							position: relative;
+						}
+						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog {
+							position: relative;
+							transform: translateY(0);
+						}
+						.woocommerce-shop .astra-off-canvas-sidebar .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog .wc-block-product-filters__overlay-header,
+						.woocommerce-shop .astra-off-canvas-sidebar .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog .wc-block-product-filters__overlay-footer {
+							display: none;
+						}
+						.woocommerce-shop .astra-off-canvas-sidebar .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog .wc-block-product-filters__overlay-content {
+							overflow: auto;
+							padding: 2px;
+						}
+					}
+				';
+			}
 
 			if ( is_account_page() && false === astra_get_option( 'modern-woo-account-view', false ) ) {
 				$css_output .= '

@@ -2015,6 +2015,7 @@ if ( ! function_exists( 'astra_get_post_thumbnail' ) ) {
 					if ( ! $check_is_singular ) {
 						$output .= apply_filters( 'astra_blog_post_featured_image_link_after', '</a>' );
 					}
+					$output .= apply_filters( 'astra_blog_post_thumb_img_content_after', '' );
 					$output .= '</div>';
 				}
 			}

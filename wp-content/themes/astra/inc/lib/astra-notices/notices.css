@@ -1,12 +1,12 @@
 .astra-review-notice-container {
-	display: flex;
-	align-items: center;
-	padding-top: 10px;
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
 }
 
 .astra-review-notice-container .dashicons {
     font-size: 1.4em;
-	padding-left: 10px;
+    padding-left: 10px;
 }
 
 .astra-review-notice-container a {
@@ -36,4 +36,12 @@
     display: flex;
     justify-content: left;
     align-items: center;
+}
+
+.astra-addon-license-notice-content {
+    display: flex;
+}
+
+.astra-addon-license-notice-logo {
+    padding-right: 10px;
 }

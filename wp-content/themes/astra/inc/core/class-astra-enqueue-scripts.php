@@ -455,7 +455,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 			// Get Elementor data.
 			$elementor_data = get_post_meta( $post_id, '_elementor_data', true );
-			if ( ! $elementor_data ) {
+			if ( ! $elementor_data || ! is_string( $elementor_data ) ) {
 				return false;
 			}
 
@@ -509,7 +509,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			 */
 			// Flexibility.js for flexbox IE10 support.
 			wp_enqueue_script( 'astra-flexibility', $js_uri . 'flexibility' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );
-			wp_add_inline_script( 'astra-flexibility', 'flexibility(document.documentElement);' );
+			wp_add_inline_script( 'astra-flexibility', 'typeof flexibility !== "undefined" && flexibility(document.documentElement);' );
 
 			// Polyfill for CustomEvent for IE.
 			wp_register_script( 'astra-customevent', $js_uri . 'custom-events-polyfill' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );

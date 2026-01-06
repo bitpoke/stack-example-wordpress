@@ -396,11 +396,11 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 			);
 
 			if ( isset( $val['desktop'] ) ) {
-				$spacing['desktop'] = array_map( 'self::check_numberic_values', $val['desktop'] );
+				$spacing['desktop'] = array_map( array( self::class, 'check_numberic_values' ), $val['desktop'] );
 
-				$spacing['tablet'] = array_map( 'self::check_numberic_values', $val['tablet'] );
+				$spacing['tablet'] = array_map( array( self::class, 'check_numberic_values' ), $val['tablet'] );
 
-				$spacing['mobile'] = array_map( 'self::check_numberic_values', $val['mobile'] );
+				$spacing['mobile'] = array_map( array( self::class, 'check_numberic_values' ), $val['mobile'] );
 
 				if ( isset( $val['desktop-unit'] ) ) {
 					$spacing['desktop-unit'] = $val['desktop-unit'];

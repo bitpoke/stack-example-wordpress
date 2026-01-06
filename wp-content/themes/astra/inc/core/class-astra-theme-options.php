@@ -262,7 +262,10 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 						'tablet-unit'  => 'px',
 						'mobile-unit'  => 'px',
 					),
-					'post-card-featured-overlay'           => '',
+					'post-card-background-overlay'         => array(
+						'background-type'  => '',
+						'background-color' => astra_get_option( 'post-card-featured-overlay' ), // fetch from old option.
+					),
 					'blog-category-style'                  => 'default',
 					'blog-tag-style'                       => 'default',
 					'blog-post-meta-divider-type'          => '/',

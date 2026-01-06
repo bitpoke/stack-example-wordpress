@@ -1,5 +1,17 @@
 *** Astra Changelog ***
 
+2026-01-06 - version 4.12.0
+* New: Integrated Astra Customizer panels with the WordPress Command Palette, enabling instant access via the Cmd + K / Ctrl + K keyboard shortcut.
+* New: Introduced a Learn tab with step-by-step guides to help users master website customization and configuration.
+* Improvement: Enhanced the Blog Cover Layout’s Background Overlay option with gradient support for greater design flexibility and improved control rendering.
+* Improvement: Resolved an issue with the WooCommerce product filter in the flyout sidebar.
+* Improvement: Improved center alignment on the WooCommerce Coming Soon page.
+* Improvement: Improved breadcrumb translation logic to correctly handle CPT archive base slugs across different languages.
+* Fix: Resolved an issue where the Astra Meta Settings icon was not working in the Elementor editor.
+* Fix: Fixed the 'flexibility is not defined' JavaScript error when using optimization plugins such as WP Rocket.
+* Fix: Typography settings now correctly display REM units when REM is selected, instead of showing PX.
+* Fix: Fixed an issue where the button focus outline border was not visible.
+
 2025-12-16 - version 4.11.18
 * Improvement: Added support for the BuddyPress plugin.
 * Improvement: Resolved duplicate ID issue in the search form markup when the sticky header is active.
@@ -249,7 +261,7 @@
 * Improvement: Conversion of 'px' to 'rem' is now working for responsive devices heading as well.
 * Improvement: WooCommerce – Display the product thumbnail image on catalog pages instead of the original image when the "Swap Image" option is enabled for Product Image Hover Style.
 * Compatibility with WordPress 6.7.
-* Fix: Gravity forms select2 fields stylings overridden by theme style. 
+* Fix: Gravity forms select2 fields stylings overridden by theme style.
 * Fix: Alignment issue of Spectra boxed container with Astra.
 * Fix: String Translations not working correctly for Astra Customizer settings.
 * Fix: Featured image not displaying on the shop page with Layout 2, while it works on product category archives.
