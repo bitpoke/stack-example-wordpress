@@ -506,7 +506,16 @@ function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
 
 	if ( $load_svg_menu_icons || ( defined( 'ASTRA_EXT_VER' ) && ! Astra_Ext_Extension::is_active( 'nav-menu' ) ) ) {
 		// Assign icons to only those menu which are registered by Astra.
-		$icon = Astra_Icons::get_icons( 'arrow' );
+		$icon = wp_kses(
+			/**
+			 * Filter to modify the submenu arrow icon SVG markup.
+			 *
+			 * @param string $icon SVG icon markup.
+			 * @since 4.12.1
+			 */
+			apply_filters( 'astra_mobile_nav_submenu_items_arrow_icon', Astra_Icons::get_icons( 'arrow' ) ),
+			Astra_Icons::allowed_svg_args()
+		);
 	}
 
 	// Dropdown svg arrow for submenu for non Astra registered menu's

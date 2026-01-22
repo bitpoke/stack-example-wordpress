@@ -1,5 +1,13 @@
 *** Astra Changelog ***
 
+2026-01-21 - version 4.12.1
+* Improvement: Added the astra_mobile_nav_submenu_items_arrow_icon filter to customize the mobile submenu arrow icon.
+* Improvement: Replaced the static color for form label and legend elements with a global variable-based color for better consistency and customization.
+* Improvement: Removed extra padding applied to the WooCommerce Product Collection block.
+* Fix: Resolved the hover layout issue on the “Enroll in this Course” button.
+* Fix: Resolved a menu padding glitch when using the Cambria font via Custom Adobe Fonts.
+* Fix: Resolved an issue with Customizer Reset button display issue on RTL mode.
+
 2026-01-06 - version 4.12.0
 * New: Integrated Astra Customizer panels with the WordPress Command Palette, enabling instant access via the Cmd + K / Ctrl + K keyboard shortcut.
 * New: Introduced a Learn tab with step-by-step guides to help users master website customization and configuration.

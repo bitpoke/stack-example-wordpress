@@ -6149,7 +6149,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'color'        => 'var(--ast-form-input-focus-text, #475569)',
 				),
 				'label, legend'           => array(
-					'color'       => '#111827',
+					'color'       => 'var(--ast-global-color-2, #111827 )',
 					'font-size'   => '14px',
 					'font-style'  => 'normal',
 					'font-weight' => '500',
