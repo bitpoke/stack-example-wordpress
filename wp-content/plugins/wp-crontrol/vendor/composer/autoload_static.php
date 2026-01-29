@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6c058fd77366cf694932fed00dc4e419
+class ComposerStaticInit26eadf1dc23ed6dd7fc65255782d841d
 {
     public static $classMap = array (
         'Crontrol\\Context\\FeatureContext' => __DIR__ . '/../..' . '/src/Context/FeatureContext.php',
@@ -39,7 +39,7 @@ class ComposerStaticInit6c058fd77366cf694932fed00dc4e419
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit6c058fd77366cf694932fed00dc4e419::$classMap;
+            $loader->classMap = ComposerStaticInit26eadf1dc23ed6dd7fc65255782d841d::$classMap;
 
         }, null, ClassLoader::class);
     }

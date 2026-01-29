@@ -3,7 +3,7 @@
 Contributors: johnbillion, scompt
 Tags: cron, wp-cron, crontrol, debug, woocommerce
 Tested up to: 6.9
-Stable tag: 1.20.0
+Stable tag: 1.21.0
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -212,6 +212,10 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 3. New cron schedules can be added, giving plugin developers more options when scheduling events
 ## Changelog ##
 
+### 1.21.0 (28 January 2026) ###
+
+* Adds support for invalid args in cron events by relaxing the strict typing and showing a warning on the listing and editing screens.
+
 ### 1.20.0 (17 December 2025) ###
 
 * Confirms support for WordPress 6.9
@@ -260,14 +264,6 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 ### 1.16.3 (19 April 2024) ###
 
 * Corrects the displayed PHP cron event name if one is provided
-
-### 1.16.2 (24 March 2024) ###
-
-* Security hardening: [An anti-tampering mechanism has been introduced for PHP cron events](https://wp-crontrol.com/help/check-php-cron-events/)
-* Improvements to accessibility and internationalisation
-* Removes the dependency on jQuery
-* Confirms support for WordPress 6.5
-
 
 ### Earlier versions ###
 

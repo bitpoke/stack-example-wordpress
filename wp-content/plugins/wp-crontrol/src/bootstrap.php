@@ -166,15 +166,13 @@ function pauser() {
  * @return void
  */
 function action_handle_posts() {
-	$request = new Request();
-
 	if ( isset( $_POST['crontrol_action'] ) && ( 'new_cron' === $_POST['crontrol_action'] ) ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You are not allowed to add new cron events.', 'wp-crontrol' ), 403 );
 		}
 		check_admin_referer( 'crontrol-new-cron' );
 
-		$cr = $request->init( wp_unslash( $_POST ) );
+		$cr = Request::init( wp_unslash( $_POST ) );
 
 		if ( PHPCronEvent::HOOK_NAME === $cr->hookname ) {
 			wp_die( esc_html__( 'You are not allowed to add new PHP cron events.', 'wp-crontrol' ), 403 );
@@ -240,7 +238,7 @@ function action_handle_posts() {
 		}
 		check_admin_referer( 'crontrol-new-cron' );
 
-		$cr = $request->init( wp_unslash( $_POST ) );
+		$cr = Request::init( wp_unslash( $_POST ) );
 
 		$next_run_local = ( 'custom' === $cr->next_run_date_local ) ? $cr->next_run_date_local_custom_date . ' ' . $cr->next_run_date_local_custom_time : $cr->next_run_date_local;
 		$args = array(
@@ -303,7 +301,7 @@ function action_handle_posts() {
 		}
 		check_admin_referer( 'crontrol-new-cron' );
 
-		$cr = $request->init( wp_unslash( $_POST ) );
+		$cr = Request::init( wp_unslash( $_POST ) );
 
 		$next_run_local = ( 'custom' === $cr->next_run_date_local ) ? $cr->next_run_date_local_custom_date . ' ' . $cr->next_run_date_local_custom_time : $cr->next_run_date_local;
 
@@ -365,7 +363,7 @@ function action_handle_posts() {
 			wp_die( esc_html__( 'You are not allowed to edit cron events.', 'wp-crontrol' ), 403 );
 		}
 
-		$cr = $request->init( wp_unslash( $_POST ) );
+		$cr = Request::init( wp_unslash( $_POST ) );
 
 		check_admin_referer( "crontrol-edit-cron_{$cr->original_hookname}_{$cr->original_sig}_{$cr->original_next_run_utc}" );
 
@@ -453,7 +451,7 @@ function action_handle_posts() {
 			wp_die( esc_html__( 'You are not allowed to edit cron events.', 'wp-crontrol' ), 403 );
 		}
 
-		$cr = $request->init( wp_unslash( $_POST ) );
+		$cr = Request::init( wp_unslash( $_POST ) );
 
 		check_admin_referer( "crontrol-edit-cron_{$cr->original_hookname}_{$cr->original_sig}_{$cr->original_next_run_utc}" );
 
@@ -536,7 +534,7 @@ function action_handle_posts() {
 			wp_die( esc_html__( 'You are not allowed to edit PHP cron events.', 'wp-crontrol' ), 403 );
 		}
 
-		$cr = $request->init( wp_unslash( $_POST ) );
+		$cr = Request::init( wp_unslash( $_POST ) );
 
 		check_admin_referer( "crontrol-edit-cron_{$cr->original_hookname}_{$cr->original_sig}_{$cr->original_next_run_utc}" );
 
@@ -1640,7 +1638,13 @@ function show_cron_form( $editing ) {
 		$other_fields .= sprintf( '<input name="crontrol_original_next_run_utc" type="hidden" value="%s" />',
 			esc_attr( (string) $existing->timestamp )
 		);
-		if ( ! empty( $existing->args ) ) {
+		if ( $existing->has_invalid_args() ) {
+			$display_args = wp_json_encode( $existing->args );
+
+			if ( false === $display_args ) {
+				$display_args = var_export( $existing->args, true );
+			}
+		} elseif ( $existing->args !== [] ) {
 			$display_args = wp_json_encode( $existing->args );
 
 			if ( false === $display_args ) {
@@ -1894,6 +1898,19 @@ function show_cron_form( $editing ) {
 							</label>
 						</th>
 						<td>
+							<?php
+							if ( $editing && $existing->has_invalid_args() ) {
+								printf(
+									'<div class="notice notice-error inline"><p>%1$s</p><p>%2$s</p></div>',
+									esc_html__( 'This event has invalid arguments and will not run correctly.', 'wp-crontrol' ),
+									sprintf(
+										/* translators: %s: The PHP type of the invalid value */
+										esc_html__( 'Arguments should be an array but %s was provided. The event will likely fail with a PHP error when it attempts to run.', 'wp-crontrol' ),
+										esc_html( gettype( $existing->args ) )
+									)
+								);
+							}
+							?>
 							<input type="text" autocorrect="off" autocapitalize="off" spellcheck="false" class="regular-text code" id="crontrol_args" name="crontrol_args" value="<?php echo esc_attr( $display_args ); ?>" aria-describedby="crontrol_args_description"/>
 							<?php do_action( 'crontrol/manage/args', $existing ); ?>
 							<p class="description" id="crontrol_args_description">
@@ -2660,14 +2677,9 @@ function get_core_schedules() {
  * @return string The JSON-encoded output.
  */
 function json_output( $input, $pretty = true ) {
-	$json_options = 0;
+	$json_options = JSON_UNESCAPED_SLASHES;
 
-	if ( defined( 'JSON_UNESCAPED_SLASHES' ) ) {
-		// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
-		$json_options |= JSON_UNESCAPED_SLASHES;
-	}
-
-	if ( $pretty && defined( 'JSON_PRETTY_PRINT' ) ) {
+	if ( $pretty ) {
 		$json_options |= JSON_PRETTY_PRINT;
 	}
 
