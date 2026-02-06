@@ -211,13 +211,32 @@ class Astra_Menu {
 					$capability,
 					'admin.php?page=' . self::$plugin_slug . '&path=woocommerce'
 				);
-			} elseif ( ASTRA_THEME_ORG_VERSION && ! $this->spectra_has_top_level_menu() ) {
+			}
+			// elseif ( ASTRA_THEME_ORG_VERSION && ! $this->spectra_has_top_level_menu() ) {
+			// add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
+			// self::$plugin_slug,
+			// 'Spectra',
+			// 'Spectra',
+			// $capability,
+			// $this->get_spectra_page_admin_link()
+			// );
+			// }
+		}
+
+		if ( is_callable( 'Astra_Learn::get_incomplete_chapters_count' ) ) {
+			$incomplete_count = Astra_Learn::get_incomplete_chapters_count();
+			if ( $incomplete_count > 0 ) {
+				$learn_menu_title = __( 'Learn', 'astra' ) . sprintf(
+					' <span class="awaiting-mod count-%1$d"><span class="pending-count">%1$d</span></span>',
+					$incomplete_count
+				);
+
 				add_submenu_page( // phpcs:ignore WPThemeReview.PluginTerritory.NoAddAdminPages.add_menu_pages_add_submenu_page -- Taken the menu on top level
 					self::$plugin_slug,
-					'Spectra',
-					'Spectra',
+					__( 'Learn', 'astra' ),
+					$learn_menu_title,
 					$capability,
-					$this->get_spectra_page_admin_link()
+					'admin.php?page=' . self::$plugin_slug . '&path=learn'
 				);
 			}
 		}

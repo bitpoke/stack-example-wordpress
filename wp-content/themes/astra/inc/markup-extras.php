@@ -1696,25 +1696,25 @@ if ( ! function_exists( 'astra_comment_form_default_fields_markup' ) ) {
 		$fields['author'] = '<div class="ast-comment-formwrap ast-row">
 			<p class="comment-form-author ' . astra_attr( 'comment-form-grid-class' ) . '">
 				<label for="author" class="screen-reader-text">' . esc_html( $name_label ) . '</label>
-				<input id="author" name="author" type="text" 
-					value="' . esc_attr( $commenter['comment_author'] ) . '" 
-					placeholder="' . esc_attr( $name_label ) . '" 
+				<input id="author" name="author" type="text"
+					value="' . esc_attr( $commenter['comment_author'] ) . '"
+					placeholder="' . esc_attr( $name_label ) . '"
 					size="30"' . $aria_req . ' autocomplete="name" />
 			</p>';
 
 		$fields['email'] = '<p class="comment-form-email ' . astra_attr( 'comment-form-grid-class' ) . '">
 			<label for="email" class="screen-reader-text">' . esc_html( $email_label ) . '</label>
-			<input id="email" name="email" type="text" 
-				value="' . esc_attr( $commenter['comment_author_email'] ) . '" 
-				placeholder="' . esc_attr( $email_label ) . '" 
+			<input id="email" name="email" type="text"
+				value="' . esc_attr( $commenter['comment_author_email'] ) . '"
+				placeholder="' . esc_attr( $email_label ) . '"
 				size="30"' . $aria_req . ' autocomplete="email" />
 		</p>';
 
 		$fields['url'] = '<p class="comment-form-url ' . astra_attr( 'comment-form-grid-class' ) . '">
 			<label for="url" class="screen-reader-text">' . esc_html( $website_label ) . '</label>
-			<input id="url" name="url" type="text" 
-				value="' . esc_url( $commenter['comment_author_url'] ) . '" 
-				placeholder="' . esc_attr( $website_label ) . '" 
+			<input id="url" name="url" type="text"
+				value="' . esc_url( $commenter['comment_author_url'] ) . '"
+				placeholder="' . esc_attr( $website_label ) . '"
 				size="30" autocomplete="url" />
 		</p>
 		</div>';
@@ -2351,7 +2351,7 @@ add_action( 'astra_header_after', 'astra_setup_article_featured_image' );
 function astra_add_aria_expanded_submenu_items_attr( $output, $item, $depth, $args ) {
 	$classes = empty( $item->classes ) ? array() : (array) $item->classes; // forming classes array if string.
 	if ( in_array( 'menu-item-has-children', $classes ) ) {
-		$output = str_replace( '<a', '<a aria-expanded="false"', $output );
+		$output = str_replace( '<a', '<a role="button" aria-expanded="false"', $output );
 	}
 	return $output;
 }

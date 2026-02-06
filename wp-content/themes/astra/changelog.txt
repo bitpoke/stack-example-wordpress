@@ -1,5 +1,12 @@
 *** Astra Changelog ***
 
+2026-02-06 - version 4.12.3
+* Fix: Resolved WP admin bar search icons styling issues.
+
+2026-02-05 - version 4.12.2
+* Improvement: Enhanced menu dropdown accessibility by aligning aria-expanded usage with supported ARIA roles, resolving Lighthouse audit warnings.
+* Fix: Resolved an issue where the search element was not clickable in the off-canvas view on mobile and tablet devices.
+
 2026-01-21 - version 4.12.1
 * Improvement: Added the astra_mobile_nav_submenu_items_arrow_icon filter to customize the mobile submenu arrow icon.
 * Improvement: Replaced the static color for form label and legend elements with a global variable-based color for better consistency and customization.

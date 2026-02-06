@@ -36,6 +36,9 @@ class Astra_BSF_Analytics {
 
 		add_action( 'init', array( $this, 'init_bsf_analytics' ), 5 );
 		add_filter( 'bsf_core_stats', array( $this, 'add_astra_analytics_data' ) );
+
+		// Track Astra customizer publish events for kpi tracking.
+		add_action( 'astra_customizer_save', array( $this, 'maybe_save_customizer_published_timestamp' ) );
 	}
 
 	/**
@@ -172,6 +175,9 @@ class Astra_BSF_Analytics {
 
 		// Add learn progress analytics data.
 		self::add_learn_progress_analytics_data( $astra_stats );
+
+		// Add KPI tracking data.
+		self::add_kpi_tracking_data( $astra_stats );
 
 		$stats_data['plugin_data']['astra'] = array_merge_recursive( $stats_data['plugin_data']['astra'], $astra_stats );
 
@@ -410,6 +416,113 @@ class Astra_BSF_Analytics {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Maybe save customizer published timestamp.
+	 *
+	 * This function checks if Astra customizer settings were modified during the customizer save event.
+	 * If so, it records the current timestamp in the '_astra_customizer_published_timestamps' option for KPI tracking.
+	 *
+	 * @since 4.12.2
+	 * @return void
+	 */
+	public function maybe_save_customizer_published_timestamp() {
+		global $wp_customize;
+
+		// Bail if customizer manager not available or no Astra customizer settings modified.
+		if ( ! $wp_customize || ! self::has_astra_customizer_settings_modified( $wp_customize ) ) {
+			return;
+		}
+
+		$timestamps = get_option( '_astra_customizer_published_timestamps', array() );
+		if ( ! is_array( $timestamps ) ) {
+			$timestamps = array();
+		}
+
+		$timestamps[] = time();
+		update_option( '_astra_customizer_published_timestamps', $timestamps, false );
+	}
+
+	/**
+	 * Check if any Astra-specific settings were modified in the customizer.
+	 *
+	 * @param WP_Customize_Manager $wp_customize The customizer manager instance.
+	 *
+	 * @since 4.12.2
+	 * @return bool True if Astra customizer settings were modified, false otherwise.
+	 */
+	public static function has_astra_customizer_settings_modified( $wp_customize ) {
+		$posted_values = $wp_customize->unsanitized_post_values();
+
+		// Check if any setting key starts with 'astra-' to identify Astra customizer settings.
+		foreach ( $posted_values as $setting_id => $setting_value ) {
+			if ( strpos( $setting_id, 'astra-' ) === 0 ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Add KPI tracking data.
+	 *
+	 * @param array $astra_stats Reference to the astra stats data.
+	 * @since 4.12.2
+	 * @return void
+	 */
+	public static function add_kpi_tracking_data( &$astra_stats ) {
+		$timestamps = get_option( '_astra_customizer_published_timestamps', array() );
+		if ( empty( $timestamps ) || ! is_array( $timestamps ) ) {
+			return;
+		}
+
+		// Get today's date for comparison.
+		$today = gmdate( 'Y-m-d' );
+
+		// Group timestamps by date and count occurrences, excluding today's data.
+		$kpi_data              = array();
+		$timestamps_to_cleanup = array();
+
+		foreach ( $timestamps as $timestamp ) {
+			// Skip invalid timestamps.
+			if ( ! is_numeric( $timestamp ) ) {
+				continue;
+			}
+
+			$date = gmdate( 'Y-m-d', (int) $timestamp );
+
+			// Skip today's data as we may have incomplete data for the current day.
+			if ( $date === $today ) {
+				continue;
+			}
+
+			// Count occurrences by date.
+			if ( ! isset( $kpi_data[ $date ] ) ) {
+				$kpi_data[ $date ] = array(
+					'numeric_values' => array(
+						'customizer_published' => 0,
+					),
+				);
+			}
+			$kpi_data[ $date ]['numeric_values']['customizer_published']++;
+
+			// Mark this timestamp for cleanup (all timestamps except today's).
+			$timestamps_to_cleanup[] = $timestamp;
+		}
+
+		// Only add to stats if we have data to report.
+		if ( ! empty( $kpi_data ) ) {
+			$astra_stats['kpi_records'] = $kpi_data;
+		}
+
+		// Cleanup old timestamps that are being sent to analytics.
+		// Keep only today's timestamps in the option.
+		if ( ! empty( $timestamps_to_cleanup ) ) {
+			$remaining_timestamps = array_diff( $timestamps, $timestamps_to_cleanup );
+			update_option( '_astra_customizer_published_timestamps', array_values( $remaining_timestamps ), false );
+		}
 	}
 
 	/**

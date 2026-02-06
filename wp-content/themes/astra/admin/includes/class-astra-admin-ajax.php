@@ -265,7 +265,7 @@ class Astra_Admin_Ajax {
 		}
 
 		$opt_in = filter_input( INPUT_POST, 'value', FILTER_VALIDATE_BOOLEAN ) ? 'yes' : 'no';
-		update_site_option( 'astra_analytics_optin', $opt_in );
+		update_site_option( 'astra_usage_optin', $opt_in );
 
 		$response_data = array(
 			'message' => esc_html__( 'Successfully saved data!', 'astra' ),

@@ -820,15 +820,16 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				'.ast-search-menu-icon form.search-form' => array(
 					'padding-right' => '0',
 				),
-				'.ast-search-menu-icon.slide-search input.search-field' => array(
-					'width' => Astra_Builder_Helper::$is_header_footer_builder_active ? '0' : '',
-				),
 				'.ast-header-search .ast-search-menu-icon.ast-dropdown-active .search-form, .ast-header-search .ast-search-menu-icon.ast-dropdown-active .search-field:focus' => array(
 					'transition'   => 'all 0.2s',
 					'border-color' => astra_get_option( 'site-accessibility-highlight-input-color' ),
 				),
 				'.search-form input.search-field:focus'  => array(
 					'outline' => 'none', // Making highlight by border that's why making outline none.
+				),
+
+				'.ast-mobile-header-content .ast-builder-layout-element:not(.ast-builder-menu):not(.ast-header-divider-element), .ast-mobile-popup-content .ast-builder-layout-element:not(.ast-builder-menu):not(.ast-header-divider-element)' => array(
+					'padding' => '15px 20px',
 				),
 			);
 
@@ -850,7 +851,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				$css_output['.ast-search-menu-icon .search-form button.search-submit:focus, .ast-theme-transparent-header .ast-header-search .ast-dropdown-active .ast-icon, .ast-theme-transparent-header .ast-inline-search .search-field:focus .ast-icon'] = array(
 					'color' => 'var(--ast-global-color-1)',
 				);
-				$css_output['.ast-header-search .slide-search .search-form'] = array(
+				$css_output['.ast-desktop .ast-header-search .slide-search .search-form'] = array(
 					'border' => '2px solid var(--ast-global-color-0)',
 				);
 

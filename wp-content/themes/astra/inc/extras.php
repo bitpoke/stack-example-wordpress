@@ -461,7 +461,7 @@ function astra_get_theme_author_details() {
  * @return string The menu item.
  */
 function astra_dropdown_icon_to_menu_link( $title, $item, $args, $depth ) {
-	$role = 'application';
+	$role = 'button';
 	$icon = '';
 
 	/**
@@ -1494,6 +1494,16 @@ function astra_get_blog_posts_per_page() {
  * @since 4.6.0
  */
 function astra_remote_docs_data() {
+	/**
+	 * Filter to disable docs loading.
+	 *
+	 * @param bool $disable_docs True to disable, false to enable.
+	 * @since 4.12.2
+	 */
+	if ( apply_filters( 'astra_disable_docs', true ) ) {
+		return false;
+	}
+
 	$astra_docs_instance = astra_docs_loader_instance( ASTRA_WEBSITE_BASE_URL . '/wp-json/powerful-docs/v1/get-docs', 'astra-docs' );
 	return json_decode( $astra_docs_instance->get_remote_data() );
 }

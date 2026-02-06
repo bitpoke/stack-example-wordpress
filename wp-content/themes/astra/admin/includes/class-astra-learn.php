@@ -341,6 +341,35 @@ class Astra_Learn {
 	}
 
 	/**
+	 * Get count of incomplete chapters.
+	 *
+	 * A chapter is considered incomplete if it has at least one incomplete step.
+	 *
+	 * @param int $user_id Optional. User ID to get progress for. Defaults to current user.
+	 * @return int Number of incomplete chapters.
+	 * @since 4.12.2
+	 */
+	public static function get_incomplete_chapters_count( $user_id = 0 ) {
+		$chapters         = self::get_learn_chapters( $user_id );
+		$incomplete_count = 0;
+
+		foreach ( $chapters as $chapter ) {
+			if ( ! isset( $chapter['steps'] ) || ! is_array( $chapter['steps'] ) ) {
+				continue;
+			}
+
+			foreach ( $chapter['steps'] as $step ) {
+				if ( empty( $step['completed'] ) ) {
+					$incomplete_count++;
+					break;
+				}
+			}
+		}
+
+		return $incomplete_count;
+	}
+
+	/**
 	 * Get learn chapters with user progress merged.
 	 *
 	 * @param int $user_id Optional. User ID to get progress for. Defaults to current user.

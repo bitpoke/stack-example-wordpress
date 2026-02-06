@@ -27,6 +27,68 @@ if ( ! class_exists( 'Astra_Command_Palette' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_command_palette_script' ) );
+			add_action( 'admin_bar_menu', array( $this, 'add_search_icon_to_admin_bar' ), 999 );
+		}
+
+		/**
+		 * Add search icon to admin bar
+		 *
+		 * @since 4.12.2
+		 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance.
+		 * @return void
+		 */
+		public function add_search_icon_to_admin_bar( $wp_admin_bar ) {
+
+			/**
+			 * Filter to enable/disable the search icon in admin bar.
+			 *
+			 * @since 4.12.3
+			 * @param bool $show_search_icon Whether to show the search icon. Default true.
+			 */
+			if ( ! apply_filters( 'astra_show_admin_bar_search_icon', true ) ) {
+				return;
+			}
+
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			/** @psalm-suppress InvalidGlobal */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+			global $wp_version;
+			if ( version_compare( $wp_version, '6.3', '<' ) ) {
+				return;
+			}
+
+			$search_icon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M15 11H15.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M11 11H11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M7 11H7.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>';
+
+			// Detect OS for keyboard shortcut display.
+			$is_mac     = false;
+			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+			if ( strpos( $user_agent, 'Mac' ) !== false || strpos( $user_agent, 'iPhone' ) !== false || strpos( $user_agent, 'iPad' ) !== false ) {
+				$is_mac = true;
+			}
+			$shortcut_key = $is_mac ? '⌘K' : 'Ctrl+K';
+
+			$title = '<span class="astra-search-icon">' . $search_icon . '</span>'
+				. '<span class="astra-search-tooltip">' . esc_html__( 'Search everything: from site settings to pages and design tools', 'astra' ) . ' (' . esc_html( $shortcut_key ) . ')</span>';
+
+			$wp_admin_bar->add_node(
+				array(
+					'id'     => 'astra-command-palette-search',
+					'title'  => $title,
+					'href'   => '#',
+					'meta'   => array(
+						'class' => 'astra-command-palette-trigger',
+					),
+					'parent' => 'top-secondary',
+				)
+			);
 		}
 
 		/**
@@ -53,6 +115,14 @@ if ( ! class_exists( 'Astra_Command_Palette' ) ) {
 			if ( ! file_exists( $script_path ) ) {
 				return;
 			}
+
+			// Enqueue command palette CSS.
+			wp_enqueue_style(
+				'astra-command-palette',
+				ASTRA_THEME_URI . 'assets/css/' . $dir_name . '/command-palette' . $file_prefix . '.css',
+				array(),
+				ASTRA_THEME_VERSION
+			);
 
 			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			wp_enqueue_script(

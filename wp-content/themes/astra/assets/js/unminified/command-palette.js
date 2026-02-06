@@ -64,14 +64,33 @@
 		} );
 	}
 
+	// Function to add click handler for admin bar search icon.
+	function addSearchIconClickHandler() {
+		const searchTrigger = document.querySelector( '#wp-admin-bar-astra-command-palette-search > a' );
+		if ( searchTrigger ) {
+			searchTrigger.addEventListener( 'click', function ( e ) {
+				e.preventDefault();
+				if ( wp.data && wp.data.dispatch ) {
+					wp.data.dispatch( 'core/commands' ).open();
+				}
+			} );
+		}
+	}
+
+	// Initialize the command registration and event handlers.
+	const init = () => {
+		registerAstraCommands();
+		addSearchIconClickHandler();
+	}
+
 	// Wait for the editor to be ready before registering commands.
 	if ( wp.domReady ) {
-		wp.domReady( registerAstraCommands );
+		wp.domReady( init );
 	} else {
 		if ( document.readyState === 'loading' ) {
-			document.addEventListener( 'DOMContentLoaded', registerAstraCommands );
+			document.addEventListener( 'DOMContentLoaded', init );
 		} else {
-			registerAstraCommands();
+			init();
 		}
 	}
 } )( window.wp );
