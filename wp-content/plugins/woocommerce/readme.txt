@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 10.5.0
+Stable tag: 10.5.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -170,14 +170,11 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 10.5.1 2026-02-10 =
+= 10.5.2 2026-02-13 =
 
 **WooCommerce**
 
-* Fix - Admin: revert to the previous version of the recent reviews widget, as errors have been reported in some setups. [#63195](https://github.com/woocommerce/woocommerce/pull/63195)
-* Fix - Fix issue that caused the shop page not to show up in Divi under certain circumstances [#63205](https://github.com/woocommerce/woocommerce/pull/63205)
-* Fix - Only disable add-to-cart button in variable products when wc-add-to-cart-variation is enqueued [#63194](https://github.com/woocommerce/woocommerce/pull/63194)
-* Enhancement - Add additional validation in the PayPal Standard shipping callback method. [#63193](https://github.com/woocommerce/woocommerce/pull/63193)
+* Fix - Fix variable products add-to-cart button appearing disabled in some stores [#63262](https://github.com/woocommerce/woocommerce/pull/63262)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
