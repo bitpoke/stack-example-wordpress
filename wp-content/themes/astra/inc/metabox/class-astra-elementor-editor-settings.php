@@ -56,6 +56,17 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 				return;
 			}
 
+			/**
+			 * Filter to disable Astra meta settings on the Elementor editor.
+			 *
+			 * @since 4.12.4
+			 *
+			 * @param bool $disable Whether to disable Astra meta settings on the Elementor editor. Default false.
+			 */
+			if ( apply_filters( 'astra_disable_elementor_editor_meta_settings', false ) ) {
+				return;
+			}
+
 			// Get post ID.
 			$post_id = 0;
 			if ( isset( $_REQUEST['post'] ) ) {

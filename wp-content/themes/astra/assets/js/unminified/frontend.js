@@ -1108,6 +1108,111 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				}, false);
 			});
 		}
+
+		const desktopMenu = document.querySelectorAll( '#ast-desktop-header .ast-builder-layout-element.ast-builder-menu' );
+		desktopMenu.forEach( menu => {
+			const desktopMenuItems = menu.querySelectorAll( '.main-header-menu .menu-item > a' );
+			desktopMenuItems.forEach( ( item ) => {
+				item.addEventListener( 'focusout', function( e ) {
+					const nextFocus         = e.relatedTarget;
+					const nextFocusMenuItem = nextFocus ? nextFocus.closest( '.menu-item' ) : null;
+					const currentFocus      = e.target;
+					const currentMenuItem   = currentFocus.closest( '.menu-item' );
+					const subMenuOpened     = currentMenuItem.classList.contains( 'ast-menu-hover' );
+					const subMenu           = currentMenuItem.querySelector( '.sub-menu' );
+					const wrapperSubmenu    = currentMenuItem.closest('.sub-menu')
+					const parentMenuItem    = currentMenuItem.closest('.sub-menu')?.closest( '.menu-item-has-children' );
+					const childMenuItem     = currentMenuItem.querySelector( '.menu-item' );
+
+
+					// If the next focus is the same menu item or a child menu item, don't close the submenu.
+					if (
+						currentMenuItem == nextFocusMenuItem ||
+						( childMenuItem && childMenuItem == nextFocusMenuItem )
+					) {
+						return;
+					}
+					
+					// If there's no next focus, close all submenus.
+					if( nextFocusMenuItem == null ) {
+						if ( wrapperSubmenu )
+							recursiveMenuCloseOnblur( wrapperSubmenu );
+						if ( subMenu )
+							recursiveMenuCloseOnblur( subMenu );
+						return;
+					}
+
+					// If the next focus is the next or previous sibling, don't close all the submenu.
+					if (
+						currentMenuItem.nextElementSibling == nextFocusMenuItem ||
+						currentMenuItem.previousElementSibling == nextFocusMenuItem
+					) {
+						// If the submenu is opened, close it and remove the 'ast-menu-hover' class.
+						if( subMenuOpened ) {
+							recursiveMenuCloseOnblur( subMenu, false );
+							currentMenuItem.classList.remove( 'ast-menu-hover' );
+						}
+						return;
+					}
+
+					// If the next focus is the parent menu item, close the submenu till the inner child menu item submenu
+					if ( parentMenuItem && parentMenuItem == nextFocusMenuItem ) {
+						childSubMenu = currentMenuItem.querySelector( '.sub-menu' );
+						recursiveMenuCloseOnblur( childSubMenu, false );
+						return;
+					}
+
+					// Here we are setting a depth level point while traversing from lower to upper submenu parents.
+					// The next focus is the next sibling of any of the parent elements in the tree, then close submenus till that level.
+					let tempParent = parentMenuItem;
+					let subMenuCloseEnd = null;
+					while ( tempParent != null ) {
+						if( tempParent.nextElementSibling == nextFocusMenuItem ) {
+							subMenuCloseEnd = tempParent.querySelector( '.sub-menu' );
+							break;
+						}
+						tempParent = tempParent.closest('.sub-menu')?.closest( '.menu-item-has-children' );
+					}
+
+					// Closes all the menus.
+					if( wrapperSubmenu )
+						recursiveMenuCloseOnblur( wrapperSubmenu, true, subMenuCloseEnd );
+
+				});
+			});
+		});
+	}
+
+	// Recursively closes the submenu upwards
+	function recursiveMenuCloseOnblur( submenu, recursive = true, bubblingEnd = null ) {
+		/**
+		 * Close the submenu
+		 */
+		submenu.classList.remove( 'toggled-on' );
+		submenu.classList.remove( 'astra-megamenu-focus' );
+		const toggle = submenu.closest( '.menu-item-has-children' ).querySelector( '.ast-header-navigation-arrow' );
+		if ( toggle ) {
+			toggle.setAttribute( 'aria-expanded', 'false' );
+		}
+
+		/**
+		 * If there's a bubbling end, set recursive to true. This recursive closing
+		 * the submenu upwards will end till this bubbleEnd element referenced at line 1168
+		 **/
+		if ( bubblingEnd ) {
+			recursive = true;
+		}
+
+		if( ! recursive ) {
+			return;
+		}
+
+		const parentSubmenu = submenu.parentElement.closest( '.sub-menu' );
+		
+		// If there's a parent submenu, close it and continue closing upwards.
+		if( null !== parentSubmenu && submenu !== bubblingEnd ) {
+			recursiveMenuCloseOnblur( parentSubmenu, true, bubblingEnd );
+		}
 	}
 
 	function closeNavigationMenu(siteNavigationSubMenu, dropdownToggleLinks, menuLi, megaMenuFullWidth) {

@@ -37,11 +37,3 @@
     justify-content: left;
     align-items: center;
 }
-
-.astra-addon-license-notice-content {
-    display: flex;
-}
-
-.astra-addon-license-notice-logo {
-    padding-right: 10px;
-}

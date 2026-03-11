@@ -2802,7 +2802,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 						margin-' . $ltr_right . ': 6px;
 					}
 
-					.woocommerce-js input[type=number] {
+					.woocommerce-js .quantity input[type=number] {
 						max-width: 58px;
 						min-height: 36px;
 					}

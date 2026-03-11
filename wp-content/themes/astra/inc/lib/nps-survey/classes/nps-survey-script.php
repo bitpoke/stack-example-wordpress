@@ -6,6 +6,10 @@
  * @package {{package}}
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Prevent multiple inclusions of this file.
 if ( defined( 'NPS_SURVEY_SCRIPT_LOADED' ) ) {
 	return;

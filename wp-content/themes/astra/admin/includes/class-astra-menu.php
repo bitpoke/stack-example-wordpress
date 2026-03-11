@@ -223,7 +223,11 @@ class Astra_Menu {
 			// }
 		}
 
-		if ( is_callable( 'Astra_Learn::get_incomplete_chapters_count' ) ) {
+		$admin_settings = get_option( 'astra_admin_settings', array() );
+		$show_learn_tab = isset( $admin_settings['show_learn_tab'] ) ? $admin_settings['show_learn_tab'] : true;
+
+		// Add Learn submenu with incomplete chapters count if there are any incomplete chapters and the Learn tab is enabled.
+		if ( false !== $show_learn_tab && is_callable( 'Astra_Learn::get_incomplete_chapters_count' ) ) {
 			$incomplete_count = Astra_Learn::get_incomplete_chapters_count();
 			if ( $incomplete_count > 0 ) {
 				$learn_menu_title = __( 'Learn', 'astra' ) . sprintf(
@@ -831,38 +835,6 @@ class Astra_Menu {
 					'internal_icon' => false,
 					'icon_path'     => 'https://ps.w.org/cartflows/assets/icon-256x256.gif',
 				),
-			),
-		);
-
-		if ( ! $under_useful_plugins ) {
-			$extensions[] = array(
-				'title'       => 'OttoKit: WordPress Automation',
-				'subtitle'    => __( 'Connect your WordPress plugins, WooCommerce sites, apps, and websites for powerful automations.', 'astra' ),
-				'status'      => self::get_plugin_status( 'suretriggers/suretriggers.php' ),
-				'slug'        => 'suretriggers',
-				'path'        => 'suretriggers/suretriggers.php',
-				'redirection' => admin_url( 'admin.php?page=suretriggers' ),
-				'ratings'     => '(60+)',
-				'activations' => '1,00,000 +',
-				'logoPath'    => array(
-					'internal_icon' => true,
-					'icon_path'     => 'ottokit',
-				),
-			);
-		}
-
-		$extensions[] = array(
-			'title'       => 'Spectra: Blocks Builder',
-			'subtitle'    => $under_useful_plugins ? __( 'Free WordPress Page Builder.', 'astra' ) : __( 'Power-up block editor with advanced blocks for faster and effortlessly website creation.', 'astra' ),
-			'status'      => self::get_plugin_status( 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php' ),
-			'slug'        => 'ultimate-addons-for-gutenberg',
-			'path'        => 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php',
-			'redirection' => admin_url( 'options-general.php?page=spectra' ),
-			'ratings'     => '(1500+)',
-			'activations' => '1,000,000 +',
-			'logoPath'    => array(
-				'internal_icon' => false,
-				'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon-256x256.gif',
 			),
 		);
 

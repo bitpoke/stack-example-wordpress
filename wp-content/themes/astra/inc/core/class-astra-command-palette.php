@@ -123,6 +123,7 @@ if ( ! class_exists( 'Astra_Command_Palette' ) ) {
 				array(),
 				ASTRA_THEME_VERSION
 			);
+			wp_style_add_data( 'astra-command-palette', 'rtl', 'replace' );
 
 			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			wp_enqueue_script(

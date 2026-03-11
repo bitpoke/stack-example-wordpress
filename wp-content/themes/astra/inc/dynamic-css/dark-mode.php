@@ -371,11 +371,11 @@ function astra_dark_palette_css( $dynamic_css, $force = false ) {
 					'.astra-dark-mode-enable .sc-pill-option__wrapper .sc-pill-option__button' => array(
 						'color' => 'var(--ast-global-color-2)',
 					),
-					'body .sc-input-group'               => array(
+					'body.astra-dark-mode-enable .sc-input-group' => array(
 						'--sc-input-background-color-focus' => 'var( --ast-global-color-secondary, --ast-global-color-5 )',
 						'color' => 'var(--ast-global-color-2)',
 					),
-					'body .sc-input-group.sc-quantity-selector .sc-quantity-selector__control' => array(
+					'body.astra-dark-mode-enable .sc-input-group.sc-quantity-selector .sc-quantity-selector__control' => array(
 						'color' => 'var(--ast-global-color-2)',
 					),
 					'.astra-dark-mode-enable .sc-drawer' => array(
@@ -397,10 +397,10 @@ function astra_dark_palette_css( $dynamic_css, $force = false ) {
 					'.astra-dark-mode-enable .wp-block-surecart-slide-out-cart' => array(
 						'border-color' => 'var(--ast-border-color)',
 					),
-					'.astra-dark-mode-enable .sc-product-line-item__title, .sc-product-line-item__description, .sc-product-line-item__price, .sc-product-line-item__description, .sc-coupon-form, .wp-block-surecart-slide-out-cart-header__title, .sc-product-line-item__price-description, .sc-product-line-item__price-variant, .sc-product-line-item__price-amount' => array(
+					'.astra-dark-mode-enable .sc-product-line-item__title, .astra-dark-mode-enable .sc-product-line-item__description, .astra-dark-mode-enable .sc-product-line-item__price, .astra-dark-mode-enable .sc-coupon-form, .astra-dark-mode-enable .wp-block-surecart-slide-out-cart-header__title, .astra-dark-mode-enable .sc-product-line-item__price-description, .astra-dark-mode-enable .sc-product-line-item__price-variant, .astra-dark-mode-enable .sc-product-line-item__price-amount' => array(
 						'color' => 'var(--ast-global-color-2)',
 					),
-					'.astra-dark-mode-enable .sc-product-line-item__price-variant, .sc-product-line-item__trial, .astra-dark-mode-enable .wp-block-surecart-product-list-price' => array(
+					'.astra-dark-mode-enable .sc-product-line-item__price-variant, .astra-dark-mode-enable .sc-product-line-item__trial, .astra-dark-mode-enable .wp-block-surecart-product-list-price' => array(
 						'color' => 'var(--ast-global-color-2)',
 					),
 					'.astra-dark-mode-enable .wp-block-surecart-cart-icon__icon svg' => array(
@@ -410,7 +410,7 @@ function astra_dark_palette_css( $dynamic_css, $force = false ) {
 						'--sc-alert-background-color' => 'var( --ast-global-color-secondary, --ast-global-color-5 )',
 						'fill'                        => 'var(--ast-global-color-2)',
 					),
-					':root body '                        => array(
+					':root body.astra-dark-mode-enable ' => array(
 						'--sc-input-label-color'           => 'var(--ast-global-color-3) ',
 						'--sc-card-background-color'       => 'var( --ast-global-color-secondary, --ast-global-color-5 ) ',
 						'--sc-input-background-color-focus' => 'var( --ast-global-color-secondary, --ast-global-color-5 ) ',
@@ -440,7 +440,7 @@ function astra_dark_palette_css( $dynamic_css, $force = false ) {
 						'--sc-color-gray-900'              => 'var(--ast-global-color-2)',
 						'--sc-color-gray-100'              => 'var( --ast-global-color-secondary, --ast-global-color-5 )',
 					),
-					'.wp-block-surecart-column.has-background' => array(
+					'.astra-dark-mode-enable .wp-block-surecart-column.has-background' => array(
 						'--sc-input-label-color'           => 'var( --ast-global-color-secondary, --ast-global-color-5 )',
 						'--sc-card-background-color'       => 'var(--ast-global-color-2)',
 						'--sc-input-background-color'      => 'var(--ast-global-color-2)',

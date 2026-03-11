@@ -1108,6 +1108,18 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				return;
 			}
 
+			// Fallback: during REST API requests, $_REQUEST['post_type'] / $_REQUEST['post'] may not be set
+			// and get_current_screen() is unavailable, so $post_type can stay null and the exclusion above
+			// never fires. Detect the post type from the REST URL and bail early for excluded post types.
+			if ( ! $post_type && defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+				$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+				foreach ( $excluded_post_types as $excluded_type ) {
+					if ( false !== strpos( $request_uri, '/wp/v2/' . $excluded_type ) ) {
+						return;
+					}
+				}
+			}
+
 			register_post_meta(
 				'',
 				'site-sidebar-layout',
@@ -1381,10 +1393,11 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				'',
 				'ast-page-background-meta',
 				array(
-					'single'        => true,
-					'type'          => 'object',
-					'auth_callback' => '__return_true',
-					'show_in_rest'  => array(
+					'single'            => true,
+					'type'              => 'object',
+					'auth_callback'     => '__return_true',
+					'sanitize_callback' => 'astra_sanitize_background_meta',
+					'show_in_rest'      => array(
 						'schema' => array(
 							'type'       => 'object',
 							'properties' => array(
@@ -1514,7 +1527,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 							),
 						),
 					),
-					'default'       => array(
+					'default'           => array(
 						'desktop' => array(
 							'background-color'      => $apply_new_default_values ? ( $reorder_color_seq ? 'var(--ast-global-color-5)' : 'var(--ast-global-color-4)' ) : '',
 							'background-image'      => '',
@@ -1566,10 +1579,11 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 				'',
 				'ast-content-background-meta',
 				array(
-					'single'        => true,
-					'type'          => 'object',
-					'auth_callback' => '__return_true',
-					'show_in_rest'  => array(
+					'single'            => true,
+					'type'              => 'object',
+					'auth_callback'     => '__return_true',
+					'sanitize_callback' => 'astra_sanitize_background_meta',
+					'show_in_rest'      => array(
 						'schema' => array(
 							'type'       => 'object',
 							'properties' => array(
@@ -1699,7 +1713,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 							),
 						),
 					),
-					'default'       => array(
+					'default'           => array(
 						'desktop' => array(
 							'background-color'      => $reorder_color_seq ? 'var(' . $palette_css_var_prefix . '4)' : 'var(' . $palette_css_var_prefix . '5)',
 							'background-image'      => '',

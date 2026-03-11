@@ -96,6 +96,7 @@ class Astra_Admin_Ajax {
 				'self_hosted_gfonts'    => 'bool',
 				'preload_local_fonts'   => 'bool',
 				'use_old_header_footer' => 'bool',
+				'show_learn_tab'        => 'bool',
 			)
 		);
 	}
