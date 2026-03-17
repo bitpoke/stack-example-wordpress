@@ -1,5 +1,9 @@
 *** Astra Changelog ***
 
+2026-03-16 - version 4.12.5
+* Fix: LifterLMS course review submission not working due to nonce mismatch.
+* Security: Strengthen theme security and harden against potential vulnerabilities.
+
 2026-03-10 - version 4.12.4
 * New: Added a "Show Learn Tab" toggle in Dashboard Settings to allow users to show or hide the Learn tab from the Astra Dashboard navigation.
 * Improvement: Refined the WooCommerce section UI in the Astra Dashboard with improved layout, hero feature dividers, and better navigation visibility.

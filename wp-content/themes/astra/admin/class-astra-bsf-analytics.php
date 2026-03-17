@@ -372,14 +372,12 @@ class Astra_BSF_Analytics {
 			}
 
 			$is_current_server = true;
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$ip = $_SERVER['SERVER_ADDR'] ?? null;
+			$ip                = isset( $_SERVER['SERVER_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_ADDR'] ) ) : null;
 		}
 
 		// Fallback: resolve server name.
 		if ( ! $ip || $ip === '127.0.0.1' || $ip === '::1' ) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$hostname = $_SERVER['SERVER_NAME'] ?? 'localhost';
+			$hostname = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : 'localhost';
 			$ip       = gethostbyname( $hostname );
 		}
 
@@ -391,12 +389,14 @@ class Astra_BSF_Analytics {
 			}
 		}
 
+		// Validate final IP before using in outbound request.
+		$ip = filter_var( $ip, FILTER_VALIDATE_IP );
 		if ( ! $ip ) {
 			return null; // Could not detect IP.
 		}
 
 		// Query ipinfo.io.
-		$url      = "https://ipinfo.io/{$ip}/json" . ( $token ? "?token={$token}" : '' );
+		$url      = 'https://ipinfo.io/' . rawurlencode( $ip ) . '/json' . ( $token ? '?token=' . rawurlencode( $token ) : '' );
 		$response = wp_remote_get( $url, array( 'timeout' => 5 ) );
 		if ( is_wp_error( $response ) ) {
 			return null;

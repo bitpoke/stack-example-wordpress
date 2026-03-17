@@ -991,7 +991,7 @@ if ( ! function_exists( 'astra_the_search_page_title' ) ) {
 				/* translators: 1: search title, 2: search string */
 				'%1$s %2$s',
 				astra_get_i18n_option( 'section-search-page-title-custom-title', _x( '%astra%', 'Search Page Title: Heading - Text', 'astra' ) ),
-				'<span>' . get_search_query() . '</span>'
+				'<span>' . esc_html( get_search_query( false ) ) . '</span>'
 			)
 		);
 

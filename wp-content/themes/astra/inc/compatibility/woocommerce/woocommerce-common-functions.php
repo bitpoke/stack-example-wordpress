@@ -55,9 +55,8 @@ if ( ! function_exists( 'astra_woo_shop_parent_category' ) ) {
 				$product_categories = html_entity_decode( wp_strip_all_tags( $product_categories ), ENT_COMPAT );
 				if ( $product_categories ) {
 					list( $parent_cat ) = explode( ';', $product_categories );
-					echo apply_filters( 'astra_woo_shop_product_categories', esc_html( $parent_cat ), get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo wp_kses_post( apply_filters( 'astra_woo_shop_product_categories', esc_html( $parent_cat ), get_the_ID() ) );
 				}
-
 				?>
 			</span>
 			<?php

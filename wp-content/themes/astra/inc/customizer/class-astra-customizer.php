@@ -709,6 +709,8 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		 * @return array The array of logo SVG icons.
 		 */
 		public function logo_svg_icons() {
+			check_ajax_referer( 'astra_customizer_nonce', 'nonce' );
+
 			// Check if the current user has the capability to edit theme options.
 			if ( ! current_user_can( 'edit_theme_options' ) ) {
 				wp_send_json_error( __( 'You are not allowed to access this resource.', 'astra' ) );

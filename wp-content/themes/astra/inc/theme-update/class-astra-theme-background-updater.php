@@ -274,7 +274,7 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 		 * @since 2.1.3
 		 * @return array
 		 */
-		public function get_db_update_callbacks() {
+		public static function get_db_update_callbacks() {
 			return self::$db_updates;
 		}
 

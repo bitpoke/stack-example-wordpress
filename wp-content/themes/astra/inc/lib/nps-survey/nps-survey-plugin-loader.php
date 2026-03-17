@@ -33,7 +33,12 @@ if ( ! class_exists( 'NPS_Survey_Plugin_Loader' ) ) {
 		public function __construct() {
 
 			spl_autoload_register( [ $this, 'autoload' ] );
-			add_action( 'wp_loaded', [ $this, 'load_files' ] );
+
+			if ( did_action( 'wp_loaded' ) ) {
+				$this->load_files();
+			} else {
+				add_action( 'wp_loaded', [ $this, 'load_files' ] );
+			}
 		}
 
 		/**
