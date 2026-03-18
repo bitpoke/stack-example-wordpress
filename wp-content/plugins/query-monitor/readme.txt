@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.9
-Stable tag: 3.20.2
+Stable tag: 3.20.3
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -126,7 +126,9 @@ Yes. You can enable this on the Settings panel.
 
 ### How can I report a security bug?
 
-[You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/query-monitor). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
+You can submit a private security vulnerability report to Query Monitor via [the Security tab on the GitHub repo](https://github.com/johnbillion/query-monitor/security). The GitHub Security Advisory process facilitates private collaboration on security issues. You'll receive credit for a valid report and a CVE if necessary.
+
+Do not report security issues on the WordPress.org support forums or via email. Thank you.
 
 ### Do you accept donations?
 
@@ -134,6 +136,13 @@ Yes. You can enable this on the Settings panel.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 ## Changelog ##
+
+### 3.20.3 (17 March 2026) ###
+
+- Clicking QM in the the admin toolbar a second time will now close the panel
+- Improvements to accessibility of the toggle buttons
+- Failed HTTP API GET requests now show a clickable link
+
 
 ### 3.20.2 (11 December 2025) ###
 
@@ -184,11 +193,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 ### 3.16.4 (25 July 2024) ###
 
 * Confirms support for WordPress 6.6.
-
-### 3.16.3 (22 May 2024) ###
-
-* Prevents an infinite loop when logging doing it wrong calls and deprecated calls.
-* Removes a global from query-monitor.php
 
 ### Earlier versions ###
 
