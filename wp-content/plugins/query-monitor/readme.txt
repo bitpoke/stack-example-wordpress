@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.9
-Stable tag: 3.20.3
+Stable tag: 3.20.4
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -137,6 +137,10 @@ Do not report security issues on the WordPress.org support forums or via email. 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 ## Changelog ##
 
+### 3.20.4 (19 March 2026) ###
+
+* This is a security release which fixes a reflected XSS vulnerability in the Request panel. [Full details in the security advisory](https://github.com/johnbillion/query-monitor/security/advisories/GHSA-2xr4-chcf-vmvf).
+
 ### 3.20.3 (17 March 2026) ###
 
 - Clicking QM in the the admin toolbar a second time will now close the panel
@@ -189,10 +193,6 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 * Support for PHP 8.4.
 * Inline scripts are now output using `wp_print_inline_script_tag()` so a Content Security Policy can be fully implemented.
 * Various improvements and fixes.
-
-### 3.16.4 (25 July 2024) ###
-
-* Confirms support for WordPress 6.6.
 
 ### Earlier versions ###
 
