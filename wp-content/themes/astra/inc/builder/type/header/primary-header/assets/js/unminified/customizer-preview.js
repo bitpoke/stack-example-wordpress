@@ -21,7 +21,7 @@
 				dynamicStyle += '.ast-mobile-header-wrap .ast-primary-header-bar , .ast-primary-header-bar .site-primary-header-wrap {';
 				dynamicStyle += 'min-height: ' + size.desktop + 'px;';
 				dynamicStyle += '} ';
-				dynamicStyle += '.ast-desktop .ast-primary-header-bar .main-header-menu > .menu-item {';
+				dynamicStyle += '.ast-desktop:not(:has(.ast-header-sticked)) .ast-primary-header-bar .main-header-menu > .menu-item {';
 				dynamicStyle += 'line-height: ' + size.desktop + 'px;';
 				dynamicStyle += '} ';
 

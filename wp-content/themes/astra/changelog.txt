@@ -1,5 +1,11 @@
 *** Astra Changelog ***
 
+2026-03-24 - version 4.12.6
+* Improvement: Performance - Removed legacy browser polyfills, optimized asset loading, and reduced frontend payload for improved Core Web Vitals.
+* Improvement: Improved submenu toggle keyboard accessibility for better WCAG compliance.
+* Fix: Header height CSS rule conflicting with sticky header shrink effect when used with "Hide When Scrolling Down" option.
+* Fix: EDD Add to Cart button appearing twice on archive pages.
+
 2026-03-16 - version 4.12.5
 * Fix: LifterLMS course review submission not working due to nonce mismatch.
 * Security: Strengthen theme security and harden against potential vulnerabilities.

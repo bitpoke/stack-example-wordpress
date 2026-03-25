@@ -8,6 +8,10 @@
 
 namespace NPS_Survey;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! class_exists( 'NPS_Survey_Plugin_Loader' ) ) {
 
 	/**

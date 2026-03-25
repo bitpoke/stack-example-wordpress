@@ -2351,7 +2351,7 @@ add_action( 'astra_header_after', 'astra_setup_article_featured_image' );
 function astra_add_aria_expanded_submenu_items_attr( $output, $item, $depth, $args ) {
 	$classes = empty( $item->classes ) ? array() : (array) $item->classes; // forming classes array if string.
 	if ( in_array( 'menu-item-has-children', $classes ) ) {
-		$output = str_replace( '<a', '<a role="button" aria-expanded="false"', $output );
+		$output = str_replace( '<a', '<a aria-expanded="false"', $output );
 	}
 	return $output;
 }

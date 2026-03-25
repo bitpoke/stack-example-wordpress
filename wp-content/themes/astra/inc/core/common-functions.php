@@ -1616,7 +1616,7 @@ if ( ! function_exists( 'astra_is_white_labelled' ) ) {
  * @return string
  */
 function astra_get_fonts_display_property() {
-	return apply_filters( 'astra_fonts_display_property', 'fallback' );
+	return apply_filters( 'astra_fonts_display_property', 'swap' );
 }
 
 /**

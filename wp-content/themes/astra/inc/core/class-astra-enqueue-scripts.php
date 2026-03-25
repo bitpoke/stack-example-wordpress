@@ -506,10 +506,19 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 			/**
 			 * IE Only Js and CSS Files.
+			 * Loads flexibility.js (IE10 flexbox polyfill), Element.matches and
+			 * CustomEvent polyfills, and IE-specific CSS.
 			 */
-			// Flexibility.js for flexbox IE10 support.
-			wp_enqueue_script( 'astra-flexibility', $js_uri . 'flexibility' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );
-			wp_add_inline_script( 'astra-flexibility', 'typeof flexibility !== "undefined" && flexibility(document.documentElement);' );
+			if ( astra_check_is_ie() ) {
+				// Flexibility.js for flexbox IE10 support.
+				wp_enqueue_script( 'astra-flexibility', $js_uri . 'flexibility' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );
+				wp_add_inline_script( 'astra-flexibility', 'typeof flexibility !== "undefined" && flexibility(document.documentElement);' );
+
+				// IE compatibility polyfills (Element.matches, CustomEvent) and IE-specific CSS.
+				wp_enqueue_script( 'astra-ie-compat', $js_uri . 'ie-compat' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );
+				wp_enqueue_style( 'astra-ie-compat', $css_uri . 'ie-compat.min.css', array(), ASTRA_THEME_VERSION, 'all' );
+				wp_style_add_data( 'astra-ie-compat', 'rtl', 'replace' );
+			}
 
 			// Polyfill for CustomEvent for IE.
 			wp_register_script( 'astra-customevent', $js_uri . 'custom-events-polyfill' . $file_prefix . '.js', array(), ASTRA_THEME_VERSION, false );
