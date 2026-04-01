@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 10.6.0
+Stable tag: 10.6.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -170,13 +170,17 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 10.6.1 2026-03-12 =
+= 10.6.2 2026-03-31 =
 
 **WooCommerce**
 
-* Fix - Add to Cart: fix validation of attributes with multi-word names [#63647](https://github.com/woocommerce/woocommerce/pull/63647)
-* Fix - Place newly installed payment gateways above offline payment methods instead of at the bottom of the list. [#63648](https://github.com/woocommerce/woocommerce/pull/63648)
-* Fix - Show shipping package title as "Shipment" instead of "Shipment 1" [#63649](https://github.com/woocommerce/woocommerce/pull/63649)
+* Fix - Fix a small punctuation issue at the LYS page. [#63873](https://github.com/woocommerce/woocommerce/pull/63873)
+* Fix - Fix extra padding on analytics tables, dashboard charts, leaderboards, and store alerts on WordPress 7.0 by setting Card/CardBody size to "none". [#63827](https://github.com/woocommerce/woocommerce/pull/63827)
+* Fix - Fix order meta box action buttons stacking poorly on smaller viewports (~1200px) with WordPress 7.0. [#63836](https://github.com/woocommerce/woocommerce/pull/63836)
+* Fix - Fix styling issues with WP 7.0 [#63825](https://github.com/woocommerce/woocommerce/pull/63825)
+* Fix - Fix variable products not working when name is different than the slug [#63771](https://github.com/woocommerce/woocommerce/pull/63771)
+* Fix - Prevent Activity panel abbreviated notification SlotFill from triggering repeated re-renders by creating the slot at module scope. [#63829](https://github.com/woocommerce/woocommerce/pull/63829)
+* Tweak - Remove unused code from the Product Collection cart-contents handler. [#63927](https://github.com/woocommerce/woocommerce/pull/63927)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
