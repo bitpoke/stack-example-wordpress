@@ -149,7 +149,7 @@ class Controller extends AbstractBlock {
 		$block_name                  = $parsed_block['blockName'];
 		$is_product_collection_block = $parsed_block['attrs']['query']['isProductCollectionBlock'] ?? false;
 		$force_page_reload_global    =
-			$parsed_block['attrs']['forcePageReload'] ?? false &&
+			( $parsed_block['attrs']['forcePageReload'] ?? false ) &&
 			isset( $parsed_block['attrs']['queryId'] );
 
 		if (
@@ -173,7 +173,7 @@ class Controller extends AbstractBlock {
 				 */
 				$render_product_collection_callback = static function ( $content, $block ) use ( &$enhanced_query_stack, &$dirty_enhanced_queries, &$render_product_collection_callback ) {
 					$force_page_reload =
-						$parsed_block['attrs']['forcePageReload'] ?? false &&
+						( $block['attrs']['forcePageReload'] ?? false ) &&
 						isset( $block['attrs']['queryId'] );
 
 					if ( $force_page_reload ) {
@@ -339,6 +339,24 @@ class Controller extends AbstractBlock {
 		 * which is a server-side rendered (SSR) block, retrieves the products that match the filters.
 		 */
 		$this->asset_data_registry->add( 'isRenderingPhpTemplate', true );
+
+		/*
+		 * When forcePageReload is enabled, the product collection has no data-wp-router-region,
+		 * so the Interactivity Router cannot update it client-side. Signal the product-filters
+		 * block so its navigate action falls back to a full page reload instead of using the
+		 * router, without affecting other blocks on the page.
+		 *
+		 * This is only needed when the query is inherited from the template, as that's the
+		 * only case where the Product Filters block can be a sibling rather than a descendant
+		 * of the Product Collection. When it's a descendant, forcePageReload is passed through
+		 * the block context instead.
+		 */
+		if (
+			( $parsed_block['attrs']['forcePageReload'] ?? false ) &&
+			( $parsed_block['attrs']['query']['inherit'] ?? false )
+		) {
+			wp_interactivity_config( 'woocommerce/product-filters', array( 'forcePageReload' => true ) );
+		}
 
 		return $pre_render;
 	}
