@@ -37,8 +37,6 @@ jobs:
           push: false
           load: true
           set: |
-            wordpress.cache-from=type=gha
-            wordpress.cache-to=type=gha
             wordpress.tags=wordpress
 
       - name: Start containers
