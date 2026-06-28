@@ -12,11 +12,13 @@ jobs:
   update:
     name: Update WordPress core
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     # Disable WordPress Core auto-updates for repositories generated from stack-example-wordpress
     # Remove or adjust the following condition if you want core auto-updates for your repository
     if: github.repository == 'bitpoke/stack-example-wordpress'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup git
         run: |
@@ -29,14 +31,15 @@ jobs:
           echo "GID=$(id -g)" >> .env
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
 
       - name: Update WordPress themes
         run: scripts/wp-core-update-and-commit.sh
 
       - name: Build
-        uses: docker/bake-action@v2.3.0
+        uses: docker/bake-action@6614cfa25eff9a0b2b2697efb0b6159e7680d584 # v7.2.0
         with:
+          source: .
           push: false
           load: true
           set: |
@@ -57,4 +60,3 @@ jobs:
 
       - name: Push changes
         run: git push
-

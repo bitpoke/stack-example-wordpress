@@ -2,3 +2,5 @@ wp
 .env
 .git
 .gitignore
+gha-creds-*.json
+gha-kubeconfig-*

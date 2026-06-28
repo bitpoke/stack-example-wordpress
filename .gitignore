@@ -10,5 +10,9 @@ docker-compose.override.yaml
 
 .env
 
+# GitHub Actions credentials
+gha-creds-*.json
+gha-kubeconfig-*
+
 # WP-CLI
 wp-cli.local.yml

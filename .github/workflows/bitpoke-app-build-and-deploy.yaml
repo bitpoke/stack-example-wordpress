@@ -30,15 +30,21 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: read
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+      with:
+        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
 
     # Setup gcloud CLI
-    - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+    - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
       with:
-        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
         project_id: ${{ env.GOOGLE_CLOUD_PROJECT }}
 
     # Configure Docker to use the gcloud command-line tool as a credential
@@ -60,11 +66,11 @@ jobs:
 
 
     # Get the GKE credentials so we can deploy to the cluster
-    - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+    - uses: google-github-actions/get-gke-credentials@3da1e46a907576cefaa90c484278bb5b259dd395 # v3.0.0
       with:
         cluster_name: ${{ env.GOOGLE_KUBERNETES_ENGINE_CLUSTER }}
         location: ${{ env.GOOGLE_CLOUD_ZONE }}
-        credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
+        project_id: ${{ env.GOOGLE_CLOUD_PROJECT }}
 
 
     # Deploy the Docker image to the GKE cluster
