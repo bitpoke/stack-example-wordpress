@@ -33,10 +33,7 @@ class Astra_Get_Breadcrumb extends Astra_Abstract_Ability {
 	 * @return array
 	 */
 	public function get_input_schema() {
-		return array(
-			'type'       => 'object',
-			'properties' => array(),
-		);
+		return array();
 	}
 
 	/**

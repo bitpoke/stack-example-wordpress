@@ -210,19 +210,19 @@ class Astra_Get_Postmeta extends Astra_Abstract_Ability {
 		$header_enabled_options = $meta_boxes->get_header_enabled_options();
 
 		// Get current meta values.
-		$post_title_meta       = get_post_meta( $post_id, 'site-post-title', true );
-		$content_layout_meta   = get_post_meta( $post_id, 'ast-site-content-layout', true );
-		$content_style_meta    = get_post_meta( $post_id, 'site-content-style', true );
-		$sidebar_layout_meta   = get_post_meta( $post_id, 'site-sidebar-layout', true );
-		$sidebar_style_meta    = get_post_meta( $post_id, 'site-sidebar-style', true );
-		$header_display_meta   = get_post_meta( $post_id, 'ast-global-header-display', true );
-		$footer_layout_meta    = get_post_meta( $post_id, 'footer-sml-layout', true );
-		$banner_title_meta     = get_post_meta( $post_id, 'ast-banner-title-visibility', true );
-		$breadcrumbs_meta      = get_post_meta( $post_id, 'ast-breadcrumbs-content', true );
-		$above_header_meta     = get_post_meta( $post_id, 'ast-hfb-above-header-display', true );
-		$main_header_meta      = get_post_meta( $post_id, 'ast-main-header-display', true );
-		$below_header_meta     = get_post_meta( $post_id, 'ast-hfb-below-header-display', true );
-		$mobile_header_meta    = get_post_meta( $post_id, 'ast-hfb-mobile-header-display', true );
+		$post_title_meta         = get_post_meta( $post_id, 'site-post-title', true );
+		$content_layout_meta     = get_post_meta( $post_id, 'ast-site-content-layout', true );
+		$content_style_meta      = get_post_meta( $post_id, 'site-content-style', true );
+		$sidebar_layout_meta     = get_post_meta( $post_id, 'site-sidebar-layout', true );
+		$sidebar_style_meta      = get_post_meta( $post_id, 'site-sidebar-style', true );
+		$header_display_meta     = get_post_meta( $post_id, 'ast-global-header-display', true );
+		$footer_layout_meta      = get_post_meta( $post_id, 'footer-sml-layout', true );
+		$banner_title_meta       = get_post_meta( $post_id, 'ast-banner-title-visibility', true );
+		$breadcrumbs_meta        = get_post_meta( $post_id, 'ast-breadcrumbs-content', true );
+		$above_header_meta       = get_post_meta( $post_id, 'ast-hfb-above-header-display', true );
+		$main_header_meta        = get_post_meta( $post_id, 'ast-main-header-display', true );
+		$below_header_meta       = get_post_meta( $post_id, 'ast-hfb-below-header-display', true );
+		$mobile_header_meta      = get_post_meta( $post_id, 'ast-hfb-mobile-header-display', true );
 		$transparent_header_meta = get_post_meta( $post_id, 'theme-transparent-header-meta', true );
 
 		$meta_data = array(

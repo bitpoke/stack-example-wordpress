@@ -70,6 +70,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 
 			if ( 'widgets.php' !== $pagenow && ! is_customize_preview() ) {
 				add_action( 'enqueue_block_editor_assets', array( $this, 'load_scripts' ) );
+				add_action( 'admin_enqueue_scripts', array( $this, 'load_classic_editor_styles' ) );
 			}
 		}
 
@@ -492,6 +493,27 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 			<?php
 
 			do_action( 'astra_meta_box_markup_after', $meta );
+
+			if ( astra_showcase_upgrade_notices() ) {
+				$nudge_copy        = array(
+					'product' => __( 'Launch high-converting product pages faster - get 300+ templates and powerful design tools.', 'astra' ),
+					'default' => __( 'Go from blank page to live website faster - get 300+ templates and powerful design tools.', 'astra' ),
+				);
+				$nudge_description = isset( $nudge_copy[ $post->post_type ] ) ? $nudge_copy[ $post->post_type ] : $nudge_copy['default'];
+
+				printf(
+					'<div class="ast-pro-upgrade-cta-wrapper">
+						<img src="%1$s" alt="%5$s">
+						<p class="ast-upgrade-description">%2$s</p>
+						<a href="%3$s" class="ast-pro-upgrade-link" target="_blank" rel="noopener noreferrer">%4$s</a>
+					</div>',
+					esc_url( ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ),
+					esc_html( $nudge_description ),
+					esc_url( astra_get_pro_url( '/pricing/', 'free-theme', 'post-metabox', 'upgrade' ) ),
+					esc_html__( 'Upgrade Now', 'astra' ),
+					esc_attr__( 'Astra Logo', 'astra' )
+				);
+			}
 		}
 
 		/**
@@ -594,6 +616,31 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 		}
 
 		/**
+		 * Enqueue metabox CSS for classic editor pages (non-block-editor).
+		 *
+		 * @return void
+		 */
+		public function load_classic_editor_styles() {
+			if ( ! is_admin() ) {
+				return;
+			}
+			$screen = get_current_screen();
+			if ( ! $screen || $screen->is_block_editor() ) {
+				return;
+			}
+			$post_type           = get_post_type();
+			$excluded_post_types = self::get_excluded_meta_post_types();
+			if ( $post_type && in_array( $post_type, $excluded_post_types, true ) ) {
+				return;
+			}
+			$file_prefix  = is_rtl() ? '-rtl' : '';
+			$file_prefix .= true === SCRIPT_DEBUG ? '' : '.min';
+			$dir_name     = true === SCRIPT_DEBUG ? 'unminified' : 'minified';
+			$css_uri      = ASTRA_THEME_URI . '/inc/metabox/extend-metabox/css/' . $dir_name;
+			wp_enqueue_style( 'astra-meta-box', $css_uri . '/metabox' . $file_prefix . '.css', array(), ASTRA_THEME_VERSION );
+		}
+
+		/**
 		 * Enqueue Script for Meta settings.
 		 *
 		 * @return void
@@ -683,8 +730,9 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'sticky_addon_enabled'           => $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'sticky-header' ) ? true : false,
 					'register_astra_metabox'         => apply_filters( 'astra_settings_metabox_register', $register_astra_metabox ),
 					'is_hide_contnet_layout_sidebar' => $ast_content_layout_sidebar,
-					'upgrade_pro_link'               => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'upgrade' ),
+					'upgrade_pro_link'               => esc_url_raw( astra_get_pro_url( '/pricing/', 'free-theme', 'post-metabox', 'upgrade' ) ),
 					'show_upgrade_notice'            => astra_showcase_upgrade_notices(),
+					'logo_url'                       => esc_url( ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ),
 					// Flag needed to check whether user is old or new, true for old user, false for new.
 					'v4_1_6_migration'               => ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support(),
 					'color_addon_enabled'            => $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'colors-and-background' ) ? true : false,

@@ -696,8 +696,19 @@ class Astra_Breadcrumb_Trail {
 		global $wp_rewrite;
 
 		// Get some taxonomy and term variables.
-		$term           = get_queried_object();
-		$taxonomy       = get_taxonomy( $term->taxonomy );
+		$term = get_queried_object();
+
+		// Bail early if queried object is not a valid taxonomy term.
+		if ( ! $term instanceof WP_Term ) {
+			return;
+		}
+
+		$taxonomy = get_taxonomy( $term->taxonomy );
+
+		if ( ! $taxonomy ) {
+			return;
+		}
+
 		$done_post_type = false;
 
 		// If there are rewrite rules for the taxonomy.
@@ -756,7 +767,7 @@ class Astra_Breadcrumb_Trail {
 		}
 
 		// If there's a single post type for the taxonomy, use it.
-		if ( false === $done_post_type && 1 === count( $taxonomy->object_type ) && post_type_exists( $taxonomy->object_type[0] ) ) {
+		if ( false === $done_post_type && ! empty( $taxonomy->object_type ) && 1 === count( $taxonomy->object_type ) && post_type_exists( $taxonomy->object_type[0] ) ) {
 
 			// If the post type is 'post'.
 			if ( 'post' === $taxonomy->object_type[0] ) {

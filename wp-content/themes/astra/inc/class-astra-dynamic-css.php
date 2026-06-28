@@ -585,16 +585,16 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'--ast-global-color-secondary'         => $color_palette_reorganize ? 'var(--ast-global-color-5)' : 'var(--ast-global-color-4)',
 					'--ast-global-color-alternate-background' => $color_palette_reorganize ? 'var(--ast-global-color-6)' : 'var(--ast-global-color-7)',
 					'--ast-global-color-subtle-background' => $color_palette_reorganize ? 'var(--ast-global-color-7)' : 'var(--ast-global-color-6)',
-					'--ast-bg-style-guide'                 => 'var( --ast-global-color-secondary, --ast-global-color-5 )',
+					'--ast-bg-style-guide'                 => 'var( --ast-global-color-secondary, var(--ast-global-color-5) )',
 					'--ast-shadow-style-guide'             => $is_dark_palette ? '0px 0px 4px 0 #ffffff57' : '0px 0px 4px 0 #00000057',
-					'--ast-global-dark-bg-style'           => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fff',
-					'--ast-global-dark-lfs'                => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fbfbfb',
-					'--ast-widget-bg-color'                => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fafafa',
-					'--ast-wc-container-head-bg-color'     => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#fbfbfb',
-					'--ast-title-layout-bg'                => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#eeeeee',
+					'--ast-global-dark-bg-style'           => $is_dark_palette ? 'var( --ast-global-color-secondary, var(--ast-global-color-5) )' : '#fff',
+					'--ast-global-dark-lfs'                => $is_dark_palette ? 'var( --ast-global-color-secondary, var(--ast-global-color-5) )' : '#fbfbfb',
+					'--ast-widget-bg-color'                => $is_dark_palette ? 'var( --ast-global-color-secondary, var(--ast-global-color-5) )' : '#fafafa',
+					'--ast-wc-container-head-bg-color'     => $is_dark_palette ? 'var( --ast-global-color-secondary, var(--ast-global-color-5) )' : '#fbfbfb',
+					'--ast-title-layout-bg'                => $is_dark_palette ? 'var( --ast-global-color-secondary, var(--ast-global-color-5) )' : '#eeeeee',
 					'--ast-search-border-color'            => $is_dark_palette ? 'var(--ast-border-color)' : '#e7e7e7',
-					'--ast-lifter-hover-bg'                => $is_dark_palette ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#e6e6e6',
-					'--ast-lifter-hover-bg'                => $is_dark_palette ? 'var( --ast-global-color-primary, --ast-global-color-4 )' : '#e6e6e6',
+					'--ast-lifter-hover-bg'                => $is_dark_palette ? 'var( --ast-global-color-primary, var(--ast-global-color-4) )' : '#e6e6e6',
+					'--ast-lifter-hover-bg'                => $is_dark_palette ? 'var( --ast-global-color-primary, var(--ast-global-color-4) )' : '#e6e6e6',
 					'--ast-gallery-block-color'            => $is_dark_palette ? 'var(--ast-global-color-2)' : '#000',
 					'--srfm-color-input-label'             => 'var(--ast-global-color-2)',
 				),
@@ -1013,9 +1013,15 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 				}
 			}
 
-			if ( false === $enable_site_accessibility ) {
+			if ( ! $enable_site_accessibility ) {
 				$css_output[ $html_selectors_focus_only_inputs . ', ' . $html_selectors_focus_visible ] = array(
 					'outline-style' => 'none',
+				);
+
+				// Static CSS uses :focus (not :focus-visible) for these elements; override explicitly.
+				$css_output['.ast-menu-toggle:focus, .ast-button-wrap .menu-toggle:focus'] = array(
+					'outline'      => 'none',
+					'border-color' => 'transparent',
 				);
 
 				$css_output['.ast-header-search .ast-search-menu-icon.ast-dropdown-active .search-form, .ast-header-search .ast-search-menu-icon.ast-dropdown-active .search-field:focus'] = array(
@@ -1028,7 +1034,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'color' => 'var(--ast-global-color-1)',
 				);
 
-				if ( false === $enable_site_accessibility ) {
+				if ( ! $enable_site_accessibility ) {
 					$css_output['.ast-header-search .slide-search .search-form'] = array(
 						'border' => '2px solid var(--ast-global-color-0)',
 					);
@@ -1036,7 +1042,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				// Reduced specificity so that it does not override customizer background color option.
 				$css_output['.ast-header-search .slide-search .search-field'] = array(
-					'background-color' => '(--ast-global-dark-bg-style)', // Referred by main.css.
+					'background-color' => 'var(--ast-global-dark-bg-style)', // Referred by main.css.
 				);
 			}
 
@@ -1260,7 +1266,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						),
 					),
 					'',
-					number_format( absint( astra_get_tablet_breakpoint() ) + 0.9, 1, '.', '' )
+					number_format( absint( astra_get_tablet_breakpoint() ) + 0.99, 2, '.', '' )
 				);
 
 				$parse_css .= astra_parse_css(
@@ -2939,9 +2945,6 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 						),
 					);
-
-					/* Parse CSS from array() */
-					$parse_css .= astra_parse_css( $ele_btn_color_builder_desktop );
 				}
 
 				$global_button_page_builder_text_color_desktop = array(
@@ -2952,6 +2955,11 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 
 				/* Parse CSS from array() */
 				$parse_css .= astra_parse_css( $global_button_page_builder_text_color_desktop );
+
+				// Output hover rule after the :visited/base rule so hover wins the cascade (equal specificity, last rule wins).
+				if ( isset( $ele_btn_color_builder_desktop ) ) {
+					$parse_css .= astra_parse_css( $ele_btn_color_builder_desktop );
+				}
 
 				if ( 'color-typo' === self::elementor_default_color_font_setting() || 'typo' === self::elementor_default_color_font_setting() ) {
 					$ele_btn_typo_builder_desktop = array(
@@ -6141,7 +6149,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'border-width' => '1px',
 					'border-style' => 'solid',
 					'border-color' => 'var(--ast-border-color)',
-					'background'   => 'var( --ast-global-color-secondary, --ast-global-color-5 )',
+					'background'   => 'var( --ast-global-color-secondary, var(--ast-global-color-5) )',
 				),
 				'input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type=reset]:focus, input[type="tel"]:focus, input[type="date"]:focus, select:focus, textarea:focus' => array(
 					'border-color' => 'var(--ast-global-color-0, #046BD2)',
@@ -6168,7 +6176,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 					'box-shadow'    => '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
 				),
 				':root'                   => array(
-					'--ast-comment-inputs-background' => $is_dark_palette ? 'var( --ast-global-color-secondary, --ast-global-color-5 )' : '#FFF',
+					'--ast-comment-inputs-background' => $is_dark_palette ? 'var( --ast-global-color-secondary, var(--ast-global-color-5) )' : '#FFF',
 				),
 				'::placeholder'           => array(
 					'color' => 'var(--ast-form-field-color, #9CA3AF)',

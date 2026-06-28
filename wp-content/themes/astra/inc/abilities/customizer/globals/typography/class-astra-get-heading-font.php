@@ -61,10 +61,7 @@ class Astra_Get_Heading_Font extends Astra_Abstract_Ability {
 	 * @return array
 	 */
 	public function get_input_schema() {
-		return array(
-			'type'       => 'object',
-			'properties' => array(),
-		);
+		return array();
 	}
 
 	/**

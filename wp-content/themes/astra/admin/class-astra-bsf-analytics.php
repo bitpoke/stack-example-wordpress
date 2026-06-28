@@ -21,6 +21,14 @@ class Astra_BSF_Analytics {
 	private static $instance = null;
 
 	/**
+	 * Events tracker instance.
+	 *
+	 * @var \BSF_Analytics_Events
+	 * @since 4.12.7
+	 */
+	private static $events;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @return void
@@ -33,12 +41,29 @@ class Astra_BSF_Analytics {
 		if ( ! class_exists( 'BSF_Analytics_Loader' ) ) {
 			require_once ASTRA_THEME_DIR . 'inc/lib/bsf-analytics/class-bsf-analytics-loader.php';
 		}
+		if ( ! class_exists( 'BSF_Analytics_Events' ) ) {
+			require_once ASTRA_THEME_DIR . 'inc/lib/bsf-analytics/class-bsf-analytics-events.php';
+		}
+		self::$events = new \BSF_Analytics_Events( 'astra' );
 
 		add_action( 'init', array( $this, 'init_bsf_analytics' ), 5 );
 		add_filter( 'bsf_core_stats', array( $this, 'add_astra_analytics_data' ) );
 
-		// Track Astra customizer publish events for kpi tracking.
+		// Track Astra customizer publish events for kpi and one-time event tracking.
 		add_action( 'astra_customizer_save', array( $this, 'maybe_save_customizer_published_timestamp' ) );
+
+		// Track theme version updates.
+		add_action( 'astra_theme_update_after', array( $this, 'track_theme_updated' ) );
+
+		// Track onboarding completion/skip in real-time via One Onboarding hooks.
+		add_action( 'one_onboarding_completion_astra', array( $this, 'track_onboarding_completed' ) );
+		add_action( 'one_onboarding_state_saved_astra', array( $this, 'track_onboarding_skipped' ) );
+
+		// Track admin settings toggles.
+		add_action( 'update_option_astra_admin_settings', array( $this, 'track_admin_settings_changes' ), 10, 2 );
+
+		// Track learn chapter progress.
+		add_action( 'astra_learn_progress_saved', array( $this, 'track_learn_chapter_progress' ) );
 	}
 
 	/**
@@ -180,6 +205,10 @@ class Astra_BSF_Analytics {
 		self::add_kpi_tracking_data( $astra_stats );
 
 		$stats_data['plugin_data']['astra'] = array_merge_recursive( $stats_data['plugin_data']['astra'], $astra_stats );
+
+		// Merge events after array_merge_recursive — recursive merge corrupts
+		// numeric-indexed event arrays by merging inner keys at the same index.
+		self::add_events_tracking_data( $stats_data['plugin_data']['astra'] );
 
 		return $stats_data;
 	}
@@ -419,10 +448,11 @@ class Astra_BSF_Analytics {
 	}
 
 	/**
-	 * Maybe save customizer published timestamp.
+	 * Maybe save customizer published timestamp and track first publish event.
 	 *
 	 * This function checks if Astra customizer settings were modified during the customizer save event.
-	 * If so, it records the current timestamp in the '_astra_customizer_published_timestamps' option for KPI tracking.
+	 * If so, it records the current timestamp in the '_astra_customizer_published_timestamps' option for KPI tracking
+	 * and tracks the first customizer publish as a one-time event.
 	 *
 	 * @since 4.12.2
 	 * @return void
@@ -442,6 +472,9 @@ class Astra_BSF_Analytics {
 
 		$timestamps[] = time();
 		update_option( '_astra_customizer_published_timestamps', $timestamps, false );
+
+		// Track first customizer publish as a one-time event.
+		self::$events->track( 'first_customizer_published', ASTRA_THEME_VERSION );
 	}
 
 	/**
@@ -479,7 +512,7 @@ class Astra_BSF_Analytics {
 		}
 
 		// Get today's date for comparison.
-		$today = gmdate( 'Y-m-d' );
+		$today = wp_date( 'Y-m-d' );
 
 		// Group timestamps by date and count occurrences, excluding today's data.
 		$kpi_data              = array();
@@ -491,7 +524,7 @@ class Astra_BSF_Analytics {
 				continue;
 			}
 
-			$date = gmdate( 'Y-m-d', (int) $timestamp );
+			$date = wp_date( 'Y-m-d', (int) $timestamp );
 
 			// Skip today's data as we may have incomplete data for the current day.
 			if ( $date === $today ) {
@@ -523,6 +556,323 @@ class Astra_BSF_Analytics {
 			$remaining_timestamps = array_diff( $timestamps, $timestamps_to_cleanup );
 			update_option( '_astra_customizer_published_timestamps', array_values( $remaining_timestamps ), false );
 		}
+	}
+
+	// ============================================
+	// Event Tracking Methods
+	// ============================================
+
+	/**
+	 * Add one-time event tracking data to analytics payload.
+	 *
+	 * Detects state-based milestone events (dedup in track() ensures each fires only once),
+	 * then flushes pending events into the stats array.
+	 *
+	 * @param array $astra_stats Reference to the astra stats data.
+	 * @since 4.12.7
+	 * @return void
+	 */
+	private static function add_events_tracking_data( &$astra_stats ) {
+		$days_since_install = self::get_days_since_install();
+
+		// theme_activated: track once with install source and time-to-value.
+		$referer_key   = defined( 'BSF_UTM_ANALYTICS_REFERER' ) ? BSF_UTM_ANALYTICS_REFERER : 'bsf_product_referers';
+		$bsf_referrers = get_option( $referer_key, array() );
+		$source        = ! empty( $bsf_referrers['astra'] ) ? $bsf_referrers['astra'] : 'self';
+
+		self::$events->track(
+			'theme_activated',
+			ASTRA_THEME_VERSION,
+			array(
+				'source'             => $source,
+				'days_since_install' => (string) $days_since_install,
+				'site_language'      => get_locale(),
+				'hosting_provider'   => self::get_hosting_provider(),
+			)
+		);
+
+		// Ensure events_record always exists in payload.
+		if ( ! isset( $astra_stats['events_record'] ) ) {
+			$astra_stats['events_record'] = array();
+		}
+
+		// Flush pending events into the payload.
+		$existing = isset( $astra_stats['events_record'] ) ? $astra_stats['events_record'] : array();
+		$flushed  = self::$events->flush_pending();
+
+		if ( ! empty( $existing ) || ! empty( $flushed ) ) {
+			$astra_stats['events_record'] = array_merge( $existing, $flushed );
+		}
+	}
+
+	/**
+	 * Track onboarding completion event.
+	 *
+	 * Fired by `one_onboarding_completion_astra` hook when user finishes onboarding.
+	 *
+	 * @param array $completion_data Complete data including screens, user info, and product details.
+	 * @since 4.12.7
+	 * @return void
+	 */
+	public function track_onboarding_completed( $completion_data ) {
+		$properties = self::get_onboarding_properties( $completion_data );
+
+		$completion_screen               = isset( $completion_data['completion_screen'] ) ? sanitize_text_field( $completion_data['completion_screen'] ) : '';
+		$properties['completion_screen'] = $completion_screen;
+
+		// Starter Templates builder selection — only relevant if user reached that screen.
+		if ( 'starter-templates' === $completion_screen && ! empty( $completion_data['starter_templates_builder'] ) ) {
+			$properties['st_builder'] = sanitize_text_field( $completion_data['starter_templates_builder'] );
+		}
+
+		// Pro features selected during onboarding.
+		$pro_features               = isset( $completion_data['pro_features'] ) && is_array( $completion_data['pro_features'] ) ? $completion_data['pro_features'] : array();
+		$properties['pro_features'] = array_map( 'sanitize_text_field', $pro_features );
+
+		// Addons selected during onboarding.
+		$selected_addons               = isset( $completion_data['selected_addons'] ) && is_array( $completion_data['selected_addons'] ) ? $completion_data['selected_addons'] : array();
+		$properties['selected_addons'] = array_map( 'sanitize_text_field', $selected_addons );
+
+		self::$events->track( 'onboarding_completed', ASTRA_THEME_VERSION, $properties, true );
+	}
+
+	/**
+	 * Track onboarding skipped event.
+	 *
+	 * Fired by `one_onboarding_state_saved_astra` hook when user exits onboarding early.
+	 * Re-trackable: each exit replaces the previous skip data so the funnel
+	 * reflects the user's latest progress.
+	 *
+	 * @param array $state_data Complete state data including screens and exit info.
+	 * @since 4.12.7
+	 * @return void
+	 */
+	public function track_onboarding_skipped( $state_data ) {
+		if ( empty( $state_data['exited_early'] ) ) {
+			return;
+		}
+
+		$properties                = self::get_onboarding_properties( $state_data );
+		$properties['exit_screen'] = isset( $state_data['exit_screen'] ) ? sanitize_text_field( $state_data['exit_screen'] ) : '';
+
+		// Allow re-tracking so the funnel reflects the user's latest exit point.
+		self::$events->track( 'onboarding_skipped', ASTRA_THEME_VERSION, $properties, true );
+	}
+
+	/**
+	 * Track admin settings changes for learn tab, local fonts, and abilities toggles.
+	 *
+	 * Fired by `update_option_astra_admin_settings` hook. Re-trackable since
+	 * users can toggle these settings multiple times.
+	 *
+	 * @param array $old_value Previous settings array.
+	 * @param array $new_value Updated settings array.
+	 * @since 4.12.7
+	 * @return void
+	 */
+	public function track_admin_settings_changes( $old_value, $new_value ) {
+		$was_learn_tab_enabled = ! empty( $old_value['show_learn_tab'] );
+		$is_learn_tab_enabled  = ! empty( $new_value['show_learn_tab'] );
+
+		if ( $was_learn_tab_enabled !== $is_learn_tab_enabled ) {
+			self::$events->track(
+				'learn_tab_toggled',
+				ASTRA_THEME_VERSION,
+				array( 'enabled' => $is_learn_tab_enabled ? 'yes' : 'no' ),
+				true
+			);
+		}
+
+		$was_local_fonts_enabled = ! empty( $old_value['self_hosted_gfonts'] );
+		$is_local_fonts_enabled  = ! empty( $new_value['self_hosted_gfonts'] );
+		$was_preload_enabled     = ! empty( $old_value['preload_local_fonts'] );
+		$is_preload_enabled      = ! empty( $new_value['preload_local_fonts'] );
+
+		if ( $was_local_fonts_enabled !== $is_local_fonts_enabled || $was_preload_enabled !== $is_preload_enabled ) {
+			self::$events->track(
+				'local_fonts_toggled',
+				ASTRA_THEME_VERSION,
+				array(
+					'enabled'         => $is_local_fonts_enabled ? 'yes' : 'no',
+					'preload_enabled' => $is_preload_enabled ? 'yes' : 'no',
+				),
+				true
+			);
+		}
+
+		// Abilities API master switch.
+		$was_abilities_enabled = ! empty( $old_value['enable_abilities'] );
+		$is_abilities_enabled  = ! empty( $new_value['enable_abilities'] );
+
+		if ( $was_abilities_enabled !== $is_abilities_enabled ) {
+			self::$events->track(
+				'abilities_toggled',
+				ASTRA_THEME_VERSION,
+				array( 'enabled' => $is_abilities_enabled ? 'yes' : 'no' ),
+				true
+			);
+		}
+
+		// Edit (write) abilities toggle.
+		$was_edit_abilities_enabled = ! empty( $old_value['enable_edit_abilities'] );
+		$is_edit_abilities_enabled  = ! empty( $new_value['enable_edit_abilities'] );
+
+		if ( $was_edit_abilities_enabled !== $is_edit_abilities_enabled ) {
+			self::$events->track(
+				'edit_abilities_toggled',
+				ASTRA_THEME_VERSION,
+				array( 'enabled' => $is_edit_abilities_enabled ? 'yes' : 'no' ),
+				true
+			);
+		}
+
+		// MCP server toggle.
+		$was_mcp_server_enabled = ! empty( $old_value['enable_mcp_server'] );
+		$is_mcp_server_enabled  = ! empty( $new_value['enable_mcp_server'] );
+
+		if ( $was_mcp_server_enabled !== $is_mcp_server_enabled ) {
+			self::$events->track(
+				'mcp_server_toggled',
+				ASTRA_THEME_VERSION,
+				array( 'enabled' => $is_mcp_server_enabled ? 'yes' : 'no' ),
+				true
+			);
+		}
+
+		// AI Assistant toggle.
+		$old_show_ai_assistant = ! isset( $old_value['show_ai_assistant'] ) ? true : ! empty( $old_value['show_ai_assistant'] );
+		$new_show_ai_assistant = ! isset( $new_value['show_ai_assistant'] ) ? true : ! empty( $new_value['show_ai_assistant'] );
+
+		if ( $old_show_ai_assistant !== $new_show_ai_assistant ) {
+			self::$events->track(
+				'ai_assistant_toggled',
+				ASTRA_THEME_VERSION,
+				array( 'enabled' => $new_show_ai_assistant ? 'yes' : 'no' ),
+				true
+			);
+		}
+	}
+
+	/**
+	 * Track cumulative learn chapter progress.
+	 *
+	 * Fires on `astra_learn_progress_saved`. Compares chapter completion state
+	 * against the full chapter structure and retracks with a cumulative snapshot
+	 * so the server always has the latest state.
+	 *
+	 * @param array $saved_progress Full progress data for the current user.
+	 * @since 4.12.7
+	 * @return void
+	 */
+	public function track_learn_chapter_progress( $saved_progress ) {
+		if ( empty( $saved_progress ) || ! class_exists( 'Astra_Learn' ) ) {
+			return;
+		}
+
+		$chapters = Astra_Learn::get_chapters_structure();
+		if ( empty( $chapters ) ) {
+			return;
+		}
+
+		$properties   = array();
+		$all_complete = true;
+
+		foreach ( $chapters as $chapter ) {
+			$chapter_id = isset( $chapter['id'] ) ? $chapter['id'] : '';
+			if ( empty( $chapter_id ) || ! isset( $chapter['steps'] ) || ! is_array( $chapter['steps'] ) || empty( $chapter['steps'] ) ) {
+				continue;
+			}
+
+			$is_done = true;
+			foreach ( $chapter['steps'] as $step ) {
+				$step_id = isset( $step['id'] ) ? $step['id'] : '';
+				if ( empty( $step_id ) ) {
+					continue;
+				}
+				if ( empty( $saved_progress[ $chapter_id ][ $step_id ] ) ) {
+					$is_done = false;
+					break;
+				}
+			}
+
+			$properties[ sanitize_key( $chapter_id ) ] = $is_done ? 'completed' : 'pending';
+			if ( ! $is_done ) {
+				$all_complete = false;
+			}
+		}
+
+		$event_value = $all_complete ? 'completed' : 'in_progress';
+
+		self::$events->track( 'learn_chapter_progress', $event_value, $properties, true );
+	}
+
+	/**
+	 * Extract common onboarding properties from completion/state data.
+	 *
+	 * @param array $data Onboarding data (completion_data or state_data).
+	 * @since 4.12.7
+	 * @return array Properties array with skipped/completed screen info.
+	 */
+	private static function get_onboarding_properties( $data ) {
+		$screens           = isset( $data['screens'] ) && is_array( $data['screens'] ) ? $data['screens'] : array();
+		$skipped_screens   = array();
+		$completed_screens = array();
+
+		foreach ( $screens as $screen ) {
+			if ( empty( $screen['id'] ) ) {
+				continue;
+			}
+			$screen_id = sanitize_text_field( $screen['id'] );
+			if ( ! empty( $screen['skipped'] ) ) {
+				$skipped_screens[] = $screen_id;
+			} else {
+				$completed_screens[] = $screen_id;
+			}
+		}
+
+		return array(
+			'screens_completed' => ! empty( $completed_screens ) ? $completed_screens : '',
+			'screens_skipped'   => ! empty( $skipped_screens ) ? $skipped_screens : '',
+			'screens_total'     => (string) count( $screens ),
+		);
+	}
+
+	/**
+	 * Track theme version update as a re-trackable event.
+	 *
+	 * @param string $previous_version The theme version before the update.
+	 * @since 4.12.7
+	 * @return void
+	 */
+	public function track_theme_updated( $previous_version ) {
+		if ( empty( $previous_version ) ) {
+			return;
+		}
+
+		self::$events->track(
+			'theme_updated',
+			ASTRA_THEME_VERSION,
+			array( 'from_version' => $previous_version ),
+			true
+		);
+	}
+
+	// ============================================
+	// Helper Methods
+	// ============================================
+
+	/**
+	 * Get days since Astra was installed.
+	 *
+	 * @since 4.12.7
+	 * @return int Number of days since install.
+	 */
+	private static function get_days_since_install() {
+		$install_time = get_site_option( 'astra_usage_installed_time', 0 );
+		if ( $install_time > 0 ) {
+			return (int) floor( ( time() - $install_time ) / DAY_IN_SECONDS );
+		}
+		return 0;
 	}
 
 	/**

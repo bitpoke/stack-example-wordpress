@@ -187,10 +187,12 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	document.addEventListener('click', function (e) {
 		const button = e.target.closest('.menu-toggle');
 		if (button && mobileHeaderType === 'dropdown') {
-			button.classList.toggle('toggled');
+			if (typeof astraAddon === 'undefined') {
+				button.classList.toggle('toggled');
+				syncToggledClass();
+			}
 			const isToggled = button.classList.contains('toggled');
 			button.setAttribute('aria-expanded', isToggled ? 'true' : 'false');
-			syncToggledClass();
 		}
 	});
 	
@@ -602,28 +604,31 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 	var get_window_width = function () {
 
-		return document.documentElement.clientWidth;
+		return window.innerWidth;
 	}
 
 	/* Add break point Class and related trigger */
 	var updateHeaderBreakPoint = function () {
 
-		// Content overrflowing out of screen can give incorrect window.innerWidth.
-		// Adding overflow hidden and then calculating the window.innerWidth fixes the problem.
-		var originalOverflow = body.style.overflow;
-		body.style.overflow = 'hidden';
 		var ww = get_window_width();
-		body.style.overflow = originalOverflow;
 
 		var break_point = astra.break_point;
 
 		/**
-		 * This case is when one hits a URL one after the other via `Open in New Tab` option
-		 * Chrome returns the value of outer width as 0 in this case.
-		 * This mis-calculates the width of the window and header seems invisible.
-		 * This could be fixed by using `0 === ww` condition below.
+		 * Use matchMedia to evaluate the breakpoint using the same CSS engine that
+		 * evaluates media queries. This guarantees JS and CSS always agree on which
+		 * header should be visible, eliminating any sub-pixel or scrollbar-width
+		 * mismatch between window.innerWidth and the actual CSS viewport width.
+		 *
+		 * The 0.99 offset mirrors the max-width: (break_point + 0.99)px rule used
+		 * in the PHP dynamic CSS, so the transition point is identical in both.
+		 *
+		 * The 0 === ww guard handles a Chrome edge case where innerWidth returns 0
+		 * when opening a URL via "Open in New Tab" — force desktop mode in that case.
 		 */
-		if (ww > break_point || 0 === ww) {
+		var isMobile = window.matchMedia( '(max-width: ' + ( parseFloat( break_point ) + 0.99 ) + 'px)' ).matches;
+
+		if ( ! isMobile || 0 === ww ) {
 			//remove menu toggled class.
 			if ( menu_toggle_all.length > 0 ) {
 
@@ -647,6 +652,7 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 	}
 
 	updateHeaderBreakPoint();
+	body.classList.add( 'ast-header-loaded' );
 
 	AstraToggleSubMenu = function( event ) {
 

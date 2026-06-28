@@ -84,9 +84,14 @@ abstract class Astra_Abstract_Ability {
 	/**
 	 * Get the input schema for the ability.
 	 *
+	 * Override in child classes that accept input parameters.
+	 * Returns empty array by default (no input required).
+	 *
 	 * @return array
 	 */
-	abstract public function get_input_schema();
+	public function get_input_schema() {
+		return array();
+	}
 
 	/**
 	 * Execute the ability.
@@ -104,8 +109,12 @@ abstract class Astra_Abstract_Ability {
 	public function get_final_input_schema() {
 		$schema = $this->get_input_schema();
 
-		if ( ! isset( $schema['properties'] ) ) {
-			$schema['properties'] = array();
+		if ( ! isset( $schema['type'] ) ) {
+			$schema['type'] = 'object';
+		}
+
+		if ( ! isset( $schema['properties'] ) || ( is_array( $schema['properties'] ) && empty( $schema['properties'] ) ) ) {
+			$schema['properties'] = new \stdClass();
 		}
 
 		return $schema;
@@ -329,6 +338,11 @@ abstract class Astra_Abstract_Ability {
 		$instance = new static();
 
 		if ( empty( $instance->id ) ) {
+			return;
+		}
+
+		// Skip write abilities when edit abilities are disabled.
+		if ( 'write' === $instance->get_tool_type() && ! Astra_API_Init::get_admin_settings_option( 'enable_edit_abilities', true ) ) {
 			return;
 		}
 

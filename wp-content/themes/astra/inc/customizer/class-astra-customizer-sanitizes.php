@@ -948,6 +948,61 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 			// returns true if checkbox is checked.
 			return isset( $val ) && is_bool( $val ) ? $val : '';
 		}
+
+		/**
+		 * Sanitize Font Extras composite value.
+		 *
+		 * Whitelists unit fields and sanitizes numeric values for line-height
+		 * and letter-spacing. Preserves '' (unitless ratio) as a valid unit for
+		 * line-height. Non-array input is discarded and an empty array is returned.
+		 *
+		 * @since 4.13.2
+		 * @param  mixed $input Raw value from the customizer setting.
+		 * @return array        Sanitized font-extras array.
+		 */
+		public static function sanitize_font_extras( $input ) {
+			if ( ! is_array( $input ) ) {
+				return array();
+			}
+
+			$valid_lh_units    = array( '', 'px', 'em', 'rem' );
+			$valid_ls_units    = array( 'px', 'em', 'rem' );
+			$valid_decorations = array( 'initial', 'underline', 'line-through', '' );
+			$valid_transforms  = array( 'lowercase', 'capitalize', 'uppercase', '' );
+
+			$out = array();
+
+			if ( isset( $input['line-height'] ) ) {
+				if ( '' === $input['line-height'] ) {
+					$out['line-height'] = '';
+				} else {
+					$lh                 = floatval( $input['line-height'] );
+					$out['line-height'] = is_numeric( $input['line-height'] ) && is_finite( $lh ) ? (string) $lh : '';
+				}
+			}
+			if ( isset( $input['line-height-unit'] ) ) {
+				$out['line-height-unit'] = in_array( $input['line-height-unit'], $valid_lh_units, true ) ? $input['line-height-unit'] : '';
+			}
+			if ( isset( $input['letter-spacing'] ) ) {
+				if ( '' === $input['letter-spacing'] ) {
+					$out['letter-spacing'] = '';
+				} else {
+					$ls                    = floatval( $input['letter-spacing'] );
+					$out['letter-spacing'] = is_numeric( $input['letter-spacing'] ) && is_finite( $ls ) ? (string) $ls : '';
+				}
+			}
+			if ( isset( $input['letter-spacing-unit'] ) ) {
+				$out['letter-spacing-unit'] = in_array( $input['letter-spacing-unit'], $valid_ls_units, true ) ? $input['letter-spacing-unit'] : '';
+			}
+			if ( isset( $input['text-decoration'] ) ) {
+				$out['text-decoration'] = in_array( $input['text-decoration'], $valid_decorations, true ) ? $input['text-decoration'] : 'initial';
+			}
+			if ( isset( $input['text-transform'] ) ) {
+				$out['text-transform'] = in_array( $input['text-transform'], $valid_transforms, true ) ? $input['text-transform'] : '';
+			}
+
+			return $out;
+		}
 	}
 }
 

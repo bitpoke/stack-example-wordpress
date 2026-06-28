@@ -1705,7 +1705,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 			// Check if star rating compatibility is not enabled and apply star rating styles.
 			if ( ! astra_wc_is_star_rating_compatibility() ) {
 				$css_desktop_output['.woocommerce .star-rating'] = array(
-					'width'          => 'calc( 5.4em + 5px )',
+					'width'          => 'calc( 5.4em + 10px )',
 					'letter-spacing' => '2px',
 				);
 				$css_desktop_output['.woocommerce .star-rating, .woocommerce .comment-form-rating .stars a, .woocommerce .star-rating::before'] = array(
@@ -3591,7 +3591,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 * @return void
 		 */
 		public function woocommerce_proceed_to_checkout_button_html() {
-			$cart_button_text = astra_get_option( 'woo-cart-button-text' );
+			$cart_button_text = astra_get_i18n_option( 'woo-cart-button-text', _x( '%astra%', 'WooCommerce Cart: Cart Button Text', 'astra' ) );
 
 			if ( $cart_button_text ) {
 				?>

@@ -413,7 +413,7 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 
 			delete_transient( 'astra-addon-db-migrated' );
 
-			do_action( 'astra_theme_update_after' );
+			do_action( 'astra_theme_update_after', $saved_version );
 		}
 	}
 }

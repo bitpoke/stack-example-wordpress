@@ -1,5 +1,49 @@
 *** Astra Changelog ***
 
+2026-06-02 - version 4.13.4
+* New: Added a "Show AI Assistant" toggle in Dashboard Settings to allow users to show or hide the AI Assistant icon from the Astra Dashboard.
+* Fix: Resolved dual header display and header button visibility issues at the mobile/desktop breakpoint.
+* Fix: Accessibility outline toggle not working correctly after importing Astra settings, causing focus outline to persist when disabled or not appear when enabled.
+* Fix: Elementor button hover color overridden by :visited rule due to CSS output order in Astra's inline styles.
+* Fix: Astra's admin scripts no longer override the native window.open globally, preventing conflicts with third-party plugins like WooCommerce.
+* Fix: Prevented PHP fatal in webfont and docs filesystem helpers when running on FTP-based hosts without WordPress credentials.
+* Fix: Customizer controls crashing with TypeError when SVG icons had not finished loading.
+
+2026-05-20 - version 4.13.3
+* New: Added PowerfulDocs AI support widget to the Astra admin dashboard — accessible via the floating Astra icon.
+* Improvement: Compatibility with WordPress 7.0.
+* Improvement: Header Builder menu now respects astra_schema_enabled and astra_site_navigation_schema_enabled filters to control schema markup output.
+* Fix: WPML [wpml-string] shortcode translations falling back to the default language on the frontend after the 4.13.1 update.
+* Fix: WooCommerce star rating clipped to 4 out of 5 stars with the Legacy WooCommerce sidebar widget.
+
+2026-05-12 - version 4.13.2
+* New: Introduced `rem` unit support for line-height and letter-spacing in the Typography customizer controls for better accessibility — `rem` values scale with the user's browser font size preference, unlike fixed `px` values.
+* New: Added WP-CLI commands for managing the Abilities API — list, enable, disable, and inspect individual abilities directly from the command line.
+* Improvement: Off-Canvas close icon no longer shrinks when a scrollbar appears, or popup padding is applied.
+* Fix: Sticky header menu toggle desync — main header burger icon showing close (X) state after sticky header releases.
+* Fix: Multi-selector control clipping long post type labels and rendering HTML entities as literal text.
+* Fix: Customizer white screen on WordPress 6.8+ caused by an unused wp-block-editor script dependency on the customizer controls bundle.
+* Fix: Padding bleed on list and quote blocks in the Separate Container layout in the Block Editor.
+* Fix: Duplicate H1 tags when using the `astra_show_site_title_h1_tag` filter with Header Builder active.
+
+2026-04-27 - version 4.13.1
+* Fix: Mini-cart not refreshing after add-to-cart on WooCommerce "Hand-picked Products" and "Products by Category" blocks.
+* Fix: Customizer strings reverting to admin language on the frontend when using different languages for Admin and Frontend with WPML.
+* Fix: Elementor compatibility CSS overriding Astra customizer toggle button color and background settings on Elementor pages.
+* Fix: Nested submenu hover styles bleeding up to parent menu items.
+* Fix: Header and content flicker (FOUC) on mobile with inline Logo + Site Title + Tagline header layout.
+
+2026-04-16 - version 4.13.0
+* New: Introduced MCP (Model Context Protocol) settings and Abilities API for AI-powered theme management. (https://wpastra.com/docs/astra-mcp/)
+* Improvement: Customizer performance overhaul — faster load times, smoother live preview, and fewer HTTP requests for a lighter, more responsive editing experience.
+* Improvement: Disabled Astra command palette search icon in admin bar for WordPress 7.0+ as it ships a built-in command palette.
+
+2026-04-08 - version 4.12.7
+* Fix: Astra global button styles not applying to Spectra v2 Infobox buttons in the Gutenberg editor.
+* Fix: Product Catalog Add to Cart action affecting Single Product Add to Cart behavior.
+* Fix: PHP fatal error in breadcrumb trail on PHP 8.0+ when taxonomy data is invalid or modified by third-party plugins.
+* Fix: Missing `var()` wrapper on CSS custom property fallbacks in dynamic CSS causing invalid fallback values for dark mode, search fields, header/footer builder, and editor styles.
+
 2026-03-24 - version 4.12.6
 * Improvement: Performance - Removed legacy browser polyfills, optimized asset loading, and reduced frontend payload for improved Core Web Vitals.
 * Improvement: Improved submenu toggle keyboard accessibility for better WCAG compliance.

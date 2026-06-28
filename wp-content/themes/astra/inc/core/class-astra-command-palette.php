@@ -59,6 +59,12 @@ if ( ! class_exists( 'Astra_Command_Palette' ) ) {
 				return;
 			}
 
+			// WP 7.0+ ships a built-in command palette, so Astra's search icon is not needed.
+			// Use 6.9.99 so that 7.0-rc and 7.0-beta pre-release versions are also excluded.
+			if ( version_compare( $wp_version, '6.9.99', '>' ) ) {
+				return;
+			}
+
 			$search_icon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
 				<path d="M15 11H15.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -100,8 +106,16 @@ if ( ! class_exists( 'Astra_Command_Palette' ) ) {
 		public function enqueue_command_palette_script() {
 
 			/** @psalm-suppress InvalidGlobal */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-			global $wp_version;
+			global $wp_customize, $wp_version;
+
+			// Skip if WP version is less than 6.3, as Command Palette is not available.
 			if ( version_compare( $wp_version, '6.3', '<' ) ) {
+				return;
+			}
+
+			// Skip in customizer for WP < 7.0 — WP 7.0+ ships a built-in command palette.
+			// Use 6.9.99 so that 7.0-rc and 7.0-beta pre-release versions are included.
+			if ( $wp_customize && version_compare( $wp_version, '6.9.99', '<' ) ) {
 				return;
 			}
 
@@ -156,35 +170,35 @@ if ( ! class_exists( 'Astra_Command_Palette' ) ) {
 				array(
 					'name'        => 'astra/customizer-global',
 					'label'       => __( 'Customizer: Global', 'astra' ),
-					'searchLabel' => __( 'Global, Container, Layout, Colors, Color, Background, Base Colors, Typography, Font, Fonts, Headings, Text, Buttons, Button, Style, Base Typography', 'astra' ),
+					'searchLabel' => __( 'Customizer, Global, Container, Layout, Colors, Color, Background, Base Colors, Typography, Font, Fonts, Headings, Text, Buttons, Button, Style, Base Typography', 'astra' ),
 					'type'        => 'panel',
 					'id'          => 'panel-global',
 				),
 				array(
 					'name'        => 'astra/customizer-header',
 					'label'       => __( 'Customizer: Header', 'astra' ),
-					'searchLabel' => __( 'Header, Site Identity, Logo, Site Title, Tagline, Primary Header, Primary Menu, Menu, Navigation, Above Header, Below Header, Mobile Header, Mobile Menu, Search, Button, Social, Account, Cart, Widget, HTML, Off Canvas, Mobile Trigger', 'astra' ),
+					'searchLabel' => __( 'Customizer, Header, Site Identity, Logo, Site Title, Tagline, Primary Header, Primary Menu, Menu, Navigation, Above Header, Below Header, Mobile Header, Mobile Menu, Search, Button, Social, Account, Cart, Widget, HTML, Off Canvas, Mobile Trigger', 'astra' ),
 					'type'        => 'panel',
 					'id'          => 'panel-header-builder-group',
 				),
 				array(
 					'name'        => 'astra/customizer-footer',
 					'label'       => __( 'Customizer: Footer', 'astra' ),
-					'searchLabel' => __( 'Footer, Footer Widgets, Footer Bar, Copyright, Primary Footer, Above Footer, Below Footer, Menu, Social, HTML, Widget', 'astra' ),
+					'searchLabel' => __( 'Customizer, Footer, Footer Widgets, Footer Bar, Copyright, Primary Footer, Above Footer, Below Footer, Menu, Social, HTML, Widget', 'astra' ),
 					'type'        => 'panel',
 					'id'          => 'panel-footer-builder-group',
 				),
 				array(
 					'name'        => 'astra/customizer-blog',
 					'label'       => __( 'Customizer: Blog', 'astra' ),
-					'searchLabel' => __( 'Blog, Archive, Single Post, Post, Single Page, Page, Content, Excerpt, Featured Image, Meta, Author, Date, Categories, Tags, Comments', 'astra' ),
+					'searchLabel' => __( 'Customizer, Blog, Archive, Single Post, Post, Single Page, Page, Content, Excerpt, Featured Image, Meta, Author, Date, Categories, Tags, Comments', 'astra' ),
 					'type'        => 'section',
 					'id'          => 'section-blog-group',
 				),
 				array(
 					'name'        => 'astra/customizer-general',
 					'label'       => __( 'Customizer: General', 'astra' ),
-					'searchLabel' => __( 'General, Sidebar, Accessibility, Skip to Content, Block Editor, Gutenberg, Misc, Scroll To Top, Back to Top', 'astra' ),
+					'searchLabel' => __( 'Customizer, General, Sidebar, Accessibility, Skip to Content, Block Editor, Gutenberg, Misc, Scroll To Top, Back to Top', 'astra' ),
 					'type'        => 'section',
 					'id'          => 'section-general-group',
 				),
@@ -195,7 +209,7 @@ if ( ! class_exists( 'Astra_Command_Palette' ) ) {
 				$panels[] = array(
 					'name'        => 'astra/customizer-woocommerce',
 					'label'       => __( 'Customizer: WooCommerce', 'astra' ),
-					'searchLabel' => __( 'WooCommerce, Shop, Store, Products, Single Product, Cart, Checkout, Account, My Account, Orders, Sidebar', 'astra' ),
+					'searchLabel' => __( 'Customizer, WooCommerce, Shop, Store, Products, Single Product, Cart, Checkout, Account, My Account, Orders, Sidebar', 'astra' ),
 					'type'        => 'panel',
 					'id'          => 'woocommerce',
 				);

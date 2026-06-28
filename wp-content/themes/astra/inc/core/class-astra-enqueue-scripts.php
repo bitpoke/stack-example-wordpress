@@ -45,6 +45,28 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 			add_action( 'wp_print_footer_scripts', array( $this, 'astra_skip_link_focus_fix' ) );
 			add_filter( 'gallery_style', array( $this, 'enqueue_galleries_style' ) );
+			add_action( 'wp_body_open', array( $this, 'set_header_break_point_early' ), 1 );
+		}
+
+		/**
+		 * Output an early inline script immediately after <body> opens to apply
+		 * `ast-header-break-point` before the header is painted, preventing FOUC
+		 * on mobile with the inline Logo + Site Title + Tagline layout.
+		 *
+		 * @since 4.13.1
+		 * @return void
+		 */
+		public function set_header_break_point_early() {
+			// Skip on AMP — it handles its own layout.
+			if ( astra_is_amp_endpoint() ) {
+				return;
+			}
+			$break_point = astra_header_break_point();
+			?>
+			<script>
+			(function(){if(window.matchMedia('(max-width:<?php echo number_format( absint( $break_point ) + 0.99, 2, '.', '' ); ?>px)').matches){document.body.classList.add('ast-header-break-point');document.body.classList.remove('ast-desktop');}})();
+			</script>
+			<?php
 		}
 
 		/**
@@ -206,7 +228,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 
 					if ( ! is_customize_preview() ) {
 						$astra_shop_add_to_cart = astra_get_option( 'shop-add-to-cart-action' );
-						if ( $astra_shop_add_to_cart && 'default' !== $astra_shop_add_to_cart ) {
+						if ( $astra_shop_add_to_cart && 'default' !== $astra_shop_add_to_cart && ! is_product() ) {
 							$default_assets['js']['astra-shop-add-to-cart'] = 'shop-add-to-cart';
 						}
 					}
@@ -767,13 +789,20 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 		 * @return void
 		 */
 		public function gutenberg_assets() {
+			// Skip block editor assets in the customizer — none of the JS/CSS targets customizer DOM.
+			if ( is_customize_preview() ) {
+				return;
+			}
+
 			/* Directory and Extension */
 			$rtl = '';
 			if ( is_rtl() ) {
 				$rtl = '-rtl';
 			}
 
-			$js_uri = ASTRA_THEME_URI . 'inc/assets/js/block-editor-script.js';
+			$js_prefix = SCRIPT_DEBUG ? '' : 'minified/';
+			$js_suffix = SCRIPT_DEBUG ? '' : '.min';
+			$js_uri    = ASTRA_THEME_URI . 'inc/assets/js/' . $js_prefix . 'block-editor-script' . $js_suffix . '.js';
 			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			wp_enqueue_script( 'astra-block-editor-script', $js_uri, false, ASTRA_THEME_VERSION, 'all' );
 			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort

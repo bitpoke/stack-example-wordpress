@@ -542,14 +542,15 @@ if ( ! class_exists( 'Astra_Elementor_Editor_Settings' ) ) {
 						'type' => \Elementor\Controls_Manager::RAW_HTML,
 						'raw'  => sprintf(
 							'<div class="ast-pro-upgrade-cta-wrapper">
-								<img src="%1$s" alt="Astra Logo">
+								<img src="%1$s" alt="%5$s">
 								<p class="elementor-control-field-description">%2$s</p>
-								<a href="%3$s" class="ast-pro-upgrade-link" target="_blank">%4$s</a>
+								<a href="%3$s" class="ast-pro-upgrade-link" target="_blank" rel="noopener noreferrer">%4$s</a>
 							</div>',
 							esc_url( ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ),
-							__( 'Unlock your full design potential and build a website to be proud of with Astra Pro.', 'astra' ),
-							astra_get_pro_url( '/pricing/', 'free-theme', 'elementor-editor', 'upgrade' ),
-							__( 'Upgrade Now', 'astra' )
+							esc_html__( 'Create beautiful pages faster with advanced design controls, ready templates, and full flexibility.', 'astra' ),
+							esc_url( astra_get_pro_url( '/pricing/', 'free-theme', 'elementor-editor', 'upgrade' ) ),
+							esc_html__( 'Upgrade Now', 'astra' ),
+							esc_attr__( 'Astra Logo', 'astra' )
 						),
 					)
 				);
