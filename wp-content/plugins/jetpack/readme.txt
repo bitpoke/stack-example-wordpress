@@ -1,10 +1,10 @@
 === Jetpack - WP Security, Backup, Speed, & Growth ===
-Contributors: automattic, adamkheckler, adrianmoldovanwp, aduth, akirk, allendav, alternatekev, andy, annamcphee, annezazu, apeatling, arcangelini, arsihasi, azaozz, barry, batmoo, beaulebens, bindlegirl, biskobe, bjorsch, blobaugh, brbrr, brileyhooper, cainm, cena, cfinke, cgastrell, chaselivingston, chellycat, clickysteve, csonnek, danielbachhuber, daniloercoli, davoraltman, delawski, designsimply, dkmyta, dllh, drawmyface, dsmart, dun2mis, dzver, ebinnion, egregor, eliorivero, enej, eoigal, erania-pinnera, ethitter, fgiannar, gcorne, georgestephanis, gibrown, goldsounds, hew, hugobaeta, hypertextranch, iammattthomas, iandunn, joen, jblz, jeffgolenski, jeherve, jenhooks, jenia, jessefriedman, jgs, jkudish, jmdodd, joanrho, johnjamesjacoby, jshreve, kbrownkd, keoshi, koke, kraftbj, lancewillett, leogermani, lhkowalski, lschuyler, macmanx, martinremy, matt, mattwiebe, matveb, maverick3x6, mcsf, mdawaffe, mdbitz, MichaelArestad, migueluy, miguelxavierpenha, mikeyarce, mkaz, nancythanki, nickmomrik, njweller, nunyvega, obenland, oskosk, pento, professor44, rachelsquirrel, rdcoll, renatoagds, retrofox, richardmtl, richardmuscat, robertbpugh, roccotripaldi, ryancowles, samhotchkiss, samiff, scarstocea, scottsweb, sdixon194, sdquirk, sermitr, simison, stephdau, thehenridev, tmoorewp, tyxla, Viper007Bond, westi, williamvianas, wpkaren, yoavf, zinigor
+Contributors: automattic, adamkheckler, adrianmoldovanwp, aduth, akirk, allendav, alternatekev, andy, annamcphee, annezazu, apeatling, arcangelini, arsihasi, azaozz, barry, batmoo, beaulebens, bindlegirl, biskobe, bjorsch, blobaugh, brbrr, brileyhooper, cainm, cena, cfinke, cgastrell, chaselivingston, chellycat, clickysteve, csonnek, danielbachhuber, daniloercoli, davoraltman, delawski, designsimply, dkmyta, dllh, dlocc, drawmyface, dsmart, dun2mis, dzver, ebinnion, egregor, eliorivero, enej, eoigal, erania-pinnera, ethitter, fgiannar, gcorne, georgestephanis, gibrown, goldsounds, hew, hugobaeta, hypertextranch, iammattthomas, iandunn, joen, jblz, jeffgolenski, jeherve, jennywp, jenia, jessefriedman, jgs, jkudish, jmdodd, joanrho, johnjamesjacoby, jshreve, kbrownkd, keoshi, koke, kraftbj, lancewillett, leogermani, lhkowalski, lschuyler, macmanx, martinremy, matt, mattwiebe, matveb, maverick3x6, mcsf, mdawaffe, mdbitz, MichaelArestad, migueluy, miguelxavierpenha, mikeyarce, mkaz, nancythanki, nickmomrik, njweller, nunyvega, obenland, oskosk, pento, professor44, rachelsquirrel, rdcoll, renatoagds, retrofox, richardmtl, richardmuscat, robertbpugh, roccotripaldi, ryanc413, samhotchkiss, samiff, scarstocea, scottsweb, sdixon194, sdquirk, sermitr, simison, stephdau, thehenridev, tmoorewp, tyxla, Viper007Bond, westi, williamvianas, wpkaren, yoavf, zinigor
 Tags: Security, backup, malware, scan, performance
-Stable tag: 15.6
-Requires at least: 6.8
+Stable tag: 15.9.1
+Requires at least: 6.9
 Requires PHP: 7.2
-Tested up to: 6.9
+Tested up to: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -326,56 +326,78 @@ Jetpack Backup can do a full website migration to a new host, migrate theme file
 
 
 == Changelog ==
-### 15.6 - 2026-03-03
+### 15.9.1 - 2026-06-24
+#### Bug fixes
+- Fix the Social admin page rendering blank, and restore the editor sharing panel, on WordPress 6.9.
+
+### 15.9 - 2026-06-09
+#### Major Enhancements
+- General: Update minimum WordPress version to 6.9.
+
 #### Enhancements
-- AI Assistant: Add `jetpack_ai_assistant_generation_complete` action hook for cross-package communication.
-- AI Sidebar: Add `jetpack.ai.imageGenerationHandler` filter to allow external plugins (e.g. Image Studio) to replace the built-in AI image generation flow for the "Get Featured Image" entry point.
-- Block Editor: Make Jetpack logo display behavior consistent across SEO and AI panels. Logo now appears in global contexts (document settings, pre-publish, post-publish) but not in the Jetpack sidebar.
-- Form Notifications: Add new HTML email template design with respondent info header, metadata section, and improved action buttons.
-- Forms: Allow Accordion, Details, and Icon blocks in forms, and Icon block to be added inside the file upload dropzone.
-- Forms: Allow customizing other option in radio field.
-- Forms: Allow filtering Forms dashboard URL.
-- Forms: Create new forms in same tab.
-- Forms: Render images from image select fields on email notifications.
-- Forms: Replace dashicon with SVG icon and add tooltip to admin bar "Form Responses" link.
-- Forms: Update response sidebar styles.
-- Forms: Use integer format for response count in dataviews.
-- Image Studio: Add Image Studio plugin support to block editor and media library.
-- Post Images: Add `jetpack-ignore-thumbnail` CSS class and `jetpack_postimages_exclude_image` filter to exclude specific images from post image discovery.
-- Reader: Add Discover card to Reader settings page to highlight feature benefits.
-- SEO: Add Canonical URLs module for archive pages to prevent duplicate content in search engines.
-- SEO: Add social link previews to the SEO tools UI.
-- Site: Ensure `is_garden` is included in default site fields for server-side rendering.
-- Social: Add visual dot to active connection in preview modal.
-- Sync: Add `clear-queue` REST endpoint to allow clearing a Sync queue.
-- Update external menu links to display an arrow indicator for improved performance and a more modern appearance.
-- VideoPress: Accept SRT subtitle files for upload alongside VTT.
-- WordPress.com Reader: Add new option to show a link to the WordPress.com Reader in the admin bar.
-- WordPress.com Reader: Automatically enable the admin bar link on sites newly connected to WordPress.com.
+- Abilities API: Register Shortlinks support for the WP.me Shortlinks module on WordPress 6.9+.
+- Admin Menu: Add sidebar redesign fields, group metadata, and saved layout data to the `/wpcom/v2/admin-menu` endpoint when the public `wp-admin-sidebar` plugin is loaded.
+- AI Assistant: Add an AI Agent Access toggle in the Jetpack Search dashboard, allowing site owners to opt in to letting AI assistants answer reader questions using the blog's content.
+- AI Page: Ensure the layout matches the rest of the Jetpack admin pages that use the AdminPage component.
+- Components: Replace Gridicon with Icon and named icon exports from `@wordpress/icons`.
+- Donations Block: Add a "Tips" variation with coffee-themed defaults for creatives.
+- Donations Block: Add admin controls for hiding the One-Time interval, choosing the default frequency, setting a per-frequency default donation amount, and configuring the suggested custom amount. At least one frequency must remain enabled.
+- Donations Block: Add Gutenberg style settings (border, color, typography, spacing) and custom controls for active tab and selected amount colors.
+- Donations Block: Add modal display mode with trigger button, configurable icon, and animated overlay.
+- Donations Block: Add Security inspector panel with configurable minimum and maximum donation amounts to help prevent fraudulent transactions.
+- Donations Block: Inherit colors and typography from the active theme, and let the Donate button pick up theme button styles.
+- Donations Block: Record Tracks events for admin-side block adoption.
+- Enqueue the shared WPDS design tokens stylesheet on Jetpack admin pages.
+- Image Studio: Expose a video clip generation capability flag (`canGenerateVideoClips`) on the localized data so the client can hide the entry point on WordPress.com sites that cannot upload videos.
+- Image Studio: Only allow video clip generation on sites where Image Studio is enabled and the plan supports video uploads.
+- Image Studio: Register a `_jetpack_feature_clip_id` post meta that links a generated video clip to its post. Stored as the attachment ID, exposed over REST so the post editor can read/write it.
+- Jetpack AI Sidebar: Allow AI Editorial Review through the sidebar preview.
+- Newsletter: Enable the subscriptions module by default for all sites.
+- Performance settings: Simplify the Search section and link to the Search dashboard so experience selection happens in one place.
+- Reader Chat: Use Jetpack Search plan eligibility for the public opt-in loader.
+- Related Posts: Add configurable result limits for related-post agent requests.
+- Related Posts: Register WordPress Abilities API support for fetching related posts.
+- Search: Add an auto-complete feature that suggests search queries as users type.
+- Search: Register the AI Agents Access opt-in setting for regular site owners.
+- SEO: Create an Overview screen with a Site visibility card.
+- SEO: Scaffold the new `jetpack-seo` package and mount its admin page.
+- Shortlinks: Require edit-posts access for Shortlinks ability requests.
+
+#### Improved compatibility
+- ActivityPub: Allow Jetpack-signed admin requests to reach the inbox, proxy, and outbox client-to-server endpoints used by the connected site's WordPress.com Reader, without an OAuth bearer.
+- Migrate Status indicator to @wordpress/ui Text.
+- Resolve WPDS design tokens in the legacy settings dashboard CSS.
+- Settings And AI Pages: Replace the `.admin-ui-page` selector hook with the stable `.jp-admin-page__page` className passed through by AdminPage, restoring page-specific layout overrides.
 
 #### Bug fixes
-- AI Assistant: Restore Jetpack logo in pre-publish panel where branding is not otherwise apparent.
-- Block Editor Assets: Fix Gutenberg asset detection when assets are served from a CDN.
-- Forms: Create new form pages without a placeholder title.
-- Forms: Fix duplicate title in plain text form submission notification emails.
-- Forms: Fix extra margin on badges in the forms dashboard.
-- Forms: Fix IP address lookup link in response inspector.
-- Forms: Prevent fatal error when rendering image-select fields with invalid image payloads.
-- Full Sync: Fix chunk size adjustment when sync is stuck to correctly preserve adjusted chunk size and stuck count across invocations.
-- Image Studio: Fix console warnings.
-- Sharing: Fix LinkedIn sharing by updating to the current share URL endpoint.
-- Sharing: Remove Pocket sharing button.
-- Shortcode embeds: Improve handling of YouTube shorts in embeds.
-- Slideshow: Fix an issue with sizing when images are lazily loaded.
-- Slideshow: Fix doubled navigation arrows.
-- Slideshow block: Fix further issues with aspect ratio.
-- Social: Fix Threads social preview for posts with gallery.
-- Social: Fix Tumblr preview to prioritize custom message when it is set.
-- Social: Refresh plan features on post-checkout redirect.
-- Social Icons: Update documentation links for available icons.
-- Subscriptions: Stop appending the “View post … subscribe” message to post excerpts in subscription emails.
-- Subscriptions Block: Make excerpt filter more broad.
-- Sync: Fix sync health check to verify queue size and lag before allowing status to be set to `in_sync`.
+- AI: Fix broken external links (Claude settings and agent documentation) in the MCP quick setup.
+- AI Page: Update the layout-mixin selector to match the renamed `jetpack-ai` body class so the page layout applies again.
+- Carousel: Stop adding EXIF image metadata to the page markup when the option to display it is disabled.
+- Copy Post: Fix backslash characters being stripped from post content, title, and excerpt when duplicating a post.
+- Forms: Address `Uncaught TypeError` message in the editor.
+- Jetpack AI: Improve MCP settings UI navigation, setup-list formatting, label alignment, and toggle spacing.
+- Jetpack AI: Send non-WordPress.com hosts through the standard checkout workflow for the MCP "Upgrade plan" CTA, and remove WordPress.com-specific upsell copy.
+- Jetpack AI Sidebar: Fix block editing when another agent provider is present.
+- JSON API: Guard media metadata access to avoid PHP warnings when attachment metadata is missing or incomplete.
+- JSON API: Honor the `fields` parameter on REST-dispatched responses so they return the same keys as the XML-RPC transport.
+- JSON API: Stop emitting "Unknown user" PHP warnings from `get_author()` for the expected case of an unresolvable author.
+- Network Admin: Pin the Sites and Settings footers to the bottom and remove core admin notices on modernized pages.
+- Newsletter: Prevent a fatal error when loading WP Admin with the modernization filter unavailable.
+- Newsletter Categories: Stop returning a 400 response when saving the same category selection that's already stored.
+- Reader Chat: Prevent the frontend widget from loading on Coming Soon or unlaunched sites.
+- Search: Bundle @wordpress/theme and @wordpress/private-apis inline in the dashboard build so it does not silently fail to load when those packages are not registered as WP script handles.
+- Settings REST API: Load the Monitor and Post by Email module classes on demand when updating their options, preventing a fatal on bulk settings updates while the module is inactive.
+- Sharing: Fix the Pinterest sharing button leading to a blank Pinterest page by using Pinterest's direct link sharing endpoint.
+- Shortcode embeds: Ensure the SoundCloud player iFrame is always correctly escaped.
+- Shortcodes: Fix query parameters such as playlist, autoplay, and poster to produce valid Archive.org embed URLs.
+- Shortcodes: Google Maps shortcode now preserves URL-encoded and HTML-encoded characters inside place names.
+- Shortcodes: Prevent PHP warning when Mailchimp embed is malformed.
+- Social: Fall back to the site-wide social message template when no per-post share message is set.
+- Social: Fix PHP warnings on the front end of posts shared with the no link sharing option.
+- VideoPress: Fix admin page crash on video upload/delete when the free-plan upgrade nudge is shown.
+- VideoPress: Fix the "Add new video" button disappearing on the admin dashboard after the first video is uploaded.
+- VideoPress: Fix the post-connection redirect so the modernized dashboard returns users to the VideoPress page instead of a 404.
+- XML-RPC: Guard JSON API request parsing to avoid PHP warnings on non-scalar post bodies and failed signature verification.
 
 --------
 

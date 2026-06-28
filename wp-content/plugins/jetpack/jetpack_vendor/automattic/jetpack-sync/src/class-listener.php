@@ -263,8 +263,8 @@ class Listener {
 		$is_importing    = Settings::is_importing();
 
 		foreach ( $args_array as $args ) {
-			$previous_end = isset( $args['previous_end'] ) ? $args['previous_end'] : null;
-			$args         = isset( $args['ids'] ) ? $args['ids'] : $args;
+			$previous_end = $args['previous_end'] ?? null;
+			$args         = $args['ids'] ?? $args;
 
 			/**
 			 * Modify or reject the data within an action before it is enqueued locally.
@@ -480,10 +480,10 @@ class Listener {
 
 		$actor = array(
 			'wpcom_user_id'    => null,
-			'external_user_id' => isset( $user->ID ) ? $user->ID : null,
-			'display_name'     => isset( $user->display_name ) ? $user->display_name : null,
-			'user_email'       => isset( $user->user_email ) ? $user->user_email : null,
-			'user_roles'       => isset( $user->roles ) ? $user->roles : null,
+			'external_user_id' => $user->ID ?? null,
+			'display_name'     => $user->display_name ?? null,
+			'user_email'       => $user->user_email ?? null,
+			'user_roles'       => $user->roles ?? null,
 			'translated_role'  => $translated_role ? $translated_role : null,
 			'is_cron'          => defined( 'DOING_CRON' ) ? DOING_CRON : false,
 			'is_rest'          => defined( 'REST_API_REQUEST' ) ? REST_API_REQUEST : false,
@@ -523,6 +523,31 @@ class Listener {
 						$actor['is_mcp_agent'] = true;
 					}
 				}
+			}
+		}
+
+		/**
+		 * Filters the actor data attached to sync events.
+		 *
+		 * Actor data identifies who or what triggered a sync event (user info,
+		 * request context, MCP client details, etc.) and is sent alongside every
+		 * event to WordPress.com.
+		 *
+		 * @since 4.33.0
+		 *
+		 * @param array $actor Associative array of actor information.
+		 */
+		$actor = apply_filters( 'jetpack_sync_actor_data', $actor );
+
+		// Ensure the filter returns a valid array.
+		if ( ! is_array( $actor ) ) {
+			$actor = array();
+		}
+
+		// Sanitize string values added via the filter.
+		foreach ( $actor as $key => $value ) {
+			if ( is_string( $value ) ) {
+				$actor[ $key ] = sanitize_text_field( $value );
 			}
 		}
 

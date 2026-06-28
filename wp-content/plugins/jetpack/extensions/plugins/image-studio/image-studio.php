@@ -10,12 +10,17 @@ namespace Automattic\Jetpack\Extensions\ImageStudio;
 use Automattic\Jetpack\Connection\Manager as Connection_Manager;
 use Automattic\Jetpack\Status;
 use Automattic\Jetpack\Status\Host;
+use Automattic\Jetpack\Status\Visitor;
+use function Automattic\Jetpack\Extensions\Shared\determine_iso_639_locale;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 0 );
 }
 
+require_once __DIR__ . '/../../shared/cdn-locale.php';
+
 const FEATURE_NAME           = 'image-studio';
+const FEATURE_CLIP_META_KEY  = '_jetpack_feature_clip_id';
 const ASSET_BASE_PATH        = 'widgets.wp.com/agents-manager/';
 const ASSET_JS_URL           = 'https://' . ASSET_BASE_PATH . 'image-studio.min.js';
 const ASSET_CSS_URL          = 'https://' . ASSET_BASE_PATH . 'image-studio.css';
@@ -28,32 +33,69 @@ const ASSET_TRANSIENT        = 'jetpack_image_studio_asset';
 /**
  * Check if Image Studio is enabled.
  *
- * Requires AI features (Big Sky or AI Assistant) plus at least one of:
- * - The unified chat experience (agents_manager_use_unified_experience).
- * - The jetpack_image_studio_enabled filter.
+ * Enabled when AI features are available and either the request is from an
+ * Automattician or the Big Sky plugin is active and enabled.
  *
  * @return bool
  */
 function is_image_studio_enabled() {
-	if ( ! has_ai_features() ) {
+	if ( is_ciab_environment() || is_big_sky_enabled() ) {
+		return true;
+	}
+
+	if ( ! has_jetpack_ai_features() ) {
 		return false;
 	}
 
-	return apply_filters( 'agents_manager_use_unified_experience', false )
-		|| apply_filters( 'jetpack_image_studio_enabled', false );
+	return true;
 }
+
+/**
+ * Check if the Big Sky plugin is active and enabled.
+ *
+ * @return bool
+ */
+function is_big_sky_enabled() {
+	return class_exists( 'Big_Sky' ) && get_option( 'big_sky_enable', '1' );
+}
+
+/**
+ * Check if current environment is CIAB (Commerce in a Box) / Next Admin.
+ *
+ * Uses the same detection method as Help Center and Agents Manager
+ *
+ * @return bool True if CIAB/Next Admin environment.
+ */
+function is_ciab_environment() {
+	return (bool) did_action( 'next_admin_init' );
+}
+
+/**
+ * Signal to Big Sky that Jetpack is handling Image Studio.
+ *
+ * Sets the jetpack_image_studio_enabled filter to true so that
+ * Big Sky skips its own Image Studio loading when Jetpack has
+ * AI features available.
+ *
+ * @return void
+ */
+function signal_image_studio_active() {
+	if ( is_image_studio_enabled() ) {
+		add_filter( 'jetpack_image_studio_enabled', '__return_true', 5 );
+	}
+}
+add_action( 'init', __NAMESPACE__ . '\signal_image_studio_active' );
 
 /**
  * Check whether AI features are available.
  *
  * - wpcom simple: always available.
- * - Atomic: requires Big Sky or AI Assistant feature flags.
- * - Self-hosted: requires a connected owner with AI not disabled
+ * - Otherwise requires a connected owner with AI not disabled
  *   (same conditions the AI Assistant plugin uses to register).
  *
  * @return bool
  */
-function has_ai_features() {
+function has_jetpack_ai_features() {
 	$host = new Host();
 
 	if ( $host->is_wpcom_simple() ) {
@@ -63,6 +105,44 @@ function has_ai_features() {
 	return ( new Connection_Manager( 'jetpack' ) )->has_connected_owner()
 		&& ! ( new Status() )->is_offline_mode()
 		&& apply_filters( 'jetpack_ai_enabled', true );
+}
+
+/**
+ * Check whether the video clip generation flow can run on the current site.
+ *
+ * Image Studio enablement is always required — video clip generation is only
+ * offered on the same plans/environments that surface Image Studio itself,
+ * on WPCOM and off. On WPCOM the helper also mirrors the server-side
+ * `wpcom_site_can_upload_videos()` capability check so the client and server
+ * agree. Off-WPCOM (self-hosted Jetpack, standalone VideoPress, dev
+ * environments) that helper isn't loaded, so only the Image Studio gate
+ * applies; the server is the source of truth if generation is unsupported.
+ *
+ * @return bool
+ */
+function image_studio_can_generate_video_clips() {
+	if ( ! is_image_studio_enabled() ) {
+		return false;
+	}
+
+	if ( function_exists( 'wpcom_site_can_upload_videos' ) && ! wpcom_site_can_upload_videos() ) {
+		return false;
+	}
+
+	/**
+	 * Filter the video clip generation capability. Consulted only after the
+	 * Image Studio and `wpcom_site_can_upload_videos()` hard gates pass.
+	 *
+	 * @since 15.9
+	 *
+	 * @param bool|null $override Override value, or null to use default detection.
+	 */
+	$override = apply_filters( 'jetpack_image_studio_can_generate_video_clips', null );
+	if ( null !== $override ) {
+		return (bool) $override;
+	}
+
+	return true;
 }
 
 /**
@@ -94,19 +174,6 @@ function is_media_library() {
 }
 
 /**
- * Determine if Image Studio should load on the current screen.
- *
- * - Media Library: load if either filter is true.
- * - Block editors (Post/Site Editor): load if either filter is true.
- * - Other screens: don't load.
- *
- * @return bool
- */
-function should_load_on_current_screen() {
-	return is_media_library() || is_block_editor();
-}
-
-/**
  * Register the Image Studio plugin.
  *
  * Registers unconditionally when either filter is true. Screen-level gating
@@ -122,6 +189,51 @@ function register_plugin() {
 	\Jetpack_Gutenberg::set_extension_available( FEATURE_NAME );
 }
 add_action( 'jetpack_register_gutenberg_extensions', __NAMESPACE__ . '\register_plugin' );
+
+/**
+ * Permission check for reading or writing the feature clip meta on a given
+ * post. WordPress runs `auth_callback` for both REST GET and POST against the
+ * meta key, so this gate determines visibility as well as mutability.
+ *
+ * @param bool   $allowed   Whether the user is allowed (unused — recomputed here).
+ * @param string $meta_key  Meta key being checked.
+ * @param int    $object_id Post ID.
+ * @return bool
+ */
+function feature_clip_meta_auth_callback( $allowed, $meta_key, $object_id ) {
+	unset( $allowed, $meta_key );
+	return current_user_can( 'edit_post', (int) $object_id );
+}
+
+/**
+ * Register the post meta that links a generated video clip to a post.
+ *
+ * Stored as the attachment ID; the URL is resolved client-side via the
+ * Media Library so deletes/replacements stay consistent. Registered for
+ * `post` only — pages can be added later if there's a use case.
+ *
+ * @return void
+ */
+function register_feature_clip_post_meta() {
+	if ( ! is_image_studio_enabled() ) {
+		return;
+	}
+
+	register_post_meta(
+		'post',
+		FEATURE_CLIP_META_KEY,
+		array(
+			'type'              => 'integer',
+			'description'       => 'Attachment ID of the generated video clip designated as this post\'s feature clip.',
+			'single'            => true,
+			'default'           => 0,
+			'show_in_rest'      => true,
+			'sanitize_callback' => 'absint',
+			'auth_callback'     => __NAMESPACE__ . '\feature_clip_meta_auth_callback',
+		)
+	);
+}
+add_action( 'init', __NAMESPACE__ . '\register_feature_clip_post_meta' );
 
 /**
  * Fetch and cache the remote asset manifest.
@@ -208,25 +320,49 @@ function get_asset_data_from_remote() {
 }
 
 /**
- * Determine the ISO 639 locale code for the current user.
+ * Get the current site's WordPress.com blog ID for tracking.
  *
- * @return string The ISO 639 language code, defaulting to 'en'.
+ * @return int The WordPress.com blog ID, or 0 when unavailable.
  */
-function determine_iso_639_locale() {
-	$language = get_user_locale();
-	$language = strtolower( $language );
+function get_tracking_blog_id() {
+	$blog_id = ( new Host() )->get_wpcom_site_id();
 
-	if ( in_array( $language, array( 'pt_br', 'pt-br', 'zh_tw', 'zh-tw', 'zh_cn', 'zh-cn' ), true ) ) {
-		$language = str_replace( '_', '-', $language );
-	} else {
-		$language = preg_replace( '/([-_].*)$/i', '', $language );
+	return $blog_id ? absint( $blog_id ) : 0;
+}
+
+/**
+ * Get the current site type for Image Studio tracking.
+ *
+ * @return string The site type: simple, atomic, or jetpack.
+ */
+function get_tracking_site_type() {
+	$host = new Host();
+
+	if ( $host->is_wpcom_simple() ) {
+		return 'simple';
 	}
 
-	if ( empty( $language ) ) {
-		return 'en';
+	if ( $host->is_woa_site() ) {
+		return 'atomic';
 	}
 
-	return $language;
+	return 'jetpack';
+}
+
+/**
+ * Check whether the current visitor should be treated as an Automattician.
+ *
+ * @return bool True when the current visitor is an Automattician.
+ */
+function is_tracking_automattician() {
+	if ( function_exists( 'wpcom_is_proxied_request' )
+		&& \wpcom_is_proxied_request()
+		&& function_exists( 'is_automattician' )
+	) {
+		return (bool) \is_automattician();
+	}
+
+	return ( new Visitor() )->is_automattician_feature_flags_only();
 }
 
 /**
@@ -269,9 +405,19 @@ function do_enqueue_assets() {
 		true
 	);
 
+	$image_studio_data = array(
+		'enabled'               => true,
+		'version'               => '1.0',
+		'blogId'                => get_tracking_blog_id(),
+		'siteType'              => get_tracking_site_type(),
+		'isA11n'                => is_tracking_automattician(),
+		'isDevMode'             => jetpack_is_internal_testing_environment(),
+		'canGenerateVideoClips' => image_studio_can_generate_video_clips(),
+	);
+
 	wp_add_inline_script(
 		FEATURE_NAME,
-		'if ( typeof window.imageStudioData === "undefined" ) { window.imageStudioData = ' . wp_json_encode( array( 'enabled' => true ), JSON_HEX_TAG | JSON_HEX_AMP ) . '; }',
+		'if ( typeof window.imageStudioData === "undefined" ) { window.imageStudioData = ' . wp_json_encode( $image_studio_data, JSON_HEX_TAG | JSON_HEX_AMP ) . '; }',
 		'before'
 	);
 
@@ -312,6 +458,71 @@ function enqueue_image_studio_admin() {
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_image_studio_admin' );
 
 /**
+ * Adds an "Edit with AI" row action for supported image types in the media library list view.
+ *
+ * Inserts the action before the default "Edit" link so it's prominently visible.
+ * Only appears for image MIME types that Image Studio supports.
+ *
+ * @param array    $actions Row actions array.
+ * @param \WP_Post $post    The attachment post object.
+ * @return array Modified row actions.
+ */
+function add_image_studio_row_action( $actions, $post ) {
+	// Keep in sync with IMAGE_STUDIO_SUPPORTED_MIME_TYPES in wp-calypso/packages/image-studio/src/types/index.ts.
+	$supported_mime_types = array(
+		'image/jpeg',
+		'image/jpg',
+		'image/png',
+		'image/webp',
+		'image/bmp',
+		'image/tiff',
+	);
+
+	if ( ! in_array( $post->post_mime_type, $supported_mime_types, true ) ) {
+		return $actions;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+		return $actions;
+	}
+
+	$link = sprintf(
+		'<a href="#" class="big-sky-image-studio-link" data-attachment-id="%d">%s</a>',
+		absint( $post->ID ),
+		esc_html__( 'Edit with AI', 'jetpack' )
+	);
+
+	// Insert before the 'edit' action, or append if 'edit' is not present.
+	$new_actions = array();
+	foreach ( $actions as $key => $value ) {
+		if ( 'edit' === $key ) {
+			$new_actions['edit-with-ai'] = $link;
+		}
+		$new_actions[ $key ] = $value;
+	}
+
+	if ( ! isset( $new_actions['edit-with-ai'] ) ) {
+		$new_actions['edit-with-ai'] = $link;
+	}
+
+	return $new_actions;
+}
+
+/**
+ * Register the "Edit with AI" row action on the Media Library screen.
+ *
+ * @return void
+ */
+function register_row_action() {
+	if ( ! is_image_studio_enabled() || ! is_media_library() ) {
+		return;
+	}
+
+	add_filter( 'media_row_actions', __NAMESPACE__ . '\add_image_studio_row_action', 10, 2 );
+}
+add_action( 'current_screen', __NAMESPACE__ . '\register_row_action' );
+
+/**
  * Get the list of AI image extensions that conflict with Image Studio.
  *
  * @return array
@@ -326,30 +537,15 @@ function get_ai_image_extensions() {
 }
 
 /**
- * Disable Jetpack AI image extensions when Image Studio is active on the current screen.
+ * Disable Jetpack AI image extensions when Image Studio is available.
  *
- * This hook fires on `jetpack_register_gutenberg_extensions` which may run multiple
- * times: once during initial module load (before get_current_screen() is available)
- * and again inside Jetpack_Gutenberg::get_availability() during enqueue (where the
- * screen IS available).
- *
- * Only disables AI extensions when we can confirm Image Studio will actually load
- * on the current screen (i.e. screen is available and should_load_on_current_screen()
- * returns true). If the screen is not available or Image Studio won't load on this
- * screen, AI extensions remain enabled.
- *
- * This ensures AI extensions are available on screens where Image Studio won't load
- * (e.g. dashboard, other non-editor screens, or early initialization).
+ * When Image Studio is available (via Jetpack_Gutenberg::is_available), AI image
+ * extensions are disabled globally to avoid duplicate functionality.
  *
  * @return void
  */
 function disable_jetpack_ai_image_extensions() {
-	if ( ! is_image_studio_enabled() ) {
-		return;
-	}
-
-	// Only disable if screen is available and Image Studio will actually load.
-	if ( ! function_exists( 'get_current_screen' ) || ! get_current_screen() || ! should_load_on_current_screen() ) {
+	if ( ! \Jetpack_Gutenberg::is_available( FEATURE_NAME ) ) {
 		return;
 	}
 
