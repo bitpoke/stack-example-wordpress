@@ -930,7 +930,7 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 		 */
 		public static function get_astra_options() {
 			if ( is_null( self::$astra_options ) || is_customize_preview() ) {
-				self::$astra_options = get_option( ASTRA_THEME_SETTINGS );
+				self::$astra_options = get_option( ASTRA_THEME_SETTINGS, array() );
 			}
 			return self::$astra_options;
 		}

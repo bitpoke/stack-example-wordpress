@@ -60,7 +60,7 @@ class Astra_Update_Global_Palette extends Astra_Abstract_Ability {
 				'colors'         => array(
 					'type'        => 'object',
 					'description' => 'Color values to update. Use color index (0-8) as keys and hex color values. Example: {"0": "#046bd2", "1": "#045cb4"}. These will override preset colors if both are provided.',
-					'properties'  => array(
+					'properties'  => (object) array(
 						'0' => array(
 							'type'        => 'string',
 							'description' => 'Color 0 - Primary color (hex format)',
@@ -142,7 +142,7 @@ class Astra_Update_Global_Palette extends Astra_Abstract_Ability {
 					'description' => 'Labels for each color index.',
 				),
 				'applied_preset' => array(
-					'type'        => 'string',
+					'type'        => array( 'string', 'null' ),
 					'description' => 'Name of the preset applied, if any.',
 				),
 			)

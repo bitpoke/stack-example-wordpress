@@ -1191,7 +1191,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 					'mobile'  => 2,
 				)
 			);
-			$args['posts_per_page'] = $col['desktop'];
+			$args['posts_per_page'] = (int) $col['desktop'];
 			return $args;
 		}
 

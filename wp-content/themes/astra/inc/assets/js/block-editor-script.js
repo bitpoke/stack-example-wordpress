@@ -1,3 +1,20 @@
+/**
+ * Safely access an iframe's document, returning null if cross-origin.
+ *
+ * @since x.x.x
+ * @param {HTMLIFrameElement} iframe
+ * @return {Document|null}
+ */
+function astraGetIframeDoc( iframe ) {
+	if ( ! iframe ) {
+		return null;
+	}
+	try {
+		return iframe.contentWindow.document || iframe.contentDocument || null;
+	} catch ( e ) {
+		return null;
+	}
+}
 
 window.addEventListener( 'load', function(e) {
 	astra_onload_function();
@@ -8,39 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.documentElement.classList.add('astra-dark-mode-enable');
 	}
 });
-
-// Function to add block editor dynamic styles. 
-function blockEditorDynamicStyles() {
-	setTimeout(() => {
-		const iframes = document.getElementsByTagName('iframe');
-		if (!iframes?.length) return;
-
-		const cloneLinkElement = (id) => {
-			const element = document.getElementById(id);
-			return element ? element.cloneNode(true) : null;
-		}
-
-		const googleFontsStyle = cloneLinkElement('astra-google-fonts-css');
-
-		const appendLinkIfNotExists = (iframeDoc, clonedLink, linkId) => {
-			if (clonedLink && !iframeDoc.getElementById(linkId)) {
-				iframeDoc.head.appendChild(clonedLink);
-			}
-		}
-
-		for (const iframe of iframes) {
-			try {
-				const iframeDoc = iframe?.contentWindow?.document || iframe?.contentDocument;
-				if (iframeDoc?.head) {
-					appendLinkIfNotExists(iframeDoc, googleFontsStyle, 'astra-google-fonts-css');
-				}
-			} catch {
-				// Access denied to iframe document.
-			}
-		}
-	}, 1000);
-}
-
 
 function addTitleVisibility() {
 	let titleVisibility = document.querySelector( '.title-visibility' ),
@@ -62,20 +46,20 @@ function addTitleVisibility() {
 
 		let iframe = undefined !== devicePreview ? devicePreview.getElementsByTagName('iframe')[0] : undefined;
 		if ( iframe && devicePreview.querySelector('iframe') !== null ) {
-			editorDocument = iframe.contentWindow.document || iframe.contentDocument;
+			editorDocument = astraGetIframeDoc( iframe ) || editorDocument;
 		}
 
-        // Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
-        if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
-            let _iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
-            editorDocument = _iframe ? _iframe.contentWindow.document : editorDocument;
+		// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
+		if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
+			let _iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
+			editorDocument = astraGetIframeDoc( _iframe ) || editorDocument;
 
-            if (editorDocument) {
-                titleVisibility = editorDocument.querySelector('.title-visibility');
-                titleBlock = editorDocument.querySelector('.edit-post-visual-editor__post-title-wrapper');
-            }
-        }
-    }
+			if (editorDocument) {
+				titleVisibility = editorDocument.querySelector('.title-visibility');
+				titleBlock = editorDocument.querySelector('.edit-post-visual-editor__post-title-wrapper');
+			}
+		}
+	}
 
 	if( null !== titleBlock && null === titleVisibility ) {
 		let titleVisibilityTrigger = '<span class="ast-title title-visibility" data-tooltip="Disable Title"> <svg xmlns="http://www.w3.org/2000/svg" width="0px" viewBox="0 0 576 512"><path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"></path></svg> </span>';
@@ -91,12 +75,12 @@ function addTitleVisibility() {
 		let titleVisibilityTriggerElement = editorDocument.querySelector( '.title-visibility' ),
 			titleVisibilityWrapper = editorDocument.querySelector( '.edit-post-visual-editor__post-title-wrapper' );
 
-        if (titleVisibilityWrapper) {
-            if ('disabled' === postTitleOption && !titleVisibilityWrapper.classList.contains('invisible')) {
-                titleVisibilityWrapper.classList.add('invisible');
-            } else {
-                titleVisibilityWrapper.classList.remove('invisible');
-            }
+		if (titleVisibilityWrapper) {
+			if ('disabled' === postTitleOption && !titleVisibilityWrapper.classList.contains('invisible')) {
+				titleVisibilityWrapper.classList.add('invisible');
+			} else {
+				titleVisibilityWrapper.classList.remove('invisible');
+			}
 
 		titleVisibilityTriggerElement.addEventListener("click", function() {
 			let metaTitleOptions = postTitleOption || '';
@@ -144,13 +128,15 @@ function siteLogoImageChange() {
 	let iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
 
 	if (iframe) {
-		let is_desktop = iframe.contentWindow.document.querySelector(
+		let iframeDoc = astraGetIframeDoc( iframe );
+		if ( ! iframeDoc ) {
+			return;
+		}
+		let is_desktop = iframeDoc.querySelector(
 			".is-desktop-preview"
 		);
 
 		if (!is_desktop) {
-			let iframeDoc =
-				iframe.contentDocument || iframe.contentWindow.document;
 			let logoElement = iframeDoc.querySelector(".custom-logo");
 
 			if (logoElement) {
@@ -198,8 +184,6 @@ function astra_onload_function() {
 			siteLogoImageChange();
 			// Adding title visibility icon on wp.data.subscribe.
 			addTitleVisibility();
-			// Block editor dynamic style function.
-			blockEditorDynamicStyles();
 			if ( astraColors.ast_wp_version_higher_6_3 ) {
 				let desktopPreview = document.getElementsByClassName('is-desktop-preview'),
 					tabletPreview = document.getElementsByClassName('is-tablet-preview'),
@@ -214,15 +198,15 @@ function astra_onload_function() {
 
 				let iframe = undefined !== devicePreview ? devicePreview.getElementsByTagName('iframe')[0] : undefined;
 				if ( iframe && devicePreview.querySelector('iframe') !== null ) {
-					editorDocument = iframe.contentWindow.document || iframe.contentDocument;
+					editorDocument = astraGetIframeDoc( iframe ) || editorDocument;
 				}
 
 				// Addressed the WordPress 6.5 issue involving an extraneous iframe layer.
 				if ( ! iframe && astraColors.ast_wp_version_higher_6_4 ) {
-					const _iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');					
-					
+					const _iframe = document.querySelector('.editor-canvas__iframe') || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
+
 					if ( !! _iframe ){
-						editorDocument = _iframe.contentWindow.document ;
+						editorDocument = astraGetIframeDoc( _iframe ) || editorDocument;
 					}
 				}
 
@@ -583,7 +567,7 @@ const updatePageBackground = ( apply_customizer_default = false, isUnboxedContai
 	let _iframe = document.querySelector("#editor iframe.editor-canvas__iframe") || document.querySelector('.block-editor-iframe__scale-container iframe[name="editor-canvas"]');
 	
 	if (_iframe && astraColors.ast_wp_version_higher_6_4) {
-		editorDoc = _iframe.contentWindow.document;
+		editorDoc = astraGetIframeDoc( _iframe ) || editorDoc;
 	}
 
 	let desktopPreview = editorDoc.getElementsByClassName('is-desktop-preview'),
@@ -600,7 +584,7 @@ const updatePageBackground = ( apply_customizer_default = false, isUnboxedContai
 
 		let iframe = undefined !== devicePreview ? devicePreview.getElementsByTagName('iframe')[0] : undefined;
 		if ( iframe && devicePreview.querySelector('iframe') !== null ) {
-			editorDoc = iframe.contentWindow.document || iframe.contentDocument;
+			editorDoc = astraGetIframeDoc( iframe ) || editorDoc;
 		}
 	}
 
@@ -638,18 +622,18 @@ const updatePageBackground = ( apply_customizer_default = false, isUnboxedContai
 	}
 
 	let bgObj = (undefined !== wp.data.select('core/editor') &&
-    null !== wp.data.select('core/editor') &&
-    undefined !== wp.data.select('core/editor').getEditedPostAttribute('meta') &&
-    wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-meta'])
-    ? wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-meta']
-    : 'default';
+	null !== wp.data.select('core/editor') &&
+	undefined !== wp.data.select('core/editor').getEditedPostAttribute('meta') &&
+	wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-meta'])
+	? wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-page-background-meta']
+	: 'default';
 
 	let contentObj = (undefined !== wp.data.select('core/editor') &&
-    null !== wp.data.select('core/editor') &&
-    undefined !== wp.data.select('core/editor').getEditedPostAttribute('meta') &&
-    wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-content-background-meta'])
-    ? wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-content-background-meta']
-    : 'default';
+	null !== wp.data.select('core/editor') &&
+	undefined !== wp.data.select('core/editor').getEditedPostAttribute('meta') &&
+	wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-content-background-meta'])
+	? wp.data.select('core/editor').getEditedPostAttribute('meta')['ast-content-background-meta']
+	: 'default';
 
 	if ( desktopPreview.length > 0 ) {
 
@@ -787,10 +771,10 @@ function applyStylesToElement( selector, styles, docObj ) {
   if ( docObj ) {
 	  const element = docObj.querySelector(selector);
 	  if (element) {
-      // Remove any prior cache values if set already.
+	  // Remove any prior cache values if set already.
   	  element.style.backgroundImage = 'none';
 	  	Object.keys(styles).forEach((property) => {
-		    element.style[property] = styles[property];
+			element.style[property] = styles[property];
   		});
 	  } else {
 	  	console.error(`Element with selector "${selector}" not found.`);
@@ -898,67 +882,3 @@ function astraGetResponsiveBackgroundObj(bgObjRes, device) {
 
   return genBgCss;
 }
-
-document.body.addEventListener('mousedown', function () {
-	var blockCssMode = document.querySelector('body').classList.contains('ast-block-legacy')
-	var fontCss = document.getElementById('astra-google-fonts-css');
-	if( true === blockCssMode ){
-		var blockCss = document.getElementById('astra-block-editor-styles-css');
-		var inlineCss = document.getElementById('astra-block-editor-styles-inline-css');
-	} else {
-		var blockCss = document.getElementById('astra-wp-editor-styles-css');
-		var inlineCss = document.getElementById('astra-wp-editor-styles-inline-css');
-	}
-
-	var blockFixCss = null !== blockCss ? blockCss.cloneNode(true) : null;
-	var blockInlineCss = null !== inlineCss ?  inlineCss.cloneNode(true) : null;
-	var blockfontCss = null !== fontCss ? fontCss.cloneNode(true) : null;
-
-	setTimeout( function() {
-
-		let tabletPreview = document.getElementsByClassName('is-tablet-preview');
-		let mobilePreview = document.getElementsByClassName('is-mobile-preview');
-
-		if (0 !== tabletPreview.length || 0 !== mobilePreview.length) {
-			var googleFontId = 'astra-google-fonts-css';
-			if( true === blockCssMode ){
-				var styleTagId = 'astra-block-editor-styles-inline-css';
-				var styleTagBlockId = 'astra-block-editor-styles-css';
-			} else {
-				var styleTagId = 'astra-wp-editor-styles-inline-css';
-				var styleTagBlockId = 'astra-wp-editor-styles-css';
-			}
-			var styleTagId = 'astra-block-editor-styles-inline-css';
-			var styleTagBlockId = 'astra-block-editor-styles-css';
-			googleFontId = 'astra-google-fonts-css';
-			let preview = tabletPreview[0] || mobilePreview[0];
-
-				let iframe = preview.getElementsByTagName('iframe')[0];
-				let iframeDocument = iframe.contentWindow.document || iframe.contentDocument;
-
-				let element = iframeDocument.getElementById(
-					styleTagId
-				);
-				let elementBlock = iframeDocument.getElementById(
-					styleTagBlockId
-				);
-				let elementGoogleFont = iframeDocument.getElementById(
-					googleFontId
-				);
-				if ( (null === element || undefined === element)) {
-
-						iframeDocument.head.appendChild( blockInlineCss );
-				}
-				if ( (null === elementBlock || undefined === elementBlock )) {
-
-					iframeDocument.head.appendChild( blockFixCss );
-				}
-				if ( (null === elementGoogleFont || undefined === elementGoogleFont ) && null !== fontCss) {
-
-					iframeDocument.head.appendChild( blockfontCss );
-				}
-
-		}
-	}, 1000);
-
-});

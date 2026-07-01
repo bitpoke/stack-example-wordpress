@@ -1,5 +1,18 @@
 *** Astra Changelog ***
 
+2026-06-30 - version 4.13.5
+* Improvement: Navigation's submenu dropdown arrow touch target size improved for better WCAG 2.5.5 accessibility compliance.
+* Fix: Shortcodes inside href attributes in Header/Footer Builder HTML elements being stripped — caused by wp_kses running before do_shortcode, regression since v4.11.11.
+* Fix: Support widget and AI Assistant hidden from the Astra dashboard when white label is active, preventing Astra branding from being visible to white-label users.
+* Fix: Editor stylesheets triggering "added to iframe incorrectly" console warnings in WP 7.0.
+* Fix: Block editor throwing SecurityError on sites where iframe canvas is cross-origin, by wrapping all iframe document accesses in a safe helper with try-catch.
+* Fix: Page scroll position jumps to top when closing cart flyout drawer, caused by focus returning to the cart icon without preventing scroll.
+* Fix: WooCommerce error log flood caused by passing related products limit as a string instead of an integer to wc_get_related_products().
+* Fix: MCP astra-update-global-palette tool schema corrections to ensure colors and applied_preset are typed correctly.
+* Fix: Incorrect plugin icons for Cart Abandonment Recovery in the "Extend Your Website" dashboard section.
+* Fix: Color picker in the Customizer closing unexpectedly when dragging the panel scrollbar.
+* Fix: Incorrect social icon labels for Vimeo, Twitter, YouTube, WhatsApp, Snapchat, and other brand icons in the SVG icon picker.
+
 2026-06-02 - version 4.13.4
 * New: Added a "Show AI Assistant" toggle in Dashboard Settings to allow users to show or hide the AI Assistant icon from the Astra Dashboard.
 * Fix: Resolved dual header display and header button visibility issues at the mobile/desktop breakpoint.

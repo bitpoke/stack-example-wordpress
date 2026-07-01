@@ -46,9 +46,10 @@
 		/**
 		 * Returns focus to the triggering element
 		 */
-		returnToTrigger: function() {
+		returnToTrigger: function( preventScroll ) {
+			var focusOptions = preventScroll ? { preventScroll: true } : undefined;
 			if (lastFocusedElement) {
-				lastFocusedElement.focus();
+				lastFocusedElement.focus( focusOptions );
 			} else {
 				// Fallback if we don't have the original element - try multiple selectors
 				var cartIcon = document.querySelector('.ast-header-woo-cart .ast-site-header-cart .ast-site-header-cart-li a.cart-container');
@@ -59,7 +60,7 @@
 					cartIcon = document.querySelector('.ast-header-woo-cart a');
 				}
 				if (cartIcon) {
-					cartIcon.focus();
+					cartIcon.focus( focusOptions );
 				}
 			}
 		},
@@ -175,7 +176,7 @@
 		
 		// Return focus to the element that opened the cart
 		setTimeout(function() {
-			focusManager.returnToTrigger();
+			focusManager.returnToTrigger( true );
 		}, 100);
 	}
 

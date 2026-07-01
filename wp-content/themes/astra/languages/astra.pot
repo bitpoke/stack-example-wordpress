@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.13.4\n"
+"Project-Id-Version: Astra 4.13.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-29T07:59:13+00:00\n"
+"POT-Creation-Date: 2026-06-30T04:56:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: astra\n"
@@ -42,12 +42,12 @@ msgid "https://wpastra.com/about/?utm_source=theme_preview&utm_medium=author_lin
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:132
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:282
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:283
 msgid "This is a temporary deactivation for testing."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:133
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:283
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:284
 msgid "How can we assist you?"
 msgstr ""
 
@@ -56,7 +56,7 @@ msgid "The theme isn't working properly."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:139
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:289
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:290
 msgid "Please tell us more about what went wrong?"
 msgstr ""
 
@@ -69,33 +69,33 @@ msgid "Could you please specify which theme?"
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:150
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:300
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:301
 msgid "It's missing a specific feature."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:151
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:301
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:302
 msgid "Please tell us more about the feature."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:156
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:306
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:307
 msgid "Other"
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:157
 #: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:132
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:307
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:308
 msgid "Please tell us more details."
 msgstr ""
 
 #: admin/includes/class-astra-admin-ajax.php:68
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:222
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:223
 msgid "Sorry, you are not allowed to do this operation."
 msgstr ""
 
 #: admin/includes/class-astra-admin-ajax.php:69
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:235
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:236
 msgid "Nonce validation failed"
 msgstr ""
 
@@ -2775,30 +2775,6 @@ msgid "Draw Polygon"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:956
-#: assets/svg/logo-svg-icons/icons-v6-1.php:2490
-#: assets/svg/logo-svg-icons/icons-v6-1.php:4183
-#: assets/svg/logo-svg-icons/icons-v6-1.php:4228
-#: assets/svg/logo-svg-icons/icons-v6-1.php:4531
-#: assets/svg/logo-svg-icons/icons-v6-1.php:4834
-#: assets/svg/logo-svg-icons/icons-v6-1.php:6055
-#: assets/svg/logo-svg-icons/icons-v6-2.php:134
-#: assets/svg/logo-svg-icons/icons-v6-2.php:477
-#: assets/svg/logo-svg-icons/icons-v6-2.php:905
-#: assets/svg/logo-svg-icons/icons-v6-2.php:3109
-#: assets/svg/logo-svg-icons/icons-v6-2.php:3709
-#: assets/svg/logo-svg-icons/icons-v6-2.php:4666
-#: assets/svg/logo-svg-icons/icons-v6-2.php:4733
-#: assets/svg/logo-svg-icons/icons-v6-2.php:5702
-#: assets/svg/logo-svg-icons/icons-v6-3.php:1095
-#: assets/svg/logo-svg-icons/icons-v6-3.php:1893
-#: assets/svg/logo-svg-icons/icons-v6-3.php:2050
-#: assets/svg/logo-svg-icons/icons-v6-3.php:3961
-#: assets/svg/logo-svg-icons/icons-v6-3.php:4069
-#: assets/svg/logo-svg-icons/icons-v6-3.php:4989
-#: assets/svg/logo-svg-icons/icons-v6-3.php:5122
-#: assets/svg/logo-svg-icons/icons-v6-3.php:5634
-#: assets/svg/logo-svg-icons/icons-v6-3.php:6146
-#: assets/svg/logo-svg-icons/icons-v6-3.php:6360
 msgid "Dribbble"
 msgstr ""
 
@@ -3184,6 +3160,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:2475
 msgid "Facebook Messenger"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-1.php:2490
+msgid "Facebook Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:2501
@@ -3663,12 +3643,20 @@ msgstr ""
 msgid "Git Alt"
 msgstr ""
 
+#: assets/svg/logo-svg-icons/icons-v6-1.php:4183
+msgid "Git Square"
+msgstr ""
+
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4194
 msgid "GitHub"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4211
 msgid "Alternate GitHub"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-1.php:4228
+msgid "GitHub Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4239
@@ -3749,6 +3737,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4516
 msgid "Google Plus G"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-1.php:4531
+msgid "Google Plus Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4542
@@ -3833,6 +3825,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4819
 msgid "Hacker News"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-1.php:4834
+msgid "Hacker News Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-1.php:4845
@@ -4185,6 +4181,10 @@ msgstr ""
 msgid "Hourglass"
 msgstr ""
 
+#: assets/svg/logo-svg-icons/icons-v6-1.php:6055
+msgid "Hourglass Empty"
+msgstr ""
+
 #: assets/svg/logo-svg-icons/icons-v6-1.php:6066
 msgid "Hourglass End"
 msgstr ""
@@ -4393,6 +4393,10 @@ msgstr ""
 msgid "Instagram"
 msgstr ""
 
+#: assets/svg/logo-svg-icons/icons-v6-2.php:134
+msgid "Instagram Square"
+msgstr ""
+
 #: assets/svg/logo-svg-icons/icons-v6-2.php:145
 msgid "InstaLOD"
 msgstr ""
@@ -4483,6 +4487,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:462
 msgid "JavaScript (JS)"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-2.php:477
+msgid "JavaScript (JS) Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:488
@@ -4603,6 +4611,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:894
 msgid "last.fm"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-2.php:905
+msgid "last.fm Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:916
@@ -5240,6 +5252,10 @@ msgstr ""
 msgid "Odnoklassniki"
 msgstr ""
 
+#: assets/svg/logo-svg-icons/icons-v6-2.php:3109
+msgid "Odnoklassniki Square"
+msgstr ""
+
 #: assets/svg/logo-svg-icons/icons-v6-2.php:3120
 msgid "Oil Can"
 msgstr ""
@@ -5403,6 +5419,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:3694
 msgid "Pencil"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-2.php:3709
+msgid "People Arrows Left Right"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:3720
@@ -5689,6 +5709,10 @@ msgstr ""
 msgid "Pied Piper PP Logo (Old)"
 msgstr ""
 
+#: assets/svg/logo-svg-icons/icons-v6-2.php:4666
+msgid "Pied Piper Square"
+msgstr ""
+
 #: assets/svg/logo-svg-icons/icons-v6-2.php:4677
 msgid "Piggy Bank"
 msgstr ""
@@ -5703,6 +5727,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:4718
 msgid "Pinterest P"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-2.php:4733
+msgid "Pinterest Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:4744
@@ -5979,6 +6007,10 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:5685
 msgid "reddit Alien"
+msgstr ""
+
+#: assets/svg/logo-svg-icons/icons-v6-2.php:5702
+msgid "Reddit Square"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:5713
@@ -6496,6 +6528,7 @@ msgid "Smoking"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:1080
+#: assets/svg/logo-svg-icons/icons-v6-3.php:1095
 msgid "Snapchat"
 msgstr ""
 
@@ -6719,6 +6752,10 @@ msgstr ""
 msgid "Stackpath"
 msgstr ""
 
+#: assets/svg/logo-svg-icons/icons-v6-3.php:1893
+msgid "Staff Aesculapius"
+msgstr ""
+
 #: assets/svg/logo-svg-icons/icons-v6-3.php:1904
 msgid "Stairs"
 msgstr ""
@@ -6756,6 +6793,7 @@ msgid "StayLinked"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:2034
+#: assets/svg/logo-svg-icons/icons-v6-3.php:2050
 msgid "Steam"
 msgstr ""
 
@@ -7308,6 +7346,7 @@ msgid "Tty"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:3946
+#: assets/svg/logo-svg-icons/icons-v6-3.php:3961
 msgid "Tumblr"
 msgstr ""
 
@@ -7333,6 +7372,7 @@ msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:4039
 #: assets/svg/logo-svg-icons/icons-v6-3.php:4054
+#: assets/svg/logo-svg-icons/icons-v6-3.php:4069
 msgid "Twitter"
 msgstr ""
 
@@ -7627,6 +7667,7 @@ msgid "Viacoin"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:4974
+#: assets/svg/logo-svg-icons/icons-v6-3.php:4989
 msgid "Viadeo"
 msgstr ""
 
@@ -7663,6 +7704,7 @@ msgid "Vihara"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:5107
+#: assets/svg/logo-svg-icons/icons-v6-3.php:5122
 #: assets/svg/logo-svg-icons/icons-v6-3.php:5133
 msgid "Vimeo"
 msgstr ""
@@ -7807,6 +7849,10 @@ msgstr ""
 msgid "What's App"
 msgstr ""
 
+#: assets/svg/logo-svg-icons/icons-v6-3.php:5634
+msgid "WhatsApp"
+msgstr ""
+
 #: assets/svg/logo-svg-icons/icons-v6-3.php:5645
 msgid "Wheat Awn"
 msgstr ""
@@ -7940,6 +7986,7 @@ msgid "Xbox"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:6131
+#: assets/svg/logo-svg-icons/icons-v6-3.php:6146
 msgid "Xing"
 msgstr ""
 
@@ -7996,6 +8043,7 @@ msgid "Yoast"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-3.php:6342
+#: assets/svg/logo-svg-icons/icons-v6-3.php:6360
 msgid "YouTube"
 msgstr ""
 
@@ -13713,15 +13761,15 @@ msgstr ""
 msgid "Customizer, WooCommerce, Shop, Store, Products, Single Product, Cart, Checkout, Account, My Account, Orders, Sidebar"
 msgstr ""
 
-#: inc/core/class-astra-enqueue-scripts.php:669
+#: inc/core/class-astra-enqueue-scripts.php:670
 msgid "Plus Quantity"
 msgstr ""
 
-#: inc/core/class-astra-enqueue-scripts.php:670
+#: inc/core/class-astra-enqueue-scripts.php:671
 msgid "Minus Quantity"
 msgstr ""
 
-#: inc/core/class-astra-enqueue-scripts.php:721
+#: inc/core/class-astra-enqueue-scripts.php:722
 msgid "No results found"
 msgstr ""
 
@@ -15932,38 +15980,38 @@ msgstr ""
 msgid "<strong>Help shape the future of %1$s.</strong><br><br>Share how you use the plugin so we can build features that matter, fix issues faster, and make smarter decisions."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:279
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:278
 msgid "This will be applicable for all sites from the network."
 msgstr ""
 
 #. translators: %s usage doc link
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:303
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:302
 msgid "Learn more."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:313
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:312
 msgid "Happy to help!"
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:324
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:323
 msgid "Skip"
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:502
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:501
 msgid "Usage Tracking"
 msgstr ""
 
 #. translators: %s Product title
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:547
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:546
 #, php-format
 msgid "Help improve %s by sharing non-sensitive usage data — like PHP version and features used."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:550
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:549
 msgid " This will be applicable for all sites from the network."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:555
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:554
 msgid "Learn More."
 msgstr ""
 
@@ -15993,15 +16041,15 @@ msgstr ""
 msgid "Skip & Deactivate"
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:288
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:289
 msgid "The plugin isn't working properly."
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:294
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:295
 msgid "I found a better alternative plugin."
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:295
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:296
 msgid "Could you please specify which plugin?"
 msgstr ""
 

@@ -42,6 +42,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			add_action( 'astra_get_fonts', array( $this, 'add_fonts' ), 1 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 1 );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'gutenberg_assets' ) );
+			add_action( 'enqueue_block_assets', array( $this, 'gutenberg_block_assets' ) );
 			add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 			add_action( 'wp_print_footer_scripts', array( $this, 'astra_skip_link_focus_fix' ) );
 			add_filter( 'gallery_style', array( $this, 'enqueue_galleries_style' ) );
@@ -794,12 +795,6 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 				return;
 			}
 
-			/* Directory and Extension */
-			$rtl = '';
-			if ( is_rtl() ) {
-				$rtl = '-rtl';
-			}
-
 			$js_prefix = SCRIPT_DEBUG ? '' : 'minified/';
 			$js_suffix = SCRIPT_DEBUG ? '' : '.min';
 			$js_uri    = ASTRA_THEME_URI . 'inc/assets/js/' . $js_prefix . 'block-editor-script' . $js_suffix . '.js';
@@ -840,8 +835,28 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			);
 
 			wp_localize_script( 'astra-block-editor-script', 'astraColors', apply_filters( 'astra_theme_root_colors', $astra_colors ) );
+		}
 
-			// Render fonts in Gutenberg layout.
+		/**
+		 * Enqueue editor CSS via enqueue_block_assets so WordPress injects them
+		 * into the block editor iframe canvas correctly (WP 6.5+).
+		 *
+		 * @since 4.13.5
+		 * @return void
+		 */
+		public function gutenberg_block_assets() {
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			if ( is_customize_preview() ) {
+				return;
+			}
+
+			/* Directory and Extension */
+			$rtl = is_rtl() ? '-rtl' : '';
+
+			// Render fonts so Google Fonts are enqueued into the iframe.
 			Astra_Fonts::render_fonts();
 
 			if ( astra_block_based_legacy_setup() ) {

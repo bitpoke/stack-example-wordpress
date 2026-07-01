@@ -908,7 +908,7 @@ class Astra_Menu {
 			'path'        => 'modern-cart/modern-cart.php',
 			'redirection' => admin_url( 'admin.php?page=moderncart_settings' ),
 			'ratings'     => '(25+)',
-			'activations' => '10,000 +',
+			'activations' => '50,000 +',
 			'logoPath'    => array(
 				'internal_icon' => true,
 				'icon_path'     => 'moderncart',
@@ -925,8 +925,8 @@ class Astra_Menu {
 			'ratings'     => '(490+)',
 			'activations' => '300,000 +',
 			'logoPath'    => array(
-				'internal_icon' => false,
-				'icon_path'     => 'https://ps.w.org/woo-cart-abandonment-recovery/assets/icon-128x128.png',
+				'internal_icon' => true,
+				'icon_path'     => 'wcar',
 			),
 		);
 
