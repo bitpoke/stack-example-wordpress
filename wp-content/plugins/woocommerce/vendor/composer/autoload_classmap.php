@@ -207,6 +207,7 @@ return array(
     'Automattic\\WooCommerce\\Admin\\API\\Reports\\Variations\\Stats\\Query' => $baseDir . '/src/Admin/API/Reports/Variations/Stats/Query.php',
     'Automattic\\WooCommerce\\Admin\\API\\Reports\\Variations\\Stats\\Segmenter' => $baseDir . '/src/Admin/API/Reports/Variations/Stats/Segmenter.php',
     'Automattic\\WooCommerce\\Admin\\API\\SettingOptions' => $baseDir . '/src/Admin/API/SettingOptions.php',
+    'Automattic\\WooCommerce\\Admin\\API\\Settings' => $baseDir . '/src/Admin/API/Settings.php',
     'Automattic\\WooCommerce\\Admin\\API\\ShippingPartnerSuggestions' => $baseDir . '/src/Admin/API/ShippingPartnerSuggestions.php',
     'Automattic\\WooCommerce\\Admin\\API\\Taxes' => $baseDir . '/src/Admin/API/Taxes.php',
     'Automattic\\WooCommerce\\Admin\\API\\Themes' => $baseDir . '/src/Admin/API/Themes.php',

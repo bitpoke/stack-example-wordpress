@@ -300,6 +300,7 @@ class ComposerStaticInit37bed2e19d8b44bc71451de7683919df
         'Automattic\\WooCommerce\\Admin\\API\\Reports\\Variations\\Stats\\Query' => __DIR__ . '/../..' . '/src/Admin/API/Reports/Variations/Stats/Query.php',
         'Automattic\\WooCommerce\\Admin\\API\\Reports\\Variations\\Stats\\Segmenter' => __DIR__ . '/../..' . '/src/Admin/API/Reports/Variations/Stats/Segmenter.php',
         'Automattic\\WooCommerce\\Admin\\API\\SettingOptions' => __DIR__ . '/../..' . '/src/Admin/API/SettingOptions.php',
+        'Automattic\\WooCommerce\\Admin\\API\\Settings' => __DIR__ . '/../..' . '/src/Admin/API/Settings.php',
         'Automattic\\WooCommerce\\Admin\\API\\ShippingPartnerSuggestions' => __DIR__ . '/../..' . '/src/Admin/API/ShippingPartnerSuggestions.php',
         'Automattic\\WooCommerce\\Admin\\API\\Taxes' => __DIR__ . '/../..' . '/src/Admin/API/Taxes.php',
         'Automattic\\WooCommerce\\Admin\\API\\Themes' => __DIR__ . '/../..' . '/src/Admin/API/Themes.php',
