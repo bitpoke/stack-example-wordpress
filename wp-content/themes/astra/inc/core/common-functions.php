@@ -164,7 +164,7 @@ if ( ! function_exists( 'astra_get_font_css_value' ) ) {
 	function astra_get_font_css_value( $value, $unit = 'px', $device = 'desktop' ) {
 
 		// If value is empty then return blank.
-		if ( '' == $value || ( 0 == $value && ! astra_zero_font_size_case() ) ) {
+		if ( '' === $value || 0 === $value || 0.0 === $value || ( 0 == $value && ! astra_zero_font_size_case() ) ) {
 			return '';
 		}
 

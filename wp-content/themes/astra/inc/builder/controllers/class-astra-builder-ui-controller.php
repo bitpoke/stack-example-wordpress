@@ -215,7 +215,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 				 */
 				$allowed_html = apply_filters( 'astra_html_widget_allowed_html', $allowed_html, $content );
 
-				echo wp_kses( do_shortcode( $content ), $allowed_html );
+				echo do_shortcode( wp_kses( $content, $allowed_html ) );
 				echo '</div>';
 				echo '</div>';
 			}

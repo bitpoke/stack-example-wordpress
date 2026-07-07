@@ -1,5 +1,9 @@
 *** Astra Changelog ***
 
+2026-07-06 - version 4.13.6
+* Fix: Reverted a 4.13.5 change that stripped form elements, style tags, and data attributes from shortcode output in the Header/Footer Builder HTML element.
+* Fix: Body font size rendering as 0px/0% on PHP 8.0+ when the stored desktop value is integer 0, caused by a loose comparison that only masked this on PHP 7.x.
+
 2026-06-30 - version 4.13.5
 * Improvement: Navigation's submenu dropdown arrow touch target size improved for better WCAG 2.5.5 accessibility compliance.
 * Fix: Shortcodes inside href attributes in Header/Footer Builder HTML elements being stripped — caused by wp_kses running before do_shortcode, regression since v4.11.11.
