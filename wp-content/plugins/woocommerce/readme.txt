@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 6.9
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 10.9.2
+Stable tag: 10.9.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -170,11 +170,11 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 10.9.3 2026-07-03 =
+= 10.9.4 2026-07-07 =
 
 **WooCommerce**
 
-* Fix - Fix a fatal error in WC_Email::send_notification() when a filtered mail callback returns a non-bool value. [#66219](https://github.com/woocommerce/woocommerce/pull/66219)
+* Fix - Fix is_vat_exempt being not correctly applied during block checkout for logged-in users. [#66342](https://github.com/woocommerce/woocommerce/pull/66342)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
