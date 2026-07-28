@@ -1,5 +1,14 @@
 *** Astra Changelog ***
 
+2026-06-28 - version 4.13.7
+* Improvement: WooCommerce - Added proper spacing between product quantity and subscription price in the checkout order review table when WooCommerce Subscriptions is active, so they no longer appear flush together.
+* Improvement: Social icon Phone, Email, and WhatsApp links no longer get double-prefixed when the entered value already includes tel:, mailto:, or a full WhatsApp link.
+* Fix: Shortcodes in the Header/Footer Builder HTML element, including inside href attributes, no longer stripped during sanitization.
+* Fix: Load Google Fonts Locally failing with a CORS block on single installs serving multiple domains from one filesystem (e.g. WPML "different domains per language"); local font URLs are now root-relative so each domain resolves fonts against its own origin.
+* Fix: Duplicate `id="email"` from the Social Icons Email icon breaking guest checkout with the WooCommerce Checkout block and Stripe.
+* Fix: Desktop toggle dropdown closing when clicking a parent menu item with children in "Dropdown Target: Link" mode.
+* Fix: Handled an edge case on the Elementor globals REST endpoint where a WP_Error returned by the route callback could cause a PHP error.
+
 2026-07-06 - version 4.13.6
 * Fix: Reverted a 4.13.5 change that stripped form elements, style tags, and data attributes from shortcode output in the Header/Footer Builder HTML element.
 * Fix: Body font size rendering as 0px/0% on PHP 8.0+ when the stored desktop value is integer 0, caused by a loose comparison that only masked this on PHP 7.x.

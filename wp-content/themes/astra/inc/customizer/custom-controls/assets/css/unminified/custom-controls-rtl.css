@@ -416,7 +416,9 @@
 
 .customize-control-ast-button-link .ast-button-link,
 .ast-upgrade-pro-wrap .ast-button-link {
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: 8px 18px;
 	border-radius: 30px;
 	border: 1px solid #5c2ede;
@@ -425,7 +427,6 @@
 	font-size: 13px !important;
 	font-weight: 400;
 	line-height: 13px !important;
-	text-align: center;
 	cursor: pointer;
 	gap: 12px;
 }

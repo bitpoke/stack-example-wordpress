@@ -77,15 +77,16 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 						switch ( $item['id'] ) {
 
 							case 'phone':
-								$link = 'tel:' . $item['url'];
+								$link = 0 === stripos( $item['url'], 'tel:' ) ? $item['url'] : 'tel:' . $item['url'];
 								break;
 
 							case 'email':
-								$link = 'mailto:' . $item['url'];
+							case 'email_2':
+								$link = 0 === stripos( $item['url'], 'mailto:' ) ? $item['url'] : 'mailto:' . $item['url'];
 								break;
 
 							case 'whatsapp':
-								$link = 'https://api.whatsapp.com/send?phone=' . $item['url'];
+								$link = 0 === stripos( $item['url'], 'http' ) || 0 === stripos( $item['url'], 'whatsapp:' ) ? $item['url'] : 'https://api.whatsapp.com/send?phone=' . $item['url'];
 								break;
 						}
 
@@ -215,7 +216,41 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 				 */
 				$allowed_html = apply_filters( 'astra_html_widget_allowed_html', $allowed_html, $content );
 
-				echo do_shortcode( wp_kses( $content, $allowed_html ) );
+				// Shield shortcodes from wp_kses(): a raw shortcode used as an attribute value (e.g.
+				// href="[acf ...]") is stripped as invalid markup before it can expand. Expand each
+				// one in isolation, swap in a placeholder, sanitize the author markup, then restore.
+				// Isolated expansion also sidesteps do_shortcodes_in_html_tags(), which leaves a
+				// shortcode unexpanded when its args contain a bare ">" or "<".
+				$ast_shortcode_map = array();
+				if ( $content && function_exists( 'get_shortcode_regex' ) ) {
+					// Unique per-render prefix (uniqid is lightweight) so authored text can never collide with a restore key.
+					$ast_placeholder_prefix = 'ast-shortcode-placeholder-' . uniqid() . '-';
+					$ast_shielded_content   = preg_replace_callback(
+						'/' . get_shortcode_regex() . '/',
+						static function ( $matches ) use ( &$ast_shortcode_map, $ast_placeholder_prefix ) {
+							$placeholder                       = $ast_placeholder_prefix . count( $ast_shortcode_map );
+							$ast_shortcode_map[ $placeholder ] = do_shortcode( $matches[0] );
+							return $placeholder;
+						},
+						$content
+					);
+
+					// preg_replace_callback() returns null on a regex engine failure; keep original content so the widget is not blanked.
+					if ( null !== $ast_shielded_content ) {
+						$content = $ast_shielded_content;
+					} else {
+						$ast_shortcode_map = array();
+					}
+				}
+
+				$content = wp_kses( $content, $allowed_html );
+
+				// strtr() replaces longest keys first in one pass, so "...-1" is never matched inside "...-10".
+				if ( ! empty( $ast_shortcode_map ) ) {
+					$content = strtr( $content, $ast_shortcode_map );
+				}
+
+				echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Author markup sanitized via wp_kses() above; shortcode output is trusted plugin output.
 				echo '</div>';
 				echo '</div>';
 			}

@@ -474,12 +474,25 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 				}
 			}
 
-			// Close Popup on # link click inside Popup.
+			// Close Popup on # link click inside desktop dropdown.
 			if ( desktopDropdownContent ) {
 				var desktopLinks = desktopDropdownContent.getElementsByTagName( 'a' );
 				for ( link = 0, len = desktopLinks.length; link < len; link++ ) {
-					desktopLinks[ link ].addEventListener( 'click', triggerToggleClose, true );
-					desktopLinks[ link ].headerType = 'dropdown';
+					// Check if the link is not inside the tabs container.
+					const isNotInsideTabsContainer = desktopLinks[ link ].closest( '.wp-block-uagb-tabs' ) === null;
+
+					if (
+						null !== desktopLinks[ link ].getAttribute( 'href' ) &&
+						( desktopLinks[ link ].getAttribute( 'href' ).startsWith( '#' ) ||
+							-1 !== desktopLinks[ link ].getAttribute( 'href' ).search( '#' ) ) &&
+						( ! desktopLinks[ link ].parentElement.classList.contains( 'menu-item-has-children' ) ||
+							( desktopLinks[ link ].parentElement.classList.contains( 'menu-item-has-children' ) &&
+								document.querySelector( 'header.site-header' ).classList.contains( 'ast-builder-menu-toggle-icon' ) ) ) &&
+						isNotInsideTabsContainer
+					) {
+						desktopLinks[ link ].addEventListener( 'click', triggerToggleClose, true );
+						desktopLinks[ link ].headerType = 'dropdown';
+					}
 				}
 			}
 
@@ -658,14 +671,21 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 
 		event.preventDefault();
 
+		var parent_li = this.parentNode;
+
+		// In Link mode, stop the click from bubbling when toggling a parent menu
+		// item's submenu. Without this, the click propagates to document-level
+		// handlers that close the entire dropdown (desktop and mobile).
+		if ( parent_li.classList.contains( 'menu-item-has-children' ) &&
+			document.querySelector( 'header.site-header' ).classList.contains( 'ast-builder-menu-toggle-link' ) ) {
+			event.stopPropagation();
+		}
 
 		if ('false' === event.target.getAttribute('aria-expanded') || ! event.target.getAttribute('aria-expanded')) {
 			event.target.setAttribute('aria-expanded', 'true');
 		} else {
 			event.target.setAttribute('aria-expanded', 'false');
 		}
-
-		var parent_li = this.parentNode;
 
 		if ( parent_li.classList.contains('ast-submenu-expanded') && document.querySelector('header.site-header').classList.contains('ast-builder-menu-toggle-link') ) {
 

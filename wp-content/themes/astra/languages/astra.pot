@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.13.6\n"
+"Project-Id-Version: Astra 4.13.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-03T13:01:47+00:00\n"
+"POT-Creation-Date: 2026-07-24T13:22:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: astra\n"
@@ -388,7 +388,7 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:238
 #: admin/includes/class-astra-menu.php:239
-#: admin/includes/class-astra-menu.php:773
+#: admin/includes/class-astra-menu.php:759
 msgid "Custom Layouts"
 msgstr ""
 
@@ -415,7 +415,7 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:414
 #: admin/includes/class-astra-theme-builder-free.php:102
-#: inc/core/class-astra-admin-settings.php:182
+#: inc/core/class-astra-admin-settings.php:189
 msgid "Activating"
 msgstr ""
 
@@ -427,7 +427,7 @@ msgstr ""
 
 #: admin/includes/class-astra-menu.php:416
 #: admin/includes/class-astra-theme-builder-free.php:104
-#: inc/core/class-astra-admin-settings.php:184
+#: inc/core/class-astra-admin-settings.php:191
 msgid "Activate"
 msgstr ""
 
@@ -467,7 +467,7 @@ msgid "Color"
 msgstr ""
 
 #: admin/includes/class-astra-menu.php:477
-#: admin/includes/class-astra-menu.php:656
+#: admin/includes/class-astra-menu.php:642
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:317
 #: inc/customizer/class-astra-customizer.php:1767
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:335
@@ -515,32 +515,32 @@ msgstr ""
 msgid "Create professional designed pixel perfect websites in minutes. Get access to 300+ pre-made full website templates for your favorite page builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:643
+#: admin/includes/class-astra-menu.php:629
 #: inc/addons/transparent-header/classes/sections/class-astra-customizer-transparent-header-configs.php:386
 msgid "Colors & Background"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:650
-#: admin/includes/class-astra-menu.php:663
-#: admin/includes/class-astra-menu.php:676
-#: admin/includes/class-astra-menu.php:689
-#: admin/includes/class-astra-menu.php:702
-#: admin/includes/class-astra-menu.php:715
-#: admin/includes/class-astra-menu.php:728
-#: admin/includes/class-astra-menu.php:741
-#: admin/includes/class-astra-menu.php:754
-#: admin/includes/class-astra-menu.php:767
-#: admin/includes/class-astra-menu.php:782
+#: admin/includes/class-astra-menu.php:636
+#: admin/includes/class-astra-menu.php:649
+#: admin/includes/class-astra-menu.php:662
+#: admin/includes/class-astra-menu.php:675
+#: admin/includes/class-astra-menu.php:688
+#: admin/includes/class-astra-menu.php:701
+#: admin/includes/class-astra-menu.php:714
+#: admin/includes/class-astra-menu.php:727
+#: admin/includes/class-astra-menu.php:740
+#: admin/includes/class-astra-menu.php:753
+#: admin/includes/class-astra-menu.php:768
+#: admin/includes/class-astra-menu.php:783
 #: admin/includes/class-astra-menu.php:797
 #: admin/includes/class-astra-menu.php:811
-#: admin/includes/class-astra-menu.php:825
+#: admin/includes/class-astra-menu.php:826
 #: admin/includes/class-astra-menu.php:840
-#: admin/includes/class-astra-menu.php:854
-#: admin/includes/class-astra-menu.php:867
+#: admin/includes/class-astra-menu.php:853
 msgid "Documentation"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:669
+#: admin/includes/class-astra-menu.php:655
 #: inc/addons/breadcrumbs/customizer/class-astra-breadcrumbs-configs.php:321
 #: inc/customizer/class-astra-extended-base-configuration.php:59
 #: inc/customizer/configurations/builder/base/class-astra-html-component-configs.php:173
@@ -557,42 +557,42 @@ msgstr ""
 msgid "Spacing"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:682
+#: admin/includes/class-astra-menu.php:668
 msgid "Blog Pro"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:695
+#: admin/includes/class-astra-menu.php:681
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:394
 msgid "Mobile Header"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:708
+#: admin/includes/class-astra-menu.php:694
 msgid "Header Sections"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:721
+#: admin/includes/class-astra-menu.php:707
 #: inc/customizer/configurations/builder/header/configs/header-builder.php:753
 #: inc/metabox/class-astra-elementor-editor-settings.php:479
 #: inc/metabox/class-astra-meta-boxes.php:719
 msgid "Sticky Header"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:734
+#: admin/includes/class-astra-menu.php:720
 #: admin/assets/build/dashboard-app.js:10
 msgid "Site Layouts"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:747
+#: admin/includes/class-astra-menu.php:733
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:166
 #: inc/customizer/class-astra-customizer-register-sections-panels.php:306
 msgid "Footer Widgets"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:760
+#: admin/includes/class-astra-menu.php:746
 msgid "Nav Menu"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:773
+#: admin/includes/class-astra-menu.php:759
 #: admin/includes/class-astra-theme-builder-free.php:81
 #: admin/includes/class-astra-theme-builder-free.php:151
 #: admin/includes/class-astra-theme-builder-free.php:152
@@ -601,86 +601,122 @@ msgstr ""
 msgid "Site Builder"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:774
+#: admin/includes/class-astra-menu.php:760
 msgid "Add content conditionally in the various hook areas of the theme."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:788
+#: admin/includes/class-astra-menu.php:774
 msgid "Page Headers"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:789
+#: admin/includes/class-astra-menu.php:775
 msgid "Make your header layouts look more appealing and sexy!"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:833
+#: admin/includes/class-astra-menu.php:819
 msgid "Supercharge your LearnDash website with amazing design features."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:860
+#: admin/includes/class-astra-menu.php:846
 #: admin/assets/build/dashboard-app.js:10
 #: admin/assets/build/dashboard-app.js:13
 msgid "White Label"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:889
+#: admin/includes/class-astra-menu.php:875
 msgid "#1 Sales Funnel WordPress Builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:889
+#: admin/includes/class-astra-menu.php:875
 msgid "Build high-converting E-Commerce stores with CartFlows, the ultimate checkout and funnel builder."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:905
+#: admin/includes/class-astra-menu.php:891
 msgid "Modern Cart: A smarter way to sell"
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:905
+#: admin/includes/class-astra-menu.php:891
 msgid "Say goodbye to slow checkouts – boost sales with a smooth, hassle-free experience."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:920
+#: admin/includes/class-astra-menu.php:906
 msgid "Recover lost revenue automatically."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:920
+#: admin/includes/class-astra-menu.php:906
 msgid "Capture emails at checkout and send follow-up emails to recover lost revenue."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:936
+#: admin/includes/class-astra-menu.php:921
+msgid "Turn variation dropdowns into swatches."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:921
 msgid "Convert WooCommerce variation dropdown attributes into attractive swatches instantly."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:983
-msgid "Sell products, services, subscriptions & more."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:995
-msgid "Free WordPress Page Builder."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:1007
-msgid "Automate your WordPress setup."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:1020
-msgid "A versatile form builder plugin."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:1032
-msgid "Ultimate Video Player For WordPress."
-msgstr ""
-
-#: admin/includes/class-astra-menu.php:1044
+#: admin/includes/class-astra-menu.php:973
 msgid "Extend Elementor with premium widgets."
 msgstr ""
 
-#: admin/includes/class-astra-menu.php:1125
+#: admin/includes/class-astra-menu.php:989
+msgid "Extend Beaver Builder with premium modules."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1011
+msgid "Free WordPress Page Builder."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1026
+msgid "A versatile form builder plugin."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1040
+msgid "Lightweight SEO to rank higher."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1054
+msgid "Reliable email delivery via SMTP."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1068
+msgid "Cookie consent & compliance made simple."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1082
+msgid "Email marketing, automation & CRM."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1098
+msgid "Sell products, services, subscriptions & more."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1113
+msgid "Automate your WordPress setup."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1127
+msgid "Membership & content restriction."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1141
+msgid "Collect donations & run fundraisers."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1155
+msgid "Ultimate video player for WordPress."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1169
+msgid "A/B testing & revenue tracking."
+msgstr ""
+
+#: admin/includes/class-astra-menu.php:1241
 msgid "Thank you for using"
 msgstr ""
 
 #. translators: 1: Astra, 2: Theme rating link
-#: admin/includes/class-astra-menu.php:1129
+#: admin/includes/class-astra-menu.php:1245
 #, php-format
 msgid "Enjoyed %1$s? Please leave us a %2$s rating. We really appreciate your support!"
 msgstr ""
@@ -8286,7 +8322,15 @@ msgstr ""
 msgid "Load Google Fonts Locally must be enabled first."
 msgstr ""
 
-#: inc/abilities/admin/settings/performance/class-astra-flush-local-fonts.php:127
+#: inc/abilities/admin/settings/performance/class-astra-flush-local-fonts.php:123
+msgid "Failed to flush local fonts cache."
+msgstr ""
+
+#: inc/abilities/admin/settings/performance/class-astra-flush-local-fonts.php:124
+msgid "Please try again later."
+msgstr ""
+
+#: inc/abilities/admin/settings/performance/class-astra-flush-local-fonts.php:131
 msgid "Local fonts cache flushed successfully."
 msgstr ""
 
@@ -11842,46 +11886,46 @@ msgstr ""
 msgid "Footer Builder"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:232
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:233
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:252
 #: inc/builder/controllers/class-astra-builder-ui-controller.php:267
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:268
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:287
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:302
 msgid "Click to edit this element."
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:252
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:267
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:287
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:302
 msgid "Click to edit this Row."
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:282
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:317
 msgctxt "Primary Menu: Menu Label (Mobile Menu)"
 msgid "%astra%"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:294
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:329
 msgid "Main menu toggle"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:383
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:418
 msgid "Close Cart Drawer"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:388
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:423
 msgid "Shopping Cart"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:450
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:485
 msgctxt "Header Builder: Account Widget - Logged In View Text"
 msgid "%astra%"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:499
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:569
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:534
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:604
 msgid "Account icon link"
 msgstr ""
 
-#: inc/builder/controllers/class-astra-builder-ui-controller.php:530
+#: inc/builder/controllers/class-astra-builder-ui-controller.php:565
 msgctxt "Header Builder: Account Widget - Logged Out View Text"
 msgid "%astra%"
 msgstr ""
@@ -13638,74 +13682,84 @@ msgstr ""
 msgid "Unlock with Astra Pro"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:183
+#: inc/core/class-astra-admin-settings.php:164
+msgid "Learn how to configure the Astra Megamenu"
+msgstr ""
+
+#: inc/core/class-astra-admin-settings.php:166
+#: inc/customizer/configurations/builder/header/configs/menu.php:663
+#: admin/assets/build/dashboard-app.js:12
+msgid "Learn more"
+msgstr ""
+
+#: inc/core/class-astra-admin-settings.php:190
 msgid "Deactivating"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:185
+#: inc/core/class-astra-admin-settings.php:192
 msgid "Deactivate"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:186
+#: inc/core/class-astra-admin-settings.php:193
 #: admin/assets/build/dashboard-app.js:20
 msgid "Settings"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:229
+#: inc/core/class-astra-admin-settings.php:236
 #: admin/assets/build/dashboard-app.js:20
 msgid "Start Building Now"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:264
+#: inc/core/class-astra-admin-settings.php:271
 msgid "Thank you for choosing Astra!"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:265
+#: inc/core/class-astra-admin-settings.php:272
 msgid "Your Website, Ready in Minutes - Let’s Start!"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:266
+#: inc/core/class-astra-admin-settings.php:273
 msgid "No complicated setup, no waiting - just a smooth, hassle-free way to bring your website to life. Follow a few quick steps, and you’ll be up and running in no time!"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:276
+#: inc/core/class-astra-admin-settings.php:283
 msgid "By clicking <b>\"Start Building Now,\"</b> you agree to install and activate the <b>Starter Templates</b> plugin."
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:277
+#: inc/core/class-astra-admin-settings.php:284
 msgid "300+ Templates"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:323
+#: inc/core/class-astra-admin-settings.php:330
 msgid "Running a WooCommerce store? You need more than just a theme."
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:324
+#: inc/core/class-astra-admin-settings.php:331
 msgid "Design your entire store without limitations - from product pages to checkout. Get conversion-optimized templates, high-converting funnels, cart recovery, upsells, and powerful automation to run your store smoothly - all in one integrated system with the Business Toolkit."
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:327
+#: inc/core/class-astra-admin-settings.php:334
 msgid "Upgrade to Business Toolkit"
 msgstr ""
 
 #. translators: %1$s: Theme Name, %2$s: Minimum Required version of the addon
-#: inc/core/class-astra-admin-settings.php:355
+#: inc/core/class-astra-admin-settings.php:362
 #, php-format
 msgid "Please update the %1$s to version %2$s or higher. Ignore if already updated."
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:505
-#: inc/core/class-astra-admin-settings.php:517
-#: inc/core/class-astra-admin-settings.php:529
+#: inc/core/class-astra-admin-settings.php:512
+#: inc/core/class-astra-admin-settings.php:524
+#: inc/core/class-astra-admin-settings.php:536
 msgid "See Library &#187;"
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:506
-#: inc/core/class-astra-admin-settings.php:518
+#: inc/core/class-astra-admin-settings.php:513
+#: inc/core/class-astra-admin-settings.php:525
 msgid "Activating Importer Plugin "
 msgstr ""
 
-#: inc/core/class-astra-admin-settings.php:532
+#: inc/core/class-astra-admin-settings.php:539
 msgid "Details &#187;"
 msgstr ""
 
@@ -14960,6 +15014,28 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/menu.php:635
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:62
 msgid "Menu"
+msgstr ""
+
+#: inc/customizer/configurations/builder/header/configs/menu.php:659
+msgid "Turn Menus Into Rich Dropdowns"
+msgstr ""
+
+#. translators: %s: Learn more documentation link.
+#: inc/customizer/configurations/builder/header/configs/menu.php:662
+#, php-format
+msgid "Turn any menu item into a large, multi-column dropdown (a mega menu) — fully designed, any width. %s"
+msgstr ""
+
+#: inc/customizer/configurations/builder/header/configs/menu.php:666
+msgid "Full-width or custom-width dropdowns"
+msgstr ""
+
+#: inc/customizer/configurations/builder/header/configs/menu.php:667
+msgid "Add templates, widgets, or custom content"
+msgstr ""
+
+#: inc/customizer/configurations/builder/header/configs/menu.php:668
+msgid "Multi-column layouts with per-item styling"
 msgstr ""
 
 #: inc/customizer/configurations/builder/header/configs/mobile-trigger.php:66
@@ -17838,10 +17914,6 @@ msgstr ""
 
 #: admin/assets/build/dashboard-app.js:12
 msgid "Creates a dedicated Astra MCP endpoint that AI clients like Claude, Cursor, and others can connect to. When disabled, the endpoint is removed and external AI clients cannot discover or call any Astra abilities."
-msgstr ""
-
-#: admin/assets/build/dashboard-app.js:12
-msgid "Learn more"
 msgstr ""
 
 #: admin/assets/build/dashboard-app.js:12

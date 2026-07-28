@@ -575,29 +575,15 @@ class Astra_Menu {
 				// Fall through: Intentional fall-through without returning.
 				return false;
 
-			case 'checkout-plugins-stripe-woo/checkout-plugins-stripe-woo.php':
-				// If the setup is not skipped and connected to the Stripe.
-				/** @psalm-suppress UndefinedClass */
-				return 'skipped' !== get_option( 'cpsw_setup_status', false ) && class_exists( '\CPSW\Admin\Admin_Controller' ) && \CPSW\Admin\Admin_Controller::get_instance()->is_stripe_connected();
+			case 'surecontact/surecontact.php':
+				// Connected once a workspace UUID has been stored.
+				$workspace_uuid = get_option( 'surecontact_workspace_uuid', '' );
+				return ! empty( $workspace_uuid );
 
-			case 'checkout-paypal-woo/checkout-paypal-woo.php':
-				if ( ! class_exists( '\CPPW\Gateway\Paypal\Api\Client' ) ) {
-					return false;
-				}
-				$remote_url = 'v1/identity/oauth2/userinfo?schema=paypalv1.1';
-				try {
-					/** @psalm-suppress UndefinedClass */
-					$response = \CPPW\Gateway\Paypal\Api\Client::request( $remote_url, array(), 'get' );
-					if ( ! is_array( $response ) || empty( $response['user_id'] ) ) {
-						return false;
-					}
-					return true;
-				} catch ( \Exception $e ) {
-					// Handle exception silently.
-					return false;
-				}
-				// Fall through: This catch block will always return false if an exception is caught.
-				return false;
+			case 'sigmize/sigmize.php':
+				// Connected once a workspace UUID has been stored.
+				$sigmize_workspace_uuid = get_option( 'sigmize_workspace_uuid', '' );
+				return ! empty( $sigmize_workspace_uuid );
 		}
 
 		return true;
@@ -930,22 +916,20 @@ class Astra_Menu {
 			),
 		);
 
-		if ( ! $under_useful_plugins ) {
-			$extensions[] = array(
-				'title'       => 'Variations Swatches by CartFlows',
-				'subtitle'    => __( 'Convert WooCommerce variation dropdown attributes into attractive swatches instantly.', 'astra' ),
-				'status'      => self::get_plugin_status( 'variation-swatches-woo/variation-swatches-woo.php' ),
-				'slug'        => 'variation-swatches-woo',
-				'path'        => 'variation-swatches-woo/variation-swatches-woo.php',
-				'redirection' => admin_url( 'admin.php?page=cfvsw_settings' ),
-				'ratings'     => '(30+)',
-				'activations' => '200,000 +',
-				'logoPath'    => array(
-					'internal_icon' => false,
-					'icon_path'     => 'https://ps.w.org/variation-swatches-woo/assets/icon.svg',
-				),
-			);
-		}
+		$extensions[] = array(
+			'title'       => 'Variations Swatches by CartFlows',
+			'subtitle'    => $under_useful_plugins ? __( 'Turn variation dropdowns into swatches.', 'astra' ) : __( 'Convert WooCommerce variation dropdown attributes into attractive swatches instantly.', 'astra' ),
+			'status'      => self::get_plugin_status( 'variation-swatches-woo/variation-swatches-woo.php' ),
+			'slug'        => 'variation-swatches-woo',
+			'path'        => 'variation-swatches-woo/variation-swatches-woo.php',
+			'redirection' => admin_url( 'admin.php?page=cfvsw_settings' ),
+			'ratings'     => '(30+)',
+			'activations' => '200,000 +',
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/variation-swatches-woo/assets/icon.svg',
+			),
+		);
 
 		return $extensions;
 	}
@@ -970,98 +954,230 @@ class Astra_Menu {
 	 * @return array
 	 */
 	public static function astra_get_useful_plugins() {
-		// Making useful plugin section dynamic.
-		if ( class_exists( 'WooCommerce' ) ) {
-			$useful_plugins = self::astra_get_woo_extensions();
-		} else {
-			$surecart_status      = self::get_plugin_status( 'surecart/surecart.php' );
-			$surecart_redirection = 'activated' === $surecart_status ? 'sc-dashboard' : 'sc-getting-started';
+		// The "Extend Your Website" pool in a single, fixed promotional order. Each entry
+		// is conditional on context; the dashboard renders the first few non-activated ones.
+		$useful_plugins = array();
 
-			$plugins = array(
-				'surecart'      => array(
-					'title'       => 'SureCart',
-					'subtitle'    => __( 'Sell products, services, subscriptions & more.', 'astra' ),
-					'status'      => $surecart_status,
-					'slug'        => 'surecart',
-					'path'        => 'surecart/surecart.php',
-					'redirection' => admin_url( 'admin.php?page=' . esc_attr( $surecart_redirection ) ),
-					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'surecart_logo',
-					),
-				),
-				'spectra'       => array(
-					'title'       => 'Spectra',
-					'subtitle'    => __( 'Free WordPress Page Builder.', 'astra' ),
-					'status'      => self::get_plugin_status( 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php' ),
-					'slug'        => 'ultimate-addons-for-gutenberg',
-					'path'        => 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php',
-					'redirection' => admin_url( 'options-general.php?page=spectra' ),
-					'logoPath'    => array(
-						'internal_icon' => false,
-						'icon_path'     => 'https://ps.w.org/ultimate-addons-for-gutenberg/assets/icon-256x256.gif',
-					),
-				),
-				'suretriggers'  => array(
-					'title'       => 'OttoKit',
-					'subtitle'    => __( 'Automate your WordPress setup.', 'astra' ),
-					'isPro'       => false,
-					'status'      => self::get_plugin_status( 'suretriggers/suretriggers.php' ),
-					'slug'        => 'suretriggers',
-					'path'        => 'suretriggers/suretriggers.php',
-					'redirection' => admin_url( 'admin.php?page=suretriggers' ),
-					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'ottokit',
-					),
-				),
-				'sureforms'     => array(
-					'title'       => 'SureForms',
-					'subtitle'    => __( 'A versatile form builder plugin.', 'astra' ),
-					'status'      => self::get_plugin_status( 'sureforms/sureforms.php' ),
-					'slug'        => 'sureforms',
-					'path'        => 'sureforms/sureforms.php',
-					'redirection' => admin_url( 'admin.php?page=sureforms_menu' ),
-					'logoPath'    => array(
-						'internal_icon' => true,
-						'icon_path'     => 'sureforms',
-					),
-				),
-				'presto-player' => array(
-					'title'       => 'Presto Player',
-					'subtitle'    => __( 'Ultimate Video Player For WordPress.', 'astra' ),
-					'status'      => self::get_plugin_status( 'presto-player/presto-player.php' ),
-					'slug'        => 'presto-player',
-					'path'        => 'presto-player/presto-player.php',
-					'redirection' => admin_url( 'edit.php?post_type=pp_video_block' ),
-					'logoPath'    => array(
-						'internal_icon' => false,
-						'icon_path'     => 'https://ps.w.org/presto-player/assets/icon-128x128.png',
-					),
-				),
-				'uael'          => array(
-					'title'       => 'Ultimate Addons for Elementor',
-					'subtitle'    => __( 'Extend Elementor with premium widgets.', 'astra' ),
-					'status'      => self::get_plugin_status( 'header-footer-elementor/header-footer-elementor.php' ),
-					'slug'        => 'header-footer-elementor',
-					'path'        => 'header-footer-elementor/header-footer-elementor.php',
-					'redirection' => admin_url( 'admin.php?page=hfe#onboarding' ),
-					'logoPath'    => array(
-						'internal_icon' => false,
-						'icon_path'     => 'https://ps.w.org/header-footer-elementor/assets/icon-256x256.gif',
-					),
+		$spectra_legacy_active = defined( 'UAGB_FILE' );
+		$elementor_active      = defined( 'ELEMENTOR_VERSION' );
+		$beaver_builder_active = defined( 'FL_BUILDER_VERSION' );
+		$woocommerce_active    = class_exists( 'WooCommerce' );
+
+		// SureCart competes with WooCommerce, so it's hidden whenever Woo is installed (active or not).
+		$woocommerce_installed = 'install' !== self::get_plugin_status( 'woocommerce/woocommerce.php' );
+
+		// Elementor companion — only on Elementor sites.
+		if ( $elementor_active ) {
+			$useful_plugins[] = array(
+				'title'       => 'Ultimate Addons for Elementor',
+				'subtitle'    => __( 'Extend Elementor with premium widgets.', 'astra' ),
+				'status'      => self::get_plugin_status( 'header-footer-elementor/header-footer-elementor.php' ),
+				'slug'        => 'header-footer-elementor',
+				'path'        => 'header-footer-elementor/header-footer-elementor.php',
+				'redirection' => admin_url( 'admin.php?page=hfe#onboarding' ),
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/header-footer-elementor/assets/icon-256x256.gif',
 				),
 			);
-
-			// Pick useful plugins depending on Elementor status.
-			$useful_plugins_keys = defined( 'ELEMENTOR_VERSION' )
-				? array( 'uael', 'sureforms', 'spectra', 'suretriggers', 'presto-player' )
-				: array( 'sureforms', 'spectra', 'suretriggers', 'surecart', 'presto-player' );
-
-			$useful_plugins = array_map( static fn( $key ) => $plugins[ $key ], $useful_plugins_keys );
 		}
 
-		return apply_filters( 'astra_useful_plugins', $useful_plugins );
+		// Beaver Builder companion — only on Beaver Builder sites.
+		if ( $beaver_builder_active ) {
+			$useful_plugins[] = array(
+				'title'       => 'Ultimate Addons for Beaver Builder',
+				'subtitle'    => __( 'Extend Beaver Builder with premium modules.', 'astra' ),
+				'status'      => self::get_plugin_status( 'ultimate-addons-for-beaver-builder-lite/bb-ultimate-addon.php' ),
+				'slug'        => 'ultimate-addons-for-beaver-builder-lite',
+				'path'        => 'ultimate-addons-for-beaver-builder-lite/bb-ultimate-addon.php',
+				'redirection' => admin_url( 'options-general.php?page=uabb-builder-settings' ),
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/ultimate-addons-for-beaver-builder-lite/assets/icon-256x256.png',
+				),
+			);
+		}
+
+		// WooCommerce commerce essentials — CartFlows, Modern Cart, Cart Abandonment Recovery, Variations Swatches.
+		if ( $woocommerce_active ) {
+			$useful_plugins = array_merge( $useful_plugins, self::astra_get_woo_extensions() );
+		}
+
+		// Spectra — free Gutenberg builder; not promoted alongside a competing page
+		// builder (Elementor or Beaver Builder), but fine alongside WooCommerce.
+		if ( ! $spectra_legacy_active && ! $elementor_active && ! $beaver_builder_active ) {
+			$useful_plugins[] = array(
+				'title'       => 'Spectra Blocks',
+				'subtitle'    => __( 'Free WordPress Page Builder.', 'astra' ),
+				'status'      => self::get_plugin_status( 'spectra-blocks/spectra-blocks.php' ),
+				'slug'        => 'spectra-blocks',
+				'path'        => 'spectra-blocks/spectra-blocks.php',
+				'redirection' => admin_url( 'admin.php?page=spectra-blocks' ),
+				'logoPath'    => array(
+					'internal_icon' => false,
+					'icon_path'     => 'https://ps.w.org/spectra-blocks/assets/icon-256x256.gif',
+				),
+			);
+		}
+
+		// SureForms — forms.
+		$useful_plugins[] = array(
+			'title'       => 'SureForms',
+			'subtitle'    => __( 'A versatile form builder plugin.', 'astra' ),
+			'status'      => self::get_plugin_status( 'sureforms/sureforms.php' ),
+			'slug'        => 'sureforms',
+			'path'        => 'sureforms/sureforms.php',
+			'redirection' => admin_url( 'admin.php?page=sureforms_menu' ),
+			'logoPath'    => array(
+				'internal_icon' => true,
+				'icon_path'     => 'sureforms',
+			),
+		);
+
+		// SureRank — SEO.
+		$useful_plugins[] = array(
+			'title'       => 'SureRank',
+			'subtitle'    => __( 'Lightweight SEO to rank higher.', 'astra' ),
+			'status'      => self::get_plugin_status( 'surerank/surerank.php' ),
+			'slug'        => 'surerank',
+			'path'        => 'surerank/surerank.php',
+			'redirection' => admin_url( 'admin.php?page=surerank' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/surerank/assets/icon-256x256.jpg',
+			),
+		);
+
+		// SureMail — email deliverability.
+		$useful_plugins[] = array(
+			'title'       => 'SureMail',
+			'subtitle'    => __( 'Reliable email delivery via SMTP.', 'astra' ),
+			'status'      => self::get_plugin_status( 'suremails/suremails.php' ),
+			'slug'        => 'suremails',
+			'path'        => 'suremails/suremails.php',
+			'redirection' => admin_url( 'options-general.php?page=suremail' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/suremails/assets/icon-256x256.gif',
+			),
+		);
+
+		// SureCookie — consent & compliance.
+		$useful_plugins[] = array(
+			'title'       => 'SureCookie',
+			'subtitle'    => __( 'Cookie consent & compliance made simple.', 'astra' ),
+			'status'      => self::get_plugin_status( 'surecookie/surecookie.php' ),
+			'slug'        => 'surecookie',
+			'path'        => 'surecookie/surecookie.php',
+			'redirection' => admin_url( 'admin.php?page=surecookie' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/surecookie/assets/icon-256x256.gif',
+			),
+		);
+
+		// SureContact — CRM / marketing.
+		$useful_plugins[] = array(
+			'title'       => 'SureContact',
+			'subtitle'    => __( 'Email marketing, automation & CRM.', 'astra' ),
+			'status'      => self::get_plugin_status( 'surecontact/surecontact.php' ),
+			'slug'        => 'surecontact',
+			'path'        => 'surecontact/surecontact.php',
+			'redirection' => admin_url( 'admin.php?page=surecontact-dashboard' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/surecontact/assets/icon-256x256.png',
+			),
+		);
+
+		// SureCart — commerce; skipped when WooCommerce is installed (competitor).
+		if ( ! $woocommerce_installed ) {
+			$surecart_status  = self::get_plugin_status( 'surecart/surecart.php' );
+			$useful_plugins[] = array(
+				'title'       => 'SureCart',
+				'subtitle'    => __( 'Sell products, services, subscriptions & more.', 'astra' ),
+				'status'      => $surecart_status,
+				'slug'        => 'surecart',
+				'path'        => 'surecart/surecart.php',
+				'redirection' => admin_url( 'admin.php?page=' . ( 'activated' === $surecart_status ? 'sc-dashboard' : 'sc-getting-started' ) ),
+				'logoPath'    => array(
+					'internal_icon' => true,
+					'icon_path'     => 'surecart_logo',
+				),
+			);
+		}
+
+		// OttoKit — automation.
+		$useful_plugins[] = array(
+			'title'       => 'OttoKit',
+			'subtitle'    => __( 'Automate your WordPress setup.', 'astra' ),
+			'status'      => self::get_plugin_status( 'suretriggers/suretriggers.php' ),
+			'slug'        => 'suretriggers',
+			'path'        => 'suretriggers/suretriggers.php',
+			'redirection' => admin_url( 'admin.php?page=suretriggers' ),
+			'logoPath'    => array(
+				'internal_icon' => true,
+				'icon_path'     => 'ottokit',
+			),
+		);
+
+		// SureMembers — memberships & content restriction.
+		$useful_plugins[] = array(
+			'title'       => 'SureMembers',
+			'subtitle'    => __( 'Membership & content restriction.', 'astra' ),
+			'status'      => self::get_plugin_status( 'suremembers-core/suremembers-core.php' ),
+			'slug'        => 'suremembers-core',
+			'path'        => 'suremembers-core/suremembers-core.php',
+			'redirection' => admin_url( 'admin.php?page=suremembers' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/suremembers-core/assets/icon-256x256.png',
+			),
+		);
+
+		// SureDonation — fundraising.
+		$useful_plugins[] = array(
+			'title'       => 'SureDonation',
+			'subtitle'    => __( 'Collect donations & run fundraisers.', 'astra' ),
+			'status'      => self::get_plugin_status( 'suredonation/suredonation.php' ),
+			'slug'        => 'suredonation',
+			'path'        => 'suredonation/suredonation.php',
+			'redirection' => admin_url( 'admin.php?page=suredonation' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/suredonation/assets/icon-256x256.png',
+			),
+		);
+
+		// Presto Player — video.
+		$useful_plugins[] = array(
+			'title'       => 'Presto Player',
+			'subtitle'    => __( 'Ultimate video player for WordPress.', 'astra' ),
+			'status'      => self::get_plugin_status( 'presto-player/presto-player.php' ),
+			'slug'        => 'presto-player',
+			'path'        => 'presto-player/presto-player.php',
+			'redirection' => admin_url( 'edit.php?post_type=pp_video_block' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/presto-player/assets/icon-256x256.png',
+			),
+		);
+
+		// Sigmize — A/B testing & analytics.
+		$useful_plugins[] = array(
+			'title'       => 'Sigmize',
+			'subtitle'    => __( 'A/B testing & revenue tracking.', 'astra' ),
+			'status'      => self::get_plugin_status( 'sigmize/sigmize.php' ),
+			'slug'        => 'sigmize',
+			'path'        => 'sigmize/sigmize.php',
+			'redirection' => admin_url( 'admin.php?page=sigmize-dashboard' ),
+			'logoPath'    => array(
+				'internal_icon' => false,
+				'icon_path'     => 'https://ps.w.org/sigmize/assets/icon-256x256.png',
+			),
+		);
+
+		return apply_filters( 'astra_useful_plugins', array_values( $useful_plugins ) );
 	}
 
 	/**

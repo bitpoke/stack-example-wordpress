@@ -1186,6 +1186,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 						'header-builder' => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'header-builder' ),
 						'footer-builder' => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'footer-builder' ),
 						'sidebar'        => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'sidebar' ),
+						'menus'          => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'menus' ),
 						'woocommerce'    => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'woocommerce' ),
 						'blog-single'    => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'blog-single' ),
 						'blog-archive'   => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'blog-archive' ),
