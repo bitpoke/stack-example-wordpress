@@ -421,10 +421,6 @@ if ( ! class_exists( 'Astra_Elementor' ) ) {
 		 * @return object
 		 */
 		public function display_global_colors_front_end( $response, $handler, $request ) {
-			// Bail early if the route callback returned an error to avoid overriding permission failures.
-			if ( is_wp_error( $response ) ) {
-				return $response;
-			}
 
 			if ( astra_maybe_disable_global_color_in_elementor() ) {
 				return $response;

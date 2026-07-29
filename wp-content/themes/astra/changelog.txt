@@ -1,5 +1,8 @@
 *** Astra Changelog ***
 
+2026-07-28 - version 4.13.8
+* Fix: Theme palette colors selected in the Elementor editor reverting to the Customizer default, a regression introduced in 4.13.7.
+
 2026-06-28 - version 4.13.7
 * Improvement: WooCommerce - Added proper spacing between product quantity and subscription price in the checkout order review table when WooCommerce Subscriptions is active, so they no longer appear flush together.
 * Improvement: Social icon Phone, Email, and WhatsApp links no longer get double-prefixed when the entered value already includes tel:, mailto:, or a full WhatsApp link.
