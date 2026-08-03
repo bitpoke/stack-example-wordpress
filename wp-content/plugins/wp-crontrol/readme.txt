@@ -2,16 +2,16 @@
 
 Contributors: johnbillion, scompt
 Tags: cron, wp-cron, crontrol, debug, woocommerce
-Tested up to: 6.9
-Stable tag: 1.21.0
+Tested up to: 7.0
+Stable tag: 1.21.1
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
-WP Crontrol enables you to take control of the cron events on your WordPress website.
+Take control of the cron events on your WordPress website or WooCommerce store with WP Crontrol.
 
 ## Description
 
-WP Crontrol enables you to take control of the scheduled cron events on your WordPress website or WooCommerce store. From the admin screens you can:
+Take control of the cron events on your WordPress website or WooCommerce store with WP Crontrol. From the admin screens you can:
 
  * View all scheduled cron events along with their arguments, schedule, callback functions, and when they are next due.
  * Edit, delete, pause, resume, and immediately run cron events.
@@ -59,6 +59,15 @@ I maintain several other plugins for developers. Check them out:
 * [Query Monitor](https://wordpress.org/plugins/query-monitor/) is the developer tools panel for WordPress.
 * [User Switching](https://wordpress.org/plugins/user-switching/) provides instant switching between user accounts in WordPress.
 
+### Thanks
+
+The time that I spend maintaining this plugin and others is in part sponsored by:
+
+* [Automattic](https://automattic.com/)
+* [ServMask](https://servmask.com/)
+* [WP Staging](https://wp-staging.com/)
+* [All my kind sponsors on GitHub](https://github.com/sponsors/johnbillion)
+
 ### Privacy Statement
 
 WP Crontrol is private by default and always will be. It does not send data to any third party, nor does it include any third party resources. [WP Crontrol's full privacy statement can be found here](https://wp-crontrol.com/privacy/).
@@ -66,6 +75,10 @@ WP Crontrol is private by default and always will be. It does not send data to a
 ### Accessibility Statement
 
 WP Crontrol aims to be fully accessible to all of its users. [WP Crontrol's full accessibility statement can be found here](https://wp-crontrol.com/accessibility/).
+
+### Legal
+
+Crontrol® is a registered trademark of Clever Things For The Web Limited.
 
 ## Frequently Asked Questions
 
@@ -199,7 +212,9 @@ The cron commands which were previously included in WP Crontrol are now part of 
 
 ### How can I report a security bug?
 
-[You can report security bugs through the official WP Crontrol Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/wp-crontrol). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
+You can submit a private security vulnerability report to WP Crontrol via [the Security tab on the GitHub repo](https://github.com/johnbillion/wp-crontrol/security). The GitHub Security Advisory process facilitates private collaboration on security issues. You'll receive credit for a valid report and a CVE if necessary.
+
+Do not report security issues on the WordPress.org support forums or via email. Thank you.
 
 ### Who took the photo in the plugin header image?
 
@@ -211,6 +226,11 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 2. New cron events can be added
 3. New cron schedules can be added, giving plugin developers more options when scheduling events
 ## Changelog ##
+
+### 1.21.1 (31 July 2026) ###
+
+- Fixes some bulk delete behaviour
+- Confirms full support for WordPress 7.0
 
 ### 1.21.0 (28 January 2026) ###
 
@@ -260,10 +280,6 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 * Confirms support for WordPress 6.6
 * Improves various aspects of the cron management interface and language
 
-
-### 1.16.3 (19 April 2024) ###
-
-* Corrects the displayed PHP cron event name if one is provided
 
 ### Earlier versions ###
 

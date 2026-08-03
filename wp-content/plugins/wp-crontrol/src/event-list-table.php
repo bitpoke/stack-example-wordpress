@@ -101,11 +101,17 @@ class Table extends \WP_List_Table {
 			add_action(
 				'admin_notices',
 				function () {
-					printf(
-						'<div id="crontrol-integrity-failures-message" class="notice notice-error"><p>%1$s</p><p><a href="%2$s">%3$s</a></p></div>',
-						esc_html__( 'One or more of your cron events needs to be checked for integrity. These events will not run until you check and re-save them.', 'wp-crontrol' ),
-						'https://wp-crontrol.com/help/check-cron-events/',
-						esc_html__( 'Read what to do', 'wp-crontrol' )
+					wp_admin_notice(
+						sprintf(
+							'%1$s<br><br><a href="%2$s">%3$s</a>',
+							esc_html__( 'One or more of your cron events needs to be checked for integrity. These events will not run until you check and re-save them.', 'wp-crontrol' ),
+							'https://wp-crontrol.com/help/check-cron-events/',
+							esc_html__( 'Read what to do', 'wp-crontrol' )
+						),
+						array(
+							'id'   => 'crontrol-integrity-failures-message',
+							'type' => 'error',
+						)
 					);
 				}
 			);
@@ -209,6 +215,7 @@ class Table extends \WP_List_Table {
 		);
 
 		$filtered['duplicated'] = filter_duplicated( $events );
+		$filtered['woocommerce'] = filter_woocommerce( $events );
 
 		/**
 		 * Filters the available filtered events on the cron event listing screen.
@@ -304,14 +311,15 @@ class Table extends \WP_List_Table {
 		$hooks_type = ( ! empty( $_GET['crontrol_hooks_type'] ) ? $_GET['crontrol_hooks_type'] : 'all' );
 
 		$types = array(
-			'all'        => __( 'All events', 'wp-crontrol' ),
-			'noaction'   => __( 'Events with no action', 'wp-crontrol' ),
-			'core'       => __( 'WordPress core events', 'wp-crontrol' ),
-			'custom'     => __( 'Custom events', 'wp-crontrol' ),
-			'php'        => __( 'PHP events', 'wp-crontrol' ),
-			'url'        => __( 'URL events', 'wp-crontrol' ),
-			'paused'     => __( 'Paused events', 'wp-crontrol' ),
-			'duplicated' => __( 'Duplicated events', 'wp-crontrol' ),
+			'all'         => __( 'All events', 'wp-crontrol' ),
+			'noaction'    => __( 'Events with no action', 'wp-crontrol' ),
+			'woocommerce' => __( 'WooCommerce events', 'wp-crontrol' ),
+			'core'        => __( 'WordPress core events', 'wp-crontrol' ),
+			'custom'      => __( 'Custom events', 'wp-crontrol' ),
+			'php'         => __( 'PHP events', 'wp-crontrol' ),
+			'url'         => __( 'URL events', 'wp-crontrol' ),
+			'paused'      => __( 'Paused events', 'wp-crontrol' ),
+			'duplicated'  => __( 'Duplicated events', 'wp-crontrol' ),
 		);
 
 		/**
@@ -636,27 +644,10 @@ class Table extends \WP_List_Table {
 	 * @param Event $event The cron event for the current row.
 	 */
 	protected function column_crontrol_hook( Event $event ): string {
-		if ( $event instanceof PHPCronEvent ) {
-			if ( ! empty( $event->args[0]['name'] ) ) {
-				/* translators: %s: Details about the PHP cron event. */
-				$output = esc_html( sprintf( __( 'PHP cron event (%s)', 'wp-crontrol' ), $event->args[0]['name'] ) );
-			} elseif ( ! empty( $event->args[0]['code'] ) ) {
-				$lines = explode( "\n", trim( $event->args[0]['code'] ) );
-				$code  = reset( $lines );
-				$code  = substr( $code, 0, 50 );
+		$output = $event->get_hook_name_label();
 
-				$php = sprintf(
-					'<code>%s</code>&hellip;',
-					esc_html( $code )
-				);
-
-				/* translators: %s: Details about the PHP cron event. */
-				$output = sprintf( esc_html__( 'PHP cron event (%s)', 'wp-crontrol' ), $php );
-			} else {
-				$output = esc_html__( 'PHP cron event', 'wp-crontrol' );
-			}
-
-			if ( ! $this->feature_context->php_crons_enabled() ) {
+		if ( ( $event instanceof PHPCronEvent ) || ( $event instanceof URLCronEvent ) ) {
+			if ( ! $event->is_enabled( $this->feature_context ) ) {
 				$output .= sprintf(
 					' &mdash; <strong class="status-crontrol-disabled post-state"><span class="dashicons dashicons-controls-pause" aria-hidden="true"></span> %s</strong>',
 					/* translators: State of a cron event, adjective */
@@ -667,57 +658,12 @@ class Table extends \WP_List_Table {
 					' &mdash; <strong class="status-crontrol-disabled post-state"><span class="dashicons dashicons-warning" aria-hidden="true"></span> %s</strong>',
 					esc_html__( 'Needs checking', 'wp-crontrol' )
 				);
-			} elseif ( isset( $event->args[0]['syntax_error_message'], $event->args[0]['syntax_error_line'] ) ) {
-				$output .= '<br><span class="status-crontrol-error"><span class="dashicons dashicons-warning" aria-hidden="true"></span> ';
-				$output .= sprintf(
-					/* translators: 1: Line number, 2: Error message text */
-					esc_html__( 'Line %1$s: %2$s', 'wp-crontrol' ),
-					esc_html( number_format_i18n( $event->args[0]['syntax_error_line'] ) ),
-					esc_html( $event->args[0]['syntax_error_message'] )
-				);
-				$output .= '</span>';
+			} elseif ( $event->has_error() ) {
+				$output .= $event->get_error_status_html();
 			}
 
 			return $output;
 		}
-
-		if ( $event instanceof URLCronEvent ) {
-			if ( ! empty( $event->args[0]['name'] ) ) {
-				/* translators: %s: Details about the URL cron event. */
-				$output = esc_html( sprintf( __( 'URL cron event (%s)', 'wp-crontrol' ), $event->args[0]['name'] ) );
-			} elseif ( ! empty( $event->args[0]['url'] ) ) {
-				$url = sprintf(
-					'<code>%s</code>',
-					esc_html( $event->args[0]['url'] )
-				);
-
-				/* translators: %s: Details about the URL cron event. */
-				$output = sprintf( esc_html__( 'URL cron event (%s)', 'wp-crontrol' ), $url );
-			} else {
-				$output = esc_html__( 'URL cron event', 'wp-crontrol' );
-			}
-
-			if ( ! $this->feature_context->url_crons_enabled() ) {
-				$output .= sprintf(
-					' &mdash; <strong class="status-crontrol-disabled post-state"><span class="dashicons dashicons-controls-pause" aria-hidden="true"></span> %s</strong>',
-					/* translators: State of a cron event, adjective */
-					esc_html__( 'Disabled', 'wp-crontrol' )
-				);
-			} elseif ( $event->integrity_failed() ) {
-				$output .= sprintf(
-					' &mdash; <strong class="status-crontrol-disabled post-state"><span class="dashicons dashicons-warning" aria-hidden="true"></span> %s</strong>',
-					esc_html__( 'Needs checking', 'wp-crontrol' )
-				);
-			} elseif ( isset( $event->args[0]['url_error_message'] ) ) {
-				$output .= '<br><span class="status-crontrol-error"><span class="dashicons dashicons-warning" aria-hidden="true"></span> ';
-				$output .= esc_html( $event->args[0]['url_error_message'] );
-				$output .= '</span>';
-			}
-
-			return $output;
-		}
-
-		$output = esc_html( $event->hook );
 
 		if ( $event->is_paused() ) {
 			$output .= sprintf(
@@ -782,13 +728,17 @@ class Table extends \WP_List_Table {
 		if ( $event instanceof CrontrolEvent ) {
 			return 'WP Crontrol';
 		} elseif ( ! empty( $hook_callbacks ) ) {
+			if ( count( $hook_callbacks ) === 1 ) {
+				return \Crontrol\output_callback( $hook_callbacks[0] );
+			}
+
 			$callbacks = array();
 
 			foreach ( $hook_callbacks as $callback ) {
 				$callbacks[] = \Crontrol\output_callback( $callback );
 			}
 
-			return implode( '<br>', $callbacks ); // WPCS:: XSS ok.
+			return '<ol><li>' . implode( '</li><li>', $callbacks ) . '</li>'; // WPCS:: XSS ok.
 		} else {
 			$help = sprintf(
 				'<a href="%s">%s</a>',

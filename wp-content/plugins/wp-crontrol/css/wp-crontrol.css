@@ -5,6 +5,10 @@ table.wp-list-table {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
 	-ms-overflow-style: -ms-autohiding-scrollbar;
+
+	thead th {
+		white-space: nowrap;
+	}
 }
 
 .wp-list-table pre {
@@ -64,6 +68,10 @@ table.wp-list-table {
 
 .wp-list-table .qm-icon-edit {
 	display: none;
+}
+
+.wp-list-table .column-crontrol_actions ol {
+	margin: 0 0 0 1.2em;
 }
 
 .status-crontrol-warning,

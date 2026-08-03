@@ -1,6 +1,6 @@
 {
 	"name": "johnbillion/wp-crontrol",
-	"description": "Take control of the cron events on your WordPress website",
+	"description": "Take control of the cron events on your WordPress website or WooCommerce store",
 	"homepage": "https://wp-crontrol.com",
 	"license": "GPL-2.0-or-later",
 	"type": "wordpress-plugin",
@@ -26,13 +26,13 @@
 		}
 	},
 	"require-dev": {
-		"johnbillion/plugin-infrastructure": "2.5.1",
+		"johnbillion/plugin-infrastructure": "2.9.5",
 		"johnbillion/wp-compat": "1.4.0",
-		"php-stubs/wordpress-stubs": "6.9.0",
+		"php-stubs/wordpress-stubs": "7.0.0 as 6.9.4",
 		"phpcompatibility/phpcompatibility-wp": "2.1.8",
 		"phpstan/phpstan": "2.1.33",
 		"szepeviktor/phpstan-wordpress": "2.0.3",
-		"wp-coding-standards/wpcs": "3.3.0"
+		"wp-coding-standards/wpcs": "3.4.1"
 	},
 	"require": {
 		"php": ">=7.4",
@@ -78,7 +78,7 @@
 			"phpcbf -nps --colors --report-code --report-summary --report-width=80 --basepath=./ ."
 		],
 		"test:phpstan": [
-			"phpstan analyze -v --memory-limit=1024M"
+			"phpstan analyze -v --memory-limit=2G"
 		],
 		"test:start": [
 			"tests-start"
