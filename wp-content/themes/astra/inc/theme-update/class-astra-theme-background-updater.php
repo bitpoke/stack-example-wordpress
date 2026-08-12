@@ -335,6 +335,9 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 		 * @return void
 		 */
 		private function update( $fallback ) {
+			// Detach astra-settings option filters (e.g. WPML admin texts) so fallback migrations read raw values and never persist translated strings back.
+			$detached_option_filters = astra_detach_option_filters();
+
 			$current_db_version = astra_get_option( 'theme-auto-version' );
 
 			if ( count( $this->get_db_update_callbacks() ) > 0 ) {
@@ -359,6 +362,8 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 				self::$background_updater->push_to_queue( 'update_db_version' );
 			}
 			self::$background_updater->save()->dispatch();
+
+			astra_restore_option_filters( $detached_option_filters );
 		}
 
 		/**

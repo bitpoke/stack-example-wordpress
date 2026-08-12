@@ -1251,7 +1251,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function replace_store_sidebar( $sidebar ) {
 
-			if ( is_shop() || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() ) {
+			if ( ( is_shop() && ! is_search() ) || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() ) {
 				$sidebar = 'astra-woo-shop-sidebar';
 			} elseif ( is_product() ) {
 				$sidebar = 'astra-woo-single-sidebar';
@@ -1269,7 +1269,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function store_sidebar_layout( $sidebar_layout ) {
 
-			if ( is_shop() || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() || is_product() ) {
+			if ( ( is_shop() && ! is_search() ) || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() || is_product() ) {
 
 				$woo_sidebar                 = astra_get_option( 'woocommerce-sidebar-layout' );
 				$astra_with_modern_ecommerce = astra_get_option( 'modern-ecommerce-setup', true );
@@ -1294,7 +1294,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 					$sidebar_layout = $global_page_specific_layout;
 				}
 
-				if ( is_shop() ) {
+				if ( is_shop() && ! is_search() ) {
 					$shop_page_id = get_option( 'woocommerce_shop_page_id' );
 					$shop_sidebar = get_post_meta( $shop_page_id, 'site-sidebar-layout', true );
 				} elseif ( is_product_taxonomy() ) {
@@ -1319,7 +1319,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function store_content_layout( $layout ) {
 
-			if ( is_woocommerce() || is_checkout() || is_cart() || is_account_page() ) {
+			if ( ( is_woocommerce() && ! is_search() ) || is_checkout() || is_cart() || is_account_page() ) {
 
 				$woo_layout = astra_toggle_layout( 'woocommerce-ast-content-layout', 'global', false );
 
@@ -1343,7 +1343,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 					$layout = $global_page_specific_layout;
 				}
 
-				if ( is_shop() ) {
+				if ( is_shop() && ! is_search() ) {
 					$shop_page_id = get_option( 'woocommerce_shop_page_id' );
 					$shop_layout  = astra_toggle_layout( 'ast-site-content-layout', 'meta', $shop_page_id );
 				} elseif ( is_product_taxonomy() ) {
@@ -1374,7 +1374,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		public function shop_meta_option() {
 
 			// Page Title.
-			if ( is_shop() ) {
+			if ( is_shop() && ! is_search() ) {
 
 				$shop_page_id        = get_option( 'woocommerce_shop_page_id' );
 				$shop_title          = get_post_meta( $shop_page_id, 'site-post-title', true );
@@ -1954,26 +1954,27 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 				' background' => $header_cart_count_color,
 			);
 
+			// Legacy fallback: Astra Pro 4.13.7+ outputs these off-canvas Product Filters rules itself (for the Shop page and product taxonomy archives), so only print them here for older/absent addon versions.
 			$sidebars_widgets = wp_get_sidebars_widgets();
-			if ( is_shop() && isset( $sidebars_widgets['astra-woo-product-off-canvas-sidebar'] ) ) {
+			if ( is_shop() && isset( $sidebars_widgets['astra-woo-product-off-canvas-sidebar'] ) && ( ! defined( 'ASTRA_EXT_VER' ) || version_compare( ASTRA_EXT_VER, '4.13.7', '<' ) ) ) {
 				$css_output .= '
 					@media ( max-width: 601px ) {
-						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters .wc-block-product-filters__open-overlay {
+						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters {
+							width: 100%;
+						}
+						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters :is(.wc-block-product-filters__open-overlay, .wc-block-product-filters__overlay-header, .wc-block-product-filters__overlay-footer) {
 							display: none;
 						}
 						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters .wc-block-product-filters__overlay {
 							pointer-events: auto;
 							position: relative;
+							width: 100%;
 						}
 						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog {
 							position: relative;
 							transform: translateY(0);
 						}
-						.woocommerce-shop .astra-off-canvas-sidebar .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog .wc-block-product-filters__overlay-header,
-						.woocommerce-shop .astra-off-canvas-sidebar .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog .wc-block-product-filters__overlay-footer {
-							display: none;
-						}
-						.woocommerce-shop .astra-off-canvas-sidebar .wc-block-product-filters__overlay .wc-block-product-filters__overlay-dialog .wc-block-product-filters__overlay-content {
+						.woocommerce-shop .astra-off-canvas-sidebar .wp-block-woocommerce-product-filters .wc-block-product-filters__overlay-dialog .wc-block-product-filters__overlay-content {
 							overflow: auto;
 							padding: 2px;
 						}

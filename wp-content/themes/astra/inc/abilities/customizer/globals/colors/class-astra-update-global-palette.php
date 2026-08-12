@@ -290,7 +290,7 @@ class Astra_Update_Global_Palette extends Astra_Abstract_Ability {
 				$global_palette['palette'][ $index ] = $color;
 			}
 
-			$theme_options = get_option( ASTRA_THEME_SETTINGS, array() );
+			$theme_options = astra_get_raw_options();
 			if ( ! is_array( $theme_options ) ) {
 				$theme_options = array();
 			}

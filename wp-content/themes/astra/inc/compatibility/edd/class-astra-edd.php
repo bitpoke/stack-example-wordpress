@@ -183,7 +183,7 @@ if ( ! class_exists( 'Astra_Edd' ) ) {
 		 */
 		public function edd_set_defaults_initialization() {
 
-			$astra_theme_options = get_option( 'astra-settings' );
+			$astra_theme_options = astra_get_raw_options();
 			$edd_settings        = get_option( 'edd_settings' );
 
 			// Set flag to set the EDD style disable only once for the very first time.

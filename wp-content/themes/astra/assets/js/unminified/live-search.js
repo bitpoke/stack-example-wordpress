@@ -21,7 +21,7 @@
 			processedHtml += `<label class="ast-search--posttype-heading"> ${postTypeLabel} </label>`;
 			postsData.forEach((post) => {
 				const searchPostTitle = decodeHTMLEntities(post.title.rendered);
-				const headerCoverSearch = document.getElementById("ast-search-form");
+				const headerCoverSearch = document.querySelector(".ast-search-box.header-cover");
 				const fullScreenSearch = document.getElementById("ast-seach-full-screen-form");
 				if (fullScreenSearch || headerCoverSearch) {
 					processedHtml += `<a class="ast-search-item" role="option" target="_self" href="${post.link}" tabindex="1"> <span> ${searchPostTitle} </span> </a>`;

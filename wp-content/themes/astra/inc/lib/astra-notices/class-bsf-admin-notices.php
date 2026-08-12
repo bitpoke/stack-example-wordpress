@@ -208,7 +208,7 @@ if ( ! class_exists( 'BSF_Admin_Notices' ) ) :
 				'bsf-astra-notices',
 				'bsfAstraNotices',
 				array(
-					'_notice_nonce' => wp_create_nonce( 'astra' ),
+					'_notice_nonce' => wp_create_nonce( 'astra-notices' ),
 				)
 			);
 		}
