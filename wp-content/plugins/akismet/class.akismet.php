@@ -2006,7 +2006,8 @@ class Akismet {
 	 * @return array $form
 	 */
 	public static function prepare_custom_form_values( $form, $data = null ) {
-		if ( 'fluentform/akismet_fields' === current_filter() && did_filter( 'fluentform_akismet_fields' ) ) {
+		// did_filter() is WP 6.1+. Older versions don't store filter history.
+		if ( 'fluentform/akismet_fields' === current_filter() && function_exists( 'did_filter' ) && did_filter( 'fluentform_akismet_fields' ) ) {
 			// Already updated the form fields via the legacy filter.
 			return $form;
 		}
