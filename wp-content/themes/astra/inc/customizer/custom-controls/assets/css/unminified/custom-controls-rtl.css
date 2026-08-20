@@ -91,6 +91,7 @@
 
 .customize-control-ast-selector .ast-alignment-inner-wrap .components-button:focus:not( :disabled ) {
 	box-shadow: none;
+	outline: none;
 }
 
 .customize-control-ast-selector .components-button .ahfb-icon-set {
@@ -1108,6 +1109,7 @@ section.ast-palette-presets-inner-wrap {
 	background-image: linear-gradient( -45deg, #ddd 25%, transparent 0 ), linear-gradient( 45deg, #ddd 25%, transparent 0 ), linear-gradient( -45deg, transparent 75%, #ddd 0 ), linear-gradient( 45deg, transparent 75%, #ddd 0 );
 	background-size: 10px 10px;
 	background-position: 100% 0, 100% 5px, 5px -5px, -5px 0;
+	border: none;
 }
 
 /** Color */
@@ -1336,11 +1338,6 @@ section.ast-palette-presets-inner-wrap {
 	flex: inherit;
 }
 
-.astra-popover-color .components-circular-option-picker__option:focus::after {
-	width: auto;
-	height: auto;
-}
-
 .components-circular-option-picker__option:after {
     box-shadow: none;
 }
@@ -1452,6 +1449,10 @@ section.ast-palette-presets-inner-wrap {
 }
 
 /* Reset Button CSS */
+.ast-reset-btn.components-button {
+	border-width: 0;
+}
+
 .ast-color-btn-reset-wrap {
 	position: absolute;
 	left: 36px;
@@ -1948,6 +1949,10 @@ textarea {
 
 #customize-controls .components-base-control .components-base-control__field {
 	margin-bottom: 0;
+}
+
+#customize-controls .components-base-control .components-base-control__field .components-input-control__container {
+	width: 100%;
 }
 
 #customize-controls .components-base-control .components-base-control__field .components-input-control__backdrop {
@@ -5457,6 +5462,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 .customize-control input:not([type="checkbox"]):not([type="radio"]),
 .customize-control textarea,
 .customize-control-content .components-text-control__input {
+	height: auto;
 	min-height: 32px;
 }
 

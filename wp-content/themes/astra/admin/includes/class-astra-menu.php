@@ -442,6 +442,7 @@ class Astra_Menu {
 			'site_builder_url'          => esc_url( admin_url( 'admin.php?page=theme-builder-free' ) ),
 			'show_learn_tab'            => Astra_API_Init::get_admin_settings_option( 'show_learn_tab', true ),
 			'show_ai_assistant'         => Astra_API_Init::get_admin_settings_option( 'show_ai_assistant', true ),
+			'has_floating_assistant'    => defined( 'ZIPAI_MCP_VERSION' ),
 		);
 
 		$this->settings_app_scripts( apply_filters( 'astra_react_admin_localize', $localize ) );
@@ -521,12 +522,13 @@ class Astra_Menu {
 
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		$st_data = array(
-			'title'        => is_callable( 'Astra_Ext_White_Label_Markup::get_whitelabel_string' ) ? Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra-sites', 'name', __( 'Starter Templates', 'astra' ) ) : __( 'Starter Templates', 'astra' ),
-			'description'  => is_callable( 'Astra_Ext_White_Label_Markup::get_whitelabel_string' ) ? Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra-sites', 'description', __( 'Create professional designed pixel perfect websites in minutes. Get access to 300+ pre-made full website templates for your favorite page builder.', 'astra' ) ) : __( 'Create professional designed pixel perfect websites in minutes. Get access to 300+ pre-made full website templates for your favorite page builder.', 'astra' ),
-			'is_available' => defined( 'ASTRA_PRO_SITES_VER' ) || defined( 'ASTRA_SITES_VER' ) ? true : false,
-			'redirection'  => admin_url( 'themes.php?page=starter-templates' ),
-			'icon_path'    => 'https://ps.w.org/astra-sites/assets/icon-256x256.gif',
-			'is_promoting' => self::is_promoting_starter_templates(),
+			'title'          => is_callable( 'Astra_Ext_White_Label_Markup::get_whitelabel_string' ) ? Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra-sites', 'name', __( 'Starter Templates', 'astra' ) ) : __( 'Starter Templates', 'astra' ),
+			'description'    => is_callable( 'Astra_Ext_White_Label_Markup::get_whitelabel_string' ) ? Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra-sites', 'description', __( 'Create professional designed pixel perfect websites in minutes. Get access to 300+ pre-made full website templates for your favorite page builder.', 'astra' ) ) : __( 'Create professional designed pixel perfect websites in minutes. Get access to 300+ pre-made full website templates for your favorite page builder.', 'astra' ),
+			'is_available'   => defined( 'ASTRA_PRO_SITES_VER' ) || defined( 'ASTRA_SITES_VER' ) ? true : false,
+			'redirection'    => admin_url( 'themes.php?page=starter-templates' ),
+			'icon_path'      => 'https://ps.w.org/astra-sites/assets/icon-256x256.gif',
+			'is_promoting'   => self::is_promoting_starter_templates(),
+			'onboarding_url' => Astra_Admin_Settings::get_astra_onboarding_link(),
 		);
 		/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 

@@ -1,5 +1,10 @@
 *** Astra Changelog ***
 
+2026-08-19 - version 4.13.10
+* Improvement: Compatibility with WordPress 7.1.
+* Fix: WooCommerce - Coupon code field, Apply coupon and Update cart buttons rendering at mismatched heights on the classic Cart page.
+* Fix: Customizer - Color palette swatches in the color picker showed a wrongly sized focus outline when clicked or tabbed to.
+
 2026-08-11 - version 4.13.9
 * Improvement: Different mobile logo now loads a right-sized image variant instead of the full-size original, improving mobile page speed and LCP.
 * Fix: WPML - Customizer strings like header/footer HTML and button text getting permanently saved in the wrong language when theme updates or setting saves re-wrote options through WPML translation filters.
