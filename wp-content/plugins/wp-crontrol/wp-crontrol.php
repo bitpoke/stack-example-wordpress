@@ -5,10 +5,10 @@
  * Description:  Take control of the cron events on your WordPress website or WooCommerce store.
  * Author:       John Blackbourn
  * Author URI:   https://wp-crontrol.com
- * Version:      1.21.1
+ * Version:      1.21.2
  * Text Domain:  wp-crontrol
  * Domain Path:  /languages/
- * Requires at least: 6.5
+ * Requires at least: 6.6
  * Requires PHP: 7.4
  * License URI:  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * License:      GPL v2 or later
@@ -36,7 +36,7 @@
 namespace Crontrol;
 
 const PLUGIN_FILE = __FILE__;
-const WP_CRONTROL_VERSION = '1.21.1';
+const WP_CRONTROL_VERSION = '1.21.2';
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'HTTP/1.1 403 Forbidden' );

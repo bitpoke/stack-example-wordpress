@@ -2,8 +2,8 @@
 
 Contributors: johnbillion, scompt
 Tags: cron, wp-cron, crontrol, debug, woocommerce
-Tested up to: 7.0
-Stable tag: 1.21.1
+Tested up to: 7.1
+Stable tag: 1.21.2
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -227,6 +227,12 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 3. New cron schedules can be added, giving plugin developers more options when scheduling events
 ## Changelog ##
 
+### 1.21.2 (29 August 2026) ###
+
+- Confirms full support for WordPress 7.1
+- Bumps the minimum supported version of WordPress to 6.6
+
+
 ### 1.21.1 (31 July 2026) ###
 
 - Fixes some bulk delete behaviour
@@ -273,13 +279,6 @@ The photo was taken by <a href="https://www.flickr.com/photos/michaelpardo/21453
 
 * Confirms support for WordPress 6.7
 * Avoids some warnings when running on PHP 8.3 and 8.4
-
-### 1.17.0 (15 July 2024) ###
-
-* Introduces [a new cron event type for sending a request to a URL](https://wp-crontrol.com/docs/url-cron-events/)
-* Confirms support for WordPress 6.6
-* Improves various aspects of the cron management interface and language
-
 
 ### Earlier versions ###
 
