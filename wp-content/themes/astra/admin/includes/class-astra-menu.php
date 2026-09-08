@@ -375,7 +375,7 @@ class Astra_Menu {
 			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			'astra_rating_url'          => ASTRA_THEME_ORG_VERSION ? 'https://wordpress.org/support/theme/astra/reviews/?rate=5#new-post' : 'https://woo.com/products/astra/#reviews',
 			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-			'spectra_plugin_status'     => self::get_plugin_status( 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php' ),
+			'spectra_plugin_status'     => self::get_plugin_status( 'spectra-blocks/spectra-blocks.php' ),
 			'theme_name'                => astra_get_theme_name(),
 			'plugin_name'               => astra_get_addon_name(),
 			'quick_settings'            => self::astra_get_quick_links(),

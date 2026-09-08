@@ -53,12 +53,18 @@ class Astra_Header_Search_Component {
 		) {
 			$search_post_types = explode( ':', sanitize_text_field( $request['post_type'] ) );
 
-			$args = array(
+			$live_search_args = array(
 				'posts_per_page' => ! empty( $args['posts_per_page'] ) ? $args['posts_per_page'] : 10,
 				'post_type'      => $search_post_types,
 				'paged'          => 1,
 				's'              => ! empty( $args['s'] ) ? $args['s'] : '',
 			);
+
+			// Merge over the core-built args instead of replacing them, so query vars set by other rest_post_query callbacks are not discarded.
+			$args = array_merge( $args, $live_search_args );
+
+			// The REST controller always sends orderby=date, which would override the relevance ordering WP_Query applies to search queries.
+			unset( $args['orderby'], $args['order'] );
 
 			if ( in_array( 'product', $search_post_types ) ) {
 				// Added product visibility checks, excluding hidden or shop-only visibility types.
@@ -69,6 +75,20 @@ class Astra_Header_Search_Component {
 					'operator' => 'NOT IN',
 				);
 			}
+
+			/**
+			 * Filters the query args used for the live search results.
+			 *
+			 * Live search runs through the REST API, where plugins that hook into the
+			 * main search query cannot reach it. This gives them a place to do so.
+			 *
+			 * @since 4.13.11
+			 * @param array           $args    Query args.
+			 * @param WP_REST_Request $request Request object.
+			 *
+			 * @psalm-suppress TooManyArguments
+			 */
+			$args = apply_filters( 'astra_live_search_query_args', $args, $request );
 		}
 
 		return $args;

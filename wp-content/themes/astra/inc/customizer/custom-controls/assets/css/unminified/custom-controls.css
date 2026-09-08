@@ -6491,7 +6491,7 @@ li#customize-control-astra-settings-header-preset-style .customizer-text {
 	text-align: right;
 }
 
-/* Wordpress 6.1 Compatibility CSS for toggle UI */
+/* WordPress 6.1 Compatibility CSS for toggle UI */
 .components-toggle-control .components-base-control__field {
 	display: flex;
 	margin-bottom: 12px;

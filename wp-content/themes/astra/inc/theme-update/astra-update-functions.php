@@ -1334,3 +1334,18 @@ function astra_theme_background_updater_4_12_2() {
 		}
 	}
 }
+
+/**
+ * Background updater function for theme v4.13.11
+ *
+ * @since 4.13.11
+ * @return void
+ */
+function astra_theme_background_updater_4_13_11() {
+	// Existing sites have been rendering excerpts without a truncation marker, so keep it that way.
+	$theme_options = get_option( 'astra-settings', array() );
+	if ( ! isset( $theme_options['blog-excerpt-marker'] ) ) {
+		$theme_options['blog-excerpt-marker'] = '';
+		update_option( 'astra-settings', $theme_options );
+	}
+}

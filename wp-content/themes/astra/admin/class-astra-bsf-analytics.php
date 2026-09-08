@@ -29,6 +29,14 @@ class Astra_BSF_Analytics {
 	private static $events;
 
 	/**
+	 * Ability outcomes already recorded this request, keyed by name and status.
+	 *
+	 * @var array<string, bool>
+	 * @since 4.13.11
+	 */
+	private static $recorded_abilities = array();
+
+	/**
 	 * Class constructor.
 	 *
 	 * @return void
@@ -64,6 +72,10 @@ class Astra_BSF_Analytics {
 
 		// Track learn chapter progress.
 		add_action( 'astra_learn_progress_saved', array( $this, 'track_learn_chapter_progress' ) );
+
+		// Track Abilities API usage. Fires from WP_Ability::execute() on WP 6.9+;
+		// simply never fires on older versions, so no version guard is needed.
+		add_action( 'wp_after_execute_ability', array( $this, 'track_ability_used' ), 10, 3 );
 	}
 
 	/**
@@ -853,6 +865,56 @@ class Astra_BSF_Analytics {
 			'theme_updated',
 			ASTRA_THEME_VERSION,
 			array( 'from_version' => $previous_version ),
+			true
+		);
+	}
+
+	/**
+	 * Track use of an Astra ability as a re-trackable event.
+	 *
+	 * Hooked to wp_after_execute_ability, which fires past the permission check and
+	 * carries the result. Astra abilities return an Astra_Abilities_Response array
+	 * rather than a WP_Error, so soft failures are visible here as 'success' => false.
+	 *
+	 * @param string $ability_name Ability name, e.g. 'astra/get-font-body'.
+	 * @param mixed  $input        Ability input. Not recorded -- it can carry site content.
+	 * @param mixed  $result       Ability result.
+	 * @since 4.13.11
+	 * @return void
+	 */
+	public function track_ability_used( $ability_name, $input, $result ) {
+		// This action fires for every registered ability, not only Astra's.
+		if ( 0 !== strpos( $ability_name, 'astra/' ) ) {
+			return;
+		}
+
+		$status = is_array( $result ) && isset( $result['success'] ) && ! $result['success'] ? 'failed' : 'passed';
+
+		// Once per ability and outcome per request, to limit repeat option writes.
+		$guard_key = $ability_name . ':' . $status;
+
+		if ( isset( self::$recorded_abilities[ $guard_key ] ) ) {
+			return;
+		}
+
+		self::$recorded_abilities[ $guard_key ] = true;
+
+		$context = 'internal';
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$context = 'cli';
+		} elseif ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			$context = 'rest';
+		}
+
+		// One shared event name keeps this to a single pending entry; $force = true stops
+		// usage_events_pushed from suppressing it after the first flush.
+		self::$events->track(
+			'ability_used',
+			$ability_name,
+			array(
+				'context' => $context,
+				'status'  => $status,
+			),
 			true
 		);
 	}

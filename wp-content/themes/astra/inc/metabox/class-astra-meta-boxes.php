@@ -576,7 +576,6 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 
 					case 'FILTER_DEFAULT':
 						/**
-						 * @psalm-suppress TooManyArguments
 						 * @psalm-suppress PossiblyInvalidArgument
 						 */
 						$meta_value = apply_filters( 'astra_php_default_filter_input', ! empty( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : '', $key );

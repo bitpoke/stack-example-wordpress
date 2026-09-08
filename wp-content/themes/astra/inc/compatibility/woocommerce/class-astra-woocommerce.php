@@ -284,9 +284,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 
 				$markup .= $this->modern_add_to_cart();
 
-				/** @psalm-suppress TooManyArguments */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				$html = apply_filters( 'astra_addon_shop_cards_buttons_html', $markup, $product );
-				/** @psalm-suppress TooManyArguments */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 				echo do_shortcode( $html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
@@ -1251,7 +1249,8 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function replace_store_sidebar( $sidebar ) {
 
-			if ( ( is_shop() && ! is_search() ) || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() ) {
+			// Product search results are part of the store, so they use the shop widget area too.
+			if ( is_shop() || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() ) {
 				$sidebar = 'astra-woo-shop-sidebar';
 			} elseif ( is_product() ) {
 				$sidebar = 'astra-woo-single-sidebar';
@@ -1269,7 +1268,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function store_sidebar_layout( $sidebar_layout ) {
 
-			if ( ( is_shop() && ! is_search() ) || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() || is_product() ) {
+			if ( is_shop() || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() || is_product() ) {
 
 				$woo_sidebar                 = astra_get_option( 'woocommerce-sidebar-layout' );
 				$astra_with_modern_ecommerce = astra_get_option( 'modern-ecommerce-setup', true );
@@ -1294,10 +1293,11 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 					$sidebar_layout = $global_page_specific_layout;
 				}
 
+				// Product search results have no page of their own, so no meta can override them.
 				if ( is_shop() && ! is_search() ) {
 					$shop_page_id = get_option( 'woocommerce_shop_page_id' );
 					$shop_sidebar = get_post_meta( $shop_page_id, 'site-sidebar-layout', true );
-				} elseif ( is_product_taxonomy() ) {
+				} elseif ( is_product_taxonomy() || is_search() ) {
 					$shop_sidebar = 'default';
 				} else {
 					$shop_sidebar = astra_get_option_meta( 'site-sidebar-layout', '', true );
@@ -1319,7 +1319,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function store_content_layout( $layout ) {
 
-			if ( ( is_woocommerce() && ! is_search() ) || is_checkout() || is_cart() || is_account_page() ) {
+			if ( is_woocommerce() || is_checkout() || is_cart() || is_account_page() ) {
 
 				$woo_layout = astra_toggle_layout( 'woocommerce-ast-content-layout', 'global', false );
 
@@ -1343,10 +1343,11 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 					$layout = $global_page_specific_layout;
 				}
 
+				// Product search results have no page of their own, so no meta can override them.
 				if ( is_shop() && ! is_search() ) {
 					$shop_page_id = get_option( 'woocommerce_shop_page_id' );
 					$shop_layout  = astra_toggle_layout( 'ast-site-content-layout', 'meta', $shop_page_id );
-				} elseif ( is_product_taxonomy() ) {
+				} elseif ( is_product_taxonomy() || is_search() ) {
 					$shop_layout = 'default';
 				} else {
 					$old_meta_layout = astra_get_option_meta( 'site-content-layout', '', true );
@@ -1463,7 +1464,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 			add_filter( 'woocommerce_product_additional_information_heading', '__return_false' );
 
 			// Breadcrumb.
-			remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0 );
+			remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
 
 			if ( astra_get_option( 'single-product-breadcrumb-disable' ) ) {
 				add_action( 'woocommerce_single_product_summary', 'woocommerce_breadcrumb', 2 );
@@ -3774,7 +3775,6 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		 */
 		public function single_product_content_structure( $product_type = '' ) {
 
-			/** @psalm-suppress TooManyArguments */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			$single_structure = apply_filters( 'astra_woo_single_product_structure', astra_get_option( 'single-product-structure' ), $product_type );
 
 			if ( is_array( $single_structure ) && ! empty( $single_structure ) ) {
@@ -3886,7 +3886,6 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 				// @codingStandardsIgnoreEnd
 					if ( is_customize_preview() ) {
 						echo '<div class="ast-sticky-add-to-cart customizer-item-block-preview customizer-navigate-on-focus ' . esc_attr( $sticky_position ) . '" data-section="astra-settings[single-product-sticky-add-to-cart]" data-type="control">';
-						/** @psalm-suppress TooManyArguments */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 						Astra_Builder_UI_Controller::render_customizer_edit_button( 'row-editor-shortcut' );
 					} else {
 						echo '<div class="ast-sticky-add-to-cart ' . esc_attr( $sticky_position ) . '">';

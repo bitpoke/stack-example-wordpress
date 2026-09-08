@@ -1,5 +1,22 @@
 *** Astra Changelog ***
 
+2026-09-08 - version 4.13.11
+* New: Blog / Archive - Truncation Marker field under Post Elements > Excerpt, setting the text shown at the end of trimmed excerpts - "[…]" by default, any text or markup you like, or empty to hide it.
+* New: Introduced the `astra_live_search_query_args` filter, allowing plugins to modify the query arguments used to fetch Live Search results.
+* Improvement: Header Builder - Top level navigation dropdown arrow touch target size improved for better WCAG 2.5.8 accessibility compliance.
+* Improvement: Block Editor - Much faster editing on large pages; the theme now syncs its layout and background only when those settings change, not on every keystroke.
+* Fix: Blog / Archive - The default "[…]" excerpt marker is now hidden on every post, instead of showing on the first post of the loop only.
+* Fix: WooCommerce - Product search results page falling back to the blog sidebar and its widgets instead of the Product Catalog sidebar, a regression introduced in 4.13.9.
+* Fix: Local webfonts returning 404 on Bedrock and other WordPress subfolder installs due to root-relative base URL being resolved against site_url() instead of home_url().
+* Fix: Custom color palette names set in a child theme's theme.json were overwritten by Astra's default labels in the block editor and Customizer.
+* Fix: Block Editor - Uncaught "Cannot read properties of null" console error when saving or updating a post more than once with the Custom Fields panel enabled.
+* Fix: Abilities API - Update Global Palette ability failed with a fatal error whenever colors were passed, and returned colors as arrays instead of objects.
+* Fix: Header Builder - Tapping the submenu dropdown arrow on touch devices followed the parent menu item's link instead of opening the submenu.
+* Fix: Loading spinner on the Starter Templates onboarding banner button sat misaligned with its label.
+* Fix: Security - Hardened starter content so it loads bundled settings safely on a fresh install, without altering unrelated site options.
+* Security: Header / Footer Builder - HTML widget accepted iframe markup from users without the unfiltered_html capability, letting injected content render site-wide. (Props - savphill / Patchstack)
+* Security: Blog / Archive - Post meta Divider Type accepted arbitrary markup from users without the unfiltered_html capability and echoed it unescaped in the post meta. (Props - Patchstack)
+
 2026-08-19 - version 4.13.10
 * Improvement: Compatibility with WordPress 7.1.
 * Fix: WooCommerce - Coupon code field, Apply coupon and Update cart buttons rendering at mismatched heights on the classic Cart page.

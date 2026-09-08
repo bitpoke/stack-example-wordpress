@@ -268,8 +268,8 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		/**
 		 * Sanitize Integer
 		 *
-		 * @param  number $input Customizer setting input number.
-		 * @return number        Absolute number.
+		 * @param  mixed $input Customizer setting input number.
+		 * @return int          Absolute number.
 		 */
 		public static function sanitize_integer( $input ) {
 			return absint( $input );
@@ -660,6 +660,41 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		 */
 		public static function sanitize_html( $input ) {
 			return wp_kses_post( $input );
+		}
+
+		/**
+		 * Sanitize Header/Footer Builder HTML widget content.
+		 *
+		 * Authors holding unfiltered_html keep raw markup; everyone else loses <iframe>.
+		 *
+		 * @param  mixed $input setting input.
+		 * @return string       sanitized setting input value.
+		 * @since 4.13.11
+		 */
+		public static function sanitize_html_widget( $input ) {
+			if ( ! is_string( $input ) ) {
+				return '';
+			}
+
+			// The gate core applies to post content: unfiltered_html or kses, with no fallback.
+			if ( current_user_can( 'unfiltered_html' ) ) {
+				return $input;
+			}
+
+			return wp_kses( $input, astra_get_html_widget_allowed_tags( false, $input ) );
+		}
+
+		/**
+		 * Sanitize the post meta Divider Type.
+		 *
+		 * Value is echoed into the post meta markup, so hold it to the control's own choices.
+		 *
+		 * @param  mixed $input setting input.
+		 * @return string       a Divider Type choice, or the default separator.
+		 * @since 4.13.11
+		 */
+		public static function sanitize_meta_separator( $input ) {
+			return in_array( $input, array( '/', '-', '|', '•', 'none' ), true ) ? $input : '/';
 		}
 
 		/**

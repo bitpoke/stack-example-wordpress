@@ -62,7 +62,8 @@ function astra_get_dynamic_taxonomy( $control_tax, $loop_count, $separator, $bad
 		$all_terms      = join( $join_separator, $term_links );
 		$output_str     = '<' . esc_attr( $html_tag ) . ' class="ast-terms-link">' . $all_terms . '</' . esc_attr( $html_tag ) . '>';
 
-		return 1 !== $loop_count ? ' ' . $separator . ' ' . $output_str : $output_str;
+		// Caller passes the raw Divider Type option straight through, and this return value is echoed.
+		return 1 !== $loop_count ? ' ' . esc_html( $separator ) . ' ' . $output_str : $output_str;
 	}
 
 	return '';
@@ -146,6 +147,9 @@ if ( ! function_exists( 'astra_get_post_meta' ) ) {
 
 		$separator = apply_filters( 'astra_post_meta_separator', $separator );
 
+		// $output_str is echoed unescaped; '&nbsp' is the theme's own spacer for the "none" choice.
+		$separator = '&nbsp' === $separator ? "\xc2\xa0" : esc_html( $separator );
+
 		foreach ( $post_meta as $meta_value ) {
 
 			switch ( $meta_value ) {
@@ -212,6 +216,7 @@ if ( ! function_exists( 'astra_get_post_meta' ) ) {
 					}
 					break;
 				default:
+					/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 					$output_str = apply_filters( 'astra_meta_case_' . $meta_value, $output_str, $loop_count, $separator );
 
 			}

@@ -169,7 +169,7 @@ if ( ! class_exists( 'Astra_Builder_Header' ) ) {
 			remove_action( 'astra_masthead', 'astra_masthead_primary_template' );
 			remove_action( 'astra_masthead_content', 'astra_primary_navigation_markup', 10 );
 
-			remove_filter( 'wp_page_menu_args', 'astra_masthead_custom_page_menu_items', 10, 2 );
+			remove_filter( 'wp_page_menu_args', 'astra_masthead_custom_page_menu_items', 10 );
 			remove_filter( 'wp_nav_menu_items', 'astra_masthead_custom_nav_menu_items' );
 		}
 

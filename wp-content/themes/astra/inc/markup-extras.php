@@ -841,7 +841,6 @@ if ( ! function_exists( 'astra_get_search_icon' ) ) {
 		 * @param string $device      Device name.
 		 *
 		 * @since 4.8.12
-		 * @psalm-suppress TooManyArguments
 		 */
 		$icon_markup = apply_filters( 'astra_get_search_icon', '', $option, $device );
 
@@ -1761,6 +1760,29 @@ if ( ! function_exists( 'astra_comment_form_default_markup' ) ) {
 add_filter( 'comment_form_defaults', 'astra_comment_form_default_markup' );
 
 /**
+ * Excerpt truncation marker
+ */
+if ( ! function_exists( 'astra_excerpt_more_marker' ) ) {
+
+	/**
+	 * Marker appended to a trimmed excerpt, as configured under Post Elements > Excerpt.
+	 *
+	 * An empty option means no marker at all, which is what existing sites have been
+	 * rendering, while new installs default to WordPress's own indicator. Code can
+	 * override it through the astra_get_option_blog-excerpt-marker filter.
+	 *
+	 * @since 4.13.11
+	 * @return string Marker markup, empty when nothing should be appended.
+	 */
+	function astra_excerpt_more_marker() {
+
+		$marker = wp_kses_post( astra_get_i18n_option( 'blog-excerpt-marker', _x( '%astra%', 'Blog / Archive: Excerpt Truncation Marker', 'astra' ) ) );
+
+		return '' === $marker ? '' : ' ' . $marker;
+	}
+}
+
+/**
  * Display Blog Post Excerpt
  */
 if ( ! function_exists( 'astra_the_excerpt' ) ) {
@@ -1781,8 +1803,13 @@ if ( ! function_exists( 'astra_the_excerpt' ) ) {
 				if ( 'full-content' === $excerpt_type ) {
 					the_content();
 				} else {
+					// Render the marker configured under Post Elements > Excerpt instead of WordPress's own.
+					// excerpt_more is applied while the excerpt is generated, so the filter has to be registered
+					// before the_excerpt() runs - added afterwards it only takes effect from the second post onwards.
+					// Removed straight after, so it does not affect excerpts rendered later in the request.
+					add_filter( 'excerpt_more', 'astra_excerpt_more_marker' );
 					the_excerpt();
-					add_filter( 'excerpt_more', '__return_false' );
+					remove_filter( 'excerpt_more', 'astra_excerpt_more_marker' );
 				}
 				?>
 			</div>

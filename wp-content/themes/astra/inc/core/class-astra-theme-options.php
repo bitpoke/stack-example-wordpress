@@ -231,6 +231,8 @@ if ( ! class_exists( 'Astra_Theme_Options' ) ) {
 					'blog-meta-date-format'                => '',
 					'blog-max-width'                       => 1200,
 					'blog-post-content'                    => 'excerpt',
+					// Mirrors the marker WordPress appends in wp_trim_excerpt(), which is a literal there - core exposes no getter for it.
+					'blog-excerpt-marker'                  => __( '[&hellip;]', 'astra' ),
 					'blog-meta'                            => $blog_defaults_update ? array(
 						'author',
 						'date',

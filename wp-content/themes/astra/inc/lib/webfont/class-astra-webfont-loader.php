@@ -593,12 +593,14 @@ class Astra_WebFont_Loader {
 		if ( ! $this->base_url ) {
 			$base_url = content_url();
 
-			// Serve local fonts root-relative when wp-content is on the site host, so the cached
-			// stylesheet/@font-face URLs resolve against the current origin (avoids cross-origin
-			// font blocks on multi-domain installs). External hosts (e.g. a CDN) stay absolute.
+			// Root-relative keeps the shared cache same-origin on multi-domain installs (e.g. WPML).
+			// Kept absolute for an external host (CDN) and when site_url() has a path, since WP_Styles
+			// prepends site_url() to a relative source and would duplicate that path (Bedrock's /wp).
 			$content_host = wp_parse_url( $base_url, PHP_URL_HOST );
 			$home_host    = wp_parse_url( home_url(), PHP_URL_HOST );
-			if ( $content_host && $content_host === $home_host ) {
+			$site_path    = wp_parse_url( site_url(), PHP_URL_PATH );
+			$wp_in_subdir = ! empty( $site_path ) && '/' !== $site_path;
+			if ( $content_host && $content_host === $home_host && ! $wp_in_subdir ) {
 				$content_path = wp_parse_url( $base_url, PHP_URL_PATH );
 				if ( $content_path ) {
 					$base_url = $content_path;

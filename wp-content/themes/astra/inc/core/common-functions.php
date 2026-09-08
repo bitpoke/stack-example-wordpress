@@ -838,7 +838,7 @@ if ( ! function_exists( 'astra_get_post_id' ) ) {
 	 * Get post ID.
 	 *
 	 * @param  string $post_id_override Get override post ID.
-	 * @return number                   Post ID.
+	 * @return int                      Post ID.
 	 */
 	function astra_get_post_id( $post_id_override = '' ) {
 
@@ -2411,5 +2411,82 @@ if ( ! function_exists( 'astra_flip_rtl_alignment' ) ) {
 			default:
 				return $alignment;
 		}
+	}
+}
+
+if ( ! function_exists( 'astra_get_html_widget_allowed_tags' ) ) {
+	/**
+	 * Allowed HTML tags for Header/Footer Builder HTML widget content.
+	 *
+	 * @param bool   $allow_iframe Whether to allow <iframe>.
+	 * @param string $content      Content being filtered, passed on to the filter.
+	 * @return array Allowed HTML tags and attributes.
+	 * @since 4.13.11
+	 */
+	function astra_get_html_widget_allowed_tags( $allow_iframe = true, $content = '' ) {
+
+		$allowed_html = wp_kses_allowed_html( 'post' );
+
+		// Add here additional tags that weren't working if you got something.
+		$additional_tags = array(
+			'select'   => array(
+				'name'     => true,
+				'id'       => true,
+				'class'    => true,
+				'multiple' => true,
+				'size'     => true,
+				'required' => true,
+				'disabled' => true,
+				'style'    => true,
+			),
+			'option'   => array(
+				'value'    => true,
+				'selected' => true,
+				'disabled' => true,
+				'class'    => true,
+				'id'       => true,
+			),
+			'optgroup' => array(
+				'label'    => true,
+				'disabled' => true,
+				'class'    => true,
+			),
+		);
+
+		if ( $allow_iframe ) {
+			$additional_tags['iframe'] = array(
+				'src'             => true,
+				'width'           => true,
+				'height'          => true,
+				'frameborder'     => true,
+				'allowfullscreen' => true,
+				'style'           => true,
+				'title'           => true,
+				'loading'         => true,
+				'referrerpolicy'  => true,
+				'sandbox'         => true,
+				'class'           => true,
+				'id'              => true,
+			);
+		}
+
+		$allowed_html = array_merge( $allowed_html, $additional_tags );
+
+		/**
+		 * Filter allowed HTML tags for HTML widget content.
+		 *
+		 * @param array $allowed_html Array of allowed HTML tags and attributes.
+		 * @param string $content The HTML content being filtered.
+		 * @param bool $allow_iframe Whether <iframe> is allowed for this caller.
+		 * @since 4.11.11
+		 */
+		$allowed_html = apply_filters( 'astra_html_widget_allowed_html', $allowed_html, $content, $allow_iframe );
+
+		// The gate stays authoritative: a filter callback cannot re-add <iframe> for an author without unfiltered_html.
+		if ( ! $allow_iframe ) {
+			unset( $allowed_html['iframe'] );
+		}
+
+		return $allowed_html;
 	}
 }

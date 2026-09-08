@@ -1032,6 +1032,57 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 						}, 10);
 					}
 				});
+
+				/**
+				 * Click cannot reliably report the input type - Firefox omits
+				 * pointerType - so record it per arrow here.
+				 */
+				element.addEventListener('pointerdown', function (e) {
+					e.currentTarget.dataset.astPointerType = e.pointerType || 'mouse';
+				}, false);
+
+				/**
+				 * The arrow sits inside the parent <a>, so on touch the tap followed
+				 * the link and the submenu never opened. Touch reports no hover.
+				 */
+				element.addEventListener('click', function (e) {
+					const arrow = e.currentTarget;
+
+					// Mouse and pen report hover, which already opens the submenu.
+					if ('touch' !== arrow.dataset.astPointerType) {
+						return;
+					}
+
+					// Below the breakpoint the mobile menu has its own toggle.
+					if (!body.classList.contains('ast-desktop')) {
+						return;
+					}
+
+					const closestLi = arrow.closest('li');
+					const subMenu = closestLi && closestLi.querySelector('.sub-menu');
+
+					if (!subMenu) {
+						return;
+					}
+
+					e.preventDefault();
+
+					// Or the document listener below closes it in the same tick.
+					e.stopPropagation();
+
+					// Read before closing, which resets aria-expanded on every arrow.
+					const wasOpen = 'true' === arrow.getAttribute('aria-expanded');
+
+					// Mouse and keyboard only ever leave one submenu open, so collapse
+					// the others here too.
+					closeNavigationMenu(siteNavigationSubMenu, dropdownToggleLinks, menuLi, megaMenuFullWidth);
+
+					if (!wasOpen) {
+						subMenu.classList.add('toggled-on');
+						closestLi.classList.add('ast-menu-hover');
+						arrow.setAttribute('aria-expanded', 'true');
+					}
+				}, false);
 			});
 
 			if (siteNavigationSubMenu || menuLi) {

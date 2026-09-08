@@ -396,13 +396,15 @@ if ( ! class_exists( 'Astra_Elementor' ) ) {
 
 			foreach ( $global_palette['palette'] as $key => $color ) {
 
-				$slug = $slugs[ $key ];
+				// A newer Astra version may have stored more palette slots than this
+				// version knows about - compute the slug so a rollback stays warning-free.
+				$slug = isset( $slugs[ $key ] ) ? $slugs[ $key ] : 'ast-global-color-' . $key;
 				// Remove hyphens from slug.
 				$no_hyphens = str_replace( '-', '', $slug );
 
 				$data['colors'][ $no_hyphens ] = array(
 					'id'    => esc_attr( $no_hyphens ),
-					'title' => 'Theme ' . $labels[ $key ],
+					'title' => 'Theme ' . ( isset( $labels[ $key ] ) ? $labels[ $key ] : ucwords( str_replace( '-', ' ', $slug ) ) ),
 					'value' => $color,
 				);
 			}
@@ -476,7 +478,9 @@ if ( ! class_exists( 'Astra_Elementor' ) ) {
 
 			if ( isset( $global_palette['palette'] ) ) {
 				foreach ( $global_palette['palette'] as $color_index => $color ) {
-					$variable_key           = '--e-global-color-' . str_replace( '-', '', $slugs[ $color_index ] );
+					// Tolerate palette slots stored by a newer Astra version ( see note above ).
+					$slug                   = isset( $slugs[ $color_index ] ) ? $slugs[ $color_index ] : 'ast-global-color-' . $color_index;
+					$variable_key           = '--e-global-color-' . str_replace( '-', '', $slug );
 					$style[ $variable_key ] = $color;
 				}
 

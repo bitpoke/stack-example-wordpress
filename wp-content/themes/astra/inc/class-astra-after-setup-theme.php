@@ -210,12 +210,47 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 					$name_pair[ 'ast-global-color-' . $index ] = $label;
 				}
 
+				// Core filters the child theme's theme.json when it has one, Astra's own otherwise.
+				$stylesheet_directory  = get_stylesheet_directory();
+				$astra_owns_theme_json = get_template_directory() === $stylesheet_directory || ! file_exists( $stylesheet_directory . '/theme.json' );
+				$astra_placeholders    = array();
+				$child_theme_names     = array();
+
+				if ( ! $astra_owns_theme_json ) {
+					$child_theme_names = Astra_Global_Palette::get_theme_json_palette_names( $stylesheet_directory );
+
+					// Core translates palette names before this filter runs, so keep both forms.
+					foreach ( Astra_Global_Palette::get_theme_json_palette_names( get_template_directory() ) as $astra_slug => $placeholder ) {
+						$astra_placeholders[ $astra_slug ] = array(
+							$placeholder,
+							translate_with_gettext_context( $placeholder, 'Color name', 'astra' ), // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText,WordPress.WP.I18n.LowLevelTranslationFunction -- Names come from Astra's own theme.json, mirroring core's translation of that file.
+						);
+					}
+				}
+
 				foreach ( $palette as $index => $color_data ) {
-					$slug                       = ! empty( $color_data['slug'] ) ? $color_data['slug'] : '';
+					$slug  = isset( $color_data['slug'] ) && is_string( $color_data['slug'] ) ? $color_data['slug'] : '';
+					$name  = isset( $color_data['name'] ) && is_string( $color_data['name'] ) ? $color_data['name'] : '';
+					$color = '';
+
+					if ( isset( $color_data['color'] ) ) {
+						$color = $color_data['color'];
+					}
+
+					$astra_wrote_name = isset( $astra_placeholders[ $slug ] ) && in_array( $name, $astra_placeholders[ $slug ], true );
+
+					// A resolved label that no longer matches the child theme's own name came from the filter.
+					$filtered_name = isset( $name_pair[ $slug ], $child_theme_names[ $slug ] ) && $name_pair[ $slug ] !== $child_theme_names[ $slug ];
+
+					// Astra relabels only the names it wrote; a child theme's own names stay.
+					if ( $astra_owns_theme_json || '' === $name || $astra_wrote_name || $filtered_name ) {
+						$name = isset( $name_pair[ $slug ] ) ? $name_pair[ $slug ] : $name;
+					}
+
 					$new_palette_data[ $index ] = array(
-						'name'  => isset( $name_pair[ $slug ] ) ? $name_pair[ $slug ] : '',
+						'name'  => $name,
 						'slug'  => $slug,
-						'color' => isset( $color_data['color'] ) ? $color_data['color'] : '',
+						'color' => $color,
 					);
 				}
 			}
