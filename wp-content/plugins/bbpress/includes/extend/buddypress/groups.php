@@ -138,6 +138,13 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		// Map group forum activity items to groups
 		add_filter( 'bbp_before_record_activity_parse_args', array( $this, 'map_activity_to_group' ) );
 
+		// Allow group members to receive group forum notifications
+		add_filter( 'bbp_subscription_user_can_view_forum', array( $this, 'subscription_user_can_view_forum' ), 10, 3 );
+
+		// Restrict private and hidden group forums outside of group requests
+		add_filter( 'bbp_map_meta_caps',              array( $this, 'map_group_forum_read_meta_caps' ), 20, 4 );
+		add_filter( 'bbp_get_excluded_forum_ids',     array( $this, 'exclude_group_forum_ids'        ), 20    );
+
 		/** Caps **************************************************************/
 
 		// Only add these filters if inside a group forum
@@ -156,6 +163,135 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 			add_filter( 'bbp_current_user_can_access_create_topic_form', array( $this, 'form_permissions' ) );
 			add_filter( 'bbp_current_user_can_access_create_reply_form', array( $this, 'form_permissions' ) );
 		}
+	}
+
+	/**
+	 * Check whether a user can view a private or hidden group forum.
+	 *
+	 * @since 2.6.17
+	 *
+	 * @param int $user_id  User ID.
+	 * @param int $forum_id Forum ID.
+	 * @return bool|null Whether the user can view the group forum, or null when
+	 *                   the forum is not a restricted group forum.
+	 */
+	public function user_can_view_group_forum( $user_id = 0, $forum_id = 0 ) {
+		$user_id   = bbp_get_user_id( $user_id, false, false );
+		$forum_id  = bbp_get_forum_id( $forum_id );
+		$group_ids = bbp_get_forum_group_ids( $forum_id );
+
+		// Keep normal bbPress permissions for other forums
+		if ( empty( $group_ids ) || ! bbp_is_forum_restricted( $forum_id, false ) ) {
+			return null;
+		}
+
+		// Preserve access for global and per-forum moderators
+		if ( bbp_is_user_forum_moderator( $user_id, $forum_id ) ) {
+			return true;
+		}
+
+		// Allow current, non-banned members of any attached group
+		foreach ( $group_ids as $group_id ) {
+			if ( false === groups_is_user_banned( $user_id, $group_id ) && false !== groups_is_user_member( $user_id, $group_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Map read access for private and hidden group forums in every request.
+	 *
+	 * @since 2.6.17
+	 *
+	 * @param array  $caps    Capabilities for the meta capability.
+	 * @param string $cap     Capability name.
+	 * @param int    $user_id User ID.
+	 * @param array  $args    Arguments.
+	 * @return array Actual capabilities for the meta capability.
+	 */
+	public function map_group_forum_read_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
+		if ( ( 'read_forum' !== $cap ) || empty( $args[0] ) ) {
+			return $caps;
+		}
+
+		// Preserve an earlier hard denial, including inactive users and
+		// restricted ancestors the user cannot read
+		if ( in_array( 'do_not_allow', $caps, true ) ) {
+			return $caps;
+		}
+
+		$can_view = $this->user_can_view_group_forum( $user_id, $args[0] );
+
+		if ( null !== $can_view ) {
+			$caps = $can_view
+				? array( 'participate' )
+				: array( 'do_not_allow' );
+		}
+
+		return $caps;
+	}
+
+	/**
+	 * Exclude private and hidden group forums a user cannot view.
+	 *
+	 * @since 2.6.17
+	 *
+	 * @param array $forum_ids Forum IDs already excluded.
+	 * @return array Forum IDs the user cannot view.
+	 */
+	public function exclude_group_forum_ids( $forum_ids ) {
+		$user_id    = bbp_get_current_user_id();
+		$restricted = array_merge( bbp_get_private_forum_ids(), bbp_get_hidden_forum_ids() );
+		$restricted = wp_parse_id_list( $restricted );
+
+		foreach ( $restricted as $forum_id ) {
+			// Skip forums that are not attached to groups
+			if ( empty( bbp_get_forum_group_ids( $forum_id ) ) ) {
+				continue;
+			}
+
+			if ( ! user_can( $user_id, 'read_forum', $forum_id ) ) {
+				$forum_ids[] = $forum_id;
+				continue;
+			}
+
+			// Include readable descendants that inherited this restriction
+			$readable = array( $forum_id );
+			foreach ( $forum_ids as $excluded_id ) {
+				if ( in_array( $forum_id, bbp_get_forum_ancestors( $excluded_id ), true ) ) {
+					$readable[] = $excluded_id;
+				}
+			}
+
+			foreach ( $readable as $readable_id ) {
+				if ( user_can( $user_id, 'read_forum', $readable_id ) ) {
+					$forum_ids = array_diff( $forum_ids, array( $readable_id ) );
+				}
+			}
+		}
+
+		return wp_parse_id_list( $forum_ids );
+	}
+
+	/**
+	 * Allow a group member to receive notifications from an attached forum.
+	 *
+	 * Unlike the request-specific capability mapping, this check accepts an
+	 * explicit user ID so it can validate subscription recipients.
+	 *
+	 * @since 2.6.17
+	 *
+	 * @param bool $retval   Whether the user can view the forum.
+	 * @param int  $user_id  User ID.
+	 * @param int  $forum_id Forum ID.
+	 * @return bool Whether the user can view the forum.
+	 */
+	public function subscription_user_can_view_forum( $retval, $user_id, $forum_id ) {
+		$can_view = $this->user_can_view_group_forum( $user_id, $forum_id );
+
+		return ( null === $can_view ) ? $retval : ( $retval && $can_view );
 	}
 
 	/**
@@ -266,15 +402,49 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 	 * @return array
 	 */
 	public function map_group_forum_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
+		// Group request state only describes the logged-in user
+		if ( bbp_get_current_user_id() !== (int) $user_id ) {
+			return (array) apply_filters( 'bbp_map_group_forum_topic_meta_caps', $caps, $cap, $user_id, $args );
+		}
+
+		// Never replace an earlier hard denial
+		if ( in_array( 'do_not_allow', $caps, true ) ) {
+			return (array) apply_filters( 'bbp_map_group_forum_topic_meta_caps', $caps, $cap, $user_id, $args );
+		}
+
+		// Explicit objects must belong to the current group
+		if ( ! empty( $args[0] ) ) {
+			$post_id   = (int) $args[0];
+			$post_type = get_post_type( $post_id );
+
+			switch ( $post_type ) {
+				case bbp_get_forum_post_type() :
+					$forum_id = $post_id;
+					break;
+
+				case bbp_get_topic_post_type() :
+					$forum_id = bbp_get_topic_forum_id( $post_id );
+					break;
+
+				case bbp_get_reply_post_type() :
+					$forum_id = bbp_get_reply_forum_id( $post_id );
+					break;
+
+				default :
+					$forum_id = 0;
+					break;
+			}
+
+			if ( empty( $forum_id ) || ! in_array( $forum_id, bbp_get_group_forum_ids(), true ) ) {
+				return (array) apply_filters( 'bbp_map_group_forum_topic_meta_caps', $caps, $cap, $user_id, $args );
+			}
+		}
 
 		switch ( $cap ) {
 
 			// If user is a group mmember, allow them to create content.
-			case 'read_forum'          :
-			case 'publish_replies'     :
-			case 'publish_topics'      :
-			case 'read_hidden_forums'  :
-			case 'read_private_forums' :
+			case 'publish_replies' :
+			case 'publish_topics'  :
 				if ( bbp_group_is_banned() ) {
 					$caps = array( 'do_not_allow' );
 				} elseif ( bbp_group_is_member() || bbp_group_is_mod() || bbp_group_is_admin() ) {
@@ -298,6 +468,14 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 			case 'delete_topic' :
 			case 'delete_reply' :
 				if ( bbp_group_is_admin() ) {
+					$caps = array( 'participate' );
+				}
+				break;
+
+			// If user is a group admin, allow them to manage forum attributes.
+			case 'manage_forum_attributes' :
+				$forum_id = ! empty( $args[0] ) ? bbp_get_forum_id( $args[0] ) : 0;
+				if ( bbp_is_forum( $forum_id ) && bbp_group_is_admin() && in_array( $forum_id, bbp_get_group_forum_ids(), true ) ) {
 					$caps = array( 'participate' );
 				}
 				break;
@@ -483,11 +661,13 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 				<div class="field-group">
 					<label for="bbp_group_forum_id"><?php esc_html_e( 'Group Forum:', 'bbpress' ); ?></label>
 					<?php
-						bbp_dropdown( array(
-							'select_id' => 'bbp_group_forum_id',
-							'show_none' => esc_html__( '&mdash; No forum &mdash;', 'bbpress' ),
-							'selected'  => $forum_id
-						) );
+						bbp_dropdown(
+							array(
+								'select_id' => 'bbp_group_forum_id',
+								'show_none' => esc_html__( '&mdash; No forum &mdash;', 'bbpress' ),
+								'selected'  => $forum_id
+							)
+						);
 					?>
 					<p class="description"><?php esc_html_e( 'Network administrators can reconfigure which forum belongs to this group.', 'bbpress' ); ?></p>
 				</div>
@@ -593,12 +773,14 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 			}
 
 			// Create the initial forum
-			$forum_id = bbp_insert_forum( array(
-				'post_parent'  => bbp_get_group_forums_root_id(),
-				'post_title'   => $group->name,
-				'post_content' => $group->description,
-				'post_status'  => $status
-			) );
+			$forum_id = bbp_insert_forum(
+				array(
+					'post_parent'  => bbp_get_group_forums_root_id(),
+					'post_title'   => $group->name,
+					'post_content' => $group->description,
+					'post_status'  => $status
+				)
+			);
 
 			// Setup forum args with forum ID
 			$new_forum_args = array( 'forum_id' => $forum_id );
@@ -655,7 +837,7 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 	public function create_screen( $group_id = 0 ) {
 
 		// Bail if not looking at this screen
-		if ( !bp_is_group_creation_step( $this->slug ) ) {
+		if ( ! bp_is_group_creation_step( $this->slug ) ) {
 			return false;
 		}
 
@@ -727,12 +909,14 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 				}
 
 				// Create the initial forum
-				$forum_id = bbp_insert_forum( array(
-					'post_parent'  => bbp_get_group_forums_root_id(),
-					'post_title'   => bp_get_new_group_name(),
-					'post_content' => bp_get_new_group_description(),
-					'post_status'  => $status
-				) );
+				$forum_id = bbp_insert_forum(
+					array(
+						'post_parent'  => bbp_get_group_forums_root_id(),
+						'post_title'   => bp_get_new_group_name(),
+						'post_content' => bp_get_new_group_description(),
+						'post_status'  => $status
+					)
+				);
 
 				// Run the BP-specific functions for new groups
 				$this->new_forum( array( 'forum_id' => $forum_id ) );
@@ -853,11 +1037,16 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		}
 
 		// Get the first forum ID
-		$forum_id = (int) is_array( $forum_ids ) ? $forum_ids[0] : $forum_ids;
-		$this->remove_forum( array(
-			'forum_id' => $forum_id,
-			'group_id' => $group_id
-		) );
+		$forum_id = (int) is_array( $forum_ids )
+			? $forum_ids[0]
+			: $forum_ids;
+
+		$this->remove_forum(
+			array(
+				'forum_id' => $forum_id,
+				'group_id' => $group_id
+			)
+		);
 	}
 
 	/**
@@ -1005,10 +1194,12 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		$forum_id     = array_shift( $forum_ids );
 
 		// Always load up the group forum
-		bbp_has_forums( array(
-			'p'           => $forum_id,
-			'post_parent' => null
-		) );
+		bbp_has_forums(
+			array(
+				'p'           => $forum_id,
+				'post_parent' => null
+			)
+		);
 
 		// Set the global forum ID
 		$bbp->current_forum_id = $forum_id;
@@ -1065,11 +1256,13 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 					add_filter( 'bbp_get_topic_stick_link', array( $this, 'hide_super_sticky_admin_link' ), 10, 2 );
 
 					// Get the topic
-					bbp_has_topics( array(
-						'name'           => bp_action_variable( $offset + 1 ),
-						'posts_per_page' => 1,
-						'show_stickies'  => false
-					) );
+					bbp_has_topics(
+						array(
+							'name'           => bp_action_variable( $offset + 1 ),
+							'posts_per_page' => 1,
+							'show_stickies'  => false
+						)
+					);
 
 					// If no topic, 404
 					if ( ! bbp_topics() ) {
@@ -1140,10 +1333,12 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 				case $this->reply_slug :
 
 					// Get the reply
-					bbp_has_replies( array(
-						'name'           => bp_action_variable( $offset + 1 ),
-						'posts_per_page' => 1
-					) );
+					bbp_has_replies(
+						array(
+							'name'           => bp_action_variable( $offset + 1 ),
+							'posts_per_page' => 1
+						)
+					);
 
 					// If no topic, 404
 					if ( ! bbp_replies() ) {
@@ -1692,10 +1887,10 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		return $args;
 	}
 
-    /**
-     * Fixes rewrite pagination in BuddyPress Group Forums & Topics.
+	/**
+	 * Fixes rewrite pagination in BuddyPress Group Forums & Topics.
 	 *
-     * Required for compatibility with BuddyPress > 12.0, where the /groups/
+	 * Required for compatibility with BuddyPress > 12.0, where the /groups/
 	 * rewrite rule will be caught before bbPress's /page/ rule.
 	 *
 	 * @since 2.6.14
@@ -1703,58 +1898,54 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 	 * @param  object object  Verified object
 	 * @param  string $type   Type of variable to check with `is_a()`
 	 * @return mixed  $object Verified object if valid, Default or null if invalid
-     */
-    public function rewrite_pagination( $object, $type = '' ) {
+	 */
+	public function rewrite_pagination( $query, $type = '' ) {
 
 		// Bail if wrong global
-        if ( 'wp_query' !== $type ) {
-            return $object;
-        }
+		if ( 'wp_query' !== $type ) {
+			return $query;
+		}
 
 		// Bail if not inside a BuddyPress Group
-        if ( ! bp_is_group() ) {
-            return $object;
-        }
+		if ( ! bp_is_group() ) {
+			return $query;
+		}
 
 		// Bail if not inside a BuddyPress Group Forum
-        if ( ! bp_is_current_action( 'forum' ) ) {
-            return $object;
-        }
+		if ( ! bp_is_current_action( 'forum' ) ) {
+			return $query;
+		}
 
 		// Default "paged" value
-        $page_number = null;
+		$page_number = null;
 
-        // Can't use bbp_is_single_topic() because it triggers a loop.
-        $is_single_topic = bp_is_action_variable( 'topic', 0 );
+		// Can't use bbp_is_single_topic() because it triggers a loop.
+		$is_single_topic = bp_is_action_variable( 'topic', 0 );
 
 		// Single Topic
-        if ( true === $is_single_topic ) {
+		if ( true === $is_single_topic ) {
 
 			// Get the page number from 3rd position
-            if ( bp_is_action_variable( 'page', 2 ) ) {
-                $page_number = bp_action_variable( 3 );
-            }
+			if ( bp_is_action_variable( 'page', 2 ) ) {
+				$page_number = bp_action_variable( 3 );
+			}
 
-		// Single Forum
-        } else {
-
-			// Get the page number from 1st position
-            if ( bp_is_action_variable( 'page', 0 ) ) {
-                $page_number = bp_action_variable( 1 );
-            }
-        }
+		// Default (Single Forum)
+		} elseif ( bp_is_action_variable( 'page', 0 ) ) {
+			$page_number = bp_action_variable( 1 );
+		}
 
 		// Bail if no page number
-        if ( empty( $page_number ) ) {
-            return $object;
-        }
+		if ( empty( $page_number ) ) {
+			return $query;
+		}
 
 		// Set the 'paged' WP_Query var to the new action-based value
-        $object->set( 'paged', $page_number );
+		$query->set( 'paged', $page_number );
 
 		// Return the filtered/modified object
-        return $object;
-    }
+		return $query;
+	}
 
 	/**
 	 * Ensure that forum content associated with a BuddyPress group can only be
@@ -1792,8 +1983,8 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		}
 
 		// Use the first group ID
-		$group_id 	 = $group_ids[0];
-		$group    	 = groups_get_group( array( 'group_id' => $group_id ) );
+		$group_id    = $group_ids[0];
+		$group       = groups_get_group( array( 'group_id' => $group_id ) );
 		$group_link  = trailingslashit( $this->group_url( $group ) );
 		$redirect_to = trailingslashit( $group_link . $this->slug );
 

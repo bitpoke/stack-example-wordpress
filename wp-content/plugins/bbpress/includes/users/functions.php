@@ -170,6 +170,79 @@ function bbp_current_author_ua() {
 /** Edit **********************************************************************/
 
 /**
+ * Filter user profile data according to the current user's field permissions.
+ *
+ * @since 2.6.17
+ *
+ * @param array $data    Submitted user profile data.
+ * @param int   $user_id User being edited.
+ * @return array Filtered user profile data.
+ */
+function bbp_filter_user_edit_post_data( $data = array(), $user_id = 0 ) {
+	$user_id = bbp_get_user_id( $user_id, false, false );
+	$user    = get_userdata( $user_id );
+
+	// Remove general profile fields.
+	if ( ! bbp_current_user_can_edit_user_field( 'profile', $user_id ) ) {
+		unset(
+			$data['first_name'],
+			$data['last_name'],
+			$data['nickname'],
+			$data['display_name'],
+			$data['url'],
+			$data['description'],
+			$data['locale']
+		);
+
+		// Remove dynamic WordPress contact methods.
+		if ( ! empty( $user ) ) {
+			foreach ( array_keys( wp_get_user_contact_methods( $user ) ) as $contact_method ) {
+				unset( $data[ $contact_method ] );
+			}
+		}
+	}
+
+	// Preserve the existing email address.
+	if ( ! bbp_current_user_can_edit_user_field( 'email', $user_id ) ) {
+		$data['email'] = ! empty( $user->user_email )
+			? $user->user_email
+			: '';
+	}
+
+	// Remove password fields.
+	if ( ! bbp_current_user_can_edit_user_field( 'password', $user_id ) ) {
+		unset( $data['pass1'], $data['pass2'] );
+	}
+
+	// Remove the WordPress site role.
+	if ( ! bbp_current_user_can_edit_user_field( 'site_role', $user_id ) ) {
+		unset( $data['role'] );
+	}
+
+	// Filter & return.
+	return (array) apply_filters( 'bbp_filter_user_edit_post_data', $data, $user_id, bbp_get_current_user_id() );
+}
+
+/**
+ * Return whether an email change requires confirmation from the edited user.
+ *
+ * Self-service changes require confirmation by default, while privileged edits
+ * to another user update the address directly.
+ *
+ * @since 2.6.17
+ *
+ * @param int $user_id User being edited.
+ * @return bool Whether confirmation is required.
+ */
+function bbp_user_email_change_requires_confirmation( $user_id = 0 ) {
+	$user_id = bbp_get_user_id( $user_id, false, false );
+	$retval  = ( bbp_get_current_user_id() === $user_id );
+
+	// Filter & return.
+	return (bool) apply_filters( 'bbp_user_email_change_requires_confirmation', $retval, $user_id, bbp_get_current_user_id() );
+}
+
+/**
  * Handles the front end user editing from POST requests
  *
  * @since 2.0.0 bbPress (r2790)
@@ -203,6 +276,9 @@ function bbp_edit_user_handler( $action = '' ) {
 		return;
 	}
 
+	// Enforce field-level profile permissions before validating and saving.
+	$_POST = bbp_filter_user_edit_post_data( $_POST, $user_id );
+
 	// Empty email check
 	if ( empty( $_POST['email'] ) ) {
 		bbp_add_error( 'bbp_user_email_empty', __( '<strong>Error</strong>: That is not a valid email address.', 'bbpress' ), array( 'form-field' => 'email' ) );
@@ -227,20 +303,22 @@ function bbp_edit_user_handler( $action = '' ) {
 			return;
 		}
 
-		// Update the option
-		$option = array(
-			'hash'     => md5( $_POST['email'] . time() . wp_rand() ),
-			'newemail' => $_POST['email'],
-		);
-		update_user_meta( $user_id, '_new_email', $option );
+		if ( bbp_user_email_change_requires_confirmation( $user_id ) ) {
+			// Update the option.
+			$option = array(
+				'hash'     => md5( $_POST['email'] . time() . wp_rand() ),
+				'newemail' => $_POST['email'],
+			);
+			update_user_meta( $user_id, '_new_email', $option );
 
-		// Attempt to notify the user of email address change
-		bbp_edit_user_email_send_notification( $user_id, $option );
+			// Attempt to notify the user of email address change.
+			bbp_edit_user_email_send_notification( $user_id, $option );
 
-		// Set the POST email variable back to the user's email address
-		// so `edit_user()` does not attempt to update it. This is not ideal,
-		// but it's also what send_confirmation_on_profile_email() does.
-		$_POST['email'] = $user_email;
+			// Set the POST email variable back to the user's email address
+			// so `edit_user()` does not attempt to update it. This is not ideal,
+			// but it's also what send_confirmation_on_profile_email() does.
+			$_POST['email'] = $user_email;
+		}
 	}
 
 	// Do action based on who's profile you're editing
@@ -396,10 +474,13 @@ function bbp_user_email_change_handler( $action = '' ) {
 function bbp_edit_user_email_send_notification( $user_id = 0, $args = array() ) {
 
 	// Parse args
-	$r = bbp_parse_args( $args, array(
-		'hash'     => '',
-		'newemail' => '',
-	) );
+	$r = bbp_parse_args(
+		$args,
+		array(
+			'hash'     => '',
+			'newemail' => '',
+		)
+	);
 
 	// Bail if any relevant parameters are empty
 	if ( empty( $user_id ) || empty( $r['hash'] ) || empty( $r['newemail'] ) ) {
@@ -410,12 +491,17 @@ function bbp_edit_user_email_send_notification( $user_id = 0, $args = array() ) 
 	// Build the nonced URL to dismiss the pending change
 	$user_login  = bbp_get_displayed_user_field( 'user_login', 'raw' );
 	$user_url    = bbp_get_user_profile_edit_url( $user_id );
-	$confirm_url = add_query_arg( array(
-		'action'       => 'bbp-update-user-email',
-		'newuseremail' => $r['hash']
-	), $user_url );
+	$confirm_url = add_query_arg(
+		array(
+			'action'       => 'bbp-update-user-email',
+			'newuseremail' => $r['hash']
+		),
+		$user_url
+	);
 
-	$email_text = __( '%1$s
+	/* translators: 1: Username, 2: Confirmation URL, 3: New email address, 4: Site name, 5: Site URL */
+	$email_text = __(
+		'%1$s
 
 Someone requested a change to the email address on your account.
 
@@ -428,7 +514,9 @@ This email was sent to: %3$s
 
 Regards,
 The %4$s Team
-%5$s', 'bbpress' );
+%5$s',
+		'bbpress'
+	);
 
 	/**
 	 * Filter the email text sent when a user changes emails.
@@ -450,6 +538,7 @@ The %4$s Team
 	$message = sprintf( $content, $user_login, $confirm_url, $r['newemail'], get_site_option( 'site_name' ), network_home_url() );
 
 	// Build the email subject
+	/* translators: %s: Site name */
 	$subject = sprintf( __( '[%s] New Email Address', 'bbpress' ), wp_specialchars_decode( get_option( 'blogname' ) ) );
 
 	// Send the email
@@ -575,9 +664,11 @@ function bbp_get_user_ids_from_nicenames( $user_nicenames = array() ) {
 		$user_nicenames = array_map( 'sanitize_title', $user_nicenames );
 
 		// Get users
-		$users = get_users( array(
-			'nicename__in' => $user_nicenames
-		) );
+		$users = get_users(
+			array(
+				'nicename__in' => $user_nicenames
+			)
+		);
 
 		// Pluck or empty
 		if ( ! empty( $users ) ) {
@@ -608,9 +699,11 @@ function bbp_get_user_nicenames_from_ids( $user_ids = array() ) {
 	if ( ! empty( $user_ids ) ) {
 
 		// Get users
-		$users = get_users( array(
-			'include' => $user_ids
-		) );
+		$users = get_users(
+			array(
+				'include' => $user_ids
+			)
+		);
 
 		// Pluck or empty
 		if ( ! empty( $users ) ) {
@@ -639,11 +732,11 @@ function bbp_get_user_topic_count_raw( $user_id = 0 ) {
 	$statii  = "'" . implode( "', '", bbp_get_public_topic_statuses() ) . "'";
 	$sql     = "SELECT COUNT(*)
 			FROM {$bbp_db->posts}
-			WHERE post_author = %d
-				AND post_type = %s
-				AND post_status IN ({$statii})";
+			WHERE post_type = %s
+				AND post_status IN ({$statii})
+				AND post_author = %d";
 
-	$query   = $bbp_db->prepare( $sql, $user_id, bbp_get_topic_post_type() );
+	$query   = $bbp_db->prepare( $sql, bbp_get_topic_post_type(), $user_id );
 	$count   = (int) $bbp_db->get_var( $query );
 
 	// Filter & return
@@ -665,11 +758,11 @@ function bbp_get_user_reply_count_raw( $user_id = 0 ) {
 	$statii  = "'" . implode( "', '", bbp_get_public_reply_statuses() ) . "'";
 	$sql     = "SELECT COUNT(*)
 			FROM {$bbp_db->posts}
-			WHERE post_author = %d
-				AND post_type = %s
-				AND post_status IN ({$statii})";
+			WHERE post_type = %s
+				AND post_status IN ({$statii})
+				AND post_author = %d";
 
-	$query   = $bbp_db->prepare( $sql, $user_id, bbp_get_reply_post_type() );
+	$query   = $bbp_db->prepare( $sql, bbp_get_reply_post_type(), $user_id );
 	$count   = (int) $bbp_db->get_var( $query );
 
 	// Filter & return
@@ -680,6 +773,7 @@ function bbp_get_user_reply_count_raw( $user_id = 0 ) {
  * Bump the topic count for a user by a certain amount.
  *
  * @since 2.6.0 bbPress (r5309)
+ * @since 2.6.17 Rebuild the count when the user option is missing.
  *
  * @param int $user_id
  * @param int $difference
@@ -697,25 +791,30 @@ function bbp_bump_user_topic_count( $user_id = 0, $difference = 1 ) {
 		return false;
 	}
 
-	// Check meta for count, or query directly if not found
-	$count = bbp_get_user_topic_count( $user_id, true );
-	if ( empty( $count ) ) {
-		$count = bbp_get_user_topic_count_raw( $user_id );
-	}
+	// Get the current count, accounting for persisted changes if it is missing
+	$difference = (int) $difference;
+	$count      = ( false === get_user_option( '_bbp_topic_count', $user_id ) )
+		? bbp_get_user_topic_count_raw( $user_id ) - $difference
+		: bbp_get_user_topic_count( $user_id, true );
 
-	$difference       = (int) $difference;
-	$user_topic_count = (int) ( $count + $difference );
+	$user_topic_count = (int) bbp_number_not_negative( $count + $difference );
 
 	// Add them up and filter them
 	$new_count = (int) apply_filters( 'bbp_bump_user_topic_count', $user_topic_count, $user_id, $difference, $count );
 
-	return bbp_update_user_topic_count( $user_id, $new_count );
+	// Preserve absolute count filters before using the atomic difference
+	$difference = ( $new_count === $user_topic_count )
+		? $new_count - $count
+		: false;
+
+	return bbp_update_user_topic_count( $user_id, $new_count, $difference );
 }
 
 /**
  * Bump the reply count for a user by a certain amount.
  *
  * @since 2.6.0 bbPress (r5309)
+ * @since 2.6.17 Rebuild the count when the user option is missing.
  *
  * @param int $user_id
  * @param int $difference
@@ -733,19 +832,181 @@ function bbp_bump_user_reply_count( $user_id = 0, $difference = 1 ) {
 		return false;
 	}
 
-	// Check meta for count, or query directly if not found
-	$count = bbp_get_user_reply_count( $user_id, true );
-	if ( empty( $count ) ) {
-		$count = bbp_get_user_reply_count_raw( $user_id );
-	}
+	// Get the current count, accounting for persisted changes if it is missing
+	$difference = (int) $difference;
+	$count      = ( false === get_user_option( '_bbp_reply_count', $user_id ) )
+		? bbp_get_user_reply_count_raw( $user_id ) - $difference
+		: bbp_get_user_reply_count( $user_id, true );
 
-	$difference       = (int) $difference;
-	$user_reply_count = (int) ( $count + $difference );
+	$user_reply_count = (int) bbp_number_not_negative( $count + $difference );
 
 	// Add them up and filter them
 	$new_count = (int) apply_filters( 'bbp_bump_user_reply_count', $user_reply_count, $user_id, $difference, $count );
 
-	return bbp_update_user_reply_count( $user_id, $new_count );
+	// Preserve absolute count filters before using the atomic difference
+	$difference = ( $new_count === $user_reply_count )
+		? $new_count - $count
+		: false;
+
+	return bbp_update_user_reply_count( $user_id, $new_count, $difference );
+}
+
+/**
+ * Update user counts when a topic or reply changes authors.
+ *
+ * @since 2.6.17
+ *
+ * @param int     $post_id     Post ID.
+ * @param WP_Post $post_after  Post object following the update.
+ * @param WP_Post $post_before Post object before the update.
+ */
+function bbp_update_counts_on_post_author_change( $post_id = 0, $post_after = false, $post_before = false ) {
+
+	// Bail if the author or post type did not change as expected
+	if ( ( $post_after->post_author === $post_before->post_author ) || ( $post_after->post_type !== $post_before->post_type ) ) {
+		return;
+	}
+
+	// Set topic public membership
+	if ( bbp_get_topic_post_type() === $post_after->post_type ) {
+		$public_statuses = bbp_get_public_topic_statuses();
+		$was_public      = in_array( $post_before->post_status, $public_statuses, true );
+		$is_public       = in_array( $post_after->post_status,  $public_statuses, true );
+		$is_topic        = true;
+
+	// Set reply public membership
+	} elseif ( bbp_get_reply_post_type() === $post_after->post_type ) {
+		$public_statuses = bbp_get_public_reply_statuses();
+		$was_public      = in_array( $post_before->post_status, $public_statuses, true );
+		$is_public       = in_array( $post_after->post_status,  $public_statuses, true );
+		$is_topic        = false;
+
+	// Bail if this is not a topic or reply
+	} else {
+		return;
+	}
+
+	// The transition callback already handles posts that were not public
+	if ( ! $was_public ) {
+		return;
+	}
+
+	// Transfer a public contribution between authors
+	if ( $is_public ) {
+		if ( $is_topic ) {
+			bbp_bump_user_topic_count( $post_before->post_author, -1 );
+			bbp_bump_user_topic_count( $post_after->post_author,   1 );
+		} else {
+			bbp_bump_user_reply_count( $post_before->post_author, -1 );
+			bbp_bump_user_reply_count( $post_after->post_author,   1 );
+		}
+
+	// Repair both authors after the transition callback targeted the new author
+	} else {
+		foreach ( bbp_get_unique_array_values( array( $post_before->post_author, $post_after->post_author ) ) as $user_id ) {
+			if ( $is_topic ) {
+				bbp_update_user_topic_count( $user_id, bbp_get_user_topic_count_raw( $user_id ) );
+			} else {
+				bbp_update_user_reply_count( $user_id, bbp_get_user_reply_count_raw( $user_id ) );
+			}
+		}
+	}
+}
+
+/**
+ * Update topic engagements when a topic or reply changes authors.
+ *
+ * @since 2.6.17
+ *
+ * @param int     $post_id     Post ID.
+ * @param WP_Post $post_after  Post object following the update.
+ * @param WP_Post $post_before Post object before the update.
+ */
+function bbp_recalculate_engagements_on_post_author_change( $post_id = 0, $post_after = false, $post_before = false ) {
+
+	// Bail if the author did not change
+	if ( $post_after->post_author === $post_before->post_author ) {
+		return;
+	}
+
+	// Get the topic ID from a topic or reply
+	if ( bbp_get_topic_post_type() === $post_after->post_type ) {
+		$topic_id = $post_id;
+	} elseif ( bbp_get_reply_post_type() === $post_after->post_type ) {
+		$topic_id = bbp_get_reply_topic_id( $post_id );
+	} else {
+		return;
+	}
+
+	// Recalculate engagements and their count
+	bbp_recalculate_topic_engagements( $topic_id );
+	bbp_update_topic_voice_count( $topic_id );
+}
+
+/**
+ * Update counts and engagements when a deleted user's posts are reassigned.
+ *
+ * WordPress reassigns post authors directly in the database, bypassing the
+ * normal post update actions. Record affected topics before that write, then
+ * repair the replacement user's counts and those topics after it completes.
+ *
+ * @since 2.6.17
+ *
+ * @param int      $user_id  ID of the user being deleted.
+ * @param int|null $reassign ID of the user receiving the posts.
+ */
+function bbp_update_counts_on_user_reassignment( $user_id = 0, $reassign = null ) {
+	static $topic_ids = array();
+
+	$user_id = (int) $user_id;
+	$reassign = (int) $reassign;
+
+	// Bail if posts are not being reassigned to another user
+	if ( empty( $user_id ) || empty( $reassign ) || ( $user_id === $reassign ) ) {
+		return;
+	}
+
+	$key = get_current_blog_id() . ':' . $user_id . ':' . $reassign;
+
+	// Record affected topics before WordPress changes their authors directly
+	if ( 'delete_user' === current_filter() ) {
+		$bbp_db     = bbp_db();
+		$topic_type = bbp_get_topic_post_type();
+		$reply_type = bbp_get_reply_post_type();
+		$query      = $bbp_db->prepare(
+			"SELECT DISTINCT CASE WHEN post_type = %s THEN ID ELSE post_parent END FROM {$bbp_db->posts} WHERE post_author = %d AND post_type IN ( %s, %s )",
+			$topic_type,
+			$user_id,
+			$topic_type,
+			$reply_type
+		);
+
+		$topic_ids[ $key ] = wp_parse_id_list( array_filter( $bbp_db->get_col( $query ) ) );
+		return;
+	}
+
+	// Bail unless WordPress completed the reassignment recorded above
+	if ( ( 'deleted_user' !== current_filter() ) || ! isset( $topic_ids[ $key ] ) ) {
+		return;
+	}
+
+	$affected_topic_ids = $topic_ids[ $key ];
+	unset( $topic_ids[ $key ] );
+
+	// Bail if the deleted user did not author any topics or replies
+	if ( empty( $affected_topic_ids ) ) {
+		return;
+	}
+
+	// Recount contributions for the replacement user
+	bbp_update_user_topic_count( $reassign, bbp_get_user_topic_count_raw( $reassign ) );
+	bbp_update_user_reply_count( $reassign, bbp_get_user_reply_count_raw( $reassign ) );
+
+	// Rebuild engagements and voices for each affected topic
+	foreach ( $affected_topic_ids as $topic_id ) {
+		bbp_recalculate_topic_engagements( $topic_id, true );
+		bbp_update_topic_voice_count( $topic_id );
+	}
 }
 
 /**
@@ -754,13 +1015,15 @@ function bbp_bump_user_reply_count( $user_id = 0, $difference = 1 ) {
  *
  * @since 2.6.0 bbPress (r5309)
  *
- * @access
- * @param $topic_id
- * @param $forum_id
- * @param $anonymous_data
- * @param $topic_author
+ * @param int $topic_id Topic ID.
  */
 function bbp_increase_user_topic_count( $topic_id = 0 ) {
+
+	// Bail if topic is not public
+	if ( ! bbp_is_topic_public( $topic_id ) ) {
+		return false;
+	}
+
 	$user_id = bbp_get_topic_author_id( $topic_id );
 	return bbp_bump_user_topic_count( $user_id, 1 );
 }
@@ -769,16 +1032,17 @@ function bbp_increase_user_topic_count( $topic_id = 0 ) {
  * Helper function used to increase (by one) the count of replies for a user when
  * a reply is published.
  *
- * This is a helper function, hooked to `bbp_new_reply`
- *
  * @since 2.6.0 bbPress (r5309)
  *
- * @param $topic_id
- * @param $forum_id
- * @param $anonymous_data
- * @param $topic_author
+ * @param int $reply_id Reply ID.
  */
 function bbp_increase_user_reply_count( $reply_id = 0 ) {
+
+	// Bail if reply is not public
+	if ( ! bbp_is_reply_public( $reply_id ) ) {
+		return false;
+	}
+
 	$user_id = bbp_get_reply_author_id( $reply_id );
 	return bbp_bump_user_reply_count( $user_id, 1 );
 }
@@ -789,22 +1053,34 @@ function bbp_increase_user_reply_count( $reply_id = 0 ) {
  *
  * @since 2.6.0 bbPress (r5309)
  *
- * @param $topic_id
+ * @param int $topic_id Topic ID.
  */
 function bbp_decrease_user_topic_count( $topic_id = 0 ) {
+
+	// Bail if topic is not public
+	if ( ! bbp_is_topic_public( $topic_id ) ) {
+		return false;
+	}
+
 	$user_id = bbp_get_topic_author_id( $topic_id );
 	return bbp_bump_user_topic_count( $user_id, -1 );
 }
 
 /**
- * Helper function used to increase (by one) the count of replies for a user when
- * a topic is unpublished.
+ * Helper function used to decrease (by one) the count of replies for a user when
+ * a reply is unpublished.
  *
  * @since 2.6.0 bbPress (r5309)
  *
- * @param $reply_id
+ * @param int $reply_id Reply ID.
  */
 function bbp_decrease_user_reply_count( $reply_id = 0 ) {
+
+	// Bail if reply is not public
+	if ( ! bbp_is_reply_public( $reply_id ) ) {
+		return false;
+	}
+
 	$user_id = bbp_get_reply_author_id( $reply_id );
 	return bbp_bump_user_reply_count( $user_id, -1 );
 }

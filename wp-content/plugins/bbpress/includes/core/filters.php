@@ -49,8 +49,9 @@ add_filter( 'login_redirect',          'bbp_redirect_login',     2,  3 );
 add_filter( 'logout_url',              'bbp_logout_url',         2,  2 );
 add_filter( 'plugin_locale',           'bbp_plugin_locale',      10, 2 );
 
-// Fix post author id for anonymous posts (set it back to 0) when the post status is changed
-add_filter( 'wp_insert_post_data', 'bbp_fix_post_author', 30, 2 );
+// Filter WordPress post data for forums and anonymous posts
+add_filter( 'wp_insert_post_data', 'bbp_filter_admin_forum_post_data', 20, 2 );
+add_filter( 'wp_insert_post_data', 'bbp_fix_post_author',              30, 2 );
 
 // Fix untrash post status after a topic or reply is re-instated
 add_filter( 'wp_untrash_post_status', 'bbp_fix_untrash_post_status', 10, 3 );
@@ -61,12 +62,16 @@ add_filter( 'comments_open', 'bbp_force_comment_status' );
 // Remove forums roles from list of all roles
 add_filter( 'editable_roles', 'bbp_filter_blog_editable_roles' );
 
+// User profile fields
+add_filter( 'show_password_fields', 'bbp_filter_user_edit_password_fields', 10, 2 );
+
 // Reply title fallback
 add_filter( 'the_title', 'bbp_get_reply_title_fallback', 2, 2 );
 
 // Avoid queries & 404s
-add_filter( 'pre_handle_404',  'bbp_pre_handle_404',  10, 2 );
-add_action( 'posts_pre_query', 'bbp_posts_pre_query', 10, 2 );
+add_filter( 'do_redirect_guess_404_permalink', 'bbp_do_not_guess_404_permalink' );
+add_filter( 'pre_handle_404',                  'bbp_pre_handle_404',              10, 2 );
+add_action( 'posts_pre_query',                 'bbp_posts_pre_query',             10, 2 );
 
 // User Creation
 add_filter( 'signup_user_meta', 'bbp_user_add_role_to_signup_meta', 10 );
@@ -213,6 +218,9 @@ if ( is_admin() ) {
 	add_filter( 'bbp_get_topic_content', 'bbp_topic_content_append_revisions',  99,  2 );
 }
 
+// Topic tag output - sanitize
+add_filter( 'bbp_get_topic_tag_name', 'esc_html' );
+
 // Form textarea output - undo the code-trick done pre-save, and sanitize
 add_filter( 'bbp_get_form_forum_content', 'bbp_code_trick_reverse' );
 add_filter( 'bbp_get_form_forum_content', 'esc_textarea'           );
@@ -229,6 +237,8 @@ add_filter( 'bbp_get_form_reply_edit_reason', 'esc_attr' );
 add_filter( 'bbp_get_form_reply_edit_reason', 'trim'     );
 add_filter( 'bbp_get_form_topic_edit_reason', 'esc_attr' );
 add_filter( 'bbp_get_form_topic_edit_reason', 'trim'     );
+add_filter( 'bbp_get_form_forum_title',       'esc_attr' );
+add_filter( 'bbp_get_form_forum_title',       'trim'     );
 add_filter( 'bbp_get_form_topic_title',       'esc_attr' );
 add_filter( 'bbp_get_form_topic_title',       'trim'     );
 add_filter( 'bbp_get_form_topic_tags',        'esc_attr' );
@@ -296,13 +306,13 @@ add_filter( 'bbp_get_displayed_user_field', 'bbp_sanitize_displayed_user_field',
 add_filter( 'bbp_get_forum_topic_count',    'bbp_suppress_private_forum_meta',  10, 2 );
 add_filter( 'bbp_get_forum_reply_count',    'bbp_suppress_private_forum_meta',  10, 2 );
 add_filter( 'bbp_get_forum_post_count',     'bbp_suppress_private_forum_meta',  10, 2 );
-add_filter( 'bbp_get_forum_freshness_link', 'bbp_suppress_private_forum_meta',  10, 2 );
+add_filter( 'bbp_get_forum_freshness_link', 'bbp_suppress_private_forum_meta',  10, 6 );
 add_filter( 'bbp_get_author_link',          'bbp_suppress_private_author_link', 10, 2 );
 add_filter( 'bbp_get_topic_author_link',    'bbp_suppress_private_author_link', 10, 2 );
 add_filter( 'bbp_get_reply_author_link',    'bbp_suppress_private_author_link', 10, 2 );
 
 // Allow private & hidden forum details for moderators
-add_filter( 'bbp_get_excluded_forum_ids', 'bbp_allow_forums_of_user', 10, 2 );
+add_filter( 'bbp_get_excluded_forum_ids', 'bbp_allow_forums_of_user' );
 
 // Topic and reply author display names
 add_filter( 'bbp_get_topic_author_display_name', 'bbp_format_user_display_name' );
@@ -344,6 +354,10 @@ add_filter( 'bbp_map_meta_caps', 'bbp_map_forum_meta_caps',     10, 4 ); // Foru
 add_filter( 'bbp_map_meta_caps', 'bbp_map_topic_meta_caps',     10, 4 ); // Topics
 add_filter( 'bbp_map_meta_caps', 'bbp_map_topic_tag_meta_caps', 10, 4 ); // Topic tags
 add_filter( 'bbp_map_meta_caps', 'bbp_map_reply_meta_caps',     10, 4 ); // Replies
+add_filter( 'bbp_map_meta_caps', 'bbp_map_xmlrpc_meta_caps',   999, 4 ); // XML-RPC
+
+// Apply bbPress moderation decisions to XML-RPC edits
+add_filter( 'xmlrpc_wp_insert_post_data', 'bbp_xmlrpc_wp_insert_post_data' );
 
 // Clickables
 add_filter( 'bbp_make_clickable', 'bbp_make_urls_clickable',      2 ); // https://bbpress.org

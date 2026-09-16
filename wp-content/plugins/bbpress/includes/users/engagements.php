@@ -194,6 +194,7 @@ function bbp_get_topic_engagements( $topic_id = 0 ) {
  * See: https://bbpress.trac.wordpress.org/ticket/3083
  *
  * @since 2.6.0 bbPress (r6522)
+ * @since 2.6.17 Honor filtered public reply statuses.
  *
  * @param int $topic_id
  *
@@ -202,28 +203,36 @@ function bbp_get_topic_engagements( $topic_id = 0 ) {
 function bbp_get_topic_engagements_raw( $topic_id = 0 ) {
 
 	// Default variables
-	$topic_id = bbp_get_topic_id( $topic_id );
-	$bbp_db   = bbp_db();
-	$statii   = "'" . implode( "', '", bbp_get_public_topic_statuses() ) . "'";
+	$topic_id       = bbp_get_topic_id( $topic_id );
+	$bbp_db         = bbp_db();
+	$topic_type     = bbp_get_topic_post_type();
+	$reply_type     = bbp_get_reply_post_type();
+	$topic_statuses = array_unique( array_filter( bbp_get_public_topic_statuses() ) );
+	$reply_statuses = array_unique( array_filter( bbp_get_public_reply_statuses() ) );
+	$sql            = array();
+	$values         = array();
 
-	// A cool UNION query!
-	$sql = "
-SELECT DISTINCT( post_author ) FROM (
-	SELECT post_author FROM {$bbp_db->posts}
-		WHERE ( ID = %d AND post_status IN ({$statii}) AND post_type = %s )
-UNION
-	SELECT post_author FROM {$bbp_db->posts}
-		WHERE ( post_parent = %d AND post_status = %s AND post_type = %s )
-) as u1";
+	// Add the topic author for countable topic statuses
+	if ( ! empty( $topic_statuses ) ) {
+		$placeholders = implode( ', ', array_fill( 0, count( $topic_statuses ), '%s' ) );
+		$sql[]        = "SELECT post_author FROM {$bbp_db->posts} WHERE ID = %d AND post_status IN ( {$placeholders} ) AND post_type = %s";
+		$values       = array_merge( $values, array( $topic_id ), $topic_statuses, array( $topic_type ) );
+	}
 
-	// Prepare & get results
-	$query   = $bbp_db->prepare( $sql, $topic_id, bbp_get_topic_post_type(), $topic_id, bbp_get_public_status_id(), bbp_get_reply_post_type() );
-	$results = $bbp_db->get_col( $query );
+	// Add reply authors for countable reply statuses
+	if ( ! empty( $reply_statuses ) ) {
+		$placeholders = implode( ', ', array_fill( 0, count( $reply_statuses ), '%s' ) );
+		$sql[]        = "SELECT post_author FROM {$bbp_db->posts} WHERE post_parent = %d AND post_status IN ( {$placeholders} ) AND post_type = %s";
+		$values       = array_merge( $values, array( $topic_id ), $reply_statuses, array( $reply_type ) );
+	}
+
+	// Query unique topic and reply authors
+	$results = ! empty( $sql )
+		? $bbp_db->get_col( $bbp_db->prepare( implode( ' UNION ', $sql ), $values ) )
+		: array();
 
 	// Parse results into voices
-	$engagements = ! is_wp_error( $results )
-		? wp_parse_id_list( array_filter( $results ) )
-		: array();
+	$engagements = wp_parse_id_list( array_filter( $results ) );
 
 	// Filter & return
 	return (array) apply_filters( 'bbp_get_topic_engagements_raw', $engagements, $topic_id );
@@ -934,14 +943,18 @@ function bbp_get_user_object_ids( $args = array() ) {
 	$object_ids = $defaults = array();
 
 	// Parse arguments
-	$r = bbp_parse_args( $args, array(
-		'user_id'     => 0,
-		'object_type' => bbp_get_topic_post_type(),
-		'rel_key'     => '',
-		'rel_type'    => 'post',
-		'filter'      => 'user_object_ids',
-		'args'        => array()
-	), 'get_user_object_ids' );
+	$r = bbp_parse_args(
+		$args,
+		array(
+			'user_id'     => 0,
+			'object_type' => bbp_get_topic_post_type(),
+			'rel_key'     => '',
+			'rel_type'    => 'post',
+			'filter'      => 'user_object_ids',
+			'args'        => array()
+		),
+		'get_user_object_ids'
+	);
 
 	// Sanitize arguments
 	$r['user_id']     = bbp_get_user_id( $r['user_id'] );
@@ -956,20 +969,21 @@ function bbp_get_user_object_ids( $args = array() ) {
 			'fields'         => 'ids',
 			'post_type'      => $r['object_type'],
 			'posts_per_page' => -1,
-			'meta_query'     => array( array(
-				'key'     => $r['rel_key'],
-				'value'   => $r['user_id'],
-				'compare' => 'NUMERIC'
-			),
-
-			// Performance
-			'nopaging'               => true,
-			'suppress_filters'       => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'ignore_sticky_posts'    => true,
-			'no_found_rows'          => true
-		) );
+			'meta_query'     => array(
+				array(
+					'key'     => $r['rel_key'],
+					'value'   => $r['user_id'],
+					'compare' => 'NUMERIC'
+				),
+				// Performance
+				'nopaging'               => true,
+				'suppress_filters'       => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'ignore_sticky_posts'    => true,
+				'no_found_rows'          => true
+			)
+		);
 	}
 
 	// Parse arguments
@@ -995,12 +1009,14 @@ function bbp_get_user_object_ids( $args = array() ) {
  * @return array Return array of forum ids, or empty array
  */
 function bbp_get_moderator_forum_ids( $user_id = 0 ) {
-	return bbp_get_user_object_ids( array(
-		'user_id'     => $user_id,
-		'rel_key'     => '_bbp_moderator_id',
-		'object_type' => bbp_get_forum_post_type(),
-		'filter'      => 'moderator_forum_ids'
-	) );
+	return bbp_get_user_object_ids(
+		array(
+			'user_id'     => $user_id,
+			'rel_key'     => '_bbp_moderator_id',
+			'object_type' => bbp_get_forum_post_type(),
+			'filter'      => 'moderator_forum_ids'
+		)
+	);
 }
 
 /**
@@ -1013,11 +1029,13 @@ function bbp_get_moderator_forum_ids( $user_id = 0 ) {
  * @return array Return array of topic ids, or empty array
  */
 function bbp_get_user_engaged_topic_ids( $user_id = 0 ) {
-	return bbp_get_user_object_ids( array(
-		'user_id' => $user_id,
-		'rel_key' => '_bbp_engagement',
-		'filter'  => 'user_engaged_topic_ids'
-	) );
+	return bbp_get_user_object_ids(
+		array(
+			'user_id' => $user_id,
+			'rel_key' => '_bbp_engagement',
+			'filter'  => 'user_engaged_topic_ids'
+		)
+	);
 }
 
 /**
@@ -1030,11 +1048,13 @@ function bbp_get_user_engaged_topic_ids( $user_id = 0 ) {
  * @return array Return array of favorite topic ids, or empty array
  */
 function bbp_get_user_favorites_topic_ids( $user_id = 0 ) {
-	return bbp_get_user_object_ids( array(
-		'user_id' => $user_id,
-		'rel_key' => '_bbp_favorite',
-		'filter'  => 'user_favorites_topic_ids'
-	) );
+	return bbp_get_user_object_ids(
+		array(
+			'user_id' => $user_id,
+			'rel_key' => '_bbp_favorite',
+			'filter'  => 'user_favorites_topic_ids'
+		)
+	);
 }
 
 /**
@@ -1047,12 +1067,14 @@ function bbp_get_user_favorites_topic_ids( $user_id = 0 ) {
  * @return array Return array of subscribed forum ids, or empty array
  */
 function bbp_get_user_subscribed_forum_ids( $user_id = 0 ) {
-	return bbp_get_user_object_ids( array(
-		'user_id'     => $user_id,
-		'rel_key'     => '_bbp_subscription',
-		'object_type' => bbp_get_forum_post_type(),
-		'filter'      => 'user_subscribed_forum_ids'
-	) );
+	return bbp_get_user_object_ids(
+		array(
+			'user_id'     => $user_id,
+			'rel_key'     => '_bbp_subscription',
+			'object_type' => bbp_get_forum_post_type(),
+			'filter'      => 'user_subscribed_forum_ids'
+		)
+	);
 }
 
 /**
@@ -1065,11 +1087,13 @@ function bbp_get_user_subscribed_forum_ids( $user_id = 0 ) {
  * @return array Return array of subscribed topic ids, or empty array
  */
 function bbp_get_user_subscribed_topic_ids( $user_id = 0 ) {
-	return bbp_get_user_object_ids( array(
-		'user_id' => $user_id,
-		'rel_key' => '_bbp_subscription',
-		'filter'  => 'user_subscribed_topic_ids'
-	) );
+	return bbp_get_user_object_ids(
+		array(
+			'user_id' => $user_id,
+			'rel_key' => '_bbp_subscription',
+			'filter'  => 'user_subscribed_topic_ids'
+		)
+	);
 }
 
 /** Deprecated ****************************************************************/

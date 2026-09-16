@@ -113,22 +113,26 @@ function bbp_map_primary_meta_caps( $caps = array(), $cap = '', $user_id = 0, $a
 
 		/** Super Moderators **************************************************/
 
-		case 'edit_user'  :
-		case 'edit_users' :
+		case 'edit_user'    :
+		case 'promote_user' :
 
-			// Moderators can edit users if super moderators is enabled
-			if ( bbp_allow_super_mods() ) {
+			// Moderators can edit users if super moderators is enabled.
+			if ( bbp_allow_super_mods() && ! is_admin() && bbp_is_single_user_edit() ) {
 
 				// Get the user ID
 				$_user_id = ! empty( $args[0] )
 					? (int) $args[0]
 					: bbp_get_displayed_user_id();
 
-				// Users can always edit themselves, so only map for others
+				// Users can always edit themselves, so only map for others.
 				if ( ! empty( $_user_id ) && ( $_user_id !== $user_id ) ) {
 
-					// Super moderators cannot edit keymasters
-					if ( ! bbp_is_user_keymaster( $_user_id ) ) {
+					// Super moderators cannot edit keymasters or site administrators.
+					if (
+						! bbp_is_user_keymaster( $_user_id )
+						&& ! user_can( $_user_id, 'manage_options' )
+						&& ! is_super_admin( $_user_id )
+					) {
 						$caps = array( 'moderate' );
 					}
 				}
@@ -294,6 +298,11 @@ function bbp_profile_update_role( $user_id = 0 ) {
 		return;
 	}
 
+	// Bail if the current user cannot edit the forum role.
+	if ( ! bbp_current_user_can_edit_user_field( 'forum_role', $user_id ) ) {
+		return;
+	}
+
 	// Bail if current user cannot promote the passing user
 	if ( ! current_user_can( 'promote_user', $user_id ) ) {
 		return;
@@ -304,11 +313,82 @@ function bbp_profile_update_role( $user_id = 0 ) {
 		return;
 	}
 
-	// Forums role we want the user to have
-	$new_role = sanitize_key( $_POST['bbp-forums-role'] );
+	// Forums role we want the user to have.
+	$new_role = sanitize_key( wp_unslash( $_POST['bbp-forums-role'] ) );
+
+	// Bail if the current user cannot assign this forum role.
+	if ( ! array_key_exists( $new_role, bbp_get_user_editable_forum_roles( $user_id ) ) ) {
+		return;
+	}
 
 	// Set the new forums role
 	bbp_set_user_role( $user_id, $new_role );
+}
+
+/**
+ * Return the forum roles the current user may assign to another user.
+ *
+ * @since 2.6.17
+ *
+ * @param int $user_id User being edited. Defaults to the displayed user.
+ * @return array Filtered array of editable forum roles.
+ */
+function bbp_get_user_editable_forum_roles( $user_id = 0 ) {
+	$user_id = bbp_get_user_id( $user_id, false, false );
+	$roles   = bbp_get_dynamic_roles();
+
+	// Moderators may assign non-staff roles by default.
+	if ( ! bbp_is_user_keymaster() ) {
+		unset(
+			$roles[ bbp_get_keymaster_role() ],
+			$roles[ bbp_get_moderator_role() ]
+		);
+	}
+
+	// Filter & return.
+	return (array) apply_filters( 'bbp_get_user_editable_forum_roles', $roles, $user_id, bbp_get_current_user_id() );
+}
+
+/**
+ * Return whether the current user may edit a user-profile field.
+ *
+ * @since 2.6.17
+ *
+ * @param string $field   Profile field group: profile, email, password,
+ *                        site_role, or forum_role.
+ * @param int    $user_id User being edited. Defaults to the displayed user.
+ * @return bool Whether the field may be edited.
+ */
+function bbp_current_user_can_edit_user_field( $field = 'profile', $user_id = 0 ) {
+	$user_id         = bbp_get_user_id( $user_id, false, false );
+	$current_user_id = bbp_get_current_user_id();
+
+	// Default to the general profile-edit capability.
+	$retval = current_user_can( 'edit_user', $user_id );
+
+	// Apply narrower defaults to sensitive field groups.
+	switch ( $field ) {
+		case 'password':
+			$retval = ! empty( $user_id )
+				&& ! empty( $current_user_id )
+				&& $retval
+				&& ( ( $user_id === $current_user_id )
+					|| bbp_is_user_keymaster( $current_user_id )
+					|| current_user_can( 'manage_options' ) );
+			break;
+
+		case 'site_role':
+			$retval = current_user_can( 'promote_users' )
+				&& current_user_can( 'promote_user', $user_id );
+			break;
+
+		case 'forum_role':
+			$retval = current_user_can( 'promote_user', $user_id );
+			break;
+	}
+
+	// Filter & return.
+	return (bool) apply_filters( 'bbp_current_user_can_edit_user_field', $retval, $field, $user_id, $current_user_id );
 }
 
 /**
@@ -434,13 +514,16 @@ function bbp_get_user_role_map() {
 	$default_role = bbp_get_default_role();
 
 	// Filter & return
-	return (array) apply_filters( 'bbp_get_user_role_map', array(
-		'administrator' => bbp_get_keymaster_role(),
-		'editor'        => $default_role,
-		'author'        => $default_role,
-		'contributor'   => $default_role,
-		'subscriber'    => $default_role
-	) );
+	return (array) apply_filters(
+		'bbp_get_user_role_map',
+		array(
+			'administrator' => bbp_get_keymaster_role(),
+			'editor'        => $default_role,
+			'author'        => $default_role,
+			'contributor'   => $default_role,
+			'subscriber'    => $default_role
+		)
+	);
 }
 
 /** User Status ***************************************************************/
@@ -521,9 +604,8 @@ function bbp_make_spam_user( $user_id = 0 ) {
 		$blogs[ $bbp_db->blogid ] = array();
 	}
 
-	// Get array of post types to mark as spam
-	$post_types = array( bbp_get_topic_post_type(), bbp_get_reply_post_type() );
-	$post_types = "'" . implode( "', '", $post_types ) . "'";
+	// Process replies before topics so topic status helpers run last
+	$post_types = array( bbp_get_reply_post_type(), bbp_get_topic_post_type() );
 
 	// Get array of statuses to mark as spam
 	$post_statuses = bbp_get_public_topic_statuses();
@@ -535,25 +617,28 @@ function bbp_make_spam_user( $user_id = 0 ) {
 		// Switch to the site ID
 		bbp_switch_to_site( $blog_id );
 
-		// Get topics and replies
-		$query = $bbp_db->prepare( "SELECT ID FROM {$bbp_db->posts} WHERE post_author = %d AND post_status IN ( {$post_statuses} ) AND post_type IN ( {$post_types} )", $user_id );
-		$posts = $bbp_db->get_col( $query );
+		foreach ( $post_types as $post_type ) {
 
-		// Loop through posts and spam them
-		if ( ! empty( $posts ) ) {
-			foreach ( $posts as $post_id ) {
+			// Get posts of this type
+			$query = $bbp_db->prepare( "SELECT ID FROM {$bbp_db->posts} WHERE post_author = %d AND post_status IN ( {$post_statuses} ) AND post_type = %s", $user_id, $post_type );
+			$posts = $bbp_db->get_col( $query );
 
-				// The routines for topics ang replies are different, so use the
-				// correct one based on the post type
-				switch ( get_post_type( $post_id ) ) {
+			// Loop through posts and spam them
+			if ( ! empty( $posts ) ) {
+				foreach ( $posts as $post_id ) {
 
-					case bbp_get_topic_post_type() :
-						bbp_spam_topic( $post_id );
-						break;
+					// The routines for topics and replies are different, so use the
+					// correct one based on the post type
+					switch ( $post_type ) {
 
-					case bbp_get_reply_post_type() :
-						bbp_spam_reply( $post_id );
-						break;
+						case bbp_get_topic_post_type() :
+							bbp_spam_topic( $post_id );
+							break;
+
+						case bbp_get_reply_post_type() :
+							bbp_spam_reply( $post_id );
+							break;
+					}
 				}
 			}
 		}
@@ -606,9 +691,8 @@ function bbp_make_ham_user( $user_id = 0 ) {
 		$blogs[ $bbp_db->blogid ] = array();
 	}
 
-	// Get array of post types to mark as spam
-	$post_types = array( bbp_get_topic_post_type(), bbp_get_reply_post_type() );
-	$post_types = "'" . implode( "', '", $post_types ) . "'";
+	// Process replies before topics so topic status helpers run last
+	$post_types = array( bbp_get_reply_post_type(), bbp_get_topic_post_type() );
 
 	// Get array of statuses to unmark as spam
 	$post_statuses = array( bbp_get_spam_status_id() );
@@ -620,25 +704,28 @@ function bbp_make_ham_user( $user_id = 0 ) {
 		// Switch to the site ID
 		bbp_switch_to_site( $blog_id );
 
-		// Get topics and replies
-		$query = $bbp_db->prepare( "SELECT ID FROM {$bbp_db->posts} WHERE post_author = %d AND post_status IN ( {$post_statuses} ) AND post_type IN ( {$post_types} )", $user_id );
-		$posts = $bbp_db->get_col( $query );
+		foreach ( $post_types as $post_type ) {
 
-		// Loop through posts and spam them
-		if ( ! empty( $posts ) ) {
-			foreach ( $posts as $post_id ) {
+			// Get posts of this type
+			$query = $bbp_db->prepare( "SELECT ID FROM {$bbp_db->posts} WHERE post_author = %d AND post_status IN ( {$post_statuses} ) AND post_type = %s", $user_id, $post_type );
+			$posts = $bbp_db->get_col( $query );
 
-				// The routines for topics ang replies are different, so use the
-				// correct one based on the post type
-				switch ( get_post_type( $post_id ) ) {
+			// Loop through posts and unspam them
+			if ( ! empty( $posts ) ) {
+				foreach ( $posts as $post_id ) {
 
-					case bbp_get_topic_post_type() :
-						bbp_unspam_topic( $post_id );
-						break;
+					// The routines for topics and replies are different, so use the
+					// correct one based on the post type
+					switch ( $post_type ) {
 
-					case bbp_get_reply_post_type() :
-						bbp_unspam_reply( $post_id );
-						break;
+						case bbp_get_topic_post_type() :
+							bbp_unspam_topic( $post_id );
+							break;
+
+						case bbp_get_reply_post_type() :
+							bbp_unspam_reply( $post_id );
+							break;
+					}
 				}
 			}
 		}
@@ -849,15 +936,19 @@ function bbp_get_moderators( $object_id = 0, $object_type = 'post' ) {
 
 	// Get global moderators
 	if ( empty( $object_id ) ) {
-		$users = get_users( array(
-			'role__in' => bbp_get_moderator_role(),
-		) );
+		$users = get_users(
+			array(
+				'role__in' => bbp_get_moderator_role(),
+			)
+		);
 
 	// Get object moderators
 	} else {
-		$users = get_users( array(
-			'include' => bbp_get_moderator_ids( $object_id, $object_type ),
-		) );
+		$users = get_users(
+			array(
+				'include' => bbp_get_moderator_ids( $object_id, $object_type ),
+			)
+		);
 	}
 
 	// Filter & return

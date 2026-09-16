@@ -115,6 +115,28 @@ function bbp_init() {
 }
 
 /**
+ * Initialize the bbPress REST API
+ *
+ * @since 2.6.17
+ */
+function bbp_rest_api_init() {
+	do_action( 'bbp_rest_api_init' );
+}
+
+/**
+ * Pass an XML-RPC request through bbPress.
+ *
+ * @since 2.6.17 bbPress
+ *
+ * @param string            $method XML-RPC method name.
+ * @param array             $args   XML-RPC method arguments.
+ * @param wp_xmlrpc_server  $server XML-RPC server instance.
+ */
+function bbp_xmlrpc_call( $method = '', $args = array(), $server = null ) {
+	do_action( 'bbp_xmlrpc_call', $method, $args, $server );
+}
+
+/**
  * Initialize roles
  *
  * @since 2.6.0 bbPress (r6106)
@@ -287,6 +309,27 @@ function bbp_transition_post_status( $new_status = '', $old_status = '', $post =
 
 	// Do the action
 	do_action( 'bbp_transition_post_status', $new_status, $old_status, $post );
+}
+
+/**
+ * Add the bbPress-specific post updated action.
+ *
+ * @since 2.6.17
+ *
+ * @param int     $post_id     Post ID.
+ * @param WP_Post $post_after  Post object following the update.
+ * @param WP_Post $post_before Post object before the update.
+ */
+function bbp_post_updated( $post_id = 0, $post_after = false, $post_before = false ) {
+	$post_types = bbp_get_post_types();
+
+	// Bail if neither version is a bbPress post type
+	if ( ! in_array( $post_after->post_type, $post_types, true ) && ! in_array( $post_before->post_type, $post_types, true ) ) {
+		return;
+	}
+
+	// Do the action
+	do_action( 'bbp_post_updated', $post_id, $post_after, $post_before );
 }
 
 /** User Actions **************************************************************/

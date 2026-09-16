@@ -25,9 +25,13 @@ defined( 'ABSPATH' ) || exit;
 function bbp_get_post_types( $args = array() ) {
 
 	// Parse args
-	$r = bbp_parse_args( $args, array(
-		'source' => 'bbpress'
-	), 'get_post_types' );
+	$r = bbp_parse_args(
+		$args,
+		array(
+			'source' => 'bbpress'
+		),
+		'get_post_types'
+	);
 
 	// Return post types
 	return get_post_types( $r );
@@ -150,6 +154,27 @@ function bbp_get_unique_array_values( $array = array() ) {
 }
 
 /**
+ * Return the non-empty string values of an array.
+ *
+ * @since 2.6.17 bbPress
+ *
+ * @param mixed $arr Value or array to get string values of
+ *
+ * @return array
+ */
+function bbp_get_string_array_values( $arr = array() ) {
+	$retval = array();
+
+	foreach ( (array) $arr as $value ) {
+		if ( is_string( $value ) && ( '' !== $value ) ) {
+			$retval[] = $value;
+		}
+	}
+
+	return $retval;
+}
+
+/**
  * Fix post author id on post save
  *
  * When a logged in user changes the status of an anonymous reply or topic, or
@@ -175,8 +200,11 @@ function bbp_fix_post_author( $data = array(), $postarr = array() ) {
 	}
 
 	// Is the post by an anonymous user?
-	if ( ( bbp_get_topic_post_type() === $data['post_type'] && ! bbp_is_topic_anonymous( $postarr['ID'] ) ) ||
-	     ( bbp_get_reply_post_type() === $data['post_type'] && ! bbp_is_reply_anonymous( $postarr['ID'] ) ) ) {
+	if (
+		( bbp_get_topic_post_type() === $data['post_type'] && ! bbp_is_topic_anonymous( $postarr['ID'] ) )
+		||
+		( bbp_get_reply_post_type() === $data['post_type'] && ! bbp_is_reply_anonymous( $postarr['ID'] ) )
+	) {
 		return $data;
 	}
 
@@ -188,7 +216,7 @@ function bbp_fix_post_author( $data = array(), $postarr = array() ) {
 }
 
 /**
- * Use the previous status when restoring a topic or reply.
+ * Use the previous status when restoring a forum, topic, or reply.
  *
  * Fixes an issue since WordPress 5.6.0. See
  * {@link https://bbpress.trac.wordpress.org/ticket/3433}.
@@ -201,8 +229,8 @@ function bbp_fix_post_author( $data = array(), $postarr = array() ) {
  */
 function bbp_fix_untrash_post_status( $new_status = 'draft', $post_id = 0, $previous_status = 'pending' ) {
 
-	// Bail if not Topic or Reply
-	if ( ! bbp_is_topic( $post_id ) && ! bbp_is_reply( $post_id ) ) {
+	// Bail if not a forum, topic, or reply
+	if ( ! bbp_is_forum( $post_id ) && ! bbp_is_topic( $post_id ) && ! bbp_is_reply( $post_id ) ) {
 		return $new_status;
 	}
 
@@ -212,6 +240,133 @@ function bbp_fix_untrash_post_status( $new_status = 'draft', $post_id = 0, $prev
 		: $new_status;
 
 	return $retval;
+}
+
+/**
+ * Update related counts when a topic or reply is created or changes status.
+ *
+ * @since 2.6.17
+ *
+ * @param string  $new_status New post status.
+ * @param string  $old_status Old post status.
+ * @param WP_Post $post       Post object.
+ */
+function bbp_update_counts_on_transition_post_status( $new_status = '', $old_status = '', $post = false ) {
+
+	/**
+	 * Short-circuits count updates for a persisted post-status transition.
+	 *
+	 * Returning a non-null value prevents the normal topic and reply count
+	 * updates. This allows integrations with custom post-status lifecycles or
+	 * count storage to replace the complete transition operation.
+	 *
+	 * @since 2.6.17
+	 *
+	 * @param null|bool $check      Whether to short-circuit count updates.
+	 * @param string    $new_status New post status.
+	 * @param string    $old_status Old post status.
+	 * @param WP_Post   $post       Post object.
+	 */
+	$check = apply_filters( 'bbp_pre_update_counts_on_transition_post_status', null, $new_status, $old_status, $post );
+	if ( null !== $check ) {
+		return (bool) $check;
+	}
+
+	// Bail if the status did not change
+	if ( $new_status === $old_status ) {
+		return;
+	}
+
+	$is_new = ( 'new' === $old_status );
+
+	// Topic counts
+	if ( bbp_get_topic_post_type() === $post->post_type ) {
+		$was_public        = in_array( $old_status, bbp_get_public_topic_statuses(), true );
+		$is_public         = in_array( $new_status, bbp_get_public_topic_statuses(), true );
+		$was_hidden        = in_array( $old_status, bbp_get_non_public_topic_statuses(), true );
+		$is_hidden         = in_array( $new_status, bbp_get_non_public_topic_statuses(), true );
+		$public_difference = (int) $is_public - (int) $was_public;
+		$hidden_difference = (int) $is_hidden - (int) $was_hidden;
+
+		// A new topic or count boundary crossing changes at least one count
+		if ( ! empty( $public_difference ) || ! empty( $hidden_difference ) ) {
+			$forum_id = $is_new
+				? $post->post_parent
+				: bbp_get_topic_forum_id( $post->ID );
+
+			// Update the forum's public topic count
+			if ( ! empty( $forum_id ) && ! empty( $public_difference ) ) {
+				bbp_bump_forum_topic_count( $forum_id, $public_difference );
+			}
+
+			// Update the forum's hidden topic count
+			if ( ! empty( $forum_id ) && ! empty( $hidden_difference ) ) {
+				bbp_bump_forum_topic_count_hidden( $forum_id, $hidden_difference );
+			}
+
+			// User counts only include public topics
+			if ( ! empty( $public_difference ) ) {
+				bbp_bump_user_topic_count( $post->post_author, $public_difference );
+			}
+
+			// Apply every public reply when its topic crosses the public boundary
+			if ( ! $is_new && ! empty( $forum_id ) && ! empty( $public_difference ) ) {
+				$reply_count      = bbp_get_topic_reply_count( $post->ID, true );
+				$reply_difference = $reply_count * $public_difference;
+
+				if ( ! empty( $reply_difference ) ) {
+					bbp_bump_forum_reply_count( $forum_id, $reply_difference );
+				}
+			}
+		}
+
+	// Reply counts
+	} elseif ( bbp_get_reply_post_type() === $post->post_type ) {
+		$was_public        = in_array( $old_status, bbp_get_public_reply_statuses(), true );
+		$is_public         = in_array( $new_status, bbp_get_public_reply_statuses(), true );
+		$was_hidden        = in_array( $old_status, bbp_get_non_public_reply_statuses(), true );
+		$is_hidden         = in_array( $new_status, bbp_get_non_public_reply_statuses(), true );
+		$public_difference = (int) $is_public - (int) $was_public;
+		$hidden_difference = (int) $is_hidden - (int) $was_hidden;
+
+		// A new reply or count boundary crossing changes at least one count
+		if ( ! empty( $public_difference ) || ! empty( $hidden_difference ) ) {
+			$topic_id = $is_new
+				? $post->post_parent
+				: bbp_get_reply_topic_id( $post->ID );
+			$forum_id = $is_new
+				? bbp_get_topic_forum_id( $topic_id )
+				: bbp_get_reply_forum_id( $post->ID );
+			$forum_public_difference = bbp_is_topic_public( $topic_id )
+				? $public_difference
+				: 0;
+
+			// Update the topic's public reply count
+			if ( ! empty( $topic_id ) && ! empty( $public_difference ) ) {
+				bbp_bump_topic_reply_count( $topic_id, $public_difference );
+			}
+
+			// Update the topic's hidden reply count
+			if ( ! empty( $topic_id ) && ! empty( $hidden_difference ) ) {
+				bbp_bump_topic_reply_count_hidden( $topic_id, $hidden_difference );
+			}
+
+			// Update the forum's public reply count
+			if ( ! empty( $forum_id ) && ! empty( $forum_public_difference ) ) {
+				bbp_bump_forum_reply_count( $forum_id, $forum_public_difference );
+			}
+
+			// Update the forum's hidden reply count
+			if ( ! empty( $forum_id ) && ! empty( $hidden_difference ) ) {
+				bbp_bump_forum_reply_count_hidden( $forum_id, $hidden_difference );
+			}
+
+			// User counts only include public replies
+			if ( ! empty( $public_difference ) ) {
+				bbp_bump_user_reply_count( $post->post_author, $public_difference );
+			}
+		}
+	}
 }
 
 /**
@@ -249,11 +404,11 @@ function bbp_past_edit_lock( $datetime = '', $utc = true ) {
 			// Period of time
 			$lockable = "+{$minutes} minutes";
 			if ( true === $utc ) {
-				$lockable .= " UTC";
+				$lockable .= ' UTC';
 			}
 
 			// Now
-			$cur_time  = current_time( 'timestamp', $utc );
+			$cur_time = current_time( 'timestamp', $utc ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 
 			// Get the duration in seconds
 			$duration  = strtotime( $lockable ) - $cur_time;
@@ -354,41 +509,45 @@ function bbp_get_trash_days( $context = 'forum' ) {
 function bbp_get_statistics( $args = array() ) {
 
 	// Parse arguments against default values
-	$r = bbp_parse_args( $args, array(
+	$r = bbp_parse_args(
+		$args,
+		array(
 
-		// Users
-		'count_users'           => true,
+			// Users
+			'count_users'           => true,
 
-		// Forums
-		'count_forums'          => true,
+			// Forums
+			'count_forums'          => true,
 
-		// Topics
-		'count_topics'          => true,
-		'count_pending_topics'  => true,
-		'count_private_topics'  => true,
-		'count_spam_topics'     => true,
-		'count_trash_topics'    => true,
-		'count_hidden_topics'   => true,
+			// Topics
+			'count_topics'          => true,
+			'count_pending_topics'  => true,
+			'count_private_topics'  => true,
+			'count_spam_topics'     => true,
+			'count_trash_topics'    => true,
+			'count_hidden_topics'   => true,
 
-		// Replies
-		'count_replies'         => true,
-		'count_pending_replies' => true,
-		'count_private_replies' => true,
-		'count_spam_replies'    => true,
-		'count_trash_replies'   => true,
-		'count_hidden_replies'  => true,
+			// Replies
+			'count_replies'         => true,
+			'count_pending_replies' => true,
+			'count_private_replies' => true,
+			'count_spam_replies'    => true,
+			'count_trash_replies'   => true,
+			'count_hidden_replies'  => true,
 
-		// Topic tags
-		'count_tags'            => true,
-		'count_empty_tags'      => true
+			// Topic tags
+			'count_tags'            => true,
+			'count_empty_tags'      => true
 
-	), 'get_statistics' );
+		),
+		'get_statistics'
+	);
 
 	// Defaults
-	$topic_count     = $topic_count_hidden    = 0;
-	$reply_count     = $reply_count_hidden    = 0;
-	$topic_tag_count = $empty_topic_tag_count = 0;
-	$hidden_topic_title = $hidden_reply_title = '';
+	$topic_count        = $topic_count_hidden    = 0;
+	$reply_count        = $reply_count_hidden    = 0;
+	$topic_tag_count    = $empty_topic_tag_count = 0;
+	$hidden_topic_title = $hidden_reply_title    = '';
 
 	// Post statuses
 	$publish = bbp_get_public_status_id();
@@ -439,30 +598,35 @@ function bbp_get_statistics( $args = array() ) {
 		// Pending
 		if ( ! empty( $r['count_pending_topics'] ) && ! empty( $caps['edit_others_topics'] ) ) {
 			$topics[ $pending ]       = bbp_number_not_negative( $all_topics->{$pending} );
+			/* translators: %s: Number of pending topics */
 			$topic_titles[ $pending ] = sprintf( esc_html__( 'Pending: %s', 'bbpress' ), bbp_number_format_i18n( $topics[ $pending ] ) );
 		}
 
 		// Private
 		if ( ! empty( $r['count_private_topics'] ) && ! empty( $caps['read_private_topics'] ) ) {
 			$topics[ $private ]       = bbp_number_not_negative( $all_topics->{$private} );
+			/* translators: %s: Number of private topics */
 			$topic_titles[ $private ] = sprintf( esc_html__( 'Private: %s', 'bbpress' ), bbp_number_format_i18n( $topics[ $private ] ) );
 		}
 
 		// Hidden
 		if ( ! empty( $r['count_hidden_topics'] ) && ! empty( $caps['read_hidden_topics'] ) ) {
 			$topics[ $hidden ]       = bbp_number_not_negative( $all_topics->{$hidden} );
+			/* translators: %s: Number of hidden topics */
 			$topic_titles[ $hidden ] = sprintf( esc_html__( 'Hidden: %s', 'bbpress' ), bbp_number_format_i18n( $topics[ $hidden ] ) );
 		}
 
 		// Spam
 		if ( ! empty( $r['count_spam_topics'] ) && ! empty( $caps['edit_others_topics'] ) ) {
 			$topics[ $spam ]       = bbp_number_not_negative( $all_topics->{$spam} );
+			/* translators: %s: Number of spam topics */
 			$topic_titles[ $spam ] = sprintf( esc_html__( 'Spammed: %s', 'bbpress' ), bbp_number_format_i18n( $topics[ $spam ] ) );
 		}
 
 		// Trash
 		if ( ! empty( $r['count_trash_topics'] ) && ! empty( $caps['view_trash'] ) ) {
 			$topics[ $trash ]       = bbp_number_not_negative( $all_topics->{$trash} );
+			/* translators: %s: Number of trashed topics */
 			$topic_titles[ $trash ] = sprintf( esc_html__( 'Trashed: %s', 'bbpress' ), bbp_number_format_i18n( $topics[ $trash ] ) );
 		}
 
@@ -488,30 +652,35 @@ function bbp_get_statistics( $args = array() ) {
 		// Pending
 		if ( ! empty( $r['count_pending_replies'] ) && ! empty( $caps['edit_others_replies'] ) ) {
 			$replies[ $pending ]      = bbp_number_not_negative( $all_replies->{$pending} );
+			/* translators: %s: Number of pending replies */
 			$reply_titles[ $pending ] = sprintf( esc_html__( 'Pending: %s', 'bbpress' ), bbp_number_format_i18n( $replies[ $pending ] ) );
 		}
 
 		// Private
 		if ( ! empty( $r['count_private_replies'] ) && ! empty( $caps['read_private_replies'] ) ) {
 			$replies[ $private ]      = bbp_number_not_negative( $all_replies->{$private} );
+			/* translators: %s: Number of private replies */
 			$reply_titles[ $private ] = sprintf( esc_html__( 'Private: %s', 'bbpress' ), bbp_number_format_i18n( $replies[ $private ] ) );
 		}
 
 		// Hidden
 		if ( ! empty( $r['count_hidden_replies'] ) && ! empty( $caps['read_hidden_replies'] ) ) {
 			$replies[ $hidden ]      = bbp_number_not_negative( $all_replies->{$hidden} );
+			/* translators: %s: Number of hidden replies */
 			$reply_titles[ $hidden ] = sprintf( esc_html__( 'Hidden: %s', 'bbpress' ), bbp_number_format_i18n( $replies[ $hidden ] ) );
 		}
 
 		// Spam
 		if ( ! empty( $r['count_spam_replies'] ) && ! empty( $caps['edit_others_replies'] ) ) {
 			$replies[ $spam ]      = bbp_number_not_negative( $all_replies->{$spam} );
+			/* translators: %s: Number of spam replies */
 			$reply_titles[ $spam ] = sprintf( esc_html__( 'Spammed: %s', 'bbpress' ), bbp_number_format_i18n( $replies[ $spam ] ) );
 		}
 
 		// Trash
 		if ( ! empty( $r['count_trash_replies'] ) && ! empty( $caps['view_trash'] ) ) {
 			$replies[ $trash ]      = bbp_number_not_negative( $all_replies->{$trash} );
+			/* translators: %s: Number of trashed replies */
 			$reply_titles[ $trash ] = sprintf( esc_html__( 'Trashed: %s', 'bbpress' ), bbp_number_format_i18n( $replies[ $trash ] ) );
 		}
 
@@ -529,7 +698,12 @@ function bbp_get_statistics( $args = array() ) {
 		$tt_id = bbp_get_topic_tag_tax_id();
 
 		// Get the count
-		$topic_tag_count = wp_count_terms( $tt_id, array( 'hide_empty' => true ) );
+		$topic_tag_count = wp_count_terms(
+			array(
+				'taxonomy'   => $tt_id,
+				'hide_empty' => true
+			)
+		);
 
 		// Empty tags
 		if ( ! empty( $r['count_empty_tags'] ) && ! empty( 'edit_topic_tags' ) ) {
@@ -589,11 +763,15 @@ function bbp_get_statistics( $args = array() ) {
 function bbp_filter_anonymous_post_data( $args = array() ) {
 
 	// Parse arguments against default values
-	$r = bbp_parse_args( $args, array(
-		'bbp_anonymous_name'    => ! empty( $_POST['bbp_anonymous_name']    ) ? $_POST['bbp_anonymous_name']    : false,
-		'bbp_anonymous_email'   => ! empty( $_POST['bbp_anonymous_email']   ) ? $_POST['bbp_anonymous_email']   : false,
-		'bbp_anonymous_website' => ! empty( $_POST['bbp_anonymous_website'] ) ? $_POST['bbp_anonymous_website'] : false,
-	), 'filter_anonymous_post_data' );
+	$r = bbp_parse_args(
+		$args,
+		array(
+			'bbp_anonymous_name'    => ! empty( $_POST['bbp_anonymous_name']    ) ? $_POST['bbp_anonymous_name'] : false,
+			'bbp_anonymous_email'   => ! empty( $_POST['bbp_anonymous_email']   ) ? $_POST['bbp_anonymous_email'] : false,
+			'bbp_anonymous_website' => ! empty( $_POST['bbp_anonymous_website'] ) ? $_POST['bbp_anonymous_website'] : false,
+		),
+		'filter_anonymous_post_data'
+	);
 
 	// Strip invalid characters
 	$r = bbp_sanitize_anonymous_post_author( $r );
@@ -682,11 +860,15 @@ function bbp_update_anonymous_post_author( $post_id = 0, $anonymous_data = array
 	}
 
 	// Parse arguments against default values
-	$r = bbp_parse_args( $anonymous_data, array(
-		'bbp_anonymous_name'    => '',
-		'bbp_anonymous_email'   => '',
-		'bbp_anonymous_website' => '',
-	), "update_{$post_type}" );
+	$r = bbp_parse_args(
+		$anonymous_data,
+		array(
+			'bbp_anonymous_name'    => '',
+			'bbp_anonymous_email'   => '',
+			'bbp_anonymous_website' => '',
+		),
+		"update_{$post_type}"
+	);
 
 	// Update all anonymous metas
 	foreach ( $r as $anon_key => $anon_value ) {
@@ -711,14 +893,18 @@ function bbp_update_anonymous_post_author( $post_id = 0, $anonymous_data = array
 function bbp_check_for_duplicate( $post_data = array() ) {
 
 	// Parse arguments against default values
-	$r = bbp_parse_args( $post_data, array(
-		'post_author'    => 0,
-		'post_type'      => array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ),
-		'post_parent'    => 0,
-		'post_content'   => '',
-		'post_status'    => bbp_get_trash_status_id(),
-		'anonymous_data' => array()
-	), 'check_for_duplicate' );
+	$r = bbp_parse_args(
+		$post_data,
+		array(
+			'post_author'    => 0,
+			'post_type'      => array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ),
+			'post_parent'    => 0,
+			'post_content'   => '',
+			'post_status'    => bbp_get_trash_status_id(),
+			'anonymous_data' => array()
+		),
+		'check_for_duplicate'
+	);
 
 	// No duplicate checks for those who can throttle
 	if ( user_can( (int) $r['post_author'], 'throttle' ) ) {
@@ -741,10 +927,17 @@ function bbp_check_for_duplicate( $post_data = array() ) {
 		if ( ! empty( $email ) && is_email( $email ) ) {
 
 			// Get the meta SQL
-			$clauses = get_meta_sql( array( array(
-				'key'   => '_bbp_anonymous_email',
-				'value' => $email,
-			) ), 'post', $bbp_db->posts, 'ID' );
+			$clauses = get_meta_sql(
+				array(
+					array(
+						'key'   => '_bbp_anonymous_email',
+						'value' => $email,
+					)
+				),
+				'post',
+				$bbp_db->posts,
+				'ID'
+			);
 
 			// Set clauses
 			$join  = $clauses['join'];
@@ -762,12 +955,12 @@ function bbp_check_for_duplicate( $post_data = array() ) {
 
 	// Prepare duplicate check query
 	$query  = "SELECT ID FROM {$bbp_db->posts} {$join}";
-	$query .= $bbp_db->prepare( "WHERE post_type = %s AND post_status != %s AND post_author = %d AND post_content = %s", $r['post_type'], $r['post_status'], $r['post_author'], $r['post_content'] );
+	$query .= $bbp_db->prepare('WHERE post_type = %s AND post_status != %s AND post_author = %d AND post_content = %s', $r['post_type'], $r['post_status'], $r['post_author'], $r['post_content'] );
 	$query .= ! empty( $r['post_parent'] )
-		? $bbp_db->prepare( " AND post_parent = %d", $r['post_parent'] )
+		? $bbp_db->prepare( ' AND post_parent = %d', $r['post_parent'] )
 		: '';
 	$query .= $where;
-	$query .= " LIMIT 1";
+	$query .= ' LIMIT 1';
 	$dupe   = apply_filters( 'bbp_check_for_duplicate_query', $query, $r );
 
 	// Dupe found
@@ -1048,6 +1241,60 @@ function bbp_get_do_not_reply_address() {
 }
 
 /**
+ * Remove subscribers who cannot read notification content.
+ *
+ * Subscription relationships can outlive a user's access to a forum. Check
+ * current access immediately before preparing a notification so restricted
+ * content is not sent to former participants.
+ *
+ * @since 2.6.17
+ *
+ * @param array $user_ids Subscriber user IDs.
+ * @param int   $forum_id Forum ID.
+ * @param int   $topic_id Topic ID.
+ * @param int   $reply_id Reply ID.
+ * @return array User IDs that can read the notification content.
+ */
+function bbp_filter_subscription_user_ids( $user_ids = array(), $forum_id = 0, $topic_id = 0, $reply_id = 0 ) {
+	$forum_id = bbp_get_forum_id( $forum_id );
+	$topic_id = bbp_get_topic_id( $topic_id );
+	$reply_id = bbp_get_reply_id( $reply_id );
+
+	foreach ( $user_ids as $key => $user_id ) {
+		$can_view_forum = user_can( $user_id, 'read_forum', $forum_id );
+
+		/**
+		 * Filters whether a subscription recipient can view a forum.
+		 *
+		 * @since 2.6.17
+		 *
+		 * @param bool $can_view Whether the user can view the forum.
+		 * @param int  $user_id  User ID.
+		 * @param int  $forum_id Forum ID.
+		 * @param int  $topic_id Topic ID.
+		 * @param int  $reply_id Reply ID.
+		 */
+		$can_view_forum = (bool) apply_filters( 'bbp_subscription_user_can_view_forum', $can_view_forum, $user_id, $forum_id, $topic_id, $reply_id );
+
+		$can_view = user_can( $user_id, 'spectate' ) && $can_view_forum;
+
+		if ( ! empty( $topic_id ) ) {
+			$can_view = $can_view && user_can( $user_id, 'read_topic', $topic_id );
+		}
+
+		if ( ! empty( $reply_id ) ) {
+			$can_view = $can_view && user_can( $user_id, 'read_reply', $reply_id );
+		}
+
+		if ( false === $can_view ) {
+			unset( $user_ids[ $key ] );
+		}
+	}
+
+	return $user_ids;
+}
+
+/**
  * Sends notification emails for new replies to subscribed topics
  *
  * Gets new post ID and check if there are subscribed users to that topic, and
@@ -1087,6 +1334,7 @@ function bbp_notify_topic_subscribers( $reply_id = 0, $topic_id = 0, $forum_id =
 	$reply_id = bbp_get_reply_id( $reply_id );
 	$topic_id = bbp_get_topic_id( $topic_id );
 	$forum_id = bbp_get_forum_id( $forum_id );
+	$password_protected = bbp_is_password_protected( $reply_id );
 
 	/** Topic *****************************************************************/
 
@@ -1119,6 +1367,9 @@ function bbp_notify_topic_subscribers( $reply_id = 0, $topic_id = 0, $forum_id =
 	// Dedicated filter to manipulate user ID's to send emails to
 	$user_ids = (array) apply_filters( 'bbp_topic_subscription_user_ids', $user_ids, $reply_id, $topic_id );
 
+	// Remove subscribers who cannot read the notification content
+	$user_ids = bbp_filter_subscription_user_ids( $user_ids, $forum_id, $topic_id, $reply_id );
+
 	// Bail of the reply author was the only one subscribed.
 	if ( empty( $user_ids ) ) {
 		return false;
@@ -1139,14 +1390,39 @@ function bbp_notify_topic_subscribers( $reply_id = 0, $topic_id = 0, $forum_id =
 	bbp_remove_all_filters( 'the_title'             );
 
 	// Strip tags from text and setup mail data
-	$forum_title       = wp_specialchars_decode( strip_tags( bbp_get_forum_title( $forum_id ) ), ENT_QUOTES );
-	$topic_title       = wp_specialchars_decode( strip_tags( bbp_get_topic_title( $topic_id ) ), ENT_QUOTES );
-	$reply_author_name = wp_specialchars_decode( strip_tags( $reply_author_name ), ENT_QUOTES );
-	$reply_content     = wp_specialchars_decode( strip_tags( bbp_get_reply_content( $reply_id ) ), ENT_QUOTES );
+	$forum_title       = wp_specialchars_decode( strip_tags( bbp_get_forum_title( $forum_id ) ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+	$topic_title       = wp_specialchars_decode( strip_tags( bbp_get_topic_title( $topic_id ) ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
 	$reply_url         = bbp_get_reply_url( $reply_id );
 
-	// For plugins to filter messages per reply/topic/user
-	$message = sprintf( esc_html__( '%1$s wrote:
+	// Do not include protected content in subscription emails
+	if ( ! empty( $password_protected ) ) {
+		$message = sprintf(
+
+			/* translators: %s: Reply URL */
+			esc_html__(
+				'A new reply was posted in a password-protected discussion.
+
+Post Link: %s
+
+-----------
+
+You are receiving this email because you subscribed to a forum topic.
+
+Login and visit the topic to unsubscribe from these emails.',
+				'bbpress'
+			),
+			$reply_url
+		);
+
+	// Include the reply details in normal subscription emails
+	} else {
+		$reply_author_name = wp_specialchars_decode( strip_tags( $reply_author_name ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+		$reply_content     = wp_specialchars_decode( strip_tags( bbp_get_reply_content( $reply_id ) ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+		$message           = sprintf(
+
+			/* translators: 1: Reply author name, 2: Reply content, 3: Reply URL */
+			esc_html__(
+				'%1$s wrote:
 
 %2$s
 
@@ -1156,13 +1432,16 @@ Post Link: %3$s
 
 You are receiving this email because you subscribed to a forum topic.
 
-Login and visit the topic to unsubscribe from these emails.', 'bbpress' ),
+Login and visit the topic to unsubscribe from these emails.',
+				'bbpress'
+			),
+			$reply_author_name,
+			$reply_content,
+			$reply_url
+		);
+	}
 
-		$reply_author_name,
-		$reply_content,
-		$reply_url
-	);
-
+	// For plugins to filter messages per reply/topic/user
 	$message = apply_filters( 'bbp_subscription_mail_message', $message, $reply_id, $topic_id );
 	if ( empty( $message ) ) {
 		return;
@@ -1197,7 +1476,7 @@ Login and visit the topic to unsubscribe from these emails.', 'bbpress' ),
 
 	// Custom headers
 	$headers  = apply_filters( 'bbp_subscription_mail_headers', $headers  );
- 	$to_email = apply_filters( 'bbp_subscription_to_email',     $no_reply );
+	$to_email = apply_filters( 'bbp_subscription_to_email',     $no_reply );
 
 	// Before
 	do_action( 'bbp_pre_notify_subscribers', $reply_id, $topic_id, $user_ids );
@@ -1254,6 +1533,7 @@ function bbp_notify_forum_subscribers( $topic_id = 0, $forum_id = 0, $anonymous_
 
 	$topic_id = bbp_get_topic_id( $topic_id );
 	$forum_id = bbp_get_forum_id( $forum_id );
+	$password_protected = bbp_is_password_protected( $topic_id );
 
 	/**
 	 * Necessary for backwards compatibility
@@ -1286,6 +1566,9 @@ function bbp_notify_forum_subscribers( $topic_id = 0, $forum_id = 0, $anonymous_
 	// Dedicated filter to manipulate user ID's to send emails to
 	$user_ids = (array) apply_filters( 'bbp_forum_subscription_user_ids', $user_ids, $topic_id, $forum_id );
 
+	// Remove subscribers who cannot read the notification content
+	$user_ids = bbp_filter_subscription_user_ids( $user_ids, $forum_id, $topic_id );
+
 	// Bail of the reply author was the only one subscribed.
 	if ( empty( $user_ids ) ) {
 		return false;
@@ -1306,14 +1589,39 @@ function bbp_notify_forum_subscribers( $topic_id = 0, $forum_id = 0, $anonymous_
 	bbp_remove_all_filters( 'the_title'             );
 
 	// Strip tags from text and setup mail data
-	$forum_title       = wp_specialchars_decode( strip_tags( bbp_get_forum_title( $forum_id ) ), ENT_QUOTES );
-	$topic_title       = wp_specialchars_decode( strip_tags( bbp_get_topic_title( $topic_id ) ), ENT_QUOTES );
-	$topic_author_name = wp_specialchars_decode( strip_tags( $topic_author_name ), ENT_QUOTES );
-	$topic_content     = wp_specialchars_decode( strip_tags( bbp_get_topic_content( $topic_id ) ), ENT_QUOTES );
+	$forum_title       = wp_specialchars_decode( strip_tags( bbp_get_forum_title( $forum_id ) ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+	$topic_title       = wp_specialchars_decode( strip_tags( bbp_get_topic_title( $topic_id ) ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
 	$topic_url         = get_permalink( $topic_id );
 
-	// For plugins to filter messages per reply/topic/user
-	$message = sprintf( esc_html__( '%1$s wrote:
+	// Do not include protected content in subscription emails
+	if ( ! empty( $password_protected ) ) {
+		$message = sprintf(
+
+			/* translators: %s: Topic URL */
+			esc_html__(
+				'A new topic was posted in a password-protected discussion.
+
+Topic Link: %s
+
+-----------
+
+You are receiving this email because you subscribed to a forum.
+
+Login and visit the topic to unsubscribe from these emails.',
+				'bbpress'
+			),
+			$topic_url
+		);
+
+	// Include the topic details in normal subscription emails
+	} else {
+		$topic_author_name = wp_specialchars_decode( strip_tags( $topic_author_name ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+		$topic_content     = wp_specialchars_decode( strip_tags( bbp_get_topic_content( $topic_id ) ), ENT_QUOTES ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+		$message           = sprintf(
+
+			/* translators: 1: Topic author name, 2: Topic content, 3: Topic URL */
+			esc_html__(
+				'%1$s wrote:
 
 %2$s
 
@@ -1323,13 +1631,16 @@ Topic Link: %3$s
 
 You are receiving this email because you subscribed to a forum.
 
-Login and visit the topic to unsubscribe from these emails.', 'bbpress' ),
+Login and visit the topic to unsubscribe from these emails.',
+				'bbpress'
+			),
+			$topic_author_name,
+			$topic_content,
+			$topic_url
+		);
+	}
 
-		$topic_author_name,
-		$topic_content,
-		$topic_url
-	);
-
+	// For plugins to filter messages per reply/topic/user
 	$message = apply_filters( 'bbp_forum_subscription_mail_message', $message, $topic_id, $forum_id, $user_id );
 	if ( empty( $message ) ) {
 		return;
@@ -1444,11 +1755,13 @@ function bbp_get_email_addresses_from_user_ids( $user_ids = array() ) {
 			}
 
 			// Call get_users() in a way that users are cached
-			$loop_users = get_users( array(
-				'blog_id' => 0,
-				'fields'  => 'all_with_meta',
-				'include' => $loop_ids
-			) );
+			$loop_users = get_users(
+				array(
+					'blog_id' => 0,
+					'fields'  => 'all_with_meta',
+					'include' => $loop_ids
+				)
+			);
 
 			// Pluck emails from users
 			$loop_emails = wp_list_pluck( $loop_users, 'user_email' );
@@ -1730,24 +2043,26 @@ function bbp_get_public_child_last_id( $parent_id = 0, $post_type = 'post' ) {
 			break;
 	}
 
-	$query = new WP_Query( array(
-		'fields'         => 'ids',
-		'post_parent'    => $parent_id,
-		'post_status'    => $post_status,
-		'post_type'      => $post_type,
-		'posts_per_page' => 1,
-		'orderby'        => array(
-			'post_date' => 'DESC',
-			'ID'        => 'DESC'
-		),
+	$query = new WP_Query(
+		array(
+			'fields'         => 'ids',
+			'post_parent'    => $parent_id,
+			'post_status'    => $post_status,
+			'post_type'      => $post_type,
+			'posts_per_page' => 1,
+			'orderby'        => array(
+				'post_date' => 'DESC',
+				'ID'        => 'DESC'
+			),
 
-		// Performance
-		'suppress_filters'       => true,
-		'update_post_term_cache' => false,
-		'update_post_meta_cache' => false,
-		'ignore_sticky_posts'    => true,
-		'no_found_rows'          => true
-	) );
+			// Performance
+			'suppress_filters'       => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'no_found_rows'          => true
+		)
+	);
 	$child_id = array_shift( $query->posts );
 	unset( $query );
 
@@ -1766,7 +2081,14 @@ function bbp_get_child_counts( $parent_id = 0 ) {
 
 	// Create cache key
 	$parent_id    = absint( $parent_id );
-	$key          = md5( serialize( array( 'parent_id' => $parent_id, 'post_type' => bbp_get_post_types() ) ) );
+	$key          = md5(
+		serialize(
+			array(
+				'parent_id' => $parent_id,
+				'post_type' => bbp_get_post_types()
+			)
+		)
+	);
 	$last_changed = wp_cache_get_last_changed( 'bbpress_posts' );
 	$cache_key    = "bbp_child_counts:{$key}:{$last_changed}";
 
@@ -1994,25 +2316,27 @@ function bbp_get_public_child_ids( $parent_id = 0, $post_type = 'post' ) {
 			break;
 	}
 
-	$query = new WP_Query( array(
-		'fields'         => 'ids',
-		'post_parent'    => $parent_id,
-		'post_status'    => $post_status,
-		'post_type'      => $post_type,
-		'posts_per_page' => -1,
-		'orderby'        => array(
-			'post_date' => 'DESC',
-			'ID'        => 'DESC'
-		),
+	$query = new WP_Query(
+		array(
+			'fields'         => 'ids',
+			'post_parent'    => $parent_id,
+			'post_status'    => $post_status,
+			'post_type'      => $post_type,
+			'posts_per_page' => -1,
+			'orderby'        => array(
+				'post_date' => 'DESC',
+				'ID'        => 'DESC'
+			),
 
-		// Performance
-		'nopaging'               => true,
-		'suppress_filters'       => true,
-		'update_post_term_cache' => false,
-		'update_post_meta_cache' => false,
-		'ignore_sticky_posts'    => true,
-		'no_found_rows'          => true
-	) );
+			// Performance
+			'nopaging'               => true,
+			'suppress_filters'       => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'no_found_rows'          => true
+		)
+	);
 
 	$child_ids = ! empty( $query->posts )
 		? $query->posts
@@ -2043,11 +2367,15 @@ function bbp_get_all_child_ids( $parent_id = 0, $post_type = 'post' ) {
 
 	// Make cache key
 	$not_in = array( 'draft', 'future' );
-	$key    = md5( serialize( array(
-		'parent_id'   => $parent_id,
-		'post_type'   => $post_type,
-		'post_status' => $not_in
-	) ) );
+	$key    = md5(
+		serialize(
+			array(
+				'parent_id'   => $parent_id,
+				'post_type'   => $post_type,
+				'post_status' => $not_in
+			)
+		)
+	);
 
 	// Check last changed
 	$last_changed = wp_cache_get_last_changed( 'bbpress_posts' );
@@ -2106,12 +2434,16 @@ function bbp_update_post_family_caches( $objects = array() ) {
 	$post_ids = array();
 
 	// Filter the types of IDs to prime
-	$ids = apply_filters( 'bbp_update_post_family_caches', array(
-		'_bbp_last_active_id',
-		'_bbp_last_reply_id',
-		'_bbp_last_topic_id',
-		'_bbp_reply_to'
-	), $objects );
+	$ids = apply_filters(
+		'bbp_update_post_family_caches',
+		array(
+			'_bbp_last_active_id',
+			'_bbp_last_reply_id',
+			'_bbp_last_topic_id',
+			'_bbp_reply_to'
+		),
+		$objects
+	);
 
 	// Get the last active IDs
 	foreach ( $objects as $object ) {
@@ -2380,18 +2712,26 @@ function bbp_request_feed_trap( $query_vars = array() ) {
 						if ( ! empty( $select_query_vars ) ) {
 
 							// Load up our own query
-							query_posts( array_merge( array(
-								'post_type' => bbp_get_forum_post_type(),
-								'feed'      => true
-							), $select_query_vars ) );
+							// phpcs:ignore WordPress.WP.DiscouragedFunctions.query_posts_query_posts
+							query_posts(
+								array_merge(
+									array(
+										'post_type' => bbp_get_forum_post_type(),
+										'feed'      => true
+									),
+									$select_query_vars
+								)
+							);
 
 							// Restrict to specific forum ID
-							$meta_query = array( array(
-								'key'     => '_bbp_forum_id',
-								'value'   => bbp_get_forum_id(),
-								'type'    => 'NUMERIC',
-								'compare' => '='
-							) );
+							$meta_query = array(
+								array(
+									'key'     => '_bbp_forum_id',
+									'value'   => bbp_get_forum_id(),
+									'type'    => 'NUMERIC',
+									'compare' => '='
+								)
+							);
 						}
 
 						// Only forum replies
@@ -2462,10 +2802,16 @@ function bbp_request_feed_trap( $query_vars = array() ) {
 						if ( ! empty( $select_query_vars ) ) {
 
 							// Load up our own query
-							query_posts( array_merge( array(
-								'post_type' => bbp_get_topic_post_type(),
-								'feed'      => true
-							), $select_query_vars ) );
+							// phpcs:ignore WordPress.WP.DiscouragedFunctions.query_posts_query_posts
+							query_posts(
+								array_merge(
+									array(
+										'post_type' => bbp_get_topic_post_type(),
+										'feed'      => true
+									),
+									$select_query_vars
+								)
+							);
 
 							// Output the feed
 							bbp_display_replies_feed_rss2( array( 'feed' => true ) );
@@ -2494,7 +2840,7 @@ function bbp_request_feed_trap( $query_vars = array() ) {
 						// The query
 						$the_query = array(
 							'posts_per_page' => bbp_get_replies_per_rss_page(),
-							'meta_query'     => array( array( ) ),
+							'meta_query'     => array( array() ),
 							'feed'           => true
 						);
 
@@ -2559,6 +2905,29 @@ function bbp_get_page_by_path( $path = '' ) {
 
 	// Filter & return
 	return apply_filters( 'bbp_get_page_by_path', $retval, $path );
+}
+
+/**
+ * Prevent WordPress from guessing permalinks for bbPress post types.
+ *
+ * bbPress post types are excluded from search because their visibility depends
+ * on forum access. Older versions of WordPress may otherwise guess a restricted
+ * forum or topic permalink from a partial slug and expose its full title.
+ *
+ * @since 2.6.17 bbPress
+ *
+ * @param bool $do_redirect_guess Whether to attempt to guess a redirect URL.
+ *
+ * @return bool Whether to attempt to guess a redirect URL.
+ */
+function bbp_do_not_guess_404_permalink( $do_redirect_guess = true ) {
+	$post_types = (array) get_query_var( 'post_type' );
+
+	if ( bbp_is_custom_post_type( $post_types ) ) {
+		$do_redirect_guess = false;
+	}
+
+	return $do_redirect_guess;
 }
 
 /**
