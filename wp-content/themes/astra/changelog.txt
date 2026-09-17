@@ -1,5 +1,15 @@
 *** Astra Changelog ***
 
+2026-09-17 - version 4.13.12
+* Fix: Scheduled Customizer changes failed to publish with a fatal error when the changeset was applied by WP-Cron or WP-CLI.
+* Fix: Firefox rendered top level dropdown arrows on a separate row below the menu item on older sites, a regression from the 4.13.11 navigation touch target change.
+* Fix: Header / Footer Builder - Button element with no URL set is now non-clickable, instead of rendering a link with a hand cursor on hover.
+* Fix: Breadcrumb - Line Height option now applies on the frontend for all breadcrumb sources, including third-party plugin breadcrumbs, instead of the fixed default line height.
+* Fix: Security - Live search now queries only the post types enabled in the Customizer, so no other post type can be pulled through the search request.
+* Fix: Customizer - Typography dropdown collapsed, hiding Line Height and Letter Spacing, when an imported template left the line-height unit unset.
+* Fix: RTL - The Dokan, WooCommerce Cart/Checkout blocks and LifterLMS compatibility stylesheets returned a 404, so those pages lost Astra's styling fixes.
+* Security: Fixed Stored Cross-Site Scripting in the Header Builder Account element, where the link's rel value was emitted as an unquoted HTML attribute.
+
 2026-09-08 - version 4.13.11
 * New: Blog / Archive - Truncation Marker field under Post Elements > Excerpt, setting the text shown at the end of trimmed excerpts - "[…]" by default, any text or markup you like, or empty to hide it.
 * New: Introduced the `astra_live_search_query_args` filter, allowing plugins to modify the query arguments used to fetch Live Search results.

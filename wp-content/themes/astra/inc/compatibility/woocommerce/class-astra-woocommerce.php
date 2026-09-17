@@ -848,7 +848,7 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 				( function_exists( 'dokan_is_cart_page' ) && dokan_is_cart_page() ) || // Cart page.
 				( function_exists( 'dokan_is_checkout_page' ) && dokan_is_checkout_page() ) || // Checkout page.
 				( function_exists( 'dokan_get_option' ) && is_page( dokan_get_option( 'dashboard', 'dokan_pages' ) ) ) || // Custom Dokan dashboard page.
-				is_page( get_option( 'woocommerce_myaccount_page_id' ) ) // WooCommerce My Account page.
+				( function_exists( 'dokan_get_option' ) && is_page( get_option( 'woocommerce_myaccount_page_id' ) ) ) // WooCommerce My Account page.
 			) {
 				$styles['astra-wc-dokan-compatibility'] = array(
 					'src'     => $css_uri . 'dokan-compatibility' . $file_prefix . '.css',

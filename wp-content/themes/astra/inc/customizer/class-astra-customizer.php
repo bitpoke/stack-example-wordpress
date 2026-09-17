@@ -165,6 +165,19 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			 */
 			return apply_filters( 'astra_is_astra_customizer', true );
 		}
+
+		/**
+		 * Whether this request needs the Customizer configurations registered.
+		 *
+		 * Includes WP-Cron and WP-CLI, where core publishes scheduled changesets.
+		 *
+		 * @since 4.13.12
+		 * @return bool
+		 */
+		public static function is_customizer_context() {
+			return is_admin() || is_customize_preview() || wp_doing_cron() || ( defined( 'WP_CLI' ) && WP_CLI );
+		}
+
 		/**
 		 * Constructor
 		 */
@@ -173,7 +186,8 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			add_action( 'astra_style_guide_site_icon', array( $this, 'site_icon_update' ) );
 
 			// Hooks that are necessary even if it is not Astra's customizer.
-			if ( is_admin() || is_customize_preview() ) {
+			if ( self::is_customizer_context() ) {
+				add_action( 'customize_register', array( $this, 'include_config_base' ), 1 );
 				add_action( 'customize_register', array( $this, 'include_configurations' ), 2 );
 				add_action( 'customize_register', array( $this, 'astra_pro_upgrade_configurations' ), 2 );
 			}
@@ -189,7 +203,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			 */
 			add_action( 'customize_preview_init', array( $this, 'preview_init' ) );
 
-			if ( is_admin() || is_customize_preview() ) {
+			if ( self::is_customizer_context() ) {
 				add_action( 'customize_register', array( $this, 'prepare_customizer_javascript_configs' ) );
 				add_action( 'customize_register', array( $this, 'prepare_group_configs' ), 9 );
 
@@ -1326,6 +1340,16 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		}
 
 		/**
+		 * Include the Customizer configuration base class.
+		 *
+		 * @since 4.13.12
+		 * @return void
+		 */
+		public function include_config_base() {
+			require_once ASTRA_THEME_DIR . 'inc/customizer/configurations/class-astra-customizer-config-base.php'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound -- Config base class every config loader extends; loaded on customize_register priority 1 so it exists before the priority 2 loaders run.
+		}
+
+		/**
 		 * Include Customizer Configuration files.
 		 *
 		 * @since 1.4.3
@@ -1333,7 +1357,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		 */
 		public function include_configurations() {
 			// @codingStandardsIgnoreStart WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
-			require ASTRA_THEME_DIR . 'inc/customizer/configurations/class-astra-customizer-config-base.php';
+			$this->include_config_base();
 
 			/**
 			 * Register Sections & Panels
@@ -2183,9 +2207,10 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
  * (customize_*, wp_ajax_*, astra_style_guide_site_icon). None fire on pure frontend
  * requests, so skip instantiation there. Static utilities on the class (e.g.
  * generate_logo_by_width(), is_astra_customizer(), logo_image_sizes()) remain
- * available because they don't require the instance.
+ * available because they don't require the instance. WP-Cron and WP-CLI are included
+ * because customize_register also fires there, when core publishes a scheduled changeset.
  */
-if ( is_admin() || is_customize_preview() ) {
+if ( Astra_Customizer::is_customizer_context() ) {
 	Astra_Customizer::get_instance();
 }
 

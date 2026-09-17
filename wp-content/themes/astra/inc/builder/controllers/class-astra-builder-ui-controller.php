@@ -437,7 +437,7 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 					$switch_to_default = true;
 					if ( 'default' !== $account_type && 'default' === $link_type && defined( 'ASTRA_EXT_VER' ) ) {
-						$new_tab = 'target=_self';
+						$new_tab = 'target="_self"';
 						if ( 'woocommerce' === $account_type && class_exists( 'WooCommerce' ) ) {
 							$woocommerce_link  = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) );
 							$link_url          = $woocommerce_link ? $woocommerce_link : '';
@@ -451,16 +451,13 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 					}
 
 					if ( $switch_to_default && '' !== $account_link && '' !== $account_link['url'] ) {
-
 						$link_url = $account_link['url'];
-
-						$new_tab = ( $account_link['new_tab'] ? 'target=_blank' : 'target=_self' );
-
-						$link_rel = ( ! empty( $account_link['link_rel'] ) ? 'rel=' . esc_attr( $account_link['link_rel'] ) : '' );
+						$new_tab  = $account_link['new_tab'] ? 'target="_blank"' : 'target="_self"';
+						$link_rel = ! empty( $account_link['link_rel'] ) ? 'rel="' . esc_attr( $account_link['link_rel'] ) . '"' : '';
 					}
 
 					if ( $action_type === 'link' || 'hover' === $show_menu ) {
-						$link_href = '' !== $link_url ? 'href=' . esc_url( $link_url ) : '';
+						$link_href = '' !== $link_url ? 'href="' . esc_url( $link_url ) . '"' : '';
 					}
 					$role = $action_type === 'link' ? 'link' : 'button';
 
@@ -483,7 +480,12 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 
 					?>
 					<div class="ast-header-account-inner-wrap">
-						<a class="<?php echo esc_attr( implode( ' ', $link_classes ) ); ?>" role="<?php echo esc_attr( $role ); ?>" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
+						<a
+							class="<?php echo esc_attr( implode( ' ', $link_classes ) ); ?>"
+							role="<?php echo esc_attr( $role ); ?>"
+							aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>"
+							<?php echo $link_href . ' ' . $new_tab . ' ' . $link_rel; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Each attribute is individually escaped above with esc_url()/esc_attr() or is a hardcoded literal. ?>
+						>
 
 							<?php
 							if ( 'avatar' === $login_profile_type ) {
@@ -546,14 +548,17 @@ if ( ! class_exists( 'Astra_Builder_UI_Controller' ) ) {
 						}
 
 						$link_url = $login_link['url'];
-						$new_tab  = ( $login_link['new_tab'] ? 'target=_blank' : 'target=_self' );
-
-						$link_rel = ( ! empty( $login_link['link_rel'] ) ? 'rel=' . esc_attr( $login_link['link_rel'] ) : '' );
+						$new_tab  = $login_link['new_tab'] ? 'target="_blank"' : 'target="_self"';
+						$link_rel = ! empty( $login_link['link_rel'] ) ? 'rel="' . esc_attr( $login_link['link_rel'] ) . '"' : '';
 					}
 
-					$link_href = 'href=' . esc_url( $link_url ) . '';
+					$link_href = 'href="' . esc_url( $link_url ) . '"';
 					?>
-					<a class="<?php echo esc_attr( implode( ' ', $logged_out_style_class ) ); ?>" aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>" <?php echo esc_attr( $link_href . ' ' . $new_tab . ' ' . $link_rel ); ?> >
+					<a
+						class="<?php echo esc_attr( implode( ' ', $logged_out_style_class ) ); ?>"
+						aria-label="<?php esc_attr_e( 'Account icon link', 'astra' ); ?>"
+						<?php echo $link_href . ' ' . $new_tab . ' ' . $link_rel; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Each attribute is individually escaped above with esc_url()/esc_attr() or is a hardcoded literal. ?>
+					>
 						<?php if ( 'icon' === $logged_out_style ) { ?>
 							<?php echo self::fetch_svg_icon( $icon_skin ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php

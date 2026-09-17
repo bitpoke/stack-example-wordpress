@@ -4968,6 +4968,11 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						'display'             => '-ms-flexbox',
 						'display'             => 'flex',
 					),
+					// Tap target for the top level dropdown toggle, safe only next to the flex rule above - on the inline-block fallback Firefox breaks the arrow onto its own row.
+					'#ast-desktop-header .main-header-menu > .menu-item.menu-item-has-children > .menu-link .ast-header-navigation-arrow' => array(
+						'padding-' . astra_flip_rtl_alignment( 'right' ) => '10px',
+						'margin-' . astra_flip_rtl_alignment( 'right' )  => '-10px',
+					),
 				);
 
 				if ( false === Astra_Builder_Helper::$is_header_footer_builder_active ) {
