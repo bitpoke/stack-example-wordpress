@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce 11.1.0\n"
+"Project-Id-Version: WooCommerce 11.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-03T09:15:51+00:00\n"
+"POT-Creation-Date: 2026-09-18T11:19:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woocommerce\n"
@@ -24933,59 +24933,59 @@ msgstr ""
 msgid "Cancelled product image regeneration job."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:280
+#: includes/class-wc-rest-authentication.php:284
 msgid "The provided API key cannot be used to access this endpoint."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:383
+#: includes/class-wc-rest-authentication.php:387
 msgid "Consumer secret is invalid."
 msgstr ""
 
 #. translators: %s: amount of errors
-#: includes/class-wc-rest-authentication.php:501
+#: includes/class-wc-rest-authentication.php:505
 #, php-format
 msgid "Missing OAuth parameter %s"
 msgid_plural "Missing OAuth parameters %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-wc-rest-authentication.php:541
+#: includes/class-wc-rest-authentication.php:545
 msgid "Consumer key is invalid."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:585
+#: includes/class-wc-rest-authentication.php:589
 msgid "Invalid signature - failed to sort parameters."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:594
+#: includes/class-wc-rest-authentication.php:598
 msgid "Invalid signature - signature method is invalid."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:602
+#: includes/class-wc-rest-authentication.php:606
 msgid "Invalid signature - provided signature does not match."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:678
+#: includes/class-wc-rest-authentication.php:682
 msgid "Invalid timestamp."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:688
+#: includes/class-wc-rest-authentication.php:692
 msgid "Invalid nonce - nonce has already been used."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:750
+#: includes/class-wc-rest-authentication.php:754
 msgid "The API key provided does not have read permissions."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:758
+#: includes/class-wc-rest-authentication.php:762
 msgid "The API key provided does not have write permissions."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:765
+#: includes/class-wc-rest-authentication.php:769
 msgid "Unknown request method."
 msgstr ""
 
-#: includes/class-wc-rest-authentication.php:837
+#: includes/class-wc-rest-authentication.php:841
 msgid "WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field."
 msgstr ""
 
@@ -36482,140 +36482,145 @@ msgid "Jetpack is not connected."
 msgstr ""
 
 #: src/Admin/API/MobileAppQRLogin.php:439
+#: src/Admin/API/MobileAppQRLogin.php:448
+msgid "This action requires an interactive admin session."
+msgstr ""
+
+#: src/Admin/API/MobileAppQRLogin.php:456
 msgid "Sorry, you are not allowed to generate a mobile app QR login token."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:836
-#: src/Admin/API/MobileAppQRLogin.php:852
+#: src/Admin/API/MobileAppQRLogin.php:853
+#: src/Admin/API/MobileAppQRLogin.php:869
 msgid "QR login cannot be used because the site URL is not configured for HTTPS. Please update the WordPress Address (URL) in Settings → General to use https://."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:878
-#: src/Admin/API/MobileAppQRLogin.php:958
-#: src/Admin/API/MobileAppQRLogin.php:1507
-#: src/Admin/API/MobileAppQRLogin.php:1805
+#: src/Admin/API/MobileAppQRLogin.php:895
+#: src/Admin/API/MobileAppQRLogin.php:975
+#: src/Admin/API/MobileAppQRLogin.php:1524
+#: src/Admin/API/MobileAppQRLogin.php:1822
 #: assets/client/admin/chunks/1497.js:1
 msgid "QR login requires an HTTPS connection."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:894
-#: src/Admin/API/MobileAppQRLogin.php:1116
-#: src/Admin/API/MobileAppQRLogin.php:1364
+#: src/Admin/API/MobileAppQRLogin.php:911
+#: src/Admin/API/MobileAppQRLogin.php:1133
+#: src/Admin/API/MobileAppQRLogin.php:1381
 msgid "Application Passwords are not available on this site."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:903
+#: src/Admin/API/MobileAppQRLogin.php:920
 msgid "Too many QR login requests. Please try again later."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:983
-#: src/Admin/API/MobileAppQRLogin.php:1002
-#: src/Admin/API/MobileAppQRLogin.php:1010
+#: src/Admin/API/MobileAppQRLogin.php:1000
+#: src/Admin/API/MobileAppQRLogin.php:1019
+#: src/Admin/API/MobileAppQRLogin.php:1027
 msgid "Too many exchange attempts. Please try again later."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:990
-#: src/Admin/API/MobileAppQRLogin.php:1018
-#: src/Admin/API/MobileAppQRLogin.php:1030
-#: src/Admin/API/MobileAppQRLogin.php:1536
-#: src/Admin/API/MobileAppQRLogin.php:1593
-#: src/Admin/API/MobileAppQRLogin.php:1674
-#: src/Admin/API/MobileAppQRLogin.php:1697
-#: src/Admin/API/MobileAppQRLogin.php:1708
+#: src/Admin/API/MobileAppQRLogin.php:1007
+#: src/Admin/API/MobileAppQRLogin.php:1035
+#: src/Admin/API/MobileAppQRLogin.php:1047
+#: src/Admin/API/MobileAppQRLogin.php:1553
+#: src/Admin/API/MobileAppQRLogin.php:1610
+#: src/Admin/API/MobileAppQRLogin.php:1691
+#: src/Admin/API/MobileAppQRLogin.php:1714
+#: src/Admin/API/MobileAppQRLogin.php:1725
 msgid "Invalid or expired QR login token."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1042
+#: src/Admin/API/MobileAppQRLogin.php:1059
 msgid "QR login token has expired."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1057
+#: src/Admin/API/MobileAppQRLogin.php:1074
 msgid "This QR login session has not been approved."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1094
+#: src/Admin/API/MobileAppQRLogin.php:1111
 msgid "Invalid exchange grant for this QR login session."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1106
+#: src/Admin/API/MobileAppQRLogin.php:1123
 msgid "User associated with this token no longer exists."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1129
+#: src/Admin/API/MobileAppQRLogin.php:1146
 msgid "Application passwords are not available for your account. Please contact the site administrator for assistance."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1166
+#: src/Admin/API/MobileAppQRLogin.php:1183
 msgid "Could not create a mobile-app credential. Please try again, or contact your site administrator."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1246
+#: src/Admin/API/MobileAppQRLogin.php:1263
 msgid "Too many QR login status checks. Please try again later."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1356
+#: src/Admin/API/MobileAppQRLogin.php:1373
 msgid "Too many QR login revoke attempts. Please try again later."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1376
+#: src/Admin/API/MobileAppQRLogin.php:1393
 msgid "No matching Application Password to revoke."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1385
+#: src/Admin/API/MobileAppQRLogin.php:1402
 msgid "Could not revoke the Application Password. Please try again."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1460
+#: src/Admin/API/MobileAppQRLogin.php:1477
 msgid "WooCommerce Mobile App (QR Login)"
 msgstr ""
 
 #. translators: 1: device descriptor (model or OS, e.g. "iPhone 15"). 2: ISO date the AP was created.
-#: src/Admin/API/MobileAppQRLogin.php:1468
+#: src/Admin/API/MobileAppQRLogin.php:1485
 #, php-format
 msgid "Woo Mobile · %1$s · %2$s"
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1515
+#: src/Admin/API/MobileAppQRLogin.php:1532
 msgid "This Woo mobile app version is no longer supported for QR sign-in. Please update the app and try again."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1529
-#: src/Admin/API/MobileAppQRLogin.php:1544
+#: src/Admin/API/MobileAppQRLogin.php:1546
+#: src/Admin/API/MobileAppQRLogin.php:1561
 msgid "Too many QR login scans. Please try again later."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1553
+#: src/Admin/API/MobileAppQRLogin.php:1570
 msgid "QR login requires device information from the mobile app."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1569
-#: src/Admin/API/MobileAppQRLogin.php:1579
+#: src/Admin/API/MobileAppQRLogin.php:1586
+#: src/Admin/API/MobileAppQRLogin.php:1596
 msgid "This QR login session is no longer accepting scans."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1661
+#: src/Admin/API/MobileAppQRLogin.php:1678
 msgid "Too many QR login approval attempts. Please try again later."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1685
+#: src/Admin/API/MobileAppQRLogin.php:1702
 msgid "This QR login session is already being approved."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1720
-#: src/Admin/API/MobileAppQRLogin.php:1743
+#: src/Admin/API/MobileAppQRLogin.php:1737
+#: src/Admin/API/MobileAppQRLogin.php:1760
 msgid "The QR login challenge has expired. Please generate a new code."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1730
+#: src/Admin/API/MobileAppQRLogin.php:1747
 msgid "This QR login session is not waiting for approval."
 msgstr ""
 
-#: src/Admin/API/MobileAppQRLogin.php:1835
+#: src/Admin/API/MobileAppQRLogin.php:1852
 msgid "Too many QR login session-status checks. Please try again later."
 msgstr ""
 
 #. translators: %s: site name.
-#: src/Admin/API/MobileAppQRLogin.php:2058
+#: src/Admin/API/MobileAppQRLogin.php:2075
 #, php-format
 msgid "A new device signed in to %s"
 msgstr ""
@@ -36988,15 +36993,15 @@ msgstr ""
 msgid "Sorry, you cannot view these options."
 msgstr ""
 
-#: src/Admin/API/Options.php:134
+#: src/Admin/API/Options.php:129
 msgid "You must supply an array of options and values."
 msgstr ""
 
-#: src/Admin/API/Options.php:139
+#: src/Admin/API/Options.php:134
 msgid "Sorry, you cannot manage these options."
 msgstr ""
 
-#: src/Admin/API/Options.php:310
+#: src/Admin/API/Options.php:296
 msgid "Array of options with associated values."
 msgstr ""
 
