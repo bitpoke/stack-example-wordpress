@@ -1231,21 +1231,23 @@ function bbp_sanitize_displayed_user_field( $value = '', $field = '', $context =
  *
  * @since 2.1.0 bbPress (r3813)
  * @since 2.6.10 bbPress (r7244) Switched from direct query to get_user_by()
+ * @since 2.6.18 Improved input handling and email login support.
  */
 function bbp_user_maybe_convert_pass() {
 
 	// Sanitize login
-	$login = ! empty( $_POST['log'] )
+	$login = isset( $_POST['log'] ) && is_string( $_POST['log'] )
 		? sanitize_user( wp_unslash( $_POST['log'] ) )
 		: '';
 
-	// Sanitize password
-	$pass = ! empty( $_POST['pwd'] )
-		? trim( $_POST['pwd'] )
+	// Unslash password without changing its literal value
+	$wp_pass = isset( $_POST['pwd'] ) && is_string( $_POST['pwd'] )
+		? $_POST['pwd']
 		: '';
+	$pass    = wp_unslash( $wp_pass );
 
 	// Bail if no username or password
-	if ( empty( $login ) || empty( $pass ) ) {
+	if ( '' === $login || '' === $pass ) {
 		return;
 	}
 
@@ -1263,9 +1265,29 @@ function bbp_user_maybe_convert_pass() {
 	}
 
 	// Get converter class from usermeta
-	$class = get_user_meta( $user->ID, '_bbp_class', true );
+	$class             = get_user_meta( $user->ID, '_bbp_class', true );
+	$has_password_meta = metadata_exists( 'user', $user->ID, '_bbp_password' );
+	$user_pass_class   = false;
 
-	// Bail if no converter class in meta
+	// Older imports may have password metadata without a converter class. Use
+	// the saved import platform as a candidate; its password callback still
+	// needs to verify the stored legacy hash before changing the account.
+	if ( empty( $class ) && $has_password_meta ) {
+		$class = get_option( '_bbp_converter_platform' );
+	}
+
+	// Completed Drupal 7 imports stored the source hash directly in user_pass
+	// and removed the temporary password metadata. Use only the saved Drupal 7
+	// platform for this legacy storage shape.
+	if ( ! $has_password_meta ) {
+		if ( empty( $class ) && 'Drupal7' === get_option( '_bbp_converter_platform' ) ) {
+			$class = 'Drupal7';
+		}
+
+		$user_pass_class = ( 'Drupal7' === $class );
+	}
+
+	// Bail if no converter class
 	if ( empty( $class ) || ! is_string( $class ) ) {
 		return;
 	}
@@ -1281,8 +1303,12 @@ function bbp_user_maybe_convert_pass() {
 		return;
 	}
 
+	// Try to upgrade a password stored directly in the users table
+	if ( $user_pass_class && ( $converter instanceof BBP_Converter_Base ) && method_exists( $converter, 'callback_user_pass' ) ) {
+		$converter->callback_user_pass( $user, $pass, $wp_pass );
+
 	// Try to call the password conversion callback method
-	if ( ( $converter instanceof BBP_Converter_Base ) && method_exists( $converter, 'callback_pass' ) ) {
-		$converter->callback_pass( $login, $pass );
+	} elseif ( ( $converter instanceof BBP_Converter_Base ) && method_exists( $converter, 'callback_pass' ) ) {
+		$converter->callback_pass( $user->user_login, $pass, $wp_pass );
 	}
 }

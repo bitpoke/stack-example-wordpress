@@ -156,12 +156,6 @@ abstract class BBP_Converter_Base {
 		// Setup old forum Database
 		$this->opdb = new BBP_Converter_DB( $db_user, $db_pass, $db_name, $db_host );
 
-		// Connection failed
-		if ( ! $this->opdb->db_connect( false ) ) {
-			$error = new WP_Error( 'bbp_converter_db_connection_failed', esc_html__( 'Database connection failed.', 'bbpress' ) );
-			wp_send_json_error( $error );
-		}
-
 		// Maybe setup the database prefix
 		$this->opdb->prefix = $db_prefix;
 
@@ -274,6 +268,13 @@ abstract class BBP_Converter_Base {
 	public function setup_globals() {}
 
 	/**
+	 * Setup fields that require an active source database connection.
+	 *
+	 * @since 2.6.18
+	 */
+	protected function setup_source_fields() {}
+
+	/**
 	 * Convert Forums
 	 */
 	public function convert_forums( $start = 1 ) {
@@ -332,10 +333,22 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Convert Table
 	 *
+	 * @since 2.6.18 Connects to the source database when conversion begins.
+	 *
 	 * @param string $to_type The destination type
 	 * @param int $start Start row
 	 */
 	public function convert_table( $to_type, $start ) {
+
+		// Connect to the source database only when conversion begins. This keeps
+		// first-login password upgrades independent of the source database.
+		if ( ! $this->opdb->db_connect( false ) ) {
+			$error = new WP_Error( 'bbp_converter_db_connection_failed', esc_html__( 'Database connection failed.', 'bbpress' ) );
+			wp_send_json_error( $error );
+		}
+
+		// Setup fields that depend on the connected source schema.
+		$this->setup_source_fields();
 
 		// Set some defaults
 		$has_insert     = false;
@@ -621,7 +634,7 @@ abstract class BBP_Converter_Base {
 							/** Forum, Topic, Reply ***************************/
 
 							default :
-								$post_id = wp_insert_post( $insert_post, true );
+								$post_id = $this->insert_post( $insert_post );
 
 								if ( is_numeric( $post_id ) ) {
 									foreach ( $insert_postmeta as $key => $value ) {
@@ -676,6 +689,34 @@ abstract class BBP_Converter_Base {
 		}
 
 		return ! $has_insert;
+	}
+
+	/**
+	 * Insert a converted post without changing imported counts.
+	 *
+	 * Converter field maps include the source forum and topic counts. Prevent
+	 * post-status transition callbacks from incrementing those counts again as
+	 * each converted topic and reply is inserted.
+	 *
+	 * @since 2.6.18
+	 *
+	 * @param array $post_data Converted post data.
+	 * @return int|WP_Error Post ID on success, WP_Error on failure.
+	 */
+	protected function insert_post( $post_data = array() ) {
+		$suppress_count_updates = function () {
+			return false;
+		};
+
+		add_filter( 'bbp_pre_update_counts_on_transition_post_status', $suppress_count_updates );
+
+		try {
+			$post_id = wp_insert_post( $post_data, true );
+		} finally {
+			remove_filter( 'bbp_pre_update_counts_on_transition_post_status', $suppress_count_updates );
+		}
+
+		return $post_id;
 	}
 
 	/**
@@ -922,11 +963,19 @@ abstract class BBP_Converter_Base {
 	/**
 	 * This method deletes passwords from the wp database.
 	 *
-	 * @param int $start Start row
+	 * @param int $start Current cleanup offset. Zero starts a new pass.
 	 */
-	public function clean_passwords( $start = 1 ) {
+	public function clean_passwords( $start = 0 ) {
 		$has_delete = false;
-		$query      = $this->wpdb->prepare( "SELECT user_id, meta_value FROM {$this->wpdb->usermeta} WHERE meta_key = %s LIMIT {$start}, {$this->max_rows}", '_bbp_password' );
+		$max_rows   = (int) $this->max_rows;
+
+		// Use an immutable cursor because native hashes are moved to user_pass and
+		// deleted from usermeta. An offset would skip rows as the result set shrinks.
+		$cursor = empty( $start )
+			? 0
+			: (int) get_option( '_bbp_converter_passwords_cursor', 0 );
+
+		$query      = $this->wpdb->prepare( "SELECT umeta_id, user_id, meta_value FROM {$this->wpdb->usermeta} WHERE meta_key = %s AND umeta_id > %d ORDER BY umeta_id ASC LIMIT {$max_rows}", '_bbp_password', $cursor );
 		$converted  = $this->get_results( $query, ARRAY_A );
 
 		if ( ! empty( $converted ) ) {
@@ -935,10 +984,16 @@ abstract class BBP_Converter_Base {
 					$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->users} SET user_pass = '' WHERE ID = %d", $value['user_id'] ) );
 				} else {
 					$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->users} SET user_pass = %s WHERE ID = %d", $value['meta_value'], $value['user_id'] ) );
-					$this->query( $this->wpdb->prepare( "DELETE FROM {$this->wpdb->usermeta} WHERE meta_key = %s AND user_id = %d", '_bbp_password', $value['user_id'] ) );
+					delete_user_meta( $value['user_id'], '_bbp_password' );
 				}
+
+				clean_user_cache( $value['user_id'] );
+				$cursor = (int) $value['umeta_id'];
 			}
+			update_option( '_bbp_converter_passwords_cursor', $cursor, false );
 			$has_delete = true;
+		} else {
+			delete_option( '_bbp_converter_passwords_cursor' );
 		}
 
 		return ! $has_delete;
@@ -1070,12 +1125,90 @@ abstract class BBP_Converter_Base {
 	/** Callbacks *************************************************************/
 
 	/**
+	 * Unserialize imported password metadata as an array.
+	 *
+	 * @since 2.6.18
+	 *
+	 * @param string $serialized_pass Serialized password metadata.
+	 * @return array|false Password metadata, or false when invalid.
+	 */
+	protected function unserialize_pass( $serialized_pass = '' ) {
+		if ( ! is_string( $serialized_pass ) || ! is_serialized( $serialized_pass ) || $this->serialized_pass_has_object( $serialized_pass ) ) {
+			return false;
+		}
+
+		// Malformed source metadata may still warn after is_serialized().
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		$pass_array = @unserialize(
+			$serialized_pass,
+			array(
+				'allowed_classes' => false,
+				'max_depth'       => 1,
+			)
+		);
+
+		return is_array( $pass_array )
+			? $pass_array
+			: false;
+	}
+
+	/**
+	 * Check serialized password metadata for object tokens without instantiating it.
+	 *
+	 * Serialized strings are skipped by their declared byte length so object-like
+	 * text inside a hash or salt does not cause a false positive.
+	 *
+	 * @since 2.6.18
+	 *
+	 * @param string $serialized_pass Serialized password metadata.
+	 * @return bool True when the value contains an object or is unsafe to parse.
+	 */
+	private function serialized_pass_has_object( $serialized_pass = '' ) {
+		$length = strlen( $serialized_pass );
+
+		for ( $offset = 0; $offset < $length; ++$offset ) {
+			$token = $serialized_pass[ $offset ];
+
+			if ( in_array( $token, array( 'O', 'C', 'E' ), true ) && isset( $serialized_pass[ $offset + 1 ] ) && ':' === $serialized_pass[ $offset + 1 ] ) {
+				return true;
+			}
+
+			if ( 's' !== $token || ! isset( $serialized_pass[ $offset + 1 ] ) || ':' !== $serialized_pass[ $offset + 1 ] ) {
+				continue;
+			}
+
+			$length_end = strpos( $serialized_pass, ':"', $offset + 2 );
+			if ( false === $length_end ) {
+				return true;
+			}
+
+			$string_length = substr( $serialized_pass, $offset + 2, $length_end - $offset - 2 );
+			$string_start  = $length_end + 2;
+			if ( '' === $string_length || ! ctype_digit( $string_length ) || (int) $string_length > $length - $string_start ) {
+				return true;
+			}
+
+			$string_end = $string_start + (int) $string_length;
+			if ( ! isset( $serialized_pass[ $string_end ] ) || '"' !== $serialized_pass[ $string_end ] ) {
+				return true;
+			}
+
+			$offset = $string_end;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Run password through wp_hash_password()
 	 *
-	 * @param string $username
-	 * @param string $password
+	 * @since 2.6.18 Added the `$wp_password` parameter.
+	 *
+	 * @param string      $username
+	 * @param string      $password
+	 * @param string|null $wp_password Optional slashed password for WordPress.
 	 */
-	public function callback_pass( $username = '', $password = '' ) {
+	public function callback_pass( $username = '', $password = '', $wp_password = null ) {
 
 		// Get user – Bail if not found
 		$user = $this->get_row( $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->users} WHERE user_login = %s AND user_pass = '' LIMIT 1", $username ) );
@@ -1105,15 +1238,15 @@ abstract class BBP_Converter_Base {
 		}
 
 		// Hash the password
-		$new_pass = wp_hash_password( $password );
+		$new_pass = wp_hash_password( is_null( $wp_password ) ? $password : $wp_password );
 
 		// Update
 		$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->users} SET user_pass = %s WHERE ID = %d", $new_pass, $user->ID ) );
 
 		// Clean up
 		unset( $new_pass );
-		$this->query( $this->wpdb->prepare( "DELETE FROM {$this->wpdb->usermeta} WHERE meta_key = %s AND user_id = %d", '_bbp_password', $user->ID ) );
-		$this->query( $this->wpdb->prepare( "DELETE FROM {$this->wpdb->usermeta} WHERE meta_key = %s AND user_id = %d", '_bbp_class',    $user->ID ) );
+		delete_user_meta( $user->ID, '_bbp_password' );
+		delete_user_meta( $user->ID, '_bbp_class'    );
 
 		// Clean the cache for this user since their password was
 		// upgraded from the old platform to the new.
@@ -1215,7 +1348,7 @@ abstract class BBP_Converter_Base {
 	 * @return string
 	 */
 	private function callback_check_anonymous( $field ) {
-		$field = ( $this->callback_userid( $field ) == 0 )
+		$field = ! $this->callback_userid( $field )
 			? 'true'
 			: 'false';
 

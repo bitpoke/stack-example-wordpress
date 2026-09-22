@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: bbPress 2.6.17\n"
+"Project-Id-Version: bbPress 2.6.18\n"
 "Report-Msgid-Bugs-To: https://bbpress.trac.wordpress.org\n"
 "Last-Translator: JOHN JAMES JACOBY <jjj@bbpress.org>\n"
 "Language-Team: ENGLISH <jjj@bbpress.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-16T06:55:31+00:00\n"
+"POT-Creation-Date: 2026-09-21T14:21:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: bbpress\n"
@@ -431,7 +431,7 @@ msgstr ""
 msgid "You can update all the forums on your network through this page. It works by calling the update script of each site automatically. Hit the link below to update."
 msgstr ""
 
-#: includes/admin/classes/class-bbp-converter-base.php:161
+#: includes/admin/classes/class-bbp-converter-base.php:346
 msgid "Database connection failed."
 msgstr ""
 

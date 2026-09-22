@@ -450,7 +450,7 @@ class AEF extends BBP_Converter_Base {
 
 		// User password verify class (Stored in usermeta for verifying password)
 		$this->field_map[] = array(
-			'to_type'      => 'users',
+			'to_type'      => 'user',
 			'to_fieldname' => '_bbp_class',
 			'default'      => 'AEF'
 		);
@@ -578,7 +578,7 @@ class AEF extends BBP_Converter_Base {
 	public function callback_savepass( $field, $row ) {
 		$pass_array = array(
 			'hash' => $field,
-			'salt' => $row['salt']
+			'salt' => isset( $row['salt'] ) ? wp_slash( (string) $row['salt'] ) : ''
 		);
 
 		return $pass_array;
@@ -591,24 +591,28 @@ class AEF extends BBP_Converter_Base {
 	public function authenticate_pass( $password, $serialized_pass ) {
 
 		// Unserialize the password, with safeguards
-		$pass_array = unserialize(
-			$serialized_pass,
-			array(
-				'allowed_classes' => false,
-				'max_depth'       => 1
-			)
-		);
+		$pass_array = $this->unserialize_pass( $serialized_pass );
 
-		// Bail if missing values
-		if ( ! is_array( $pass_array ) || ! isset( $pass_array['hash'], $pass_array['salt'] ) ) {
+		// Bail if missing or invalid values
+		if ( ! is_string( $password ) || ! is_array( $pass_array ) || ! isset( $pass_array['hash'], $pass_array['salt'] ) || ! is_string( $pass_array['hash'] ) || ! is_string( $pass_array['salt'] ) ) {
 			return false;
 		}
 
-		// Return comparison
-		return hash_equals(
-			$pass_array['hash'],
-			md5( md5( $password ) . $pass_array['salt'] )
-		);
+		// AEF encodes and escapes the submitted password before hashing it
+		foreach ( array( 'UTF-8', 'ISO-8859-1' ) as $charset ) {
+			$legacy_password = addslashes( htmlentities( $password, ENT_QUOTES, $charset ) );
+
+			// Do not let invalid input collapse to an empty password
+			if ( ( '' === $legacy_password ) && ( '' !== $password ) ) {
+				continue;
+			}
+
+			if ( hash_equals( $pass_array['hash'], md5( $pass_array['salt'] . $legacy_password ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
