@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce 11.1.1\n"
+"Project-Id-Version: WooCommerce 11.1.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-18T11:19:28+00:00\n"
+"POT-Creation-Date: 2026-09-22T14:03:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woocommerce\n"
@@ -9988,7 +9988,7 @@ msgid "Free!"
 msgstr ""
 
 #: includes/abstracts/abstract-wc-order.php:2730
-#: includes/wc-template-functions.php:2775
+#: includes/wc-template-functions.php:2785
 #: assets/client/blocks/cart.js:22
 #: assets/client/blocks/checkout.js:21
 #: assets/client/blocks/wc-block-library.js:34
@@ -10254,7 +10254,7 @@ msgstr ""
 #: includes/gateways/cheque/class-wc-gateway-cheque.php:88
 #: includes/gateways/cod/class-wc-gateway-cod.php:114
 #: includes/gateways/paypal/includes/settings-paypal.php:29
-#: includes/wc-template-functions.php:2334
+#: includes/wc-template-functions.php:2344
 #: src/Admin/API/ShippingPartnerSuggestions.php:180
 #: src/Internal/Admin/Onboarding/OnboardingIndustries.php:77
 #: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/AbstractPaymentGatewaySettingsSchema.php:293
@@ -10614,8 +10614,8 @@ msgstr ""
 #: includes/admin/class-wc-admin-assets.php:827
 #: includes/admin/settings/views/html-webhooks-edit.php:70
 #: includes/class-wc-frontend-scripts.php:768
-#: includes/wc-template-functions.php:3475
-#: includes/wc-template-functions.php:3476
+#: includes/wc-template-functions.php:3485
+#: includes/wc-template-functions.php:3486
 #: templates/cart/shipping-calculator.php:58
 msgid "Select an option&hellip;"
 msgstr ""
@@ -12509,7 +12509,7 @@ msgstr ""
 #: includes/admin/class-wc-admin-profile.php:138
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:91
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:163
-#: includes/wc-template-functions.php:3448
+#: includes/wc-template-functions.php:3458
 #: templates/cart/shipping-calculator.php:32
 msgid "Select a country / region&hellip;"
 msgstr ""
@@ -14195,7 +14195,7 @@ msgstr ""
 #: includes/class-wc-emails.php:594
 #: includes/legacy/abstract-wc-legacy-order.php:512
 #: includes/wc-account-functions.php:244
-#: includes/wc-template-functions.php:4196
+#: includes/wc-template-functions.php:4206
 #: src/Internal/Admin/Logging/FileV2/FileListTable.php:70
 #: src/Internal/Admin/Logging/PageController.php:378
 #: assets/client/admin/app/index.js:2
@@ -14915,7 +14915,7 @@ msgid "Stock"
 msgstr ""
 
 #: includes/admin/importers/class-wc-product-csv-importer-controller.php:819
-#: includes/wc-template-functions.php:4253
+#: includes/wc-template-functions.php:4263
 #: src/Blocks/BlockTypes/ProductSpecifications.php:64
 #: assets/client/admin/email-editor/index.js:2
 #: assets/client/admin/wp-admin-scripts/email-editor-integration.js:2
@@ -17303,7 +17303,7 @@ msgstr ""
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:114
 #: includes/admin/views/html-bulk-edit-product.php:150
 #: includes/admin/views/html-quick-edit-product.php:138
-#: includes/wc-template-functions.php:4246
+#: includes/wc-template-functions.php:4256
 #: src/Blocks/BlockTypes/ProductSpecifications.php:56
 #: assets/client/blocks/product-specifications.js:2
 #: assets/client/blocks/wc-block-library.js:130
@@ -18332,7 +18332,7 @@ msgstr ""
 
 #: includes/admin/settings/class-wc-settings-accounts.php:63
 #: includes/customizer/class-wc-shop-customizer.php:733
-#: includes/wc-template-functions.php:2763
+#: includes/wc-template-functions.php:2773
 #: src/Blocks/BlockTypes/Checkout.php:157
 #: src/Internal/Admin/Orders/ListTable.php:618
 #: templates/checkout/form-checkout.php:32
@@ -22258,7 +22258,7 @@ msgstr ""
 #: includes/class-wc-cart.php:1394
 #: includes/class-wc-frontend-scripts.php:742
 #: includes/wc-cart-functions.php:133
-#: includes/wc-template-functions.php:2750
+#: includes/wc-template-functions.php:2760
 #: src/Blocks/BlockTypes/ProductButton.php:409
 #: src/Blocks/BlockTypes/ProductButton.php:410
 msgid "View cart"
@@ -23025,7 +23025,7 @@ msgstr ""
 
 #: includes/class-wc-emails.php:874
 #: includes/class-wc-emails.php:879
-#: includes/wc-template-functions.php:2355
+#: includes/wc-template-functions.php:2365
 #: src/Blocks/BlockTypesController.php:243
 #: src/Blocks/Domain/Services/CheckoutFieldsFrontend.php:118
 #: templates/checkout/form-shipping.php:57
@@ -23075,8 +23075,8 @@ msgstr ""
 #. translators: %s is the rating value wrapped in HTML strong tags.
 #: includes/class-wc-embed.php:132
 #: includes/rest-api/Controllers/Version3/class-wc-rest-report-reviews-totals-controller.php:57
-#: includes/wc-template-functions.php:4359
-#: includes/wc-template-functions.php:4382
+#: includes/wc-template-functions.php:4369
+#: includes/wc-template-functions.php:4392
 #: includes/widgets/class-wc-widget-layered-nav-filters.php:123
 #: src/Blocks/BlockTypes/ProductRating.php:122
 #: src/Blocks/BlockTypes/ProductRatingStars.php:89
@@ -23346,7 +23346,7 @@ msgid "required"
 msgstr ""
 
 #: includes/class-wc-frontend-scripts.php:717
-#: includes/wc-template-functions.php:3392
+#: includes/wc-template-functions.php:3402
 msgid "optional"
 msgstr ""
 
@@ -27493,7 +27493,7 @@ msgstr ""
 #. translators: 1: current item count
 #. translators: %d: downloads count
 #: includes/legacy/abstract-wc-legacy-order.php:512
-#: includes/wc-template-functions.php:4196
+#: includes/wc-template-functions.php:4206
 #, php-format
 msgid "Download %d"
 msgstr ""
@@ -27625,7 +27625,7 @@ msgstr ""
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-attributes-v1-controller.php:487
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-categories-v1-controller.php:174
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:92
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:549
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:564
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-shipping-classes-v1-controller.php:94
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-tags-v1-controller.php:94
 #: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:84
@@ -29523,62 +29523,62 @@ msgstr ""
 msgid "Invalid product review ID."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:304
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:319
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:466
 msgid "Creating product review failed."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:350
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:365
 msgid "Updating product review failed."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:409
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:424
 msgid "The product review does not support trashing."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:413
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:428
 msgid "The comment has already been trashed."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:420
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:435
 msgid "The product review cannot be deleted."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:555
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:570
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:159
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:905
 #: src/StoreApi/Schemas/V1/ProductReviewSchema.php:108
 msgid "The content of the review."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:560
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:575
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:164
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:858
 #: src/StoreApi/Schemas/V1/ProductReviewSchema.php:57
 msgid "The date the review was created, in the site's timezone."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:565
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:580
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:174
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:913
 #: src/StoreApi/Schemas/V1/ProductReviewSchema.php:117
 msgid "Review rating (0 to 5)."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:570
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:585
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:179
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:894
 #: src/StoreApi/Schemas/V1/ProductReviewSchema.php:102
 msgid "Reviewer name."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:575
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:590
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:184
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:899
 msgid "Reviewer email."
 msgstr ""
 
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:580
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:595
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:189
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:918
 #: src/StoreApi/Schemas/V1/ProductReviewSchema.php:123
@@ -34034,37 +34034,37 @@ msgid "Relevance"
 msgstr ""
 
 #. translators: 1: product name 2: image position
-#: includes/wc-template-functions.php:2027
+#: includes/wc-template-functions.php:2037
 #, php-format
 msgid "%1$s - Image %2$s"
 msgstr ""
 
 #. translators: %s: reviews count
-#: includes/wc-template-functions.php:2365
+#: includes/wc-template-functions.php:2375
 #, php-format
 msgid "Reviews (%d)"
 msgstr ""
 
-#: includes/wc-template-functions.php:2861
+#: includes/wc-template-functions.php:2871
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
 
-#: includes/wc-template-functions.php:2914
+#: includes/wc-template-functions.php:2924
 msgid "Cart is not available. This may indicate that the function is being called before woocommerce_init or in an admin context."
 msgstr ""
 
-#: includes/wc-template-functions.php:2932
+#: includes/wc-template-functions.php:2942
 msgid "Place order"
 msgstr ""
 
-#: includes/wc-template-functions.php:3456
+#: includes/wc-template-functions.php:3466
 msgid "Update country / region"
 msgstr ""
 
-#: includes/wc-template-functions.php:3545
-#: includes/wc-template-functions.php:3726
-#: includes/wc-template-functions.php:3746
+#: includes/wc-template-functions.php:3555
+#: includes/wc-template-functions.php:3736
+#: includes/wc-template-functions.php:3756
 #: src/Blocks/BlockTypes/Dropdown.php:74
 #: src/Blocks/BlockTypes/Dropdown.php:81
 #: src/Blocks/BlockTypes/Dropdown.php:95
@@ -34075,7 +34075,7 @@ msgstr ""
 
 #. translators: 1: rating 2: rating count
 #. translators: %1$s is referring to the average rating value, %2$s is referring to the number of ratings
-#: includes/wc-template-functions.php:4379
+#: includes/wc-template-functions.php:4389
 #: assets/client/blocks/all-products.js:15
 #: assets/client/blocks/cart-frontend.js:6
 #: assets/client/blocks/cart.js:17
@@ -34090,20 +34090,20 @@ msgid_plural "Rated %1$s out of 5 based on %2$s customer ratings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/wc-template-functions.php:4397
+#: includes/wc-template-functions.php:4407
 msgctxt "min_price"
 msgid "From:"
 msgstr ""
 
-#: includes/wc-template-functions.php:4444
+#: includes/wc-template-functions.php:4454
 msgid "Your cart is currently empty."
 msgstr ""
 
-#: includes/wc-template-functions.php:4674
+#: includes/wc-template-functions.php:4684
 msgid "Shop"
 msgstr ""
 
-#: includes/wc-template-functions.php:4790
+#: includes/wc-template-functions.php:4800
 msgid "Page"
 msgstr ""
 
@@ -40246,7 +40246,7 @@ msgstr ""
 #: src/Gateways/PayPal/Notices.php:183
 #: src/Gateways/PayPal/Notices.php:218
 #: src/Internal/ShopperLists/ShopperListRenderer.php:255
-#: templates/order/customer-review-order.php:123
+#: templates/order/customer-review-order.php:127
 #: assets/client/admin/app/index.js:2
 #: assets/client/admin/chunks/3132.js:1
 #: assets/client/admin/chunks/settings-payments-main.js:1
@@ -42465,10 +42465,10 @@ msgid "Order line items. Only present when include_line_items is true."
 msgstr ""
 
 #: src/Internal/Abilities/Domain/Traits/OrderAbilityTrait.php:164
-#: src/Internal/OrderReviews/SubmissionHandler.php:74
-#: src/Internal/OrderReviews/SubmissionHandler.php:78
-#: src/Internal/OrderReviews/SubmissionHandler.php:83
-#: src/Internal/OrderReviews/SubmissionHandler.php:96
+#: src/Internal/OrderReviews/SubmissionHandler.php:104
+#: src/Internal/OrderReviews/SubmissionHandler.php:108
+#: src/Internal/OrderReviews/SubmissionHandler.php:113
+#: src/Internal/OrderReviews/SubmissionHandler.php:126
 #: src/Internal/Orders/OrderActionsRestController.php:506
 #: src/Internal/Traits/OrderAttributionMeta.php:212
 msgid "Order not found."
@@ -48626,11 +48626,11 @@ msgstr ""
 msgid "Skipped scheduling review-request email for order %1$d: %2$s."
 msgstr ""
 
-#: src/Internal/OrderReviews/SubmissionHandler.php:69
+#: src/Internal/OrderReviews/SubmissionHandler.php:99
 msgid "Security check failed."
 msgstr ""
 
-#: src/Internal/OrderReviews/SubmissionHandler.php:265
+#: src/Internal/OrderReviews/SubmissionHandler.php:323
 #: assets/client/blocks/product-review-author-name.js:1
 #: assets/client/blocks/wc-block-library.js:137
 msgid "Anonymous"
@@ -55221,7 +55221,7 @@ msgid "Average order value"
 msgstr ""
 
 #: templates/order/customer-review-order-empty.php:31
-#: templates/order/customer-review-order.php:180
+#: templates/order/customer-review-order.php:184
 msgid "Thank you for your reviews"
 msgstr ""
 
@@ -55230,7 +55230,7 @@ msgid "Nothing to review here"
 msgstr ""
 
 #: templates/order/customer-review-order-empty.php:44
-#: templates/order/customer-review-order.php:183
+#: templates/order/customer-review-order.php:187
 msgid "Your feedback helps other customers make better purchasing decisions."
 msgstr ""
 
@@ -55242,27 +55242,27 @@ msgstr ""
 msgid "Share your experience with this product..."
 msgstr ""
 
-#: templates/order/customer-review-order.php:96
+#: templates/order/customer-review-order.php:100
 msgid "Review your order"
 msgstr ""
 
-#: templates/order/customer-review-order.php:100
+#: templates/order/customer-review-order.php:104
 msgid "Loved something? Not so much? Share a quick review for what you bought. Feel free to skip any product."
 msgstr ""
 
-#: templates/order/customer-review-order.php:104
+#: templates/order/customer-review-order.php:108
 msgid "* Mandatory fields"
 msgstr ""
 
-#: templates/order/customer-review-order.php:114
+#: templates/order/customer-review-order.php:118
 msgid "Don't see all your products?"
 msgstr ""
 
-#: templates/order/customer-review-order.php:117
+#: templates/order/customer-review-order.php:121
 msgid "Some products may not be available for review because the store has disabled reviews for them."
 msgstr ""
 
-#: templates/order/customer-review-order.php:173
+#: templates/order/customer-review-order.php:177
 msgid "Submit reviews"
 msgstr ""
 

@@ -4,7 +4,7 @@ Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 11.1.0
+Stable tag: 11.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -170,15 +170,12 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 11.1.1 2026-09-18 =
+= 11.1.2 2026-09-22 =
 
 **WooCommerce**
 
-* Fix - Add a stricter dispatch check to REST API key authentication. [#68827](https://github.com/woocommerce/woocommerce/pull/68827)
-* Fix - Prevent unstyled Mini Cart drawer contents from appearing below the footer when the Mini Cart block is hidden. [#68790](https://github.com/woocommerce/woocommerce/pull/68790)
-* Fix - Update legacy options API permission checks. [#68862](https://github.com/woocommerce/woocommerce/pull/68862)
-* Fix - Update mobile app login permission checks. [#68862](https://github.com/woocommerce/woocommerce/pull/68862)
-* Fix - Update session cookie validation. [#68862](https://github.com/woocommerce/woocommerce/pull/68862)
+* Fix - Prevent variation gallery rendering from recursively requesting variation data. [#68965](https://github.com/woocommerce/woocommerce/pull/68965)
+* Fix - Route order review submissions through WordPress's comment pipeline so they receive the same filtering and moderation as other comments. [#68961](https://github.com/woocommerce/woocommerce/pull/68961)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
