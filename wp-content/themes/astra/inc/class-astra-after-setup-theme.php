@@ -253,6 +253,29 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 						'color' => $color,
 					);
 				}
+
+				// Append user defined custom global colors - theme.json only ships the 9 theme slots.
+				$existing_slugs = wp_list_pluck( $new_palette_data, 'slug' );
+
+				foreach ( Astra_Global_Palette::get_custom_colors() as $custom_index => $custom_color ) {
+					if ( ! empty( $custom_color['retired'] ) ) {
+						continue;
+					}
+
+					$slot_index = 9 + (int) $custom_index;
+					$slot_slug  = 'ast-global-color-' . $slot_index;
+
+					// A child theme's own theme.json may already declare this slug.
+					if ( in_array( $slot_slug, $existing_slugs, true ) ) {
+						continue;
+					}
+
+					$new_palette_data[] = array(
+						'name'  => $custom_color['name'],
+						'slug'  => $slot_slug,
+						'color' => 'var(--' . $slot_slug . ')',
+					);
+				}
 			}
 
 			if ( ! empty( $new_palette_data ) ) {

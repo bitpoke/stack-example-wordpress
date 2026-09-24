@@ -1700,6 +1700,32 @@ function astra_get_fonts_display_property() {
 }
 
 /**
+ * Strip characters that would let a CSS value escape its own declaration.
+ *
+ * astra_parse_css() concatenates values into "selector{property:value;}" with no
+ * CSS-context escaping, and esc_attr() does not neutralise ";", "{" or "}".
+ *
+ * @since 4.14.0
+ * @param mixed $value Raw CSS value.
+ * @return string Value safe to interpolate into a CSS declaration.
+ */
+function astra_sanitize_css_value( $value ) {
+	if ( ! is_scalar( $value ) ) {
+		return '';
+	}
+
+	$value = (string) $value;
+
+	// Loop until stable so a removed char can't let a forbidden sequence re-form (e.g. "/{*" -> "/*").
+	do {
+		$prev  = $value;
+		$value = str_replace( array( '/*', '*/', ';', '{', '}', '<', '>' ), '', $value );
+	} while ( $prev !== $value );
+
+	return trim( $value );
+}
+
+/**
  * Sanitize background meta object for post meta storage.
  *
  * @since 4.12.4
@@ -1719,7 +1745,7 @@ function astra_sanitize_background_meta( $meta_value ) {
 			continue;
 		}
 		foreach ( $meta_value[ $device ] as $key => $value ) {
-			$sanitized[ $device ][ $key ] = sanitize_text_field( $value );
+			$sanitized[ $device ][ $key ] = astra_sanitize_css_value( sanitize_text_field( $value ) );
 		}
 	}
 
@@ -1742,10 +1768,10 @@ function astra_get_responsive_background_obj( $bg_obj_res, $device ) {
 	}
 
 	$bg_obj      = isset( $bg_obj_res[ $device ] ) ? $bg_obj_res[ $device ] : array();
-	$bg_img      = isset( $bg_obj['background-image'] ) ? esc_attr( $bg_obj['background-image'] ) : '';
-	$bg_tab_img  = isset( $bg_obj_res['tablet']['background-image'] ) ? esc_attr( $bg_obj_res['tablet']['background-image'] ) : '';
-	$bg_desk_img = isset( $bg_obj_res['desktop']['background-image'] ) ? esc_attr( $bg_obj_res['desktop']['background-image'] ) : '';
-	$bg_color    = isset( $bg_obj['background-color'] ) ? esc_attr( $bg_obj['background-color'] ) : '';
+	$bg_img      = isset( $bg_obj['background-image'] ) ? astra_sanitize_css_value( esc_attr( $bg_obj['background-image'] ) ) : '';
+	$bg_tab_img  = isset( $bg_obj_res['tablet']['background-image'] ) ? astra_sanitize_css_value( esc_attr( $bg_obj_res['tablet']['background-image'] ) ) : '';
+	$bg_desk_img = isset( $bg_obj_res['desktop']['background-image'] ) ? astra_sanitize_css_value( esc_attr( $bg_obj_res['desktop']['background-image'] ) ) : '';
+	$bg_color    = isset( $bg_obj['background-color'] ) ? astra_sanitize_css_value( esc_attr( $bg_obj['background-color'] ) ) : '';
 	$tablet_css  = isset( $bg_obj_res['tablet']['background-image'] ) && $bg_obj_res['tablet']['background-image'] ? true : false;
 	$desktop_css = isset( $bg_obj_res['desktop']['background-image'] ) && $bg_obj_res['desktop']['background-image'] ? true : false;
 
@@ -1786,11 +1812,12 @@ function astra_get_responsive_background_obj( $bg_obj_res, $device ) {
 				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				$overlay_type = isset( $bg_obj['overlay-type'] ) ? $bg_obj['overlay-type'] : 'none';
 				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-				$overlay_color = isset( $bg_obj['overlay-color'] ) ? esc_attr( $bg_obj['overlay-color'] ) : '';
+				$overlay_color = isset( $bg_obj['overlay-color'] ) ? astra_sanitize_css_value( esc_attr( $bg_obj['overlay-color'] ) ) : '';
 				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-				$overlay_grad = isset( $bg_obj['overlay-gradient'] ) ? esc_attr( $bg_obj['overlay-gradient'] ) : '';
+				$overlay_grad = isset( $bg_obj['overlay-gradient'] ) ? astra_sanitize_css_value( esc_attr( $bg_obj['overlay-gradient'] ) ) : '';
 				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-				$overlay_opacity = isset( $bg_obj['overlay-opacity'] ) ? $bg_obj['overlay-opacity'] : '';
+				// Force numeric before it reaches astra_hex_to_rgba()'s abs().
+				$overlay_opacity = isset( $bg_obj['overlay-opacity'] ) && '' !== $bg_obj['overlay-opacity'] ? floatval( $bg_obj['overlay-opacity'] ) : '';
 				/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 				if ( '' !== $bg_img ) {
@@ -1839,19 +1866,19 @@ function astra_get_responsive_background_obj( $bg_obj_res, $device ) {
 
 	if ( '' !== $bg_img ) {
 		if ( isset( $bg_obj['background-repeat'] ) ) {
-			$gen_bg_css['background-repeat'] = esc_attr( $bg_obj['background-repeat'] );
+			$gen_bg_css['background-repeat'] = astra_sanitize_css_value( esc_attr( $bg_obj['background-repeat'] ) );
 		}
 
 		if ( isset( $bg_obj['background-position'] ) ) {
-			$gen_bg_css['background-position'] = esc_attr( $bg_obj['background-position'] );
+			$gen_bg_css['background-position'] = astra_sanitize_css_value( esc_attr( $bg_obj['background-position'] ) );
 		}
 
 		if ( isset( $bg_obj['background-size'] ) ) {
-			$gen_bg_css['background-size'] = esc_attr( $bg_obj['background-size'] );
+			$gen_bg_css['background-size'] = astra_sanitize_css_value( esc_attr( $bg_obj['background-size'] ) );
 		}
 
 		if ( isset( $bg_obj['background-attachment'] ) ) {
-			$gen_bg_css['background-attachment'] = esc_attr( $bg_obj['background-attachment'] );
+			$gen_bg_css['background-attachment'] = astra_sanitize_css_value( esc_attr( $bg_obj['background-attachment'] ) );
 		}
 	}
 

@@ -830,6 +830,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'page_bg_dynamic_title'          => $page_bg_dynamic_title,
 					'global_color_palette'           => $global_palette,
 					'color_palette_labels'           => Astra_Global_Palette::get_palette_labels(),
+					'custom_global_colors'           => Astra_Global_Palette::get_custom_colors(),
 				)
 			);
 

@@ -178,7 +178,7 @@ if ( ! function_exists( 'astra_get_post_meta' ) ) {
 								/** @psalm-suppress ArgumentTypeCoercion */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 								$get_author_gravatar = get_avatar_url( $get_author_id, array( 'size' => astra_get_option( 'blog-meta-author-avatar-size', 25 ) ) );
 								/** @psalm-suppress PossiblyFalseOperand */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-								$output_str .= '<img class=' . esc_attr( 'ast-author-image' ) . ' src="' . $get_author_gravatar . '" alt="' . get_the_title() . '" />';
+								$output_str .= '<img class="ast-author-image" src="' . esc_url( (string) $get_author_gravatar ) . '" alt="' . esc_attr( get_the_title() ) . '" />';
 									/** @psalm-suppress PossiblyFalseOperand */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 							}
 						}

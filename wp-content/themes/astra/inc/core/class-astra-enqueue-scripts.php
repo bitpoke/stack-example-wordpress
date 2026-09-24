@@ -736,6 +736,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 					'search_post_types_labels'     => $search_post_type_label,
 					'search_language'              => astra_get_current_language_slug(),
 					'no_live_results_found'        => __( 'No results found', 'astra' ),
+					'search_results_label'         => __( 'Search results', 'astra' ),
 					'search_page_condition'        => is_search() && true === astra_get_option( 'ast-search-live-search' ) ? true : false,
 					'search_page_post_types'       => $search_page_post_types,
 					'search_page_post_type_labels' => $search_page_post_type_label,
@@ -828,16 +829,22 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 			$astra_global_palette_instance = new Astra_Global_Palette();
-			$astra_colors                  = array(
-				'var(--ast-global-color-0)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-0)' ),
-				'var(--ast-global-color-1)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-1)' ),
-				'var(--ast-global-color-2)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-2)' ),
-				'var(--ast-global-color-3)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-3)' ),
-				'var(--ast-global-color-4)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-4)' ),
-				'var(--ast-global-color-5)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-5)' ),
-				'var(--ast-global-color-6)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-6)' ),
-				'var(--ast-global-color-7)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-7)' ),
-				'var(--ast-global-color-8)'     => $astra_global_palette_instance->get_color_by_palette_variable( 'var(--ast-global-color-8)' ),
+			$astra_colors                  = array();
+
+			// Map every palette slot (9 theme slots + user defined custom colors) to its hex value.
+			$custom_global_colors = Astra_Global_Palette::get_custom_colors();
+			foreach ( array_keys( Astra_Global_Palette::get_palette_slugs() ) as $palette_index ) {
+				$palette_index = (int) $palette_index;
+
+				// Removed custom colors are not emitted anywhere, so skip their mapping too.
+				if ( $palette_index >= 9 && ( ! isset( $custom_global_colors[ $palette_index - 9 ] ) || ! empty( $custom_global_colors[ $palette_index - 9 ]['retired'] ) ) ) {
+					continue;
+				}
+				$palette_variable                  = 'var(--ast-global-color-' . $palette_index . ')';
+				$astra_colors[ $palette_variable ] = $astra_global_palette_instance->get_color_by_palette_variable( $palette_variable );
+			}
+
+			$astra_colors += array(
 				'ast_wp_version_higher_6_3'     => astra_wp_version_compare( '6.2.99', '>' ),
 				'ast_wp_version_higher_6_4'     => astra_wp_version_compare( '6.4.99', '>' ),
 				'is_dark_palette'               => Astra_Global_Palette::is_dark_palette(),

@@ -219,10 +219,11 @@ final class Astra_Builder_Customizer {
 		wp_enqueue_script(
 			'ahfb-customizer-preview',
 			ASTRA_THEME_URI . 'inc/assets/js/' . $js_prefix . 'customizer-preview' . $js_suffix . '.js',
-			array( 'customize-preview' ),
+			array( 'customize-preview', 'wp-i18n' ),
 			ASTRA_THEME_VERSION,
 			true
 		);
+		wp_set_script_translations( 'ahfb-customizer-preview', 'astra' );
 
 		wp_localize_script(
 			'ahfb-customizer-preview',

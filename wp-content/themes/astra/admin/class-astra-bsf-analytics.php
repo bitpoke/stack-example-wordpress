@@ -603,6 +603,23 @@ class Astra_BSF_Analytics {
 			)
 		);
 
+		// custom_global_colors_added: track once when the palette first has an active custom color.
+		if ( class_exists( 'Astra_Global_Palette' ) ) {
+			$custom_colors = Astra_Global_Palette::get_custom_colors();
+
+			foreach ( $custom_colors as $custom_color ) {
+				if ( empty( $custom_color['retired'] ) ) {
+					// Slots created, removed ones included -- shows how many of the nine a site uses.
+					self::$events->track(
+						'custom_global_colors_added',
+						ASTRA_THEME_VERSION,
+						array( 'custom_colors' => (string) count( $custom_colors ) )
+					);
+					break;
+				}
+			}
+		}
+
 		// Ensure events_record always exists in payload.
 		if ( ! isset( $astra_stats['events_record'] ) ) {
 			$astra_stats['events_record'] = array();

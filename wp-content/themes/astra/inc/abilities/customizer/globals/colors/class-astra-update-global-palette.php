@@ -166,8 +166,17 @@ class Astra_Update_Global_Palette extends Astra_Abstract_Ability {
 
 		$palette_data['palettes'] = isset( $palette_data['palettes'] ) && is_array( $palette_data['palettes'] ) ? $palette_data['palettes'] : array();
 
-		if ( ! isset( $palette_data['palettes'][ $palette_id ] ) ) {
-			$palette_data['palettes'][ $palette_id ] = array_fill( 0, 9, '#000000' );
+		$custom_colors_count = isset( $palette_data['customColors'] ) && is_array( $palette_data['customColors'] ) ? count( $palette_data['customColors'] ) : 0;
+
+		/** @psalm-suppress PossiblyUndefinedStringArrayOffset -- 'palettes' is guaranteed by the assignment above. */
+		if ( ! isset( $palette_data['palettes'][ $palette_id ] ) || ! is_array( $palette_data['palettes'][ $palette_id ] ) ) {
+			// A 9-slot seed would misalign the palette with the customColors metadata and truncate the live palette on apply.
+			$palette_data['palettes'][ $palette_id ] = array_merge( array_fill( 0, 9, '#000000' ), array_fill( 0, $custom_colors_count, '#FFFFFF' ) );
+		} elseif ( count( $palette_data['palettes'][ $palette_id ] ) < 9 + $custom_colors_count ) {
+			$palette_data['palettes'][ $palette_id ] = array_merge(
+				$palette_data['palettes'][ $palette_id ],
+				array_fill( 0, 9 + $custom_colors_count - count( $palette_data['palettes'][ $palette_id ] ), '#FFFFFF' )
+			);
 		}
 
 		$applied_preset = '';
@@ -188,7 +197,9 @@ class Astra_Update_Global_Palette extends Astra_Abstract_Ability {
 				}
 
 				if ( $preset_key && isset( $presets[ $preset_key ] ) ) {
-					$palette_data['palettes'][ $palette_id ] = $presets[ $preset_key ];
+					// Presets only carry the 9 theme slots - keep user defined custom colors ( slots 9+ ) intact.
+					$custom_slots                            = array_slice( $palette_data['palettes'][ $palette_id ], 9 );
+					$palette_data['palettes'][ $palette_id ] = array_merge( $presets[ $preset_key ], $custom_slots );
 					$applied_preset                          = $preset_key;
 				} else {
 					return Astra_Abilities_Response::error(
@@ -247,10 +258,11 @@ class Astra_Update_Global_Palette extends Astra_Abstract_Ability {
 				$global_palette['palette'] = array();
 			}
 
-			$active_palette = isset( $palettes[ $palette_id ] ) ? $palettes[ $palette_id ] : array();
-			foreach ( $active_palette as $index => $color ) {
-				$global_palette['palette'][ $index ] = $color;
-			}
+			$active_palette = isset( $palettes[ $palette_id ] ) && is_array( $palettes[ $palette_id ] ) ? $palettes[ $palette_id ] : array();
+
+			// Replace wholesale - merging index-by-index would leave the previously active
+			// palette's custom color values ( slots 9+ ) live when the new palette has fewer slots.
+			$global_palette['palette'] = array_values( $active_palette );
 
 			$theme_options = astra_get_raw_options();
 			if ( ! is_array( $theme_options ) ) {

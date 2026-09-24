@@ -332,8 +332,7 @@
 			return;
 		}
 
-		// Listening for WooCommerce's default 'added_to_cart' and 'astra_refresh_cart_fragments' both events.
-		$(document.body).on('added_to_cart astra_refresh_cart_fragments', function (event, fragments, cart_hash) {
+		$(document.body).on('astra_refresh_cart_fragments', function () {
 			// Refreshing WooCommerce cart fragments.
 			$.get(wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'get_refreshed_fragments'), function (data) {
 				if (data && data.fragments) {
@@ -344,14 +343,23 @@
 			});
 		});
 
+		// WooCommerce core applies fragments passed with 'added_to_cart'; refresh only when the trigger carries no usable fragments (some plugins fire it bare, expecting the theme to refetch).
+		$(document.body).on('added_to_cart', function (event, fragments) {
+			if (!fragments || !fragments['div.widget_shopping_cart_content']) {
+				$(document.body).trigger('astra_refresh_cart_fragments');
+			}
+		});
+
 		// Listen for WooCommerce block-based add-to-cart (used by "Hand-picked Products" and "Products by Category" blocks).
 		// These blocks use the Store API (/wc/store/v1) and fire wc-blocks_added_to_cart instead of the classic added_to_cart event.
 		$(document.body).on('wc-blocks_added_to_cart', function () {
 			$(document.body).trigger('astra_refresh_cart_fragments');
 		});
 
-		// Triggering the 'astra_refresh_cart_fragments' event to refresh the cart fragments on page load.
-		$(document.body).trigger('astra_refresh_cart_fragments');
+		// On page load, refresh fragments only when WooCommerce's cart-fragments script is not present to handle it itself.
+		if (typeof wc_cart_fragments_params === 'undefined') {
+			$(document.body).trigger('astra_refresh_cart_fragments');
+		}
 	});
 
 })();

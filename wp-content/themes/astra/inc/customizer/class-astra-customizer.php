@@ -1702,47 +1702,64 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		 * @since 4.8.0
 		 */
 		public function render_style_guide_markup() {
+			$style_guide_colors = array(
+				'color-0' => array(
+					'title' => __( 'Brand', 'astra' ),
+					'code'  => 'var(--ast-global-color-0)',
+				),
+				'color-1' => array(
+					'title' => __( 'Alt Brand', 'astra' ),
+					'code'  => 'var(--ast-global-color-1)',
+				),
+				'color-2' => array(
+					'title' => __( 'Heading', 'astra' ),
+					'code'  => 'var(--ast-global-color-2)',
+				),
+				'color-3' => array(
+					'title' => __( 'Text', 'astra' ),
+					'code'  => 'var(--ast-global-color-3)',
+				),
+				'color-4' => array(
+					'title' => __( 'Primary', 'astra' ),
+					'code'  => 'var(--ast-global-color-4)',
+				),
+				'color-5' => array(
+					'title' => __( 'Secondary', 'astra' ),
+					'code'  => 'var(--ast-global-color-5)',
+				),
+				'color-6' => array(
+					'title' => __( 'Border', 'astra' ),
+					'code'  => 'var(--ast-global-color-6)',
+				),
+				'color-7' => array(
+					'title' => __( 'Subtle BG', 'astra' ),
+					'code'  => 'var(--ast-global-color-7)',
+				),
+				'color-8' => array(
+					'title' => __( 'Extra', 'astra' ),
+					'code'  => 'var(--ast-global-color-8)',
+				),
+			);
+
+			// Append user defined custom global colors to the style guide swatches.
+			foreach ( Astra_Global_Palette::get_custom_colors() as $custom_index => $custom_color ) {
+				if ( ! empty( $custom_color['retired'] ) ) {
+					continue;
+				}
+
+				$slot_index = 9 + (int) $custom_index;
+
+				/* translators: %d: custom color number. */
+				$style_guide_colors[ 'color-' . $slot_index ] = array(
+					'title' => '' !== trim( (string) $custom_color['name'] ) ? $custom_color['name'] : sprintf( __( 'Custom %d', 'astra' ), (int) $custom_index + 1 ),
+					'code'  => 'var(--ast-global-color-' . $slot_index . ')',
+				);
+			}
+
 			$settings = apply_filters(
 				'astra_quick_customizer_navigation_setup',
 				array(
-					'colors' => array(
-						'color-0' => array(
-							'title' => __( 'Brand', 'astra' ),
-							'code'  => 'var(--ast-global-color-0)',
-						),
-						'color-1' => array(
-							'title' => __( 'Alt Brand', 'astra' ),
-							'code'  => 'var(--ast-global-color-1)',
-						),
-						'color-2' => array(
-							'title' => __( 'Heading', 'astra' ),
-							'code'  => 'var(--ast-global-color-2)',
-						),
-						'color-3' => array(
-							'title' => __( 'Text', 'astra' ),
-							'code'  => 'var(--ast-global-color-3)',
-						),
-						'color-4' => array(
-							'title' => __( 'Primary', 'astra' ),
-							'code'  => 'var(--ast-global-color-4)',
-						),
-						'color-5' => array(
-							'title' => __( 'Secondary', 'astra' ),
-							'code'  => 'var(--ast-global-color-5)',
-						),
-						'color-6' => array(
-							'title' => __( 'Border', 'astra' ),
-							'code'  => 'var(--ast-global-color-6)',
-						),
-						'color-7' => array(
-							'title' => __( 'Subtle BG', 'astra' ),
-							'code'  => 'var(--ast-global-color-7)',
-						),
-						'color-8' => array(
-							'title' => __( 'Extra', 'astra' ),
-							'code'  => 'var(--ast-global-color-8)',
-						),
-					),
+					'colors' => $style_guide_colors,
 				)
 			);
 

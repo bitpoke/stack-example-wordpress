@@ -1372,6 +1372,11 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 						const scrollOffsetTop = elementOffsetTop - offset;
 						if( scrollOffsetTop ) {
 							astraSmoothScroll( e, scrollOffsetTop );
+
+							// Reflect the anchor in the URL so the section link stays shareable, matching native browser behavior.
+							if ( ! hash && href !== window.location.hash ) {
+								window.history.pushState( null, '', href );
+							}
 						}
 					}
 				}

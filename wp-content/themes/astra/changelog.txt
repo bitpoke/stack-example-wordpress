@@ -1,5 +1,14 @@
 *** Astra Changelog ***
 
+2026-09-24 - version 4.14.0
+* New: Global Palette - Add your own named custom colors with the new + button under Global > Colors, available in the block editor, Elementor and every Astra color picker. (https://wpastra.com/docs/custom-global-colors/)
+* Improvement: WooCommerce - Removed duplicate cart refresh requests on page load and after add to cart, reducing server load on shops.
+* Fix: EDD - Single download page showed an empty sidebar-width blank space on new installs until the download Sidebar Layout was saved once.
+* Fix: Clicking an anchor link with Smooth Scroll to ID enabled now updates the URL with the #hash after scrolling, keeping section links shareable and reload-safe.
+* Fix: Security - Blog / Archive - Author avatar alt attribute now escapes the post title, so markup in a title can no longer break out of it.
+* Security: Page and content background post meta values are now sanitized for CSS context, so a value saved by a lower-privileged user cannot inject rules into the frontend stylesheet.
+* Security: Live Search - Fixed Stored Cross-Site Scripting where a crafted post title could run script in a visitor's browser.
+
 2026-09-17 - version 4.13.12
 * Fix: Scheduled Customizer changes failed to publish with a fatal error when the changeset was applied by WP-Cron or WP-CLI.
 * Fix: Firefox rendered top level dropdown arrows on a separate row below the menu item on older sites, a regression from the 4.13.11 navigation touch target change.
