@@ -13,15 +13,51 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Validate an XML-RPC edit against bbPress posting rules.
  *
- * @since 2.6.17 bbPress
+ * @since 2.6.17 bbPress (r7486)
+ * @since 2.6.19 bbPress (r7684) Validate publication and date changes.
  *
  * @param string $method XML-RPC method name.
  * @param array  $args   XML-RPC method arguments.
  */
 function bbp_validate_xmlrpc_post( $method = '', $args = array() ) {
-	global $bbp_xmlrpc_error_post_id;
+	global $bbp_xmlrpc_error_post_id, $bbp_xmlrpc_error_post_type;
 
 	$bbp_xmlrpc_error_post_id = 0;
+	$bbp_xmlrpc_error_post_type = '';
+
+	// WordPress handles create permissions, but not bbPress's strict block list.
+	if ( 'wp.newPost' === $method ) {
+		if ( empty( $args[3] ) || ! is_array( $args[3] ) ) {
+			return;
+		}
+
+		$post_data = $args[3];
+		$post_type = isset( $post_data['post_type'] ) ? $post_data['post_type'] : '';
+		if ( ! in_array( $post_type, array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true ) ) {
+			return;
+		}
+
+		$title   = isset( $post_data['post_title'] ) ? wp_unslash( $post_data['post_title'] ) : '';
+		$content = isset( $post_data['post_content'] ) ? wp_unslash( $post_data['post_content'] ) : '';
+		if ( ! bbp_check_for_moderation( array(), bbp_get_current_user_id(), $title, $content, true ) ) {
+			$bbp_xmlrpc_error_post_type = $post_type;
+		}
+
+		return;
+	}
+
+	// mt.publishPost sets a post status without bbPress lifecycle handling
+	if ( 'mt.publishPost' === $method ) {
+		$post_id = ! empty( $args[0] ) ? (int) $args[0] : 0;
+		$post    = get_post( $post_id );
+		$types   = array( bbp_get_forum_post_type(), bbp_get_topic_post_type(), bbp_get_reply_post_type() );
+
+		if ( ! empty( $post ) && in_array( $post->post_type, $types, true ) && ( 'publish' !== $post->post_status ) ) {
+			$bbp_xmlrpc_error_post_id = $post_id;
+		}
+
+		return;
+	}
 
 	$is_restore = ( 'wp.restoreRevision' === $method );
 
@@ -68,7 +104,26 @@ function bbp_validate_xmlrpc_post( $method = '', $args = array() ) {
 	$parent_changed = ( $post_parent !== (int) $post->post_parent );
 	$status_changed = isset( $post_data['post_status'] ) && ( $post_data['post_status'] !== $post->post_status );
 	$order_changed  = isset( $post_data['menu_order'] ) && ( (int) $post_data['menu_order'] !== (int) $post->menu_order );
-	$invalid        = false;
+	$invalid          = false;
+	$is_forum_content = in_array( $post_type, array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true );
+	$can_moderate     = current_user_can( 'moderate', $post_id );
+
+	// Keep non-moderators from moving the edit window through XML-RPC dates
+	if ( $is_forum_content && ! $can_moderate && bbp_xmlrpc_post_date_changed( $post_data, $post ) ) {
+		$invalid = true;
+	}
+
+	// XML-RPC does not set the front-end query flags used by the topic and
+	// reply capability mappings to enforce the author edit window.
+	if ( $is_forum_content && ( bbp_get_current_user_id() === (int) $post->post_author ) && ! $can_moderate ) {
+		$post_date_gmt = ( '0000-00-00 00:00:00' === $post->post_date_gmt )
+			? get_gmt_from_date( $post->post_date )
+			: $post->post_date_gmt;
+
+		if ( bbp_past_edit_lock( $post_date_gmt ) ) {
+			$invalid = true;
+		}
+	}
 
 	// Validate forum structure and visibility changes
 	if ( bbp_get_forum_post_type() === $post_type ) {
@@ -139,9 +194,42 @@ function bbp_validate_xmlrpc_post( $method = '', $args = array() ) {
 }
 
 /**
+ * Check whether XML-RPC date fields would change a post's publication date.
+ *
+ * Match the date conversion used by WordPress's wp.editPost method.
+ *
+ * @since 2.6.19 bbPress (r7684)
+ *
+ * @param array   $post_data Submitted post fields.
+ * @param WP_Post $post      Existing post.
+ * @return bool Whether the publication date would change.
+ */
+function bbp_xmlrpc_post_date_changed( $post_data, $post ) {
+	if ( ! isset( $post_data['post_date'] ) && ! isset( $post_data['post_date_gmt'] ) ) {
+		return false;
+	}
+
+	if ( ! empty( $post_data['post_date_gmt'] ) && ( $post_data['post_date_gmt'] instanceof IXR_Date ) ) {
+		$iso_date = rtrim( $post_data['post_date_gmt']->getIso(), 'Z' ) . 'Z';
+	} elseif ( ! empty( $post_data['post_date'] ) && ( $post_data['post_date'] instanceof IXR_Date ) ) {
+		$iso_date = $post_data['post_date']->getIso();
+	} else {
+		return true;
+	}
+
+	$local = ! empty( $iso_date ) ? iso8601_to_datetime( $iso_date ) : false;
+	$gmt   = ! empty( $iso_date ) ? iso8601_to_datetime( $iso_date, 'gmt' ) : false;
+	$post_date_gmt = ( '0000-00-00 00:00:00' === $post->post_date_gmt )
+		? get_gmt_from_date( $post->post_date )
+		: $post->post_date_gmt;
+
+	return empty( $local ) || empty( $gmt ) || ( $post->post_date !== $local ) || ( $post_date_gmt !== $gmt );
+}
+
+/**
  * Deny a post capability when an XML-RPC edit failed bbPress validation.
  *
- * @since 2.6.17 bbPress
+ * @since 2.6.17 bbPress (r7486)
  *
  * @param array  $caps    Required capabilities.
  * @param string $cap     Requested capability.
@@ -150,11 +238,14 @@ function bbp_validate_xmlrpc_post( $method = '', $args = array() ) {
  * @return array Required capabilities.
  */
 function bbp_map_xmlrpc_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
-	global $bbp_xmlrpc_error_post_id;
+	global $bbp_xmlrpc_error_post_id, $bbp_xmlrpc_error_post_type;
 
 	$edit_caps = array( 'edit_post', 'edit_topic', 'edit_reply' );
 
 	if ( ! empty( $bbp_xmlrpc_error_post_id ) && in_array( $cap, $edit_caps, true ) && ! empty( $args[0] ) && ( (int) $args[0] === $bbp_xmlrpc_error_post_id ) ) {
+		$caps[] = 'do_not_allow';
+	}
+	if ( ( ( bbp_get_topic_post_type() === $bbp_xmlrpc_error_post_type ) && ( 'edit_topics' === $cap ) ) || ( ( bbp_get_reply_post_type() === $bbp_xmlrpc_error_post_type ) && ( 'edit_replies' === $cap ) ) ) {
 		$caps[] = 'do_not_allow';
 	}
 
@@ -164,7 +255,7 @@ function bbp_map_xmlrpc_meta_caps( $caps = array(), $cap = '', $user_id = 0, $ar
 /**
  * Apply bbPress moderation to XML-RPC post data.
  *
- * @since 2.6.17 bbPress
+ * @since 2.6.17 bbPress (r7486)
  *
  * @param array $post_data Parsed post data.
  * @return array Parsed post data.

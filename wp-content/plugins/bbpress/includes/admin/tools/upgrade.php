@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Admin repair page
  *
- * @since 2.6.0 bbPress (r6278)
+ * @since 2.6.0 bbPress (r6279)
  *
  */
 function bbp_admin_upgrade_page() {
@@ -144,8 +144,8 @@ function bbp_admin_upgrade_page() {
 										<span class="run">
 											<a href="<?php bbp_admin_repair_tool_run_url( $item ); ?>" aria-label="<?php                                            printf(
 												/* translators: %s: Repair tool title */
-												esc_html__( 'Run %s', 'bbpress' ),
-												$item['title']
+												esc_attr__( 'Run %s', 'bbpress' ),
+												esc_attr( $item['title'] )
 											);
 											?>" id="<?php echo esc_attr( $item['id'] ); ?>" ><?php esc_html_e( 'Run', 'bbpress' ); ?></a>
 										</span>
@@ -278,7 +278,7 @@ function bbp_admin_upgrade_user_engagements() {
  *
  * Previously named: bbp_admin_repair_group_forum_relationships()
  *
- * @since 2.6.0 bbPress (r4395)
+ * @since 2.6.0 bbPress (r6496)
  *
  * @return If a wp_error() occurs and no converted forums are found
  */
@@ -325,7 +325,7 @@ function bbp_admin_upgrade_group_forum_relationships() {
 		}
 
 		// Attempt to update group meta
-		$updated = $bbp_db->query( "UPDATE `{$groups_meta_table}` SET `meta_value` = '{$group_forums->ID}' WHERE `meta_key` = 'forum_id' AND `meta_value` = '{$group_forums->meta_value}'" );
+		$updated = $bbp_db->query( $bbp_db->prepare( "UPDATE `{$groups_meta_table}` SET `meta_value` = %d WHERE `meta_key` = %s AND `meta_value` = %s", $group_forums->ID, 'forum_id', $group_forums->meta_value ) );
 
 		// Bump the count
 		if ( ! empty( $updated ) && ! is_wp_error( $updated ) ) {
@@ -427,7 +427,7 @@ function bbp_admin_upgrade_group_forum_relationships() {
 /**
  * Upgrade user favorites for bbPress 2.6 and higher
  *
- * @since 2.6.0 bbPress (r6174)
+ * @since 2.6.0 bbPress (r6176)
  *
  * @return array An array of the status code and the message
  */
@@ -489,7 +489,7 @@ function bbp_admin_upgrade_user_favorites() {
 /**
  * Upgrade user topic subscriptions for bbPress 2.6 and higher
  *
- * @since 2.6.0 bbPress (r6174)
+ * @since 2.6.0 bbPress (r6193)
  *
  * @return array An array of the status code and the message
  */

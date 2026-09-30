@@ -153,7 +153,7 @@ function bbp_is_forum_archive() {
 /**
  * Viewing a single forum
  *
- * @since 2.0.0 bbPress (r3338)
+ * @since 2.0.0 bbPress (r3344)
  *
  * @return bool
  */
@@ -232,7 +232,7 @@ function bbp_is_topic( $post_id = 0 ) {
 /**
  * Viewing a single topic
  *
- * @since 2.0.0 bbPress (r3338)
+ * @since 2.0.0 bbPress (r3344)
  *
  * @return bool
  */
@@ -383,7 +383,7 @@ function bbp_is_topic_tag() {
 /**
  * Check if the current page is editing a topic tag
  *
- * @since 2.0.0 bbPress (r3346)
+ * @since 2.0.0 bbPress (r3348)
  *
  * @global string $pagenow The filename of the current screen.
  * @global string $taxnow  The taxonomy of the current screen.
@@ -421,7 +421,7 @@ function bbp_is_topic_tag_edit() {
  * Check if the current post type is one that comes with bbPress.
  *
  * @since 2.0.0 bbPress (r3311)
- * @since 2.6.17 bbPress Added support for post-type names and arrays.
+ * @since 2.6.17 bbPress (r7500) Added support for post-type names and arrays.
  *
  * @param mixed $post_types Optional. Post object, post ID, post-type name, or
  *                          an array of post-type names.
@@ -453,7 +453,7 @@ function bbp_is_custom_post_type( $post_types = false ) {
 /**
  * Check if a bbPress object or any of its parents is password protected.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7502)
  *
  * @param int    $object_id   Optional. Object ID. Defaults to the current post.
  * @param string $object_type Optional. Object type. Defaults to 'post'.
@@ -508,9 +508,58 @@ function bbp_is_password_protected( $object_id = 0, $object_type = 'post' ) {
 }
 
 /**
+ * Get the bbPress object or ancestor whose password is still required.
+ *
+ * @since 2.6.19 bbPress (r7669)
+ *
+ * @param int $object_id Optional. Object ID. Defaults to the current post.
+ * @return int Protected post ID, or zero if all passwords are satisfied.
+ */
+function bbp_get_password_required_id( $object_id = 0 ) {
+	$post     = get_post( $object_id );
+	$post_ids = array();
+	$forum_id = 0;
+
+	// Include the object
+	if ( ! empty( $post ) && bbp_is_custom_post_type( $post ) ) {
+		$object_id = $post->ID;
+		$post_ids  = array( $object_id );
+
+		// Include the topic and forum for replies
+		if ( bbp_is_reply( $object_id ) ) {
+			$post_ids[] = bbp_get_reply_topic_id( $object_id );
+			$forum_id   = bbp_get_reply_forum_id( $object_id );
+
+		// Include the forum for topics
+		} elseif ( bbp_is_topic( $object_id ) ) {
+			$forum_id = bbp_get_topic_forum_id( $object_id );
+
+		// Include the forum itself
+		} elseif ( bbp_is_forum( $object_id ) ) {
+			$forum_id = $object_id;
+		}
+
+		// Include the forum and its ancestors
+		if ( ! empty( $forum_id ) ) {
+			$post_ids[] = $forum_id;
+			$post_ids   = array_merge( $post_ids, bbp_get_forum_ancestors( $forum_id ) );
+		}
+	}
+
+	// Check the object and its parents
+	foreach ( array_unique( array_filter( $post_ids ) ) as $post_id ) {
+		if ( post_password_required( $post_id ) ) {
+			return (int) $post_id;
+		}
+	}
+
+	return 0;
+}
+
+/**
  * Check if current page is a bbPress reply
  *
- * @since 2.0.0 bbPress (r2549)
+ * @since 2.0.0 bbPress (r2553)
  *
  * @param int $post_id Possible post_id to check
  * @return bool True if it's a reply page, false if not
@@ -632,7 +681,7 @@ function bbp_is_favorites() {
 /**
  * Check if current page is a bbPress user's subscriptions page (profile page)
  *
- * @since 2.0.0 bbPress (r2652)
+ * @since 2.0.0 bbPress (r2668)
  *
  * @return bool True if it's the subscriptions page, false if not
  */
@@ -682,7 +731,7 @@ function bbp_is_topics_created() {
  * Check if current page shows the replies created by a bbPress user (profile
  * page)
  *
- * @since 2.2.0 bbPress (r4225)
+ * @since 2.2.0 bbPress (r4228)
  *
  * @return bool True if it's the replies created page, false if not
  */
@@ -706,7 +755,7 @@ function bbp_is_replies_created() {
 /**
  * Check if current page is the currently logged in users author page
  *
- * @since 2.0.0 bbPress (r2688)
+ * @since 2.0.0 bbPress (r2660)
  *
  * @return bool True if it's the user's home, false if not
  */
@@ -750,7 +799,7 @@ function bbp_is_user_home_edit() {
 /**
  * Check if current page is a user profile page
  *
- * @since 2.0.0 bbPress (r2688)
+ * @since 2.0.0 bbPress (r3311)
  *
  * @return bool True if it's a user's profile page, false if not
  */
@@ -774,7 +823,7 @@ function bbp_is_single_user() {
 /**
  * Check if current page is a user profile edit page
  *
- * @since 2.0.0 bbPress (r2688)
+ * @since 2.0.0 bbPress (r3311)
  *
  * @return bool True if it's a user's profile edit page, false if not
  */
@@ -798,7 +847,7 @@ function bbp_is_single_user_edit() {
 /**
  * Check if current page is a user profile page
  *
- * @since 2.2.0 bbPress (r4225)
+ * @since 2.2.0 bbPress (r4228)
  *
  * @return bool True if it's a user's profile page, false if not
  */
@@ -822,7 +871,7 @@ function bbp_is_single_user_profile() {
 /**
  * Check if current page is a user topics created page
  *
- * @since 2.2.0 bbPress (r4225)
+ * @since 2.2.0 bbPress (r4228)
  *
  * @return bool True if it's a user's topics page, false if not
  */
@@ -846,7 +895,7 @@ function bbp_is_single_user_topics() {
 /**
  * Check if current page is a user replies created page
  *
- * @since 2.2.0 bbPress (r4225)
+ * @since 2.2.0 bbPress (r4228)
  *
  * @return bool True if it's a user's replies page, false if not
  */
@@ -894,7 +943,7 @@ function bbp_is_single_user_engagements() {
 /**
  * Check if current page is a view page
  *
- * @since 2.0.0 bbPress (r2789)
+ * @since 2.0.0 bbPress (r3311)
  *
  * @global WP_Query $wp_query To check if WP_Query::bbp_is_view is true
  * @return bool Is it a view page?
@@ -1007,7 +1056,7 @@ function bbp_is_search_results() {
 /**
  * Check if current page is an edit page
  *
- * @since 2.1.0 bbPress (r3585)
+ * @since 2.1.0 bbPress (r3586)
  *
  * @return bool True if it's the edit page, false if not
  */
@@ -1173,7 +1222,7 @@ function bbp_body_class( $wp_classes = array(), $custom_classes = false ) {
  * Output a small piece of JavaScript to replace the "bbp-no-js" body class
  * with "bbp-js" to allow interactive & dynamic elements to work as intended.
  *
- * @since 2.6.10 bbPress (r7229)
+ * @since 2.6.10 bbPress (r7230)
  */
 function bbp_swap_no_js_body_class() {
 	static $done = false;
@@ -1205,7 +1254,7 @@ function bbp_swap_no_js_body_class() {
  * A preliminary strpos() is performed before looping through each shortcode, to
  * prevent unnecessarily processing.
  *
- * @since 2.6.0
+ * @since 2.6.0 bbPress (r6440)
  *
  * @param string $text
  * @return bool
@@ -1369,7 +1418,7 @@ function bbp_wp_login_action( $args = array() ) {
 	/**
 	 * Return the login form action url
 	 *
-	 * @since 2.6.0 bbPress (r5684)
+	 * @since 2.6.0 bbPress (r5685)
 	 *
 	 * @param array $args This function supports these arguments:
 	 *  - action: The action being taken
@@ -1541,7 +1590,7 @@ function bbp_tab_index( $auto_increment = true ) {
  *
  * Most internal usages pass `false` which results in no attribute being used.
  *
- * @since 2.6.0 bbPress (r6424)
+ * @since 2.6.0 bbPress (r6433)
  *
  * @param mixed $tab False to skip, any integer to use
  */
@@ -1557,7 +1606,7 @@ function bbp_tab_index_attribute( $tab = false ) {
 	 *
 	 * Most internal usages pass `false` which results in no attribute being used.
 	 *
-	 * @since 2.6.0 bbPress (r6424)
+	 * @since 2.6.0 bbPress (r6433)
 	 *
 	 * @param mixed $tab False to skip, any integer to use
 	 *
@@ -2064,7 +2113,7 @@ function bbp_get_the_content( $args = array() ) {
 /**
  * Edit TinyMCE plugins to match core behaviour
  *
- * @since 2.3.0 bbPress (r4574)
+ * @since 2.3.0 bbPress (r4576)
  *
  * @param array $plugins
  * @see tiny_mce_plugins, teeny_mce_plugins
@@ -2090,7 +2139,7 @@ function bbp_get_tiny_mce_plugins( $plugins = array() ) {
 /**
  * Edit TeenyMCE buttons to match allowedtags
  *
- * @since 2.3.0 bbPress (r4605)
+ * @since 2.3.0 bbPress (r4606)
  *
  * @param array $buttons
  * @see teeny_mce_buttons
@@ -2119,7 +2168,7 @@ function bbp_get_teeny_mce_buttons( $buttons = array() ) {
 /**
  * Edit TinyMCE quicktags buttons to match allowedtags
  *
- * @since 2.3.0 bbPress (r4606)
+ * @since 2.3.0 bbPress (r4607)
  *
  * @param array $settings
  * @see quicktags_settings
@@ -2320,7 +2369,7 @@ function bbp_reset_query_name() {
 /**
  * Output the page title as a breadcrumb
  *
- * @since 2.0.0 bbPress (r2589)
+ * @since 2.0.0 bbPress (r2583)
  *
  * @param string $sep Separator. Defaults to '&larr;'
  * @param bool $current_page Include the current item
@@ -2640,7 +2689,7 @@ function bbp_allowed_tags() {
 	 * This is useful for displaying in the post area, which elements and
 	 * attributes are supported. As well as any plugins which want to display it.
 	 *
-	 * @since 2.0.0 bbPress (r2780)
+	 * @since 2.0.0 bbPress (r2782)
 	 *
 	 * @return string HTML allowed tags entity encoded.
 	 */
@@ -2667,7 +2716,7 @@ function bbp_allowed_tags() {
 /**
  * Display possible errors & messages inside a template file
  *
- * @since 2.0.0 bbPress (r2688)
+ * @since 2.0.0 bbPress (r2970)
  */
 function bbp_template_notices() {
 

@@ -109,7 +109,7 @@ class BBP_Admin {
 	/**
 	 * The main bbPress admin loader
 	 *
-	 * @since 2.0.0 bbPress (r2515)
+	 * @since 2.0.0 bbPress (r3071)
 	 */
 	public function __construct() {
 		$this->setup_globals();
@@ -120,7 +120,7 @@ class BBP_Admin {
 	/**
 	 * Admin globals
 	 *
-	 * @since 2.0.0 bbPress (r2646)
+	 * @since 2.0.0 bbPress (r3338)
 	 *
 	 * @access private
 	 */
@@ -141,7 +141,7 @@ class BBP_Admin {
 	/**
 	 * Include required files
 	 *
-	 * @since 2.0.0 bbPress (r2646)
+	 * @since 2.0.0 bbPress (r3338)
 	 *
 	 * @access private
 	 */
@@ -169,7 +169,7 @@ class BBP_Admin {
 	/**
 	 * Setup the admin hooks, actions and filters
 	 *
-	 * @since 2.0.0 bbPress (r2646)
+	 * @since 2.0.0 bbPress (r3338)
 	 *
 	 * @access private
 	 */
@@ -233,7 +233,7 @@ class BBP_Admin {
 	/**
 	 * Setup general admin area notices.
 	 *
-	 * @since 2.6.0 bbPress (r6701)
+	 * @since 2.6.0 bbPress (r6705)
 	 */
 	public function setup_notices() {
 
@@ -275,7 +275,7 @@ class BBP_Admin {
 	/**
 	 * Handle hiding of general admin area notices.
 	 *
-	 * @since 2.6.0 bbPress (r6701)
+	 * @since 2.6.0 bbPress (r6705)
 	 */
 	public function hide_notices() {
 
@@ -426,7 +426,7 @@ class BBP_Admin {
 	/**
 	 * Maybe append the pending upgrade count to the "Tools" menu.
 	 *
-	 * @since 2.6.0 bbPress (r6896)
+	 * @since 2.6.0 bbPress (r6897)
 	 *
 	 * @global menu $menu
 	 */
@@ -467,11 +467,12 @@ class BBP_Admin {
 		// Loop through tools and check
 		if ( ! empty( $tools ) ) {
 			foreach ( $tools as $tool ) {
+				$name = wp_kses_post( $tool['name'] );
 
 				// Try to add the admin page
 				$page = add_management_page(
-					$tool['name'],
-					$tool['name'],
+					$name,
+					$name,
 					$tool['cap'],
 					$tool['page'],
 					$tool['func']
@@ -551,7 +552,7 @@ class BBP_Admin {
 	/**
 	 * Add the network admin menus
 	 *
-	 * @since 2.1.0 bbPress (r3689)
+	 * @since 2.1.0 bbPress (r3731)
 	 */
 	public function network_admin_menus() {
 
@@ -634,7 +635,7 @@ class BBP_Admin {
 	/**
 	 * Maps settings capabilities
 	 *
-	 * @since 2.2.0 bbPress (r4242)
+	 * @since 2.2.0 bbPress (r4244)
 	 *
 	 * @param array $caps Capabilities for meta capability
 	 * @param string $cap Capability name
@@ -673,6 +674,13 @@ class BBP_Admin {
 				$caps = array( bbp_admin()->minimum_capability );
 				break;
 
+			// On multisite, use a grantable capability for network user imports.
+			case 'bbp_tools_import_users' :
+				$caps = is_multisite()
+					? array( $cap )
+					: array( bbp_setup_admin()->minimum_capability );
+				break;
+
 			// Extend - BuddyPress
 			case 'bbp_settings_buddypress' :
 				if ( ( is_plugin_active( 'buddypress/bp-loader.php' ) && defined( 'BP_VERSION' ) && bp_is_root_blog() ) && is_super_admin() ) {
@@ -701,7 +709,7 @@ class BBP_Admin {
 	/**
 	 * Register the importers
 	 *
-	 * @since 2.0.0 bbPress (r2737)
+	 * @since 2.0.0 bbPress (r3194)
 	 */
 	public function register_importers() {
 
@@ -735,7 +743,7 @@ class BBP_Admin {
 	/**
 	 * Add Settings link to plugins area
 	 *
-	 * @since 2.0.0 bbPress (r2737)
+	 * @since 2.2.0 bbPress (r4159)
 	 *
 	 * @param array $links Links array in which we would prepend our link
 	 * @param string $file Current plugin basename
@@ -768,7 +776,7 @@ class BBP_Admin {
 	/**
 	 * Enqueue any admin scripts we might need
 	 *
-	 * @since 2.2.0 bbPress (r4260)
+	 * @since 2.2.0 bbPress (r4261)
 	 */
 	public function enqueue_scripts() {
 
@@ -808,7 +816,7 @@ class BBP_Admin {
 	/**
 	 * Enqueue any admin scripts we might need
 	 *
-	 * @since 2.6.0 bbPress (r5224)
+	 * @since 2.6.0 bbPress (r5225)
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( 'bbp-admin-css' );
@@ -838,7 +846,7 @@ class BBP_Admin {
 	 * Because wp-content can exist outside of the WordPress root, there is no
 	 * way to be certain what the relative path of admin images is.
 	 *
-	 * @since 2.6.0 bbPress (r2521)
+	 * @since 2.6.0 bbPress (r6913)
 	 */
 	public function register_admin_styles() {
 
@@ -891,7 +899,7 @@ class BBP_Admin {
 	 * way to be certain what the relative path of the admin images is.
 	 * We are including the two most common configurations here, just in case.
 	 *
-	 * @since 2.6.0 bbPress (r2521)
+	 * @since 2.6.0 bbPress (r6913)
 	 */
 	public function register_admin_scripts() {
 
@@ -974,7 +982,7 @@ class BBP_Admin {
 		// If we found some topics, loop through and display them
 		if ( ! empty( $topics ) ) {
 			foreach ( (array) $topics as $post ) {
-				printf( esc_html__( '%1$s - %2$s', 'bbpress' ), bbp_get_topic_id( $post->ID ), bbp_get_topic_title( $post->ID ) . "\n" );
+				printf( esc_html__( '%1$s - %2$s', 'bbpress' ), bbp_get_topic_id( $post->ID ), esc_html( bbp_get_topic_title( $post->ID ) ) . "\n" );
 			}
 		}
 		die();
@@ -983,7 +991,7 @@ class BBP_Admin {
 	/**
 	 * Ajax action for facilitating the topic and reply author auto-suggest
 	 *
-	 * @since 2.4.0 bbPress (r5014)
+	 * @since 2.4.0 bbPress (r5015)
 	 */
 	public function suggest_user() {
 
@@ -1054,7 +1062,7 @@ class BBP_Admin {
 		// If we found some users, loop through and output them to the AJAX
 		if ( ! empty( $users_query->results ) ) {
 			foreach ( (array) $users_query->results as $user ) {
-				printf( esc_html__( '%1$s - %2$s', 'bbpress' ), bbp_get_user_id( $user->ID ), bbp_get_user_nicename( $user->ID, array( 'force' => $user->user_nicename ) ) . "\n" );
+				printf( esc_html__( '%1$s - %2$s', 'bbpress' ), bbp_get_user_id( $user->ID ), esc_html( bbp_get_user_nicename( $user->ID, array( 'force' => $user->user_nicename ) ) ) . "\n" );
 			}
 		}
 		die();
@@ -1303,7 +1311,7 @@ class BBP_Admin {
 	/**
 	 * Update all bbPress forums across all sites
 	 *
-	 * @since 2.1.0 bbPress (r3689)
+	 * @since 2.1.0 bbPress (r3731)
 	 */
 	public static function update_screen() {
 
@@ -1319,6 +1327,7 @@ class BBP_Admin {
 		// Taking action
 		switch ( $action ) {
 			case 'bbp-update' :
+				check_admin_referer( 'bbp-update' );
 
 				// Run the full updater
 				bbp_version_updater(); ?>
@@ -1334,7 +1343,7 @@ class BBP_Admin {
 			default : ?>
 
 				<p><?php esc_html_e( 'You can update your forum through this page. Hit the link below to update.', 'bbpress' ); ?></p>
-				<p><a class="button" href="index.php?page=bbp-update&amp;action=bbp-update"><?php esc_html_e( 'Update Forum', 'bbpress' ); ?></a></p>
+				<p><a class="button" href="<?php echo esc_url( wp_nonce_url( 'index.php?page=bbp-update&action=bbp-update', 'bbp-update' ) ); ?>"><?php esc_html_e( 'Update Forum', 'bbpress' ); ?></a></p>
 
 			<?php break;
 
@@ -1346,7 +1355,7 @@ class BBP_Admin {
 	/**
 	 * Update all bbPress forums across all sites
 	 *
-	 * @since 2.1.0 bbPress (r3689)
+	 * @since 2.1.0 bbPress (r3731)
 	 */
 	public static function network_update_screen() {
 		$bbp_db = bbp_db();
@@ -1363,6 +1372,7 @@ class BBP_Admin {
 		// Taking action
 		switch ( $action ) {
 			case 'bbpress-update' :
+				check_admin_referer( 'bbpress-update' );
 
 				// Site counter
 				$n = isset( $_GET['n'] ) ? intval( $_GET['n'] ) : 0;
@@ -1434,12 +1444,12 @@ class BBP_Admin {
 
 					<p>
 						<?php esc_html_e( 'If your browser doesn&#8217;t start loading the next page automatically, click this link:', 'bbpress' ); ?>
-						<a class="button" href="update-core.php?page=bbpress-update&amp;action=bbpress-update&amp;n=<?php echo ( $n + 5 ); ?>"><?php esc_html_e( 'Next Forums', 'bbpress' ); ?></a>
+						<a class="button" href="<?php echo esc_url( wp_nonce_url( 'update-core.php?page=bbpress-update&action=bbpress-update&n=' . ( $n + 5 ), 'bbpress-update' ) ); ?>"><?php esc_html_e( 'Next Forums', 'bbpress' ); ?></a>
 					</p>
 					<script type='text/javascript'>
 						<!--
 						function nextpage() {
-							location.href = 'update-core.php?page=bbpress-update&action=bbpress-update&n=<?php echo ( $n + 5 ) ?>';
+							location.href = '<?php echo esc_js( add_query_arg( '_wpnonce', wp_create_nonce( 'bbpress-update' ), 'update-core.php?page=bbpress-update&action=bbpress-update&n=' . ( $n + 5 ) ) ); ?>';
 						}
 						setTimeout( 'nextpage()', 250 );
 						//-->
@@ -1453,7 +1463,7 @@ class BBP_Admin {
 			default : ?>
 
 				<p><?php esc_html_e( 'You can update all the forums on your network through this page. It works by calling the update script of each site automatically. Hit the link below to update.', 'bbpress' ); ?></p>
-				<p><a class="button" href="update-core.php?page=bbpress-update&amp;action=bbpress-update"><?php esc_html_e( 'Update Forums', 'bbpress' ); ?></a></p>
+				<p><a class="button" href="<?php echo esc_url( wp_nonce_url( 'update-core.php?page=bbpress-update&action=bbpress-update', 'bbpress-update' ) ); ?>"><?php esc_html_e( 'Update Forums', 'bbpress' ); ?></a></p>
 
 			<?php break;
 

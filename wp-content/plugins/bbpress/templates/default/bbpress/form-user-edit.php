@@ -110,7 +110,7 @@ defined( 'ABSPATH' ) || exit;
 
 		<div>
 			<label for="email"><?php esc_html_e( 'Email', 'bbpress' ); ?></label>
-			<input type="text" name="email" id="email" value="<?php bbp_displayed_user_field( 'user_email', 'edit' ); ?>" maxlength="100" class="regular-text" autocomplete="off" />
+			<input type="text" name="email" id="email" value="<?php bbp_displayed_user_field( 'user_email', 'edit' ); ?>" maxlength="100" class="regular-text" autocomplete="off" <?php disabled( ! bbp_current_user_can_edit_user_field( 'email', bbp_get_displayed_user_id() ) ); ?> />
 		</div>
 
 		<?php bbp_get_template_part( 'form', 'user-passwords' ); ?>
@@ -139,6 +139,7 @@ defined( 'ABSPATH' ) || exit;
 
 				<div>
 					<label for="super_admin"><?php esc_html_e( 'Network Role', 'bbpress' ); ?></label>
+					<input type="hidden" name="bbp_super_admin_present" value="1" />
 					<label>
 						<input class="checkbox" type="checkbox" id="super_admin" name="super_admin"<?php checked( is_super_admin( bbp_get_displayed_user_id() ) ); ?> />
 						<?php esc_html_e( 'Grant this user super admin privileges for the Network.', 'bbpress' ); ?>

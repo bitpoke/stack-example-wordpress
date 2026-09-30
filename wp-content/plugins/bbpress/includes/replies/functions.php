@@ -468,6 +468,9 @@ function bbp_new_reply_handler( $action = '' ) {
 
 		/** Update counts, etc... *********************************************/
 
+		// Validate the parent now that the new reply has a topic
+		$reply_to = bbp_validate_reply_to( $reply_to, $reply_id );
+
 		do_action( 'bbp_new_reply', $reply_id, $topic_id, $forum_id, $anonymous_data, $reply_data['post_author'], false, $reply_to );
 
 		/** Additional Actions (After Save) ***********************************/
@@ -505,6 +508,8 @@ function bbp_new_reply_handler( $action = '' ) {
 
 /**
  * Handles the front end edit reply submission
+ *
+ * @since 2.6.19 bbPress (r7680) Enforce the edit lock on submissions.
  *
  * @param string $action The requested action to compare this function to
  *                    id, anonymous data, reply author, bool true (for edit),
@@ -549,6 +554,11 @@ function bbp_edit_reply_handler( $action = '' ) {
 
 	// User cannot edit this reply
 	} elseif ( ! current_user_can( 'edit_reply', $reply_id ) ) {
+		bbp_add_error( 'bbp_edit_reply_permission', __( '<strong>Error</strong>: You do not have permission to edit that reply.', 'bbpress' ) );
+		return;
+
+	// Authors cannot bypass the edit lock by submitting from another page
+	} elseif ( ( bbp_get_current_user_id() === (int) $reply->post_author ) && ! current_user_can( 'moderate', $reply_id ) && bbp_past_edit_lock( $reply->post_date_gmt ) ) {
 		bbp_add_error( 'bbp_edit_reply_permission', __( '<strong>Error</strong>: You do not have permission to edit that reply.', 'bbpress' ) );
 		return;
 
@@ -909,7 +919,7 @@ function bbp_update_reply( $reply_id = 0, $topic_id = 0, $forum_id = 0, $anonymo
 /**
  * Walk up the ancestor tree from the current reply, and update all the counts
  *
- * @since 2.0.0 bbPress (r2884)
+ * @since 2.0.0 bbPress (r2895)
  *
  * @param int $reply_id Optional. Reply id
  * @param string $last_active_time Optional. Last active time
@@ -960,8 +970,8 @@ function bbp_update_reply_walker( $reply_id, $last_active_time = '', $forum_id =
 			// Topic meta relating to most recent reply
 			} elseif ( bbp_is_topic( $ancestor ) ) {
 
-				// Only update if reply is published
-				if ( ! bbp_is_reply_pending( $reply_id ) ) {
+				// Only update if reply is public
+				if ( ( true === $refresh ) || bbp_is_reply_public( $reply_id ) ) {
 
 					// Last reply and active ID's
 					bbp_update_topic_last_reply_id ( $ancestor, $reply_id  );
@@ -986,8 +996,8 @@ function bbp_update_reply_walker( $reply_id, $last_active_time = '', $forum_id =
 			// Forum meta relating to most recent topic
 			} elseif ( bbp_is_forum( $ancestor ) ) {
 
-				// Only update if reply is published
-				if ( ! bbp_is_reply_pending( $reply_id ) && ! bbp_is_topic_pending( $topic_id ) ) {
+				// Only update if both reply and topic are public
+				if ( ( true === $refresh ) || ( bbp_is_reply_public( $reply_id ) && bbp_is_topic_public( $topic_id ) ) ) {
 
 					// Last topic and reply ID's
 					bbp_update_forum_last_topic_id( $ancestor, $topic_id );
@@ -1020,7 +1030,7 @@ function bbp_update_reply_walker( $reply_id, $last_active_time = '', $forum_id =
 /**
  * Update the reply with its forum id it is in
  *
- * @since 2.0.0 bbPress (r2855)
+ * @since 2.0.0 bbPress (r2858)
  *
  * @param int $reply_id Optional. Reply id to update
  * @param int $forum_id Optional. Forum id
@@ -1063,7 +1073,7 @@ function bbp_update_reply_forum_id( $reply_id = 0, $forum_id = 0 ) {
 /**
  * Update the reply with its topic id it is in
  *
- * @since 2.0.0 bbPress (r2855)
+ * @since 2.0.0 bbPress (r2858)
  *
  * @param int $reply_id Optional. Reply id to update
  * @param int $topic_id Optional. Topic id
@@ -1166,6 +1176,7 @@ function bbp_get_reply_ancestors( $reply_id = 0 ) {
 			$ancestors = array( $reply_to );
 
 			// Get parent reply
+			// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Fetch each ancestor until none remains.
 			while ( $ancestor = bbp_get_reply( $id ) ) {
 
 				// Does parent have a parent?
@@ -1236,7 +1247,7 @@ function bbp_update_reply_revision_log( $args = array() ) {
  *
  * Handles the front end move reply submission
  *
- * @since 2.3.0 bbPress (r4521)
+ * @since 2.3.0 bbPress (r4522)
  *
  * @param string $action The requested action to compare this function to
  */
@@ -1283,8 +1294,8 @@ function bbp_move_reply_handler( $action = '' ) {
 		return;
 	}
 
-	// Use cannot edit topic
-	if ( ! current_user_can( 'edit_topic', $source_topic->ID ) ) {
+	// User must moderate and edit the source topic
+	if ( ! current_user_can( 'moderate', $source_topic->ID ) || ! current_user_can( 'edit_topic', $source_topic->ID ) ) {
 		bbp_add_error( 'bbp_move_reply_source_permission', __( '<strong>Error</strong>: You do not have permission to edit the source topic.', 'bbpress' ) );
 	}
 
@@ -1321,8 +1332,8 @@ function bbp_move_reply_handler( $action = '' ) {
 					bbp_add_error( 'bbp_move_reply_destination_not_found', __( '<strong>Error</strong>: The topic you want to move to was not found.', 'bbpress' ) );
 				}
 
-				// User cannot edit the destination topic
-				if ( ! current_user_can( 'edit_topic', $destination_topic->ID ) ) {
+				// User must moderate and edit the destination topic
+				if ( ! current_user_can( 'moderate', $destination_topic->ID ) || ! current_user_can( 'edit_topic', $destination_topic->ID ) ) {
 					bbp_add_error( 'bbp_move_reply_destination_permission', __( '<strong>Error</strong>: You do not have permission to edit the destination topic.', 'bbpress' ) );
 				}
 
@@ -1509,8 +1520,8 @@ function bbp_move_reply_handler( $action = '' ) {
  * When a reply is moved, update the counts of source and destination topic
  * and their forums.
  *
- * @since 2.3.0 bbPress (r4521)
- * @since 2.6.17 Recount both forums and topic engagements.
+ * @since 2.3.0 bbPress (r4522)
+ * @since 2.6.17 bbPress (r7468) Recount both forums and topic engagements.
  *
  * @param int $move_reply_id Move reply id
  * @param int $source_topic_id Source topic id
@@ -1592,7 +1603,7 @@ function bbp_toggle_reply_handler( $action = '' ) {
 	}
 
 	// What is the user doing here?
-	if ( ! current_user_can( 'edit_reply', $reply_id ) || ( 'bbp_toggle_reply_trash' === $action && ! current_user_can( 'delete_reply', $reply_id ) ) ) {
+	if ( ! current_user_can( 'edit_reply', $reply_id ) || ( 'bbp_toggle_reply_trash' === $action && ! current_user_can( 'delete_reply', $reply_id ) ) || ( 'bbp_toggle_reply_trash' !== $action && ! current_user_can( 'moderate', $reply_id ) ) ) {
 		bbp_add_error( 'bbp_toggle_reply_permission', __( '<strong>Error</strong>: You do not have permission to do that.', 'bbpress' ) );
 		return;
 	}
@@ -1762,7 +1773,7 @@ function bbp_get_reply_statuses( $reply_id = 0 ) {
 /**
  * Return array of available reply toggle actions
  *
- * @since 2.6.0 bbPress (r6133)
+ * @since 2.6.0 bbPress (r6134)
  *
  * @param int $reply_id   Optional. Reply id.
  *
@@ -1785,7 +1796,7 @@ function bbp_get_reply_toggles( $reply_id = 0 ) {
 /**
  * Return array of public reply statuses.
  *
- * @since 2.6.0 bbPress (r6705)
+ * @since 2.6.0 bbPress (r6706)
  *
  * @return array
  */
@@ -2044,7 +2055,7 @@ function bbp_untrash_reply( $reply_id = 0 ) {
 /**
  * Called after deleting a reply
  *
- * @since 2.0.0 bbPress (r2993)
+ * @since 2.0.0 bbPress (r2895)
  */
 function bbp_deleted_reply( $reply_id = 0 ) {
 	$reply_id = bbp_get_reply_id( $reply_id );
@@ -2059,7 +2070,7 @@ function bbp_deleted_reply( $reply_id = 0 ) {
 /**
  * Called after trashing a reply
  *
- * @since 2.0.0 bbPress (r2993)
+ * @since 2.0.0 bbPress (r2895)
  */
 function bbp_trashed_reply( $reply_id = 0 ) {
 	$reply_id = bbp_get_reply_id( $reply_id );
@@ -2074,7 +2085,7 @@ function bbp_trashed_reply( $reply_id = 0 ) {
 /**
  * Called after untrashing (restoring) a reply
  *
- * @since 2.0.0 bbPress (r2993)
+ * @since 2.0.0 bbPress (r2895)
  */
 function bbp_untrashed_reply( $reply_id = 0 ) {
 	$reply_id = bbp_get_reply_id( $reply_id );
@@ -2091,7 +2102,7 @@ function bbp_untrashed_reply( $reply_id = 0 ) {
 /**
  * Return the replies per page setting
  *
- * @since 2.0.0 bbPress (r3540)
+ * @since 2.1.0 bbPress (r3572)
  *
  * @param int $default Default replies per page (15)
  * @return int
@@ -2113,7 +2124,7 @@ function bbp_get_replies_per_page( $default = 15 ) {
 /**
  * Return the replies per RSS page setting
  *
- * @since 2.0.0 bbPress (r3540)
+ * @since 2.1.0 bbPress (r3572)
  *
  * @param int $default Default replies per page (25)
  * @return int
@@ -2137,7 +2148,7 @@ function bbp_get_replies_per_rss_page( $default = 25 ) {
 /**
  * Check if autoembeds are enabled and hook them in if so
  *
- * @since 2.1.0 bbPress (r3752)
+ * @since 2.1.0 bbPress (r3753)
  *
  * @global WP_Embed $wp_embed
  */
@@ -2157,7 +2168,7 @@ function bbp_reply_content_autoembed() {
  * This function filters the 'post_where' of the WP_Query, and changes the query
  * to include both the topic AND its children in the same loop.
  *
- * @since 2.1.0 bbPress (r4058)
+ * @since 2.1.0 bbPress (r4059)
  *
  * @param string $where
  * @param WP_Query $query
@@ -2240,6 +2251,13 @@ function bbp_display_replies_feed_rss2( $replies_query = array() ) {
 	if ( bbp_is_single_topic() && ! bbp_user_can_view_forum( array( 'forum_id' => bbp_get_topic_forum_id() ) ) ) {
 		return;
 	}
+	if ( bbp_is_single_topic() && ! bbp_is_topic_public() && ! current_user_can( 'read_topic', bbp_get_topic_id() ) ) {
+		return;
+	}
+
+	// Keep replies from non-public topics out of public feeds.
+	$replies_query['_bbp_public_topic_replies'] = true;
+	unset( $replies_query['_bbp_search_private_topic_replies'] );
 
 	// Adjust the title based on context
 	if ( bbp_is_single_topic() ) {
@@ -2284,7 +2302,7 @@ function bbp_display_replies_feed_rss2( $replies_query = array() ) {
 
 					<item>
 						<guid><?php bbp_topic_permalink(); ?></guid>
-						<title><![CDATA[<?php bbp_topic_title(); ?>]]></title>
+						<title><?php echo apply_filters( 'the_title_rss', bbp_get_topic_title() ); ?></title>
 						<link><?php bbp_topic_permalink(); ?></link>
 						<pubDate><?php echo mysql2date( 'D, d M Y H:i:s +0000', get_post_time( 'Y-m-d H:i:s', true ), false ); ?></pubDate>
 						<dc:creator><?php bbp_topic_author_display_name(); ?></dc:creator>
@@ -2296,7 +2314,7 @@ function bbp_display_replies_feed_rss2( $replies_query = array() ) {
 								__( 'Replies: %s', 'bbpress' ),
 								bbp_get_topic_reply_count()
 							); ?></p>
-							<?php bbp_topic_content(); ?>
+							<?php echo bbp_escape_feed_cdata( bbp_get_topic_content() ); ?>
 							]]>
 						</description>
 
@@ -2317,14 +2335,14 @@ function bbp_display_replies_feed_rss2( $replies_query = array() ) {
 
 				<item>
 					<guid><?php bbp_reply_url(); ?></guid>
-					<title><![CDATA[<?php bbp_reply_title(); ?>]]></title>
+					<title><?php echo apply_filters( 'the_title_rss', bbp_get_reply_title() ); ?></title>
 					<link><?php bbp_reply_url(); ?></link>
 					<pubDate><?php echo mysql2date( 'D, d M Y H:i:s +0000', get_post_time( 'Y-m-d H:i:s', true ), false ); ?></pubDate>
 					<dc:creator><?php bbp_reply_author_display_name(); ?></dc:creator>
 
 					<description>
 						<![CDATA[
-						<?php bbp_reply_content(); ?>
+						<?php echo bbp_escape_feed_cdata( bbp_get_reply_content() ); ?>
 						]]>
 					</description>
 
@@ -2353,7 +2371,7 @@ function bbp_display_replies_feed_rss2( $replies_query = array() ) {
 /**
  * Redirect if unauthorized user is attempting to edit a reply
  *
- * @since 2.1.0 bbPress (r3605)
+ * @since 2.1.0 bbPress (r3607)
  */
 function bbp_check_reply_edit() {
 
@@ -2378,7 +2396,7 @@ function bbp_check_reply_edit() {
  * freshness order. By updating the menu_order accordingly, we're able to
  * leverage core WordPress query ordering much more effectively.
  *
- * @since 2.1.0 bbPress (r3933)
+ * @since 2.1.0 bbPress (r3934)
  *
  * @param int $reply_id
  * @param int $reply_position
@@ -2433,7 +2451,7 @@ function bbp_update_reply_position( $reply_id = 0, $reply_position = false ) {
  * Get the position of a reply by querying the DB directly for the replies
  * of a given topic.
  *
- * @since 2.1.0 bbPress (r3933)
+ * @since 2.1.0 bbPress (r3934)
  *
  * @param int $reply_id
  * @param int $topic_id
@@ -2460,10 +2478,15 @@ function bbp_get_reply_position_raw( $reply_id = 0, $topic_id = 0 ) {
 
 				// Reverse replies array and search for current reply position
 				$topic_replies  = array_reverse( $topic_replies );
-				$reply_position = array_search( (string) $reply_id, $topic_replies );
+				$reply_position = array_search( $reply_id, $topic_replies, true );
 
-				// Bump the position to compensate for the lead topic post
-				++$reply_position;
+				// Bump the position to compensate for the lead topic post,
+				// or reset to 0 if the reply was not found in the children list.
+				if ( false !== $reply_position ) {
+					++$reply_position;
+				} else {
+					$reply_position = 0;
+				}
 			}
 		}
 	}
@@ -2560,14 +2583,15 @@ function bbp_list_replies( $args = array() ) {
 /**
  * Validate a `reply_to` field for hierarchical replies
  *
- * Checks for 2 scenarios:
+ * Checks for 3 scenarios:
  * -- The reply to ID is actually a reply
  * -- The reply to ID does not match the current reply
+ * -- The reply to ID belongs to the same topic as the current reply
  *
  * @see https://bbpress.trac.wordpress.org/ticket/2588
  * @see https://bbpress.trac.wordpress.org/ticket/2586
  *
- * @since 2.5.4 bbPress (r5377)
+ * @since 2.6.0 bbPress (r5378)
  *
  * @param int $reply_to
  * @param int $reply_id
@@ -2582,8 +2606,16 @@ function bbp_validate_reply_to( $reply_to = 0, $reply_id = 0 ) {
 	}
 
 	// The parent reply cannot be itself
-	if ( $reply_id === $reply_to ) {
+	if ( (int) $reply_id === (int) $reply_to ) {
 		$reply_to = 0;
+	}
+
+	// The parent reply must belong to the same topic
+	if ( ! empty( $reply_id ) && ! empty( $reply_to ) ) {
+		$topic_id = bbp_get_reply_topic_id( $reply_id );
+		if ( empty( $topic_id ) || ( bbp_get_reply_topic_id( $reply_to ) !== $topic_id ) ) {
+			$reply_to = 0;
+		}
 	}
 
 	return (int) $reply_to;

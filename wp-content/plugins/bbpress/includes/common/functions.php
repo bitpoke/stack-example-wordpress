@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Return array of bbPress registered post types
  *
- * @since 2.6.0 bbPress (r6813)
+ * @since 2.6.0 bbPress (r6814)
  *
  * @param array $args Array of arguments to pass into `get_post_types()`
  *
@@ -35,6 +35,73 @@ function bbp_get_post_types( $args = array() ) {
 
 	// Return post types
 	return get_post_types( $r );
+}
+
+/**
+ * Exclude bbPress content from WordPress public author discovery.
+ *
+ * WordPress counts published posts without checking their forum visibility.
+ * A published topic or reply may belong to a private or hidden forum.
+ *
+ * @since 2.6.19 bbPress (r7710)
+ *
+ * @param array                $args    User query arguments.
+ * @param WP_REST_Request|null $request Optional REST request.
+ * @return array Filtered user query arguments.
+ */
+function bbp_exclude_forum_posts_from_user_query( $args, $request = null ) {
+	if ( $request instanceof WP_REST_Request && current_user_can( 'list_users' ) ) {
+		return $args;
+	}
+
+	if ( empty( $args['has_published_posts'] ) || ! is_array( $args['has_published_posts'] ) ) {
+		return $args;
+	}
+
+	$args['has_published_posts'] = array_values( array_diff( $args['has_published_posts'], bbp_get_post_types() ) );
+
+	// An empty post-type list would otherwise remove the author restriction.
+	if ( empty( $args['has_published_posts'] ) ) {
+		$args['include'] = array( 0 );
+	}
+
+	return $args;
+}
+
+/**
+ * Exclude replies in non-public topics from public bbPress queries.
+ *
+ * The query flag scopes this SQL clause to listings that expose replies
+ * outside a single topic, so pagination counts match the visible results.
+ *
+ * @since 2.6.19 bbPress (r7618)
+ *
+ * @param string   $where       SQL WHERE clause.
+ * @param WP_Query $posts_query Posts query.
+ * @return string SQL WHERE clause.
+ */
+function bbp_public_topic_replies_where( $where = '', $posts_query = null ) {
+	if ( ! $posts_query instanceof WP_Query || ! $posts_query->get( '_bbp_public_topic_replies' ) ) {
+		return $where;
+	}
+
+	$bbp_db   = bbp_db();
+	$statuses = bbp_get_public_topic_statuses();
+	if ( $posts_query->get( '_bbp_search_private_topic_replies' ) && current_user_can( 'read_private_topics' ) && ! is_feed() && ! $posts_query->is_feed() ) {
+		$statuses[] = bbp_get_private_status_id();
+	}
+
+	if ( empty( $statuses ) ) {
+		return $where . $bbp_db->prepare( " AND {$bbp_db->posts}.post_type <> %s", bbp_get_reply_post_type() );
+	}
+
+	$placeholders = implode( ', ', array_fill( 0, count( $statuses ), '%s' ) );
+	$where .= $bbp_db->prepare(
+		" AND ( {$bbp_db->posts}.post_type <> %s OR EXISTS ( SELECT 1 FROM {$bbp_db->posts} AS bbp_parent_topic WHERE bbp_parent_topic.ID = {$bbp_db->posts}.post_parent AND bbp_parent_topic.post_type = %s AND bbp_parent_topic.post_status IN ({$placeholders}) ) )",
+		array_merge( array( bbp_get_reply_post_type(), bbp_get_topic_post_type() ), $statuses )
+	);
+
+	return $where;
 }
 
 /** URLs **********************************************************************/
@@ -60,7 +127,7 @@ function bbp_get_redirect_to() {
 /**
  * Append 'view=all' to query string if it's already there from referer
  *
- * @since 2.0.0 bbPress (r3325)
+ * @since 2.0.0 bbPress (r2957)
  *
  * @param string $original_link Original Link to be modified
  * @param bool $force Override bbp_get_view_all() check
@@ -113,7 +180,7 @@ function bbp_get_view_all( $cap = 'moderate' ) {
 /**
  * Assist pagination by returning correct page number
  *
- * @since 2.0.0 bbPress (r2628)
+ * @since 2.0.0 bbPress (r2634)
  *
  * @return int Current page number
  */
@@ -149,6 +216,7 @@ function bbp_get_paged() {
  *
  * @return array
  */
+// phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.arrayFound -- Preserve the public parameter name for PHP 8 named arguments.
 function bbp_get_unique_array_values( $array = array() ) {
 	return array_unique( array_filter( array_values( $array ) ) );
 }
@@ -156,7 +224,7 @@ function bbp_get_unique_array_values( $array = array() ) {
 /**
  * Return the non-empty string values of an array.
  *
- * @since 2.6.17 bbPress
+ * @since 2.6.17 bbPress (r7506)
  *
  * @param mixed $arr Value or array to get string values of
  *
@@ -221,7 +289,7 @@ function bbp_fix_post_author( $data = array(), $postarr = array() ) {
  * Fixes an issue since WordPress 5.6.0. See
  * {@link https://bbpress.trac.wordpress.org/ticket/3433}.
  *
- * @since 2.6.10 bbPress (r7233)
+ * @since 2.6.10 bbPress (r7234)
  *
  * @param string $new_status      New status to use when untrashing. Default: 'draft'
  * @param int    $post_id         Post ID
@@ -245,7 +313,7 @@ function bbp_fix_untrash_post_status( $new_status = 'draft', $post_id = 0, $prev
 /**
  * Update related counts when a topic or reply is created or changes status.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7451)
  *
  * @param string  $new_status New post status.
  * @param string  $old_status Old post status.
@@ -260,7 +328,7 @@ function bbp_update_counts_on_transition_post_status( $new_status = '', $old_sta
 	 * updates. This allows integrations with custom post-status lifecycles or
 	 * count storage to replace the complete transition operation.
 	 *
-	 * @since 2.6.17
+	 * @since 2.6.17 bbPress (r7478)
 	 *
 	 * @param null|bool $check      Whether to short-circuit count updates.
 	 * @param string    $new_status New post status.
@@ -375,7 +443,7 @@ function bbp_update_counts_on_transition_post_status( $new_status = '', $old_sta
  * It is recommended to leave $utc set to true and to work with UTC/GMT dates.
  * Turning this off will use the WordPress offset which is likely undesirable.
  *
- * @since 2.0.0 bbPress (r3133)
+ * @since 2.0.0 bbPress (r3134)
  * @since 2.6.0 bbPress (r6868) Inverted some logic and added unit tests
  *
  * @param string  $datetime Gets run through strtotime()
@@ -434,7 +502,7 @@ function bbp_past_edit_lock( $datetime = '', $utc = true ) {
  * up by WordPress Cron. If set to 0, items will skip trash and be deleted
  * immediately.
  *
- * @since 2.6.0 bbPress (r6424)
+ * @since 2.6.0 bbPress (r6432)
  *
  * @param string $context Provide context for additional filtering
  * @return int Number of days items remain in trash
@@ -483,7 +551,7 @@ function bbp_get_trash_days( $context = 'forum' ) {
  *  - count_private_topics:  Count private topics? (only counted if the current
  *                           user has read_private_topics cap)
  *  - count_hidden_topics:   Count hidden topics? (only counted if the current
- *                           user has read_hidden_topics cap)
+ *                           user has read_hidden_forums cap)
  *  - count_spam_topics:     Count spam topics? (only counted if the current
  *                           user has edit_others_topics cap)
  *  - count_trash_topics:    Count trash topics? (only counted if the current
@@ -495,7 +563,7 @@ function bbp_get_trash_days( $context = 'forum' ) {
  *  - count_private_replies: Count private replies? (only counted if the current
  *                           user has read_private_replies cap)
  *  - count_hidden_replies:  Count hidden replies? (only counted if the current
- *                           user has read_hidden_replies cap)
+ *                           user has read_hidden_forums cap)
  *  - count_spam_replies:    Count spam replies? (only counted if the current
  *                           user has edit_others_replies cap)
  *  - count_trash_replies:   Count trash replies? (only counted if the current
@@ -572,6 +640,7 @@ function bbp_get_statistics( $args = array() ) {
 	$caps = array(
 		'view_trash'           => false,
 		'read_private_topics'  => false,
+		'read_hidden_forums'   => false,
 		'edit_others_topics'   => false,
 		'read_private_replies' => false,
 		'edit_others_replies'  => false,
@@ -579,8 +648,8 @@ function bbp_get_statistics( $args = array() ) {
 	);
 
 	// Get capabilities
-	foreach ( $caps as $key => $cap ) {
-		$caps[ $key ] = current_user_can( $cap );
+	foreach ( array_keys( $caps ) as $cap ) {
+		$caps[ $cap ] = current_user_can( $cap );
 	}
 
 	// Topics
@@ -610,7 +679,7 @@ function bbp_get_statistics( $args = array() ) {
 		}
 
 		// Hidden
-		if ( ! empty( $r['count_hidden_topics'] ) && ! empty( $caps['read_hidden_topics'] ) ) {
+		if ( ! empty( $r['count_hidden_topics'] ) && ! empty( $caps['read_hidden_forums'] ) ) {
 			$topics[ $hidden ]       = bbp_number_not_negative( $all_topics->{$hidden} );
 			/* translators: %s: Number of hidden topics */
 			$topic_titles[ $hidden ] = sprintf( esc_html__( 'Hidden: %s', 'bbpress' ), bbp_number_format_i18n( $topics[ $hidden ] ) );
@@ -664,7 +733,7 @@ function bbp_get_statistics( $args = array() ) {
 		}
 
 		// Hidden
-		if ( ! empty( $r['count_hidden_replies'] ) && ! empty( $caps['read_hidden_replies'] ) ) {
+		if ( ! empty( $r['count_hidden_replies'] ) && ! empty( $caps['read_hidden_forums'] ) ) {
 			$replies[ $hidden ]      = bbp_number_not_negative( $all_replies->{$hidden} );
 			/* translators: %s: Number of hidden replies */
 			$reply_titles[ $hidden ] = sprintf( esc_html__( 'Hidden: %s', 'bbpress' ), bbp_number_format_i18n( $replies[ $hidden ] ) );
@@ -706,7 +775,7 @@ function bbp_get_statistics( $args = array() ) {
 		);
 
 		// Empty tags
-		if ( ! empty( $r['count_empty_tags'] ) && ! empty( 'edit_topic_tags' ) ) {
+		if ( ! empty( $r['count_empty_tags'] ) && ! empty( $caps['edit_topic_tags'] ) ) {
 			$empty_topic_tag_count = wp_count_terms( $tt_id ) - $topic_tag_count;
 		}
 	}
@@ -1117,7 +1186,7 @@ function bbp_check_for_moderation( $anonymous_data = array(), $author_id = 0, $t
 	/**
 	 * Filters the bbPress moderation keys.
 	 *
-	 * @since 2.6.0 bbPress (r6050)
+	 * @since 2.6.0 bbPress (r6855)
 	 *
 	 * @param string $moderation List of moderation keys. One per new line.
 	 */
@@ -1201,7 +1270,7 @@ function bbp_check_for_moderation( $anonymous_data = array(), $author_id = 0, $t
 /**
  * Deprecated. Use bbp_check_for_moderation() with strict flag set.
  *
- * @since 2.0.0 bbPress (r3446)
+ * @since 2.0.0 bbPress (r3447)
  * @since 2.6.0 bbPress (r6854)
  * @deprecated 2.6.0 Use bbp_check_for_moderation() with strict flag set
  */
@@ -1218,9 +1287,8 @@ function bbp_check_for_blacklist( $anonymous_data = array(), $author_id = 0, $ti
  * available to customize this address further. In the future, we may consider
  * using `admin_email` instead, though this is not normally publicized.
  *
- * We use `$_SERVER['SERVER_NAME']` here to mimic similar functionality in
- * WordPress core. Previously, we used `get_home_url()` to use already validated
- * user input, but it was causing issues in some installations.
+ * Use the parsed home URL host to preserve mapped domains without including
+ * paths or relying on a request-supplied server name.
  *
  * @since 2.6.0 bbPress (r5409)
  *
@@ -1231,7 +1299,11 @@ function bbp_check_for_blacklist( $anonymous_data = array(), $author_id = 0, $ti
  * @return string
  */
 function bbp_get_do_not_reply_address() {
-	$sitename = strtolower( $_SERVER['SERVER_NAME'] );
+	$sitename = wp_parse_url( home_url(), PHP_URL_HOST );
+	if ( empty( $sitename ) ) {
+		$sitename = wp_parse_url( site_url(), PHP_URL_HOST );
+	}
+	$sitename = strtolower( (string) $sitename );
 	if ( substr( $sitename, 0, 4 ) === 'www.' ) {
 		$sitename = substr( $sitename, 4 );
 	}
@@ -1247,7 +1319,7 @@ function bbp_get_do_not_reply_address() {
  * current access immediately before preparing a notification so restricted
  * content is not sent to former participants.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7494)
  *
  * @param array $user_ids Subscriber user IDs.
  * @param int   $forum_id Forum ID.
@@ -1266,7 +1338,7 @@ function bbp_filter_subscription_user_ids( $user_ids = array(), $forum_id = 0, $
 		/**
 		 * Filters whether a subscription recipient can view a forum.
 		 *
-		 * @since 2.6.17
+		 * @since 2.6.17 bbPress (r7494)
 		 *
 		 * @param bool $can_view Whether the user can view the forum.
 		 * @param int  $user_id  User ID.
@@ -1444,12 +1516,18 @@ Login and visit the topic to unsubscribe from these emails.',
 	// For plugins to filter messages per reply/topic/user
 	$message = apply_filters( 'bbp_subscription_mail_message', $message, $reply_id, $topic_id );
 	if ( empty( $message ) ) {
+		bbp_restore_all_filters( 'bbp_get_reply_content' );
+		bbp_restore_all_filters( 'bbp_get_topic_title'   );
+		bbp_restore_all_filters( 'the_title'             );
 		return;
 	}
 
 	// For plugins to filter titles per reply/topic/user
 	$subject = apply_filters( 'bbp_subscription_mail_title', '[' . $forum_title . '] ' . $topic_title, $reply_id, $topic_id );
 	if ( empty( $subject ) ) {
+		bbp_restore_all_filters( 'bbp_get_reply_content' );
+		bbp_restore_all_filters( 'bbp_get_topic_title'   );
+		bbp_restore_all_filters( 'the_title'             );
 		return;
 	}
 
@@ -1488,7 +1566,7 @@ Login and visit the topic to unsubscribe from these emails.',
 	do_action( 'bbp_post_notify_subscribers', $reply_id, $topic_id, $user_ids );
 
 	// Restore previously removed filters
-	bbp_restore_all_filters( 'bbp_get_topic_content' );
+	bbp_restore_all_filters( 'bbp_get_reply_content' );
 	bbp_restore_all_filters( 'bbp_get_topic_title'   );
 	bbp_restore_all_filters( 'the_title'             );
 
@@ -1643,12 +1721,18 @@ Login and visit the topic to unsubscribe from these emails.',
 	// For plugins to filter messages per reply/topic/user
 	$message = apply_filters( 'bbp_forum_subscription_mail_message', $message, $topic_id, $forum_id, $user_id );
 	if ( empty( $message ) ) {
+		bbp_restore_all_filters( 'bbp_get_topic_content' );
+		bbp_restore_all_filters( 'bbp_get_topic_title'   );
+		bbp_restore_all_filters( 'the_title'             );
 		return;
 	}
 
 	// For plugins to filter titles per reply/topic/user
 	$subject = apply_filters( 'bbp_forum_subscription_mail_title', '[' . $forum_title . '] ' . $topic_title, $topic_id, $forum_id, $user_id );
 	if ( empty( $subject ) ) {
+		bbp_restore_all_filters( 'bbp_get_topic_content' );
+		bbp_restore_all_filters( 'bbp_get_topic_title'   );
+		bbp_restore_all_filters( 'the_title'             );
 		return;
 	}
 
@@ -1720,7 +1804,7 @@ function bbp_notify_subscribers( $reply_id = 0, $topic_id = 0, $forum_id = 0, $a
 /**
  * Return an array of user email addresses from an array of user IDs
  *
- * @since 2.6.0 bbPress (r6722)
+ * @since 2.6.0 bbPress (r6725)
  *
  * @param array $user_ids
  * @return array
@@ -1794,7 +1878,7 @@ function bbp_get_email_addresses_from_user_ids( $user_ids = array() ) {
  * desired. A future version of bbPress will introduce a setting to more easily
  * tune this.
  *
- * @since 2.6.0 bbPress (r6918)
+ * @since 2.6.0 bbPress (r6919)
  *
  * @param array $args Original arguments passed to wp_mail().
  * @return array
@@ -1868,7 +1952,7 @@ function bbp_get_email_header() {
  *
  * See: `wp_logout_url()`
  *
- * @since 2.1.0 bbPress (2815)
+ * @since 2.0.0 bbPress (r2815)
  *
  * @param string $url URL used to log out
  * @param string $redirect_to Where to redirect to?
@@ -1902,7 +1986,7 @@ function bbp_logout_url( $url = '', $redirect_to = '' ) {
 		$validated = wp_validate_redirect( $filtered, $forum_root );
 
 		// Assemble $redirect_to and add it (encoded) to full $url
-		$appended  = add_query_arg( array( 'loggedout'   => 'true'   ), $validated );
+		$appended  = add_query_arg( array( 'loggedout' => 'true' ), $validated );
 		$encoded   = urlencode( $appended );
 		$url       = add_query_arg( array( 'redirect_to' => $encoded ), $url       );
 	}
@@ -1921,7 +2005,7 @@ function bbp_logout_url( $url = '', $redirect_to = '' ) {
  * it allows for arguments to be passively or aggressively filtered using the
  * optional $filter_key parameter.
  *
- * @since 2.1.0 bbPress (r3839)
+ * @since 2.1.0 bbPress (r3840)
  *
  * @param string|array $args Value to merge with $defaults
  * @param array $defaults Array that serves as the defaults.
@@ -1961,7 +2045,7 @@ function bbp_parse_args( $args, $defaults = array(), $filter_key = '' ) {
 /**
  * Adds ability to include or exclude specific post_parent ID's
  *
- * @since 2.0.0 bbPress (r2996)
+ * @since 2.0.0 bbPress (r2997)
  *
  * @deprecated 2.5.8 bbPress (r5814)
  *
@@ -2073,7 +2157,7 @@ function bbp_get_public_child_last_id( $parent_id = 0, $post_type = 'post' ) {
 /**
  * Query the database for child counts, grouped by type & status
  *
- * @since 2.6.0 bbPress (r6826)
+ * @since 2.6.0 bbPress (r6827)
  *
  * @param int $parent_id
  */
@@ -2144,7 +2228,7 @@ function bbp_get_child_counts( $parent_id = 0 ) {
 /**
  * Filter a list of child counts, from `bbp_get_child_counts()`
  *
- * @since 2.6.0 bbPress (r6826)
+ * @since 2.6.0 bbPress (r6827)
  *
  * @param int    $parent_id  ID of post to get child counts from
  * @param array  $types      Optional. An array of post types to filter by
@@ -2230,7 +2314,7 @@ function bbp_get_public_child_count( $parent_id = 0, $post_type = 'post' ) {
 /**
  * Query the DB and get a count of public children
  *
- * @since 2.0.0 bbPress (r2868)
+ * @since 2.6.0 bbPress (r6827)
  * @since 2.6.0 bbPress (r5954) Replace direct queries with WP_Query() objects
  *
  * @param int    $parent_id Parent id.
@@ -2281,7 +2365,7 @@ function bbp_get_non_public_child_count( $parent_id = 0, $post_type = 'post' ) {
 /**
  * Query the DB and get the child id's of public children
  *
- * @since 2.0.0 bbPress (r2868)
+ * @since 2.0.0 bbPress (r2891)
  * @since 2.6.0 bbPress (r5954) Replace direct queries with WP_Query() objects
  *
  * @param int    $parent_id Parent id.
@@ -2417,7 +2501,7 @@ function bbp_get_all_child_ids( $parent_id = 0, $post_type = 'post' ) {
  *
  * Also see: bbp_update_post_author_caches()
  *
- * @since 2.6.0 bbPress (r6699)
+ * @since 2.6.0 bbPress (r6700)
  *
  * @param array $objects Array of objects, fresh from a query
  *
@@ -2490,7 +2574,7 @@ function bbp_update_post_family_caches( $objects = array() ) {
  *
  * This is triggered when a `update_post_author_cache` argument is set to true.
  *
- * @since 2.6.0 bbPress (r6699)
+ * @since 2.6.0 bbPress (r6700)
  *
  * @param array $objects Array of objects, fresh from a query
  *
@@ -2541,7 +2625,7 @@ function bbp_update_post_author_caches( $objects = array() ) {
  *
  * Used most frequently when editing a forum/topic/reply
  *
- * @since 2.1.0 bbPress (r3694)
+ * @since 2.1.0 bbPress (r3702)
  *
  * @param string $field Name of the key
  * @param string $context How to sanitize - raw|edit|db|display|attribute|js
@@ -2566,7 +2650,7 @@ function bbp_get_global_post_field( $field = 'ID', $context = 'edit' ) {
  *
  * To avoid security exploits within the theme.
  *
- * @since 2.1.0 bbPress (r4022)
+ * @since 2.1.0 bbPress (r4023)
  *
  * @param string $action Action nonce
  * @param string $query_arg where to look for nonce in $_REQUEST
@@ -2577,7 +2661,7 @@ function bbp_verify_nonce_request( $action = '', $query_arg = '_wpnonce' ) {
 
 	// Parse home_url() into pieces to remove query-strings, strange characters,
 	// and other funny things that plugins might to do to it.
-	$parsed_home = parse_url( home_url( '/', ( is_ssl() ? 'https' : 'http' ) ) );
+	$parsed_home = wp_parse_url( home_url( '/', ( is_ssl() ? 'https' : 'http' ) ) );
 
 	// Maybe include the port, if it's included
 	if ( isset( $parsed_home['port'] ) ) {
@@ -2639,6 +2723,21 @@ function bbp_verify_nonce_request( $action = '', $query_arg = '_wpnonce' ) {
 }
 
 /** Feeds *********************************************************************/
+
+/**
+ * Escape CDATA terminators in bbPress feed content.
+ *
+ * Mirrors the handling in WordPress's get_the_content_feed() while preserving
+ * bbPress's topic and reply content filters.
+ *
+ * @since 2.6.19 bbPress (r7620)
+ *
+ * @param string $content Feed content.
+ * @return string Content safe to include in a CDATA section.
+ */
+function bbp_escape_feed_cdata( $content = '' ) {
+	return str_replace( ']]>', ']]&gt;', $content );
+}
 
 /**
  * This function is hooked into the WordPress 'request' action and is
@@ -2899,7 +2998,12 @@ function bbp_get_page_by_path( $path = '' ) {
 
 		// Pretty permalinks are on so path might exist
 		if ( get_option( 'permalink_structure' ) ) {
-			$retval = get_page_by_path( $path );
+			$page = get_page_by_path( $path );
+
+			// Only public pages can provide archive titles and content.
+			if ( ! empty( $page ) && ( 'page' === $page->post_type ) && is_post_publicly_viewable( $page ) && empty( $page->post_password ) ) {
+				$retval = $page;
+			}
 		}
 	}
 
@@ -2914,7 +3018,7 @@ function bbp_get_page_by_path( $path = '' ) {
  * on forum access. Older versions of WordPress may otherwise guess a restricted
  * forum or topic permalink from a partial slug and expose its full title.
  *
- * @since 2.6.17 bbPress
+ * @since 2.6.17 bbPress (r7500)
  *
  * @param bool $do_redirect_guess Whether to attempt to guess a redirect URL.
  *
@@ -2972,7 +3076,7 @@ function bbp_set_200() {
  * Some conditions (like private/hidden forums and edits) have their own checks
  * on `bbp_template_redirect` and are not currently 404s.
  *
- * @since 2.6.0 bbPress (r6555)
+ * @since 2.6.0 bbPress (r6554)
  *
  * @param bool $override Whether to override the default handler
  * @param WP_Query $wp_query The posts query being referenced
@@ -3005,7 +3109,7 @@ function bbp_pre_handle_404( $override = false, $wp_query = false ) {
  * This effectively short-circuits the default query for posts, which is
  * currently only used to avoid calling the main query when it's not necessary.
  *
- * @since 2.6.0 bbPress (r6580)
+ * @since 2.6.0 bbPress (r6583)
  *
  * @param mixed $posts Default null. Array of posts (possibly empty)
  * @param WP_Query $wp_query
@@ -3026,7 +3130,7 @@ function bbp_posts_pre_query( $posts = null, $wp_query = false ) {
 /**
  * Get scheme for a URL based on is_ssl() results.
  *
- * @since 2.6.0 bbPress (r6759)
+ * @since 2.6.0 bbPress (r6760)
  *
  * @return string https:// if is_ssl(), otherwise http://
  */
@@ -3044,7 +3148,7 @@ function bbp_get_url_scheme() {
  * Uses mb_strlen() in `8bit` mode to treat strings as raw. This matches the
  * behavior present in Comments, PHPMailer, RandomCompat, and others.
  *
- * @since 2.6.0 bbPress (r6783)
+ * @since 2.6.0 bbPress (r6784)
  *
  * @param string $title
  * @return bool

@@ -41,7 +41,7 @@ function bbp_redirect_login( $url = '', $raw_url = '', $user = '' ) {
 /**
  * Is an anonymous topic/reply being made?
  *
- * @since 2.0.0 bbPress (r2688)
+ * @since 2.0.0 bbPress (r2670)
  *
  * @return bool True if anonymous is allowed and user is not logged in, false if
  *               anonymous is not allowed or user is logged in
@@ -121,7 +121,7 @@ function bbp_set_current_anonymous_user_data( $anonymous_data = array() ) {
 	// Setup cookie expiration
 	$lifetime = (int) apply_filters( 'comment_cookie_lifetime', 30000000 );
 	$expiry   = time() + $lifetime;
-	$secure   = ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) );
+	$secure   = ( 'https' === wp_parse_url( home_url(), PHP_URL_SCHEME ) );
 
 	// Set the cookies
 	setcookie( 'comment_author_'       . COOKIEHASH, $anonymous_data['bbp_anonymous_name'],    $expiry, COOKIEPATH, COOKIE_DOMAIN, $secure );
@@ -154,7 +154,7 @@ function bbp_current_author_ip() {
 /**
  * Get the poster user agent
  *
- * @since 2.0.0 bbPress (r3446)
+ * @since 2.0.0 bbPress (r3447)
  *
  * @return string
  */
@@ -172,7 +172,7 @@ function bbp_current_author_ua() {
 /**
  * Filter user profile data according to the current user's field permissions.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7514)
  *
  * @param array $data    Submitted user profile data.
  * @param int   $user_id User being edited.
@@ -229,7 +229,7 @@ function bbp_filter_user_edit_post_data( $data = array(), $user_id = 0 ) {
  * Self-service changes require confirmation by default, while privileged edits
  * to another user update the address directly.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7514)
  *
  * @param int $user_id User being edited.
  * @return bool Whether confirmation is required.
@@ -243,9 +243,36 @@ function bbp_user_email_change_requires_confirmation( $user_id = 0 ) {
 }
 
 /**
+ * Update a user's network role when the profile form submitted that field.
+ *
+ * A missing checkbox is ambiguous unless the form also submits its presence
+ * marker. Continue accepting checked boxes from older custom templates.
+ *
+ * @since 2.6.19 bbPress (r7696)
+ *
+ * @param int   $user_id User being edited.
+ * @param array $data    Submitted profile fields.
+ */
+function bbp_maybe_update_user_super_admin( $user_id = 0, $data = array() ) {
+	if ( ! is_multisite() || bbp_is_user_home_edit() || ! current_user_can( 'manage_network_options' ) || ! is_super_admin() ) {
+		return;
+	}
+
+	if ( ! isset( $data['bbp_super_admin_present'] ) && ! isset( $data['super_admin'] ) ) {
+		return;
+	}
+
+	if ( empty( $data['super_admin'] ) ) {
+		revoke_super_admin( $user_id );
+	} else {
+		grant_super_admin( $user_id );
+	}
+}
+
+/**
  * Handles the front end user editing from POST requests
  *
- * @since 2.0.0 bbPress (r2790)
+ * @since 2.0.0 bbPress (r2688)
  *
  * @param string $action The requested action to compare this function to
  */
@@ -349,11 +376,7 @@ function bbp_edit_user_handler( $action = '' ) {
 	} elseif ( is_integer( $edit_user ) ) {
 
 		// Maybe update super admin ability
-		if ( is_multisite() && ! bbp_is_user_home_edit() && current_user_can( 'manage_network_options' ) && is_super_admin() ) {
-			empty( $_POST['super_admin'] )
-				? revoke_super_admin( $edit_user )
-				: grant_super_admin( $edit_user );
-		}
+		bbp_maybe_update_user_super_admin( $edit_user, $_POST );
 
 		// Redirect
 		$args     = array( 'updated' => 'true' );
@@ -367,7 +390,7 @@ function bbp_edit_user_handler( $action = '' ) {
 /**
  * Handles user email address updating from GET requests
  *
- * @since 2.6.0 bbPress (r5660)
+ * @since 2.6.0 bbPress (r5663)
  *
  * @param string $action
  */
@@ -467,7 +490,7 @@ function bbp_user_email_change_handler( $action = '' ) {
 /**
  * Sends an email when an email address change occurs on POST requests
  *
- * @since 2.6.0 bbPress (r5660)
+ * @since 2.6.0 bbPress (r5663)
  *
  * @see send_confirmation_on_profile_email()
  */
@@ -553,7 +576,7 @@ The %4$s Team
  * output actions if they don't want any unexpected junk to appear there, and
  * also avoids needing to pollute the templates with additional logic and actions.
  *
- * @since 2.2.0 bbPress (r4273)
+ * @since 2.2.0 bbPress (r4274)
  */
 function bbp_user_edit_after() {
 	$action = bbp_is_user_home_edit() ? 'show_user_profile' : 'edit_user_profile';
@@ -567,7 +590,7 @@ function bbp_user_edit_after() {
  * Get the topics that a user created
  *
  * @since 2.0.0 bbPress (r2660)
- * @since 2.6.0 bbPress (r6618) Signature changed to accept an array of arguments
+ * @since 2.6.0 bbPress (r6619) Signature changed to accept an array of arguments
  *
  * @param array $args    Optional. Arguments to pass into bbp_has_topics()
  *
@@ -601,8 +624,8 @@ function bbp_get_user_topics_started( $args = array() ) {
 /**
  * Get the replies that a user created
  *
- * @since 2.2.0 bbPress (r4225)
- * @since 2.6.0 bbPress (r6618) Signature changed to accept an array of arguments
+ * @since 2.2.0 bbPress (r4228)
+ * @since 2.6.0 bbPress (r6619) Signature changed to accept an array of arguments
  *
  * @param array $args Optional. Arguments to pass into bbp_has_replies()
  *
@@ -628,6 +651,8 @@ function bbp_get_user_replies_created( $args = array() ) {
 
 	// Parse arguments
 	$r = bbp_parse_args( $args, $defaults, 'get_user_replies_created' );
+	$r['_bbp_public_topic_replies'] = ! bbp_get_view_all( 'edit_others_replies' );
+	unset( $r['_bbp_search_private_topic_replies'] );
 
 	// Get the replies
 	$query   = bbp_has_replies( $r );
@@ -642,7 +667,7 @@ function bbp_get_user_replies_created( $args = array() ) {
  *
  * This function is primarily used when saving object moderators
  *
- * @since 2.6.0 bbPress
+ * @since 2.6.0 bbPress (r6056)
  *
  * @param mixed $user_nicenames
  * @return array
@@ -685,7 +710,7 @@ function bbp_get_user_ids_from_nicenames( $user_nicenames = array() ) {
  *
  * This function is primarily used when saving object moderators
  *
- * @since 2.6.0 bbPress
+ * @since 2.6.0 bbPress (r6056)
  *
  * @param mixed $user_ids
  * @return array
@@ -773,7 +798,7 @@ function bbp_get_user_reply_count_raw( $user_id = 0 ) {
  * Bump the topic count for a user by a certain amount.
  *
  * @since 2.6.0 bbPress (r5309)
- * @since 2.6.17 Rebuild the count when the user option is missing.
+ * @since 2.6.17 bbPress (r7451) Rebuild the count when the user option is missing.
  *
  * @param int $user_id
  * @param int $difference
@@ -814,7 +839,7 @@ function bbp_bump_user_topic_count( $user_id = 0, $difference = 1 ) {
  * Bump the reply count for a user by a certain amount.
  *
  * @since 2.6.0 bbPress (r5309)
- * @since 2.6.17 Rebuild the count when the user option is missing.
+ * @since 2.6.17 bbPress (r7451) Rebuild the count when the user option is missing.
  *
  * @param int $user_id
  * @param int $difference
@@ -854,7 +879,7 @@ function bbp_bump_user_reply_count( $user_id = 0, $difference = 1 ) {
 /**
  * Update user counts when a topic or reply changes authors.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7468)
  *
  * @param int     $post_id     Post ID.
  * @param WP_Post $post_after  Post object following the update.
@@ -916,7 +941,7 @@ function bbp_update_counts_on_post_author_change( $post_id = 0, $post_after = fa
 /**
  * Update topic engagements when a topic or reply changes authors.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7468)
  *
  * @param int     $post_id     Post ID.
  * @param WP_Post $post_after  Post object following the update.
@@ -950,7 +975,7 @@ function bbp_recalculate_engagements_on_post_author_change( $post_id = 0, $post_
  * normal post update actions. Record affected topics before that write, then
  * repair the replacement user's counts and those topics after it completes.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7468)
  *
  * @param int      $user_id  ID of the user being deleted.
  * @param int|null $reassign ID of the user receiving the posts.
@@ -1095,7 +1120,7 @@ function bbp_decrease_user_reply_count( $reply_id = 0 ) {
  * met, we assume a user cannot perform this task, and look for ways they can
  * earn the ability to access this template.
  *
- * @since 2.1.0 bbPress (r3605)
+ * @since 2.1.0 bbPress (r3607)
  */
 function bbp_check_user_edit() {
 
@@ -1140,7 +1165,7 @@ function bbp_check_user_edit() {
 /**
  * Check if a user is blocked, or cannot spectate the forums.
  *
- * @since 2.0.0 bbPress (r2996)
+ * @since 2.2.0 bbPress (r4316)
  */
 function bbp_forum_enforce_blocked() {
 
@@ -1172,7 +1197,7 @@ function bbp_forum_enforce_blocked() {
  *    a backwards compatible approach like this one was necessary to protect
  *    existing installations that may have custom template parts.
  *
- * @since 2.6.0 bbPress (r5368)
+ * @since 2.6.0 bbPress (r5369)
  *
  * @param string $value
  * @param string $field
@@ -1207,7 +1232,7 @@ function bbp_sanitize_displayed_user_field( $value = '', $field = '', $context =
 		case 'display_name' :
 		case 'first_name'   :
 		case 'last_name'    :
-		case 'nick_name'    :
+		case 'nickname'     :
 			$filter = ( 'edit' === $context ) ? 'esc_attr' : 'esc_html';
 			break;
 
@@ -1229,9 +1254,9 @@ function bbp_sanitize_displayed_user_field( $value = '', $field = '', $context =
 /**
  * Convert passwords from previous platform encryption to WordPress encryption.
  *
- * @since 2.1.0 bbPress (r3813)
- * @since 2.6.10 bbPress (r7244) Switched from direct query to get_user_by()
- * @since 2.6.18 Improved input handling and email login support.
+ * @since 2.1.0 bbPress (r4072)
+ * @since 2.6.10 bbPress (r7245) Switched from direct query to get_user_by()
+ * @since 2.6.18 bbPress (r7546) Improved input handling and email login support.
  */
 function bbp_user_maybe_convert_pass() {
 
@@ -1245,6 +1270,11 @@ function bbp_user_maybe_convert_pass() {
 		? $_POST['pwd']
 		: '';
 	$pass    = wp_unslash( $wp_pass );
+
+	// Match WordPress's default password limit before invoking a legacy converter.
+	if ( strlen( $wp_pass ) > 4096 ) {
+		return;
+	}
 
 	// Bail if no username or password
 	if ( '' === $login || '' === $pass ) {
@@ -1276,15 +1306,15 @@ function bbp_user_maybe_convert_pass() {
 		$class = get_option( '_bbp_converter_platform' );
 	}
 
-	// Completed Drupal 7 imports stored the source hash directly in user_pass
-	// and removed the temporary password metadata. Use only the saved Drupal 7
-	// platform for this legacy storage shape.
+	// Completed Drupal 7 and PHPWind imports stored source data directly in
+	// user_pass and removed temporary password metadata. Their callbacks must
+	// verify the legacy value before changing the account.
 	if ( ! $has_password_meta ) {
-		if ( empty( $class ) && 'Drupal7' === get_option( '_bbp_converter_platform' ) ) {
-			$class = 'Drupal7';
+		if ( empty( $class ) && in_array( get_option( '_bbp_converter_platform' ), array( 'Drupal7', 'PHPWind' ), true ) ) {
+			$class = get_option( '_bbp_converter_platform' );
 		}
 
-		$user_pass_class = ( 'Drupal7' === $class );
+		$user_pass_class = in_array( $class, array( 'Drupal7', 'PHPWind' ), true );
 	}
 
 	// Bail if no converter class

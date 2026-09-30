@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  * A wrapper for wp_insert_post() that also includes the necessary meta values
  * for the topic to function properly.
  *
- * @since 2.0.0 bbPress (r3349)
+ * @since 2.0.0 bbPress (r2970)
  *
  * @param array $topic_data Forum post data
  * @param array $topic_meta Forum meta data
@@ -435,6 +435,8 @@ function bbp_new_topic_handler( $action = '' ) {
 /**
  * Handles the front end edit topic submission
  *
+ * @since 2.6.19 bbPress (r7680) Enforce the edit lock on submissions.
+ *
  * @param string $action The requested action to compare this function to
  */
 function bbp_edit_topic_handler( $action = '' ) {
@@ -470,6 +472,11 @@ function bbp_edit_topic_handler( $action = '' ) {
 
 	// User cannot edit this topic
 	} elseif ( ! current_user_can( 'edit_topic', $topic_id ) ) {
+		bbp_add_error( 'bbp_edit_topic_permission', __( '<strong>Error</strong>: You do not have permission to edit that topic.', 'bbpress' ) );
+		return;
+
+	// Authors cannot bypass the edit lock by submitting from another page
+	} elseif ( ( bbp_get_current_user_id() === (int) $topic->post_author ) && ! current_user_can( 'moderate', $topic_id ) && bbp_past_edit_lock( $topic->post_date_gmt ) ) {
 		bbp_add_error( 'bbp_edit_topic_permission', __( '<strong>Error</strong>: You do not have permission to edit that topic.', 'bbpress' ) );
 		return;
 
@@ -777,7 +784,7 @@ function bbp_update_topic( $topic_id = 0, $forum_id = 0, $anonymous_data = array
 	if ( ! empty( $_POST['bbp_stick_topic'] ) && in_array( $_POST['bbp_stick_topic'], array_keys( $topic_types ), true ) ) {
 
 		// What's the caps?
-		if ( current_user_can( 'moderate', $topic_id ) ) {
+		if ( current_user_can( 'moderate', $topic_id ) && ( current_user_can( 'moderate' ) || ( 'super' !== $_POST['bbp_stick_topic'] && ! bbp_is_topic_super_sticky( $topic_id ) ) ) ) {
 
 			// What's the haps?
 			switch ( $_POST['bbp_stick_topic'] ) {
@@ -869,7 +876,7 @@ function bbp_update_topic( $topic_id = 0, $forum_id = 0, $anonymous_data = array
  * manual queries against the database to get their results. As such, this
  * function can be costly to run but is necessary to keep everything accurate.
  *
- * @since 2.0.0 bbPress (r2800)
+ * @since 2.0.0 bbPress (r2895)
  *
  * @param int $topic_id Topic id
  * @param string $last_active_time Optional. Last active time
@@ -899,6 +906,11 @@ function bbp_update_topic_walker( $topic_id, $last_active_time = '', $forum_id =
 
 	// Topic status
 	$topic_status = get_post_status( $topic_id );
+
+	// Do not replace public forum activity with a non-public topic
+	if ( ( false === $refresh ) && ! bbp_is_topic_public( $topic_id ) ) {
+		return;
+	}
 
 	// If we want a full refresh, retain the resolved forum and query its values
 	if ( true === $refresh ) {
@@ -1107,7 +1119,6 @@ function bbp_merge_topic_handler( $action = '' ) {
 	// Nonce check
 	if ( ! bbp_verify_nonce_request( 'bbp-merge-topic_' . $source_topic_id ) ) {
 		bbp_add_error( 'bbp_merge_topic_nonce', __( '<strong>Error</strong>: Are you sure you wanted to do that?', 'bbpress' ) );
-		return;
 	}
 
 	// Get source topic
@@ -1116,13 +1127,11 @@ function bbp_merge_topic_handler( $action = '' ) {
 	// Source topic not found
 	if ( empty( $source_topic ) ) {
 		bbp_add_error( 'bbp_merge_topic_source_not_found', __( '<strong>Error</strong>: The topic you want to merge was not found.', 'bbpress' ) );
-		return;
 	}
 
-	// Cannot edit source topic
-	if ( ! current_user_can( 'edit_topic', $source_topic->ID ) ) {
+	// User must moderate and edit the source topic
+	if ( ! empty( $source_topic ) && ( ! current_user_can( 'moderate', $source_topic->ID ) || ! current_user_can( 'edit_topic', $source_topic->ID ) ) ) {
 		bbp_add_error( 'bbp_merge_topic_source_permission', __( '<strong>Error</strong>: You do not have permission to edit the source topic.', 'bbpress' ) );
-		return;
 	}
 
 	/** Destination Topic *****************************************************/
@@ -1142,8 +1151,13 @@ function bbp_merge_topic_handler( $action = '' ) {
 		bbp_add_error( 'bbp_merge_topic_destination_not_found', __( '<strong>Error</strong>: The topic you want to merge to was not found.', 'bbpress' ) );
 	}
 
-	// Cannot edit destination topic
-	if ( ! current_user_can( 'edit_topic', $destination_topic->ID ) ) {
+	// A topic cannot be merged with itself
+	if ( ! empty( $source_topic ) && ! empty( $destination_topic ) && ( $source_topic->ID === $destination_topic->ID ) ) {
+		bbp_add_error( 'bbp_merge_topic_destination_same', __( '<strong>Error</strong>: The destination topic must be different from the source topic.', 'bbpress' ) );
+	}
+
+	// User must moderate and edit the destination topic
+	if ( ! empty( $destination_topic ) && ( ! current_user_can( 'moderate', $destination_topic->ID ) || ! current_user_can( 'edit_topic', $destination_topic->ID ) ) ) {
 		bbp_add_error( 'bbp_merge_topic_destination_permission', __( '<strong>Error</strong>: You do not have permission to edit the destination topic.', 'bbpress' ) );
 	}
 
@@ -1317,7 +1331,7 @@ function bbp_merge_topic_handler( $action = '' ) {
  * and their forums.
  *
  * @since 2.0.0 bbPress (r2756)
- * @since 2.6.17 Recount both forums and topic engagements.
+ * @since 2.6.17 bbPress (r7468) Recount both forums and topic engagements.
  *
  * @param int $destination_topic_id Destination topic id.
  * @param int $source_topic_id Source topic id.
@@ -1366,7 +1380,7 @@ function bbp_merge_topic_count( $destination_topic_id, $source_topic_id, $source
  * Handles the front end split topic submission
  *
  * @since 2.0.0 bbPress (r2756)
- * @since 2.6.17 Recount both forums and topic engagements.
+ * @since 2.6.17 bbPress (r7468) Recount both forums and topic engagements.
  *
  * @param string $action The requested action to compare this function to
  */
@@ -1401,21 +1415,22 @@ function bbp_split_topic_handler( $action = '' ) {
 	/** Topic to Split ********************************************************/
 
 	// Get the topic being split
-	$source_topic = bbp_get_topic( $from_reply->post_parent );
+	if ( ! empty( $from_reply ) ) {
+		$source_topic = bbp_get_topic( $from_reply->post_parent );
+	}
 
 	// No topic
-	if ( empty( $source_topic ) ) {
+	if ( ! empty( $from_reply ) && empty( $source_topic ) ) {
 		bbp_add_error( 'bbp_split_topic_source_not_found', __( '<strong>Error</strong>: The topic you want to split was not found.', 'bbpress' ) );
 	}
 
 	// Nonce check failed
-	if ( ! bbp_verify_nonce_request( 'bbp-split-topic_' . $source_topic->ID ) ) {
+	if ( ! empty( $source_topic ) && ! bbp_verify_nonce_request( 'bbp-split-topic_' . $source_topic->ID ) ) {
 		bbp_add_error( 'bbp_split_topic_nonce', __( '<strong>Error</strong>: Are you sure you wanted to do that?', 'bbpress' ) );
-		return;
 	}
 
-	// Use cannot edit topic
-	if ( ! current_user_can( 'edit_topic', $source_topic->ID ) ) {
+	// User must moderate and edit the source topic
+	if ( ! empty( $source_topic ) && ( ! current_user_can( 'moderate', $source_topic->ID ) || ! current_user_can( 'edit_topic', $source_topic->ID ) ) ) {
 		bbp_add_error( 'bbp_split_topic_source_permission', __( '<strong>Error</strong>: You do not have permission to edit the source topic.', 'bbpress' ) );
 	}
 
@@ -1452,8 +1467,13 @@ function bbp_split_topic_handler( $action = '' ) {
 					bbp_add_error( 'bbp_split_topic_destination_not_found', __( '<strong>Error</strong>: The topic you want to split to was not found.', 'bbpress' ) );
 				}
 
-				// User cannot edit the destination topic
-				if ( ! current_user_can( 'edit_topic', $destination_topic->ID ) ) {
+				// A topic cannot be split into itself
+				if ( ! empty( $source_topic ) && ! empty( $destination_topic ) && ( $source_topic->ID === $destination_topic->ID ) ) {
+					bbp_add_error( 'bbp_split_topic_destination_same', __( '<strong>Error</strong>: The destination topic must be different from the source topic.', 'bbpress' ) );
+				}
+
+				// User must moderate and edit the destination topic
+				if ( ! empty( $destination_topic ) && ( ! current_user_can( 'moderate', $destination_topic->ID ) || ! current_user_can( 'edit_topic', $destination_topic->ID ) ) ) {
 					bbp_add_error( 'bbp_split_topic_destination_permission', __( '<strong>Error</strong>: You do not have permission to edit the destination topic.', 'bbpress' ) );
 				}
 
@@ -1705,7 +1725,7 @@ function bbp_split_topic_handler( $action = '' ) {
  * and their forums.
  *
  * @since 2.0.0 bbPress (r2756)
- * @since 2.6.17 Recount both forums and topic engagements.
+ * @since 2.6.17 bbPress (r7468) Recount both forums and topic engagements.
  *
  * @param int $from_reply_id From reply id
  * @param int $source_topic_id Source topic id
@@ -1754,7 +1774,7 @@ function bbp_split_topic_count( $from_reply_id, $source_topic_id, $destination_t
 /**
  * Handles the front end tag management (renaming, merging, destroying)
  *
- * @since 2.0.0 bbPress (r2768)
+ * @since 2.1.0 bbPress (r3671)
  *
  * @param string $action The requested action to compare this function to
  */
@@ -1960,7 +1980,7 @@ function bbp_edit_topic_tag_handler( $action = '' ) {
 /**
  * Return an associative array of available topic statuses
  *
- * @since 2.4.0 bbPress (r5059)
+ * @since 2.4.0 bbPress (r5060)
  *
  * @param int $topic_id   Optional. Topic id.
  *
@@ -1985,7 +2005,7 @@ function bbp_get_topic_statuses( $topic_id = 0 ) {
 /**
  * Return an associative array of topic sticky types
  *
- * @since 2.4.0 bbPress (r5059)
+ * @since 2.4.0 bbPress (r5060)
  *
  * @param int $topic_id   Optional. Topic id.
  *
@@ -2008,7 +2028,7 @@ function bbp_get_topic_types( $topic_id = 0 ) {
 /**
  * Return array of available topic toggle actions
  *
- * @since 2.6.0 bbPress (r6133)
+ * @since 2.6.0 bbPress (r6142)
  *
  * @param int $topic_id   Optional. Topic id.
  *
@@ -2033,7 +2053,7 @@ function bbp_get_topic_toggles( $topic_id = 0 ) {
 /**
  * Return array of public topic statuses.
  *
- * @since 2.6.0 bbPress (r6383)
+ * @since 2.6.0 bbPress (r6384)
  *
  * @return array
  */
@@ -2050,7 +2070,7 @@ function bbp_get_public_topic_statuses() {
 /**
  * Return array of non-public topic statuses.
  *
- * @since 2.6.0 bbPress (r6642)
+ * @since 2.6.0 bbPress (r6644)
  *
  * @return array
  */
@@ -2148,7 +2168,13 @@ function bbp_toggle_topic_handler( $action = '' ) {
 	}
 
 	// What is the user doing here?
-	if ( ! current_user_can( 'edit_topic', $topic_id ) || ( 'bbp_toggle_topic_trash' === $action && ! current_user_can( 'delete_topic', $topic_id ) ) ) {
+	if ( ! current_user_can( 'edit_topic', $topic_id ) || ( 'bbp_toggle_topic_trash' === $action && ! current_user_can( 'delete_topic', $topic_id ) ) || ( 'bbp_toggle_topic_trash' !== $action && ! current_user_can( 'moderate', $topic_id ) ) ) {
+		bbp_add_error( 'bbp_toggle_topic_permission', __( '<strong>Error</strong>: You do not have permission to do that.', 'bbpress' ) );
+		return;
+	}
+
+	// Super stickies affect every forum and require global moderation
+	if ( ( 'bbp_toggle_topic_stick' === $action ) && ! current_user_can( 'moderate' ) && ( bbp_is_topic_super_sticky( $topic_id ) || ( ! bbp_is_topic_sticky( $topic_id ) && ! empty( $_GET['super'] ) && ( '1' === $_GET['super'] ) ) ) ) {
 		bbp_add_error( 'bbp_toggle_topic_permission', __( '<strong>Error</strong>: You do not have permission to do that.', 'bbpress' ) );
 		return;
 	}
@@ -2192,7 +2218,7 @@ function bbp_toggle_topic_handler( $action = '' ) {
  * within that context, so if you need to call this function directly, make sure
  * you're also doing what the handler does too.
  *
- * @since 2.6.0  bbPress (r6133)
+ * @since 2.6.0  bbPress (r6142)
  * @access private
  *
  * @param array $args
@@ -2381,7 +2407,7 @@ function bbp_remove_topic_from_all_favorites( $topic_id = 0 ) {
 /**
  * Remove a deleted topic from all user subscriptions
  *
- * @since 2.0.0 bbPress (r2652)
+ * @since 2.0.0 bbPress (r2668)
  *
  * @param int $topic_id Get the topic id to remove
  */
@@ -2407,8 +2433,8 @@ function bbp_remove_topic_from_all_subscriptions( $topic_id = 0 ) {
 /**
  * Bump the total reply count of a topic
  *
- * @since 2.1.0 bbPress (r3825)
- * @since 2.6.17 Use atomic metadata writes and non-negative counts.
+ * @since 2.1.0 bbPress (r3826)
+ * @since 2.6.17 bbPress (r7468) Use atomic metadata writes and non-negative counts.
  *
  * @param int $topic_id   Optional. Topic id.
  * @param int $difference Optional. Default 1
@@ -2501,8 +2527,8 @@ function bbp_decrease_topic_reply_count( $topic_id = 0 ) {
 /**
  * Bump the total hidden reply count of a topic
  *
- * @since 2.1.0 bbPress (r3825)
- * @since 2.6.17 Use atomic metadata writes and non-negative counts.
+ * @since 2.1.0 bbPress (r3826)
+ * @since 2.6.17 bbPress (r7468) Use atomic metadata writes and non-negative counts.
  *
  * @param int $topic_id   Optional. Topic id.
  * @param int $difference Optional. Default 1
@@ -2619,7 +2645,7 @@ function bbp_insert_topic_update_counts( $topic_id = 0, $forum_id = 0 ) {
 /**
  * Update the topic's forum id
  *
- * @since 2.0.0 bbPress (r2855)
+ * @since 2.0.0 bbPress (r2858)
  *
  * @param int $topic_id Optional. Topic id to update
  * @param int $forum_id Optional. Forum id
@@ -2647,7 +2673,7 @@ function bbp_update_topic_forum_id( $topic_id = 0, $forum_id = 0 ) {
 /**
  * Update the topic's topic id
  *
- * @since 2.0.0 bbPress (r2954)
+ * @since 2.0.0 bbPress (r2955)
  *
  * @param int $topic_id Optional. Topic id to update
  * @return int Topic id
@@ -2663,7 +2689,7 @@ function bbp_update_topic_topic_id( $topic_id = 0 ) {
 /**
  * Adjust the total reply count of a topic
  *
- * @since 2.0.0 bbPress (r2467)
+ * @since 2.0.0 bbPress (r2485)
  *
  * @param int $topic_id Optional. Topic id to update
  * @param int $reply_count Optional. Set the reply count manually.
@@ -2691,7 +2717,7 @@ function bbp_update_topic_reply_count( $topic_id = 0, $reply_count = false ) {
  * Adjust the total hidden reply count of a topic (hidden includes trashed,
  * spammed and pending replies)
  *
- * @since 2.0.0 bbPress (r2740)
+ * @since 2.0.0 bbPress (r3349)
  *
  * @param int $topic_id Optional. Topic id to update
  * @param int $reply_count Optional. Set the reply count manually
@@ -2718,7 +2744,7 @@ function bbp_update_topic_reply_count_hidden( $topic_id = 0, $reply_count = fals
 /**
  * Update the topic with the last active post ID
  *
- * @since 2.0.0 bbPress (r2888)
+ * @since 2.0.0 bbPress (r2895)
  *
  * @param int $topic_id Optional. Topic id to update
  * @param int $active_id Optional. active id
@@ -2753,7 +2779,7 @@ function bbp_update_topic_last_active_id( $topic_id = 0, $active_id = 0 ) {
 /**
  * Update the topics last active date/time (aka freshness)
  *
- * @since 2.0.0 bbPress (r2680)
+ * @since 2.0.0 bbPress (r2895)
  *
  * @param int    $topic_id Optional. Topic id.
  * @param string $new_time Optional. New time in mysql format.
@@ -2783,7 +2809,7 @@ function bbp_update_topic_last_active_time( $topic_id = 0, $new_time = '' ) {
 /**
  * Update the topic with the most recent reply ID
  *
- * @since 2.0.0 bbPress (r2625)
+ * @since 2.0.0 bbPress (r2627)
  *
  * @param int $topic_id Optional. Topic id to update
  * @param int $reply_id Optional. Reply id
@@ -2852,7 +2878,7 @@ function bbp_update_topic_voice_count( $topic_id = 0 ) {
 /**
  * Adjust the total anonymous reply count of a topic
  *
- * @since 2.0.0 bbPress (r2567)
+ * @since 2.0.0 bbPress (r2918)
  *
  * @param int $topic_id Optional. Topic id to update
  * @return int Anonymous reply count
@@ -3093,7 +3119,7 @@ function bbp_spam_topic( $topic_id = 0 ) {
  *
  * Usually you'll want to do this before the topic itself is marked as spam.
  *
- * @since 2.6.0 bbPress (r5405)
+ * @since 2.6.0 bbPress (r5406)
  *
  * @param int $topic_id
  */
@@ -3148,7 +3174,7 @@ function bbp_spam_topic_replies( $topic_id = 0 ) {
  *
  * Usually you'll want to do this before the topic itself is marked as spam.
  *
- * @since 2.6.0 bbPress (r5405)
+ * @since 2.6.0 bbPress (r5406)
  *
  * @param int $topic_id
  */
@@ -3239,7 +3265,7 @@ function bbp_unspam_topic( $topic_id = 0 ) {
  *
  * Usually you'll want to do this after the topic is unspammed.
  *
- * @since 2.6.0 bbPress (r5405)
+ * @since 2.6.0 bbPress (r5406)
  *
  * @param int $topic_id
  */
@@ -3274,7 +3300,7 @@ function bbp_unspam_topic_replies( $topic_id = 0 ) {
  *
  * Usually you'll want to do this before the topic itself is unmarked as spam.
  *
- * @since 2.6.0 bbPress (r5405)
+ * @since 2.6.0 bbPress (r5406)
  *
  * @param int $topic_id
  */
@@ -3515,7 +3541,7 @@ function bbp_delete_topic( $topic_id = 0 ) {
  *
  * Usually you'll want to do this before the topic itself is deleted.
  *
- * @since 2.6.0 bbPress (r5405)
+ * @since 2.6.0 bbPress (r5406)
  *
  * @param int $topic_id
  */
@@ -3579,7 +3605,7 @@ function bbp_trash_topic( $topic_id = 0 ) {
  *
  * Usually you'll want to do this before the topic itself is marked as spam.
  *
- * @since 2.6.0 bbPress (r5405)
+ * @since 2.6.0 bbPress (r5406)
  *
  * @param int $topic_id
  */
@@ -3646,7 +3672,7 @@ function bbp_untrash_topic( $topic_id = 0 ) {
  *
  * Usually you'll want to do this after the topic is unspammed.
  *
- * @since 2.6.0 bbPress (r5405)
+ * @since 2.6.0 bbPress (r5406)
  *
  * @param int $topic_id
  */
@@ -3681,7 +3707,7 @@ function bbp_untrash_topic_replies( $topic_id = 0 ) {
 /**
  * Called after deleting a topic
  *
- * @since 2.0.0 bbPress (r2993)
+ * @since 2.0.0 bbPress (r2895)
  */
 function bbp_deleted_topic( $topic_id = 0 ) {
 	$topic_id = bbp_get_topic_id( $topic_id );
@@ -3696,7 +3722,7 @@ function bbp_deleted_topic( $topic_id = 0 ) {
 /**
  * Called after trashing a topic
  *
- * @since 2.0.0 bbPress (r2993)
+ * @since 2.0.0 bbPress (r2895)
  */
 function bbp_trashed_topic( $topic_id = 0 ) {
 	$topic_id = bbp_get_topic_id( $topic_id );
@@ -3711,7 +3737,7 @@ function bbp_trashed_topic( $topic_id = 0 ) {
 /**
  * Called after untrashing a topic
  *
- * @since 2.0.0 bbPress (r2993)
+ * @since 2.0.0 bbPress (r2895)
  */
 function bbp_untrashed_topic( $topic_id = 0 ) {
 	$topic_id = bbp_get_topic_id( $topic_id );
@@ -3728,7 +3754,7 @@ function bbp_untrashed_topic( $topic_id = 0 ) {
 /**
  * Return the topics per page setting
  *
- * @since 2.0.0 bbPress (r3540)
+ * @since 2.1.0 bbPress (r3572)
  * @return int
  */
 function bbp_get_topics_per_page( $default = 15 ) {
@@ -3748,7 +3774,7 @@ function bbp_get_topics_per_page( $default = 15 ) {
 /**
  * Return the topics per RSS page setting
  *
- * @since 2.0.0 bbPress (r3540)
+ * @since 2.1.0 bbPress (r3572)
  *
  * @param int $default Default replies per page (25)
  * @return int
@@ -3772,7 +3798,7 @@ function bbp_get_topics_per_rss_page( $default = 25 ) {
 /**
  * Get topic tags for a specific topic ID
  *
- * @since 2.6.0 bbPress (r5836)
+ * @since 2.6.0 bbPress (r5837)
  *
  * @param int $topic_id
  *
@@ -3790,7 +3816,7 @@ function bbp_get_topic_tags( $topic_id = 0 ) {
 /**
  * Get topic tags for a specific topic ID
  *
- * @since 2.2.0 bbPress (r4165)
+ * @since 2.2.0 bbPress (r4166)
  *
  * @param int    $topic_id
  * @param string $sep
@@ -3811,7 +3837,7 @@ function bbp_get_topic_tag_names( $topic_id = 0, $sep = ', ' ) {
 /**
  * Get the topic-tag names a user is allowed to set on a topic.
  *
- * @since 2.6.17 bbPress
+ * @since 2.6.17 bbPress (r7510)
  *
  * @param int      $topic_id Topic id.
  * @param string   $tag_names Comma-separated topic-tag names.
@@ -3861,7 +3887,7 @@ function bbp_get_topic_tag_names_for_update( $topic_id = 0, $tag_names = '', $us
  * @see https://bbpress.trac.wordpress.org/ticket/3043
  * @access private
  *
- * @since 2.6.0 bbPress (r6253)
+ * @since 2.6.0 bbPress (r6254)
  *
  * @param array  $terms    List of Term taxonomy IDs.
  * @param object $taxonomy Current taxonomy object of terms.
@@ -3917,7 +3943,7 @@ function bbp_update_topic_tag_count( $terms, $taxonomy ) {
 /**
  * Check if autoembeds are enabled and hook them in if so
  *
- * @since 2.1.0 bbPress (r3752)
+ * @since 2.1.0 bbPress (r3753)
  *
  * @global WP_Embed $wp_embed
  */
@@ -3983,12 +4009,12 @@ function bbp_display_topics_feed_rss2( $topics_query = array() ) {
 
 				<item>
 					<guid><?php bbp_topic_permalink(); ?></guid>
-					<title><![CDATA[<?php bbp_topic_title(); ?>]]></title>
+					<title><?php echo apply_filters( 'the_title_rss', bbp_get_topic_title() ); ?></title>
 					<link><?php bbp_topic_permalink(); ?></link>
 					<pubDate><?php echo mysql2date( 'D, d M Y H:i:s +0000', get_post_meta( bbp_get_topic_id(), '_bbp_last_active_time', true ), false ); ?></pubDate>
 					<dc:creator><?php the_author(); ?></dc:creator>
 
-					<?php if ( ! post_password_required() ) : ?>
+					<?php if ( ! bbp_get_password_required_id( bbp_get_topic_id() ) ) : ?>
 
 					<description>
 						<![CDATA[
@@ -3997,7 +4023,7 @@ function bbp_display_topics_feed_rss2( $topics_query = array() ) {
 							esc_html__( 'Replies: %s', 'bbpress' ),
 							bbp_get_topic_reply_count()
 						); ?></p>
-						<?php bbp_topic_content(); ?>
+						<?php echo bbp_escape_feed_cdata( bbp_get_topic_content() ); ?>
 						]]>
 					</description>
 
@@ -4026,7 +4052,7 @@ function bbp_display_topics_feed_rss2( $topics_query = array() ) {
 /**
  * Redirect if unauthorized user is attempting to edit a topic
  *
- * @since 2.1.0 bbPress (r3605)
+ * @since 2.1.0 bbPress (r3607)
  */
 function bbp_check_topic_edit() {
 
@@ -4044,7 +4070,7 @@ function bbp_check_topic_edit() {
 /**
  * Redirect if unauthorized user is attempting to edit a topic tag
  *
- * @since 2.1.0 bbPress (r3605)
+ * @since 2.1.0 bbPress (r3607)
  */
 function bbp_check_topic_tag_edit() {
 

@@ -12,7 +12,8 @@
 /**
  * Maps primary capabilities
  *
- * @since 2.2.0 bbPress (r4242)
+ * @since 2.2.0 bbPress (r4244)
+ * @since 2.6.19 bbPress (r7690) Limit super moderator edits to site members and protect peer roles.
  *
  * @param array  $caps Capabilities for meta capability.
  * @param string $cap Capability name.
@@ -128,11 +129,13 @@ function bbp_map_primary_meta_caps( $caps = array(), $cap = '', $user_id = 0, $a
 				// Users can always edit themselves, so only map for others.
 				if ( ! empty( $_user_id ) && ( $_user_id !== $user_id ) ) {
 
-					// Super moderators cannot edit keymasters or site administrators.
+					// Limit edits to site members and protect staff roles from peers.
 					if (
-						! bbp_is_user_keymaster( $_user_id )
+						( ! is_multisite() || is_user_member_of_blog( $_user_id ) )
+						&& ! bbp_is_user_keymaster( $_user_id )
 						&& ! user_can( $_user_id, 'manage_options' )
 						&& ! is_super_admin( $_user_id )
+						&& ( ( 'edit_user' === $cap ) || ! user_can( $_user_id, 'moderate' ) )
 					) {
 						$caps = array( 'moderate' );
 					}
@@ -149,7 +152,7 @@ function bbp_map_primary_meta_caps( $caps = array(), $cap = '', $user_id = 0, $a
 /**
  * Set a user's role in the forums
  *
- * @since 2.1.0 bbPress (r3860)
+ * @since 2.2.0 bbPress (r4289)
  *
  * @param int $user_id
  *
@@ -234,7 +237,7 @@ function bbp_get_user_role( $user_id = 0 ) {
 /**
  * Return a user's blog role
  *
- * @since 2.3.0 bbPress (r4446)
+ * @since 2.3.0 bbPress (r4447)
  *
  * @param int $user_id
  *
@@ -274,7 +277,7 @@ function bbp_get_user_blog_role( $user_id = 0 ) {
  * By default, this is hooked to the `bbp_profile_update` action which fires
  * after a user profile is updated to avoid being stomped by set_role().
  *
- * @since 2.2.0 bbPress (r4235)
+ * @since 2.2.0 bbPress (r4330)
  *
  * @param int $user_id
  *
@@ -329,7 +332,8 @@ function bbp_profile_update_role( $user_id = 0 ) {
 /**
  * Return the forum roles the current user may assign to another user.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7514)
+ * @since 2.6.19 bbPress (r7686) Allow site administrators to assign staff roles.
  *
  * @param int $user_id User being edited. Defaults to the displayed user.
  * @return array Filtered array of editable forum roles.
@@ -338,8 +342,8 @@ function bbp_get_user_editable_forum_roles( $user_id = 0 ) {
 	$user_id = bbp_get_user_id( $user_id, false, false );
 	$roles   = bbp_get_dynamic_roles();
 
-	// Moderators may assign non-staff roles by default.
-	if ( ! bbp_is_user_keymaster() ) {
+	// Only keymasters and site administrators may assign staff roles.
+	if ( ! bbp_is_user_keymaster() && ! current_user_can( 'manage_options' ) ) {
 		unset(
 			$roles[ bbp_get_keymaster_role() ],
 			$roles[ bbp_get_moderator_role() ]
@@ -353,7 +357,7 @@ function bbp_get_user_editable_forum_roles( $user_id = 0 ) {
 /**
  * Return whether the current user may edit a user-profile field.
  *
- * @since 2.6.17
+ * @since 2.6.17 bbPress (r7514)
  *
  * @param string $field   Profile field group: profile, email, password,
  *                        site_role, or forum_role.
@@ -369,6 +373,7 @@ function bbp_current_user_can_edit_user_field( $field = 'profile', $user_id = 0 
 
 	// Apply narrower defaults to sensitive field groups.
 	switch ( $field ) {
+		case 'email':
 		case 'password':
 			$retval = ! empty( $user_id )
 				&& ! empty( $current_user_id )
@@ -395,7 +400,7 @@ function bbp_current_user_can_edit_user_field( $field = 'profile', $user_id = 0 
 /**
  * Check if a role string is valid
  *
- * @since 2.6.5
+ * @since 2.6.5 bbPress (r7087)
  *
  * @param string $role
  *
@@ -430,7 +435,7 @@ function bbp_is_valid_role( $role = '' ) {
  * This function will bail if the forum is not global in a multisite
  * installation of WordPress, or if the user is marked as spam or deleted.
  *
- * @since 2.0.0 bbPress (r3380)
+ * @since 2.2.0 bbPress (r4185)
  *
  * @return void If not multisite, not global, or user is deleted/spammed
  */
@@ -505,7 +510,7 @@ function bbp_set_current_user_default_role() {
  * appropriate bbPress roles to WordPress users that wouldn't already have a
  * role in the forums. Also guarantees WordPress admins get the Keymaster role.
  *
- * @since 2.2.0 bbPress (r4334)
+ * @since 2.2.0 bbPress (r4335)
  *
  * @return array Filtered array of WordPress roles to bbPress roles
  */
@@ -532,7 +537,7 @@ function bbp_get_user_role_map() {
 /**
  * Checks if the user has been marked as a spammer.
  *
- * @since 2.0.0 bbPress (r3355)
+ * @since 2.0.0 bbPress (r3356)
  *
  * @param int $user_id int The ID for the user.
  * @return bool True if spammer, False if not.
@@ -571,7 +576,7 @@ function bbp_is_user_spammer( $user_id = 0 ) {
 /**
  * Mark a users topics and replies as spam when the user is marked as spam
  *
- * @since 2.0.0 bbPress (r3405)
+ * @since 2.0.0 bbPress (r3410)
  *
  * @param int $user_id Optional. User ID to spam. Defaults to displayed user.
  *
@@ -658,7 +663,7 @@ function bbp_make_spam_user( $user_id = 0 ) {
 /**
  * Mark a users topics and replies as spam when the user is marked as spam
  *
- * @since 2.0.0 bbPress (r3405)
+ * @since 2.0.0 bbPress (r3410)
  *
  * @param int $user_id Optional. User ID to unspam. Defaults to displayed user.
  *
@@ -749,7 +754,7 @@ function bbp_make_ham_user( $user_id = 0 ) {
 /**
  * Checks if the user has been marked as deleted.
  *
- * @since 2.0.0 bbPress (r3355)
+ * @since 2.0.0 bbPress (r3356)
  *
  * @param int $user_id int The ID for the user.
  * @return bool True if deleted, False if not.
@@ -788,7 +793,7 @@ function bbp_is_user_deleted( $user_id = 0 ) {
 /**
  * Checks if user is active
  *
- * @since 2.0.0 bbPress (r3502)
+ * @since 2.0.0 bbPress (r3504)
  *
  * @param int $user_id The user ID to check
  * @return bool True if public, false if not
@@ -818,7 +823,7 @@ function bbp_is_user_active( $user_id = 0 ) {
 /**
  * Checks if user is not active.
  *
- * @since 2.0.0 bbPress (r3502)
+ * @since 2.0.0 bbPress (r3504)
  *
  * @param int $user_id The user ID to check. Defaults to current user ID
  * @return bool True if inactive, false if active
@@ -846,7 +851,7 @@ function bbp_is_user_keymaster( $user_id = 0 ) {
 /**
  * Does a user have a profile for the current site
  *
- * @since 2.2.0 bbPress (r4362)
+ * @since 2.2.0 bbPress (r4363)
  *
  * @param int $user_id User ID to check
  *

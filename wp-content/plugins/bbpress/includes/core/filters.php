@@ -49,6 +49,11 @@ add_filter( 'login_redirect',          'bbp_redirect_login',     2,  3 );
 add_filter( 'logout_url',              'bbp_logout_url',         2,  2 );
 add_filter( 'plugin_locale',           'bbp_plugin_locale',      10, 2 );
 
+// Keep WordPress author discovery limited to non-forum posts.
+add_filter( 'rest_user_query',               'bbp_exclude_forum_posts_from_user_query', 10, 2 );
+add_filter( 'wp_sitemaps_users_query_args',  'bbp_exclude_forum_posts_from_user_query'  );
+add_filter( 'rest_request_before_callbacks', 'bbp_filter_rest_user_discovery',          10, 3 );
+
 // Filter WordPress post data for forums and anonymous posts
 add_filter( 'wp_insert_post_data', 'bbp_filter_admin_forum_post_data', 20, 2 );
 add_filter( 'wp_insert_post_data', 'bbp_fix_post_author',              30, 2 );
@@ -104,6 +109,9 @@ add_filter( 'bbp_request', 'bbp_request_feed_trap' );
  */
 add_filter( 'bbp_template_include', 'bbp_template_include_theme_supports', 2, 1 );
 add_filter( 'bbp_template_include', 'bbp_template_include_theme_compat',   4, 2 );
+
+add_filter( 'redirect_canonical', 'bbp_do_not_redirect_restricted_posts', 11, 2 );
+add_filter( 'oembed_request_post_id', 'bbp_filter_oembed_request_post_id' );
 
 // Filter bbPress template locations
 add_filter( 'bbp_get_template_stack', 'bbp_add_template_stack_locations' );
@@ -307,9 +315,9 @@ add_filter( 'bbp_get_forum_topic_count',    'bbp_suppress_private_forum_meta',  
 add_filter( 'bbp_get_forum_reply_count',    'bbp_suppress_private_forum_meta',  10, 2 );
 add_filter( 'bbp_get_forum_post_count',     'bbp_suppress_private_forum_meta',  10, 2 );
 add_filter( 'bbp_get_forum_freshness_link', 'bbp_suppress_private_forum_meta',  10, 6 );
-add_filter( 'bbp_get_author_link',          'bbp_suppress_private_author_link', 10, 2 );
-add_filter( 'bbp_get_topic_author_link',    'bbp_suppress_private_author_link', 10, 2 );
-add_filter( 'bbp_get_reply_author_link',    'bbp_suppress_private_author_link', 10, 2 );
+add_filter( 'bbp_get_author_link',          'bbp_suppress_private_author_link', 10, 3 );
+add_filter( 'bbp_get_topic_author_link',    'bbp_suppress_private_author_link', 10, 3 );
+add_filter( 'bbp_get_reply_author_link',    'bbp_suppress_private_author_link', 10, 3 );
 
 // Allow private & hidden forum details for moderators
 add_filter( 'bbp_get_excluded_forum_ids', 'bbp_allow_forums_of_user' );
@@ -379,7 +387,7 @@ add_filter( 'bbp_make_clickable', 'bbp_make_mentions_clickable',  8 ); // @jjj
 /**
  * Deprecated locale filter
  *
- * @since 2.2.0 bbPress (r4213)
+ * @since 2.2.0 bbPress (r4214)
  *
  * @param string $locale
  * @return string  $domain

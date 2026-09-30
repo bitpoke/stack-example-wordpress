@@ -18,7 +18,7 @@ if ( ! class_exists( 'BBP_Converter_Base' ) ) :
  *
  * phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
  *
- * @since 2.1.0 bbPress (r3813)
+ * @since 2.1.0 bbPress (r3816)
  */
 abstract class BBP_Converter_Base {
 
@@ -115,7 +115,7 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Initialize the converter
 	 *
-	 * @since 2.1.0
+	 * @since 2.6.0 bbPress (r6456)
 	 */
 	private function init() {
 
@@ -130,7 +130,7 @@ abstract class BBP_Converter_Base {
 		/** Sanitize Options **************************************************/
 
 		$this->clean         = ! empty( $_POST['_bbp_converter_clean'] );
-		$this->convert_users = (bool) get_option( '_bbp_converter_convert_users', false );
+		$this->convert_users = current_user_can( 'bbp_tools_import_users' ) && (bool) get_option( '_bbp_converter_convert_users', false );
 		$this->halt          = (bool) get_option( '_bbp_converter_halt',          0     );
 		$this->max_rows      = (int) get_option( '_bbp_converter_rows',          100   );
 
@@ -270,7 +270,7 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Setup fields that require an active source database connection.
 	 *
-	 * @since 2.6.18
+	 * @since 2.6.18 bbPress (r7588)
 	 */
 	protected function setup_source_fields() {}
 
@@ -333,12 +333,16 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Convert Table
 	 *
-	 * @since 2.6.18 Connects to the source database when conversion begins.
+	 * @since 2.1.0 bbPress (r3816) Connects to the source database when conversion begins.
 	 *
 	 * @param string $to_type The destination type
 	 * @param int $start Start row
 	 */
 	public function convert_table( $to_type, $start ) {
+		// Without account import, do not create users or user engagements.
+		if ( ! $this->convert_users && in_array( $to_type, array( 'user', 'forum_subscriptions', 'topic_subscriptions', 'favorites' ), true ) ) {
+			return true;
+		}
 
 		// Connect to the source database only when conversion begins. This keeps
 		// first-login password upgrades independent of the source database.
@@ -464,15 +468,18 @@ abstract class BBP_Converter_Base {
 							// This row has a destination that matches one of the
 							// columns in this table.
 							if ( in_array( $row['to_fieldname'], $tablefield_array, true ) ) {
+								// Source user IDs must not claim existing WordPress accounts.
+								if ( ( 'post_author' === $row['to_fieldname'] ) && ! $this->convert_users ) {
+									$insert_post['post_author'] = 0;
 
 								// Allows us to set default fields.
-								if ( isset( $row['default'] ) ) {
+								} elseif ( isset( $row['default'] ) ) {
 									$insert_post[ $row['to_fieldname'] ] = $row['default'];
 
 								// Translates a field from the old forum.
 								} elseif ( isset( $row['callback_method'] ) ) {
 									if ( ( 'callback_userid' === $row['callback_method'] ) && ( false === $this->convert_users ) ) {
-										$insert_post[ $row['to_fieldname'] ] = $forum[ $row['from_fieldname'] ];
+										$insert_post[ $row['to_fieldname'] ] = 0;
 									} else {
 										$insert_post[ $row['to_fieldname'] ] = call_user_func_array( array( $this, $row['callback_method'] ), array( $forum[ $row['from_fieldname'] ], $forum ) );
 									}
@@ -493,7 +500,7 @@ abstract class BBP_Converter_Base {
 								// Translates a field from the old forum.
 								} elseif ( isset( $row['callback_method'] ) ) {
 									if ( ( 'callback_userid' === $row['callback_method'] ) && ( false === $this->convert_users ) ) {
-										$insert_postmeta[ $row['to_fieldname'] ] = $forum[ $row['from_fieldname'] ];
+										$insert_postmeta[ $row['to_fieldname'] ] = 0;
 									} else {
 										$insert_postmeta[ $row['to_fieldname'] ] = call_user_func_array( array( $this, $row['callback_method'] ), array( $forum[ $row['from_fieldname'] ], $forum ) );
 									}
@@ -698,12 +705,22 @@ abstract class BBP_Converter_Base {
 	 * post-status transition callbacks from incrementing those counts again as
 	 * each converted topic and reply is inserted.
 	 *
-	 * @since 2.6.18
+	 * @since 2.6.18 bbPress (r7600)
 	 *
 	 * @param array $post_data Converted post data.
 	 * @return int|WP_Error Post ID on success, WP_Error on failure.
 	 */
 	protected function insert_post( $post_data = array() ) {
+		// Keep safe source formatting without trusting imported HTML.
+		foreach ( array( 'post_content', 'post_excerpt' ) as $field ) {
+			if ( isset( $post_data[ $field ] ) ) {
+				$post_data[ $field ] = wp_kses_post( $post_data[ $field ] );
+			}
+		}
+		if ( isset( $post_data['post_title'] ) ) {
+			$post_data['post_title'] = wp_strip_all_tags( $post_data['post_title'] );
+		}
+
 		$suppress_count_updates = function () {
 			return false;
 		};
@@ -908,7 +925,7 @@ abstract class BBP_Converter_Base {
 	/**
 	 * This method deletes data from the wp database.
 	 *
-	 * @since 2.6.0 bbPress (r6456)
+	 * @since 2.1.0 bbPress (r3816)
 	 */
 	public function clean() {
 
@@ -920,7 +937,20 @@ abstract class BBP_Converter_Base {
 		$esc_like = $this->wpdb->esc_like( '_bbp_' ) . '%';
 		$query    = ! empty( $this->sync_table )
 			? $this->wpdb->prepare( "SELECT value_id FROM {$this->sync_table_name} INNER JOIN {$this->wpdb->posts} ON(value_id = ID) WHERE meta_key LIKE %s AND value_type = %s GROUP BY value_id ORDER BY value_id DESC LIMIT {$this->max_rows}", $esc_like, 'post' )
-			: $this->wpdb->prepare( "SELECT post_id AS value_id FROM {$this->wpdb->postmeta} WHERE meta_key LIKE %s GROUP BY post_id ORDER BY post_id DESC LIMIT {$this->max_rows}", $esc_like );
+			: $this->wpdb->prepare( "SELECT postmeta.post_id AS value_id
+				FROM {$this->wpdb->postmeta} AS postmeta
+					INNER JOIN {$this->wpdb->posts} AS posts ON ( postmeta.post_id = posts.ID )
+				WHERE ( posts.post_type = %s AND postmeta.meta_key = %s )
+					OR ( posts.post_type = %s AND postmeta.meta_key = %s )
+					OR ( posts.post_type = %s AND postmeta.meta_key = %s )
+				GROUP BY postmeta.post_id ORDER BY postmeta.post_id DESC LIMIT {$this->max_rows}",
+				bbp_get_forum_post_type(),
+				'_bbp_old_forum_id',
+				bbp_get_topic_post_type(),
+				'_bbp_old_topic_id',
+				bbp_get_reply_post_type(),
+				'_bbp_old_reply_id'
+			);
 
 		$posts = $this->get_results( $query, ARRAY_A );
 
@@ -933,6 +963,11 @@ abstract class BBP_Converter_Base {
 					$has_delete = true;
 				}
 			}
+		}
+
+		// Imported accounts are network-wide and cannot be owned by one site.
+		if ( is_multisite() ) {
+			return ! $has_delete;
 		}
 
 		/** Delete users ******************************************************/
@@ -981,9 +1016,9 @@ abstract class BBP_Converter_Base {
 		if ( ! empty( $converted ) ) {
 			foreach ( $converted as $value ) {
 				if ( is_serialized( $value['meta_value'] ) ) {
-					$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->users} SET user_pass = '' WHERE ID = %d", $value['user_id'] ) );
+					$this->update_password( $value['user_id'], '' );
 				} else {
-					$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->users} SET user_pass = %s WHERE ID = %d", $value['meta_value'], $value['user_id'] ) );
+					$this->update_password( $value['user_id'], $value['meta_value'] );
 					delete_user_meta( $value['user_id'], '_bbp_password' );
 				}
 
@@ -1081,9 +1116,23 @@ abstract class BBP_Converter_Base {
 	}
 
 	/**
+	 * Update a converted password without saving its hash in the last query option.
+	 *
+	 * @since 2.6.19 bbPress (r7641)
+	 *
+	 * @param int    $user_id  User ID.
+	 * @param string $password Password hash or an empty string.
+	 */
+	private function update_password( $user_id, $password ) {
+		$query = $this->wpdb->prepare( "UPDATE {$this->wpdb->users} SET user_pass = %s WHERE ID = %d", $password, $user_id );
+
+		return $this->wpdb->query( $query ); // phpcs:ignore
+	}
+
+	/**
 	 * Update the last query ran
 	 *
-	 * @since 2.6.0 bbPress (r6637)
+	 * @since 2.6.0 bbPress (r6638)
 	 *
 	 * @param string $query The literal MySQL query
 	 * @return bool
@@ -1095,7 +1144,7 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Update the number of rows in the current step
 	 *
-	 * @since 2.6.0 bbPress (r6637)
+	 * @since 2.6.0 bbPress (r6681)
 	 *
 	 * @param string $query The literal MySQL query
 	 * @return array
@@ -1111,7 +1160,7 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Update the number of rows in the current step
 	 *
-	 * @since 2.6.0 bbPress (r6637)
+	 * @since 2.6.0 bbPress (r6681)
 	 *
 	 * @param string $table_name The literal MySQL query
 	 * @return bool
@@ -1127,7 +1176,7 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Unserialize imported password metadata as an array.
 	 *
-	 * @since 2.6.18
+	 * @since 2.6.18 bbPress (r7588)
 	 *
 	 * @param string $serialized_pass Serialized password metadata.
 	 * @return array|false Password metadata, or false when invalid.
@@ -1158,7 +1207,7 @@ abstract class BBP_Converter_Base {
 	 * Serialized strings are skipped by their declared byte length so object-like
 	 * text inside a hash or salt does not cause a false positive.
 	 *
-	 * @since 2.6.18
+	 * @since 2.6.18 bbPress (r7588)
 	 *
 	 * @param string $serialized_pass Serialized password metadata.
 	 * @return bool True when the value contains an object or is unsafe to parse.
@@ -1202,7 +1251,7 @@ abstract class BBP_Converter_Base {
 	/**
 	 * Run password through wp_hash_password()
 	 *
-	 * @since 2.6.18 Added the `$wp_password` parameter.
+	 * @since 2.1.0 bbPress (r3866) Added the `$wp_password` parameter.
 	 *
 	 * @param string      $username
 	 * @param string      $password
@@ -1210,14 +1259,17 @@ abstract class BBP_Converter_Base {
 	 */
 	public function callback_pass( $username = '', $password = '', $wp_password = null ) {
 
+		// Password upgrades run during login, outside of converter progress.
+		// Avoid writing these lookups to the last query option on every attempt.
+
 		// Get user – Bail if not found
-		$user = $this->get_row( $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->users} WHERE user_login = %s AND user_pass = '' LIMIT 1", $username ) );
+		$user = $this->wpdb->get_row( $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->users} WHERE user_login = %s AND user_pass = '' LIMIT 1", $username ) ); // phpcs:ignore
 		if ( empty( $user ) ) {
 			return;
 		}
 
 		// Get usermeta – Bail if not found
-		$usermeta = $this->get_row( $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->usermeta} WHERE meta_key = %s AND user_id = %d LIMIT 1", '_bbp_password', $user->ID ) );
+		$usermeta = $this->wpdb->get_row( $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->usermeta} WHERE meta_key = %s AND user_id = %d LIMIT 1", '_bbp_password', $user->ID ) ); // phpcs:ignore
 		if ( empty( $usermeta ) ) {
 			return;
 		}
@@ -1241,7 +1293,7 @@ abstract class BBP_Converter_Base {
 		$new_pass = wp_hash_password( is_null( $wp_password ) ? $password : $wp_password );
 
 		// Update
-		$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->users} SET user_pass = %s WHERE ID = %d", $new_pass, $user->ID ) );
+		$this->update_password( $user->ID, $new_pass );
 
 		// Clean up
 		unset( $new_pass );
@@ -1322,6 +1374,11 @@ abstract class BBP_Converter_Base {
 	 * @return string
 	 */
 	private function callback_userid( $field ) {
+		// Source IDs must never resolve to unrelated network users.
+		if ( ! $this->convert_users ) {
+			return 0;
+		}
+
 		if ( ! isset( $this->map_userid[ $field ] ) ) {
 			$row = ! empty( $this->sync_table )
 				? $this->get_row( $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s LIMIT 1", '_bbp_old_user_id', $field ) )
@@ -1397,7 +1454,7 @@ abstract class BBP_Converter_Base {
 			$bbcode->{$prop} = $value;
 		}
 
-		return html_entity_decode( $bbcode->Parse( $field ) );
+		return $bbcode->Parse( $field );
 	}
 
 	protected function callback_null( $field ) {

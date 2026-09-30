@@ -16,7 +16,7 @@ if ( ! class_exists( 'BBP_Topics_Admin' ) ) :
  *
  * @package bbPress
  * @subpackage Administration
- * @since 2.0.0 bbPress (r2464)
+ * @since 2.0.0 bbPress (r3095)
  */
 class BBP_Topics_Admin {
 
@@ -27,12 +27,14 @@ class BBP_Topics_Admin {
 	 */
 	private $post_type = '';
 
+	private $accepted_forum_moves = array();
+
 	/** Functions *************************************************************/
 
 	/**
 	 * The main bbPress topics admin loader
 	 *
-	 * @since 2.0.0 bbPress (r2515)
+	 * @since 2.0.0 bbPress (r3095)
 	 */
 	public function __construct() {
 		$this->setup_globals();
@@ -42,7 +44,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Setup the admin hooks, actions and filters
 	 *
-	 * @since 2.0.0 bbPress (r2646)
+	 * @since 2.0.0 bbPress (r3376)
 	 * @since 2.6.0 bbPress (r6101) Added bulk actions
 	 *
 	 * @access private
@@ -75,6 +77,7 @@ class BBP_Topics_Admin {
 		add_action( 'add_meta_boxes', array( $this, 'subscriptions_metabox' ) );
 		add_action( 'add_meta_boxes', array( $this, 'comments_metabox'      ) );
 		add_action( 'save_post',      array( $this, 'save_meta_boxes'       ) );
+		add_filter( 'wp_insert_post_data', array( $this, 'filter_post_data' ), 20, 2 );
 
 		// Check if there are any bbp_toggle_topic_* requests on admin_init, also have a message displayed
 		add_action( 'load-edit.php',  array( $this, 'toggle_topic'        ) );
@@ -96,7 +99,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Admin globals
 	 *
-	 * @since 2.0.0 bbPress (r2646)
+	 * @since 2.0.0 bbPress (r3376)
 	 *
 	 * @access private
 	 */
@@ -109,7 +112,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Contextual help for bbPress topic edit page
 	 *
-	 * @since 2.0.0 bbPress (r3119)
+	 * @since 2.1.0 bbPress (r3686)
 	 */
 	public function edit_help() {
 
@@ -181,7 +184,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Contextual help for bbPress topic edit page
 	 *
-	 * @since 2.0.0 bbPress (r3119)
+	 * @since 2.1.0 bbPress (r3686)
 	 */
 	public function new_help() {
 
@@ -357,7 +360,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Add the topic attributes meta-box
 	 *
-	 * @since 2.0.0 bbPress (r2744)
+	 * @since 2.1.0 bbPress (r3749)
 	 */
 	public function attributes_metabox() {
 		add_meta_box(
@@ -373,7 +376,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Add the author info meta-box
 	 *
-	 * @since 2.0.0 bbPress (r2828)
+	 * @since 2.0.0 bbPress (r3120)
 	 */
 	public function author_metabox() {
 
@@ -424,7 +427,7 @@ class BBP_Topics_Admin {
 	 *
 	 * Allows viewing of users who have engaged in a topic.
 	 *
-	 * @since 2.6.0 bbPress (r6333)
+	 * @since 2.6.0 bbPress (r6334)
 	 */
 	public function engagements_metabox() {
 
@@ -524,12 +527,21 @@ class BBP_Topics_Admin {
 	/**
 	 * Pass the topic attributes for processing
 	 *
-	 * @since 2.0.0 bbPress (r2746)
+	 * @since 2.6.0 bbPress (r6056)
 	 *
 	 * @param int $topic_id Topic id
 	 * @return int Parent id
 	 */
 	public function save_meta_boxes( $topic_id ) {
+		$accepted_move = isset( $this->accepted_forum_moves[ $topic_id ] )
+			? $this->accepted_forum_moves[ $topic_id ]
+			: array();
+		unset( $this->accepted_forum_moves[ $topic_id ] );
+
+		// Revisions can also fire save_post with the metabox nonce.
+		if ( ! bbp_is_topic( $topic_id ) ) {
+			return $topic_id;
+		}
 
 		// Bail if doing an autosave
 		if ( bbp_doing_autosave() ) {
@@ -552,12 +564,14 @@ class BBP_Topics_Admin {
 		}
 
 		// Bail if current user cannot edit this topic
-		if ( ! current_user_can( 'edit_topic', $topic_id ) ) {
+		if ( ! current_user_can( 'edit_topic', $topic_id ) && empty( $accepted_move ) ) {
 			return $topic_id;
 		}
 
-		// Get the forum ID
-		$forum_id = ! empty( $_POST['parent_id'] ) ? (int) $_POST['parent_id'] : 0;
+		// Use the parent accepted by WordPress and the destination filter.
+		$forum_id = ! empty( $accepted_move )
+			? $accepted_move['new']
+			: bbp_get_topic_forum_id( $topic_id );
 
 		// Get topic author data
 		$anonymous_data = bbp_filter_anonymous_post_data();
@@ -566,6 +580,9 @@ class BBP_Topics_Admin {
 
 		// Formally update the topic
 		bbp_update_topic( $topic_id, $forum_id, $anonymous_data, $author_id, $is_edit );
+		if ( ! empty( $accepted_move['old'] ) ) {
+			bbp_move_topic_handler( $topic_id, $accepted_move['old'], $accepted_move['new'] );
+		}
 
 		// Allow other fun things to happen
 		do_action( 'bbp_topic_attributes_metabox_save', $topic_id, $forum_id       );
@@ -575,12 +592,79 @@ class BBP_Topics_Admin {
 	}
 
 	/**
+	 * Keep admin topic moves within forums the current user may use.
+	 *
+	 * @since 2.6.19 bbPress (r7688)
+	 *
+	 * @param array $data    Sanitized post data.
+	 * @param array $postarr Unprocessed post data.
+	 * @return array Filtered post data.
+	 */
+	public function filter_post_data( $data, $postarr ) {
+
+		// Only filter administration saves of existing topics.
+		if ( ! is_admin() || empty( $postarr['ID'] ) || ( bbp_get_topic_post_type() !== $data['post_type'] ) ) {
+			return $data;
+		}
+
+		$topic = bbp_get_topic( $postarr['ID'] );
+		if ( empty( $topic ) || (int) $topic->post_parent === (int) $data['post_parent'] ) {
+			return $data;
+		}
+
+		$old_forum_id = (int) $topic->post_parent;
+		$new_forum_id = (int) $data['post_parent'];
+		$is_new       = ( 'auto-draft' === $topic->post_status );
+		$is_editor    = ! empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] );
+
+		// Other admin save paths cannot complete a bbPress topic move.
+		if ( ! $is_editor && ! $is_new ) {
+			$data['post_parent'] = $topic->post_parent;
+			return $data;
+		}
+
+		// Match the front-end topic move checks before WordPress changes post_parent.
+		if (
+			! $is_editor
+			|| empty( $_POST['bbp_topic_metabox'] )
+			|| ! is_string( $_POST['bbp_topic_metabox'] )
+			|| ! wp_verify_nonce( $_POST['bbp_topic_metabox'], 'bbp_topic_metabox_save' )
+			|| ! current_user_can( 'edit_topic', $topic->ID )
+			|| ( $is_new && ! current_user_can( 'publish_topics' ) )
+			|| ( ! empty( $old_forum_id ) && ! current_user_can( 'edit_forum', $old_forum_id ) )
+			|| ! bbp_get_forum( $new_forum_id )
+			|| bbp_is_forum_category( $new_forum_id )
+			|| ! current_user_can( 'read_forum', $new_forum_id )
+			|| ( bbp_is_forum_closed( $new_forum_id ) && ! current_user_can( 'edit_forum', $new_forum_id ) )
+		) {
+			if ( $is_new ) {
+				wp_die(
+					esc_html__( 'The selected forum is not available for this topic.', 'bbpress' ),
+					'',
+					array(
+						'response'  => 403,
+						'back_link' => true,
+					)
+				);
+			}
+			$data['post_parent'] = $topic->post_parent;
+		} else {
+			$this->accepted_forum_moves[ $topic->ID ] = array(
+				'old' => $old_forum_id,
+				'new' => $new_forum_id,
+			);
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Toggle topic
 	 *
 	 * Handles the admin-side opening/closing, sticking/unsticking and
 	 * spamming/unspamming of topics
 	 *
-	 * @since 2.0.0 bbPress (r2727)
+	 * @since 2.0.0 bbPress (r3095)
 	 */
 	public function toggle_topic() {
 
@@ -603,6 +687,11 @@ class BBP_Topics_Admin {
 
 		// What is the user doing here?
 		if ( ! current_user_can( 'moderate', $topic_id ) ) {
+			wp_die( esc_html__( 'You do not have permission to do that.', 'bbpress' ) );
+		}
+
+		// Super stickies affect every forum and require global moderation
+		if ( ( 'bbp_toggle_topic_stick' === $action ) && ! current_user_can( 'moderate' ) && ( bbp_is_topic_super_sticky( $topic_id ) || ( ! bbp_is_topic_sticky( $topic_id ) && ! empty( $_GET['super'] ) && ( '1' === $_GET['super'] ) ) ) ) {
 			wp_die( esc_html__( 'You do not have permission to do that.', 'bbpress' ) );
 		}
 
@@ -699,7 +788,7 @@ class BBP_Topics_Admin {
 	 * Display the success/error notices from
 	 * {@link BBP_Admin::toggle_topic()}
 	 *
-	 * @since 2.0.0 bbPress (r2727)
+	 * @since 2.0.0 bbPress (r3095)
 	 */
 	public function toggle_topic_notice() {
 
@@ -818,7 +907,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Returns an array of keys used to sort row actions
 	 *
-	 * @since 2.6.0 bbPress (r6771)
+	 * @since 2.6.0 bbPress (r6772)
 	 *
 	 * @return array
 	 */
@@ -846,7 +935,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Returns an array of notice toggles
 	 *
-	 * @since 2.6.0 bbPress (r6396)
+	 * @since 2.6.0 bbPress (r6397)
 	 *
 	 * @return array
 	 */
@@ -872,7 +961,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Returns an array of notice toggles
 	 *
-	 * @since 2.6.0 bbPress (r6396)
+	 * @since 2.6.0 bbPress (r6397)
 	 *
 	 * @return array
 	 */
@@ -893,7 +982,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Manage the column headers for the topics page
 	 *
-	 * @since 2.0.0 bbPress (r2485)
+	 * @since 2.4.0 bbPress (r4991)
 	 *
 	 * @param array $columns The columns
 	 *
@@ -918,7 +1007,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Print extra columns for the topics page
 	 *
-	 * @since 2.0.0 bbPress (r2485)
+	 * @since 2.4.0 bbPress (r4991)
 	 *
 	 * @param string $column Column
 	 * @param int $topic_id Topic id
@@ -1001,7 +1090,7 @@ class BBP_Topics_Admin {
 	 * Remove the quick-edit action link under the topic title and add the
 	 * content and close/stick/spam links
 	 *
-	 * @since 2.0.0 bbPress (r2485)
+	 * @since 2.4.0 bbPress (r4991)
 	 *
 	 * @param array  $actions Actions
 	 * @param object $topic   Topic object
@@ -1068,7 +1157,7 @@ class BBP_Topics_Admin {
 
 			// Sticky
 			// Dont show sticky if topic is spam, trash or pending
-			if ( ! bbp_is_topic_spam( $topic->ID ) && ! bbp_is_topic_trash( $topic->ID ) && ! bbp_is_topic_pending( $topic->ID ) ) {
+			if ( ! bbp_is_topic_spam( $topic->ID ) && ! bbp_is_topic_trash( $topic->ID ) && ! bbp_is_topic_pending( $topic->ID ) && ( ! bbp_is_topic_super_sticky( $topic->ID ) || current_user_can( 'moderate' ) ) ) {
 				$args = array(
 					'topic_id' => $topic->ID,
 					'action'   => 'bbp_toggle_topic_stick'
@@ -1077,13 +1166,16 @@ class BBP_Topics_Admin {
 				if ( bbp_is_topic_sticky( $topic->ID ) ) {
 					$actions['stick'] = '<a href="' . esc_url( $stick_uri ) . '" title="' . esc_attr__( 'Unstick this topic', 'bbpress' ) . '">' . esc_html__( 'Unstick', 'bbpress' ) . '</a>';
 				} else {
-					$args = array(
-						'topic_id' => $topic->ID,
-						'action'   => 'bbp_toggle_topic_stick',
-						'super'    => '1'
-					);
-					$super_uri        = wp_nonce_url( add_query_arg( $args, remove_query_arg( array( 'bbp_topic_toggle_notice', 'topic_id', 'failed', 'super' ) ) ), 'stick-topic_'  . $topic->ID );
-					$actions['stick'] = '<a href="' . esc_url( $stick_uri ) . '" title="' . esc_attr__( 'Stick this topic to its forum', 'bbpress' ) . '">' . esc_html__( 'Stick', 'bbpress' ) . '</a> <a href="' . esc_url( $super_uri ) . '" title="' . esc_attr__( 'Stick this topic to front', 'bbpress' ) . '">' . esc_html__( '(to front)', 'bbpress' ) . '</a>';
+					$actions['stick'] = '<a href="' . esc_url( $stick_uri ) . '" title="' . esc_attr__( 'Stick this topic to its forum', 'bbpress' ) . '">' . esc_html__( 'Stick', 'bbpress' ) . '</a>';
+					if ( current_user_can( 'moderate' ) ) {
+						$args = array(
+							'topic_id' => $topic->ID,
+							'action'   => 'bbp_toggle_topic_stick',
+							'super'    => '1'
+						);
+						$super_uri        = wp_nonce_url( add_query_arg( $args, remove_query_arg( array( 'bbp_topic_toggle_notice', 'topic_id', 'failed', 'super' ) ) ), 'stick-topic_'  . $topic->ID );
+						$actions['stick'] .= ' <a href="' . esc_url( $super_uri ) . '" title="' . esc_attr__( 'Stick this topic to front', 'bbpress' ) . '">' . esc_html__( '(to front)', 'bbpress' ) . '</a>';
+					}
 				}
 			}
 
@@ -1123,7 +1215,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Sort row actions by key
 	 *
-	 * @since 2.6.0
+	 * @since 2.6.0 bbPress (r6772)
 	 *
 	 * @param array $actions
 	 *
@@ -1152,7 +1244,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Add forum dropdown to topic and reply list table filters
 	 *
-	 * @since 2.0.0 bbPress (r2991)
+	 * @since 2.0.0 bbPress (r3095)
 	 *
 	 * @return bool False. If post type is not topic or reply
 	 */
@@ -1203,7 +1295,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Adjust the request query and include the forum id
 	 *
-	 * @since 2.0.0 bbPress (r2991)
+	 * @since 2.0.0 bbPress (r3095)
 	 *
 	 * @param array $query_vars Query variables from {@link WP_Query}
 	 * @return array Processed Query Vars
@@ -1224,7 +1316,7 @@ class BBP_Topics_Admin {
 	/**
 	 * Custom user feedback messages for topic post type
 	 *
-	 * @since 2.0.0 bbPress (r3080)
+	 * @since 2.0.0 bbPress (r3097)
 	 *
 	 * @global int $post_ID
 	 *
@@ -1320,11 +1412,16 @@ endif; // class_exists check
  * This is currently here to make hooking and unhooking of the admin UI easy.
  * It could use dependency injection in the future, but for now this is easier.
  *
- * @since 2.0.0 bbPress (r2596)
+ * @since 2.0.0 bbPress (r3343)
  *
  * @param WP_Screen $current_screen Current screen object
  */
 function bbp_admin_topics( $current_screen ) {
+
+	// Bail if not in site admin
+	if ( ! is_blog_admin() ) {
+		return;
+	}
 
 	// Bail if not a forum screen
 	if ( empty( $current_screen->post_type ) || ( bbp_get_topic_post_type() !== $current_screen->post_type ) ) {

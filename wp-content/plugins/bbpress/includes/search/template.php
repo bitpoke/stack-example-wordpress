@@ -72,7 +72,11 @@ function bbp_has_search_results( $args = array() ) {
 
 	// Only call the search query if 's' is not empty
 	if ( ! empty( $r['s'] ) ) {
+		$r['_bbp_public_topic_replies'] = true;
+		$r['_bbp_search_private_topic_replies'] = true;
+		add_filter( 'posts_where', 'bbp_public_topic_replies_where', 10, 2 );
 		$bbp->search_query = new WP_Query( $r );
+		remove_filter( 'posts_where', 'bbp_public_topic_replies_where', 10 );
 	}
 
 	// Maybe prime last active posts
@@ -351,7 +355,7 @@ function bbp_get_search_terms( $passed_terms = '' ) {
 /**
  * Return the base URL used inside of pagination links
  *
- * @since 2.6.0 bbPress (r6679)
+ * @since 2.6.0 bbPress (r6680)
  *
  * @return string
  */

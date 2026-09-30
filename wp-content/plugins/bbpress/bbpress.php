@@ -5,7 +5,7 @@
  *
  * bbPress is forum software with a twist from the creators of WordPress.
  *
- * $Id: bbpress.php 7604 2026-09-21 14:19:57Z johnjamesjacoby $
+ * $Id: bbpress.php 7745 2026-09-29 23:33:24Z johnjamesjacoby $
  *
  * @package bbPress
  * @subpackage Main
@@ -24,7 +24,7 @@
  * Requires PHP:      7.2
  * Requires at least: 6.0
  * Tested up to:      7.1
- * Version:           2.6.18
+ * Version:           2.6.19
  */
 
 // Exit if accessed directly
@@ -36,7 +36,7 @@ if ( ! class_exists( 'bbPress' ) ) :
  *
  * "Word hard. Stay bumble."
  *
- * @since 2.0.0 bbPress (r2464)
+ * @since 2.0.0 bbPress (r2594)
  */
 final class bbPress {
 
@@ -104,7 +104,7 @@ final class bbPress {
 	 * Insures that only one instance of bbPress exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
-	 * @since 2.1.0 bbPress (r3757)
+	 * @since 2.1.0 bbPress (r3758)
 	 *
 	 * @staticvar object $instance
 	 * @see bbpress()
@@ -133,7 +133,7 @@ final class bbPress {
 	/**
 	 * A dummy constructor to prevent bbPress from being loaded more than once.
 	 *
-	 * @since 2.0.0 bbPress (r2464)
+	 * @since 2.0.0 bbPress (r3071)
 	 *
 	 * @see bbPress::instance()
 	 * @see bbpress();
@@ -145,7 +145,7 @@ final class bbPress {
 	/**
 	 * A dummy magic method to prevent bbPress from being cloned
 	 *
-	 * @since 2.0.0 bbPress (r2464)
+	 * @since 2.1.0 bbPress (r3758)
 	 */
 	public function __clone() {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'bbpress' ), '2.1' );
@@ -154,7 +154,7 @@ final class bbPress {
 	/**
 	 * A dummy magic method to prevent bbPress from being unserialized
 	 *
-	 * @since 2.0.0 bbPress (r2464)
+	 * @since 2.1.0 bbPress (r3758)
 	 */
 	public function __wakeup() {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'bbpress' ), '2.1' );
@@ -192,7 +192,7 @@ final class bbPress {
 	/**
 	 * Magic method for unsetting bbPress variables
 	 *
-	 * @since 2.3.0 bbPress (r4628)
+	 * @since 2.3.0 bbPress (r4629)
 	 */
 	public function __unset( $key ) {
 		if ( isset( $this->data[ $key ] ) ) {
@@ -203,7 +203,7 @@ final class bbPress {
 	/**
 	 * Magic method to prevent notices and errors from invalid method calls
 	 *
-	 * @since 2.2.0 bbPress (r4252)
+	 * @since 2.2.0 bbPress (r4253)
 	 */
 	public function __call( $name = '', $args = array() ) {
 		unset( $name, $args );
@@ -216,7 +216,7 @@ final class bbPress {
 	 * Setup the environment variables to allow the rest of bbPress to function
 	 * more easily.
 	 *
-	 * @since 2.0.0 bbPress (r2626)
+	 * @since 2.6.0 bbPress (r6331)
 	 *
 	 * @access private
 	 */
@@ -224,8 +224,8 @@ final class bbPress {
 
 		/** Versions **********************************************************/
 
-		$this->version    = '2.6.18';
-		$this->db_version = '263';
+		$this->version    = '2.6.19';
+		$this->db_version = '264';
 
 		/** Paths *************************************************************/
 
@@ -254,7 +254,7 @@ final class bbPress {
 	/**
 	 * Smart defaults to many bbPress specific class variables.
 	 *
-	 * @since 2.6.0 bbPress (r6330)
+	 * @since 2.6.0 bbPress (r6331)
 	 */
 	private function setup_variables() {
 
@@ -327,7 +327,7 @@ final class bbPress {
 	/**
 	 * Include required files
 	 *
-	 * @since 2.0.0 bbPress (r2626)
+	 * @since 2.0.0 bbPress (r3334)
 	 *
 	 * @access private
 	 */
@@ -406,7 +406,7 @@ final class bbPress {
 	/**
 	 * Setup the default hooks and actions
 	 *
-	 * @since 2.0.0 bbPress (r2644)
+	 * @since 2.0.0 bbPress (r3334)
 	 *
 	 * @access private
 	 */
@@ -458,7 +458,7 @@ final class bbPress {
 	 * the bbp-theme-compat folders, it's fine to hardcode these here. If at a
 	 * later date we need to automate this, and API will need to be built.
 	 *
-	 * @since 2.1.0 bbPress (r3829)
+	 * @since 2.1.0 bbPress (r3830)
 	 */
 	public function register_theme_packages() {
 
@@ -481,7 +481,7 @@ final class bbPress {
 	/**
 	 * Setup the default bbPress theme compatibility location.
 	 *
-	 * @since 2.1.0 bbPress (r3778)
+	 * @since 2.1.0 bbPress (r3779)
 	 */
 	public function setup_theme() {
 		bbp_setup_theme_compat( bbp_get_theme_package_id() );
@@ -496,7 +496,7 @@ final class bbPress {
 	 * will be removed on bbPress updates. If you're creating custom
 	 * translation files, please use the global language folder.
 	 *
-	 * @since 2.0.0 bbPress (r2596)
+	 * @since 2.0.0 bbPress (r3333)
 	 */
 	public function load_textdomain() {
 
@@ -725,7 +725,7 @@ final class bbPress {
 	/**
 	 * Register the topic tag and forum moderator taxonomies
 	 *
-	 * @since 2.0.0 bbPress (r2464) Added bbp_get_topic_tag_tax_id() taxonomy
+	 * @since 2.0.0 bbPress (r2753) Added bbp_get_topic_tag_tax_id() taxonomy
 	 */
 	public static function register_taxonomies() {
 
@@ -796,7 +796,7 @@ final class bbPress {
 	/**
 	 * Register the bbPress shortcodes
 	 *
-	 * @since 2.0.0 bbPress (r3031)
+	 * @since 2.2.0 bbPress (r4212)
 	 */
 	public function register_shortcodes() {
 		$this->shortcodes = new BBP_Shortcodes();
@@ -807,7 +807,7 @@ final class bbPress {
 	 *
 	 * Counts added in 2.6.0 to avoid negative values
 	 *
-	 * @since 2.6.0 bbPress (r6300)
+	 * @since 2.6.0 bbPress (r6302)
 	 */
 	public function register_meta() {
 
@@ -823,14 +823,14 @@ final class bbPress {
 			// Counts are single values
 			'single'            => true,
 
-			// Counts should be made available in REST
+			// Public counts should be made available in REST
 			'show_in_rest'      => true,
 
 			// Never allow counts to go negative
 			'sanitize_callback' => 'bbp_number_not_negative',
 
-			// All users may update count meta data
-			'auth_callback'     => '__return_true'
+			// Derived counts cannot be edited through metadata endpoints
+			'auth_callback'     => '__return_false'
 		);
 
 		/** Post **************************************************************/
@@ -842,10 +842,13 @@ final class bbPress {
 		register_meta( 'post', '_bbp_total_reply_count',        $count );
 		register_meta( 'post', '_bbp_voice_count',              $count );
 		register_meta( 'post', '_bbp_anonymous_reply_count',    $count );
-		register_meta( 'post', '_bbp_topic_count_hidden',       $count );
-		register_meta( 'post', '_bbp_reply_count_hidden',       $count );
-		register_meta( 'post', '_bbp_total_topic_count_hidden', $count );
-		register_meta( 'post', '_bbp_total_reply_count_hidden', $count );
+		// Hidden counts must stay private if custom fields are exposed in REST.
+		$hidden_count = $count;
+		$hidden_count['show_in_rest'] = false;
+		register_meta( 'post', '_bbp_topic_count_hidden',       $hidden_count );
+		register_meta( 'post', '_bbp_reply_count_hidden',       $hidden_count );
+		register_meta( 'post', '_bbp_total_topic_count_hidden', $hidden_count );
+		register_meta( 'post', '_bbp_total_reply_count_hidden', $hidden_count );
 		register_meta( 'post', '_bbp_forum_subforum_count',     $count );
 
 		/** User **************************************************************/
@@ -864,7 +867,7 @@ final class bbPress {
 				'single'            => true,
 				'show_in_rest'      => true,
 				'sanitize_callback' => 'bbp_number_not_negative',
-				'auth_callback'     => '__return_true'
+				'auth_callback'     => '__return_false'
 			)
 		);
 	}
@@ -881,7 +884,7 @@ final class bbPress {
 	/**
 	 * Setup the user engagements strategy
 	 *
-	 * @since 2.6.0 bbPress (r6875)
+	 * @since 2.6.0 bbPress (r6876)
 	 */
 	public function setup_engagements() {
 
@@ -896,7 +899,7 @@ final class bbPress {
 	/**
 	 * Initialize forum-specific roles
 	 *
-	 * @since 2.6.0
+	 * @since 2.6.0 bbPress (r6118)
 	 */
 	public function roles_init() {
 
@@ -943,7 +946,7 @@ final class bbPress {
 	 * - Topic views
 	 * - User profiles
 	 *
-	 * @since 2.0.0 bbPress (r2688)
+	 * @since 2.4.0 bbPress (r4930)
 	 *
 	 * @todo Extract into an API
 	 */
@@ -1119,7 +1122,7 @@ final class bbPress {
  *
  * Example: <?php $bbp = bbpress(); ?>
  *
- * @since 2.0.0 bbPress (r2464)
+ * @since 2.1.0 bbPress (r3758)
  *
  * @return bbPress The one true bbPress Instance
  */
