@@ -3708,7 +3708,8 @@ if ( ! class_exists( 'Astra_Woocommerce' ) ) {
 		public function single_product_category() {
 			/** @psalm-suppress InvalidGlobal */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			global $product;
-			echo '<span class="single-product-category">' . wp_kses_post( wc_get_product_category_list( $product->get_id(), ', ' ) ) . '</span>';
+			$category_list = wc_get_product_category_list( $product->get_id(), ', ' );
+			echo '<span class="single-product-category">' . wp_kses_post( is_string( $category_list ) ? $category_list : '' ) . '</span>';
 		}
 
 		/**

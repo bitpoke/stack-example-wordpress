@@ -1,5 +1,15 @@
 *** Astra Changelog ***
 
+2026-10-15 - version 4.14.1
+* Fix: WooCommerce - The Slide In Cart now opens after adding a product from shop, archive and other product listings when the header Cart Click Action is set to Cart Page.
+* Fix: WPML - Custom banner titles and descriptions for Blog/Post archive, WooCommerce catalog, EDD and SureCart archives are now translatable via String Translation.
+* Fix: RTL - Live Search results dropdown rendered as a squeezed, broken list on mobile and tablet on archive pages with pagination.
+* Fix: Menus - A plugin or custom walker passing a non-array value to the menu link attributes filter no longer triggers a fatal error that cuts the page off mid-render.
+* Fix: Menus - Markup added after a menu item's link is no longer altered, and submenu toggles now name their menu item and report the right open state to screen readers.
+* Fix: Metabox - Container, Sidebar and Advanced Settings options no longer show when editing the Posts page, since they don't apply to the blog listing.
+* Fix: Customizer - Setting the Body font family back to Default (inherit) now shows the default system font in the live preview instead of a serif fallback.
+* Fix: Accessibility - Pressing Esc no longer throws a console error, and closing the Slide-In Cart with Esc now returns focus to the cart icon.
+
 2026-09-24 - version 4.14.0
 * New: Global Palette - Add your own named custom colors with the new + button under Global > Colors, available in the block editor, Elementor and every Astra color picker. (https://wpastra.com/docs/custom-global-colors/)
 * Improvement: WooCommerce - Removed duplicate cart refresh requests on page load and after add to cart, reducing server load on shops.

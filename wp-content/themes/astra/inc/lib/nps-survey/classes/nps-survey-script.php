@@ -30,6 +30,15 @@ class Nps_Survey {
 	private static $instance = null;
 
 	/**
+	 * REST nonce, kept once any product rendering a survey on this page passes its capability check.
+	 *
+	 * @access private
+	 * @var string
+	 * @since 1.0.25
+	 */
+	private static $rest_nonce = '';
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.0.0
@@ -97,7 +106,7 @@ class Nps_Survey {
 			return;
 		}
 		// Loading script here to confirm if the screen is allowed or not.
-		self::editor_load_scripts( $show_on_screen );
+		self::editor_load_scripts( $show_on_screen, $plugin_slug );
 
 		?><div data-id="<?php echo esc_attr( $id ); ?>" class="nps-survey-root" data-vars="<?php echo esc_attr( strval( wp_json_encode( $vars ) ) ); ?>"></div>
 		<?php
@@ -107,10 +116,11 @@ class Nps_Survey {
 	 * Load script.
 	 *
 	 * @param array<string> $show_on_screens An array of screen IDs where the scripts should be loaded.
+	 * @param string        $plugin_slug Slug of the product rendering the survey, used to scope the REST nonce capability check.
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public static function editor_load_scripts( $show_on_screens ): void {
+	public static function editor_load_scripts( $show_on_screens, string $plugin_slug = '' ): void {
 
 		$admin_only = self::is_nps_survey_enabled_for_admin_only();
 		if ( $admin_only && ! is_admin() ) {
@@ -154,7 +164,7 @@ class Nps_Survey {
 			[
 				'ajaxurl'        => esc_url( admin_url( 'admin-ajax.php' ) ),
 				'_ajax_nonce'    => wp_create_nonce( 'nps-survey' ),
-				'rest_api_nonce' => current_user_can( 'manage_options' ) ? wp_create_nonce( 'wp_rest' ) : '',
+				'rest_api_nonce' => self::get_rest_nonce( $plugin_slug ),
 			]
 		);
 
@@ -288,7 +298,7 @@ class Nps_Survey {
 	/**
 	 * Check whether a given request has permission to read notes.
 	 *
-	 * @param  object $request WP_REST_Request Full details about the request.
+	 * @param  \WP_REST_Request<array<string,mixed>> $request Full details about the request.
 	 * @return object|bool
 	 */
 	public static function get_item_permissions_check( $request ) {
@@ -307,7 +317,7 @@ class Nps_Survey {
 			return true;
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( self::get_required_capability( $request ) ) ) {
 			return new \WP_Error(
 				'nps_survey_rest_cannot_access',
 				__( 'Sorry, you are not allowed to do that.', 'astra' ),
@@ -315,6 +325,70 @@ class Nps_Survey {
 			);
 		}
 		return true;
+	}
+
+	/**
+	 * Get the capability required to see and interact with the NPS survey.
+	 *
+	 * Defaults to `manage_options`, matching the library's original behavior, so nothing
+	 * changes for a bundling product unless it explicitly opts in via the filter below.
+	 *
+	 * A bundling product that shows the survey to a capability narrower than
+	 * `manage_options` (see `nps_survey_show_notice`) would otherwise hit a REST 403 on
+	 * every dismiss/rating call for those users. Rather than lowering the requirement for
+	 * every product sharing this library, this filter lets a product vouch for its own
+	 * narrower capability, scoped to its own calls only by checking
+	 * `$request->get_param( 'plugin_slug' )` -- every other product keeps `manage_options`.
+	 *
+	 * `$request` is always a `WP_REST_Request` carrying `plugin_slug`: the real request when
+	 * checking a REST call, and a slug-only stand-in when deciding whether the page gets a
+	 * REST nonce, so one callback covers both without a `null` check.
+	 *
+	 * A previous attempt (see PR #118) relaxed this globally to `is_user_logged_in()`
+	 * for every product at once and was reverted before merge: both REST endpoints
+	 * write to a single, site-wide (not per-user) option, so opening them to any
+	 * authenticated account -- rather than to a capability a specific product opts into --
+	 * lets a low-privilege account (e.g. a customer account) permanently silence the
+	 * survey for the entire site, or submit feedback under the site's identity to the
+	 * external metrics endpoint. Keep any new default here at `manage_options` or narrower.
+	 *
+	 * @since 1.0.25
+	 * @param \WP_REST_Request<array<string,mixed>> $request Real REST request, or a stand-in carrying only `plugin_slug`.
+	 * @return string
+	 */
+	public static function get_required_capability( $request ) {
+		return apply_filters( 'nps_survey_required_capability', 'manage_options', $request );
+	}
+
+	/**
+	 * Get the REST nonce for the current user, or an empty string if no product on this page vouches for them.
+	 *
+	 * The nonce is localized once per page and shared by every bundled product, so it is kept
+	 * as soon as any rendering product's capability check passes. Each REST call is still
+	 * checked against its own `plugin_slug`, so this never lets one product act for another.
+	 *
+	 * @param string $plugin_slug Slug of the product rendering the survey.
+	 * @since 1.0.25
+	 * @return string
+	 */
+	private static function get_rest_nonce( string $plugin_slug ): string {
+		if ( '' !== self::$rest_nonce ) {
+			return self::$rest_nonce;
+		}
+
+		/**
+		 * Stand-in request carrying only the slug.
+		 *
+		 * @var \WP_REST_Request<array<string,mixed>> $request
+		 */
+		$request = new \WP_REST_Request( 'POST', '/' . self::get_api_namespace() . '/dismiss-nps-survey/' );
+		$request->set_param( 'plugin_slug', sanitize_key( $plugin_slug ) );
+
+		if ( current_user_can( self::get_required_capability( $request ) ) ) {
+			self::$rest_nonce = wp_create_nonce( 'wp_rest' );
+		}
+
+		return self::$rest_nonce;
 	}
 
 	/**

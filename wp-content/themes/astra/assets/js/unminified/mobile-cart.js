@@ -186,16 +186,15 @@
 	function cartInit() {
 		// Close Popup if esc is pressed.
 		document.addEventListener('keyup', function (event) {
-			// 27 is keymap for esc key.
-			if (event.keyCode === 27) {
+			// Run only while the cart is open.
+			if ('Escape' === event.key && cart_flyout && cart_flyout.classList.contains('active')) {
 				event.preventDefault();
 				cart_flyout.classList.remove('active');
 				document.documentElement.classList.remove('ast-mobile-cart-active');
-				updateTrigger();
 				
 				// Return focus to the element that opened the cart
 				setTimeout(function() {
-					focusManager.returnToTrigger();
+					focusManager.returnToTrigger( true );
 				}, 100);
 			}
 		});
@@ -211,7 +210,7 @@
 				
 				// Return focus to the element that opened the cart
 				setTimeout(function() {
-					focusManager.returnToTrigger();
+					focusManager.returnToTrigger( true );
 				}, 100);
 			}
 		});

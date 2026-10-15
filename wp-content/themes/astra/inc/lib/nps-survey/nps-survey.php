@@ -3,7 +3,7 @@
  * Plugin Name: NPS Survey
  * Description: It is a nps survey library.
  * Author: Brainstorm Force
- * Version: 1.0.24
+ * Version: 1.0.25
  * License: GPL v2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: nps-survey
@@ -24,5 +24,5 @@ define( 'NPS_SURVEY_FILE', __FILE__ );
 define( 'NPS_SURVEY_BASE', plugin_basename( NPS_SURVEY_FILE ) );
 define( 'NPS_SURVEY_DIR', plugin_dir_path( NPS_SURVEY_FILE ) );
 define( 'NPS_SURVEY_URL', plugins_url( '/', NPS_SURVEY_FILE ) );
-define( 'NPS_SURVEY_VER', '1.0.24' );
+define( 'NPS_SURVEY_VER', '1.0.25' );
 require_once 'nps-survey-plugin-loader.php';

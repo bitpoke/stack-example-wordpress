@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Astra 4.14.0\n"
+"Project-Id-Version: Astra 4.14.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/astra\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-22T07:14:37+00:00\n"
+"POT-Creation-Date: 2026-10-09T08:41:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: astra\n"
@@ -42,12 +42,12 @@ msgid "https://wpastra.com/about/?utm_source=theme_preview&utm_medium=author_lin
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:144
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:283
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:420
 msgid "This is a temporary deactivation for testing."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:145
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:284
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:421
 msgid "How can we assist you?"
 msgstr ""
 
@@ -56,7 +56,7 @@ msgid "The theme isn't working properly."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:151
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:290
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:427
 msgid "Please tell us more about what went wrong?"
 msgstr ""
 
@@ -69,33 +69,33 @@ msgid "Could you please specify which theme?"
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:162
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:301
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:438
 msgid "It's missing a specific feature."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:163
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:302
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:439
 msgid "Please tell us more about the feature."
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:168
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:307
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:444
 msgid "Other"
 msgstr ""
 
 #: admin/class-astra-bsf-analytics.php:169
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:132
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:308
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:133
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:445
 msgid "Please tell us more details."
 msgstr ""
 
 #: admin/includes/class-astra-admin-ajax.php:68
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:223
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:360
 msgid "Sorry, you are not allowed to do this operation."
 msgstr ""
 
 #: admin/includes/class-astra-admin-ajax.php:69
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:236
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:373
 msgid "Nonce validation failed"
 msgstr ""
 
@@ -4967,7 +4967,7 @@ msgid "MedApps"
 msgstr ""
 
 #: assets/svg/logo-svg-icons/icons-v6-2.php:1947
-#: inc/extras.php:1210
+#: inc/extras.php:1230
 msgid "Medium"
 msgstr ""
 
@@ -11688,7 +11688,7 @@ msgstr ""
 #: inc/customizer/configurations/builder/header/configs/account.php:294
 #: inc/customizer/configurations/builder/header/configs/off-canvas.php:151
 #: inc/customizer/configurations/layout/class-astra-header-layout-configs.php:649
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:105
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:106
 #: inc/customizer/extend-custom-controls/build/index.js:1
 msgid "Icon"
 msgstr ""
@@ -11851,12 +11851,52 @@ msgstr ""
 msgid "Read More &raquo;"
 msgstr ""
 
-#: inc/blog/blog.php:452
+#: inc/blog/blog.php:457
+msgctxt "Blog/Post Archive: Banner Custom Title"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:458
+msgctxt "Blog/Post Archive: Banner Custom Description"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:461
+msgctxt "WooCommerce Product Catalog: Banner Custom Title"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:462
+msgctxt "WooCommerce Product Catalog: Banner Custom Description"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:465
+msgctxt "EDD Product Archive: Banner Custom Title"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:466
+msgctxt "EDD Product Archive: Banner Custom Description"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:469
+msgctxt "SureCart Shop: Banner Custom Title"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:470
+msgctxt "SureCart Shop: Banner Custom Description"
+msgid "%astra%"
+msgstr ""
+
+#: inc/blog/blog.php:494
 msgctxt "Search Page Title: Subheading - When Results Found"
 msgid "%astra%"
 msgstr ""
 
-#: inc/blog/blog.php:453
+#: inc/blog/blog.php:495
 msgctxt "Search Page Title: Subheading - When Results Not Found"
 msgid "%astra%"
 msgstr ""
@@ -12178,10 +12218,6 @@ msgstr ""
 
 #: inc/class-astra-memory-limit-notice.php:350
 msgid "Continue monitoring your memory usage, especially when installing new plugins or themes."
-msgstr ""
-
-#: inc/class-astra-mobile-header.php:109
-msgid "Toggle Menu"
 msgstr ""
 
 #: inc/compatibility/class-astra-beaver-themer.php:360
@@ -12583,7 +12619,7 @@ msgstr ""
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:106
 #: inc/customizer/configurations/layout/class-astra-blog-layout-configs.php:386
 #: inc/customizer/configurations/layout/class-astra-blog-single-layout-configs.php:48
-#: inc/extras.php:1234
+#: inc/extras.php:1254
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:222
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:228
 #: inc/modules/posts-structures/customizer/class-astra-posts-archive-structures-configs.php:343
@@ -13870,11 +13906,6 @@ msgstr ""
 
 #: inc/core/class-astra-theme-options.php:488
 msgid "Contact Us"
-msgstr ""
-
-#: inc/core/class-astra-walker-page.php:85
-#: inc/core/class-astra-walker-page.php:97
-msgid "Toggle menu"
 msgstr ""
 
 #: inc/core/class-theme-strings.php:29
@@ -16052,24 +16083,30 @@ msgstr ""
 msgid "Astra WordPress Theme"
 msgstr ""
 
-#: inc/extras.php:554
-msgid "Menu Toggle"
+#: inc/extras.php:464
+msgid "Toggle submenu"
 msgstr ""
 
-#: inc/extras.php:1209
+#. translators: %s: Menu item title.
+#: inc/extras.php:468
+#, php-format
+msgid "Toggle %s submenu"
+msgstr ""
+
+#: inc/extras.php:1229
 msgid "Thumbnail"
 msgstr ""
 
-#: inc/extras.php:1211
+#: inc/extras.php:1231
 msgid "Medium Large"
 msgstr ""
 
-#: inc/extras.php:1212
+#: inc/extras.php:1232
 msgid "Large"
 msgstr ""
 
-#: inc/extras.php:1213
-#: inc/extras.php:1220
+#: inc/extras.php:1233
+#: inc/extras.php:1240
 msgid "Full Size"
 msgstr ""
 
@@ -16089,38 +16126,38 @@ msgstr ""
 msgid "<strong>Help shape the future of %1$s.</strong><br><br>Share how you use the plugin so we can build features that matter, fix issues faster, and make smarter decisions."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:278
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:280
 msgid "This will be applicable for all sites from the network."
 msgstr ""
 
 #. translators: %s usage doc link
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:302
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:304
 msgid "Learn more."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:312
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:314
 msgid "Happy to help!"
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:323
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:325
 msgid "Skip"
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:501
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:503
 msgid "Usage Tracking"
 msgstr ""
 
 #. translators: %s Product title
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:546
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:548
 #, php-format
 msgid "Help improve %s by sharing non-sensitive usage data — like PHP version and features used."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:549
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:551
 msgid " This will be applicable for all sites from the network."
 msgstr ""
 
-#: inc/lib/bsf-analytics/class-bsf-analytics.php:554
+#: inc/lib/bsf-analytics/class-bsf-analytics.php:556
 msgid "Learn More."
 msgstr ""
 
@@ -16137,28 +16174,28 @@ msgid "If you have a moment, please share why you are deactivating the plugin."
 msgstr ""
 
 #. translators: %1$s: link html start, %2$s: link html end
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:141
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:142
 #, php-format
 msgid "Need help from our experts? %1$sClick here to contact us.%2$s"
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:152
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:155
 msgid "Submit & Deactivate"
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:153
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:156
 msgid "Skip & Deactivate"
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:289
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:426
 msgid "The plugin isn't working properly."
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:295
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:432
 msgid "I found a better alternative plugin."
 msgstr ""
 
-#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:296
+#: inc/lib/bsf-analytics/modules/deactivation-survey/classes/class-deactivation-survey-feedback.php:433
 msgid "Could you please specify which plugin?"
 msgstr ""
 
@@ -16198,20 +16235,20 @@ msgstr ""
 msgid "We value your input. How can we improve your experience?"
 msgstr ""
 
-#: inc/lib/nps-survey/classes/nps-survey-script.php:313
+#: inc/lib/nps-survey/classes/nps-survey-script.php:323
 msgid "Sorry, you are not allowed to do that."
 msgstr ""
 
-#: inc/lib/nps-survey/classes/nps-survey-script.php:366
-#: inc/lib/nps-survey/classes/nps-survey-script.php:486
+#: inc/lib/nps-survey/classes/nps-survey-script.php:440
+#: inc/lib/nps-survey/classes/nps-survey-script.php:560
 msgid "Nonce verification failed."
 msgstr ""
 
-#: inc/lib/nps-survey/classes/nps-survey-script.php:431
+#: inc/lib/nps-survey/classes/nps-survey-script.php:505
 msgid "Remote request failed."
 msgstr ""
 
-#: inc/lib/nps-survey/classes/nps-survey-script.php:466
+#: inc/lib/nps-survey/classes/nps-survey-script.php:540
 msgid "Request failed."
 msgstr ""
 
@@ -16245,24 +16282,24 @@ msgstr ""
 msgid "Assign Footer Menu"
 msgstr ""
 
-#: inc/markup-extras.php:1793
+#: inc/markup-extras.php:1805
 msgctxt "Blog / Archive: Excerpt Truncation Marker"
 msgid "%astra%"
 msgstr ""
 
-#: inc/markup-extras.php:1855
+#: inc/markup-extras.php:1867
 msgid "Add Widget"
 msgstr ""
 
-#: inc/markup-extras.php:1895
+#: inc/markup-extras.php:1907
 msgid "Click here to assign a widget for this area."
 msgstr ""
 
-#: inc/markup-extras.php:2041
+#: inc/markup-extras.php:2053
 msgid "Untitled Post"
 msgstr ""
 
-#: inc/markup-extras.php:2051
+#: inc/markup-extras.php:2063
 #, php-format
 msgid "Read: %s"
 msgstr ""

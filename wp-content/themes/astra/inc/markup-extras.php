@@ -1407,9 +1407,15 @@ add_action( 'astra_masthead_content', 'astra_primary_navigation_markup', 10 );
  * Ex. .main-header-menu a => .main-header-menu .menu-link
  *
  * @since 2.5.0
- * @param array $atts   An array of all parameters assigned to menu anchors.
+ * @param array|mixed $atts   An array of all parameters assigned to menu anchors.
+ * @return array|mixed
  */
 function astra_menu_anchor_class_for_nav_menus( $atts ) {
+
+	// Another callback or a custom walker may pass a non-array; leave it untouched to avoid a fatal.
+	if ( ! is_array( $atts ) ) {
+		return $atts;
+	}
 
 	if ( ! empty( $atts['class'] ) ) {
 		$atts['class'] = $atts['class'] . ' menu-link';
@@ -1428,9 +1434,15 @@ add_filter( 'nav_menu_link_attributes', 'astra_menu_anchor_class_for_nav_menus',
  * As we are replacing tag based selector to class selector, adding 'menu-link' selector to all anchors inside menu items.
  *
  * @since 2.5.0
- * @param array $atts   An array of all parameters assigned to menu anchors.
+ * @param array|mixed $atts   An array of all parameters assigned to menu anchors.
+ * @return array|mixed
  */
 function astra_menu_anchor_class_for_page_menus( $atts ) {
+
+	// Another callback or a custom walker may pass a non-array; leave it untouched to avoid a fatal.
+	if ( ! is_array( $atts ) ) {
+		return $atts;
+	}
 
 	if ( ! empty( $atts['class'] ) ) {
 		$atts['class'] = $atts['class'] . ' menu-link';
@@ -2380,22 +2392,33 @@ function astra_setup_article_featured_image() {
 add_action( 'astra_header_after', 'astra_setup_article_featured_image' );
 
 /**
- * Add aria-expanded attribute to menu items that have submenus.
+ * Add aria-expanded attribute to the link of menu items that have submenus.
  *
- * @since 4.6.15
- * @param string $output The HTML output of the menu item.
- * @param object $item Menu item data object.
- * @param int    $depth Depth of the current menu item.
- * @param array  $args An array of arguments.
+ * Set through the link attributes so it never reaches markup appended after the link, such as mega menu content.
  *
- * @return string $output Menu item markup output.
+ * @since 4.14.1
+ * @param mixed $atts Menu link attributes, an array unless a third party filter broke it.
+ * @param mixed $item Menu item data object.
+ *
+ * @return mixed Menu link attributes.
  */
-function astra_add_aria_expanded_submenu_items_attr( $output, $item, $depth, $args ) {
-	$classes = empty( $item->classes ) ? array() : (array) $item->classes; // forming classes array if string.
-	if ( in_array( 'menu-item-has-children', $classes ) ) {
-		$output = str_replace( '<a', '<a aria-expanded="false"', $output );
+function astra_add_aria_expanded_menu_link_attr( $atts, $item = null ) {
+	if ( ! is_array( $atts ) || ! is_object( $item ) ) {
+		return $atts;
 	}
-	return $output;
+
+	$classes = empty( $item->classes ) ? array() : (array) $item->classes; // forming classes array if string.
+	if ( ! in_array( 'menu-item-has-children', $classes, true ) ) {
+		return $atts;
+	}
+
+	// Mega menu items with the link disabled render as a span, which cannot carry aria-expanded.
+	if ( isset( $item->megamenu_disable_link ) && 'disable-link' === $item->megamenu_disable_link ) {
+		return $atts;
+	}
+
+	$atts['aria-expanded'] = 'false';
+	return $atts;
 }
 
-add_filter( 'walker_nav_menu_start_el', 'astra_add_aria_expanded_submenu_items_attr', 10, 4 );
+add_filter( 'nav_menu_link_attributes', 'astra_add_aria_expanded_menu_link_attr', 10, 2 );

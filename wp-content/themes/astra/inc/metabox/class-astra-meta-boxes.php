@@ -728,7 +728,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'is_addon_activated'             => defined( 'ASTRA_EXT_VER' ) ? true : false,
 					'sticky_addon_enabled'           => $astra_ext_extension_class_exists && Astra_Ext_Extension::is_active( 'sticky-header' ) ? true : false,
 					'register_astra_metabox'         => apply_filters( 'astra_settings_metabox_register', $register_astra_metabox ),
-					'is_hide_contnet_layout_sidebar' => $ast_content_layout_sidebar,
+					'is_hide_content_layout_sidebar' => $ast_content_layout_sidebar,
 					'upgrade_pro_link'               => esc_url_raw( astra_get_pro_url( '/pricing/', 'free-theme', 'post-metabox', 'upgrade' ) ),
 					'show_upgrade_notice'            => astra_showcase_upgrade_notices(),
 					'logo_url'                       => esc_url( ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ),

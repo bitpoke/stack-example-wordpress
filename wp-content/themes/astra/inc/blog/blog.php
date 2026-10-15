@@ -434,6 +434,48 @@ function astra_get_last_meta_word( $string ) {
 }
 
 /**
+ * Return translated archive banner custom title/description.
+ */
+if ( ! function_exists( 'astra_get_archive_banner_translation' ) ) {
+
+	/**
+	 * Returns the translated archive banner custom title/description for a post type, or the '%astra%' sentinel.
+	 *
+	 * Gettext contexts must be static literals for string scanners to register them, so known post types are
+	 * listed here. Unknown post types return the sentinel, so astra_get_i18n_option() uses the saved value as-is.
+	 *
+	 * @param  string $post_type Post type of the archive.
+	 * @param  string $field     Banner field, either 'title' or 'description'.
+	 *
+	 * @return string Value to pass as the $translated argument of astra_get_i18n_option().
+	 *
+	 * @since 4.14.1
+	 */
+	function astra_get_archive_banner_translation( $post_type, $field ) {
+		$strings = array(
+			'post'       => array(
+				'title'       => _x( '%astra%', 'Blog/Post Archive: Banner Custom Title', 'astra' ),
+				'description' => _x( '%astra%', 'Blog/Post Archive: Banner Custom Description', 'astra' ),
+			),
+			'product'    => array(
+				'title'       => _x( '%astra%', 'WooCommerce Product Catalog: Banner Custom Title', 'astra' ),
+				'description' => _x( '%astra%', 'WooCommerce Product Catalog: Banner Custom Description', 'astra' ),
+			),
+			'download'   => array(
+				'title'       => _x( '%astra%', 'EDD Product Archive: Banner Custom Title', 'astra' ),
+				'description' => _x( '%astra%', 'EDD Product Archive: Banner Custom Description', 'astra' ),
+			),
+			'sc_product' => array(
+				'title'       => _x( '%astra%', 'SureCart Shop: Banner Custom Title', 'astra' ),
+				'description' => _x( '%astra%', 'SureCart Shop: Banner Custom Description', 'astra' ),
+			),
+		);
+
+		return isset( $strings[ $post_type ][ $field ] ) ? $strings[ $post_type ][ $field ] : '%astra%';
+	}
+}
+
+/**
  * Get the current archive description.
  *
  * @since 4.0.0
@@ -444,7 +486,7 @@ function astra_get_archive_description( $post_type ) {
 	$description = '';
 
 	if ( defined( 'SURECART_PLUGIN_FILE' ) && is_page() && get_the_ID() === absint( get_option( 'surecart_shop_page_id' ) ) ) {
-		return astra_get_option( 'ast-dynamic-archive-sc_product-custom-description', '' );
+		return astra_get_i18n_option( 'ast-dynamic-archive-sc_product-custom-description', astra_get_archive_banner_translation( 'sc_product', 'description' ) );
 	}
 
 	if ( is_search() ) {
@@ -467,10 +509,10 @@ function astra_get_archive_description( $post_type ) {
 	}
 
 	if ( is_post_type_archive( $post_type ) ) {
-		$description = astra_get_option( 'ast-dynamic-archive-' . $post_type . '-custom-description', '' );
+		$description = astra_get_i18n_option( 'ast-dynamic-archive-' . $post_type . '-custom-description', astra_get_archive_banner_translation( $post_type, 'description' ) );
 	}
 	if ( 'post' === $post_type && ( ( is_front_page() && is_home() ) || is_home() ) ) {
-		$description = astra_get_option( 'ast-dynamic-archive-post-custom-description', '' );
+		$description = astra_get_i18n_option( 'ast-dynamic-archive-post-custom-description', astra_get_archive_banner_translation( 'post', 'description' ) );
 	}
 
 	return $description;

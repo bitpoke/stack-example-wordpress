@@ -106,7 +106,7 @@ if ( ! class_exists( 'Astra_Mobile_Header' ) ) {
 				'ast-menu-toggle',
 				array(
 					'aria-expanded' => 'false',
-					'aria-label'    => __( 'Toggle Menu', 'astra' ),
+					'aria-label'    => astra_get_submenu_toggle_label( isset( $item->title ) ? $item->title : '' ),
 				),
 				$item
 			) . '>' . Astra_Icons::get_icons( 'arrow' ) . '</button>';

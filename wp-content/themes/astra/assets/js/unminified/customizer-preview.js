@@ -2125,6 +2125,17 @@ function hasWordPressWidgetBlockEditor() {
 	} );
 
 	astra_generate_outside_font_family_css( 'astra-settings[body-font-family]', 'body, button, input, select, textarea, .ast-button, .ast-custom-button' );
+	// Body has no parent font to inherit, so mirror astra_body_font_family()'s system stack.
+	wp.customize( 'astra-settings[body-font-family]', ( setting ) => {
+		setting.bind( ( value ) => {
+			if ( 'inherit' === value ) {
+				astra_update_style(
+					'astra-settings-body-font-family-font-family',
+					'body, button, input, select, textarea, .ast-button, .ast-custom-button { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif }'
+				);
+			}
+		} );
+	} );
 	astra_generate_font_weight_css( 'astra-settings[body-font-family]', 'astra-settings[body-font-weight]', 'font-weight', 'body, button, input, select, textarea, .ast-button, .ast-custom-button' );
 	astra_font_extras_css( 'body-font-extras', 'body, button, input, select, textarea, .ast-button, .ast-custom-button' );
 	wp.customize('astra-settings[font-size-body]', function (value) {
