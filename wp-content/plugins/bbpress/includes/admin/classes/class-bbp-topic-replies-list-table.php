@@ -233,18 +233,15 @@ class BBP_Topic_Replies_List_Table extends WP_List_Table {
 			)
 		);
 
-		// Get the total number of replies, for pagination
-		$total_items = bbp_get_topic_reply_count( $topic_id );
-
 		// Set list table items to queried posts
 		$this->items = $reply_query->posts;
 
 		// Set the pagination arguments
 		$this->set_pagination_args(
 			array(
-				'total_items' => $total_items,
+				'total_items' => (int) $reply_query->found_posts,
 				'per_page'    => $per_page,
-				'total_pages' => ceil( $total_items / $per_page )
+				'total_pages' => (int) $reply_query->max_num_pages
 			)
 		);
 	}

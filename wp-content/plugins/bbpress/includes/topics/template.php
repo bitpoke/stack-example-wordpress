@@ -751,26 +751,33 @@ function bbp_topic_excerpt( $topic_id = 0, $length = 100 ) {
  * Output the post date and time of a topic
  *
  * @since 2.2.0 bbPress (r4156)
+ * @since 2.6.20 bbPress (r7972) Added the `$date_format` parameter.
  *
  * @param int $topic_id Optional. Topic id.
  * @param bool $humanize Optional. Humanize output using time_since
  * @param bool $gmt Optional. Use GMT
+ * @param string $date_format Optional. PHP date format. Defaults to the WordPress date format.
+ *                            Ignored when `$humanize` is true.
  */
-function bbp_topic_post_date( $topic_id = 0, $humanize = false, $gmt = false ) {
-	echo bbp_get_topic_post_date( $topic_id, $humanize, $gmt );
+function bbp_topic_post_date( $topic_id = 0, $humanize = false, $gmt = false, $date_format = '' ) {
+	echo bbp_get_topic_post_date( $topic_id, $humanize, $gmt, $date_format );
 }
 	/**
 	 * Return the post date and time of a topic
 	 *
 	 * @since 2.2.0 bbPress (r4156)
+	 * @since 2.6.20 bbPress (r7972) Added the `$date_format` parameter.
 	 *
 	 * @param int $topic_id Optional. Topic id.
 	 * @param bool $humanize Optional. Humanize output using time_since
 	 * @param bool $gmt Optional. Use GMT
+	 * @param string $date_format Optional. PHP date format. Defaults to the WordPress date format.
+	 *                            Ignored when `$humanize` is true.
 	 * @return string
 	 */
-function bbp_get_topic_post_date( $topic_id = 0, $humanize = false, $gmt = false ) {
-	$topic_id = bbp_get_topic_id( $topic_id );
+function bbp_get_topic_post_date( $topic_id = 0, $humanize = false, $gmt = false, $date_format = '' ) {
+	$topic_id    = bbp_get_topic_id( $topic_id );
+	$date_format = ! empty( $date_format ) ? $date_format : get_option( 'date_format' );
 
 	// 4 days, 4 hours ago
 	if ( ! empty( $humanize ) ) {
@@ -781,14 +788,14 @@ function bbp_get_topic_post_date( $topic_id = 0, $humanize = false, $gmt = false
 
 	// August 4, 2012 at 2:37 pm
 	} else {
-		$date   = get_post_time( get_option( 'date_format' ), $gmt, $topic_id, true );
+		$date   = get_post_time( $date_format, $gmt, $topic_id, true );
 		$time   = get_post_time( get_option( 'time_format' ), $gmt, $topic_id, true );
 		/* translators: 1: Date, 2: Time */
 		$result = sprintf( _x( '%1$s at %2$s', 'date at time', 'bbpress' ), $date, $time );
 	}
 
 	// Filter & return
-	return apply_filters( 'bbp_get_topic_post_date', $result, $topic_id, $humanize, $gmt, $date, $time );
+	return apply_filters( 'bbp_get_topic_post_date', $result, $topic_id, $humanize, $gmt, $date, $time, $date_format );
 }
 
 /**
@@ -1808,7 +1815,9 @@ function bbp_get_topic_subscription_link( $args = array() ) {
 
 	// Defaults
 	$retval      = false;
-	$user_id     = bbp_get_current_user_id();
+	$user_id     = bbp_is_subscriptions()
+		? bbp_get_user_id( 0, true, true )
+		: bbp_get_current_user_id();
 	$redirect_to = bbp_is_subscriptions()
 		? bbp_get_subscriptions_permalink( $user_id )
 		: '';
@@ -1860,7 +1869,9 @@ function bbp_get_topic_favorite_link( $args = array() ) {
 
 	// No link
 	$retval      = false;
-	$user_id     = bbp_get_current_user_id();
+	$user_id     = bbp_is_favorites()
+		? bbp_get_user_id( 0, true, true )
+		: bbp_get_current_user_id();
 	$redirect_to = bbp_is_favorites()
 		? bbp_get_favorites_permalink( $user_id )
 		: '';
@@ -2913,7 +2924,7 @@ function bbp_get_topic_merge_link( $args = array() ) {
 		return;
 	}
 
-		$uri    = add_query_arg( array( 'action' => 'merge' ), bbp_get_topic_edit_url( $topic->ID ) );
+		$uri    = add_query_arg( array( 'action' => 'bbp-merge-topic' ), bbp_get_topic_edit_url( $topic->ID ) );
 	$retval = $r['link_before'] . '<a href="' . esc_url( $uri ) . '" class="bbp-topic-merge-link">' . $r['merge_text'] . '</a>' . $r['link_after'];
 
 	// Filter & return
@@ -3489,6 +3500,7 @@ function bbp_get_single_topic_description( $args = array() ) {
 
 	// Build the topic description
 	$vc_int      = bbp_get_topic_voice_count   ( $topic_id, true  );
+	$reply_int   = bbp_get_topic_reply_count   ( $topic_id, true  );
 	$voice_count = bbp_get_topic_voice_count   ( $topic_id, false );
 	$reply_count = bbp_get_topic_replies_link  ( $topic_id        );
 	$time_since  = bbp_get_topic_freshness_link( $topic_id        );
@@ -3506,13 +3518,30 @@ function bbp_get_single_topic_description( $args = array() ) {
 				'size'    => $r['size']
 			)
 		);
-			/* translators: 1: Reply count, 2: Voice count, 3: Last updated time, 4: Last updated by */
-			$retstr = sprintf( esc_html__( 'This topic has %1$s, %2$s, and was last updated %3$s by %4$s.', 'bbpress' ), $reply_count, $voice_count, $time_since, $last_updated_by );
+		/* translators: Plural form is selected by reply count. 1: Reply count, 2: Voice count, 3: Last updated time, 4: Last updated by */
+		$topic_description = _n(
+			'This topic has %1$s, %2$s, and was last updated %3$s by %4$s.',
+			'This topic has %1$s, %2$s, and was last updated %3$s by %4$s.',
+			$reply_int,
+			'bbpress'
+		);
+		$retstr = sprintf(
+			esc_html( $topic_description ),
+			$reply_count,
+			$voice_count,
+			$time_since,
+			$last_updated_by
+		);
 
 	// Topic has no replies
 	} elseif ( ! empty( $vc_int ) && ! empty( $reply_count ) ) {
-		/* translators: 1: Voice count, 2: Reply count */
-		$retstr = sprintf( esc_html__( 'This topic has %1$s and %2$s.', 'bbpress' ), $voice_count, $reply_count );
+		/* translators: Plural form is selected by reply count. 1: Voice count, 2: Reply count */
+		$topic_description = _n( 'This topic has %1$s and %2$s.', 'This topic has %1$s and %2$s.', $reply_int, 'bbpress' );
+		$retstr = sprintf(
+			esc_html( $topic_description ),
+			$voice_count,
+			$reply_count
+		);
 
 	// Topic has no replies and no voices
 	} elseif ( empty( $vc_int ) && empty( $reply_count ) ) {
@@ -3785,8 +3814,8 @@ function bbp_topic_tag_edit_link( $tag = '' ) {
 
 			// Pretty or ugly URL
 			$retval = bbp_use_pretty_urls()
-				? user_trailingslashit( trailingslashit( bbp_get_topic_tag_link() ) . bbp_get_edit_slug() )
-				: add_query_arg( array( bbp_get_edit_rewrite_id() => '1' ), bbp_get_topic_tag_link() );
+				? user_trailingslashit( trailingslashit( bbp_get_topic_tag_link( $tag ) ) . bbp_get_edit_slug() )
+				: add_query_arg( array( bbp_get_edit_rewrite_id() => '1' ), bbp_get_topic_tag_link( $tag ) );
 
 		// No link
 		} else {
@@ -3828,10 +3857,11 @@ function bbp_get_topic_tag_description( $args = array() ) {
 	);
 
 	// Get the term
-	if ( ! empty( $r['tag'] ) ) {
-		$term = get_term_by( 'slug', $r['tag'], bbp_get_topic_tag_tax_id() );
+	$tag = $r['tag'];
+	if ( ! empty( $tag ) ) {
+		$term = get_term_by( 'slug', $tag, bbp_get_topic_tag_tax_id() );
 	} else {
-		$tag  = $r['tag'] = get_query_var( 'term' );
+		$tag = $r['tag'] = get_query_var( 'term' );
 		$term = get_queried_object();
 	}
 
@@ -4144,13 +4174,20 @@ function bbp_is_topic_form_post_request() {
 		return false;
 	}
 
+	$action = bbp_get_post_action();
+
+	// Bail if not a topic form action
+	if ( ! bbp_is_post_action( array( 'bbp-new-topic', 'bbp-edit-topic' ) ) ) {
+		return false;
+	}
+
 	// Creating a new topic
-	if ( bbp_verify_nonce_request( 'bbp-new-topic' ) ) {
+	if ( ( 'bbp-new-topic' === $action ) && bbp_verify_nonce_request( 'bbp-new-topic' ) ) {
 		return true;
 	}
 
 	// Editing an existing topic
-	if ( bbp_verify_nonce_request( 'bbp-edit-topic_' . bbp_get_topic_id() ) ) {
+	if ( ( 'bbp-edit-topic' === $action ) && bbp_verify_nonce_request( 'bbp-edit-topic_' . bbp_get_topic_id() ) ) {
 		return true;
 	}
 

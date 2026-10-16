@@ -67,7 +67,7 @@ if ( bbp_is_forum_edit() ) : ?>
 
 				<?php endif; ?>
 
-				<?php do_action( 'bbp_template_notices' ); ?>
+				<?php do_action( 'bbp_template_notices', 'forum' ); ?>
 
 				<div>
 
@@ -195,7 +195,7 @@ if ( bbp_is_forum_edit() ) : ?>
 	<div id="no-forum-<?php bbp_forum_id(); ?>" class="bbp-no-forum">
 		<div class="bbp-template-notice">
 			<ul>
-				<li><?php is_user_logged_in()
+				<li><?php ( is_user_logged_in() || bbp_is_forums_status( 'frozen' ) )
 					? esc_html_e( 'You cannot create new forums.',               'bbpress' )
 					: esc_html_e( 'You must be logged in to create new forums.', 'bbpress' );
 				?></li>

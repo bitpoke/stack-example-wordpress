@@ -589,7 +589,7 @@ class BBP_Replies_Admin {
 
 				$is_approve = bbp_is_reply_public( $reply_id );
 				$message    = ( true === $is_approve )
-					? 'unpproved'
+					? 'unapproved'
 					: 'approved';
 				$success    = ( true === $is_approve )
 					? bbp_unapprove_reply( $reply_id )
@@ -1058,7 +1058,11 @@ class BBP_Replies_Admin {
 	public function filter_empty_spam() {
 
 		// Bail if not viewing spam
-		if ( empty( $_GET['post_status'] ) || ( bbp_get_spam_status_id() !== $_GET['post_status'] ) && current_user_can( 'moderate' ) ) {
+		if (
+			empty( $_GET['post_status'] )
+			|| ( bbp_get_spam_status_id() !== $_GET['post_status'] )
+			|| ! current_user_can( 'moderate' )
+		) {
 			return;
 		}
 

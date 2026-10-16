@@ -22,6 +22,7 @@ function bbp_get_forum_caps() {
 	return (array) apply_filters(
 		'bbp_get_forum_caps',
 		array(
+			'create_posts'        => 'create_forums',
 			'edit_posts'          => 'edit_forums',
 			'edit_others_posts'   => 'edit_others_forums',
 			'publish_posts'       => 'publish_forums',
@@ -48,6 +49,11 @@ function bbp_map_forum_meta_caps( $caps = array(), $cap = '', $user_id = 0, $arg
 
 	// What capability is being checked?
 	switch ( $cap ) {
+		case 'create_forums' :
+			$caps = bbp_is_forums_status( 'frozen' )
+				? array( 'do_not_allow' )
+				: map_meta_cap( 'edit_forums', $user_id );
+			break;
 
 		/** Reading ***********************************************************/
 
@@ -62,9 +68,20 @@ function bbp_map_forum_meta_caps( $caps = array(), $cap = '', $user_id = 0, $arg
 			break;
 
 		case 'read_forum' :
+			$can_read = user_can( $user_id, 'spectate' ) || bbp_is_anonymous();
+
+			if ( ! $can_read && ! empty( $args[0] ) ) {
+				/**
+				 * Allow integrations to grant read access to a specific forum without
+				 * requiring the bbPress spectate capability.
+				 *
+				 * @since 2.6.20 bbPress (r7833)
+				 */
+				$can_read = (bool) apply_filters( 'bbp_allow_read_without_spectate', false, $user_id, (int) $args[0], $cap );
+			}
 
 			// User cannot spectate
-			if ( ! user_can( $user_id, 'spectate' ) && ! bbp_is_anonymous() ) {
+			if ( ! $can_read ) {
 				$caps = array( 'do_not_allow' );
 
 			// Do some post ID based logic
@@ -129,6 +146,8 @@ function bbp_map_forum_meta_caps( $caps = array(), $cap = '', $user_id = 0, $arg
 		/** Publishing ********************************************************/
 
 		case 'publish_forums'  :
+			// Keep this capability for existing forums and BuddyPress group-root setup.
+			// Ordinary new forums are checked through create_forums and the form handler.
 
 			// Moderators can always edit
 			if ( user_can( $user_id, 'moderate' ) ) {
@@ -186,8 +205,16 @@ function bbp_map_forum_meta_caps( $caps = array(), $cap = '', $user_id = 0, $arg
 				// Get caps for post type object
 				$post_type = get_post_type_object( $_post->post_type );
 
+				// An auto-draft's first save creates a forum.
+				if ( 'auto-draft' === $_post->post_status && bbp_is_forums_status( 'frozen' ) ) {
+					$caps = array( 'do_not_allow' );
+
+				// Frozen forums permit edits only by Keymasters and Moderators.
+				} elseif ( ! bbp_user_can_edit_in_forums( $user_id ) ) {
+					$caps = array( 'do_not_allow' );
+
 				// Add 'do_not_allow' cap if user is spam or deleted
-				if ( bbp_is_user_inactive( $user_id ) ) {
+				} elseif ( bbp_is_user_inactive( $user_id ) ) {
 					$caps = array( 'do_not_allow' );
 
 				// Moderators can always read forum content
@@ -296,6 +323,13 @@ function bbp_allow_forums_of_user( $forum_ids = array(), $user_id = 0 ) {
 
 	// Per-forum Moderators
 	if ( bbp_allow_forum_mods() ) {
+		// Capability checks read each forum and its metadata. Load large sets in
+		// batches instead of issuing two queries for every forum.
+		if ( count( $forum_ids ) > 20 ) {
+			foreach ( array_chunk( wp_parse_id_list( $forum_ids ), 500 ) as $batch ) {
+				_prime_post_caches( $batch, false, true );
+			}
+		}
 
 		// Loop through forum IDs
 		foreach ( $forum_ids as $key => $forum_id ) {

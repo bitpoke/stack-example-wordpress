@@ -193,6 +193,11 @@ add_action( 'trashed_post',   'bbp_trashed_forum'   );
 add_action( 'untrashed_post', 'bbp_untrashed_forum' );
 add_action( 'deleted_post',   'bbp_deleted_forum', 10, 2 );
 
+// Keep attachments private after permanent deletion
+add_action( 'bbp_delete_forum', 'bbp_make_post_attachments_private' );
+add_action( 'bbp_delete_topic', 'bbp_make_post_attachments_private' );
+add_action( 'bbp_delete_reply', 'bbp_make_post_attachments_private' );
+
 // Auto trash/untrash/delete a forums topics
 add_action( 'bbp_delete_forum',  'bbp_delete_forum_topics',  10 );
 add_action( 'bbp_trash_forum',   'bbp_trash_forum_topics',   10 );
@@ -210,6 +215,8 @@ add_action( 'bbp_forum_attributes_metabox_save', 'bbp_save_forum_extras', 2 );
 // New/Edit Reply
 add_action( 'bbp_new_reply',  'bbp_update_reply', 10, 7 );
 add_action( 'bbp_edit_reply', 'bbp_update_reply', 10, 7 );
+add_action( 'bbp_new_reply',  'bbp_update_reply_subscription', 10, 5 );
+add_action( 'bbp_edit_reply', 'bbp_update_reply_subscription', 10, 5 );
 
 // Before Delete/Trash/Untrash Reply
 add_action( 'wp_trash_post',      'bbp_trash_reply'   );
@@ -225,6 +232,8 @@ add_action( 'deleted_post',   'bbp_deleted_reply'   );
 // New/Edit Topic
 add_action( 'bbp_new_topic',  'bbp_update_topic', 10, 5 );
 add_action( 'bbp_edit_topic', 'bbp_update_topic', 10, 5 );
+add_action( 'bbp_new_topic',  'bbp_update_topic_subscription', 10, 4 );
+add_action( 'bbp_edit_topic', 'bbp_update_topic_subscription', 10, 4 );
 
 // Split/Merge Topic
 add_action( 'bbp_merged_topic',     'bbp_merge_topic_count', 1, 3 );
@@ -257,8 +266,14 @@ add_action( 'bbp_trash_forum',  'bbp_remove_forum_from_all_subscriptions' );
 add_action( 'bbp_delete_forum', 'bbp_remove_forum_from_all_subscriptions' );
 
 // Subscription notifications
-add_action( 'bbp_new_reply',    'bbp_notify_topic_subscribers', 11, 5 );
-add_action( 'bbp_new_topic',    'bbp_notify_forum_subscribers', 11, 4 );
+add_action( 'bbp_new_reply',                  'bbp_notify_topic_subscribers',          11, 5 );
+add_action( 'bbp_new_topic',                  'bbp_notify_forum_subscribers',          11, 4 );
+add_action( 'bbp_new_reply',                  'bbp_defer_subscription_notification',   12 );
+add_action( 'bbp_new_topic',                  'bbp_defer_subscription_notification',   12 );
+add_action( 'bbp_transition_post_status',     'bbp_notify_forum_subscribers_on_topic_publication', 11, 3 );
+add_action( 'bbp_transition_post_status',     'bbp_notify_topic_subscribers_on_reply_publication', 11, 3 );
+add_action( 'bbp_deferred_reply_published',   'bbp_notify_topic_subscribers',          11, 5 );
+add_action( 'bbp_deferred_topic_published',   'bbp_notify_forum_subscribers',          11, 4 );
 
 // Sticky
 add_action( 'bbp_stick_topic',     'bbp_unstick_topic' );
@@ -393,6 +408,8 @@ add_action( 'wpmu_activate_user',  'bbp_user_add_role_on_activate', 10, 3 );
 add_action( 'bbp_template_redirect', 'bbp_forum_enforce_blocked', 1  );
 add_action( 'bbp_template_redirect', 'bbp_forum_enforce_hidden',  1  );
 add_action( 'bbp_template_redirect', 'bbp_forum_enforce_private', 1  );
+add_action( 'bbp_template_redirect', 'bbp_forum_enforce_attachments', 1 );
+add_action( 'bbp_template_redirect', 'bbp_reply_enforce_visibility',   1 );
 add_action( 'bbp_template_redirect', 'bbp_post_request',          10 );
 add_action( 'bbp_template_redirect', 'bbp_get_request',           10 );
 add_action( 'bbp_template_redirect', 'bbp_check_user_edit',       10 );

@@ -94,6 +94,29 @@ function bbp_insert_topic( $topic_data = array(), $topic_meta = array() ) {
 	return $topic_id;
 }
 
+/** Validation ***************************************************************/
+
+/**
+ * Validate a topic title.
+ *
+ * @since 2.6.20 bbPress (r7965)
+ *
+ * @param string $topic_title     Topic title.
+ * @param string $empty_error_code Optional. Error code for an empty title.
+ */
+function bbp_validate_topic_title( $topic_title = '', $empty_error_code = 'bbp_topic_title' ) {
+
+	// Title cannot be empty
+	if ( empty( $topic_title ) ) {
+		bbp_add_error( $empty_error_code, __( '<strong>Error</strong>: Your topic needs a title.', 'bbpress' ) );
+	}
+
+	// Title too long
+	if ( bbp_is_title_too_long( $topic_title ) ) {
+		bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
+	}
+}
+
 /** Post Form Handlers ********************************************************/
 
 /**
@@ -138,7 +161,6 @@ function bbp_new_topic_handler( $action = '' ) {
 		// User cannot create topics
 		if ( ! current_user_can( 'publish_topics' ) ) {
 			bbp_add_error( 'bbp_topic_permission', __( '<strong>Error</strong>: You do not have permission to create new topics.', 'bbpress' ) );
-			return;
 		}
 
 		// Topic author is current user
@@ -161,15 +183,8 @@ function bbp_new_topic_handler( $action = '' ) {
 	// Filter and sanitize
 	$topic_title = apply_filters( 'bbp_new_topic_pre_title', $topic_title );
 
-	// No topic title
-	if ( empty( $topic_title ) ) {
-		bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your topic needs a title.', 'bbpress' ) );
-	}
-
-	// Title too long
-	if ( bbp_is_title_too_long( $topic_title ) ) {
-		bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-	}
+	// Validate the topic title
+	bbp_validate_topic_title( $topic_title );
 
 	/** Topic Content *********************************************************/
 
@@ -246,7 +261,17 @@ function bbp_new_topic_handler( $action = '' ) {
 			} elseif ( bbp_is_forum_hidden( $forum_id ) && ! current_user_can( 'read_forum', $forum_id ) ) {
 				bbp_add_error( 'bbp_new_topic_forum_hidden', __( '<strong>Error</strong>: This forum is hidden and you do not have the capability to read or create new topics in it.', 'bbpress' ) );
 			}
+
+			// The forum or one of its ancestors still requires a password
+			if ( bbp_get_password_required_id( $forum_id ) ) {
+				bbp_add_error( 'bbp_new_topic_forum_password', __( '<strong>Error</strong>: You must enter the forum password to create new topics.', 'bbpress' ) );
+			}
 		}
+	}
+
+	// Apply the site-wide policy even when this topic has no forum.
+	if ( ! bbp_current_user_can_post_in_forums() ) {
+		bbp_add_error( 'bbp_new_topic_forums_closed', __( '<strong>Error</strong>: The forums are not accepting new topics.', 'bbpress' ) );
 	}
 
 	/** Topic Flooding ********************************************************/
@@ -390,34 +415,42 @@ function bbp_new_topic_handler( $action = '' ) {
 
 		do_action( 'bbp_new_topic_post_extras', $topic_id );
 
-		/** Redirect **********************************************************/
+		/** Pending ***********************************************************/
 
-		// Redirect to
-		$redirect_to = bbp_get_redirect_to();
+		if ( bbp_get_pending_status_id() === bbp_get_topic_status( $topic_id ) ) {
+			bbp_add_error( 'bbp_topic_moderated', esc_html__( 'Your topic is pending moderation.', 'bbpress' ) );
+			unset( $_POST['bbp_topic_title'], $_POST['bbp_topic_content'], $_POST['bbp_topic_tags'] );
 
-		// Get the topic URL
-		$redirect_url = bbp_get_topic_permalink( $topic_id, $redirect_to );
+		} else {
+			/** Redirect ******************************************************/
 
-		// Add view all?
-		if ( bbp_get_view_all() || ! empty( $view_all ) ) {
+			// Redirect to
+			$redirect_to = bbp_get_redirect_to();
 
-			// User can moderate, so redirect to topic with view all set
-			if ( current_user_can( 'moderate', $topic_id ) ) {
-				$redirect_url = bbp_add_view_all( $redirect_url );
+			// Get the topic URL
+			$redirect_url = bbp_get_topic_permalink( $topic_id, $redirect_to );
 
-			// User cannot moderate, so redirect to forum
-			} else {
-				$redirect_url = bbp_get_forum_permalink( $forum_id );
+			// Add view all?
+			if ( bbp_get_view_all() || ! empty( $view_all ) ) {
+
+				// User can moderate, so redirect to topic with view all set
+				if ( current_user_can( 'moderate', $topic_id ) ) {
+					$redirect_url = bbp_add_view_all( $redirect_url );
+
+				// User cannot moderate, so redirect to forum
+				} else {
+					$redirect_url = bbp_get_forum_permalink( $forum_id );
+				}
 			}
+
+			// Allow to be filtered
+			$redirect_url = apply_filters( 'bbp_new_topic_redirect_to', $redirect_url, $redirect_to, $topic_id );
+
+			/** Successful Save ***************************************************/
+
+			// Redirect back to new topic
+			bbp_redirect( $redirect_url );
 		}
-
-		// Allow to be filtered
-		$redirect_url = apply_filters( 'bbp_new_topic_redirect_to', $redirect_url, $redirect_to, $topic_id );
-
-		/** Successful Save ***************************************************/
-
-		// Redirect back to new topic
-		bbp_redirect( $redirect_url );
 
 	/** Errors ****************************************************************/
 
@@ -553,15 +586,8 @@ function bbp_edit_topic_handler( $action = '' ) {
 	// Filter and sanitize
 	$topic_title = apply_filters( 'bbp_edit_topic_pre_title', $topic_title, $topic_id );
 
-	// No topic title
-	if ( empty( $topic_title ) ) {
-		bbp_add_error( 'bbp_edit_topic_title', __( '<strong>Error</strong>: Your topic needs a title.', 'bbpress' ) );
-	}
-
-	// Title too long
-	if ( bbp_is_title_too_long( $topic_title ) ) {
-		bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-	}
+	// Validate the topic title
+	bbp_validate_topic_title( $topic_title, 'bbp_edit_topic_title' );
 
 	/** Topic Content *********************************************************/
 
@@ -817,27 +843,6 @@ function bbp_update_topic( $topic_id = 0, $forum_id = 0, $anonymous_data = array
 		// Set transient for throttle check (only on new, not edit)
 		if ( empty( $is_edit ) ) {
 			set_transient( '_bbp_' . bbp_current_author_ip() . '_last_posted', time(), HOUR_IN_SECONDS );
-		}
-	}
-
-	// Handle Subscription Checkbox
-	if ( bbp_is_subscriptions_active() && ! empty( $author_id ) ) {
-
-		// Check if subscribed
-		$subscribed = bbp_is_user_subscribed( $author_id, $topic_id );
-
-		// Check for action
-		$subscheck  = ( ! empty( $_POST['bbp_topic_subscription'] ) && ( 'bbp_subscribe' === $_POST['bbp_topic_subscription'] ) )
-			? true
-			: false;
-
-		// Subscribed and unsubscribing
-		if ( ( true === $subscribed ) && ( false === $subscheck ) ) {
-			bbp_remove_user_subscription( $author_id, $topic_id );
-
-		// Not subscribed and subscribing
-		} elseif ( ( false === $subscribed ) && ( true === $subscheck ) ) {
-			bbp_add_user_subscription( $author_id, $topic_id );
 		}
 	}
 
@@ -1269,6 +1274,7 @@ function bbp_merge_topic_handler( $action = '' ) {
 		array(
 			'post_parent'    => $source_topic->ID,
 			'post_type'      => bbp_get_reply_post_type(),
+			'post_status'    => array_unique( array_merge( bbp_get_public_reply_statuses(), bbp_get_non_public_reply_statuses() ) ),
 			'posts_per_page' => -1,
 			'order'          => 'ASC'
 		)
@@ -1502,15 +1508,8 @@ function bbp_split_topic_handler( $action = '' ) {
 					// Filter the new topic title
 					$destination_topic_title = apply_filters( 'bbp_new_topic_pre_title', $destination_topic_title );
 
-					// Title cannot be empty
-					if ( empty( $destination_topic_title ) ) {
-						bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your topic needs a title.', 'bbpress' ) );
-					}
-
-					// Title too long
-					if ( bbp_is_title_too_long( $destination_topic_title ) ) {
-						bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-					}
+					// Validate the topic title
+					bbp_validate_topic_title( $destination_topic_title );
 
 					// Bail before converting the reply if there are errors
 					if ( bbp_has_errors() ) {
@@ -2622,6 +2621,8 @@ function bbp_decrease_topic_reply_count_hidden( $topic_id = 0 ) {
  * Update counts after a topic is inserted via `bbp_insert_topic`.
  *
  * @since 2.6.0 bbPress (r6036)
+ * @deprecated 2.6.20 bbPress. Counts are updated on post-status transitions.
+ *                    Retained for compatibility; unused internally since 2.6.16.
  *
  * @param int $topic_id The topic id.
  * @param int $forum_id The forum id.
@@ -2955,6 +2956,7 @@ function bbp_update_topic_revision_log( $args = array() ) {
  * @return mixed False or {@link WP_Error} on failure, topic id on success
  */
 function bbp_close_topic( $topic_id = 0 ) {
+	$revisions_removed = false;
 
 	// Get topic
 	$topic = bbp_get_topic( $topic_id );
@@ -3014,6 +3016,7 @@ function bbp_close_topic( $topic_id = 0 ) {
  * @return mixed False or {@link WP_Error} on failure, topic id on success
  */
 function bbp_open_topic( $topic_id = 0 ) {
+	$revisions_removed = false;
 
 	// Get topic
 	$topic = bbp_get_topic( $topic_id );
@@ -3120,6 +3123,7 @@ function bbp_spam_topic( $topic_id = 0 ) {
  * Usually you'll want to do this before the topic itself is marked as spam.
  *
  * @since 2.6.0 bbPress (r5406)
+ * @since 2.6.20 bbPress (r8016) Use an unfiltered structural reply lookup.
  *
  * @param int $topic_id
  */
@@ -3128,43 +3132,28 @@ function bbp_spam_topic_replies( $topic_id = 0 ) {
 	// Validation
 	$topic_id = bbp_get_topic_id( $topic_id );
 
-	// Topic is being spammed, so its replies are trashed
-	$replies = new WP_Query(
-		array(
-			'fields'         => 'id=>parent',
-			'post_type'      => bbp_get_reply_post_type(),
-			'post_status'    => bbp_get_public_status_id(),
-			'post_parent'    => $topic_id,
-			'posts_per_page' => -1,
-
-			// Performance
-			'nopaging'               => true,
-			'suppress_filters'       => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'ignore_sticky_posts'    => true,
-			'no_found_rows'          => true
-		)
+	// Topic is being spammed, so its public replies are trashed
+	$reply_ids = bbp_get_child_ids_by_status(
+		$topic_id,
+		bbp_get_reply_post_type(),
+		bbp_get_public_status_id()
 	);
 
-	if ( ! empty( $replies->posts ) ) {
+	if ( ! empty( $reply_ids ) ) {
 
 		// Prevent debug notices
 		$pre_spammed_replies = array();
 
 		// Loop through replies, trash them, and add them to array
-		foreach ( $replies->posts as $reply ) {
-			wp_trash_post( $reply->ID );
-			$pre_spammed_replies[] = $reply->ID;
+		foreach ( $reply_ids as $reply_id ) {
+			wp_trash_post( $reply_id );
+			$pre_spammed_replies[] = $reply_id;
 		}
 
 		// Set a post_meta entry of the replies that were trashed by this action.
 		// This is so we can possibly untrash them, without untrashing replies
 		// that were purposefully trashed before.
 		update_post_meta( $topic_id, '_bbp_pre_spammed_replies', $pre_spammed_replies );
-
-		// Reset the global post data after looping through the above WP_Query
-		wp_reset_postdata();
 	}
 }
 
@@ -3479,7 +3468,7 @@ function bbp_unstick_topic( $topic_id = 0 ) {
 	$super    = bbp_is_topic_super_sticky( $topic_id );
 	$forum_id = empty( $super ) ? bbp_get_topic_forum_id( $topic_id ) : 0;
 	$stickies = bbp_get_stickies( $forum_id );
-	$offset   = array_search( $topic_id, $stickies );
+	$offset   = array_search( $topic_id, $stickies, true );
 
 	do_action( 'bbp_unstick_topic', $topic_id );
 
@@ -3552,32 +3541,17 @@ function bbp_delete_topic_replies( $topic_id = 0 ) {
 
 	// Topic is being permanently deleted, so its replies gotta go too
 	// Note that we get all post statuses here
-	$replies = new WP_Query(
-		array(
-			'fields'         => 'id=>parent',
-			'post_type'      => bbp_get_reply_post_type(),
-			'post_status'    => array_keys( get_post_stati() ),
-			'post_parent'    => $topic_id,
-			'posts_per_page' => -1,
-
-			// Performance
-			'nopaging'               => true,
-			'suppress_filters'       => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'ignore_sticky_posts'    => true,
-			'no_found_rows'          => true
-		)
+	$reply_ids = bbp_get_child_ids_by_status(
+		$topic_id,
+		bbp_get_reply_post_type(),
+		array_keys( get_post_stati() )
 	);
 
 	// Loop through and delete child replies
-	if ( ! empty( $replies->posts ) ) {
-		foreach ( $replies->posts as $reply ) {
-			wp_delete_post( $reply->ID, true );
+	if ( ! empty( $reply_ids ) ) {
+		foreach ( $reply_ids as $reply_id ) {
+			wp_delete_post( $reply_id, true );
 		}
-
-		// Reset the $post global
-		wp_reset_postdata();
 	}
 }
 
@@ -3615,42 +3589,27 @@ function bbp_trash_topic_replies( $topic_id = 0 ) {
 	$topic_id = bbp_get_topic_id( $topic_id );
 
 	// Topic is being trashed, so its replies are trashed too
-	$replies = new WP_Query(
-		array(
-			'fields'         => 'id=>parent',
-			'post_type'      => bbp_get_reply_post_type(),
-			'post_status'    => bbp_get_public_status_id(),
-			'post_parent'    => $topic_id,
-			'posts_per_page' => -1,
-
-			// Performance
-			'nopaging'               => true,
-			'suppress_filters'       => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'ignore_sticky_posts'    => true,
-			'no_found_rows'          => true
-		)
+	$reply_ids = bbp_get_child_ids_by_status(
+		$topic_id,
+		bbp_get_reply_post_type(),
+		bbp_get_public_status_id()
 	);
 
-	if ( ! empty( $replies->posts ) ) {
+	if ( ! empty( $reply_ids ) ) {
 
 		// Prevent debug notices
 		$pre_trashed_replies = array();
 
 		// Loop through replies, trash them, and add them to array
-		foreach ( $replies->posts as $reply ) {
-			wp_trash_post( $reply->ID );
-			$pre_trashed_replies[] = $reply->ID;
+		foreach ( $reply_ids as $reply_id ) {
+			wp_trash_post( $reply_id );
+			$pre_trashed_replies[] = $reply_id;
 		}
 
 		// Set a post_meta entry of the replies that were trashed by this action.
 		// This is so we can possibly untrash them, without untrashing replies
 		// that were purposefully trashed before.
 		update_post_meta( $topic_id, '_bbp_pre_trashed_replies', $pre_trashed_replies );
-
-		// Reset the $post global
-		wp_reset_postdata();
 	}
 }
 

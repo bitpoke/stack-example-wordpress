@@ -117,6 +117,29 @@ function bbp_insert_forum( $forum_data = array(), $forum_meta = array() ) {
 	return $forum_id;
 }
 
+/** Validation ***************************************************************/
+
+/**
+ * Validate a forum title.
+ *
+ * @since 2.6.20 bbPress (r7978)
+ *
+ * @param string $forum_title     Forum title.
+ * @param string $empty_error_code Optional. Error code for an empty title.
+ */
+function bbp_validate_forum_title( $forum_title = '', $empty_error_code = 'bbp_forum_title' ) {
+
+	// Title cannot be empty
+	if ( empty( $forum_title ) ) {
+		bbp_add_error( $empty_error_code, __( '<strong>Error</strong>: Your forum needs a title.', 'bbpress' ) );
+	}
+
+	// Title too long
+	if ( bbp_is_title_too_long( $forum_title ) ) {
+		bbp_add_error( 'bbp_forum_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
+	}
+}
+
 /** Post Form Handlers ********************************************************/
 
 /**
@@ -148,7 +171,6 @@ function bbp_new_forum_handler( $action = '' ) {
 	// User cannot create forums
 	if ( ! current_user_can( 'publish_forums' ) ) {
 		bbp_add_error( 'bbp_forum_permission', __( '<strong>Error</strong>: You do not have permission to create new forums.', 'bbpress' ) );
-		return;
 	}
 
 	// Forum author is current user
@@ -170,15 +192,8 @@ function bbp_new_forum_handler( $action = '' ) {
 	// Filter and sanitize
 	$forum_title = apply_filters( 'bbp_new_forum_pre_title', $forum_title );
 
-	// No forum title
-	if ( empty( $forum_title ) ) {
-		bbp_add_error( 'bbp_forum_title', __( '<strong>Error</strong>: Your forum needs a title.', 'bbpress' ) );
-	}
-
-	// Title too long
-	if ( bbp_is_title_too_long( $forum_title ) ) {
-		bbp_add_error( 'bbp_forum_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-	}
+	// Validate the forum title
+	bbp_validate_forum_title( $forum_title );
 
 	/** Forum Content *********************************************************/
 
@@ -230,6 +245,11 @@ function bbp_new_forum_handler( $action = '' ) {
 		if ( bbp_is_forum_hidden( $forum_parent_id ) && ! current_user_can( 'read_forum', $forum_parent_id ) ) {
 			bbp_add_error( 'bbp_new_forum_forum_hidden', __( '<strong>Error</strong>: This forum is hidden and you do not have the capability to read or create new forums in it.', 'bbpress' ) );
 		}
+	}
+
+	// Only BuddyPress Group Forums can be created while forums are frozen.
+	if ( bbp_is_forums_status( 'frozen' ) ) {
+		bbp_add_error( 'bbp_new_forum_forums_frozen', __( '<strong>Error</strong>: New forums cannot be created at this time.', 'bbpress' ) );
 	}
 
 	/** Forum Flooding ********************************************************/
@@ -489,15 +509,8 @@ function bbp_edit_forum_handler( $action = '' ) {
 	// Filter and sanitize
 	$forum_title = apply_filters( 'bbp_edit_forum_pre_title', $forum_title, $forum_id );
 
-	// No forum title
-	if ( empty( $forum_title ) ) {
-		bbp_add_error( 'bbp_edit_forum_title', __( '<strong>Error</strong>: Your forum needs a title.', 'bbpress' ) );
-	}
-
-	// Title too long
-	if ( bbp_is_title_too_long( $forum_title ) ) {
-		bbp_add_error( 'bbp_forum_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-	}
+	// Validate the forum title
+	bbp_validate_forum_title( $forum_title, 'bbp_edit_forum_title' );
 
 	/** Forum Content *********************************************************/
 
@@ -897,7 +910,7 @@ function bbp_normalize_forum( $forum_id = 0 ) {
  * This function only synchronizes the private and hidden forum ID options. It
  * does not update the forum post status or fire any status transition actions.
  *
- * @since 2.6.19 bbPress
+ * @since 2.6.19 bbPress (r7672)
  *
  * @param int    $forum_id  Optional. Forum ID.
  * @param string $visibility Optional. Forum visibility.
@@ -951,7 +964,7 @@ function bbp_update_forum_visibility_options( $forum_id = 0, $visibility = '' ) 
 /**
  * Synchronize forum visibility options after a post status transition.
  *
- * @since 2.6.19 bbPress
+ * @since 2.6.19 bbPress (r7672)
  *
  * @param string  $new_status New post status.
  * @param string  $old_status Old post status.
@@ -2165,6 +2178,7 @@ function bbp_update_forum_topic_count( $forum_id = 0, $update_ancestors = false 
  * @since 2.0.0 bbPress (r3349)
  * @since 2.6.0 bbPress (r5954) Replace direct queries with WP_Query() objects
  * @since 2.6.17 bbPress (r7468) Optionally update ancestor forum totals.
+ * @since 2.6.20 bbPress (r8016) Use an unfiltered structural topic lookup.
  *
  * @param int $forum_id Optional. Topic id to update.
  * @param int $topic_count Optional. Set the topic count manually.
@@ -2204,27 +2218,13 @@ function bbp_update_forum_topic_count_hidden( $forum_id = 0, $topic_count = fals
 
 		// Get topics of forum
 		if ( ! is_int( $topic_count ) ) {
-			$query = new WP_Query(
-				array(
-					'fields'         => 'ids',
-					'post_parent'    => $forum_id,
-					'post_status'    => bbp_get_non_public_topic_statuses(),
-					'post_type'      => bbp_get_topic_post_type(),
-					'posts_per_page' => -1,
-
-					// Performance
-					'nopaging'               => true,
-					'suppress_filters'       => true,
-					'update_post_term_cache' => false,
-					'update_post_meta_cache' => false,
-					'ignore_sticky_posts'    => true,
-					'no_found_rows'          => true
+			$topic_count = count(
+				bbp_get_child_ids_by_status(
+					$forum_id,
+					bbp_get_topic_post_type(),
+					bbp_get_non_public_topic_statuses()
 				)
 			);
-
-			$topic_count = $query->post_count;
-
-			unset( $query );
 		}
 
 		$topic_count  = (int) $topic_count;
@@ -2664,15 +2664,21 @@ function bbp_get_excluded_forum_ids() {
 		? array_filter( wp_parse_id_list( array_merge( $private, $hidden ) ) )
 		: array();
 
-	// Include every descendant, even below a forum with a non-countable status
-	$parents = $forum_ids;
-	while ( ! empty( $parents ) ) {
-		$parent_id = array_shift( $parents );
+	// Include every descendant, even below a forum with a non-countable status.
+	// Large exclusion lists need batched child lookups instead of one query per
+	// forum on a cold cache.
+	if ( count( $forum_ids ) > 20 ) {
+		$forum_ids = bbp_forum_query_all_descendant_ids( $forum_ids );
+	} else {
+		$parents = $forum_ids;
+		while ( ! empty( $parents ) ) {
+			$parent_id = array_shift( $parents );
 
-		foreach ( bbp_forum_query_all_subforum_ids( $parent_id ) as $forum_id ) {
-			if ( ! in_array( $forum_id, $forum_ids, true ) ) {
-				$forum_ids[] = $forum_id;
-				$parents[]   = $forum_id;
+			foreach ( bbp_forum_query_all_subforum_ids( $parent_id ) as $forum_id ) {
+				if ( ! in_array( $forum_id, $forum_ids, true ) ) {
+					$forum_ids[] = $forum_id;
+					$parents[]   = $forum_id;
+				}
 			}
 		}
 	}
@@ -2719,6 +2725,50 @@ function bbp_forum_query_all_subforum_ids( $forum_id ) {
 	}
 
 	return wp_parse_id_list( $forum_ids );
+}
+
+/**
+ * Return a set of forum IDs and all descendants using batched child lookups.
+ *
+ * @since 2.6.20 bbPress (r7833)
+ *
+ * @param int[] $forum_ids Starting forum IDs.
+ * @return int[] Starting IDs and descendant IDs.
+ */
+function bbp_forum_query_all_descendant_ids( $forum_ids ) {
+	$forum_ids = wp_parse_id_list( $forum_ids );
+	$cache_key = 'bbp_descendant_ids:' . md5( serialize( $forum_ids ) ) . ':' . wp_cache_get_last_changed( 'bbpress_posts' );
+	$cached    = wp_cache_get( $cache_key, 'bbpress_posts' );
+
+	if ( false !== $cached ) {
+		return $cached;
+	}
+
+	$bbp_db  = bbp_db();
+	$parents = $forum_ids;
+	$seen    = array_fill_keys( $forum_ids, true );
+
+	while ( ! empty( $parents ) ) {
+		$batch = array_splice( $parents, 0, 500 );
+		$query = $bbp_db->prepare(
+			"SELECT ID FROM {$bbp_db->posts} WHERE post_parent IN (" . implode( ',', $batch ) . ') AND post_type = %s',
+			bbp_get_forum_post_type()
+		);
+
+		foreach ( (array) $bbp_db->get_col( $query ) as $forum_id ) {
+			$forum_id = (int) $forum_id;
+
+			if ( ! isset( $seen[ $forum_id ] ) ) {
+				$seen[ $forum_id ] = true;
+				$forum_ids[]       = $forum_id;
+				$parents[]         = $forum_id;
+			}
+		}
+	}
+
+	wp_cache_set( $cache_key, $forum_ids, 'bbpress_posts' );
+
+	return $forum_ids;
 }
 
 /**
@@ -3107,9 +3157,7 @@ function bbp_forum_query_subforum_ids( $forum_id ) {
 	$statuses     = bbp_get_countable_forum_statuses();
 	$subforum_ids = array();
 
-	// Query and cache countable subforums. The public child-ID helper excludes
-	// private and hidden forums, while the all-child helper includes trash, so
-	// neither existing helper represents the statuses counted here.
+	// Query and cache countable subforums
 	if ( ! empty( $forum_id ) && ! empty( $statuses ) ) {
 		$key = md5(
 			serialize(
@@ -3124,13 +3172,7 @@ function bbp_forum_query_subforum_ids( $forum_id ) {
 		$subforum_ids = wp_cache_get( $cache_key, 'bbpress_posts' );
 
 		if ( false === $subforum_ids ) {
-			$bbp_db       = bbp_db();
-			$placeholders = implode( ', ', array_fill( 0, count( $statuses ), '%s' ) );
-			$query        = $bbp_db->prepare(
-				"SELECT ID FROM {$bbp_db->posts} WHERE post_parent = %d AND post_type = %s AND post_status IN ({$placeholders}) ORDER BY ID DESC",
-				array_merge( array( $forum_id, bbp_get_forum_post_type() ), $statuses )
-			);
-			$subforum_ids = (array) $bbp_db->get_col( $query );
+			$subforum_ids = bbp_get_child_ids_by_status( $forum_id, bbp_get_forum_post_type(), $statuses );
 
 			wp_cache_set( $cache_key, $subforum_ids, 'bbpress_posts' );
 		}
@@ -3318,37 +3360,19 @@ function bbp_delete_forum_topics( $forum_id = 0 ) {
 
 	// Forum is being permanently deleted, so its content has go too
 	// Note that we get all post statuses here
-	$topics = new WP_Query(
-		array(
-			'fields'         => 'id=>parent',
-			'post_type'      => bbp_get_topic_post_type(),
-			'post_parent'    => $forum_id,
-			'post_status'    => array_keys( get_post_stati() ),
-			'posts_per_page' => -1,
-
-			// Performance
-			'nopaging'               => true,
-			'suppress_filters'       => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'ignore_sticky_posts'    => true,
-			'no_found_rows'          => true
-		)
+	$topic_ids = bbp_get_child_ids_by_status(
+		$forum_id,
+		bbp_get_topic_post_type(),
+		array_keys( get_post_stati() )
 	);
 
 	// Loop through and delete child topics. Topic replies will get deleted by
 	// the bbp_delete_topic() action.
-	if ( ! empty( $topics->posts ) ) {
-		foreach ( $topics->posts as $topic ) {
-			wp_delete_post( $topic->ID, true );
+	if ( ! empty( $topic_ids ) ) {
+		foreach ( $topic_ids as $topic_id ) {
+			wp_delete_post( $topic_id, true );
 		}
-
-		// Reset the $post global
-		wp_reset_postdata();
 	}
-
-	// Cleanup
-	unset( $topics );
 }
 
 /**
@@ -3375,48 +3399,30 @@ function bbp_trash_forum_topics( $forum_id = 0 ) {
 	);
 
 	// Forum is being trashed, so its topics (and replies) are trashed too
-	$topics = new WP_Query(
-		array(
-			'fields'         => 'id=>parent',
-			'post_type'      => bbp_get_topic_post_type(),
-			'post_parent'    => $forum_id,
-			'post_status'    => $post_stati,
-			'posts_per_page' => -1,
-
-			// Performance
-			'nopaging'               => true,
-			'suppress_filters'       => true,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'ignore_sticky_posts'    => true,
-			'no_found_rows'          => true
-		)
+	$topic_ids = bbp_get_child_ids_by_status(
+		$forum_id,
+		bbp_get_topic_post_type(),
+		$post_stati
 	);
 
 	// Loop through and trash child topics. Topic replies will get trashed by
 	// the bbp_trash_topic() action.
-	if ( ! empty( $topics->posts ) ) {
+	if ( ! empty( $topic_ids ) ) {
 
 		// Prevent debug notices
 		$pre_trashed_topics = array();
 
 		// Loop through topics, trash them, and add them to array
-		foreach ( $topics->posts as $topic ) {
-			wp_trash_post( $topic->ID, true );
-			$pre_trashed_topics[] = $topic->ID;
+		foreach ( $topic_ids as $topic_id ) {
+			wp_trash_post( $topic_id, true );
+			$pre_trashed_topics[] = $topic_id;
 		}
 
 		// Set a post_meta entry of the topics that were trashed by this action.
 		// This is so we can possibly untrash them, without untrashing topics
 		// that were purposefully trashed before.
 		update_post_meta( $forum_id, '_bbp_pre_trashed_topics', $pre_trashed_topics );
-
-		// Reset the $post global
-		wp_reset_postdata();
 	}
-
-	// Cleanup
-	unset( $topics );
 }
 
 /**

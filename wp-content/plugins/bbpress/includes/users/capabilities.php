@@ -14,6 +14,7 @@
  *
  * @since 2.2.0 bbPress (r4244)
  * @since 2.6.19 bbPress (r7690) Limit super moderator edits to site members and protect peer roles.
+ * @since 2.6.20 bbPress (r7892) Treat network users as forum users when global access is enabled.
  *
  * @param array  $caps Capabilities for meta capability.
  * @param string $cap Capability name.
@@ -129,9 +130,10 @@ function bbp_map_primary_meta_caps( $caps = array(), $cap = '', $user_id = 0, $a
 				// Users can always edit themselves, so only map for others.
 				if ( ! empty( $_user_id ) && ( $_user_id !== $user_id ) ) {
 
-					// Limit edits to site members and protect staff roles from peers.
+					// Limit edits to forum users and protect staff roles from peers.
 					if (
-						( ! is_multisite() || is_user_member_of_blog( $_user_id ) )
+						get_userdata( $_user_id )
+						&& ( ! is_multisite() || bbp_allow_global_access() || is_user_member_of_blog( $_user_id ) )
 						&& ! bbp_is_user_keymaster( $_user_id )
 						&& ! user_can( $_user_id, 'manage_options' )
 						&& ! is_super_admin( $_user_id )
@@ -358,6 +360,7 @@ function bbp_get_user_editable_forum_roles( $user_id = 0 ) {
  * Return whether the current user may edit a user-profile field.
  *
  * @since 2.6.17 bbPress (r7514)
+ * @since 2.6.20 bbPress (r7892) Limit non-member edits to the forum role on multisite.
  *
  * @param string $field   Profile field group: profile, email, password,
  *                        site_role, or forum_role.
@@ -391,6 +394,18 @@ function bbp_current_user_can_edit_user_field( $field = 'profile', $user_id = 0 
 		case 'forum_role':
 			$retval = current_user_can( 'promote_user', $user_id );
 			break;
+	}
+
+	// Profile fields are shared across the network, so limit non-members to their forum role.
+	if (
+		( 'forum_role' !== $field )
+		&& is_multisite()
+		&& ! empty( $user_id )
+		&& ( $user_id !== $current_user_id )
+		&& ! is_user_member_of_blog( $user_id )
+		&& ! current_user_can( 'manage_network_users' )
+	) {
+		$retval = false;
 	}
 
 	// Filter & return.
@@ -950,11 +965,10 @@ function bbp_get_moderators( $object_id = 0, $object_type = 'post' ) {
 
 	// Get object moderators
 	} else {
-		$users = get_users(
-			array(
-				'include' => bbp_get_moderator_ids( $object_id, $object_type ),
-			)
-		);
+		$user_ids = bbp_get_moderator_ids( $object_id, $object_type );
+		$users    = ! empty( $user_ids )
+			? get_users( array( 'include' => $user_ids ) )
+			: array();
 	}
 
 	// Filter & return

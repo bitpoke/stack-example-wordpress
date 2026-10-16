@@ -409,6 +409,7 @@ class BBP_User_Engagements_Term extends BBP_User_Engagements_Base {
 	 * Remove a user id from all objects
 	 *
 	 * @since 2.6.0 bbPress (r6739)
+	 * @since 2.6.20 bbPress (r7958) Avoid a warning when the user relationship does not exist.
 	 *
 	 * @param int    $user_id   The user id
 	 * @param string $meta_key  The relationship key
@@ -422,6 +423,11 @@ class BBP_User_Engagements_Term extends BBP_User_Engagements_Base {
 		$this->jit_taxonomy( $tax_key );
 		$term     = get_term_by( 'slug', $user_key, $tax_key );
 
+		// Bail if term does not exist.
+		if ( empty( $term ) ) {
+			return false;
+		}
+
 		return wp_delete_term( $term->term_id, $tax_key );
 	}
 
@@ -430,25 +436,28 @@ class BBP_User_Engagements_Term extends BBP_User_Engagements_Base {
 	 *
 	 * @since 2.6.0 bbPress (r6739)
 	 * @since 2.6.17 bbPress (r7468) Limit removal to the requested relationship taxonomy.
+	 * @since 2.6.20 bbPress (r7988) Return true after removing the requested relationships.
 	 *
 	 * @param int    $object_id The object id
-	 * @param int    $user_id   The user id
 	 * @param string $meta_key  The relationship key
 	 * @param string $meta_type The relationship type (usually 'post')
 	 *
-	 * @return bool Returns true on success, false on failure
+	 * @return bool Always returns true; term relationship removal does not report failures
 	 */
 	public function remove_object_from_all_users( $object_id = 0, $meta_key = '', $meta_type = 'post' ) {
 		$tax_key = "{$meta_key}_{$meta_type}";
 		$this->jit_taxonomy( $tax_key );
 
-		return wp_delete_object_term_relationships( $object_id, $tax_key );
+		wp_delete_object_term_relationships( $object_id, $tax_key );
+
+		return true;
 	}
 
 	/**
 	 * Remove all users from all objects
 	 *
 	 * @since 2.6.0 bbPress (r6739)
+	 * @since 2.6.20 bbPress (r7958) Implement bulk term relationship cleanup.
 	 *
 	 * @param string $meta_key  The relationship key
 	 * @param string $meta_type The relationship type (usually 'post')
@@ -456,7 +465,34 @@ class BBP_User_Engagements_Term extends BBP_User_Engagements_Base {
 	 * @return bool Returns true on success, false on failure
 	 */
 	public function remove_all_users_from_all_objects( $meta_key = '', $meta_type = 'post' ) {
-		// TODO
+		$tax_key = "{$meta_key}_{$meta_type}";
+		$this->jit_taxonomy( $tax_key );
+		$term_ids = get_terms(
+			array(
+				'taxonomy'               => $tax_key,
+				'hide_empty'             => false,
+				'fields'                 => 'ids',
+				'orderby'                => 'none',
+				'cache_results'          => false,
+				'update_term_meta_cache' => false
+			)
+		);
+
+		// Bail if terms cannot be queried.
+		if ( is_wp_error( $term_ids ) ) {
+			return false;
+		}
+
+		// Delete all relationship terms and their object relationships.
+		foreach ( $term_ids as $term_id ) {
+			$deleted = wp_delete_term( $term_id, $tax_key );
+
+			if ( is_wp_error( $deleted ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -573,10 +609,11 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 * @param string $meta_key
 	 * @param int    $object_id
 	 * @param bool   $prefix
+	 * @param string $context_key
 	 *
 	 * @return string
 	 */
-	private function get_user_option_key( $meta_key = '', $object_id = 0, $prefix = false ) {
+	private function get_user_option_key( $meta_key = '', $object_id = 0, $prefix = false, $context_key = '' ) {
 		switch ( $meta_key ) {
 
 			// Favorites
@@ -588,9 +625,13 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 			case '_bbp_subscription' :
 
 				// Maybe guess at post type
-				$post_type = ! empty( $object_id )
-					? get_post_type( $object_id )
-					: bbp_get_topic_post_type();
+				if ( ! empty( $object_id ) ) {
+					$post_type = get_post_type( $object_id );
+				} elseif ( 'get_user_forum_subscriptions' === $context_key ) {
+					$post_type = bbp_get_forum_post_type();
+				} else {
+					$post_type = bbp_get_topic_post_type();
+				}
 
 				// Forums & Topics used different keys :/
 				$key = ( bbp_get_forum_post_type() === $post_type )
@@ -739,6 +780,7 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 * Add a user id to an object
 	 *
 	 * @since 2.6.0 bbPress (r6844)
+	 * @since 2.6.20 bbPress (r7989) Normalize object IDs before strict lookups.
 	 *
 	 * @param int    $object_id The object id
 	 * @param int    $user_id   The user id
@@ -749,10 +791,11 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 * @return bool Returns true on success, false on failure
 	 */
 	public function add_user_to_object( $object_id = 0, $user_id = 0, $meta_key = '', $meta_type = 'post', $unique = false ) {
+		$object_id  = absint( $object_id );
 		$retval     = false;
 		$option_key = $this->get_user_option_key( $meta_key, $object_id );
 		$object_ids = $this->parse_comma_list( get_user_option( $option_key, $user_id ) );
-		$exists     = array_search( $object_id, $object_ids );
+		$exists     = array_search( $object_id, $object_ids, true );
 
 		// Not already added, so add it
 		if ( false === $exists ) {
@@ -774,6 +817,7 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 * Remove a user id from an object
 	 *
 	 * @since 2.6.0 bbPress (r6844)
+	 * @since 2.6.20 bbPress (r7989) Normalize object IDs before strict lookups.
 	 *
 	 * @param int    $object_id The object id
 	 * @param int    $user_id   The user id
@@ -783,10 +827,11 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 * @return bool Returns true on success, false on failure
 	 */
 	public function remove_user_from_object( $object_id = 0, $user_id = 0, $meta_key = '', $meta_type = 'post' ) {
+		$object_id  = absint( $object_id );
 		$retval     = false;
 		$option_key = $this->get_user_option_key( $meta_key, $object_id );
 		$object_ids = $this->parse_comma_list( get_user_option( $option_key, $user_id ) );
-		$exists     = array_search( $object_id, $object_ids );
+		$exists     = array_search( $object_id, $object_ids, true );
 
 		// Exists, so remove it
 		if ( false !== $exists ) {
@@ -844,9 +889,9 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 * Remove an object from all users
 	 *
 	 * @since 2.6.0 bbPress (r6844)
+	 * @since 2.6.20 bbPress (r7988) Report partial cleanup failures.
 	 *
 	 * @param int    $object_id The object id
-	 * @param int    $user_id   The user id
 	 * @param string $meta_key  The relationship key
 	 * @param string $meta_type The relationship type (usually 'post')
 	 *
@@ -859,7 +904,6 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 		$u_count  = count( $user_ids );
 
 		// Count number of removals
-		$removed  = array();
 		$r_count  = 0;
 
 		// Users have engaged, so remove them
@@ -867,11 +911,10 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 
 			// Loop through users and remove them from the object
 			foreach ( $user_ids as $user_id ) {
-				$removed[] = $this->remove_user_from_object( $object_id, $user_id, $meta_key, $meta_type );
+				if ( $this->remove_user_from_object( $object_id, $user_id, $meta_key, $meta_type ) ) {
+					++$r_count;
+				}
 			}
-
-			// Count the removed users
-			$r_count = count( $removed );
 		}
 
 		// Return true if successfully removed from all users
@@ -882,6 +925,7 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 * Remove all users from all objects
 	 *
 	 * @since 2.6.0 bbPress (r6844)
+	 * @since 2.6.20 bbPress (r7988) Report partial cleanup failures.
 	 *
 	 * @param string $meta_key  The relationship key
 	 * @param string $meta_type The relationship type (usually 'post')
@@ -897,7 +941,6 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 		$u_count    = count( $user_ids );
 
 		// Count number of removals
-		$removed    = array();
 		$r_count    = 0;
 
 		// Users have engaged, so remove them
@@ -905,11 +948,10 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 
 			// Loop through users and remove their user options
 			foreach ( $user_ids as $user_id ) {
-				$removed[] = $this->remove_user_from_all_objects( $user_id, $meta_key );
+				if ( $this->remove_user_from_all_objects( $user_id, $meta_key ) ) {
+					++$r_count;
+				}
 			}
-
-			// Count the removed users
-			$r_count = count( $removed );
 		}
 
 		// Return true if successfully removed from all users
@@ -962,7 +1004,7 @@ class BBP_User_Engagements_User extends BBP_User_Engagements_Base {
 	 */
 	public function get_query( $args = array(), $context_key = '', $meta_key = '', $meta_type = 'post' ) {
 		$user_id    = bbp_get_user_id( $args, true, true );
-		$option_key = $this->get_user_option_key( $meta_key );
+		$option_key = $this->get_user_option_key( $meta_key, 0, false, $context_key );
 		$object_ids = $this->parse_comma_list( get_user_option( $option_key, $user_id ) );
 
 		// Maybe trick WP_Query into ".ID IN (0)" to return no results

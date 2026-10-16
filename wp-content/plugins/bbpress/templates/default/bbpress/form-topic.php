@@ -75,7 +75,7 @@ if ( ! bbp_is_single_forum() ) : ?>
 
 				<?php endif; ?>
 
-				<?php do_action( 'bbp_template_notices' ); ?>
+				<?php do_action( 'bbp_template_notices', 'topic' ); ?>
 
 				<div>
 
@@ -249,14 +249,14 @@ if ( ! bbp_is_single_forum() ) : ?>
 	<div id="no-topic-<?php bbp_forum_id(); ?>" class="bbp-no-topic">
 		<div class="bbp-template-notice">
 			<ul>
-				<li><?php is_user_logged_in()
+				<li><?php ( is_user_logged_in() || ! bbp_is_forums_status( 'open' ) )
 					? esc_html_e( 'You cannot create new topics.',               'bbpress' )
 					: esc_html_e( 'You must be logged in to create new topics.', 'bbpress' );
 				?></li>
 			</ul>
 		</div>
 
-		<?php if ( ! is_user_logged_in() ) : ?>
+		<?php if ( ! is_user_logged_in() && ! bbp_is_forums_status( 'frozen' ) ) : ?>
 
 			<?php bbp_get_template_part( 'form', 'user-login' ); ?>
 

@@ -256,21 +256,16 @@ class BBP_Default extends BBP_Theme_Compat {
 			$type = is_string( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '';
 		}
 
-		// Bail if user cannot add favorites for this user
-		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			bbp_ajax_response( false, esc_html__( 'You do not have permission to do this.', 'bbpress' ), 302 );
-		}
-
 		// Get the object
 		$object = get_post( $id );
 
 		// Validate the object before checking its favorite state
-		if ( empty( $object ) || ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'favorite', 'remove' ) ) {
+		if ( empty( $object ) || ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'favorite', 'remove', $user_id ) ) {
 			bbp_ajax_response( false, esc_html__( 'Favorite failed.', 'bbpress' ), 303 );
 		}
 		$is_favorite = bbp_is_user_favorite( $user_id, $object->ID );
 		$toggle_action = $is_favorite ? 'remove' : 'add';
-		if ( ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'favorite', $toggle_action ) ) {
+		if ( ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'favorite', $toggle_action, $user_id ) ) {
 			bbp_ajax_response( false, esc_html__( 'Favorite failed.', 'bbpress' ), 303 );
 		}
 
@@ -325,21 +320,16 @@ class BBP_Default extends BBP_Theme_Compat {
 			$type = is_string( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '';
 		}
 
-		// Bail if user cannot add favorites for this user
-		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			bbp_ajax_response( false, esc_html__( 'You do not have permission to do this.', 'bbpress' ), 302 );
-		}
-
 		// Get the object
 		$object = get_post( $id );
 
 		// Validate the object before checking its subscription state
-		if ( empty( $object ) || ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'subscription', 'remove' ) ) {
+		if ( empty( $object ) || ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'subscription', 'remove', $user_id ) ) {
 			bbp_ajax_response( false, esc_html__( 'Subscription failed.', 'bbpress' ), 303 );
 		}
 		$is_subscribed = bbp_is_user_subscribed( $user_id, $object->ID, $type );
 		$toggle_action = $is_subscribed ? 'remove' : 'add';
-		if ( ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'subscription', $toggle_action ) ) {
+		if ( ! bbp_current_user_can_toggle_engagement( $object->ID, $type, 'subscription', $toggle_action, $user_id ) ) {
 			bbp_ajax_response( false, esc_html__( 'Subscription failed.', 'bbpress' ), 303 );
 		}
 

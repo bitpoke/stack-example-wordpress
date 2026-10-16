@@ -320,8 +320,8 @@ function bbp_is_topic_merge() {
 	$retval = false;
 
 	// Check topic edit and GET params
-	if ( bbp_is_topic_edit() && ! empty( $_GET['action'] ) && ( 'merge' === $_GET['action'] ) ) {
-		return true;
+	if ( bbp_is_topic_edit() && bbp_is_get_action( array( 'merge', 'bbp-merge-topic' ) ) ) {
+		$retval = true;
 	}
 
 	// Filter & return
@@ -341,7 +341,7 @@ function bbp_is_topic_split() {
 	$retval = false;
 
 	// Check topic edit and GET params
-	if ( bbp_is_topic_edit() && ! empty( $_GET['action'] ) && ( 'split' === $_GET['action'] ) ) {
+	if ( bbp_is_topic_edit() && bbp_is_get_action( array( 'split', 'bbp-split-topic' ) ) ) {
 		$retval = true;
 	}
 
@@ -620,7 +620,7 @@ function bbp_is_reply_move() {
 	$retval = false;
 
 	// Check reply edit and GET params
-	if ( bbp_is_reply_edit() && ! empty( $_GET['action'] ) && ( 'move' === $_GET['action'] ) ) {
+	if ( bbp_is_reply_edit() && bbp_is_get_action( array( 'move', 'bbp-move-reply' ) ) ) {
 		$retval = true;
 	}
 
@@ -1121,26 +1121,35 @@ function bbp_body_class( $wp_classes = array(), $custom_classes = false ) {
 	} elseif ( bbp_is_single_reply() ) {
 		$bbp_classes[] = bbp_get_reply_post_type();
 
-	} elseif ( bbp_is_topic_edit() ) {
-		$bbp_classes[] = bbp_get_topic_post_type() . '-edit';
-
 	} elseif ( bbp_is_topic_merge() ) {
 		$bbp_classes[] = bbp_get_topic_post_type() . '-merge';
+		$bbp_classes[] = bbp_get_topic_post_type() . '-edit';
 
 	} elseif ( bbp_is_topic_split() ) {
 		$bbp_classes[] = bbp_get_topic_post_type() . '-split';
+		$bbp_classes[] = bbp_get_topic_post_type() . '-edit';
 
-	} elseif ( bbp_is_reply_edit() ) {
-		$bbp_classes[] = bbp_get_reply_post_type() . '-edit';
+	} elseif ( bbp_is_topic_edit() ) {
+		$bbp_classes[] = bbp_get_topic_post_type() . '-edit';
 
 	} elseif ( bbp_is_reply_move() ) {
 		$bbp_classes[] = bbp_get_reply_post_type() . '-move';
+		$bbp_classes[] = bbp_get_reply_post_type() . '-edit';
+
+	} elseif ( bbp_is_reply_edit() ) {
+		$bbp_classes[] = bbp_get_reply_post_type() . '-edit';
 
 	} elseif ( bbp_is_single_view() ) {
 		$bbp_classes[] = 'bbp-view';
 		$bbp_classes[] = 'bbp-view-' . bbp_get_view_id();
 
 	/** User ******************************************************************/
+
+	} elseif ( bbp_is_user_home_edit() ) {
+		$bbp_classes[] = 'bbp-user-home-edit';
+		$bbp_classes[] = 'bbp-user-edit';
+		$bbp_classes[] = 'single';
+		$bbp_classes[] = 'singular';
 
 	} elseif ( bbp_is_single_user_edit() ) {
 		$bbp_classes[] = 'bbp-user-edit';
@@ -1154,11 +1163,6 @@ function bbp_body_class( $wp_classes = array(), $custom_classes = false ) {
 
 	} elseif ( bbp_is_user_home() ) {
 		$bbp_classes[] = 'bbp-user-home';
-		$bbp_classes[] = 'single';
-		$bbp_classes[] = 'singular';
-
-	} elseif ( bbp_is_user_home_edit() ) {
-		$bbp_classes[] = 'bbp-user-home-edit';
 		$bbp_classes[] = 'single';
 		$bbp_classes[] = 'singular';
 
@@ -1184,13 +1188,17 @@ function bbp_body_class( $wp_classes = array(), $custom_classes = false ) {
 
 	/** Search ****************************************************************/
 
-	} elseif ( bbp_is_search() ) {
-		$bbp_classes[] = 'bbp-search';
-		$bbp_classes[] = 'forum-search';
-
 	} elseif ( bbp_is_search_results() ) {
 		$bbp_classes[] = 'bbp-search-results';
 		$bbp_classes[] = 'forum-search-results';
+
+		if ( bbp_is_search() ) {
+			$bbp_classes[] = 'bbp-search';
+			$bbp_classes[] = 'forum-search';
+		}
+	} elseif ( bbp_is_search() ) {
+		$bbp_classes[] = 'bbp-search';
+		$bbp_classes[] = 'forum-search';
 
 	/** Shortcodes ************************************************************/
 
@@ -2203,7 +2211,7 @@ function bbp_get_quicktags_settings( $settings = array() ) {
  *
  * @since 2.0.0 bbPress (r2789)
  *
- * @param string $view Optional. View id
+ * @param string|int $view Optional. View ID.
  */
 function bbp_view_id( $view = '' ) {
 	echo bbp_get_view_id( $view );
@@ -2212,19 +2220,20 @@ function bbp_view_id( $view = '' ) {
 	/**
 	 * Get the view id
 	 *
-	 * Use view id if supplied, otherwise bbp_get_view_rewrite_id() query var.
+	 * Uses the supplied view ID, then the current view ID, then the view rewrite
+	 * query var.
 	 *
 	 * @since 2.0.0 bbPress (r2789)
 	 *
-	 * @param string $view Optional. View id.
-	 * @return bool|string ID on success, false on failure
+	 * @param string|int $view Optional. View ID.
+	 * @return string View ID, or empty string if none is set.
 	 */
 	function bbp_get_view_id( $view = '' ) {
 		$bbp = bbpress();
 
 		// User supplied string
-		if ( ! empty( $view ) && is_string( $view ) ) {
-			$view_id = $view;
+		if ( ! empty( $view ) && ( is_string( $view ) || is_int( $view ) ) ) {
+			$view_id = (string) $view;
 
 		// Current view ID
 		} elseif ( ! empty( $bbp->current_view_id ) ) {
@@ -2233,6 +2242,13 @@ function bbp_view_id( $view = '' ) {
 		// Querying for view
 		} else {
 			$view_id = get_query_var( bbp_get_view_rewrite_id() );
+		}
+
+		// View IDs are strings.
+		if ( is_int( $view_id ) ) {
+			$view_id = (string) $view_id;
+		} elseif ( ! is_string( $view_id ) ) {
+			$view_id = '';
 		}
 
 		// Filter & return
@@ -2244,7 +2260,7 @@ function bbp_view_id( $view = '' ) {
  *
  * @since 2.0.0 bbPress (r2789)
  *
- * @param string $view Optional. View id
+ * @param string|int $view Optional. View ID.
  */
 function bbp_view_title( $view = '' ) {
 	echo bbp_get_view_title( $view );
@@ -2253,19 +2269,19 @@ function bbp_view_title( $view = '' ) {
 	/**
 	 * Get the view name aka title
 	 *
-	 * If a view id is supplied, that is used. Otherwise the bbp_view
-	 * query var is checked for.
+	 * Uses the supplied view ID, then the current view ID, then the view rewrite
+	 * query var.
 	 *
 	 * @since 2.0.0 bbPress (r2789)
 	 *
-	 * @param string $view Optional. View id
+	 * @param string|int $view Optional. View ID.
 	 * @return bool|string Title on success, false on failure
 	 */
 	function bbp_get_view_title( $view = '' ) {
 		$bbp = bbpress();
 
 		$view = bbp_get_view_id( $view );
-		if ( empty( $view ) ) {
+		if ( empty( $view ) || ! isset( $bbp->views[ $view ]['title'] ) ) {
 			return false;
 		}
 
@@ -2277,7 +2293,7 @@ function bbp_view_title( $view = '' ) {
  *
  * @since 2.0.0 bbPress (r2789)
  *
- * @param string $view Optional. View id
+ * @param string|int|false $view Optional. View ID.
  */
 function bbp_view_url( $view = false ) {
 	echo esc_url( bbp_get_view_url( $view ) );
@@ -2287,9 +2303,8 @@ function bbp_view_url( $view = false ) {
 	 *
 	 * @since 2.0.0 bbPress (r2789)
 	 *
-	 * @param string $view Optional. View id
-	 *                        used view id
-	 * @return string View url (or home url if the view was not found)
+	 * @param string|int|false $view Optional. View ID.
+	 * @return string View URL, or home URL if no view resolves.
 	 */
 function bbp_get_view_url( $view = false ) {
 
@@ -2714,14 +2729,71 @@ function bbp_allowed_tags() {
 /** Errors & Messages *********************************************************/
 
 /**
+ * Return the template notice context for the current POST action.
+ *
+ * @since 2.6.20 bbPress (r7969)
+ *
+ * @return string Template notice context.
+ */
+function bbp_get_template_notice_context() {
+
+	// Bail if not a POST request
+	if ( ! bbp_is_post_request() ) {
+		return '';
+	}
+
+	// Map form actions to their notice contexts
+	$action   = bbp_get_post_action();
+	$contexts = array(
+		'bbp-new-forum'  => 'forum',
+		'bbp-edit-forum' => 'forum',
+		'bbp-new-topic'  => 'topic',
+		'bbp-edit-topic' => 'topic',
+		'bbp-new-reply'  => 'reply',
+		'bbp-edit-reply' => 'reply',
+	);
+	$context  = isset( $contexts[ $action ] )
+		? $contexts[ $action ]
+		: '';
+
+	// Filter & return
+	return apply_filters( 'bbp_get_template_notice_context', $context, $action );
+}
+
+/**
+ * Return true|false if notices should display in one of the given contexts.
+ *
+ * @since 2.6.20 bbPress (r7969)
+ *
+ * @param string|array $context Context or contexts to check.
+ * @return bool
+ */
+function bbp_is_template_notice_context( $context = '' ) {
+	$notice_context = bbp_get_template_notice_context();
+
+	return empty( $context )
+		|| empty( $notice_context )
+		|| in_array( $notice_context, (array) $context, true );
+}
+
+/**
  * Display possible errors & messages inside a template file
  *
  * @since 2.0.0 bbPress (r2970)
+ * @since 2.6.20 bbPress (r7969) Added the `$context` parameter.
+ *
+ * @param string $context Optional. Form context. Accepts 'forum', 'topic', or
+ *                        'reply'. Default empty.
  */
-function bbp_template_notices() {
+function bbp_template_notices( $context = '' ) {
 
 	// Bail if no notices or errors
 	if ( ! bbp_has_errors() ) {
+		return;
+	}
+
+	// Keep form submission notices in the form that handled the request
+	if ( ! bbp_is_template_notice_context( $context ) ) {
 		return;
 	}
 

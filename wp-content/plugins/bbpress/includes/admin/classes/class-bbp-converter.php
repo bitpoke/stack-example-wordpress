@@ -59,6 +59,13 @@ class BBP_Converter {
 	public $total_percentage = 0;
 
 	/**
+	 * @since 2.6.20 bbPress (r7920)
+	 *
+	 * @var bool Whether the conversion is complete
+	 */
+	private $finished = false;
+
+	/**
 	 * @var int Name of source forum platform
 	 */
 	public $platform = '';
@@ -157,6 +164,7 @@ class BBP_Converter {
 				'state' => array(
 					'delay'         => (int) get_option( '_bbp_converter_delay_time', 2 ),
 					'started'       => (bool) get_option( '_bbp_converter_step',       0 ),
+					'finished'      => (bool) get_option( '_bbp_converter_finished',   false ),
 					'running'       => false,
 					'status'        => false,
 					'step_percent'  => $this->step_percentage,
@@ -265,6 +273,7 @@ class BBP_Converter {
 				'rows_in_step'  => $this->rows_in_step,
 				'step_percent'  => $this->step_percentage,
 				'total_percent' => $this->total_percentage,
+				'finished'      => $this->finished,
 				'progress'      => $progress
 			)
 		);
@@ -311,12 +320,14 @@ class BBP_Converter {
 	private function maybe_restart() {
 
 		// Save step and count so that it can be restarted.
-		if ( ! get_option( '_bbp_converter_step' ) || ! empty( $_POST['_bbp_converter_restart'] ) ) {
+		$finished = (bool) get_option( '_bbp_converter_finished', false );
+		if ( ( ! get_option( '_bbp_converter_step' ) && ! $finished ) || ! empty( $_POST['_bbp_converter_restart'] ) ) {
 			$this->step             = 1;
 			$this->start            = 0;
 			$this->step_percentage  = 0;
 			$this->total_percentage = 0;
 			$this->rows_in_step     = 0;
+			$this->finished         = false;
 			$this->maybe_update_options();
 		}
 	}
@@ -336,6 +347,7 @@ class BBP_Converter {
 			'_bbp_converter_step'         => $this->step,
 			'_bbp_converter_start'        => $this->start,
 			'_bbp_converter_rows_in_step' => $this->rows_in_step,
+			'_bbp_converter_finished'     => $this->finished,
 
 			// Halt
 			'_bbp_converter_halt' => ! empty( $_POST['_bbp_converter_halt'] )
@@ -413,6 +425,7 @@ class BBP_Converter {
 		$this->start        = (int) get_option( '_bbp_converter_start',        0   );
 		$this->rows         = (int) get_option( '_bbp_converter_rows',         100 );
 		$this->rows_in_step = (int) get_option( '_bbp_converter_rows_in_step', 0   );
+		$this->finished     = (bool) get_option( '_bbp_converter_finished',     false );
 
 		// Set boundaries
 		$this->max          = ( $this->start + $this->rows ) - 1;
@@ -480,6 +493,11 @@ class BBP_Converter {
 		$step = ( $next_step <= $this->max_steps )
 			? $next_step
 			: 0;
+
+		// Flush caches once the final conversion step is complete.
+		if ( 0 === $step ) {
+			$this->complete();
+		}
 
 		// Update step and start at 0
 		update_option( '_bbp_converter_step',         $step );
@@ -890,8 +908,26 @@ class BBP_Converter {
 	 * @since 2.6.0 bbPress (r6514)
 	 */
 	private function step_done() {
+		if ( ! $this->finished ) {
+			$this->complete();
+		}
+
 		$this->reset();
 		$this->converter_response( esc_html__( 'Import Finished', 'bbpress' ) );
+	}
+
+	/**
+	 * Complete the conversion and flush stale cached objects.
+	 *
+	 * @since 2.6.20 bbPress (r7920)
+	 */
+	private function complete() {
+		$this->step_percentage  = 100;
+		$this->total_percentage = 100;
+		$this->finished         = true;
+
+		update_option( '_bbp_converter_finished', true );
+		wp_cache_flush();
 	}
 
 	/** Helper Table **********************************************************/

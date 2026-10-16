@@ -55,10 +55,11 @@ class FluxBB extends BBP_Converter_Base {
 
 		// Forum reply count (Stored in postmeta)
 		$this->field_map[] = array(
-			'from_tablename' => 'forums',
-			'from_fieldname' => 'num_posts',
-			'to_type'        => 'forum',
-			'to_fieldname'   => '_bbp_reply_count'
+			'from_tablename'  => 'forums',
+			'from_fieldname'  => 'num_posts',
+			'to_type'         => 'forum',
+			'to_fieldname'    => '_bbp_reply_count',
+			'callback_method' => 'callback_forum_reply_count'
 		);
 
 		// Forum total topic count (Stored in postmeta)
@@ -71,10 +72,11 @@ class FluxBB extends BBP_Converter_Base {
 
 		// Forum total reply count (Stored in postmeta)
 		$this->field_map[] = array(
-			'from_tablename' => 'forums',
-			'from_fieldname' => 'num_posts',
-			'to_type'        => 'forum',
-			'to_fieldname'   => '_bbp_total_reply_count'
+			'from_tablename'  => 'forums',
+			'from_fieldname'  => 'num_posts',
+			'to_type'         => 'forum',
+			'to_fieldname'    => '_bbp_total_reply_count',
+			'callback_method' => 'callback_forum_reply_count'
 		);
 
 		// Forum title.
@@ -358,12 +360,16 @@ class FluxBB extends BBP_Converter_Base {
 		);
 
 		// Reply parent forum id (If no parent, then 0, Stored in postmeta)
+		// Note: This join also excludes each topic's first post from the replies.
 		$this->field_map[] = array(
-			'from_tablename'  => 'posts',
-			'from_fieldname'  => 'topic_id',
+			'from_tablename'  => 'topics',
+			'from_fieldname'  => 'forum_id',
+			'join_tablename'  => 'posts',
+			'join_type'       => 'INNER',
+			'join_expression' => 'ON topics.id = posts.topic_id WHERE topics.first_post_id != posts.id',
 			'to_type'         => 'reply',
 			'to_fieldname'    => '_bbp_forum_id',
-			'callback_method' => 'callback_topicid_to_forumid'
+			'callback_method' => 'callback_forumid'
 		);
 
 		// Reply parent topic id (If no parent, then 0, Stored in postmeta)
@@ -719,13 +725,31 @@ class FluxBB extends BBP_Converter_Base {
 	}
 
 	/**
-	 * Verify the topic/reply count.
+	 * Convert a FluxBB forum post count into a reply count.
+	 *
+	 * FluxBB includes each topic's first post in the forum post count.
+	 *
+	 * @since 2.6.20 bbPress (r7937)
+	 *
+	 * @param int   $count Forum post count.
+	 * @param array $row   Source forum row.
+	 * @return int Forum reply count.
+	 */
+	public function callback_forum_reply_count( $count = 0, $row = array() ) {
+		$num_topics = isset( $row['num_topics'] )
+			? (int) $row['num_topics']
+			: 0;
+
+		return max( 0, (int) $count - $num_topics );
+	}
+
+	/**
+	 * Verify the topic reply count.
 	 *
 	 * @param int $count FluxBB v1.5.3 topic/reply counts
 	 * @return string WordPress safe
 	 */
 	public function callback_topic_reply_count( $count = 1 ) {
-		$count = absint( (int) $count - 1 );
-		return $count;
+		return max( 0, (int) $count );
 	}
 }

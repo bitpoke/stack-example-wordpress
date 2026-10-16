@@ -27,6 +27,11 @@ function bbp_admin_get_settings_sections() {
 		array(
 
 			// Settings
+			'bbp_settings_status' => array(
+				'title'    => esc_html__( 'Forum Status', 'bbpress' ),
+				'callback' => 'bbp_admin_setting_callback_status_section',
+				'page'     => 'discussion'
+			),
 			'bbp_settings_users' => array(
 				'title'    => esc_html__( 'Forum User Settings', 'bbpress' ),
 				'callback' => 'bbp_admin_setting_callback_user_section',
@@ -108,6 +113,17 @@ function bbp_admin_get_settings_fields() {
 	return (array) apply_filters(
 		'bbp_admin_get_settings_fields',
 		array(
+
+			/** Status Section ***************************************************/
+
+			'bbp_settings_status' => array(
+				'_bbp_forums_status' => array(
+					'title'             => esc_html__( 'Status', 'bbpress' ),
+					'callback'          => 'bbp_admin_setting_callback_forums_status',
+					'sanitize_callback' => 'bbp_admin_sanitize_forums_status',
+					'args'              => array( 'label_for' => '_bbp_forums_status' )
+				)
+			),
 
 			/** User Section ******************************************************/
 
@@ -636,6 +652,24 @@ function bbp_admin_sanitize_default_role( $role ) {
 }
 
 /**
+ * Keep the site-wide forums status within its supported values.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @param mixed $status Submitted status.
+ * @return string Valid forums status.
+ */
+function bbp_admin_sanitize_forums_status( $status ) {
+	$statuses = bbp_get_forums_statuses();
+
+	if ( is_string( $status ) && isset( $statuses[ $status ] ) ) {
+		return $status;
+	}
+
+	return bbp_get_forums_status();
+}
+
+/**
  * Keep the active theme package within the registered packages.
  *
  * @since 2.6.19 bbPress (r7707)
@@ -689,6 +723,36 @@ function bbp_admin_get_settings_fields_for_section( $section_id = '' ) {
 
 	// Filter & return
 	return (array) apply_filters( 'bbp_admin_get_settings_fields_for_section', $retval, $section_id );
+}
+
+/** Status Section ************************************************************/
+
+/**
+ * Site-wide forums status section description.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ */
+function bbp_admin_setting_callback_status_section() {
+	?>
+	<p><?php esc_html_e( 'Control posting and editing across all forums.', 'bbpress' ); ?></p>
+	<?php
+}
+
+/**
+ * Site-wide forums status setting.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ */
+function bbp_admin_setting_callback_forums_status() {
+	$status = bbp_get_forums_status();
+	?>
+	<select name="_bbp_forums_status" id="_bbp_forums_status" <?php bbp_maybe_admin_setting_disabled( '_bbp_forums_status' ); ?>>
+		<?php foreach ( bbp_get_forums_statuses() as $value => $label ) : ?>
+			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $status, $value ); ?>><?php echo esc_html( $label ); ?></option>
+		<?php endforeach; ?>
+	</select>
+	<p class="description"><?php esc_html_e( 'Set how forums handle new topics, replies, and edits.', 'bbpress' ); ?></p>
+	<?php
 }
 
 /** User Section **************************************************************/
@@ -1985,6 +2049,21 @@ function bbp_admin_settings_help() {
 			'content' =>
 						'<p>' . esc_html__( 'This screen provides access to all of the Forums settings.',                          'bbpress' ) . '</p>' .
 						'<p>' . esc_html__( 'Please see the additional help tabs for more information on each individual section.', 'bbpress' ) . '</p>'
+		)
+	);
+
+	// Forum Status
+	$current_screen->add_help_tab(
+		array(
+			'id'      => 'forum_status',
+			'title'   => esc_html__( 'Forum Status', 'bbpress' ),
+			'content' =>
+						'<ul>' .
+							'<li>' . esc_html__( 'Open follows the permissions of each forum and topic.', 'bbpress' ) . '</li>' .
+							'<li>' . esc_html__( 'Closed allows Keymasters and Moderators to add topics and replies.', 'bbpress' ) . '</li>' .
+							'<li>' . esc_html__( 'Frozen stops new topics and replies, and new forums other than BuddyPress Group Forums. Only Keymasters and Moderators may edit existing content.', 'bbpress' ) . '</li>' .
+						'</ul>' .
+						'<p>' . esc_html__( 'Forum creation in Open and Closed follows existing permissions.', 'bbpress' ) . '</p>'
 		)
 	);
 

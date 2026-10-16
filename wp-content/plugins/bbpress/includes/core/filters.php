@@ -49,6 +49,10 @@ add_filter( 'login_redirect',          'bbp_redirect_login',     2,  3 );
 add_filter( 'logout_url',              'bbp_logout_url',         2,  2 );
 add_filter( 'plugin_locale',           'bbp_plugin_locale',      10, 2 );
 
+// Apply bbPress shortcode policy to forum, topic, and reply content.
+add_filter( 'pre_do_shortcode_tag',     'bbp_pre_do_shortcode_tag', 10, 4 );
+add_filter( 'bbp_pre_do_shortcode_tag', 'bbp_prevent_content_shortcodes', 10, 4 );
+
 // Keep WordPress author discovery limited to non-forum posts.
 add_filter( 'rest_user_query',               'bbp_exclude_forum_posts_from_user_query', 10, 2 );
 add_filter( 'wp_sitemaps_users_query_args',  'bbp_exclude_forum_posts_from_user_query'  );
@@ -77,6 +81,7 @@ add_filter( 'the_title', 'bbp_get_reply_title_fallback', 2, 2 );
 add_filter( 'do_redirect_guess_404_permalink', 'bbp_do_not_guess_404_permalink' );
 add_filter( 'pre_handle_404',                  'bbp_pre_handle_404',              10, 2 );
 add_action( 'posts_pre_query',                 'bbp_posts_pre_query',             10, 2 );
+add_filter( 'posts_where',                     'bbp_public_topic_replies_where',  11, 2 );
 
 // User Creation
 add_filter( 'signup_user_meta', 'bbp_user_add_role_to_signup_meta', 10 );
@@ -111,7 +116,9 @@ add_filter( 'bbp_template_include', 'bbp_template_include_theme_supports', 2, 1 
 add_filter( 'bbp_template_include', 'bbp_template_include_theme_compat',   4, 2 );
 
 add_filter( 'redirect_canonical', 'bbp_do_not_redirect_restricted_posts', 11, 2 );
+add_filter( 'redirect_canonical', 'bbp_do_not_redirect_restricted_attachments', 11, 2 );
 add_filter( 'oembed_request_post_id', 'bbp_filter_oembed_request_post_id' );
+add_filter( 'oembed_request_post_id', 'bbp_filter_oembed_request_attachment_id' );
 
 // Filter bbPress template locations
 add_filter( 'bbp_get_template_stack', 'bbp_add_template_stack_locations' );
@@ -389,8 +396,9 @@ add_filter( 'bbp_make_clickable', 'bbp_make_mentions_clickable',  8 ); // @jjj
  *
  * @since 2.2.0 bbPress (r4214)
  *
- * @param string $locale
- * @return string  $domain
+ * @param string $locale Locale.
+ * @param string $domain Text domain.
+ * @return string Locale.
  */
 function _bbp_filter_locale( $locale = '', $domain = '' ) {
 
@@ -401,7 +409,7 @@ function _bbp_filter_locale( $locale = '', $domain = '' ) {
 
 	return apply_filters( 'bbpress_locale', $locale, $domain );
 }
-add_filter( 'bbp_plugin_locale', '_bbp_filter_locale', 10, 1 );
+add_filter( 'bbp_plugin_locale', '_bbp_filter_locale', 10, 2 );
 
 /**
  * Deprecated forums query filter

@@ -72,7 +72,7 @@ if ( bbp_is_reply_edit() ) : ?>
 
 				<?php endif; ?>
 
-				<?php do_action( 'bbp_template_notices' ); ?>
+				<?php do_action( 'bbp_template_notices', 'reply' ); ?>
 
 				<div>
 
@@ -229,14 +229,14 @@ if ( bbp_is_reply_edit() ) : ?>
 	<div id="no-reply-<?php bbp_topic_id(); ?>" class="bbp-no-reply">
 		<div class="bbp-template-notice">
 			<ul>
-				<li><?php is_user_logged_in()
+				<li><?php ( is_user_logged_in() || ! bbp_is_forums_status( 'open' ) )
 					? esc_html_e( 'You cannot reply to this topic.',               'bbpress' )
 					: esc_html_e( 'You must be logged in to reply to this topic.', 'bbpress' );
 				?></li>
 			</ul>
 		</div>
 
-		<?php if ( ! is_user_logged_in() ) : ?>
+		<?php if ( ! is_user_logged_in() && ! bbp_is_forums_status( 'frozen' ) ) : ?>
 
 			<?php bbp_get_template_part( 'form', 'user-login' ); ?>
 

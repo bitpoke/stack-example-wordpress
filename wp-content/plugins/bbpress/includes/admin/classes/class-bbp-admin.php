@@ -527,7 +527,7 @@ class BBP_Admin {
 			// Credits
 			add_dashboard_page(
 				esc_html__( 'Welcome to bbPress',  'bbpress' ),
-				esc_html__( 'Welcome to bbPress',  'bbpress' ),
+				esc_html__( 'Credits',             'bbpress' ),
 				'bbp_about_page',
 				'bbp-credits',
 				array( $this, 'credits_screen' )
@@ -663,6 +663,7 @@ class BBP_Admin {
 			case 'bbp_converter_options'     : // Converter - Options
 
 			// Settings Sections
+			case 'bbp_settings_status'       : // Settings - Status
 			case 'bbp_settings_users'        : // Settings - Users
 			case 'bbp_settings_features'     : // Settings - Features
 			case 'bbp_settings_theme_compat' : // Settings - Theme compat
@@ -985,7 +986,7 @@ class BBP_Admin {
 				printf( esc_html__( '%1$s - %2$s', 'bbpress' ), bbp_get_topic_id( $post->ID ), esc_html( bbp_get_topic_title( $post->ID ) ) . "\n" );
 			}
 		}
-		die();
+		wp_die();
 	}
 
 	/**
@@ -1065,7 +1066,7 @@ class BBP_Admin {
 				printf( esc_html__( '%1$s - %2$s', 'bbpress' ), bbp_get_user_id( $user->ID ), esc_html( bbp_get_user_nicename( $user->ID, array( 'force' => $user->user_nicename ) ) ) . "\n" );
 			}
 		}
-		die();
+		wp_die();
 	}
 
 	/** About *****************************************************************/

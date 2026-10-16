@@ -45,17 +45,42 @@ class BBP_BuddyPress_Members {
 		// Allow unsubscribe/unfavorite links to work
 		add_action( 'bp_template_redirect', array( $this, 'set_member_forum_query_vars' ) );
 
-		/** Favorites *********************************************************/
+		/** Engagements *******************************************************/
 
-		// Move handler to 'bp_actions' - BuddyPress bypasses template_loader
+		// Move handlers to 'bp_actions' - BuddyPress bypasses template_loader
 		remove_action( 'bbp_get_request', 'bbp_favorites_handler', 1 );
-		add_action(    'bp_actions',      'bbp_favorites_handler', 1 );
-
-		/** Subscriptions *****************************************************/
-
-		// Move handler to 'bp_actions' - BuddyPress bypasses template_loader
 		remove_action( 'bbp_get_request', 'bbp_subscriptions_handler', 1 );
-		add_action(    'bp_actions',      'bbp_subscriptions_handler', 1 );
+		add_action(    'bp_actions',      array( $this, 'engagements_handler' ), 1 );
+	}
+
+	/** Actions ***************************************************************/
+
+	/**
+	 * Handle favorites and subscriptions from BuddyPress member pages.
+	 *
+	 * BuddyPress does not pass the requested action to its `bp_actions` hook,
+	 * so get it directly from the request before passing it to the bbPress
+	 * handlers.
+	 *
+	 * @since 2.6.20 (r7933)
+	 * @since 2.6.20 (r8025) Set member query variables before handling engagements.
+	 */
+	public function engagements_handler() {
+
+		// Bail if no action, or if not a string (arrays not supported)
+		if ( empty( $_GET['action'] ) || ! is_string( $_GET['action'] ) ) {
+			return;
+		}
+
+		// Sanitize the GET action
+		$action = sanitize_key( $_GET['action'] );
+
+		// Set the displayed member context before handlers select a user
+		$this->set_member_forum_query_vars();
+
+		// Pass the action to both handlers, which validate supported actions
+		bbp_favorites_handler( $action );
+		bbp_subscriptions_handler( $action );
 	}
 
 	/**
@@ -170,14 +195,15 @@ class BBP_BuddyPress_Members {
 	 *
 	 * @since 2.3.0 bbPress (r4616)
 	 * @since 2.6.0 bbPress (r6320) Support all profile sections
+	 * @since 2.6.20 bbPress (r7925) Support all displayed profiles
 	 *
 	 * @global WP_Query $wp_query
-	 * @return If not viewing your own profile
+	 * @return void
 	 */
 	public function set_member_forum_query_vars() {
 
 		// Special handling for forum component
-		if ( ! bp_is_my_profile() ) {
+		if ( ! bp_is_user() ) {
 			return;
 		}
 

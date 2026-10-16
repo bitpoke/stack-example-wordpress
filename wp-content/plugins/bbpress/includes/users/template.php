@@ -1164,19 +1164,14 @@ function bbp_get_user_favorites_link( $args = array(), $user_id = 0, $wrap = tru
 	}
 
 	// Validate the object before checking its favorite state
-	if ( empty( $user_id ) || empty( $object_id ) || ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'favorite', 'remove' ) ) {
-		return false;
-	}
-
-	// No link if you can't edit yourself
-	if ( ! current_user_can( 'edit_user', $user_id ) ) {
+	if ( empty( $user_id ) || empty( $object_id ) || ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'favorite', 'remove', $user_id ) ) {
 		return false;
 	}
 
 	// Decide which link to show
 	$is_fav = bbp_is_user_favorite( $user_id, $object_id );
 	$toggle_action = ! empty( $is_fav ) ? 'remove' : 'add';
-	if ( ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'favorite', $toggle_action ) ) {
+	if ( ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'favorite', $toggle_action, $user_id ) ) {
 		return false;
 	}
 
@@ -1205,7 +1200,7 @@ function bbp_get_user_favorites_link( $args = array(), $user_id = 0, $wrap = tru
 	$html = sprintf( '%s<span id="favorite-%d"  %s><a href="%s" class="favorite-toggle" data-bbp-object-id="%d" data-bbp-object-type="%s" data-bbp-nonce="%s">%s</a></span>%s', $r['before'], $object_id, $sub, $url, $object_id, $object_type, wp_create_nonce( 'toggle-favorite_' . $object_id ), $text, $r['after'] );
 
 	// Initial output is wrapped in a span, ajax output is hooked to this
-	if ( ! empty( $wrap ) ) {
+	if ( ! empty( $wrap ) && ( bbp_get_current_user_id() === $user_id ) ) {
 		$html = '<span id="favorite-toggle">' . $html . '</span>';
 	}
 
@@ -1371,19 +1366,14 @@ function bbp_get_user_subscribe_link( $args = array(), $user_id = 0, $wrap = tru
 	}
 
 	// Validate the object before checking its subscription state
-	if ( empty( $user_id ) || empty( $object_id ) || ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'subscription', 'remove' ) ) {
-		return false;
-	}
-
-	// No link if you can't edit yourself
-	if ( ! current_user_can( 'edit_user', $user_id ) ) {
+	if ( empty( $user_id ) || empty( $object_id ) || ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'subscription', 'remove', $user_id ) ) {
 		return false;
 	}
 
 	// Decide which link to show
 	$is_subscribed = bbp_is_user_subscribed( $user_id, $object_id, $object_type );
 	$toggle_action = ! empty( $is_subscribed ) ? 'remove' : 'add';
-	if ( ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'subscription', $toggle_action ) ) {
+	if ( ! bbp_current_user_can_toggle_engagement( $object_id, $object_type, 'subscription', $toggle_action, $user_id ) ) {
 		return false;
 	}
 
@@ -1408,13 +1398,14 @@ function bbp_get_user_subscribe_link( $args = array(), $user_id = 0, $wrap = tru
 		$q_args['redirect_to'] = urlencode( $r['redirect_to'] );
 	}
 
-	// URL
-	$url  = esc_url( wp_nonce_url( add_query_arg( $q_args ), 'toggle-subscription_post_' . $object_id ) );
+	// URL using the original nonce action for third-party theme package handlers.
+	$nonce_action = 'toggle-subscription_' . $object_id;
+	$url  = esc_url( wp_nonce_url( add_query_arg( $q_args ), $nonce_action ) );
 	$sub  = $is_subscribed ? ' class="is-subscribed"' : '';
-	$html = sprintf( '%s<span id="subscribe-%d"  %s><a href="%s" class="subscription-toggle" data-bbp-object-id="%d" data-bbp-object-type="%s" data-bbp-nonce="%s">%s</a></span>%s', $r['before'], $object_id, $sub, $url, $object_id, $object_type, wp_create_nonce( 'toggle-subscription_post_' . $object_id ), $text, $r['after'] );
+	$html = sprintf( '%s<span id="subscribe-%d"  %s><a href="%s" class="subscription-toggle" data-bbp-object-id="%d" data-bbp-object-type="%s" data-bbp-nonce="%s">%s</a></span>%s', $r['before'], $object_id, $sub, $url, $object_id, $object_type, wp_create_nonce( $nonce_action ), $text, $r['after'] );
 
 	// Initial output is wrapped in a span, ajax output is hooked to this
-	if ( ! empty( $wrap ) ) {
+	if ( ! empty( $wrap ) && ( bbp_get_current_user_id() === $user_id ) ) {
 		$html = '<span id="subscription-toggle">' . $html . '</span>';
 	}
 
@@ -2283,6 +2274,11 @@ function bbp_current_user_can_publish_topics() {
 		$retval = true;
 	}
 
+	// The site-wide status limits the default publishing permission.
+	if ( ! bbp_current_user_can_post_in_forums() ) {
+		$retval = false;
+	}
+
 	// Filter & return
 	return (bool) apply_filters( 'bbp_current_user_can_publish_topics', $retval );
 }
@@ -2306,6 +2302,11 @@ function bbp_current_user_can_publish_forums() {
 	// User is logged in
 	} elseif ( current_user_can( 'publish_forums' ) ) {
 		$retval = true;
+	}
+
+	// Only BuddyPress Group Forums can be created while forums are frozen.
+	if ( bbp_is_forums_status( 'frozen' ) ) {
+		$retval = false;
 	}
 
 	// Filter & return
@@ -2335,6 +2336,11 @@ function bbp_current_user_can_publish_replies() {
 	// User is logged in
 	} elseif ( current_user_can( 'publish_replies' ) ) {
 		$retval = true;
+	}
+
+	// The site-wide status limits the default publishing permission.
+	if ( ! bbp_current_user_can_post_in_forums() ) {
+		$retval = false;
 	}
 
 	// Filter & return
@@ -2409,6 +2415,11 @@ function bbp_current_user_can_access_create_forum_form() {
 		$retval = current_user_can( 'edit_forum', bbp_get_forum_id() );
 	}
 
+	// Editing an existing forum remains available to capable users.
+	if ( ! bbp_is_forum_edit() && bbp_is_forums_status( 'frozen' ) ) {
+		$retval = false;
+	}
+
 	// Filter & return
 	return (bool) apply_filters( 'bbp_current_user_can_access_create_forum_form', (bool) $retval );
 }
@@ -2436,6 +2447,11 @@ function bbp_current_user_can_access_create_topic_form() {
 	// User can edit this topic
 	} else {
 		$retval = current_user_can( 'edit_topic', bbp_get_topic_id() );
+	}
+
+	// A new topic needs the site's posting permission; editing does not.
+	if ( ! bbp_is_topic_edit() && ! bbp_current_user_can_post_in_forums() ) {
+		$retval = false;
 	}
 
 	// Filter & return
@@ -2469,6 +2485,11 @@ function bbp_current_user_can_access_create_reply_form() {
 	// User can edit this topic
 	} elseif ( bbp_get_topic_id() ) {
 		$retval = current_user_can( 'edit_topic', bbp_get_topic_id() );
+	}
+
+	// A new reply needs the site's posting permission; editing does not.
+	if ( ! bbp_is_reply_edit() && ! bbp_current_user_can_post_in_forums() ) {
+		$retval = false;
 	}
 
 	// Filter & return

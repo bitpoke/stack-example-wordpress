@@ -112,7 +112,7 @@ class BBP_Akismet {
 
 		$user_data['last_active'] = '';
 		$user_data['registered']  = date( 'Y-m-d H:i:s' ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-		$user_data['total_posts'] = (int) bbp_get_user_post_count( $post_data['post_author'] );
+		$user_data['total_posts'] = (int) bbp_get_user_post_count( $post_data['post_author'], true );
 
 		// Get user data
 		$userdata = get_userdata( $post_data['post_author'] );
@@ -150,26 +150,32 @@ class BBP_Akismet {
 		// Pass title & content together into comment content
 		$_post_content = trim( $post_data['post_title'] . "\n\n" . $post_data['post_content'] );
 
-		// Check if the post data is spammy...
-		$_post = $this->maybe_spam(
-			array(
-				'comment_author'                 => $user_data['name'],
-				'comment_author_email'           => $user_data['email'],
-				'comment_author_url'             => $user_data['website'],
-				'comment_content'                => $_post_content,
-				'comment_post_ID'                => $post_data['post_parent'],
-				'comment_type'                   => $post_data['post_type'],
-				'comment_total'                  => $user_data['total_posts'],
-				'comment_last_active_gmt'        => $user_data['last_active'],
-				'comment_account_registered_gmt' => $user_data['registered'],
-				'permalink'                      => $post_permalink,
-				'referrer'                       => wp_get_raw_referer(),
-				'user_agent'                     => bbp_current_author_ua(),
-				'user_ID'                        => $post_data['post_author'],
-				'user_ip'                        => bbp_current_author_ip(),
-				'user_role'                      => $this->get_user_roles( $post_data['post_author'] ),
-			)
+		// Prepare the post data for Akismet.
+		$akismet_data = array(
+			'comment_author'                 => $user_data['name'],
+			'comment_author_email'           => $user_data['email'],
+			'comment_author_url'             => $user_data['website'],
+			'comment_content'                => $_post_content,
+			'comment_post_ID'                => $post_data['post_parent'],
+			'comment_type'                   => $post_data['post_type'],
+			'comment_total'                  => $user_data['total_posts'],
+			'comment_last_active_gmt'        => $user_data['last_active'],
+			'comment_account_registered_gmt' => $user_data['registered'],
+			'permalink'                      => $post_permalink,
+			'referrer'                       => wp_get_raw_referer(),
+			'user_agent'                     => bbp_current_author_ua(),
+			'user_ID'                        => $post_data['post_author'],
+			'user_ip'                        => bbp_current_author_ip(),
+			'user_role'                      => $this->get_user_roles( $post_data['post_author'] ),
 		);
+
+		// Tell Akismet when existing content is being rechecked after an edit.
+		if ( ! empty( $post_data['ID'] ) ) {
+			$akismet_data['recheck_reason'] = 'edit';
+		}
+
+		// Check if the post data is spammy...
+		$_post = $this->maybe_spam( $akismet_data );
 
 		// Set the results (from maybe_spam() above)
 		$post_data['bbp_akismet_result_headers'] = $_post['bbp_akismet_result_headers'];

@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 <ul id="bbp-topic-<?php bbp_topic_id(); ?>" <?php bbp_topic_class(); ?>>
 	<li class="bbp-topic-title">
 
-		<?php if ( bbp_is_user_home() ) : ?>
+		<?php if ( bbp_current_user_can_manage_engagements() ) : ?>
 
 			<?php if ( bbp_is_favorites() ) : ?>
 

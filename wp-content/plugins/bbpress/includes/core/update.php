@@ -189,18 +189,18 @@ function bbp_setup_updater( $current_screen = null ) {
 function bbp_setup_new_site( $site_id = 0 ) {
 
 	// Look for initial content
-	$created = is_multisite()
+	$create = is_multisite()
 		? get_blog_option( $site_id, '_bbp_flag_initial_content', false )
 		: get_option( '_bbp_flag_initial_content', false );
 
 	// Maybe create the initial content
-	if ( ! empty( $created ) ) {
+	if ( ! empty( $create ) ) {
 		bbp_create_initial_content();
 
-		// Flag initial content as created
+		// Disable future initial content creation
 		is_multisite()
-			? update_blog_option( $site_id, '_bbp_flag_initial_content', true )
-			: update_option( '_bbp_flag_initial_content', true );
+			? update_blog_option( $site_id, '_bbp_flag_initial_content', false )
+			: update_option( '_bbp_flag_initial_content', false );
 	}
 }
 

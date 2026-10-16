@@ -151,7 +151,7 @@ class BBP_Component {
 	 * @since 2.0.0 bbPress (r2700)
 	 */
 	public function generate_rewrite_rules( $wp_rewrite ) {
-		do_action_ref_array( 'bbp_' . $this->name . '_generate_rewrite_rules', $wp_rewrite );
+		do_action_ref_array( 'bbp_' . $this->name . '_generate_rewrite_rules', array( &$wp_rewrite ) );
 	}
 }
 endif; // BBP_Component
@@ -225,7 +225,9 @@ class BBP_Walker_Dropdown extends Walker {
 		if ( ( true === $args['disable_categories'] )
 				&& ( bbp_get_forum_post_type() === $object->post_type )
 				&& ( bbp_is_forum_category( $object->ID )
-					|| ( ! current_user_can( 'edit_forum', $object->ID ) && bbp_is_forum_closed( $object->ID )
+					|| ( ! current_user_can( 'edit_forum', $object->ID )
+						&& bbp_is_forum_closed( $object->ID )
+						&& ( ! bbp_is_topic_edit() || ( (int) bbp_get_topic_forum_id() !== (int) $object->ID ) )
 				)
 			) ) {
 			$output .= ' disabled="disabled" value=""';

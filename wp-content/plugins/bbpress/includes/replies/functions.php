@@ -98,6 +98,8 @@ function bbp_insert_reply( $reply_data = array(), $reply_meta = array() ) {
  * Update counts after a reply is inserted via `bbp_insert_reply`.
  *
  * @since 2.6.0 bbPress (r6036)
+ * @deprecated 2.6.20 bbPress. Counts are updated on post-status transitions.
+ *                    Retained for compatibility; unused internally since 2.6.16.
  *
  * @param int $reply_id The reply id.
  * @param int $topic_id The topic id.
@@ -116,6 +118,25 @@ function bbp_insert_reply_update_counts( $reply_id = 0, $topic_id = 0, $forum_id
 	} else {
 		bbp_increase_topic_reply_count_hidden( $topic_id );
 		bbp_increase_forum_reply_count_hidden( $forum_id );
+	}
+}
+
+/** Validation ***************************************************************/
+
+/**
+ * Validate a reply title.
+ *
+ * Reply titles are optional, so empty titles are valid.
+ *
+ * @since 2.6.20 bbPress (r7978)
+ *
+ * @param string $reply_title Reply title.
+ */
+function bbp_validate_reply_title( $reply_title = '' ) {
+
+	// Title too long
+	if ( bbp_is_title_too_long( $reply_title ) ) {
+		bbp_add_error( 'bbp_reply_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
 	}
 }
 
@@ -268,6 +289,16 @@ function bbp_new_reply_handler( $action = '' ) {
 		}
 	}
 
+	// The topic, forum, or one of its ancestors still requires a password
+	if ( ! empty( $topic_id ) && bbp_get_password_required_id( $topic_id ) ) {
+		bbp_add_error( 'bbp_new_reply_topic_password', __( '<strong>Error</strong>: You must enter the topic or forum password to create new replies.', 'bbpress' ) );
+	}
+
+	// Apply the site-wide policy independently of this topic's forum status.
+	if ( ! bbp_current_user_can_post_in_forums() ) {
+		bbp_add_error( 'bbp_new_reply_forums_closed', __( '<strong>Error</strong>: The forums are not accepting new replies.', 'bbpress' ) );
+	}
+
 	/** Unfiltered HTML *******************************************************/
 
 	// Remove kses filters from title and content for capable users and if the nonce is verified
@@ -286,10 +317,8 @@ function bbp_new_reply_handler( $action = '' ) {
 	// Filter and sanitize
 	$reply_title = apply_filters( 'bbp_new_reply_pre_title', $reply_title );
 
-	// Title too long
-	if ( bbp_is_title_too_long( $reply_title ) ) {
-		bbp_add_error( 'bbp_reply_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-	}
+	// Validate the reply title
+	bbp_validate_reply_title( $reply_title );
 
 	/** Reply Content *********************************************************/
 
@@ -477,21 +506,29 @@ function bbp_new_reply_handler( $action = '' ) {
 
 		do_action( 'bbp_new_reply_post_extras', $reply_id );
 
-		/** Redirect **********************************************************/
+		/** Pending ***********************************************************/
 
-		// Redirect to
-		$redirect_to = bbp_get_redirect_to();
+		if ( bbp_get_pending_status_id() === bbp_get_reply_status( $reply_id ) ) {
+			bbp_add_error( 'bbp_reply_moderated', esc_html__( 'Your reply is pending moderation.', 'bbpress' ) );
+			unset( $_POST['bbp_reply_title'], $_POST['bbp_reply_content'], $_POST['bbp_topic_tags'] );
 
-		// Get the reply URL
-		$reply_url = bbp_get_reply_url( $reply_id, $redirect_to );
+		} else {
+			/** Redirect ******************************************************/
 
-		// Allow to be filtered
-		$reply_url = apply_filters( 'bbp_new_reply_redirect_to', $reply_url, $redirect_to, $reply_id );
+			// Redirect to
+			$redirect_to = bbp_get_redirect_to();
 
-		/** Successful Save ***************************************************/
+			// Get the reply URL
+			$reply_url = bbp_get_reply_url( $reply_id, $redirect_to );
 
-		// Redirect back to new reply
-		bbp_redirect( $reply_url );
+			// Allow to be filtered
+			$reply_url = apply_filters( 'bbp_new_reply_redirect_to', $reply_url, $redirect_to, $reply_id );
+
+			/** Successful Save ***************************************************/
+
+			// Redirect back to new reply
+			bbp_redirect( $reply_url );
+		}
 
 	/** Errors ****************************************************************/
 
@@ -623,10 +660,8 @@ function bbp_edit_reply_handler( $action = '' ) {
 	// Filter and sanitize
 	$reply_title = apply_filters( 'bbp_edit_reply_pre_title', $reply_title, $reply_id );
 
-	// Title too long
-	if ( bbp_is_title_too_long( $reply_title ) ) {
-		bbp_add_error( 'bbp_reply_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-	}
+	// Validate the reply title
+	bbp_validate_reply_title( $reply_title );
 
 	/** Reply Content *********************************************************/
 
@@ -867,27 +902,6 @@ function bbp_update_reply( $reply_id = 0, $topic_id = 0, $forum_id = 0, $anonymo
 		// Set transient for throttle check (only on new, not edit)
 		if ( empty( $is_edit ) ) {
 			set_transient( '_bbp_' . bbp_current_author_ip() . '_last_posted', time(), HOUR_IN_SECONDS );
-		}
-	}
-
-	// Handle Subscription Checkbox
-	if ( bbp_is_subscriptions_active() && ! empty( $author_id ) && ! empty( $topic_id ) ) {
-
-		// Check if subscribed
-		$subscribed = bbp_is_user_subscribed( $author_id, $topic_id );
-
-		// Check for action
-		$subscheck  = ( ! empty( $_POST['bbp_topic_subscription'] ) && ( 'bbp_subscribe' === $_POST['bbp_topic_subscription'] ) )
-			? true
-			: false;
-
-		// Subscribed and unsubscribing
-		if ( ( true === $subscribed ) && ( false === $subscheck ) ) {
-			bbp_remove_user_subscription( $author_id, $topic_id );
-
-		// Not subscribed and subscribing
-		} elseif ( ( false === $subscribed ) && ( true === $subscheck ) ) {
-			bbp_add_user_subscription( $author_id, $topic_id );
 		}
 	}
 
@@ -1183,7 +1197,7 @@ function bbp_get_reply_ancestors( $reply_id = 0 ) {
 				$grampy_id = bbp_get_reply_to( $ancestor->ID );
 
 				// Loop detection: If the ancestor has been seen before, break.
-				if ( empty( $ancestor->post_parent ) || ( $grampy_id === $reply_id ) || in_array( $grampy_id, $ancestors, true ) ) {
+				if ( empty( $grampy_id ) || empty( $ancestor->post_parent ) || ( $grampy_id === $reply_id ) || in_array( $grampy_id, $ancestors, true ) ) {
 					break;
 				}
 
@@ -1386,15 +1400,8 @@ function bbp_move_reply_handler( $action = '' ) {
 					// Filter the new topic title
 					$destination_topic_title = apply_filters( 'bbp_new_topic_pre_title', $destination_topic_title );
 
-					// Title cannot be empty
-					if ( empty( $destination_topic_title ) ) {
-						bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your topic needs a title.', 'bbpress' ) );
-					}
-
-					// Title too long
-					if ( bbp_is_title_too_long( $destination_topic_title ) ) {
-						bbp_add_error( 'bbp_topic_title', __( '<strong>Error</strong>: Your title is too long.', 'bbpress' ) );
-					}
+					// Validate the topic title
+					bbp_validate_topic_title( $destination_topic_title );
 
 					// Bail before converting the reply if there are errors
 					if ( bbp_has_errors() ) {
@@ -2169,6 +2176,7 @@ function bbp_reply_content_autoembed() {
  * to include both the topic AND its children in the same loop.
  *
  * @since 2.1.0 bbPress (r4059)
+ * @since 2.6.20 bbPress (r8013) Limit the index hint to the outer query.
  *
  * @param string $where
  * @param WP_Query $query
@@ -2227,13 +2235,43 @@ function _bbp_has_replies_where( $where = '', $query = false ) {
 		") AND ({$table_name}.ID = {$topic_id} OR {$table_name}.post_parent = {$topic_id})"
 	);
 
-	// Try to replace the search text with the replacement
-	$new_where = str_replace( $search, $replace, $where );
+	// Add the index hint to the outer query only.
+	$from_position = strpos( $where, $search[0] );
+	if ( false !== $from_position ) {
+		$where = substr_replace( $where, $replace[0], $from_position, strlen( $search[0] ) );
+	}
+
+	// Try to replace the remaining search text with the replacement.
+	$new_where = str_replace(
+		array_slice( $search, 1 ),
+		array_slice( $replace, 1 ),
+		$where
+	);
 	if ( ! empty( $new_where ) ) {
 		$where = $new_where;
 	}
 
 	return $where;
+}
+
+/**
+ * Prevent direct access to replies whose status or parent topic is not visible.
+ *
+ * @since 2.6.20 bbPress (r8013)
+ */
+function bbp_reply_enforce_visibility() {
+
+	// Bail if this is not a single reply request.
+	if ( ! bbp_is_single_reply() ) {
+		return;
+	}
+
+	$reply_id = bbp_get_reply_id();
+	$topic_id = bbp_get_reply_topic_id( $reply_id );
+
+	if ( ( ! bbp_is_reply_public( $reply_id ) && ! current_user_can( 'read_reply', $reply_id ) ) || ( ! bbp_is_topic_public( $topic_id ) && ! current_user_can( 'read_topic', $topic_id ) ) ) {
+		bbp_set_404();
+	}
 }
 
 /** Feeds *********************************************************************/
@@ -2417,7 +2455,7 @@ function bbp_update_reply_position( $reply_id = 0, $reply_position = false ) {
 		: bbp_get_reply_position_raw( $reply_id, bbp_get_reply_topic_id( $reply_id ) );
 
 	// Get the current reply position
-	$current_position = get_post_field( 'menu_order', $reply_id );
+	$current_position = (int) get_post_field( 'menu_order', $reply_id );
 
 	// Bail if no change
 	if ( $reply_position === $current_position ) {

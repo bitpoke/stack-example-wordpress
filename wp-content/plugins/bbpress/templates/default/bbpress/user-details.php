@@ -103,24 +103,24 @@ do_action( 'bbp_template_before_user_details' ); ?>
 				</li>
 			<?php endif; ?>
 
-			<?php if ( bbp_is_user_home() || current_user_can( 'edit_user', bbp_get_displayed_user_id() ) ) : ?>
+			<?php if ( bbp_is_subscriptions_active() && bbp_current_user_can_manage_engagements( 'subscription' ) ) : ?>
+				<li class="<?php if ( bbp_is_subscriptions() ) : ?>current<?php endif; ?>">
+					<span class="bbp-user-subscriptions-link">
+						<a href="<?php bbp_subscriptions_permalink(); ?>" title="
+							<?php
+							printf(
+								/* translators: %s: User's display name */
+								esc_attr__( "%s's Subscriptions", 'bbpress' ),
+								bbp_get_displayed_user_field( 'display_name' )
+							);
+							?>">
+							<?php esc_html_e( 'Subscriptions', 'bbpress' ); ?>
+						</a>
+					</span>
+				</li>
+			<?php endif; ?>
 
-				<?php if ( bbp_is_subscriptions_active() ) : ?>
-					<li class="<?php if ( bbp_is_subscriptions() ) : ?>current<?php endif; ?>">
-						<span class="bbp-user-subscriptions-link">
-							<a href="<?php bbp_subscriptions_permalink(); ?>" title="
-								<?php
-								printf(
-									/* translators: %s: User's display name */
-									esc_attr__( "%s's Subscriptions", 'bbpress' ),
-									bbp_get_displayed_user_field( 'display_name' )
-								);
-								?>">
-								<?php esc_html_e( 'Subscriptions', 'bbpress' ); ?>
-							</a>
-						</span>
-					</li>
-				<?php endif; ?>
+			<?php if ( bbp_is_user_home() || current_user_can( 'edit_user', bbp_get_displayed_user_id() ) ) : ?>
 
 				<li class="<?php if ( bbp_is_single_user_edit() ) : ?>current<?php endif; ?>">
 					<span class="bbp-user-edit-link">

@@ -10,6 +10,67 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** WordPress Content *********************************************************/
+
+/**
+ * Filter shortcodes in bbPress post content in WordPress content loops.
+ *
+ * bbPress renders its post content without running shortcodes, but a theme can
+ * pass the raw content through WordPress's the_content filter. Offer a bbPress
+ * sub-filter for this case without affecting shortcodes in other post types.
+ *
+ * @since 2.6.20 bbPress (r7848)
+ *
+ * @param false|string $output  Short-circuit value from an earlier filter.
+ * @param string       $tag     Shortcode name.
+ * @param array        $attr    Shortcode attributes.
+ * @param array        $matches Shortcode regular expression match.
+ * @return false|string Filtered short-circuit value.
+ */
+function bbp_pre_do_shortcode_tag( $output, $tag, $attr, $matches ) {
+	if ( ! doing_filter( 'the_content' ) ) {
+		return $output;
+	}
+
+	if ( ! in_array( get_post_type(), bbp_get_post_types(), true ) ) {
+		return $output;
+	}
+
+	return apply_filters( 'bbp_pre_do_shortcode_tag', $output, $tag, $attr, $matches );
+}
+
+/**
+ * Prevent shortcodes in bbPress post content unless explicitly allowed.
+ *
+ * The allow-list is empty by default because bbPress does not execute
+ * shortcodes in forum, topic, or reply content on its own content paths.
+ *
+ * @since 2.6.20 bbPress (r7848)
+ *
+ * @param false|string $output  Short-circuit value from an earlier filter.
+ * @param string       $tag     Shortcode name.
+ * @param array        $attr    Shortcode attributes.
+ * @param array        $matches Shortcode regular expression match.
+ * @return false|string Short-circuit value or the literal shortcode.
+ */
+function bbp_prevent_content_shortcodes( $output, $tag, $attr, $matches ) {
+	/**
+	 * Filter shortcode tags allowed to run in bbPress post content.
+	 *
+	 * @since 2.6.20 bbPress (r7848)
+	 *
+	 * @param array        $allowed   Allowed shortcode tags. Empty by default.
+	 * @param string|false $post_type Current post type.
+	 */
+	$allowed = (array) apply_filters( 'bbp_allowed_content_shortcodes', array(), get_post_type() );
+
+	if ( ! in_array( $tag, $allowed, true ) ) {
+		$output = $matches[0];
+	}
+
+	return $output;
+}
+
 /** Kses **********************************************************************/
 
 /**

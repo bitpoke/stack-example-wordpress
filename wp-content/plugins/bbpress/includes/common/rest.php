@@ -69,6 +69,14 @@ class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
 	 * @return true|WP_Error True if the request has access, WP_Error otherwise.
 	 */
 	public function create_item_permissions_check( $request ) {
+		if ( in_array( $this->post_type, array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true ) && ! bbp_current_user_can_post_in_forums() ) {
+			$message = ( bbp_get_topic_post_type() === $this->post_type )
+				? __( 'The forums are not accepting new topics.', 'bbpress' )
+				: __( 'The forums are not accepting new replies.', 'bbpress' );
+
+			return new WP_Error( 'bbp_rest_forums_closed', $message, array( 'status' => 403 ) );
+		}
+
 		$retval = parent::create_item_permissions_check( $request );
 
 		if ( is_wp_error( $retval ) || ! $retval || ! in_array( $this->post_type, array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true ) ) {
@@ -111,11 +119,11 @@ class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
 			);
 		}
 
-		// Match the front-end topic edit checks for category and closed forums.
+		// Match the front-end topic edit check for category forums.
 		if ( ! empty( $post ) && ( bbp_get_topic_post_type() === $post->post_type ) ) {
 			$topic_forum_id = bbp_get_topic_forum_id( $post->ID );
 
-			if ( bbp_is_forum_category( $topic_forum_id ) || ( bbp_is_forum_closed( $topic_forum_id ) && ! current_user_can( 'edit_forum', $topic_forum_id ) ) ) {
+			if ( bbp_is_forum_category( $topic_forum_id ) ) {
 				return new WP_Error(
 					'bbp_rest_cannot_edit_topic_forum',
 					esc_html__( 'You are not allowed to edit this topic in its forum.', 'bbpress' ),
@@ -310,31 +318,6 @@ class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
 	}
 
 	/**
-	 * Checks if a post type is allowed for permission checks.
-	 *
-	 * bbPress posts may be attachment parents even when their own REST routes
-	 * are disabled.
-	 *
-	 * @since 2.6.17 bbPress (r7482)
-	 *
-	 * @param WP_Post_Type|string $post_type Post type object or name.
-	 * @return bool Whether the post type is allowed.
-	 */
-	protected function check_is_post_type_allowed( $post_type ) {
-		if ( ! is_object( $post_type ) ) {
-			$post_type = get_post_type_object( $post_type );
-		}
-
-		$types = array( bbp_get_forum_post_type(), bbp_get_topic_post_type(), bbp_get_reply_post_type() );
-
-		if ( ! empty( $post_type ) && in_array( $post_type->name, $types, true ) ) {
-			return true;
-		}
-
-		return parent::check_is_post_type_allowed( $post_type );
-	}
-
-	/**
 	 * Checks if a post can be read.
 	 *
 	 * @since 2.6.17 bbPress (r7482)
@@ -375,6 +358,23 @@ class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
 				break;
 		}
 
+		// Do not expose content below a forum outside a registered visibility
+		$visibility_forum_ids = array();
+		if ( ! empty( $forum_id ) ) {
+			$visibility_forum_ids = ( bbp_get_forum_post_type() === $post->post_type )
+				? bbp_get_forum_ancestors( $forum_id )
+				: array_merge( array( $forum_id ), bbp_get_forum_ancestors( $forum_id ) );
+			$visibility_forum_ids = wp_parse_id_list( $visibility_forum_ids );
+		}
+
+		foreach ( $visibility_forum_ids as $visibility_forum_id ) {
+			$forum_visibilities = array_keys( bbp_get_forum_visibilities( $visibility_forum_id ) );
+
+			if ( ! in_array( bbp_get_forum_visibility( $visibility_forum_id ), $forum_visibilities, true ) ) {
+				return false;
+			}
+		}
+
 		// Check access to restricted forums and their ancestors
 		$restricted = ! empty( $forum_id ) && bbp_is_forum_restricted( $forum_id, true );
 		$moderator  = $restricted && is_user_logged_in() && bbp_is_user_forum_moderator( $user_id, $forum_id );
@@ -409,59 +409,5 @@ class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
 		}
 
 		return true;
-	}
-}
-
-/**
- * REST API controller for attachments to bbPress post types.
- *
- * @since 2.6.17 bbPress (r7482)
- */
-class BBP_REST_Attachments_Controller extends WP_REST_Attachments_Controller {
-
-	/**
-	 * Checks if an attachment can be read.
-	 *
-	 * @since 2.6.17 bbPress (r7482)
-	 *
-	 * @param WP_Post $post Attachment post object.
-	 * @return bool Whether the attachment can be read.
-	 */
-	public function check_read_permission( $post ) {
-		$post_type = get_post_type_object( $post->post_type );
-		if ( ! $this->check_is_post_type_allowed( $post_type ) ) {
-			return false;
-		}
-
-		// Inherit bbPress permissions from the attachment parent
-		if ( ( 'inherit' === $post->post_status ) && ! empty( $post->post_parent ) ) {
-			$parent = get_post( $post->post_parent );
-			$types  = array( bbp_get_forum_post_type(), bbp_get_topic_post_type(), bbp_get_reply_post_type() );
-
-			if ( ! empty( $parent ) && in_array( $parent->post_type, $types, true ) ) {
-				if ( bbp_get_password_required_id( $parent->ID ) ) {
-					return false;
-				}
-
-				$controller = new BBP_REST_Posts_Controller( $parent->post_type );
-
-				return $controller->check_read_permission( $parent );
-			}
-		}
-
-		return parent::check_read_permission( $post );
-	}
-}
-
-/**
- * Use the bbPress controller for attachments when Core's is unchanged.
- *
- * @since 2.6.17 bbPress (r7482)
- */
-function bbp_register_rest_attachment_controller() {
-	$post_type = get_post_type_object( 'attachment' );
-
-	if ( ! empty( $post_type ) && ( 'WP_REST_Attachments_Controller' === $post_type->rest_controller_class ) ) {
-		$post_type->rest_controller_class = 'BBP_REST_Attachments_Controller';
 	}
 }

@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 <ul id="bbp-forum-<?php bbp_forum_id(); ?>" <?php bbp_forum_class(); ?>>
 	<li class="bbp-forum-info">
 
-		<?php if ( bbp_is_user_home() && bbp_is_subscriptions() ) : ?>
+		<?php if ( bbp_is_subscriptions() && bbp_current_user_can_manage_engagements( 'subscription' ) ) : ?>
 
 			<span class="bbp-row-actions">
 

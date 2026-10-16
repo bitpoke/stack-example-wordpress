@@ -266,6 +266,10 @@ function bbp_view_query( $view = '', $new_args = '' ) {
 	}
 
 	$query_args = bbp_get_view_query_args( $view );
+	$views      = bbp_get_views();
+	if ( ! isset( $views[ $view ] ) && empty( $query_args ) ) {
+		return false;
+	}
 
 	if ( ! empty( $new_args ) ) {
 		$new_args   = bbp_parse_args( $new_args, '', 'view_query' );
@@ -624,6 +628,33 @@ function bbp_delete_rewrite_rules() {
 /** Requests ******************************************************************/
 
 /**
+ * Return the sanitized action for the current POST request.
+ *
+ * @since 2.6.20 bbPress (r7969)
+ *
+ * @return string
+ */
+function bbp_get_post_action() {
+	return ! empty( $_POST['action'] ) && is_string( $_POST['action'] )
+		? sanitize_key( $_POST['action'] )
+		: '';
+}
+
+/**
+ * Return true|false if this is a POST request for one of the given actions.
+ *
+ * @since 2.6.20 bbPress (r7969)
+ *
+ * @param string|array $action Action or actions to check.
+ * @return bool
+ */
+function bbp_is_post_action( $action = '' ) {
+	$post_action = bbp_get_post_action();
+
+	return ! empty( $post_action ) && bbp_is_post_request() && in_array( $post_action, (array) $action, true );
+}
+
+/**
  * Return true|false if this is a POST request
  *
  * @since 2.3.0 bbPress (r4791)
@@ -631,7 +662,8 @@ function bbp_delete_rewrite_rules() {
  * @return bool
  */
 function bbp_is_post_request() {
-	return (bool) ( 'POST' === strtoupper( $_SERVER['REQUEST_METHOD'] ) );
+	return isset( $_SERVER['REQUEST_METHOD'] )
+		&& ( 'POST' === strtoupper( $_SERVER['REQUEST_METHOD'] ) );
 }
 
 /**
@@ -642,7 +674,24 @@ function bbp_is_post_request() {
  * @return bool
  */
 function bbp_is_get_request() {
-	return (bool) ( 'GET' === strtoupper( $_SERVER['REQUEST_METHOD'] ) );
+	return isset( $_SERVER['REQUEST_METHOD'] )
+		&& ( 'GET' === strtoupper( $_SERVER['REQUEST_METHOD'] ) );
+}
+
+/**
+ * Return true|false if the GET action matches one of the given actions.
+ *
+ * @since 2.6.20 bbPress (r7985)
+ *
+ * @param string|array $action Action or actions to check.
+ * @return bool
+ */
+function bbp_is_get_action( $action = '' ) {
+	$get_action = ! empty( $_GET['action'] ) && is_string( $_GET['action'] )
+		? sanitize_key( $_GET['action'] )
+		: '';
+
+	return ! empty( $get_action ) && in_array( $get_action, (array) $action, true );
 }
 
 /** Redirection ***************************************************************/

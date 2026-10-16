@@ -36,7 +36,7 @@ function bbp_get_default_options() {
 
 			/** Flags *************************************************************/
 
-			'_bbp_flag_initial_content'   => 1,         // Flag to indicate initial content was created
+			'_bbp_flag_initial_content'   => 1,         // Flag to create initial content
 
 			/** Features **********************************************************/
 
@@ -58,6 +58,7 @@ function bbp_get_default_options() {
 
 			/** Settings **********************************************************/
 
+			'_bbp_forums_status'          => 'open',    // Site-wide forum content status
 			'_bbp_default_role'           => $role,     // Default forums role
 			'_bbp_edit_lock'              => 5,         // Lock post editing after 5 minutes
 			'_bbp_throttle_time'          => 10,        // Throttle post time to 10 seconds
@@ -322,6 +323,121 @@ function bbp_pre_load_options() {
 
 /** Active? *******************************************************************/
 
+/** Forum Status **************************************************************/
+
+/**
+ * Return the available site-wide forum statuses.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @return array Status labels keyed by status ID.
+ */
+function bbp_get_forums_statuses() {
+	$statuses = array(
+		'open'   => _x( 'Open',   'Site-wide forum status', 'bbpress' ),
+		'closed' => _x( 'Closed', 'Site-wide forum status', 'bbpress' ),
+		'frozen' => _x( 'Frozen', 'Site-wide forum status', 'bbpress' )
+	);
+
+	return (array) apply_filters( 'bbp_get_forums_statuses', $statuses );
+}
+
+/**
+ * Get the site-wide forums status.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @return string Valid status key, or open when the saved value is invalid.
+ */
+function bbp_get_forums_status() {
+	$status   = get_option( '_bbp_forums_status', 'open' );
+	$statuses = bbp_get_forums_statuses();
+
+	return is_string( $status ) && isset( $statuses[ $status ] )
+		? $status
+		: 'open';
+}
+
+/**
+ * Check the site-wide forums status.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @param string $status Status to check.
+ * @return bool Whether the current status matches.
+ */
+function bbp_is_forums_status( $status ) {
+	return is_string( $status ) && ( bbp_get_forums_status() === $status );
+}
+
+/**
+ * Check whether a user is a Keymaster or site-wide Moderator.
+ *
+ * Read the assigned capability directly so scoped BuddyPress and forum
+ * moderation cannot grant a site-wide exception.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @param int $user_id User ID.
+ * @return bool Whether the user has a site-wide moderation role or capability.
+ */
+function bbp_user_is_keymaster_or_moderator( $user_id ) {
+	$user = get_userdata( (int) $user_id );
+
+	return $user && ( bbp_is_user_keymaster( $user->ID ) || ! empty( $user->allcaps['moderate'] ) );
+}
+
+/**
+ * Check whether the site-wide status allows a user to post anywhere.
+ *
+ * This policy supplements the existing post-type and per-forum permissions.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @param int $user_id User ID.
+ * @return bool Whether the site-wide status allows posting in all forums.
+ */
+function bbp_user_can_post_in_forums( $user_id ) {
+	if ( bbp_is_forums_status( 'open' ) ) {
+		$retval = true;
+	} elseif ( bbp_is_forums_status( 'frozen' ) ) {
+		$retval = false;
+	} else {
+		$retval = bbp_user_is_keymaster_or_moderator( $user_id );
+	}
+
+	return (bool) apply_filters( 'bbp_user_can_post_in_forums', $retval, $user_id, bbp_get_forums_status() );
+}
+
+/**
+ * Check whether the site-wide status allows the current user to post anywhere.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @return bool Whether the site-wide status allows posting in all forums.
+ */
+function bbp_current_user_can_post_in_forums() {
+	return bbp_user_can_post_in_forums( get_current_user_id() );
+}
+
+/**
+ * Check whether the site-wide status permits a user to edit forums, topics, and replies.
+ *
+ * @since 2.6.20 bbPress (r7854)
+ *
+ * @param int $user_id User ID.
+ * @return bool Whether the site-wide status permits the user to edit.
+ */
+function bbp_user_can_edit_in_forums( $user_id ) {
+	if ( ! bbp_is_forums_status( 'frozen' ) ) {
+		$retval = true;
+	} else {
+		$retval = bbp_user_is_keymaster_or_moderator( $user_id );
+	}
+
+	return (bool) apply_filters( 'bbp_user_can_edit_in_forums', $retval, $user_id, bbp_get_forums_status() );
+}
+
 /**
  * Checks if favorites feature is enabled.
  *
@@ -460,8 +576,11 @@ function bbp_allow_search( $default = 1 ) {
  */
 function bbp_allow_threaded_replies( $default = 0 ) {
 
+	// Apply the legacy filter first for backward compatibility
+	$allow = (bool) apply_filters( '_bbp_allow_threaded_replies', (bool) get_option( '_bbp_allow_threaded_replies', $default ) );
+
 	// Filter & return
-	return (bool) apply_filters( '_bbp_allow_threaded_replies', (bool) get_option( '_bbp_allow_threaded_replies', $default ) );
+	return (bool) apply_filters( 'bbp_allow_threaded_replies', $allow );
 }
 
 /**
@@ -714,33 +833,57 @@ function bbp_settings_integration( $default = 'basic' ) {
 }
 
 /**
- * How to interact with engagements
+ * Check whether an engagements strategy is valid.
  *
- * There are 3 possible strategies:
+ * @since 2.6.20 bbPress (r8009)
+ *
+ * @param string $strategy Engagements strategy to check.
+ * @return bool Whether the strategy class exists and is not the base class.
+ */
+function bbp_is_valid_engagements_strategy( $strategy ) {
+	if ( ! is_string( $strategy ) ) {
+		return false;
+	}
+
+	$class_name         = 'BBP_User_Engagements_' . ucwords( $strategy );
+	$disallowed_classes = array(
+		strtolower( 'BBP_User_Engagements_Base' ),
+	);
+
+	return class_exists( $class_name ) && ! in_array( strtolower( $class_name ), $disallowed_classes, true );
+}
+
+/**
+ * How to interact with engagements.
+ *
+ * There are 3 bundled strategies:
  * - 'meta' 2.6 and higher. Uses multiple postmeta keys.
  * - 'user' Pre-2.6. Uses comma-separated string of IDs in usermeta.
  * - 'term' Alternate. Uses taxonomy term relationships.
  *
  * @since 2.6.0 bbPress (r6876)
+ * @since 2.6.20 bbPress (r8009) Validates stored and filtered strategy values.
  *
- * @param bool $default Optional. Default value false
- * @return string How to interact with engagements
+ * @param string $default Optional. Default value 'meta'.
+ * @return string Valid engagements strategy, or 'meta' if invalid.
  */
 function bbp_engagements_strategy( $default = 'meta' ) {
 
 	// Get the option value
 	$integration = get_option( '_bbp_engagements_strategy', $default );
 
-	// Check that class exists, or fallback
-	$class_name  = 'BBP_User_Engagements_' . ucwords( $integration );
-
 	// Fallback to 'meta' if invalid
-	if ( ! class_exists( $class_name ) ) {
+	if ( ! bbp_is_valid_engagements_strategy( $integration ) ) {
 		$integration = 'meta';
 	}
 
-	// Filter & return
-	return apply_filters( 'bbp_engagements_strategy', $integration, $default );
+	// Filter the integration
+	$integration = apply_filters( 'bbp_engagements_strategy', $integration, $default );
+
+	// Return a valid integration
+	return bbp_is_valid_engagements_strategy( $integration )
+		? $integration
+		: 'meta';
 }
 
 /** Slugs *********************************************************************/

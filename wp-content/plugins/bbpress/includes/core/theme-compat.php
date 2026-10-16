@@ -438,6 +438,11 @@ function bbp_theme_compat_reset_post( $args = array() ) {
 		);
 	}
 
+	// Use generated content when a theme requests an excerpt
+	if ( isset( $args['post_content'] ) && ! isset( $args['post_excerpt'] ) ) {
+		$args['post_excerpt'] = $args['post_content'];
+	}
+
 	// Parse & filter
 	$dummy = bbp_parse_args( $args, $defaults, 'theme_compat_reset_post' );
 
@@ -472,6 +477,45 @@ function bbp_theme_compat_reset_post( $args = array() ) {
 
 	// If we are resetting a post, we are in theme compat
 	bbp_set_theme_compat_active( true );
+}
+
+/**
+ * Filter the content of a forum or topic archive root page.
+ *
+ * Root pages are ordinary WordPress pages, even though an archive post may be
+ * current while their content is filtered. Temporarily use the root page as
+ * the current query post so shortcodes restore the correct post data.
+ *
+ * @since 2.6.20 bbPress (r7848)
+ *
+ * @param WP_Post $page Root page.
+ * @return string Filtered page content.
+ */
+function bbp_get_theme_compat_page_content( $page ) {
+	global $post;
+
+	$wp_query = bbp_get_wp_query();
+	$content  = ( $page instanceof WP_Post ) ? $page->post_content : '';
+
+	// Fall back to the previous behavior without a valid post and main query.
+	if ( ! ( $page instanceof WP_Post ) || ! ( $wp_query instanceof WP_Query ) ) {
+		return apply_filters( 'the_content', $content );
+	}
+
+	// The main query post is also the current global post in this call path.
+	$original_query_post = $wp_query->post;
+
+	try {
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$post           = $page;
+		$wp_query->post = $page;
+		$wp_query->setup_postdata( $page );
+
+		return apply_filters( 'the_content', $content );
+	} finally {
+		$wp_query->post = $original_query_post;
+		wp_reset_postdata();
+	}
 }
 
 /**
@@ -556,7 +600,7 @@ function bbp_template_include_theme_compat( $template = '' ) {
 
 		// ...or use the existing page content?
 		} else {
-			$new_content = apply_filters( 'the_content', $page->post_content );
+			$new_content = bbp_get_theme_compat_page_content( $page );
 		}
 
 		// Should we replace the title...
@@ -643,7 +687,7 @@ function bbp_template_include_theme_compat( $template = '' ) {
 
 		// ...or use the existing page content?
 		} else {
-			$new_content = apply_filters( 'the_content', $page->post_content );
+			$new_content = bbp_get_theme_compat_page_content( $page );
 		}
 
 		// Should we replace the title...
@@ -1016,11 +1060,28 @@ function bbp_restore_all_filters( $tag, $priority = false ) {
 		// Filters exist in this priority
 		if ( ! empty( $priority ) && isset( $bbp->filters->wp_filter[ $tag ][ $priority ] ) ) {
 
-			// Store filters in a backup
-			$wp_filter[ $tag ][ $priority ] = $bbp->filters->wp_filter[ $tag ][ $priority ];
+			// Restore through WP_Hook to preserve priority order
+			if ( class_exists( 'WP_Hook' ) ) {
+				if ( empty( $wp_filter[ $tag ] ) || ! is_a( $wp_filter[ $tag ], 'WP_Hook' ) ) {
+					$wp_filter[ $tag ] = new WP_Hook();
+				}
+
+				$wp_filter[ $tag ]->remove_all_filters( $priority );
+				foreach ( $bbp->filters->wp_filter[ $tag ][ $priority ] as $callback ) {
+					$wp_filter[ $tag ]->add_filter( $tag, $callback['function'], $priority, $callback['accepted_args'] );
+				}
+
+			// Restore legacy filter arrays in priority order
+			} else {
+				$wp_filter[ $tag ][ $priority ] = $bbp->filters->wp_filter[ $tag ][ $priority ];
+				ksort( $wp_filter[ $tag ] );
+			}
 
 			// Unset the filters
 			unset( $bbp->filters->wp_filter[ $tag ][ $priority ] );
+			if ( empty( $bbp->filters->wp_filter[ $tag ] ) ) {
+				unset( $bbp->filters->wp_filter[ $tag ] );
+			}
 
 		// Priority is empty
 		} else {

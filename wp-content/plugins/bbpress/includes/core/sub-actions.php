@@ -421,13 +421,8 @@ function bbp_post_request() {
 		return;
 	}
 
-	// Bail if no action, or if not a string (arrays not supported)
-	if ( empty( $_POST['action'] ) || ! is_string( $_POST['action'] ) ) {
-		return;
-	}
-
-	// Sanitize the POST action
-	$action = sanitize_key( $_POST['action'] );
+	// Get the POST action
+	$action = bbp_get_post_action();
 
 	// Bail if action was totally invalid
 	if ( empty( $action ) ) {
@@ -638,6 +633,7 @@ function bbp_user_can_embed_post( $post_id = 0 ) {
  */
 function bbp_filter_oembed_request_post_id( $post_id = 0 ) {
 	$post = get_post( $post_id );
+
 	if ( $post && bbp_is_custom_post_type( $post ) && ! bbp_user_can_embed_post( $post_id ) ) {
 		return 0;
 	}

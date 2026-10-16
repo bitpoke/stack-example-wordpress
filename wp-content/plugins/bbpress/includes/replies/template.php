@@ -199,13 +199,7 @@ function bbp_has_replies( $args = array() ) {
 	$bbp = bbpress();
 
 	// Call the query
-	if ( ! empty( $r['_bbp_public_topic_replies'] ) ) {
-		add_filter( 'posts_where', 'bbp_public_topic_replies_where', 10, 2 );
-	}
 	$bbp->reply_query = new WP_Query( $r );
-	if ( ! empty( $r['_bbp_public_topic_replies'] ) ) {
-		remove_filter( 'posts_where', 'bbp_public_topic_replies_where', 10 );
-	}
 
 	// Maybe prime the post author caches
 	if ( ! empty( $r['update_post_family_cache'] ) ) {
@@ -671,26 +665,33 @@ function bbp_reply_excerpt( $reply_id = 0, $length = 100 ) {
  * Output the post date and time of a reply
  *
  * @since 2.2.0 bbPress (r4156)
+ * @since 2.6.20 bbPress (r7972) Added the `$date_format` parameter.
  *
  * @param int $reply_id Optional. Reply id.
  * @param bool $humanize Optional. Humanize output using time_since
  * @param bool $gmt Optional. Use GMT
+ * @param string $date_format Optional. PHP date format. Defaults to the WordPress date format.
+ *                            Ignored when `$humanize` is true.
  */
-function bbp_reply_post_date( $reply_id = 0, $humanize = false, $gmt = false ) {
-	echo bbp_get_reply_post_date( $reply_id, $humanize, $gmt );
+function bbp_reply_post_date( $reply_id = 0, $humanize = false, $gmt = false, $date_format = '' ) {
+	echo bbp_get_reply_post_date( $reply_id, $humanize, $gmt, $date_format );
 }
 	/**
 	 * Return the post date and time of a reply
 	 *
 	 * @since 2.2.0 bbPress (r4156)
+	 * @since 2.6.20 bbPress (r7972) Added the `$date_format` parameter.
 	 *
 	 * @param int $reply_id Optional. Reply id.
 	 * @param bool $humanize Optional. Humanize output using time_since
 	 * @param bool $gmt Optional. Use GMT
+	 * @param string $date_format Optional. PHP date format. Defaults to the WordPress date format.
+	 *                            Ignored when `$humanize` is true.
 	 * @return string
 	 */
-function bbp_get_reply_post_date( $reply_id = 0, $humanize = false, $gmt = false ) {
-	$reply_id = bbp_get_reply_id( $reply_id );
+function bbp_get_reply_post_date( $reply_id = 0, $humanize = false, $gmt = false, $date_format = '' ) {
+	$reply_id    = bbp_get_reply_id( $reply_id );
+	$date_format = ! empty( $date_format ) ? $date_format : get_option( 'date_format' );
 
 	// 4 days, 4 hours ago
 	if ( ! empty( $humanize ) ) {
@@ -701,14 +702,14 @@ function bbp_get_reply_post_date( $reply_id = 0, $humanize = false, $gmt = false
 
 	// August 4, 2012 at 2:37 pm
 	} else {
-		$date   = get_post_time( get_option( 'date_format' ), $gmt, $reply_id, true );
+		$date   = get_post_time( $date_format, $gmt, $reply_id, true );
 		$time   = get_post_time( get_option( 'time_format' ), $gmt, $reply_id, true );
 		/* translators: 1: Date, 2: Time */
 		$result = sprintf( _x( '%1$s at %2$s', 'date at time', 'bbpress' ), $date, $time );
 	}
 
 	// Filter & return
-	return apply_filters( 'bbp_get_reply_post_date', $result, $reply_id, $humanize, $gmt, $date, $time );
+	return apply_filters( 'bbp_get_reply_post_date', $result, $reply_id, $humanize, $gmt, $date, $time, $date_format );
 }
 
 /**
@@ -2192,7 +2193,7 @@ function bbp_get_reply_move_link( $args = array() ) {
 
 	$uri = add_query_arg(
 		array(
-			'action'   => 'move',
+			'action'   => 'bbp-move-reply',
 			'reply_id' => $reply_id
 		),
 		bbp_get_reply_edit_url( $reply_id )
@@ -2258,7 +2259,7 @@ function bbp_get_topic_split_link( $args = array() ) {
 
 	$uri = add_query_arg(
 		array(
-			'action'   => 'split',
+			'action'   => 'bbp-split-topic',
 			'reply_id' => $reply_id
 		),
 		bbp_get_topic_edit_url( $topic_id )
@@ -2362,7 +2363,7 @@ function bbp_reply_class( $reply_id = 0, $classes = array() ) {
 		$topic_id  = bbp_get_reply_topic_id( $reply_id );
 		$forum_id  = bbp_get_reply_forum_id( $reply_id );
 		$author_id = bbp_get_reply_author_id( $reply_id );
-		$reply_pos = bbp_get_reply_position( $reply_id, true );
+		$reply_pos = bbp_get_reply_position( $reply_id, $topic_id );
 		$classes   = array_filter( (array) $classes );
 		$count     = isset( $bbp->reply_query->current_post )
 			? (int) $bbp->reply_query->current_post
@@ -2876,13 +2877,20 @@ function bbp_is_reply_form_post_request() {
 		return false;
 	}
 
+	$action = bbp_get_post_action();
+
+	// Bail if not a reply form action
+	if ( ! bbp_is_post_action( array( 'bbp-new-reply', 'bbp-edit-reply' ) ) ) {
+		return false;
+	}
+
 	// Creating a new reply
-	if ( bbp_verify_nonce_request( 'bbp-new-reply' ) ) {
+	if ( ( 'bbp-new-reply' === $action ) && bbp_verify_nonce_request( 'bbp-new-reply' ) ) {
 		return true;
 	}
 
 	// Editing an existing reply
-	if ( bbp_verify_nonce_request( 'bbp-edit-reply' ) ) {
+	if ( ( 'bbp-edit-reply' === $action ) && bbp_verify_nonce_request( 'bbp-edit-reply_' . bbp_get_reply_id() ) ) {
 		return true;
 	}
 

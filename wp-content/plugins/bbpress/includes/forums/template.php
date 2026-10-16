@@ -878,15 +878,18 @@ function bbp_get_forum_subscription_link( $args = array() ) {
 
 	// Defaults
 	$retval      = false;
+	$user_id     = bbp_is_subscriptions()
+		? bbp_get_user_id( 0, true, true )
+		: bbp_get_current_user_id();
 	$redirect_to = bbp_is_subscriptions()
-		? bbp_get_subscriptions_permalink()
+		? bbp_get_subscriptions_permalink( $user_id )
 		: '';
 
 	// Parse the arguments
 	$r = bbp_parse_args(
 		$args,
 		array(
-			'user_id'     => bbp_get_current_user_id(),
+			'user_id'     => $user_id,
 			'object_id'   => bbp_get_forum_id(),
 			'object_type' => 'post',
 			'before'      => '',
@@ -1656,10 +1659,15 @@ function bbp_is_forum_status( $forum_id, $status_name, $check_ancestors = true, 
 				if ( bbp_is_forum_category( $ancestor ) ) {
 
 					// Check the ancestor forum status
-					$retval = bbp_is_forum_status( $ancestor, $status_name, false );
-					if ( true === $retval ) {
+					$ancestor_matches = bbp_is_forum_status( $ancestor, $status_name, false );
+					if ( true === $ancestor_matches ) {
 						++$count;
 					}
+
+					// Combine statuses across the category hierarchy.
+					$retval = ( 'OR' === $operator )
+						? ( $retval || $ancestor_matches )
+						: ( $retval && $ancestor_matches );
 				}
 
 				// Break when it reach the max count
@@ -2174,35 +2182,35 @@ function bbp_get_single_forum_description( $args = array() ) {
 		// Has replies
 		if ( ! empty( $reply_count ) ) {
 			$retstr = bbp_is_forum_category( $forum_id )
-				/* translators: 1: Topics link, 2: Replies text, 3: Last update time, 4: Author link */
-				? sprintf( esc_html__( 'This category has %1$s, %2$s, and was last updated %3$s by %4$s.', 'bbpress' ), $topic_text, $reply_text, $time_since, $last_updated_by )
-				/* translators: 1: Topics link, 2: Replies text, 3: Last update time, 4: Author link */
-				: sprintf( esc_html__( 'This forum has %1$s, %2$s, and was last updated %3$s by %4$s.',    'bbpress' ), $topic_text, $reply_text, $time_since, $last_updated_by );
+				/* translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text, 3: Last update time, 4: Author link */
+				? sprintf( esc_html( _n( 'This category has %1$s, %2$s, and was last updated %3$s by %4$s.', 'This category has %1$s, %2$s, and was last updated %3$s by %4$s.', $tc_int, 'bbpress' ) ), $topic_text, $reply_text, $time_since, $last_updated_by )
+				/* translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text, 3: Last update time, 4: Author link */
+				: sprintf( esc_html( _n( 'This forum has %1$s, %2$s, and was last updated %3$s by %4$s.', 'This forum has %1$s, %2$s, and was last updated %3$s by %4$s.', $tc_int, 'bbpress' ) ), $topic_text, $reply_text, $time_since, $last_updated_by );
 
 		// Only has topics
 		} else {
 			$retstr = bbp_is_forum_category( $forum_id )
-				/* translators: 1: Topics link, 2: Last update time, 3: Author link */
-				? sprintf( esc_html__( 'This category has %1$s, and was last updated %2$s by %3$s.', 'bbpress' ), $topic_text, $time_since, $last_updated_by )
-				/* translators: 1: Topics link, 2: Last update time, 3: Author link */
-				: sprintf( esc_html__( 'This forum has %1$s, and was last updated %2$s by %3$s.',    'bbpress' ), $topic_text, $time_since, $last_updated_by );
+				/* translators: Plural form is selected by topic count. 1: Topics link, 2: Last update time, 3: Author link */
+				? sprintf( esc_html( _n( 'This category has %1$s, and was last updated %2$s by %3$s.', 'This category has %1$s, and was last updated %2$s by %3$s.', $tc_int, 'bbpress' ) ), $topic_text, $time_since, $last_updated_by )
+				/* translators: Plural form is selected by topic count. 1: Topics link, 2: Last update time, 3: Author link */
+				: sprintf( esc_html( _n( 'This forum has %1$s, and was last updated %2$s by %3$s.', 'This forum has %1$s, and was last updated %2$s by %3$s.', $tc_int, 'bbpress' ) ), $topic_text, $time_since, $last_updated_by );
 		}
 
 	// Forum has no last active data (but does have topics & replies)
 	} elseif ( ! empty( $reply_count ) ) {
 		$retstr = bbp_is_forum_category( $forum_id )
-			/* translators: 1: Topics link, 2: Replies text */
-			? sprintf( esc_html__( 'This category has %1$s and %2$s.', 'bbpress' ), $topic_text, $reply_text )
-			/* translators: 1: Topics link, 2: Replies text */
-			: sprintf( esc_html__( 'This forum has %1$s and %2$s.',    'bbpress' ), $topic_text, $reply_text );
+			/* translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text */
+			? sprintf( esc_html( _n( 'This category has %1$s and %2$s.', 'This category has %1$s and %2$s.', $tc_int, 'bbpress' ) ), $topic_text, $reply_text )
+			/* translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text */
+			: sprintf( esc_html( _n( 'This forum has %1$s and %2$s.', 'This forum has %1$s and %2$s.', $tc_int, 'bbpress' ) ), $topic_text, $reply_text );
 
 	// Forum has no last active data or replies (but does have topics)
 	} elseif ( ! empty( $topic_count ) ) {
 		$retstr = bbp_is_forum_category( $forum_id )
-			/* translators: 1: Topics link */
-			? sprintf( esc_html__( 'This category has %1$s.', 'bbpress' ), $topic_text )
-			/* translators: 1: Topics link */
-			: sprintf( esc_html__( 'This forum has %1$s.',    'bbpress' ), $topic_text );
+			/* translators: Plural form is selected by topic count. 1: Topics link */
+			? sprintf( esc_html( _n( 'This category has %1$s.', 'This category has %1$s.', $tc_int, 'bbpress' ) ), $topic_text )
+			/* translators: Plural form is selected by topic count. 1: Topics link */
+			: sprintf( esc_html( _n( 'This forum has %1$s.', 'This forum has %1$s.', $tc_int, 'bbpress' ) ), $topic_text );
 
 	// Forum is empty
 	} else {
@@ -2329,7 +2337,7 @@ function bbp_form_forum_moderators() {
 
 					// Comma separate user nicenames
 					if ( ! empty( $user_nicenames ) ) {
-						$forum_mods = implode( ', ', wp_list_pluck( $user_nicenames, 'user_nicename' ) );
+						$forum_mods = implode( ', ', $user_nicenames );
 					}
 				}
 			}
@@ -2545,9 +2553,9 @@ function bbp_get_form_forum_type_dropdown( $args = array() ) {
 			$r['forum_id'] = bbp_get_forum_id( $r['forum_id'] );
 			$r['selected'] = bbp_get_forum_type( $r['forum_id'] );
 
-		// New topic
+		// New forum
 		} else {
-			$r['selected'] = bbp_get_public_status_id();
+			$r['selected'] = 'forum';
 		}
 	}
 
@@ -2738,8 +2746,11 @@ function bbp_get_form_forum_visibility_dropdown( $args = array() ) {
 
 	<?php
 
+	// Preserve the existing type filter for visibility dropdowns.
+	$html = apply_filters( 'bbp_get_form_forum_type_dropdown', ob_get_clean(), $r, $args );
+
 	// Filter & return
-	return apply_filters( 'bbp_get_form_forum_type_dropdown', ob_get_clean(), $r, $args );
+	return apply_filters( 'bbp_get_form_forum_visibility_dropdown', $html, $r, $args );
 }
 
 /**
@@ -2761,13 +2772,20 @@ function bbp_is_forum_form_post_request() {
 		return false;
 	}
 
+	$action = bbp_get_post_action();
+
+	// Bail if not a forum form action
+	if ( ! bbp_is_post_action( array( 'bbp-new-forum', 'bbp-edit-forum' ) ) ) {
+		return false;
+	}
+
 	// Creating a new forum
-	if ( bbp_verify_nonce_request( 'bbp-new-forum' ) ) {
+	if ( ( 'bbp-new-forum' === $action ) && bbp_verify_nonce_request( 'bbp-new-forum' ) ) {
 		return true;
 	}
 
 	// Editing an existing forum
-	if ( bbp_verify_nonce_request( 'bbp-edit-forum_' . bbp_get_forum_id() ) ) {
+	if ( ( 'bbp-edit-forum' === $action ) && bbp_verify_nonce_request( 'bbp-edit-forum_' . bbp_get_forum_id() ) ) {
 		return true;
 	}
 

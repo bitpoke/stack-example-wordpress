@@ -741,11 +741,14 @@ abstract class BBP_Converter_Base {
 	 */
 	public function convert_forum_parents( $start = 1 ) {
 		$has_update = false;
+		$count_query = ! empty( $this->sync_table )
+			? $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value > 0",           '_bbp_old_forum_parent_id' )
+			: $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value > 0", '_bbp_old_forum_parent_id' );
 		$query      = ! empty( $this->sync_table )
-			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value > 0 LIMIT {$start}, {$this->max_rows}",           '_bbp_old_forum_parent_id' )
-			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value > 0 LIMIT {$start}, {$this->max_rows}", '_bbp_old_forum_parent_id' );
+			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value > 0 ORDER BY value_id, meta_id LIMIT {$start}, {$this->max_rows}",           '_bbp_old_forum_parent_id' )
+			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value > 0 ORDER BY post_id, meta_id LIMIT {$start}, {$this->max_rows}", '_bbp_old_forum_parent_id' );
 
-		foreach ( $this->count_rows_by_results( $query ) as $row ) {
+		foreach ( $this->count_rows_by_results( $query, $count_query, $start ) as $row ) {
 			$parent_id = $this->callback_forumid( $row->meta_value );
 			$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->posts} SET post_parent = %d WHERE ID = %d LIMIT 1", $parent_id, $row->value_id ) );
 			$has_update = true;
@@ -761,11 +764,14 @@ abstract class BBP_Converter_Base {
 	 */
 	public function convert_topic_stickies( $start = 1 ) {
 		$has_update = false;
+		$count_query = ! empty( $this->sync_table )
+			? $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s",           '_bbp_old_sticky_status_id', 'sticky' )
+			: $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s", '_bbp_old_sticky_status_id', 'sticky' );
 		$query      = ! empty( $this->sync_table )
-			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s LIMIT {$start}, {$this->max_rows}",           '_bbp_old_sticky_status_id', 'sticky' )
-			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s LIMIT {$start}, {$this->max_rows}", '_bbp_old_sticky_status_id', 'sticky' );
+			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s ORDER BY value_id, meta_id LIMIT {$start}, {$this->max_rows}",           '_bbp_old_sticky_status_id', 'sticky' )
+			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s ORDER BY post_id, meta_id LIMIT {$start}, {$this->max_rows}", '_bbp_old_sticky_status_id', 'sticky' );
 
-		foreach ( $this->count_rows_by_results( $query ) as $row ) {
+		foreach ( $this->count_rows_by_results( $query, $count_query, $start ) as $row ) {
 			bbp_stick_topic( $row->value_id );
 			$has_update = true;
 		}
@@ -780,11 +786,14 @@ abstract class BBP_Converter_Base {
 	 */
 	public function convert_topic_super_stickies( $start = 1 ) {
 		$has_update = false;
+		$count_query = ! empty( $this->sync_table )
+			? $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s",           '_bbp_old_sticky_status_id', 'super-sticky' )
+			: $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s", '_bbp_old_sticky_status_id', 'super-sticky' );
 		$query      = ! empty( $this->sync_table )
-			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s LIMIT {$start}, {$this->max_rows}",           '_bbp_old_sticky_status_id', 'super-sticky' )
-			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s LIMIT {$start}, {$this->max_rows}", '_bbp_old_sticky_status_id', 'super-sticky' );
+			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s ORDER BY value_id, meta_id LIMIT {$start}, {$this->max_rows}",           '_bbp_old_sticky_status_id', 'super-sticky' )
+			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s ORDER BY post_id, meta_id LIMIT {$start}, {$this->max_rows}", '_bbp_old_sticky_status_id', 'super-sticky' );
 
-		foreach ( $this->count_rows_by_results( $query ) as $row ) {
+		foreach ( $this->count_rows_by_results( $query, $count_query, $start ) as $row ) {
 			$super = true;
 			bbp_stick_topic( $row->value_id, $super );
 			$has_update = true;
@@ -800,11 +809,14 @@ abstract class BBP_Converter_Base {
 	 */
 	public function convert_topic_closed_topics( $start = 1 ) {
 		$has_update = false;
+		$count_query = ! empty( $this->sync_table )
+			? $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s",           '_bbp_old_closed_status_id', 'closed' )
+			: $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s", '_bbp_old_closed_status_id', 'closed' );
 		$query      = ! empty( $this->sync_table )
-			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s LIMIT {$start}, {$this->max_rows}",           '_bbp_old_closed_status_id', 'closed' )
-			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s LIMIT {$start}, {$this->max_rows}", '_bbp_old_closed_status_id', 'closed' );
+			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value = %s ORDER BY value_id, meta_id LIMIT {$start}, {$this->max_rows}",           '_bbp_old_closed_status_id', 'closed' )
+			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s ORDER BY post_id, meta_id LIMIT {$start}, {$this->max_rows}", '_bbp_old_closed_status_id', 'closed' );
 
-		foreach ( $this->count_rows_by_results( $query ) as $row ) {
+		foreach ( $this->count_rows_by_results( $query, $count_query, $start ) as $row ) {
 			bbp_close_topic( $row->value_id );
 			$has_update = true;
 		}
@@ -819,11 +831,14 @@ abstract class BBP_Converter_Base {
 	 */
 	public function convert_reply_to_parents( $start = 1 ) {
 		$has_update = false;
+		$count_query = ! empty( $this->sync_table )
+			? $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value > 0",           '_bbp_old_reply_to_id' )
+			: $this->wpdb->prepare( "SELECT COUNT(*) FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value > 0", '_bbp_old_reply_to_id' );
 		$query      = ! empty( $this->sync_table )
-			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value > 0 LIMIT {$start}, {$this->max_rows}",           '_bbp_old_reply_to_id' )
-			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value > 0 LIMIT {$start}, {$this->max_rows}", '_bbp_old_reply_to_id' );
+			? $this->wpdb->prepare( "SELECT value_id, meta_value FROM {$this->sync_table_name} WHERE meta_key = %s AND meta_value > 0 ORDER BY value_id, meta_id LIMIT {$start}, {$this->max_rows}",           '_bbp_old_reply_to_id' )
+			: $this->wpdb->prepare( "SELECT post_id AS value_id, meta_value FROM {$this->wpdb->postmeta} WHERE meta_key = %s AND meta_value > 0 ORDER BY post_id, meta_id LIMIT {$start}, {$this->max_rows}", '_bbp_old_reply_to_id' );
 
-		foreach ( $this->count_rows_by_results( $query ) as $row ) {
+		foreach ( $this->count_rows_by_results( $query, $count_query, $start ) as $row ) {
 			$reply_to = $this->callback_reply_to( $row->meta_value );
 			$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND post_id = %d LIMIT 1", $reply_to, '_bbp_reply_to', $row->value_id ) );
 			$has_update = true;
@@ -842,34 +857,62 @@ abstract class BBP_Converter_Base {
 		$has_update = false;
 
 		if ( ! empty( $this->sync_table ) ) {
+			$count_query = $this->wpdb->prepare( "SELECT COUNT(*)
+				FROM {$this->sync_table_name} AS sync_table1
+				INNER JOIN {$this->sync_table_name} AS sync_table2
+				ON ( sync_table1.value_id = sync_table2.value_id )
+				WHERE sync_table1.meta_key = %s
+				AND sync_table1.meta_value = %s
+				AND sync_table2.meta_key = %s",
+				'_bbp_old_is_topic_anonymous_id',
+				'true',
+				'_bbp_old_topic_author_name_id'
+			);
 			$query = $this->wpdb->prepare( "SELECT sync_table1.value_id AS topic_id, sync_table1.meta_value AS topic_is_anonymous, sync_table2.meta_value AS topic_author
 				FROM {$this->sync_table_name} AS sync_table1
 				INNER JOIN {$this->sync_table_name} AS sync_table2
 				ON ( sync_table1.value_id = sync_table2.value_id )
-				WHERE sync_table1.meta_value = %s
+				WHERE sync_table1.meta_key = %s
+				AND sync_table1.meta_value = %s
 				AND sync_table2.meta_key = %s
+					ORDER BY sync_table1.value_id, sync_table1.meta_id, sync_table2.meta_id
 				LIMIT {$start}, {$this->max_rows}",
+				'_bbp_old_is_topic_anonymous_id',
 				'true',
 				'_bbp_old_topic_author_name_id'
 			);
 		} else {
+			$count_query = $this->wpdb->prepare( "SELECT COUNT(*)
+				FROM {$this->wpdb->postmeta} AS wp_postmeta1
+				INNER JOIN {$this->wpdb->postmeta} AS wp_postmeta2
+				ON ( wp_postmeta1.post_id = wp_postmeta2.post_id )
+				WHERE wp_postmeta1.meta_key = %s
+				AND wp_postmeta1.meta_value = %s
+				AND wp_postmeta2.meta_key = %s",
+				'_bbp_old_is_topic_anonymous_id',
+				'true',
+				'_bbp_old_topic_author_name_id'
+			);
 			$query = $this->wpdb->prepare( "SELECT wp_postmeta1.post_id AS topic_id, wp_postmeta1.meta_value AS topic_is_anonymous, wp_postmeta2.meta_value AS topic_author
 				FROM {$this->wpdb->postmeta} AS wp_postmeta1
 				INNER JOIN {$this->wpdb->postmeta} AS wp_postmeta2
 				ON ( wp_postmeta1.post_id = wp_postmeta2.post_id )
-				WHERE wp_postmeta1.meta_value = %s
+				WHERE wp_postmeta1.meta_key = %s
+				AND wp_postmeta1.meta_value = %s
 				AND wp_postmeta2.meta_key = %s
+					ORDER BY wp_postmeta1.post_id, wp_postmeta1.meta_id, wp_postmeta2.meta_id
 				LIMIT {$start}, {$this->max_rows}",
+				'_bbp_old_is_topic_anonymous_id',
 				'true',
 				'_bbp_old_topic_author_name_id'
 			);
 		}
 
-		foreach ( $this->count_rows_by_results( $query ) as $row ) {
+		foreach ( $this->count_rows_by_results( $query, $count_query, $start ) as $row ) {
 			$anonymous_topic_author_id = 0;
 			$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->posts} SET post_author = %d WHERE ID = %d LIMIT 1", $anonymous_topic_author_id, $row->topic_id ) );
 
-			add_post_meta( $row->topic_id, '_bbp_anonymous_name', $row->topic_author );
+			update_post_meta( $row->topic_id, '_bbp_anonymous_name', $row->topic_author );
 
 			$has_update = true;
 		}
@@ -887,34 +930,62 @@ abstract class BBP_Converter_Base {
 		$has_update = false;
 
 		if ( ! empty( $this->sync_table ) ) {
+			$count_query = $this->wpdb->prepare( "SELECT COUNT(*)
+				FROM {$this->sync_table_name} AS sync_table1
+				INNER JOIN {$this->sync_table_name} AS sync_table2
+				ON ( sync_table1.value_id = sync_table2.value_id )
+				WHERE sync_table1.meta_key = %s
+				AND sync_table1.meta_value = %s
+				AND sync_table2.meta_key = %s",
+				'_bbp_old_is_reply_anonymous_id',
+				'true',
+				'_bbp_old_reply_author_name_id'
+			);
 			$query = $this->wpdb->prepare( "SELECT sync_table1.value_id AS reply_id, sync_table1.meta_value AS reply_is_anonymous, sync_table2.meta_value AS reply_author
 				FROM {$this->sync_table_name} AS sync_table1
 				INNER JOIN {$this->sync_table_name} AS sync_table2
 				ON ( sync_table1.value_id = sync_table2.value_id )
-				WHERE sync_table1.meta_value = %s
+				WHERE sync_table1.meta_key = %s
+				AND sync_table1.meta_value = %s
 				AND sync_table2.meta_key = %s
+					ORDER BY sync_table1.value_id, sync_table1.meta_id, sync_table2.meta_id
 				LIMIT {$start}, {$this->max_rows}",
+				'_bbp_old_is_reply_anonymous_id',
 				'true',
 				'_bbp_old_reply_author_name_id'
 			);
 		} else {
+			$count_query = $this->wpdb->prepare( "SELECT COUNT(*)
+				FROM {$this->wpdb->postmeta} AS wp_postmeta1
+				INNER JOIN {$this->wpdb->postmeta} AS wp_postmeta2
+				ON ( wp_postmeta1.post_id = wp_postmeta2.post_id )
+				WHERE wp_postmeta1.meta_key = %s
+				AND wp_postmeta1.meta_value = %s
+				AND wp_postmeta2.meta_key = %s",
+				'_bbp_old_is_reply_anonymous_id',
+				'true',
+				'_bbp_old_reply_author_name_id'
+			);
 			$query = $this->wpdb->prepare( "SELECT wp_postmeta1.post_id AS reply_id, wp_postmeta1.meta_value AS reply_is_anonymous, wp_postmeta2.meta_value AS reply_author
 				FROM {$this->wpdb->postmeta} AS wp_postmeta1
 				INNER JOIN {$this->wpdb->postmeta} AS wp_postmeta2
 				ON ( wp_postmeta1.post_id = wp_postmeta2.post_id )
-				WHERE wp_postmeta1.meta_value = %s
+				WHERE wp_postmeta1.meta_key = %s
+				AND wp_postmeta1.meta_value = %s
 				AND wp_postmeta2.meta_key = %s
+					ORDER BY wp_postmeta1.post_id, wp_postmeta1.meta_id, wp_postmeta2.meta_id
 				LIMIT {$start}, {$this->max_rows}",
+				'_bbp_old_is_reply_anonymous_id',
 				'true',
 				'_bbp_old_reply_author_name_id'
 			);
 		}
 
-		foreach ( $this->count_rows_by_results( $query ) as $row ) {
+		foreach ( $this->count_rows_by_results( $query, $count_query, $start ) as $row ) {
 			$anonymous_reply_author_id = 0;
 			$this->query( $this->wpdb->prepare( "UPDATE {$this->wpdb->posts} SET post_author = %d WHERE ID = %d LIMIT 1", $anonymous_reply_author_id, $row->reply_id ) );
 
-			add_post_meta( $row->reply_id, '_bbp_anonymous_name', $row->reply_author );
+			update_post_meta( $row->reply_id, '_bbp_anonymous_name', $row->reply_author );
 
 			$has_update = true;
 		}
@@ -1145,14 +1216,22 @@ abstract class BBP_Converter_Base {
 	 * Update the number of rows in the current step
 	 *
 	 * @since 2.6.0 bbPress (r6681)
+	 * @since 2.6.20 bbPress (r7920) Count complete result sets across batches.
 	 *
-	 * @param string $query The literal MySQL query
+	 * @param string $query       The literal MySQL results query.
+	 * @param string $count_query The literal MySQL count query.
+	 * @param int    $start       Current conversion offset.
 	 * @return array
 	 */
-	private function count_rows_by_results( $query = '' ) {
-		$results = $this->get_results( $query );
+	private function count_rows_by_results( $query = '', $count_query = '', $start = 0 ) {
+		$results      = $this->get_results( $query );
+		$saved_count  = (int) get_option( '_bbp_converter_rows_in_step', 0 );
+		$result_count = count( $results );
 
-		update_option( '_bbp_converter_rows_in_step', count( $results ) );
+		if ( empty( $start ) || ! $saved_count || ( $result_count && ( $start + $result_count > $saved_count ) ) ) {
+			$count = (int) $this->wpdb->get_var( $count_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			update_option( '_bbp_converter_rows_in_step', $count );
+		}
 
 		return $results;
 	}

@@ -16,6 +16,11 @@ jQuery( document ).ready( function ( $ ) {
 		total_p  = $( '#bbp-converter-total-percentage' ),
 		fields   = settings.find( 'table:first-of-type input, table:first-of-type select' );
 
+	// A fresh page starts a new import after the previous one completed.
+	if ( BBP_Converter.state.finished ) {
+		restart.prop( 'checked', true );
+	}
+
 	/**
 	 * Show/hide db password button toggle
 	 *
@@ -110,10 +115,6 @@ jQuery( document ).ready( function ( $ ) {
 			values[ field.name ] = field.value;
 		} );
 
-		if ( values['_bbp_converter_restart'] ) {
-			restart.removeAttr( 'checked' );
-		}
-
 		if ( values['_bbp_converter_delay_time'] ) {
 			BBP_Converter.state.delay = parseInt( values['_bbp_converter_delay_time'], 10 ) * 1000;
 		}
@@ -140,6 +141,7 @@ jQuery( document ).ready( function ( $ ) {
 
 				// Success
 				if ( true === response.success ) {
+					restart.prop( 'checked', false );
 					bbp_converter_step( data );
 
 				// Failure
@@ -150,7 +152,9 @@ jQuery( document ).ready( function ( $ ) {
 			} catch( e ) {
 				bbp_converter_stop();
 			}
-		}, 'json' );
+		}, 'json' ).fail( function() {
+			bbp_converter_stop();
+		} );
 	}
 
 	/**
@@ -163,8 +167,8 @@ jQuery( document ).ready( function ( $ ) {
 	 */
 	function bbp_converter_step( data ) {
 
-		// Bail if not running
-		if ( ! BBP_Converter.state.running ) {
+		// Bail if not running, unless the final request completed
+		if ( ! BBP_Converter.state.running && ( true !== data.finished ) ) {
 			return;
 		}
 
@@ -175,7 +179,8 @@ jQuery( document ).ready( function ( $ ) {
 		bbp_converter_wait();
 
 		// Done
-		if ( data.current_step === data.final_step ) {
+		if ( true === data.finished ) {
+			restart.prop( 'checked', true );
 			bbp_converter_stop(
 				BBP_Converter.strings.button_start,
 				BBP_Converter.strings.import_complete
@@ -317,10 +322,10 @@ jQuery( document ).ready( function ( $ ) {
 			if ( remaining <= 0 ) {
 				clearInterval( BBP_Converter.state.status );
 
-				if ( parseInt( data.current_step, 10 ) < parseInt( data.final_step, 10 ) ) {
-					status.text( BBP_Converter.strings.status_up_next.replace( '%s', data.current_step ) );
-				} else {
+				if ( true === data.finished ) {
 					status.text( BBP_Converter.strings.status_complete );
+				} else {
+					status.text( BBP_Converter.strings.status_up_next.replace( '%s', data.current_step ) );
 				}
 			}
 		}, 1000 );
