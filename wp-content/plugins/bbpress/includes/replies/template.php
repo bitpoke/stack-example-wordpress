@@ -560,7 +560,28 @@ function bbp_get_reply_title_fallback( $post_title = '', $post_id = 0 ) {
 
 	// Do not use an unreadable parent's title as the reply title.
 	if ( ! bbp_user_can_embed_post( $post_id ) ) {
-		return apply_filters( 'bbp_get_reply_title_fallback', esc_html__( 'Reply', 'bbpress' ), $post_id, '' );
+		// Pending replies are not embeddable, so check the reader's access.
+		$can_read = is_user_logged_in() && current_user_can( 'read_reply', $post_id );
+
+		if ( $can_read ) {
+			$topic_id = bbp_get_reply_topic_id( $post_id );
+			$can_read = bbp_is_topic( $topic_id ) && current_user_can( 'read_topic', $topic_id );
+		}
+
+		if ( $can_read ) {
+			$forum_id = bbp_get_reply_forum_id( $post_id );
+			$can_read = bbp_is_forum_visibility_valid( $forum_id )
+				&& bbp_user_can_view_forum( array( 'forum_id' => $forum_id ) )
+				&& ! bbp_is_forum_restricted_for_user( $forum_id, bbp_get_current_user_id() );
+		}
+
+		if ( $can_read ) {
+			$can_read = ! bbp_is_password_protected( $post_id );
+		}
+
+		if ( ! $can_read ) {
+			return apply_filters( 'bbp_get_reply_title_fallback', esc_html__( 'Reply', 'bbpress' ), $post_id, '' );
+		}
 	}
 
 	// Get reply topic title.
@@ -786,16 +807,21 @@ function bbp_get_reply_revision_log( $reply_id = 0 ) {
 			$author_id = $revision->post_author;
 			$reason    = '';
 		} else {
-			$author_id = $revision_log[ $revision->ID ]['author'];
+			$author_id = (int) $revision_log[ $revision->ID ]['author'];
 			$reason    = $revision_log[ $revision->ID ]['reason'];
+
+			if ( empty( $author_id ) ) {
+				$author_id = $revision->post_author;
+			}
 		}
 
 		$since  = bbp_get_time_since( bbp_convert_date( $revision->post_modified ) );
 		$author = bbp_get_author_link(
 			array(
+				'post_id'   => $revision->ID,
+				'user_id'   => $author_id,
 				'size'      => 14,
-				'link_text' => bbp_get_reply_author_display_name( $revision->ID ),
-				'post_id'   => $revision->ID
+				'link_text' => bbp_get_reply_author_display_name( $revision->ID )
 			)
 		);
 
@@ -2647,17 +2673,25 @@ function bbp_reply_to_dropdown( $reply_id = 0 ) {
 	 * Return a select box allowing to pick which topic/reply a reply belongs.
 	 *
 	 * @since 2.6.0 bbPress (r5387)
+	 * @since 2.6.21 bbPress (r8137) Added the $topic_id parameter.
 	 *
 	 * @param int $reply_id
+	 * @param int $topic_id Optional topic id when previewing a reply move.
 	 *
 	 * @return string The dropdown
 	 */
-function bbp_get_reply_to_dropdown( $reply_id = 0 ) {
+function bbp_get_reply_to_dropdown( $reply_id = 0, $topic_id = 0 ) {
 
 	// Validate the reply data
 	$reply_id = bbp_get_reply_id( $reply_id );
 	$reply_to = bbp_get_reply_to( $reply_id );
-	$topic_id = bbp_get_reply_topic_id( $reply_id );
+	$saved_topic_id = bbp_get_reply_topic_id( $reply_id );
+	$topic_id       = ! empty( $topic_id ) ? (int) $topic_id : $saved_topic_id;
+
+	// A reply in the old topic cannot be the parent in the new topic.
+	if ( $topic_id !== $saved_topic_id ) {
+		$reply_to = 0;
+	}
 
 	// Get the replies
 	$posts = get_posts(

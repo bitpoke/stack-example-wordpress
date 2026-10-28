@@ -553,6 +553,12 @@ function bbp_parse_query( $posts_query ) {
 
 		/** Find User *********************************************************/
 
+		// 404 and bail if the user query variable is not scalar
+		if ( ! is_scalar( $bbp_user ) ) {
+			$posts_query->bbp_is_404 = true;
+			return;
+		}
+
 		// Setup the default user variable
 		$the_user = false;
 
@@ -630,6 +636,11 @@ function bbp_parse_query( $posts_query ) {
 
 		// Make sure 404 is not set
 		$posts_query->is_404  = false;
+
+		// Reset singular state inherited from WordPress query variables
+		$posts_query->is_page     = false;
+		$posts_query->is_single   = false;
+		$posts_query->is_singular = false;
 
 		// Correct is_home variable
 		$posts_query->is_home = false;

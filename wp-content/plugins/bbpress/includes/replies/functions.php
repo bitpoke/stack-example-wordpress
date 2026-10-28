@@ -251,17 +251,17 @@ function bbp_new_reply_handler( $action = '' ) {
 			// Get the forum id
 			$posted_forum_id = intval( $_POST['bbp_forum_id'] );
 
-			// Forum id is empty
+			// Forum id is 0
 			if ( 0 === $posted_forum_id ) {
-				bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID is missing.', 'bbpress' ) );
+				bbp_add_error( 'bbp_reply_forum_id', __( '<strong>Error</strong>: Forum ID is missing.', 'bbpress' ) );
 
 			// Forum id is a negative number
 			} elseif ( 0 > $posted_forum_id ) {
-				bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID cannot be a negative number.', 'bbpress' ) );
+				bbp_add_error( 'bbp_reply_forum_id', __( '<strong>Error</strong>: Forum ID cannot be a negative number.', 'bbpress' ) );
 
 			// Forum does not exist
 			} elseif ( ! bbp_get_forum( $posted_forum_id ) ) {
-				bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum does not exist.', 'bbpress' ) );
+				bbp_add_error( 'bbp_reply_forum_id', __( '<strong>Error</strong>: Forum does not exist.', 'bbpress' ) );
 
 			}
 		}
@@ -754,6 +754,12 @@ function bbp_edit_reply_handler( $action = '' ) {
 		)
 	);
 
+	// Preserve the original reply when its first logged edit is submitted.
+	$log_reply_edit = ! empty( $_POST['bbp_log_reply_edit'] ) && ( '1' === $_POST['bbp_log_reply_edit'] );
+	if ( $log_reply_edit ) {
+		bbp_save_initial_post_revision( $reply_id );
+	}
+
 	// Toggle revisions to avoid duplicates
 	if ( post_type_supports( bbp_get_reply_post_type(), 'revisions' ) ) {
 		$revisions_removed = true;
@@ -801,7 +807,7 @@ function bbp_edit_reply_handler( $action = '' ) {
 		}
 
 		// Update revision log
-		if ( ! empty( $_POST['bbp_log_reply_edit'] ) && ( '1' === $_POST['bbp_log_reply_edit'] ) ) {
+		if ( $log_reply_edit ) {
 			$revision_id = wp_save_post_revision( $reply_id );
 			if ( ! empty( $revision_id ) ) {
 				bbp_update_reply_revision_log(
@@ -2270,7 +2276,12 @@ function bbp_reply_enforce_visibility() {
 	$topic_id = bbp_get_reply_topic_id( $reply_id );
 
 	if ( ( ! bbp_is_reply_public( $reply_id ) && ! current_user_can( 'read_reply', $reply_id ) ) || ( ! bbp_is_topic_public( $topic_id ) && ! current_user_can( 'read_topic', $topic_id ) ) ) {
-		bbp_set_404();
+		$query = bbp_get_wp_query();
+
+		bbp_set_404( $query );
+
+		// Stop WordPress from rendering a feed body after visibility failed.
+		$query->is_feed = false;
 	}
 }
 

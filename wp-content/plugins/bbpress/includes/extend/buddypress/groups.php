@@ -25,6 +25,15 @@ if ( ! class_exists( 'BBP_Forums_Group_Extension' ) && class_exists( 'BP_Group_E
  */
 class BBP_Forums_Group_Extension extends BP_Group_Extension {
 
+	/**
+	 * Published forums attached to BuddyPress groups.
+	 *
+	 * @since 2.6.21 bbPress (r8091)
+	 *
+	 * @var array|null
+	 */
+	private $published_group_forum_ids = null;
+
 	/** Methods ***************************************************************/
 
 	/**
@@ -97,6 +106,10 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		add_action( 'bbp_edit_topic_pre_extras',      array( $this, 'validate_topic_forum_id' ) );
 		add_action( 'bbp_edit_reply_pre_extras',      array( $this, 'validate_reply_to_id'    ) );
 
+		// Validate group membership when creating topics & replies
+		add_action( 'bbp_new_topic_pre_extras',       array( $this, 'validate_new_post'       ), 10, 1 );
+		add_action( 'bbp_new_reply_pre_extras',       array( $this, 'validate_new_post'       ), 10, 2 );
+
 		// Check if group-forum attributes should be changed
 		add_action( 'groups_group_after_save',        array( $this, 'update_group_forum' ) );
 
@@ -155,6 +168,8 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		add_filter( 'bbp_allow_read_without_spectate', array( $this, 'allow_group_forum_read_without_role' ), 10, 4 );
 		add_filter( 'bbp_map_meta_caps',              array( $this, 'map_group_forum_read_meta_caps' ), 20, 4 );
 		add_filter( 'bbp_get_excluded_forum_ids',     array( $this, 'exclude_group_forum_ids'        ), 20    );
+		add_filter( 'bbp_is_forum_restricted_for_user', array( $this, 'restrict_inaccessible_group_forums' ), 10, 3 );
+		add_filter( 'bbp_user_can_view_forum',         array( $this, 'filter_user_can_view_forum'       ), 10, 3 );
 
 		// BuddyPress rewrites resolve the group during query parsing.
 		if ( function_exists( 'bp_core_get_query_parser' ) && ( 'rewrites' === bp_core_get_query_parser() ) && ! ( bp_is_single_item() && bp_is_group() && bp_is_current_action( $this->slug ) ) ) {
@@ -191,22 +206,33 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 	}
 
 	/**
-	 * Check whether a user can view a private or hidden group forum.
+	 * Check whether a user can view a group forum.
 	 *
 	 * @since 2.6.17 bbPress (r7496)
+	 * @since 2.6.21 bbPress (r8091) Enforce BuddyPress community visibility.
 	 *
 	 * @param int $user_id  User ID.
 	 * @param int $forum_id Forum ID.
 	 * @return bool|null Whether the user can view the group forum, or null when
-	 *                   the forum is not a restricted group forum.
+	 *                   normal bbPress permissions apply.
 	 */
 	public function user_can_view_group_forum( $user_id = 0, $forum_id = 0 ) {
 		$user_id   = bbp_get_user_id( $user_id, false, false );
 		$forum_id  = bbp_get_forum_id( $forum_id );
 		$group_ids = bbp_get_forum_group_ids( $forum_id );
 
-		// Keep normal bbPress permissions for other forums
-		if ( empty( $group_ids ) || ! bbp_is_forum_restricted( $forum_id, false ) ) {
+		// Keep normal bbPress permissions for other forums.
+		if ( empty( $group_ids ) ) {
+			return null;
+		}
+
+		// Enforce BuddyPress community visibility for group forums.
+		if ( function_exists( 'bp_get_community_visibility' ) && ! bp_user_can( $user_id, 'bp_view', array( 'bp_component' => 'groups' ) ) ) {
+			return false;
+		}
+
+		// Keep normal bbPress permissions for public group forums.
+		if ( ! bbp_is_forum_restricted( $forum_id, false ) ) {
 			return null;
 		}
 
@@ -223,6 +249,49 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Include BuddyPress group visibility in forum read restrictions.
+	 *
+	 * Public group forums can be unreadable when the community is Members Only.
+	 * Check attached ancestors as well as the requested forum so their public
+	 * descendants cannot bypass the group decision.
+	 *
+	 * @since 2.6.21 bbPress (r8123)
+	 *
+	 * @param bool $restricted Whether bbPress already restricts the forum.
+	 * @param int  $forum_id   Forum ID.
+	 * @param int  $user_id    User ID.
+	 * @return bool Whether the forum is restricted from the user.
+	 */
+	public function restrict_inaccessible_group_forums( $restricted, $forum_id, $user_id ) {
+		if ( $restricted || empty( $forum_id ) || ! function_exists( 'bp_get_community_visibility' ) || bp_user_can( $user_id, 'bp_view', array( 'bp_component' => 'groups' ) ) ) {
+			return $restricted;
+		}
+
+		$forum_ids = array_merge( array( $forum_id ), bbp_get_forum_ancestors( $forum_id ) );
+		foreach ( $forum_ids as $candidate_id ) {
+			if ( false === $this->user_can_view_group_forum( $user_id, $candidate_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Apply the same group decision to public forum template reads.
+	 *
+	 * @since 2.6.21 bbPress (r8123)
+	 *
+	 * @param bool $can_view Whether bbPress allows the forum to be viewed.
+	 * @param int  $forum_id Forum ID.
+	 * @param int  $user_id  User ID.
+	 * @return bool Whether the forum can be viewed.
+	 */
+	public function filter_user_can_view_forum( $can_view, $forum_id, $user_id ) {
+		return $can_view && ! $this->restrict_inaccessible_group_forums( false, $forum_id, $user_id );
 	}
 
 	/**
@@ -330,10 +399,37 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 	}
 
 	/**
-	 * Exclude private and hidden group forums a user cannot view.
+	 * Get published forums attached to BuddyPress groups.
+	 *
+	 * @since 2.6.21 bbPress (r8091)
+	 *
+	 * @return array Published group forum IDs.
+	 */
+	private function get_published_group_forum_ids() {
+		if ( null === $this->published_group_forum_ids ) {
+			$bbp_db = bbp_db();
+
+			$this->published_group_forum_ids = wp_parse_id_list(
+				$bbp_db->get_col(
+					$bbp_db->prepare(
+						"SELECT DISTINCT p.ID FROM {$bbp_db->posts} AS p INNER JOIN {$bbp_db->postmeta} AS pm ON pm.post_id = p.ID WHERE p.post_type = %s AND p.post_status = %s AND pm.meta_key = %s",
+						bbp_get_forum_post_type(),
+						bbp_get_public_status_id(),
+						'_bbp_group_ids'
+					)
+				)
+			);
+		}
+
+		return $this->published_group_forum_ids;
+	}
+
+	/**
+	 * Exclude group forums a user cannot view.
 	 *
 	 * @since 2.6.17 bbPress (r7496)
 	 * @since 2.6.19 bbPress (r7678) Exclude unreadable descendants.
+	 * @since 2.6.21 bbPress (r8091) Enforce BuddyPress community visibility.
 	 *
 	 * @param array $forum_ids Forum IDs already excluded.
 	 * @return array Forum IDs the user cannot view.
@@ -341,6 +437,12 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 	public function exclude_group_forum_ids( $forum_ids ) {
 		$user_id      = bbp_get_current_user_id();
 		$restricted   = array_merge( bbp_get_private_forum_ids(), bbp_get_hidden_forum_ids() );
+
+		// Include public group forums when BuddyPress hides the community.
+		if ( function_exists( 'bp_get_community_visibility' ) && ! bp_current_user_can( 'bp_view', array( 'bp_component' => 'groups' ) ) ) {
+			$restricted = array_merge( $restricted, $this->get_published_group_forum_ids() );
+		}
+
 		$restricted   = wp_parse_id_list( $restricted );
 		$excluded     = array_fill_keys( wp_parse_id_list( $forum_ids ), true );
 		$group_forums = array();
@@ -649,6 +751,40 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 	 */
 	public function remove_group_forum_meta_cap_map() {
 		remove_filter( 'bbp_map_meta_caps', array( $this, 'map_group_forum_meta_caps' ), 10 );
+	}
+
+	/**
+	 * Validate group membership before creating a topic or reply.
+	 *
+	 * @since 2.6.21 bbPress (r8103)
+	 *
+	 * @param int $object_id Forum ID for topics, or topic ID for replies.
+	 * @param int $forum_id  Forum ID for replies.
+	 */
+	public function validate_new_post( $object_id = 0, $forum_id = 0 ) {
+		$forum_id = ! empty( $forum_id ) ? bbp_get_forum_id( $forum_id ) : bbp_get_forum_id( $object_id );
+		$group_ids = bbp_get_forum_group_ids( $forum_id );
+
+		// Keep normal bbPress permissions for other forums and anonymous posting.
+		if ( empty( $group_ids ) || bbp_is_anonymous() ) {
+			return;
+		}
+
+		$user_id = bbp_get_current_user_id();
+
+		// Preserve access for global and per-forum moderators.
+		if ( bbp_is_user_forum_moderator( $user_id, $forum_id ) ) {
+			return;
+		}
+
+		// Allow current, non-banned members of any attached group.
+		foreach ( $group_ids as $group_id ) {
+			if ( false === groups_is_user_banned( $user_id, $group_id ) && false !== groups_is_user_member( $user_id, $group_id ) ) {
+				return;
+			}
+		}
+
+		bbp_add_error( 'bbp_group_forum_permission', __( '<strong>Error</strong>: You do not have permission to create content in this forum.', 'bbpress' ) );
 	}
 
 	/**
@@ -1422,9 +1558,11 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 					// hide the 'to front' admin links
 					add_filter( 'bbp_get_topic_stick_link', array( $this, 'hide_super_sticky_admin_link' ), 10, 2 );
 
+					// The route page belongs to the nested replies query.
 					$topic_args = array(
 						'post_name__in'  => array( bp_action_variable( $offset + 1 ) ),
 						'posts_per_page' => 1,
+						'paged'          => 1,
 						'show_stickies'  => false
 					);
 

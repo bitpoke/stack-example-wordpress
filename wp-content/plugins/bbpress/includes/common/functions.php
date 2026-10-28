@@ -125,6 +125,55 @@ function bbp_public_topic_replies_where( $where = '', $posts_query = null ) {
 	return $where;
 }
 
+/**
+ * Exclude password-protected bbPress matches from search queries.
+ *
+ * Password-protected content stays out of public search results even after its
+ * password has been entered. Direct requests continue to use WordPress's post
+ * password cookie normally.
+ *
+ * @since 2.6.21 bbPress (r8133)
+ *
+ * @param string   $where       SQL WHERE clause.
+ * @param WP_Query $posts_query Posts query.
+ * @return string SQL WHERE clause.
+ */
+function bbp_password_protected_search_where( $where = '', $posts_query = null ) {
+	if ( ! $posts_query instanceof WP_Query || ! $posts_query->get( '_bbp_password_protected_search' ) ) {
+		return $where;
+	}
+
+	$bbp_db = bbp_db();
+	$where .= $bbp_db->prepare(
+		" AND ( {$bbp_db->posts}.post_type NOT IN ( %s, %s, %s ) OR CHAR_LENGTH( {$bbp_db->posts}.post_password ) = 0 )",
+		bbp_get_forum_post_type(),
+		bbp_get_topic_post_type(),
+		bbp_get_reply_post_type()
+	);
+
+	// Metadata is a fallback, not a replacement for canonical forum ancestry.
+	$forum_ids       = wp_parse_id_list( $posts_query->get( '_bbp_password_protected_forum_ids' ) );
+	$topic_forum_sql = '';
+	if ( ! empty( $forum_ids ) ) {
+		$placeholders = implode( ', ', array_fill( 0, count( $forum_ids ), '%d' ) );
+		$where       .= $bbp_db->prepare(
+			" AND ( {$bbp_db->posts}.post_type <> %s OR {$bbp_db->posts}.ID NOT IN ({$placeholders}) )
+			AND ( {$bbp_db->posts}.post_type <> %s OR {$bbp_db->posts}.post_parent NOT IN ({$placeholders}) )",
+			array_merge( array( bbp_get_forum_post_type() ), $forum_ids, array( bbp_get_topic_post_type() ), $forum_ids )
+		);
+		$topic_forum_sql = $bbp_db->prepare( " AND bbp_password_topic.post_parent NOT IN ({$placeholders})", $forum_ids );
+	}
+
+	// Follow reply ancestry without changing existing parent-topic status rules.
+	$where .= $bbp_db->prepare(
+		" AND ( {$bbp_db->posts}.post_type <> %s OR EXISTS ( SELECT 1 FROM {$bbp_db->posts} AS bbp_password_topic WHERE bbp_password_topic.ID = {$bbp_db->posts}.post_parent AND bbp_password_topic.post_type = %s AND CHAR_LENGTH( bbp_password_topic.post_password ) = 0{$topic_forum_sql} ) )",
+		bbp_get_reply_post_type(),
+		bbp_get_topic_post_type()
+	);
+
+	return $where;
+}
+
 /** URLs **********************************************************************/
 
 /**
@@ -261,6 +310,30 @@ function bbp_get_string_array_values( $arr = array() ) {
 	}
 
 	return $retval;
+}
+
+/**
+ * Set the GMT date for pending topics and replies.
+ *
+ * WordPress leaves the GMT date empty for pending posts, which can cause a
+ * later status change to replace the original post date.
+ *
+ * @since 2.6.21 bbPress (r8038)
+ *
+ * @param array $data Post data
+ * @return array Filtered post data
+ */
+function bbp_set_pending_post_date_gmt( $data = array() ) {
+	if (
+		isset( $data['post_type'], $data['post_status'], $data['post_date'], $data['post_date_gmt'] )
+		&& in_array( $data['post_type'], array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true )
+		&& ( bbp_get_pending_status_id() === $data['post_status'] )
+		&& ( '0000-00-00 00:00:00' === $data['post_date_gmt'] )
+	) {
+		$data['post_date_gmt'] = get_gmt_from_date( $data['post_date'] );
+	}
+
+	return $data;
 }
 
 /**
@@ -832,6 +905,83 @@ function bbp_get_statistics( $args = array() ) {
 }
 
 /** New/edit topic/reply helpers **********************************************/
+
+/**
+ * Set a normal bbPress revision author to the author of its parent post.
+ *
+ * @since 2.6.21 bbPress (r8078)
+ *
+ * @param array $data Post data.
+ * @return array Post data.
+ */
+function bbp_filter_revision_post_author( $data = array() ) {
+	if ( isset( $data['post_type'], $data['post_parent'] ) && ( 'revision' === $data['post_type'] ) && ! empty( $data['post_parent'] ) ) {
+		$parent = get_post( $data['post_parent'] );
+
+		if ( ! empty( $parent ) && in_array( $parent->post_type, bbp_get_post_types(), true ) && ( empty( $data['post_name'] ) || ( false === strpos( $data['post_name'], '-autosave-v1' ) ) ) ) {
+			$data['post_author'] = (int) $parent->post_author;
+		}
+	}
+
+	return $data;
+}
+
+/**
+ * Save the original bbPress post before its first logged edit.
+ *
+ * Supports every registered bbPress post type. Autosaves are not counted as
+ * normal revisions.
+ *
+ * @since 2.6.21 bbPress (r8078)
+ *
+ * @param int $post_id Post ID.
+ * @return int|WP_Error|false|null Revision ID on success. False if a normal
+ *                                 revision already exists. Null if the ID or
+ *                                 post type is invalid, revisions are disabled,
+ *                                 or WordPress skips the save. WP_Error on
+ *                                 failure.
+ */
+function bbp_save_initial_post_revision( $post_id = 0 ) {
+	$post_id = (int) $post_id;
+
+	if ( $post_id <= 0 ) {
+		return null;
+	}
+
+	$post = get_post( $post_id );
+
+	if ( empty( $post ) || ! in_array( $post->post_type, bbp_get_post_types(), true ) ) {
+		return null;
+	}
+
+	$revisions = wp_get_post_revisions(
+		$post_id,
+		array(
+			'name'           => "{$post_id}-revision-v1",
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+		)
+	);
+
+	if ( ! empty( $revisions ) ) {
+		return false;
+	}
+
+	$filter_added = false === has_filter( 'wp_insert_post_data', 'bbp_filter_revision_post_author' );
+	if ( $filter_added ) {
+		add_filter( 'wp_insert_post_data', 'bbp_filter_revision_post_author' );
+	}
+
+	try {
+		$revision_id = wp_save_post_revision( $post_id );
+	} finally {
+		if ( $filter_added ) {
+			remove_filter( 'wp_insert_post_data', 'bbp_filter_revision_post_author' );
+		}
+	}
+
+	return $revision_id;
+}
 
 /**
  * Filter anonymous post data
@@ -2363,6 +2513,7 @@ function bbp_get_public_child_last_id( $parent_id = 0, $post_type = 'post' ) {
  * Query the database for child counts, grouped by type & status
  *
  * @since 2.6.0 bbPress (r6827)
+ * @since 2.6.21 bbPress (r8055) Use indexed post relationships for forums and topics.
  *
  * @param int $parent_id
  */
@@ -2386,8 +2537,56 @@ function bbp_get_child_counts( $parent_id = 0 ) {
 	if ( false === $retval ) {
 
 		// Setup the DB & query
-		$bbp_db = bbp_db();
-		$sql    = "SELECT
+		$bbp_db    = bbp_db();
+		$post_type = get_post_type( $parent_id );
+
+		// Forums contain direct forums/topics and replies through direct topics
+		if ( bbp_get_forum_post_type() === $post_type ) {
+			$sql = "SELECT
+						p.post_type AS type,
+						p.post_status AS status,
+						COUNT( * ) AS count
+					FROM {$bbp_db->posts} AS p
+					WHERE p.post_parent = %d
+						AND p.post_type IN ( %s, %s )
+					GROUP BY p.post_status, p.post_type
+					UNION ALL
+					SELECT
+						r.post_type AS type,
+						r.post_status AS status,
+						COUNT( * ) AS count
+					FROM {$bbp_db->posts} AS r
+						INNER JOIN {$bbp_db->posts} AS t
+							ON r.post_parent = t.ID
+					WHERE t.post_parent = %d
+						AND t.post_type = %s
+						AND r.post_type = %s
+					GROUP BY r.post_status, r.post_type";
+			$query = $bbp_db->prepare(
+				$sql,
+				$parent_id,
+				bbp_get_forum_post_type(),
+				bbp_get_topic_post_type(),
+				$parent_id,
+				bbp_get_topic_post_type(),
+				bbp_get_reply_post_type()
+			);
+
+		// Topics contain direct replies
+		} elseif ( bbp_get_topic_post_type() === $post_type ) {
+			$sql   = "SELECT
+						p.post_type AS type,
+						p.post_status AS status,
+						COUNT( * ) AS count
+					FROM {$bbp_db->posts} AS p
+					WHERE p.post_parent = %d
+						AND p.post_type = %s
+					GROUP BY p.post_status, p.post_type";
+			$query = $bbp_db->prepare( $sql, $parent_id, bbp_get_reply_post_type() );
+
+		// Retain metadata relationships for unknown parent types
+		} else {
+			$sql      = "SELECT
 						p.post_type AS type,
 						p.post_status AS status,
 						COUNT( * ) AS count
@@ -2397,14 +2596,23 @@ function bbp_get_child_counts( $parent_id = 0 ) {
 							AND pm.meta_key = %s
 					WHERE pm.meta_value = %s
 					GROUP BY p.post_status, p.post_type";
+			$meta_key = "_bbp_{$post_type}_id";
+			$query    = $bbp_db->prepare( $sql, $meta_key, $parent_id );
+		}
 
-		// Get prepare vars
-		$post_type = get_post_type( $parent_id );
-		$meta_key  = "_bbp_{$post_type}_id";
+		/**
+		 * Filters the prepared SQL query for child counts.
+		 *
+		 * @since 2.6.21 bbPress (r8055)
+		 *
+		 * @param string       $query      Prepared SQL query.
+		 * @param int          $parent_id  Parent post ID.
+		 * @param string|false $post_type  Parent post type, or false if unknown.
+		 */
+		$query = apply_filters( 'bbp_get_child_counts_query', $query, $parent_id, $post_type );
 
-		// Prepare & get results
-		$query     = $bbp_db->prepare( $sql, $meta_key, $parent_id );
-		$results   = $bbp_db->get_results( $query, ARRAY_A );
+		// Get results
+		$results = $bbp_db->get_results( $query, ARRAY_A );
 
 		// Setup return value
 		$retval    = wp_list_pluck( $results, 'type', 'type' );
@@ -2719,8 +2927,10 @@ function bbp_get_all_child_ids( $parent_id = 0, $post_type = 'post' ) {
 		$query       = $bbp_db->prepare( "SELECT ID FROM {$bbp_db->posts} WHERE post_parent = %d AND post_status NOT IN ( {$post_status} ) AND post_type = %s ORDER BY ID DESC", $parent_id, $post_type );
 		$child_ids   = (array) $bbp_db->get_col( $query );
 
-		// Always cache the results
-		wp_cache_set( $cache_key, $child_ids, 'bbpress_posts' );
+		// Cache successful results.
+		if ( empty( $bbp_db->last_error ) ) {
+			wp_cache_set( $cache_key, $child_ids, 'bbpress_posts' );
+		}
 	}
 
 	// Make sure results are INTs
@@ -2962,6 +3172,38 @@ function bbp_verify_nonce_request( $action = '', $query_arg = '_wpnonce' ) {
 	return $result;
 }
 
+/** Requests ******************************************************************/
+
+/**
+ * Remove empty route query variables from a request.
+ *
+ * Empty route values cannot identify bbPress content. Leaving them in the
+ * request may cause WordPress to treat the request as a bbPress route without
+ * setting the corresponding post type or taxonomy query.
+ *
+ * @since 2.6.21 bbPress (r8084)
+ *
+ * @param array $query_vars Query variables for the request.
+ * @return array Query variables for the request.
+ */
+function bbp_request_remove_empty_query_vars( $query_vars = array() ) {
+	$bbp_query_vars = array(
+		bbp_get_forum_post_type(),
+		bbp_get_topic_post_type(),
+		bbp_get_reply_post_type(),
+		bbp_get_topic_tag_tax_id(),
+		bbp_get_view_rewrite_id(),
+	);
+
+	foreach ( $bbp_query_vars as $query_var ) {
+		if ( isset( $query_vars[ $query_var ] ) && empty( $query_vars[ $query_var ] ) ) {
+			unset( $query_vars[ $query_var ] );
+		}
+	}
+
+	return $query_vars;
+}
+
 /** Feeds *********************************************************************/
 
 /**
@@ -3192,11 +3434,12 @@ function bbp_request_feed_trap( $query_vars = array() ) {
 				}
 			}
 
-		// Single Topic Vview
+		// Single Topic View
 		} elseif ( isset( $query_vars[ bbp_get_view_rewrite_id() ] ) ) {
+			$view_id = bbp_get_view_rewrite_id();
 
 			// Get the view
-			$view = $query_vars[ bbp_get_view_rewrite_id() ];
+			$view = $query_vars[ $view_id ];
 
 			// We have a view to display a feed
 			if ( ! empty( $view ) ) {
@@ -3207,6 +3450,11 @@ function bbp_request_feed_trap( $query_vars = array() ) {
 				// Output the feed if view exists
 				if ( ! empty( $the_query ) ) {
 					bbp_display_topics_feed_rss2( $the_query );
+
+				// Return a 404 for unregistered views
+				} else {
+					unset( $query_vars[ $view_id ] );
+					$query_vars['error'] = 404;
 				}
 			}
 		}
@@ -3252,23 +3500,44 @@ function bbp_get_page_by_path( $path = '' ) {
 }
 
 /**
- * Prevent WordPress from guessing permalinks for bbPress post types.
+ * Prevent WordPress from guessing permalinks for bbPress requests.
  *
  * bbPress post types are excluded from search because their visibility depends
  * on forum access. Older versions of WordPress may otherwise guess a restricted
  * forum or topic permalink from a partial slug and expose its full title.
  *
+ * Incomplete bbPress route roots and malformed requests beneath them do not
+ * match their rewrite rules, so WordPress may also treat them as ordinary post
+ * slugs and redirect to unrelated content.
+ *
  * @since 2.6.17 bbPress (r7500)
+ * @since 2.6.21 bbPress (r8065) Prevent guessing for incomplete route roots.
+ * @since 2.6.21 bbPress (r8094) Prevent guessing for malformed route children.
+ * @since 2.6.21 bbPress (r8097) Match route roots case-insensitively.
  *
  * @param bool $do_redirect_guess Whether to attempt to guess a redirect URL.
  *
  * @return bool Whether to attempt to guess a redirect URL.
  */
 function bbp_do_not_guess_404_permalink( $do_redirect_guess = true ) {
-	$post_types = (array) get_query_var( 'post_type' );
+	global $wp;
 
-	if ( bbp_is_custom_post_type( $post_types ) ) {
+	$post_types = (array) get_query_var( 'post_type' );
+	$request    = isset( $wp->request )
+		? strtolower( urldecode( $wp->request ) )
+		: '';
+	$route_roots = array_map( 'urldecode', bbp_get_route_root_slugs() );
+	$route_roots = array_map( 'strtolower', $route_roots );
+
+	if ( bbp_is_custom_post_type( $post_types ) || in_array( $request, $route_roots, true ) ) {
 		$do_redirect_guess = false;
+	} else {
+		foreach ( $route_roots as $route_root ) {
+			if ( 0 === strpos( $request, trailingslashit( $route_root ) ) ) {
+				$do_redirect_guess = false;
+				break;
+			}
+		}
 	}
 
 	return $do_redirect_guess;

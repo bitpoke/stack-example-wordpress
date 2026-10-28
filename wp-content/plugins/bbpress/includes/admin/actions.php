@@ -47,6 +47,8 @@ add_action( 'admin_head',              'bbp_admin_head'                    );
 add_action( 'admin_notices',           'bbp_admin_notices'                 );
 add_action( 'menu_order',              'bbp_admin_menu_order'              );
 add_filter( 'custom_menu_order',       'bbp_admin_custom_menu_order'       );
+add_filter( 'admin_body_class',        'bbp_admin_icon_body_class'        );
+add_action( 'bbp_register',            'bbp_register_admin_icons',     1 );
 
 // Hook on to admin_init
 add_action( 'bbp_admin_init', 'bbp_register_importers'          );
@@ -111,6 +113,9 @@ add_filter( 'bbp_admin_replies_column_headers', 'bbp_filter_column_headers' );
 // Load the converter early (page and AJAX)
 add_action( 'load-tools_page_bbp-converter', 'bbp_setup_converter', 2 );
 add_action( 'wp_ajax_bbp_converter_process', 'bbp_setup_converter', 2 );
+
+// Preview reply topic changes
+add_action( 'wp_ajax_bbp_reply_topic_forum', 'bbp_ajax_reply_topic_forum' );
 
 // Add New User
 add_action( 'user_new_form', 'bbp_add_user_form_role_field', 10, 1 );

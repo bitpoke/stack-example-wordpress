@@ -2,20 +2,21 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: bbPress 2.6.20\n"
+"Project-Id-Version: bbPress 2.6.21\n"
 "Report-Msgid-Bugs-To: https://bbpress.trac.wordpress.org\n"
 "Last-Translator: JOHN JAMES JACOBY <jjj@bbpress.org>\n"
 "Language-Team: ENGLISH <jjj@bbpress.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T16:31:29+00:00\n"
+"POT-Creation-Date: 2026-10-27T18:45:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: bbpress\n"
 
 #. Plugin Name of the plugin
 #: bbpress.php
+#: includes/admin/icons.php:55
 msgid "bbPress"
 msgstr ""
 
@@ -40,25 +41,25 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: bbpress.php:541
+#: bbpress.php:544
 msgid "bbPress Forums"
 msgstr ""
 
-#: bbpress.php:571
+#: bbpress.php:574
 msgid "bbPress Topics"
 msgstr ""
 
-#: bbpress.php:601
+#: bbpress.php:604
 msgid "bbPress Replies"
 msgstr ""
 
-#: bbpress.php:637
+#: bbpress.php:640
 msgctxt "post"
 msgid "Closed"
 msgstr ""
 
 #. translators: %s: Number of closed items
-#: bbpress.php:639
+#: bbpress.php:642
 #, php-format
 msgctxt "post"
 msgid "Closed <span class=\"count\">(%s)</span>"
@@ -66,13 +67,13 @@ msgid_plural "Closed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: bbpress.php:654
+#: bbpress.php:657
 msgctxt "post"
 msgid "Spam"
 msgstr ""
 
 #. translators: %s: Number of spammed items
-#: bbpress.php:656
+#: bbpress.php:659
 #, php-format
 msgctxt "post"
 msgid "Spam <span class=\"count\">(%s)</span>"
@@ -80,13 +81,13 @@ msgid_plural "Spam <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: bbpress.php:672
+#: bbpress.php:675
 msgctxt "post"
 msgid "Orphan"
 msgstr ""
 
 #. translators: %s: Number of orphaned items
-#: bbpress.php:674
+#: bbpress.php:677
 #, php-format
 msgctxt "post"
 msgid "Orphan <span class=\"count\">(%s)</span>"
@@ -94,13 +95,13 @@ msgid_plural "Orphans <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: bbpress.php:690
+#: bbpress.php:693
 msgctxt "post"
 msgid "Hidden"
 msgstr ""
 
 #. translators: %s: Number of hidden items
-#: bbpress.php:692
+#: bbpress.php:695
 #, php-format
 msgctxt "post"
 msgid "Hidden <span class=\"count\">(%s)</span>"
@@ -108,30 +109,30 @@ msgid_plural "Hidden <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: bbpress.php:766
+#: bbpress.php:769
 msgid "Most popular topics"
 msgstr ""
 
-#: bbpress.php:782
+#: bbpress.php:785
 msgid "Topics with no replies"
 msgstr ""
 
-#: bbpress.php:822
+#: bbpress.php:825
 msgid "bbPress Item Count"
 msgstr ""
 
-#: bbpress.php:867
+#: bbpress.php:878
 msgid "bbPress User Activity"
 msgstr ""
 
-#: includes/admin/actions.php:178
+#: includes/admin/actions.php:183
 #: includes/admin/forums.php:592
 #: includes/admin/settings.php:302
 #: includes/admin/settings.php:323
 #: includes/admin/tools/common.php:440
-#: includes/admin/topics.php:994
-#: includes/extend/buddypress/activity.php:483
-#: includes/forums/template.php:2846
+#: includes/admin/topics.php:995
+#: includes/extend/buddypress/activity.php:557
+#: includes/forums/template.php:2864
 #: includes/topics/template.php:49
 #: includes/topics/template.php:50
 #: templates/default/bbpress/content-statistics.php:30
@@ -139,17 +140,17 @@ msgstr ""
 msgid "Topics"
 msgstr ""
 
-#: includes/admin/actions.php:183
-#: includes/admin/actions.php:195
+#: includes/admin/actions.php:188
+#: includes/admin/actions.php:200
 #: includes/admin/forums.php:593
 #: includes/admin/settings.php:310
 #: includes/admin/settings.php:331
 #: includes/admin/tools/common.php:443
 #: includes/admin/topics.php:417
-#: includes/admin/topics.php:996
-#: includes/core/theme-compat.php:764
-#: includes/extend/buddypress/activity.php:493
-#: includes/forums/template.php:2904
+#: includes/admin/topics.php:997
+#: includes/core/theme-compat.php:786
+#: includes/extend/buddypress/activity.php:567
+#: includes/forums/template.php:2922
 #: includes/replies/template.php:51
 #: includes/replies/template.php:52
 #: templates/default/bbpress/content-statistics.php:35
@@ -160,17 +161,18 @@ msgstr ""
 msgid "Replies"
 msgstr ""
 
-#: includes/admin/actions.php:190
-#: includes/admin/actions.php:202
+#: includes/admin/actions.php:195
+#: includes/admin/actions.php:207
 #: includes/admin/forums.php:591
+#: includes/admin/icons.php:61
 #: includes/admin/metaboxes.php:132
 #: includes/admin/metaboxes.php:474
-#: includes/admin/metaboxes.php:547
-#: includes/admin/replies.php:802
+#: includes/admin/metaboxes.php:548
+#: includes/admin/replies.php:797
 #: includes/admin/settings.php:373
-#: includes/admin/topics.php:995
-#: includes/extend/buddypress/groups.php:58
-#: includes/extend/buddypress/groups.php:59
+#: includes/admin/topics.php:996
+#: includes/extend/buddypress/groups.php:67
+#: includes/extend/buddypress/groups.php:68
 #: includes/forums/template.php:52
 #: templates/default/bbpress/loop-forums.php:20
 msgid "Forum"
@@ -178,10 +180,11 @@ msgid_plural "Forums"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/actions.php:207
+#: includes/admin/actions.php:212
+#: includes/admin/icons.php:62
 #: includes/admin/metaboxes.php:149
-#: includes/admin/metaboxes.php:578
-#: includes/admin/replies.php:803
+#: includes/admin/metaboxes.php:566
+#: includes/admin/replies.php:798
 #: includes/admin/settings.php:381
 #: includes/topics/template.php:51
 #: templates/default/bbpress/content-single-topic-lead.php:23
@@ -270,7 +273,7 @@ msgstr ""
 #: includes/admin/classes/class-bbp-admin.php:986
 #: includes/admin/classes/class-bbp-admin.php:1066
 #: includes/common/classes.php:496
-#: includes/replies/template.php:2693
+#: includes/replies/template.php:2727
 #, php-format
 msgid "%1$s - %2$s"
 msgstr ""
@@ -751,8 +754,8 @@ msgid "Import Finished"
 msgstr ""
 
 #: includes/admin/classes/class-bbp-topic-replies-list-table.php:64
-#: includes/admin/replies.php:804
-#: includes/admin/topics.php:998
+#: includes/admin/replies.php:799
+#: includes/admin/topics.php:999
 #: templates/default/bbpress/loop-replies.php:18
 #: templates/default/bbpress/loop-replies.php:44
 #: templates/default/bbpress/loop-search.php:19
@@ -774,39 +777,39 @@ msgstr ""
 
 #: includes/admin/classes/class-bbp-topic-replies-list-table.php:96
 #: includes/admin/replies.php:254
-#: includes/admin/replies.php:974
+#: includes/admin/replies.php:961
 #: includes/admin/topics.php:259
-#: includes/admin/topics.php:1189
-#: includes/replies/template.php:2111
-#: includes/topics/template.php:2969
+#: includes/admin/topics.php:1190
+#: includes/replies/template.php:2137
+#: includes/topics/template.php:2974
 msgid "Spam"
 msgstr ""
 
 #: includes/admin/classes/class-bbp-topic-replies-list-table.php:97
-#: includes/admin/replies.php:989
-#: includes/admin/topics.php:1203
-#: includes/replies/template.php:2024
-#: includes/topics/template.php:2599
+#: includes/admin/replies.php:976
+#: includes/admin/topics.php:1204
+#: includes/replies/template.php:2050
+#: includes/topics/template.php:2604
 msgid "Trash"
 msgstr ""
 
 #. translators: %s: Topic title
 #: includes/admin/classes/class-bbp-topic-replies-list-table.php:149
-#: includes/admin/replies.php:943
-#: includes/admin/topics.php:1116
-#: includes/admin/topics.php:1140
+#: includes/admin/replies.php:930
+#: includes/admin/topics.php:1117
+#: includes/admin/topics.php:1141
 #: includes/admin/users.php:263
 msgid "View"
 msgstr ""
 
 #: includes/admin/classes/class-bbp-topic-replies-list-table.php:154
 #: includes/admin/settings.php:413
-#: includes/common/template.php:2525
+#: includes/common/template.php:2562
 #: includes/forums/template.php:56
 #: includes/replies/template.php:57
-#: includes/replies/template.php:1905
+#: includes/replies/template.php:1931
 #: includes/topics/template.php:55
-#: includes/topics/template.php:2480
+#: includes/topics/template.php:2485
 #: templates/default/bbpress/user-details.php:135
 msgid "Edit"
 msgstr ""
@@ -1020,9 +1023,9 @@ msgid "The forum was not found."
 msgstr ""
 
 #: includes/admin/forums.php:395
-#: includes/admin/replies.php:578
-#: includes/admin/topics.php:690
-#: includes/admin/topics.php:695
+#: includes/admin/replies.php:573
+#: includes/admin/topics.php:691
+#: includes/admin/topics.php:696
 msgid "You do not have permission to do that."
 msgstr ""
 
@@ -1051,7 +1054,7 @@ msgid "Forum \"%1$s\" successfully closed."
 msgstr ""
 
 #: includes/admin/forums.php:594
-#: includes/admin/metaboxes.php:714
+#: includes/admin/metaboxes.php:702
 msgid "Moderators"
 msgstr ""
 
@@ -1062,13 +1065,13 @@ msgid "Creator"
 msgstr ""
 
 #: includes/admin/forums.php:596
-#: includes/admin/replies.php:805
-#: includes/admin/topics.php:999
+#: includes/admin/replies.php:800
+#: includes/admin/topics.php:1000
 msgid "Created"
 msgstr ""
 
 #: includes/admin/forums.php:597
-#: includes/admin/topics.php:1000
+#: includes/admin/topics.php:1001
 #: templates/default/bbpress/loop-forums.php:26
 #: templates/default/bbpress/loop-topics.php:24
 msgid "Last Post"
@@ -1113,14 +1116,14 @@ msgid "View forum"
 msgstr ""
 
 #: includes/admin/forums.php:778
-#: includes/admin/replies.php:1139
-#: includes/admin/topics.php:1353
+#: includes/admin/replies.php:1126
+#: includes/admin/topics.php:1354
 msgid "Custom field updated."
 msgstr ""
 
 #: includes/admin/forums.php:781
-#: includes/admin/replies.php:1142
-#: includes/admin/topics.php:1356
+#: includes/admin/replies.php:1129
+#: includes/admin/topics.php:1357
 msgid "Custom field deleted."
 msgstr ""
 
@@ -1155,13 +1158,25 @@ msgid "Forum scheduled for: %s."
 msgstr ""
 
 #: includes/admin/forums.php:818
-#: includes/admin/replies.php:1179
-#: includes/admin/topics.php:1393
+#: includes/admin/replies.php:1166
+#: includes/admin/topics.php:1394
 msgid "M j, Y @ G:i"
 msgstr ""
 
 #: includes/admin/forums.php:827
 msgid "Forum draft updated."
+msgstr ""
+
+#: includes/admin/icons.php:63
+#: includes/admin/metaboxes.php:166
+#: includes/replies/template.php:583
+msgid "Reply"
+msgid_plural "Replies"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/icons.php:64
+msgid "bbPress logo"
 msgstr ""
 
 #. translators: %s: Number of users
@@ -1208,16 +1223,9 @@ msgstr[1] ""
 msgid "Discussion"
 msgstr ""
 
-#: includes/admin/metaboxes.php:166
-#: includes/replies/template.php:563
-msgid "Reply"
-msgid_plural "Replies"
-msgstr[0] ""
-msgstr[1] ""
-
 #: includes/admin/metaboxes.php:185
 #: includes/admin/settings.php:389
-#: includes/topics/template.php:3607
+#: includes/topics/template.php:3612
 msgid "Topic Tag"
 msgid_plural "Topic Tags"
 msgstr[0] ""
@@ -1266,7 +1274,7 @@ msgstr ""
 #: includes/admin/metaboxes.php:362
 #: includes/admin/metaboxes.php:363
 #: includes/admin/metaboxes.php:453
-#: includes/admin/metaboxes.php:525
+#: includes/admin/metaboxes.php:527
 #: templates/default/bbpress/form-forum.php:120
 msgid "Status:"
 msgstr ""
@@ -1308,8 +1316,8 @@ msgid "Select whether to open or close the topic."
 msgstr ""
 
 #: includes/admin/metaboxes.php:473
-#: includes/admin/metaboxes.php:546
-#: includes/extend/buddypress/groups.php:1768
+#: includes/admin/metaboxes.php:547
+#: includes/extend/buddypress/groups.php:1906
 #: includes/topics/template.php:67
 #: templates/default/bbpress/form-topic.php:123
 #: templates/default/bbpress/loop-search-forum.php:33
@@ -1317,97 +1325,104 @@ msgid "Forum:"
 msgstr ""
 
 #: includes/admin/metaboxes.php:489
-#: includes/extend/buddypress/groups.php:824
+#: includes/extend/buddypress/groups.php:960
 #: templates/default/bbpress/form-topic.php:127
 msgid "&mdash; No forum &mdash;"
 msgstr ""
 
-#: includes/admin/metaboxes.php:527
+#: includes/admin/metaboxes.php:529
 msgid "Select what status to give the reply."
 msgstr ""
 
-#: includes/admin/metaboxes.php:562
-msgid "&mdash; No reply &mdash;"
+#: includes/admin/metaboxes.php:550
+#: includes/admin/replies.php:864
+#: includes/admin/replies.php:1243
+#: includes/admin/topics.php:1040
+msgid "No forum"
 msgstr ""
 
-#: includes/admin/metaboxes.php:577
+#: includes/admin/metaboxes.php:565
 #: templates/default/bbpress/loop-search-topic.php:25
 msgid "Topic:"
 msgstr ""
 
-#: includes/admin/metaboxes.php:590
+#: includes/admin/metaboxes.php:567
+msgid "The forum could not be previewed."
+msgstr ""
+
+#: includes/admin/metaboxes.php:578
 #: templates/default/bbpress/form-reply.php:133
 msgid "Reply To:"
 msgstr ""
 
-#: includes/admin/metaboxes.php:591
+#: includes/admin/metaboxes.php:579
 msgid "Reply To"
 msgstr ""
 
-#: includes/admin/metaboxes.php:662
+#: includes/admin/metaboxes.php:650
 #: templates/default/bbpress/form-topic-tag.php:48
 msgid "Name:"
 msgstr ""
 
-#: includes/admin/metaboxes.php:663
+#: includes/admin/metaboxes.php:651
 #: templates/default/bbpress/form-user-edit.php:17
 #: templates/default/bbpress/form-user-edit.php:22
 msgid "Name"
 msgstr ""
 
-#: includes/admin/metaboxes.php:668
+#: includes/admin/metaboxes.php:656
 msgid "Email:"
 msgstr ""
 
-#: includes/admin/metaboxes.php:669
+#: includes/admin/metaboxes.php:657
 #: templates/default/bbpress/form-user-edit.php:112
 #: templates/default/bbpress/form-user-register.php:34
 msgid "Email"
 msgstr ""
 
-#: includes/admin/metaboxes.php:674
+#: includes/admin/metaboxes.php:662
 #: templates/default/bbpress/form-anonymous.php:33
 msgid "Website:"
 msgstr ""
 
-#: includes/admin/metaboxes.php:675
+#: includes/admin/metaboxes.php:663
 #: templates/default/bbpress/form-user-edit.php:60
 msgid "Website"
 msgstr ""
 
-#: includes/admin/metaboxes.php:682
+#: includes/admin/metaboxes.php:670
 msgid "ID:"
 msgstr ""
 
-#: includes/admin/metaboxes.php:683
+#: includes/admin/metaboxes.php:671
 msgid "ID"
 msgstr ""
 
-#: includes/admin/metaboxes.php:690
+#: includes/admin/metaboxes.php:678
 msgid "IP:"
 msgstr ""
 
-#: includes/admin/metaboxes.php:691
+#: includes/admin/metaboxes.php:679
 msgid "IP Address"
 msgstr ""
 
-#: includes/admin/metaboxes.php:716
+#: includes/admin/metaboxes.php:704
 msgid "Separate user-names with commas"
 msgstr ""
 
-#: includes/admin/metaboxes.php:747
+#: includes/admin/metaboxes.php:735
 msgid "No users have engaged to this topic."
 msgstr ""
 
-#: includes/admin/metaboxes.php:780
+#: includes/admin/metaboxes.php:768
 msgid "No users have favorited this topic."
 msgstr ""
 
-#: includes/admin/metaboxes.php:813
+#: includes/admin/metaboxes.php:801
 msgid "No users have subscribed to this topic."
 msgstr ""
 
-#: includes/admin/metaboxes.php:846
+#: includes/admin/metaboxes.php:834
 msgid "No users have subscribed to this forum."
 msgstr ""
 
@@ -1499,11 +1514,11 @@ msgid "Select the attributes that your reply should have:"
 msgstr ""
 
 #: includes/admin/replies.php:218
-msgid "<strong>Forum</strong> dropdown determines the parent forum that the reply belongs to. Select the forum, or leave the default (Use Forum of Topic) to post the reply in forum of the topic."
+msgid "<strong>Forum</strong> shows the forum of the selected topic."
 msgstr ""
 
 #: includes/admin/replies.php:219
-msgid "<strong>Topic</strong> determines the parent topic that the reply belongs to."
+msgid "<strong>Topic</strong> determines the parent topic and forum that the reply belongs to."
 msgstr ""
 
 #: includes/admin/replies.php:220
@@ -1512,8 +1527,8 @@ msgstr ""
 
 #: includes/admin/replies.php:252
 #: includes/admin/topics.php:257
-#: includes/replies/template.php:2112
-#: includes/topics/template.php:2970
+#: includes/replies/template.php:2138
+#: includes/topics/template.php:2975
 msgid "Unspam"
 msgstr ""
 
@@ -1560,210 +1575,210 @@ msgstr ""
 msgid "Author Information"
 msgstr ""
 
-#: includes/admin/replies.php:531
+#: includes/admin/replies.php:526
+#: includes/admin/replies.php:1232
 msgid "The selected topic is not available for this reply."
 msgstr ""
 
-#: includes/admin/replies.php:573
+#: includes/admin/replies.php:568
 msgid "The reply was not found."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:677
+#: includes/admin/replies.php:672
 #, php-format
 msgid "There was a problem marking the reply \"%1$s\" as spam."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:679
+#: includes/admin/replies.php:674
 #, php-format
 msgid "Reply \"%1$s\" successfully marked as spam."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:685
+#: includes/admin/replies.php:680
 #, php-format
 msgid "There was a problem unmarking the reply \"%1$s\" as spam."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:687
+#: includes/admin/replies.php:682
 #, php-format
 msgid "Reply \"%1$s\" successfully unmarked as spam."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:693
+#: includes/admin/replies.php:688
 #, php-format
 msgid "There was a problem approving the reply \"%1$s\"."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:695
+#: includes/admin/replies.php:690
 #, php-format
 msgid "Reply \"%1$s\" successfully approved."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:701
+#: includes/admin/replies.php:696
 #, php-format
 msgid "There was a problem unapproving the reply \"%1$s\"."
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/admin/replies.php:703
+#: includes/admin/replies.php:698
 #, php-format
 msgid "Reply \"%1$s\" successfully unapproved."
 msgstr ""
 
-#: includes/admin/replies.php:801
+#: includes/admin/replies.php:796
 msgid "Title"
 msgstr ""
 
-#: includes/admin/replies.php:844
+#: includes/admin/replies.php:839
 msgid "No topic"
-msgstr ""
-
-#: includes/admin/replies.php:865
-msgid "(Mismatch)"
-msgstr ""
-
-#: includes/admin/replies.php:877
-#: includes/admin/topics.php:1039
-msgid "No forum"
 msgstr ""
 
 #. translators: %s: Reply title
 #. translators: %s: Topic title
-#: includes/admin/replies.php:935
-#: includes/admin/topics.php:1116
-#: includes/admin/topics.php:1140
+#: includes/admin/replies.php:922
+#: includes/admin/topics.php:1117
+#: includes/admin/topics.php:1141
 #, php-format
 msgid "View &#8220;%s&#8221;"
 msgstr ""
 
-#: includes/admin/replies.php:961
+#: includes/admin/replies.php:948
 msgid "Unapprove this reply"
 msgstr ""
 
-#: includes/admin/replies.php:961
+#: includes/admin/replies.php:948
 msgctxt "Unapprove reply"
 msgid "Unapprove"
 msgstr ""
 
-#: includes/admin/replies.php:963
+#: includes/admin/replies.php:950
 msgid "Approve this reply"
 msgstr ""
 
-#: includes/admin/replies.php:963
+#: includes/admin/replies.php:950
 msgctxt "Approve reply"
 msgid "Approve"
 msgstr ""
 
-#: includes/admin/replies.php:974
+#: includes/admin/replies.php:961
 msgid "Mark this reply as spam"
 msgstr ""
 
-#: includes/admin/replies.php:976
+#: includes/admin/replies.php:963
 msgid "Mark the reply as not spam"
 msgstr ""
 
-#: includes/admin/replies.php:976
-#: includes/admin/topics.php:1191
+#: includes/admin/replies.php:963
+#: includes/admin/topics.php:1192
 msgid "Not Spam"
 msgstr ""
 
-#: includes/admin/replies.php:987
-#: includes/admin/topics.php:1201
-#: includes/replies/template.php:2049
-#: includes/topics/template.php:2628
+#: includes/admin/replies.php:974
+#: includes/admin/topics.php:1202
+#: includes/replies/template.php:2075
+#: includes/topics/template.php:2633
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: includes/admin/replies.php:987
-#: includes/admin/topics.php:1201
-#: includes/replies/template.php:2025
-#: includes/topics/template.php:2600
+#: includes/admin/replies.php:974
+#: includes/admin/topics.php:1202
+#: includes/replies/template.php:2051
+#: includes/topics/template.php:2605
 msgid "Restore"
 msgstr ""
 
-#: includes/admin/replies.php:989
-#: includes/admin/topics.php:1203
-#: includes/replies/template.php:2058
-#: includes/topics/template.php:2640
+#: includes/admin/replies.php:976
+#: includes/admin/topics.php:1204
+#: includes/replies/template.php:2084
+#: includes/topics/template.php:2645
 msgid "Move this item to the Trash"
 msgstr ""
 
-#: includes/admin/replies.php:993
-#: includes/admin/topics.php:1207
-#: includes/replies/template.php:2068
-#: includes/topics/template.php:2654
+#: includes/admin/replies.php:980
+#: includes/admin/topics.php:1208
+#: includes/replies/template.php:2094
+#: includes/topics/template.php:2659
 msgid "Delete this item permanently"
 msgstr ""
 
-#: includes/admin/replies.php:993
-#: includes/admin/topics.php:1207
+#: includes/admin/replies.php:980
+#: includes/admin/topics.php:1208
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/admin/replies.php:1048
-#: includes/admin/topics.php:1262
+#: includes/admin/replies.php:1035
+#: includes/admin/topics.php:1263
 msgid "In all forums"
 msgstr ""
 
-#: includes/admin/replies.php:1076
-#: includes/admin/topics.php:1290
+#: includes/admin/replies.php:1063
+#: includes/admin/topics.php:1291
 msgid "Empty Spam"
 msgstr ""
 
-#: includes/admin/replies.php:1133
-#: includes/admin/replies.php:1145
+#: includes/admin/replies.php:1120
+#: includes/admin/replies.php:1132
 #: includes/replies/template.php:82
 msgid "Reply updated."
 msgstr ""
 
-#: includes/admin/replies.php:1135
-#: includes/admin/replies.php:1159
-#: includes/admin/topics.php:1349
-#: includes/admin/topics.php:1373
+#: includes/admin/replies.php:1122
+#: includes/admin/replies.php:1146
+#: includes/admin/topics.php:1350
+#: includes/admin/topics.php:1374
 msgid "View topic"
 msgstr ""
 
 #. translators: %s: Date and time of the revision
-#: includes/admin/replies.php:1151
+#: includes/admin/replies.php:1138
 #, php-format
 msgid "Reply restored to revision from %s"
 msgstr ""
 
-#: includes/admin/replies.php:1157
+#: includes/admin/replies.php:1144
 msgid "Reply created."
 msgstr ""
 
-#: includes/admin/replies.php:1163
+#: includes/admin/replies.php:1150
 msgid "Reply saved."
 msgstr ""
 
-#: includes/admin/replies.php:1168
+#: includes/admin/replies.php:1155
 msgid "Reply submitted."
 msgstr ""
 
-#: includes/admin/replies.php:1170
-#: includes/admin/replies.php:1182
-#: includes/admin/replies.php:1190
-#: includes/admin/topics.php:1384
-#: includes/admin/topics.php:1396
-#: includes/admin/topics.php:1404
+#: includes/admin/replies.php:1157
+#: includes/admin/replies.php:1169
+#: includes/admin/replies.php:1177
+#: includes/admin/topics.php:1385
+#: includes/admin/topics.php:1397
+#: includes/admin/topics.php:1405
 msgid "Preview topic"
 msgstr ""
 
 #. translators: Publish box date format, see http://php.net/date
-#: includes/admin/replies.php:1178
+#: includes/admin/replies.php:1165
 #, php-format
 msgid "Reply scheduled for: %s."
 msgstr ""
 
-#: includes/admin/replies.php:1188
+#: includes/admin/replies.php:1175
 msgid "Reply draft updated."
+msgstr ""
+
+#: includes/admin/replies.php:1226
+msgid "The reply is not available."
+msgstr ""
+
+#: includes/admin/replies.php:1237
+msgid "You cannot move this reply."
 msgstr ""
 
 #: includes/admin/settings.php:31
@@ -1878,7 +1893,7 @@ msgstr ""
 
 #: includes/admin/settings.php:251
 #: includes/admin/settings.php:421
-#: includes/common/template.php:2645
+#: includes/common/template.php:2682
 #: includes/search/template.php:177
 #: templates/default/bbpress/form-reply-search.php:20
 #: templates/default/bbpress/form-search.php:21
@@ -2868,8 +2883,8 @@ msgid "Users"
 msgstr ""
 
 #: includes/admin/tools/common.php:446
-#: includes/topics/template.php:3605
-#: includes/topics/template.php:3606
+#: includes/topics/template.php:3610
+#: includes/topics/template.php:3611
 #: templates/default/bbpress/content-statistics.php:40
 msgid "Topic Tags"
 msgstr ""
@@ -3249,13 +3264,13 @@ msgid "All Forums"
 msgstr ""
 
 #: includes/admin/tools/reset.php:35
-#: includes/topics/functions.php:3934
+#: includes/topics/functions.php:3994
 #: includes/topics/template.php:52
 msgid "All Topics"
 msgstr ""
 
 #: includes/admin/tools/reset.php:36
-#: includes/replies/functions.php:2306
+#: includes/replies/functions.php:2317
 #: includes/replies/template.php:54
 msgid "All Replies"
 msgstr ""
@@ -3673,234 +3688,234 @@ msgstr ""
 msgid "Error in unspamming topic."
 msgstr ""
 
-#: includes/admin/topics.php:642
+#: includes/admin/topics.php:643
 msgid "The selected forum is not available for this topic."
 msgstr ""
 
-#: includes/admin/topics.php:685
+#: includes/admin/topics.php:686
 msgid "The topic was not found."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:827
+#: includes/admin/topics.php:828
 #, php-format
 msgid "There was a problem opening the topic \"%1$s\"."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:829
+#: includes/admin/topics.php:830
 #, php-format
 msgid "Topic \"%1$s\" successfully opened."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:835
+#: includes/admin/topics.php:836
 #, php-format
 msgid "There was a problem closing the topic \"%1$s\"."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:837
+#: includes/admin/topics.php:838
 #, php-format
 msgid "Topic \"%1$s\" successfully closed."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:843
+#: includes/admin/topics.php:844
 #, php-format
 msgid "There was a problem sticking the topic \"%1$s\" to front."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:845
+#: includes/admin/topics.php:846
 #, php-format
 msgid "Topic \"%1$s\" successfully stuck to front."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:851
+#: includes/admin/topics.php:852
 #, php-format
 msgid "There was a problem sticking the topic \"%1$s\"."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:853
+#: includes/admin/topics.php:854
 #, php-format
 msgid "Topic \"%1$s\" successfully stuck."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:859
+#: includes/admin/topics.php:860
 #, php-format
 msgid "There was a problem unsticking the topic \"%1$s\"."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:861
+#: includes/admin/topics.php:862
 #, php-format
 msgid "Topic \"%1$s\" successfully unstuck."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:867
+#: includes/admin/topics.php:868
 #, php-format
 msgid "There was a problem marking the topic \"%1$s\" as spam."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:869
+#: includes/admin/topics.php:870
 #, php-format
 msgid "Topic \"%1$s\" successfully marked as spam."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:875
+#: includes/admin/topics.php:876
 #, php-format
 msgid "There was a problem unmarking the topic \"%1$s\" as spam."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:877
+#: includes/admin/topics.php:878
 #, php-format
 msgid "Topic \"%1$s\" successfully unmarked as spam."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:883
+#: includes/admin/topics.php:884
 #, php-format
 msgid "There was a problem approving the topic \"%1$s\"."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:885
+#: includes/admin/topics.php:886
 #, php-format
 msgid "Topic \"%1$s\" successfully approved."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:891
+#: includes/admin/topics.php:892
 #, php-format
 msgid "There was a problem unapproving the topic \"%1$s\"."
 msgstr ""
 
 #. translators: %1$s: Topic title
-#: includes/admin/topics.php:893
+#: includes/admin/topics.php:894
 #, php-format
 msgid "Topic \"%1$s\" successfully unapproved."
 msgstr ""
 
-#: includes/admin/topics.php:997
+#: includes/admin/topics.php:998
 #: templates/default/bbpress/loop-topics.php:19
 msgid "Voices"
 msgstr ""
 
-#: includes/admin/topics.php:1075
-#: includes/topics/template.php:2049
+#: includes/admin/topics.php:1076
+#: includes/topics/template.php:2054
 msgid "No Replies"
 msgstr ""
 
-#: includes/admin/topics.php:1130
+#: includes/admin/topics.php:1131
 msgid "Unapprove this topic"
 msgstr ""
 
-#: includes/admin/topics.php:1130
+#: includes/admin/topics.php:1131
 msgctxt "Unapprove Topic"
 msgid "Unapprove"
 msgstr ""
 
-#: includes/admin/topics.php:1135
+#: includes/admin/topics.php:1136
 msgid "Approve this topic"
 msgstr ""
 
-#: includes/admin/topics.php:1135
+#: includes/admin/topics.php:1136
 msgctxt "Approve Topic"
 msgid "Approve"
 msgstr ""
 
-#: includes/admin/topics.php:1152
+#: includes/admin/topics.php:1153
 msgid "Close this topic"
 msgstr ""
 
-#: includes/admin/topics.php:1152
+#: includes/admin/topics.php:1153
 msgctxt "Close a Topic"
 msgid "Close"
 msgstr ""
 
-#: includes/admin/topics.php:1154
+#: includes/admin/topics.php:1155
 msgid "Open this topic"
 msgstr ""
 
-#: includes/admin/topics.php:1154
+#: includes/admin/topics.php:1155
 msgctxt "Open a Topic"
 msgid "Open"
 msgstr ""
 
-#: includes/admin/topics.php:1167
+#: includes/admin/topics.php:1168
 msgid "Unstick this topic"
 msgstr ""
 
-#: includes/admin/topics.php:1167
-#: includes/topics/template.php:2825
+#: includes/admin/topics.php:1168
+#: includes/topics/template.php:2830
 msgid "Unstick"
 msgstr ""
 
-#: includes/admin/topics.php:1169
+#: includes/admin/topics.php:1170
 msgid "Stick this topic to its forum"
 msgstr ""
 
-#: includes/admin/topics.php:1169
-#: includes/topics/template.php:2824
+#: includes/admin/topics.php:1170
+#: includes/topics/template.php:2829
 msgid "Stick"
 msgstr ""
 
-#: includes/admin/topics.php:1177
+#: includes/admin/topics.php:1178
 msgid "Stick this topic to front"
 msgstr ""
 
-#: includes/admin/topics.php:1177
-#: includes/topics/template.php:2826
+#: includes/admin/topics.php:1178
+#: includes/topics/template.php:2831
 msgid "(to front)"
 msgstr ""
 
-#: includes/admin/topics.php:1189
+#: includes/admin/topics.php:1190
 msgid "Mark this topic as spam"
 msgstr ""
 
-#: includes/admin/topics.php:1191
+#: includes/admin/topics.php:1192
 msgid "Mark the topic as not spam"
 msgstr ""
 
-#: includes/admin/topics.php:1347
-#: includes/admin/topics.php:1359
+#: includes/admin/topics.php:1348
+#: includes/admin/topics.php:1360
 #: includes/topics/template.php:80
 msgid "Topic updated."
 msgstr ""
 
 #. translators: %s: Date and time of the revision
-#: includes/admin/topics.php:1365
+#: includes/admin/topics.php:1366
 #, php-format
 msgid "Topic restored to revision from %s"
 msgstr ""
 
-#: includes/admin/topics.php:1371
+#: includes/admin/topics.php:1372
 msgid "Topic created."
 msgstr ""
 
-#: includes/admin/topics.php:1377
+#: includes/admin/topics.php:1378
 msgid "Topic saved."
 msgstr ""
 
-#: includes/admin/topics.php:1382
+#: includes/admin/topics.php:1383
 msgid "Topic submitted."
 msgstr ""
 
 #. translators: Publish box date format, see http://php.net/date
-#: includes/admin/topics.php:1392
+#: includes/admin/topics.php:1393
 #, php-format
 msgid "Topic scheduled for: %s."
 msgstr ""
 
-#: includes/admin/topics.php:1402
+#: includes/admin/topics.php:1403
 msgid "Topic draft updated."
 msgstr ""
 
@@ -3930,22 +3945,22 @@ msgstr ""
 msgid "Site Role"
 msgstr ""
 
-#: includes/common/formatting.php:682
+#: includes/common/formatting.php:823
 msgid "sometime"
 msgstr ""
 
-#: includes/common/formatting.php:683
+#: includes/common/formatting.php:824
 msgid "right now"
 msgstr ""
 
 #. translators: %s: Time period
-#: includes/common/formatting.php:685
+#: includes/common/formatting.php:826
 #, php-format
 msgid "%s ago"
 msgstr ""
 
 #. translators: %s: Number of years
-#: includes/common/formatting.php:690
+#: includes/common/formatting.php:831
 #, php-format
 msgid "%s year"
 msgid_plural "%s years"
@@ -3953,7 +3968,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of months
-#: includes/common/formatting.php:693
+#: includes/common/formatting.php:834
 #, php-format
 msgid "%s month"
 msgid_plural "%s months"
@@ -3961,7 +3976,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of weeks
-#: includes/common/formatting.php:696
+#: includes/common/formatting.php:837
 #, php-format
 msgid "%s week"
 msgid_plural "%s weeks"
@@ -3969,7 +3984,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of days
-#: includes/common/formatting.php:699
+#: includes/common/formatting.php:840
 #, php-format
 msgid "%s day"
 msgid_plural "%s days"
@@ -3977,7 +3992,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of hours
-#: includes/common/formatting.php:702
+#: includes/common/formatting.php:843
 #, php-format
 msgid "%s hour"
 msgid_plural "%s hours"
@@ -3985,7 +4000,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of minutes
-#: includes/common/formatting.php:705
+#: includes/common/formatting.php:846
 #, php-format
 msgid "%s minute"
 msgid_plural "%s minutes"
@@ -3993,68 +4008,68 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of seconds
-#: includes/common/formatting.php:708
+#: includes/common/formatting.php:849
 #, php-format
 msgid "%s second"
 msgid_plural "%s seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/common/formatting.php:778
+#: includes/common/formatting.php:919
 msgctxt "Separator in time since"
 msgid ","
 msgstr ""
 
 #. translators: %s: Number of pending topics
 #. translators: %s: Number of pending replies
-#: includes/common/functions.php:692
-#: includes/common/functions.php:746
+#: includes/common/functions.php:765
+#: includes/common/functions.php:819
 #, php-format
 msgid "Pending: %s"
 msgstr ""
 
 #. translators: %s: Number of private topics
 #. translators: %s: Number of private replies
-#: includes/common/functions.php:699
-#: includes/common/functions.php:753
+#: includes/common/functions.php:772
+#: includes/common/functions.php:826
 #, php-format
 msgid "Private: %s"
 msgstr ""
 
 #. translators: %s: Number of hidden topics
 #. translators: %s: Number of hidden replies
-#: includes/common/functions.php:706
-#: includes/common/functions.php:760
+#: includes/common/functions.php:779
+#: includes/common/functions.php:833
 #, php-format
 msgid "Hidden: %s"
 msgstr ""
 
 #. translators: %s: Number of spam topics
 #. translators: %s: Number of spam replies
-#: includes/common/functions.php:713
-#: includes/common/functions.php:767
+#: includes/common/functions.php:786
+#: includes/common/functions.php:840
 #, php-format
 msgid "Spammed: %s"
 msgstr ""
 
 #. translators: %s: Number of trashed topics
 #. translators: %s: Number of trashed replies
-#: includes/common/functions.php:720
-#: includes/common/functions.php:774
+#: includes/common/functions.php:793
+#: includes/common/functions.php:847
 #, php-format
 msgid "Trashed: %s"
 msgstr ""
 
-#: includes/common/functions.php:872
+#: includes/common/functions.php:1022
 msgid "<strong>Error</strong>: Invalid author name."
 msgstr ""
 
-#: includes/common/functions.php:878
+#: includes/common/functions.php:1028
 msgid "<strong>Error</strong>: Invalid email address."
 msgstr ""
 
 #. translators: %s: Reply URL
-#: includes/common/functions.php:1681
+#: includes/common/functions.php:1831
 #, php-format
 msgid ""
 "A new reply was posted in a password-protected discussion.\n"
@@ -4069,7 +4084,7 @@ msgid ""
 msgstr ""
 
 #. translators: 1: Reply author name, 2: Reply content, 3: Reply URL
-#: includes/common/functions.php:1703
+#: includes/common/functions.php:1853
 #, php-format
 msgid ""
 "%1$s wrote:\n"
@@ -4086,7 +4101,7 @@ msgid ""
 msgstr ""
 
 #. translators: %s: Topic URL
-#: includes/common/functions.php:1886
+#: includes/common/functions.php:2036
 #, php-format
 msgid ""
 "A new topic was posted in a password-protected discussion.\n"
@@ -4101,7 +4116,7 @@ msgid ""
 msgstr ""
 
 #. translators: 1: Topic author name, 2: Topic content, 3: Topic URL
-#: includes/common/functions.php:1908
+#: includes/common/functions.php:2058
 #, php-format
 msgid ""
 "%1$s wrote:\n"
@@ -4195,27 +4210,27 @@ msgstr ""
 msgid "You are not allowed to change this forum visibility."
 msgstr ""
 
-#: includes/common/template.php:1316
+#: includes/common/template.php:1353
 msgid "Conditional query tags do not work before the query is run. Before then, they always return false."
 msgstr ""
 
-#: includes/common/template.php:1799
+#: includes/common/template.php:1836
 msgid "No topics available"
 msgstr ""
 
-#: includes/common/template.php:1804
+#: includes/common/template.php:1841
 msgid "No forums available"
 msgstr ""
 
-#: includes/common/template.php:1809
+#: includes/common/template.php:1846
 msgid "None available"
 msgstr ""
 
-#: includes/common/template.php:2446
+#: includes/common/template.php:2483
 msgid "Home"
 msgstr ""
 
-#: includes/common/template.php:2516
+#: includes/common/template.php:2553
 msgid "(Edit)"
 msgstr ""
 
@@ -4224,133 +4239,133 @@ msgstr ""
 #. translators: %s: Topic tag name
 #. translators: %s: Topic current tag name wrapped in span tags
 #. translators: %s - topic tag name
-#: includes/common/template.php:2521
-#: includes/common/template.php:2641
-#: includes/common/template.php:2952
-#: includes/core/theme-compat.php:873
+#: includes/common/template.php:2558
+#: includes/common/template.php:2678
+#: includes/common/template.php:2989
+#: includes/core/theme-compat.php:895
 #: templates/default/extras/taxonomy-topic-tag-edit.php:22
 #: templates/default/extras/taxonomy-topic-tag.php:21
 #, php-format
 msgid "Topic Tag: %s"
 msgstr ""
 
-#: includes/common/template.php:2544
+#: includes/common/template.php:2581
 msgid "&lsaquo;"
 msgstr ""
 
-#: includes/common/template.php:2544
+#: includes/common/template.php:2581
 msgid "&rsaquo;"
 msgstr ""
 
-#: includes/common/template.php:2869
+#: includes/common/template.php:2906
 msgid "Log Out"
 msgstr ""
 
 #. translators: %s: Forum title
-#: includes/common/template.php:2910
+#: includes/common/template.php:2947
 #, php-format
 msgid "Forum Edit: %s"
 msgstr ""
 
 #. translators: %s: Topic title
-#: includes/common/template.php:2916
+#: includes/common/template.php:2953
 #, php-format
 msgid "Topic Edit: %s"
 msgstr ""
 
 #. translators: %s: Reply title
-#: includes/common/template.php:2922
+#: includes/common/template.php:2959
 #, php-format
 msgid "Reply Edit: %s"
 msgstr ""
 
 #. translators: %s: Topic tag name
-#: includes/common/template.php:2928
+#: includes/common/template.php:2965
 #, php-format
 msgid "Topic Tag Edit: %s"
 msgstr ""
 
 #. translators: %s: Forum title
-#: includes/common/template.php:2936
+#: includes/common/template.php:2973
 #, php-format
 msgid "Forum: %s"
 msgstr ""
 
 #. translators: %s: Topic title
-#: includes/common/template.php:2942
+#: includes/common/template.php:2979
 #, php-format
 msgid "Topic: %s"
 msgstr ""
 
-#: includes/common/template.php:2965
+#: includes/common/template.php:3002
 msgid "Your Topics"
 msgstr ""
 
 #. translators: user's display name
-#: includes/common/template.php:2969
+#: includes/common/template.php:3006
 #, php-format
 msgid "%s's Topics"
 msgstr ""
 
-#: includes/common/template.php:2975
+#: includes/common/template.php:3012
 msgid "Your Replies"
 msgstr ""
 
 #. translators: user's display name
-#: includes/common/template.php:2979
+#: includes/common/template.php:3016
 #, php-format
 msgid "%s's Replies"
 msgstr ""
 
-#: includes/common/template.php:2985
+#: includes/common/template.php:3022
 msgid "Your Favorites"
 msgstr ""
 
 #. translators: user's display name
 #. translators: %s: User's display name
-#: includes/common/template.php:2989
+#: includes/common/template.php:3026
 #: templates/default/bbpress/user-details.php:97
 #, php-format
 msgid "%s's Favorites"
 msgstr ""
 
-#: includes/common/template.php:2995
+#: includes/common/template.php:3032
 msgid "Your Subscriptions"
 msgstr ""
 
 #. translators: user's display name
 #. translators: %s: User's display name
-#: includes/common/template.php:2999
+#: includes/common/template.php:3036
 #: templates/default/bbpress/user-details.php:113
 #, php-format
 msgid "%s's Subscriptions"
 msgstr ""
 
-#: includes/common/template.php:3004
+#: includes/common/template.php:3041
 msgid "Your Profile"
 msgstr ""
 
 #. translators: user's display name
 #. translators: %s: User's display name
-#: includes/common/template.php:3008
+#: includes/common/template.php:3045
 #: templates/default/bbpress/user-details.php:34
 #, php-format
 msgid "%s's Profile"
 msgstr ""
 
-#: includes/common/template.php:3015
+#: includes/common/template.php:3052
 msgid "Edit Your Profile"
 msgstr ""
 
 #. translators: %s: User's display name
-#: includes/common/template.php:3021
+#: includes/common/template.php:3058
 #: templates/default/bbpress/user-details.php:131
 #, php-format
 msgid "Edit %s's Profile"
 msgstr ""
 
 #. translators: %s: View title
-#: includes/common/template.php:3030
+#: includes/common/template.php:3067
 #, php-format
 msgid "View: %s"
 msgstr ""
@@ -4651,91 +4666,95 @@ msgstr ""
 msgid "Akismet was unable to check this post (response: %s), will automatically retry again later."
 msgstr ""
 
-#: includes/extend/akismet.php:938
-#: includes/extend/akismet.php:948
+#: includes/extend/akismet.php:903
+#: includes/extend/akismet.php:913
 msgid "Akismet History"
 msgstr ""
 
-#: includes/extend/akismet.php:992
+#: includes/extend/akismet.php:957
 msgid "No recorded history. Akismet has not checked this post."
 msgstr ""
 
-#: includes/extend/buddypress/activity.php:481
+#: includes/extend/buddypress/activity.php:555
 msgid "New forum topic"
 msgstr ""
 
-#: includes/extend/buddypress/activity.php:491
+#: includes/extend/buddypress/activity.php:565
 msgid "New forum reply"
 msgstr ""
 
 #. translators: 1: User linked profile, 2: Topic linked title, 3: Forum linked title
-#: includes/extend/buddypress/activity.php:706
+#: includes/extend/buddypress/activity.php:786
 #: includes/extend/buddypress/functions.php:859
 #, php-format
 msgid "%1$s started the topic %2$s in the forum %3$s"
 msgstr ""
 
 #. translators: 1: User linked profile, 2: Topic linked title, 3: Forum linked title
-#: includes/extend/buddypress/activity.php:852
+#: includes/extend/buddypress/activity.php:938
 #: includes/extend/buddypress/functions.php:863
 #, php-format
 msgid "%1$s replied to the topic %2$s in the forum %3$s"
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:715
+#: includes/extend/buddypress/groups.php:787
+msgid "<strong>Error</strong>: You do not have permission to create content in this forum."
+msgstr ""
+
+#: includes/extend/buddypress/groups.php:851
 msgid "<strong>Error</strong>: Forum ID is invalid."
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:778
+#: includes/extend/buddypress/groups.php:914
 msgid "<strong>Error</strong>: Reply To is invalid."
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:803
-#: includes/extend/buddypress/groups.php:806
+#: includes/extend/buddypress/groups.php:939
+#: includes/extend/buddypress/groups.php:942
 msgid "Group Forum Settings"
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:807
-#: includes/extend/buddypress/groups.php:1016
+#: includes/extend/buddypress/groups.php:943
+#: includes/extend/buddypress/groups.php:1152
 msgid "Create a discussion forum to allow members of this group to communicate in a structured, bulletin-board style fashion."
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:811
-#: includes/extend/buddypress/groups.php:1019
+#: includes/extend/buddypress/groups.php:947
+#: includes/extend/buddypress/groups.php:1155
 msgid "Yes. I want this group to have a forum."
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:814
+#: includes/extend/buddypress/groups.php:950
 msgid "Saying no will not delete existing forum content."
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:819
+#: includes/extend/buddypress/groups.php:955
 msgid "Group Forum:"
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:829
+#: includes/extend/buddypress/groups.php:965
 msgid "Network administrators can reconfigure which forum belongs to this group."
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:834
+#: includes/extend/buddypress/groups.php:970
 msgid "Save Settings"
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:869
-#: includes/extend/buddypress/groups.php:1034
+#: includes/extend/buddypress/groups.php:1005
+#: includes/extend/buddypress/groups.php:1170
 #: includes/extend/buddypress/notifications.php:233
 #: includes/forums/functions.php:159
 #: includes/forums/functions.php:446
 #: includes/replies/functions.php:163
 #: includes/replies/functions.php:583
-#: includes/replies/functions.php:1307
+#: includes/replies/functions.php:1313
 #: includes/topics/functions.php:136
-#: includes/topics/functions.php:529
-#: includes/topics/functions.php:1126
-#: includes/topics/functions.php:1435
-#: includes/topics/functions.php:1818
-#: includes/topics/functions.php:1870
-#: includes/topics/functions.php:1941
+#: includes/topics/functions.php:525
+#: includes/topics/functions.php:1164
+#: includes/topics/functions.php:1495
+#: includes/topics/functions.php:1878
+#: includes/topics/functions.php:1930
+#: includes/topics/functions.php:2001
 #: includes/users/engagements.php:709
 #: includes/users/engagements.php:1009
 #: includes/users/functions.php:304
@@ -4744,16 +4763,16 @@ msgstr ""
 msgid "<strong>Error</strong>: Are you sure you wanted to do that?"
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:974
+#: includes/extend/buddypress/groups.php:1110
 msgctxt "group admin edit screen"
 msgid "Discussion Forum"
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:1014
+#: includes/extend/buddypress/groups.php:1150
 msgid "Group Forum"
 msgstr ""
 
-#: includes/extend/buddypress/groups.php:1411
+#: includes/extend/buddypress/groups.php:1547
 msgid "This group does not currently have a forum."
 msgstr ""
 
@@ -4837,7 +4856,7 @@ msgstr ""
 
 #: includes/forums/functions.php:258
 #: includes/replies/functions.php:340
-#: includes/topics/functions.php:280
+#: includes/topics/functions.php:276
 msgid "<strong>Error</strong>: Slow down; you move too fast."
 msgstr ""
 
@@ -4852,7 +4871,7 @@ msgstr ""
 #. translators: %s: Error message(s)
 #: includes/forums/functions.php:403
 #: includes/replies/functions.php:538
-#: includes/topics/functions.php:460
+#: includes/topics/functions.php:456
 #, php-format
 msgid "<strong>Error</strong>: The following problem(s) occurred: %s"
 msgstr ""
@@ -4883,37 +4902,37 @@ msgstr ""
 msgid "<strong>Error</strong>: The following problem(s) have been found with your forum: %sPlease try again."
 msgstr ""
 
-#: includes/forums/functions.php:2497
+#: includes/forums/functions.php:2536
 msgctxt "Open the forum"
 msgid "Open"
 msgstr ""
 
-#: includes/forums/functions.php:2498
+#: includes/forums/functions.php:2537
 msgctxt "Close the forum"
 msgid "Closed"
 msgstr ""
 
-#: includes/forums/functions.php:2519
+#: includes/forums/functions.php:2558
 msgctxt "Forum accepts new topics"
 msgid "Forum"
 msgstr ""
 
-#: includes/forums/functions.php:2520
+#: includes/forums/functions.php:2559
 msgctxt "Forum is a category"
 msgid "Category"
 msgstr ""
 
-#: includes/forums/functions.php:2544
+#: includes/forums/functions.php:2583
 msgctxt "Make forum public"
 msgid "Public"
 msgstr ""
 
-#: includes/forums/functions.php:2545
+#: includes/forums/functions.php:2584
 msgctxt "Make forum private"
 msgid "Private"
 msgstr ""
 
-#: includes/forums/functions.php:2546
+#: includes/forums/functions.php:2585
 msgctxt "Make forum hidden"
 msgid "Hidden"
 msgstr ""
@@ -5012,20 +5031,20 @@ msgid "Forum scheduled."
 msgstr ""
 
 #: includes/forums/template.php:897
-#: includes/topics/template.php:1834
+#: includes/topics/template.php:1839
 #: includes/users/template.php:1339
 msgid "Subscribe"
 msgstr ""
 
 #: includes/forums/template.php:898
-#: includes/topics/template.php:1835
+#: includes/topics/template.php:1840
 #: includes/users/template.php:1340
 msgid "Unsubscribe"
 msgstr ""
 
 #. translators: %s: Number of topics
 #: includes/forums/template.php:1237
-#: includes/forums/template.php:2176
+#: includes/forums/template.php:2194
 #, php-format
 msgid "%s topic"
 msgid_plural "%s topics"
@@ -5035,7 +5054,7 @@ msgstr[1] ""
 #. translators: %s: Number of hidden topics
 #. translators: %s: Number of hidden replies
 #: includes/forums/template.php:1253
-#: includes/topics/template.php:2094
+#: includes/topics/template.php:2099
 #, php-format
 msgid "(+%s hidden)"
 msgid_plural "(+%s hidden)"
@@ -5043,8 +5062,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: Number of replies
-#: includes/forums/template.php:2159
-#: includes/topics/template.php:2078
+#: includes/forums/template.php:2177
+#: includes/topics/template.php:2083
 #, php-format
 msgid "%s reply"
 msgid_plural "%s replies"
@@ -5052,7 +5071,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text, 3: Last update time, 4: Author link
-#: includes/forums/template.php:2186
+#: includes/forums/template.php:2204
 #, php-format
 msgid "This category has %1$s, %2$s, and was last updated %3$s by %4$s."
 msgid_plural "This category has %1$s, %2$s, and was last updated %3$s by %4$s."
@@ -5060,7 +5079,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text, 3: Last update time, 4: Author link
-#: includes/forums/template.php:2188
+#: includes/forums/template.php:2206
 #, php-format
 msgid "This forum has %1$s, %2$s, and was last updated %3$s by %4$s."
 msgid_plural "This forum has %1$s, %2$s, and was last updated %3$s by %4$s."
@@ -5068,7 +5087,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link, 2: Last update time, 3: Author link
-#: includes/forums/template.php:2194
+#: includes/forums/template.php:2212
 #, php-format
 msgid "This category has %1$s, and was last updated %2$s by %3$s."
 msgid_plural "This category has %1$s, and was last updated %2$s by %3$s."
@@ -5076,7 +5095,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link, 2: Last update time, 3: Author link
-#: includes/forums/template.php:2196
+#: includes/forums/template.php:2214
 #, php-format
 msgid "This forum has %1$s, and was last updated %2$s by %3$s."
 msgid_plural "This forum has %1$s, and was last updated %2$s by %3$s."
@@ -5084,7 +5103,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text
-#: includes/forums/template.php:2203
+#: includes/forums/template.php:2221
 #, php-format
 msgid "This category has %1$s and %2$s."
 msgid_plural "This category has %1$s and %2$s."
@@ -5092,7 +5111,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link, 2: Replies text
-#: includes/forums/template.php:2205
+#: includes/forums/template.php:2223
 #, php-format
 msgid "This forum has %1$s and %2$s."
 msgid_plural "This forum has %1$s and %2$s."
@@ -5100,7 +5119,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link
-#: includes/forums/template.php:2211
+#: includes/forums/template.php:2229
 #, php-format
 msgid "This category has %1$s."
 msgid_plural "This category has %1$s."
@@ -5108,14 +5127,14 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by topic count. 1: Topics link
-#: includes/forums/template.php:2213
+#: includes/forums/template.php:2231
 #, php-format
 msgid "This forum has %1$s."
 msgid_plural "This forum has %1$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/forums/template.php:2217
+#: includes/forums/template.php:2235
 msgid "This forum is empty."
 msgstr ""
 
@@ -5145,24 +5164,28 @@ msgstr ""
 
 #: includes/replies/functions.php:242
 #: includes/replies/functions.php:256
-#: includes/topics/functions.php:210
-#: includes/topics/functions.php:224
-#: includes/topics/functions.php:544
+#: includes/topics/functions.php:207
+#: includes/topics/functions.php:221
+#: includes/topics/functions.php:540
+#: includes/topics/functions.php:554
 msgid "<strong>Error</strong>: Forum ID is missing."
 msgstr ""
 
 #: includes/replies/functions.php:246
-#: includes/topics/functions.php:214
+#: includes/topics/functions.php:211
+#: includes/topics/functions.php:544
 msgid "<strong>Error</strong>: Forum ID must be a number."
 msgstr ""
 
 #: includes/replies/functions.php:260
-#: includes/topics/functions.php:228
+#: includes/topics/functions.php:225
+#: includes/topics/functions.php:558
 msgid "<strong>Error</strong>: Forum ID cannot be a negative number."
 msgstr ""
 
 #: includes/replies/functions.php:264
-#: includes/topics/functions.php:232
+#: includes/topics/functions.php:229
+#: includes/topics/functions.php:562
 msgid "<strong>Error</strong>: Forum does not exist."
 msgstr ""
 
@@ -5206,7 +5229,7 @@ msgid "<strong>Error</strong>: Topic is closed."
 msgstr ""
 
 #: includes/replies/functions.php:443
-#: includes/replies/functions.php:782
+#: includes/replies/functions.php:788
 msgid "<strong>Error</strong>: There was a problem adding the tags to the topic."
 msgstr ""
 
@@ -5244,128 +5267,128 @@ msgid "<strong>Error</strong>: Your reply cannot be edited at this time."
 msgstr ""
 
 #: includes/replies/functions.php:707
-#: includes/replies/functions.php:1614
-#: includes/topics/functions.php:324
-#: includes/topics/functions.php:633
-#: includes/topics/functions.php:2171
-#: includes/topics/functions.php:2177
+#: includes/replies/functions.php:1620
+#: includes/topics/functions.php:320
+#: includes/topics/functions.php:665
+#: includes/topics/functions.php:2231
+#: includes/topics/functions.php:2237
 msgid "<strong>Error</strong>: You do not have permission to do that."
 msgstr ""
 
 #. translators: %s: Error message
-#: includes/replies/functions.php:848
+#: includes/replies/functions.php:854
 #, php-format
 msgid "<strong>Error</strong>: The following problem(s) have been found with your reply: %sPlease try again."
 msgstr ""
 
-#: includes/replies/functions.php:1283
-#: includes/topics/functions.php:1409
+#: includes/replies/functions.php:1289
+#: includes/topics/functions.php:1469
 msgid "<strong>Error</strong>: A reply ID is required."
 msgstr ""
 
-#: includes/replies/functions.php:1292
+#: includes/replies/functions.php:1298
 msgid "<strong>Error</strong>: The reply you want to move was not found."
 msgstr ""
 
-#: includes/replies/functions.php:1302
+#: includes/replies/functions.php:1308
 msgid "<strong>Error</strong>: The topic you want to move from was not found."
 msgstr ""
 
-#: includes/replies/functions.php:1313
-#: includes/topics/functions.php:1139
-#: includes/topics/functions.php:1440
+#: includes/replies/functions.php:1319
+#: includes/topics/functions.php:1177
+#: includes/topics/functions.php:1500
 msgid "<strong>Error</strong>: You do not have permission to edit the source topic."
 msgstr ""
 
-#: includes/replies/functions.php:1323
+#: includes/replies/functions.php:1329
 msgid "<strong>Error</strong>: You need to choose a valid move option."
 msgstr ""
 
-#: includes/replies/functions.php:1336
-#: includes/topics/functions.php:1463
+#: includes/replies/functions.php:1342
+#: includes/topics/functions.php:1523
 msgid "<strong>Error</strong>: A topic ID is required."
 msgstr ""
 
-#: includes/replies/functions.php:1346
+#: includes/replies/functions.php:1352
 msgid "<strong>Error</strong>: The topic you want to move to was not found."
 msgstr ""
 
-#: includes/replies/functions.php:1351
-#: includes/topics/functions.php:1166
-#: includes/topics/functions.php:1483
+#: includes/replies/functions.php:1357
+#: includes/topics/functions.php:1204
+#: includes/topics/functions.php:1543
 msgid "<strong>Error</strong>: You do not have permission to edit the destination topic."
 msgstr ""
 
-#: includes/replies/functions.php:1431
-#: includes/topics/functions.php:1540
+#: includes/replies/functions.php:1437
+#: includes/topics/functions.php:1600
 msgid "<strong>Error</strong>: There was a problem converting the reply into the topic. Please try again."
 msgstr ""
 
-#: includes/replies/functions.php:1436
-#: includes/topics/functions.php:1545
+#: includes/replies/functions.php:1442
+#: includes/topics/functions.php:1605
 msgid "<strong>Error</strong>: You do not have permission to create new topics. The reply could not be converted into a topic."
 msgstr ""
 
-#: includes/replies/functions.php:1608
+#: includes/replies/functions.php:1614
 msgid "<strong>Error</strong>: This reply could not be found or no longer exists."
 msgstr ""
 
-#: includes/replies/functions.php:1695
+#: includes/replies/functions.php:1701
 msgid "<strong>Error</strong>: There was a problem approving the reply."
 msgstr ""
 
-#: includes/replies/functions.php:1695
+#: includes/replies/functions.php:1701
 msgid "<strong>Error</strong>: There was a problem unapproving the reply."
 msgstr ""
 
-#: includes/replies/functions.php:1706
+#: includes/replies/functions.php:1712
 msgid "<strong>Error</strong>: There was a problem unmarking the reply as spam."
 msgstr ""
 
-#: includes/replies/functions.php:1706
+#: includes/replies/functions.php:1712
 msgid "<strong>Error</strong>: There was a problem marking the reply as spam."
 msgstr ""
 
-#: includes/replies/functions.php:1721
+#: includes/replies/functions.php:1727
 msgid "<strong>Error</strong>: There was a problem trashing the reply."
 msgstr ""
 
-#: includes/replies/functions.php:1729
+#: includes/replies/functions.php:1735
 msgid "<strong>Error</strong>: There was a problem untrashing the reply."
 msgstr ""
 
-#: includes/replies/functions.php:1737
+#: includes/replies/functions.php:1743
 msgid "<strong>Error</strong>: There was a problem deleting the reply."
 msgstr ""
 
-#: includes/replies/functions.php:1771
+#: includes/replies/functions.php:1777
 msgctxt "Publish the reply"
 msgid "Publish"
 msgstr ""
 
-#: includes/replies/functions.php:1772
+#: includes/replies/functions.php:1778
 msgctxt "Spam the reply"
 msgid "Spam"
 msgstr ""
 
-#: includes/replies/functions.php:1773
+#: includes/replies/functions.php:1779
 msgctxt "Trash the reply"
 msgid "Trash"
 msgstr ""
 
-#: includes/replies/functions.php:1774
+#: includes/replies/functions.php:1780
 msgctxt "Mark reply as pending"
 msgid "Pending"
 msgstr ""
 
-#: includes/replies/functions.php:2304
+#: includes/replies/functions.php:2315
 msgid "All Posts"
 msgstr ""
 
 #. translators: %s: Number of replies
 #. translators: %s: Number of replies to the topic
-#: includes/replies/functions.php:2352
-#: includes/topics/functions.php:3982
+#: includes/replies/functions.php:2363
+#: includes/topics/functions.php:4042
 #, php-format
 msgid "Replies: %s"
 msgstr ""
@@ -5465,14 +5488,14 @@ msgstr ""
 
 #. translators: %s: Topic title
 #. translators: %s: Reply reference (includes reply number and topic title)
-#: includes/replies/template.php:572
+#: includes/replies/template.php:593
 #: templates/default/bbpress/form-reply.php:32
 #, php-format
 msgid "Reply To: %s"
 msgstr ""
 
 #. translators: 1: Date, 2: Time
-#: includes/replies/template.php:708
+#: includes/replies/template.php:729
 #: includes/topics/template.php:794
 #, php-format
 msgctxt "date at time"
@@ -5480,86 +5503,86 @@ msgid "%1$s at %2$s"
 msgstr ""
 
 #. translators: 1: Time since modification, 2: Author linked display name, 3: Modification reason
-#: includes/replies/template.php:805
+#: includes/replies/template.php:831
 #, php-format
 msgid "This reply was modified %1$s by %2$s. Reason: %3$s"
 msgstr ""
 
 #. translators: 1: Time since modification, 2: Author linked display name
-#: includes/replies/template.php:808
+#: includes/replies/template.php:834
 #, php-format
 msgid "This reply was modified %1$s by %2$s."
 msgstr ""
 
 #. translators: %s: Author's display name
 #. translators: %s: Author's name
-#: includes/replies/template.php:1238
-#: includes/topics/template.php:1473
-#: includes/users/template.php:2150
+#: includes/replies/template.php:1264
+#: includes/topics/template.php:1478
+#: includes/users/template.php:2154
 #, php-format
 msgid "View %s's profile"
 msgstr ""
 
 #. translators: %s: Author's display name
 #. translators: %s: Author's name
-#: includes/replies/template.php:1240
-#: includes/topics/template.php:1475
-#: includes/users/template.php:2152
+#: includes/replies/template.php:1266
+#: includes/topics/template.php:1480
+#: includes/users/template.php:2156
 #, php-format
 msgid "Visit %s's website"
 msgstr ""
 
-#: includes/replies/template.php:1629
-#: includes/topics/template.php:3028
+#: includes/replies/template.php:1655
+#: includes/topics/template.php:3033
 msgctxt "verb"
 msgid "Reply"
 msgstr ""
 
-#: includes/replies/template.php:1705
+#: includes/replies/template.php:1731
 #: templates/default/bbpress/form-user-passwords.php:31
 msgid "Cancel"
 msgstr ""
 
-#: includes/replies/template.php:2026
-#: includes/topics/template.php:2601
+#: includes/replies/template.php:2052
+#: includes/topics/template.php:2606
 #: templates/default/bbpress/form-topic-tag.php:126
 #: templates/default/bbpress/form-topic-tag.php:145
 msgid "Delete"
 msgstr ""
 
-#: includes/replies/template.php:2068
-#: includes/topics/template.php:2654
+#: includes/replies/template.php:2094
+#: includes/topics/template.php:2659
 msgid "Are you sure you want to delete that permanently?"
 msgstr ""
 
-#: includes/replies/template.php:2179
+#: includes/replies/template.php:2205
 msgid "Move"
 msgstr ""
 
-#: includes/replies/template.php:2180
+#: includes/replies/template.php:2206
 msgid "Move this reply"
 msgstr ""
 
-#: includes/replies/template.php:2245
+#: includes/replies/template.php:2271
 msgid "Split"
 msgstr ""
 
-#: includes/replies/template.php:2246
+#: includes/replies/template.php:2272
 msgid "Split the topic from this reply"
 msgstr ""
 
-#: includes/replies/template.php:2309
+#: includes/replies/template.php:2335
 msgctxt "Pending Status"
 msgid "Approve"
 msgstr ""
 
-#: includes/replies/template.php:2310
+#: includes/replies/template.php:2336
 msgctxt "Pending Status"
 msgid "Unapprove"
 msgstr ""
 
 #. translators: %s: Number of reply threads
-#: includes/replies/template.php:2499
+#: includes/replies/template.php:2525
 #, php-format
 msgid "Viewing %1$s reply thread"
 msgid_plural "Viewing %1$s reply threads"
@@ -5567,7 +5590,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %1$s: Number of replies
-#: includes/replies/template.php:2507
+#: includes/replies/template.php:2533
 #, php-format
 msgid "Viewing %1$s reply"
 msgid_plural "Viewing %1$s replies"
@@ -5575,7 +5598,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: Number of replies being viewed, 2: Starting reply number, 3: Ending reply number, 4: Total replies
-#: includes/replies/template.php:2512
+#: includes/replies/template.php:2538
 #, php-format
 msgid "Viewing %2$s replies (of %4$s total)"
 msgid_plural "Viewing %1$s replies - %2$s through %3$s (of %4$s total)"
@@ -5583,7 +5606,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %1$s: Number of posts
-#: includes/replies/template.php:2522
+#: includes/replies/template.php:2548
 #, php-format
 msgid "Viewing %1$s post"
 msgid_plural "Viewing %1$s posts"
@@ -5591,14 +5614,14 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: Number of posts being viewed, 2: Starting post number, 3: Ending post number, 4: Total posts
-#: includes/replies/template.php:2527
+#: includes/replies/template.php:2553
 #, php-format
 msgid "Viewing %2$s post (of %4$s total)"
 msgid_plural "Viewing %1$s posts - %2$s through %3$s (of %4$s total)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/replies/template.php:2691
+#: includes/replies/template.php:2725
 msgctxt "Default reply to dropdown text"
 msgid "None"
 msgstr ""
@@ -5634,243 +5657,251 @@ msgid "<strong>Error</strong>: You do not have permission to create new topics."
 msgstr ""
 
 #: includes/topics/functions.php:200
-#: includes/topics/functions.php:603
+#: includes/topics/functions.php:635
 msgid "<strong>Error</strong>: Your topic cannot be empty."
 msgstr ""
 
-#: includes/topics/functions.php:246
+#: includes/topics/functions.php:242
 msgid "<strong>Error</strong>: This forum is a category. No topics can be created in this forum."
 msgstr ""
 
-#: includes/topics/functions.php:253
-#: includes/topics/functions.php:566
+#: includes/topics/functions.php:249
+#: includes/topics/functions.php:598
 msgid "<strong>Error</strong>: This forum has been closed to new topics."
 msgstr ""
 
-#: includes/topics/functions.php:258
-#: includes/topics/functions.php:571
+#: includes/topics/functions.php:254
+#: includes/topics/functions.php:603
 msgid "<strong>Error</strong>: This forum is private and you do not have the capability to read or create new topics in it."
 msgstr ""
 
-#: includes/topics/functions.php:262
-#: includes/topics/functions.php:575
+#: includes/topics/functions.php:258
+#: includes/topics/functions.php:607
 msgid "<strong>Error</strong>: This forum is hidden and you do not have the capability to read or create new topics in it."
 msgstr ""
 
-#: includes/topics/functions.php:267
+#: includes/topics/functions.php:263
 msgid "<strong>Error</strong>: You must enter the forum password to create new topics."
 msgstr ""
 
-#: includes/topics/functions.php:274
+#: includes/topics/functions.php:270
 msgid "<strong>Error</strong>: The forums are not accepting new topics."
 msgstr ""
 
-#: includes/topics/functions.php:294
+#: includes/topics/functions.php:290
 msgid "<strong>Error</strong>: Duplicate topic detected; it looks as though you&#8217;ve already said that."
 msgstr ""
 
-#: includes/topics/functions.php:300
+#: includes/topics/functions.php:296
 msgid "<strong>Error</strong>: Your topic cannot be created at this time."
 msgstr ""
 
-#: includes/topics/functions.php:421
+#: includes/topics/functions.php:417
 msgid "Your topic is pending moderation."
 msgstr ""
 
-#: includes/topics/functions.php:464
+#: includes/topics/functions.php:460
 msgid "<strong>Error</strong>: The topic was not created."
 msgstr ""
 
-#: includes/topics/functions.php:492
-#: includes/topics/functions.php:1119
+#: includes/topics/functions.php:488
+#: includes/topics/functions.php:1157
 msgid "<strong>Error</strong>: Topic ID not found."
 msgstr ""
 
-#: includes/topics/functions.php:503
+#: includes/topics/functions.php:499
 msgid "<strong>Error</strong>: The topic you want to edit was not found."
 msgstr ""
 
-#: includes/topics/functions.php:508
-#: includes/topics/functions.php:513
+#: includes/topics/functions.php:504
+#: includes/topics/functions.php:509
 msgid "<strong>Error</strong>: You do not have permission to edit that topic."
 msgstr ""
 
-#: includes/topics/functions.php:559
+#: includes/topics/functions.php:578
+msgid "<strong>Error</strong>: You do not have the capability to move topics out of this forum."
+msgstr ""
+
+#: includes/topics/functions.php:582
+msgid "<strong>Error</strong>: You do not have the capability to move topics into this forum."
+msgstr ""
+
+#: includes/topics/functions.php:591
 msgid "<strong>Error</strong>: This forum is a category. No topics can be created in it."
 msgstr ""
 
-#: includes/topics/functions.php:609
+#: includes/topics/functions.php:641
 msgid "<strong>Error</strong>: Your topic cannot be edited at this time."
 msgstr ""
 
 #. translators: %s: Error message
-#: includes/topics/functions.php:768
+#: includes/topics/functions.php:806
 #, php-format
 msgid "<strong>Error</strong>: The following problem(s) have been found with your topic: %sPlease try again."
 msgstr ""
 
-#: includes/topics/functions.php:1134
+#: includes/topics/functions.php:1172
 msgid "<strong>Error</strong>: The topic you want to merge was not found."
 msgstr ""
 
-#: includes/topics/functions.php:1146
+#: includes/topics/functions.php:1184
 msgid "<strong>Error</strong>: Destination topic ID not found."
 msgstr ""
 
-#: includes/topics/functions.php:1156
+#: includes/topics/functions.php:1194
 msgid "<strong>Error</strong>: The topic you want to merge to was not found."
 msgstr ""
 
-#: includes/topics/functions.php:1161
-#: includes/topics/functions.php:1478
+#: includes/topics/functions.php:1199
+#: includes/topics/functions.php:1538
 msgid "<strong>Error</strong>: The destination topic must be different from the source topic."
 msgstr ""
 
-#: includes/topics/functions.php:1418
+#: includes/topics/functions.php:1478
 msgid "<strong>Error</strong>: The reply you want to split from was not found."
 msgstr ""
 
-#: includes/topics/functions.php:1430
+#: includes/topics/functions.php:1490
 msgid "<strong>Error</strong>: The topic you want to split was not found."
 msgstr ""
 
-#: includes/topics/functions.php:1450
+#: includes/topics/functions.php:1510
 msgid "<strong>Error</strong>: You need to choose a valid split option."
 msgstr ""
 
-#: includes/topics/functions.php:1473
+#: includes/topics/functions.php:1533
 msgid "<strong>Error</strong>: The topic you want to split to was not found."
 msgstr ""
 
 #. translators: %s: Error message(s)
-#: includes/topics/functions.php:1806
+#: includes/topics/functions.php:1866
 #, php-format
 msgid "<strong>Error</strong>: The following problem(s) have been found while getting the tag: %s"
 msgstr ""
 
-#: includes/topics/functions.php:1824
-#: includes/topics/functions.php:1876
+#: includes/topics/functions.php:1884
+#: includes/topics/functions.php:1936
 msgid "<strong>Error</strong>: You do not have permission to edit the topic tags."
 msgstr ""
 
-#: includes/topics/functions.php:1833
-#: includes/topics/functions.php:1885
+#: includes/topics/functions.php:1893
+#: includes/topics/functions.php:1945
 msgid "<strong>Error</strong>: You need to enter a tag name."
 msgstr ""
 
 #. translators: %s: Error message(s)
-#: includes/topics/functions.php:1853
+#: includes/topics/functions.php:1913
 #, php-format
 msgid "<strong>Error</strong>: The following problem(s) have been found while updating the tag: %s"
 msgstr ""
 
 #. translators: %s: Error message(s)
-#: includes/topics/functions.php:1898
-#: includes/topics/functions.php:1924
+#: includes/topics/functions.php:1958
+#: includes/topics/functions.php:1984
 #, php-format
 msgid "<strong>Error</strong>: The following problem(s) have been found while merging the tags: %s"
 msgstr ""
 
-#: includes/topics/functions.php:1907
+#: includes/topics/functions.php:1967
 msgid "<strong>Error</strong>: The tags which are being merged can not be the same."
 msgstr ""
 
-#: includes/topics/functions.php:1947
+#: includes/topics/functions.php:2007
 msgid "<strong>Error</strong>: You do not have permission to delete the topic tags."
 msgstr ""
 
 #. translators: %s: Error message(s)
-#: includes/topics/functions.php:1957
+#: includes/topics/functions.php:2017
 #, php-format
 msgid "<strong>Error</strong>: The following problem(s) have been found while deleting the tag: %s"
 msgstr ""
 
-#: includes/topics/functions.php:1994
-#: includes/topics/template.php:2699
+#: includes/topics/functions.php:2054
+#: includes/topics/template.php:2704
 msgctxt "Open the topic"
 msgid "Open"
 msgstr ""
 
-#: includes/topics/functions.php:1995
+#: includes/topics/functions.php:2055
 msgctxt "Close the topic"
 msgid "Closed"
 msgstr ""
 
-#: includes/topics/functions.php:1996
+#: includes/topics/functions.php:2056
 msgctxt "Spam the topic"
 msgid "Spam"
 msgstr ""
 
-#: includes/topics/functions.php:1997
+#: includes/topics/functions.php:2057
 msgctxt "Trash the topic"
 msgid "Trash"
 msgstr ""
 
-#: includes/topics/functions.php:1998
+#: includes/topics/functions.php:2058
 msgctxt "Unapprove the topic"
 msgid "Pending"
 msgstr ""
 
-#: includes/topics/functions.php:2019
+#: includes/topics/functions.php:2079
 msgctxt "Unstick a topic"
 msgid "Normal"
 msgstr ""
 
-#: includes/topics/functions.php:2020
+#: includes/topics/functions.php:2080
 msgctxt "Make topic sticky"
 msgid "Sticky"
 msgstr ""
 
-#: includes/topics/functions.php:2021
+#: includes/topics/functions.php:2081
 msgctxt "Make topic super sticky"
 msgid "Super Sticky"
 msgstr ""
 
-#: includes/topics/functions.php:2165
+#: includes/topics/functions.php:2225
 msgid "<strong>Error</strong>: This topic could not be found or no longer exists."
 msgstr ""
 
-#: includes/topics/functions.php:2266
+#: includes/topics/functions.php:2326
 msgid "<strong>Error</strong>: There was a problem approving the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2267
+#: includes/topics/functions.php:2327
 msgid "<strong>Error</strong>: There was a problem unapproving the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2284
+#: includes/topics/functions.php:2344
 msgid "<strong>Error</strong>: There was a problem closing the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2285
+#: includes/topics/functions.php:2345
 msgid "<strong>Error</strong>: There was a problem opening the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2303
+#: includes/topics/functions.php:2363
 msgid "<strong>Error</strong>: There was a problem unsticking the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2304
+#: includes/topics/functions.php:2364
 msgid "<strong>Error</strong>: There was a problem sticking the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2322
+#: includes/topics/functions.php:2382
 msgid "<strong>Error</strong>: There was a problem unmarking the topic as spam."
 msgstr ""
 
-#: includes/topics/functions.php:2323
+#: includes/topics/functions.php:2383
 msgid "<strong>Error</strong>: There was a problem marking the topic as spam."
 msgstr ""
 
-#: includes/topics/functions.php:2336
+#: includes/topics/functions.php:2396
 msgid "<strong>Error</strong>: There was a problem trashing the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2347
+#: includes/topics/functions.php:2407
 msgid "<strong>Error</strong>: There was a problem untrashing the topic."
 msgstr ""
 
-#: includes/topics/functions.php:2356
+#: includes/topics/functions.php:2416
 msgid "<strong>Error</strong>: There was a problem deleting the topic."
 msgstr ""
 
@@ -5965,82 +5996,82 @@ msgid "Topic scheduled."
 msgstr ""
 
 #. translators: 1: Time since modification, 2: Author link, 3: Modification reason
-#: includes/topics/template.php:971
+#: includes/topics/template.php:976
 #, php-format
 msgid "This topic was modified %1$s by %2$s. Reason: %3$s"
 msgstr ""
 
 #. translators: 1: Time since modification, 2: Author link
-#: includes/topics/template.php:974
+#: includes/topics/template.php:979
 #, php-format
 msgid "This topic was modified %1$s by %2$s."
 msgstr ""
 
-#: includes/topics/template.php:1888
+#: includes/topics/template.php:1893
 #: includes/users/template.php:1137
 msgid "Favorite"
 msgstr ""
 
-#: includes/topics/template.php:1889
+#: includes/topics/template.php:1894
 #: includes/users/template.php:1138
 msgid "Unfavorite"
 msgstr ""
 
-#: includes/topics/template.php:2260
+#: includes/topics/template.php:2265
 msgid "Tagged:"
 msgstr ""
 
-#: includes/topics/template.php:2698
+#: includes/topics/template.php:2703
 msgctxt "Close the topic"
 msgid "Close"
 msgstr ""
 
-#: includes/topics/template.php:2761
+#: includes/topics/template.php:2766
 msgctxt "Approve the topic"
 msgid "Approve"
 msgstr ""
 
-#: includes/topics/template.php:2762
+#: includes/topics/template.php:2767
 msgctxt "Unapprove the topic"
 msgid "Unapprove"
 msgstr ""
 
-#: includes/topics/template.php:2914
+#: includes/topics/template.php:2919
 #: templates/default/bbpress/form-topic-tag.php:86
 #: templates/default/bbpress/form-topic-tag.php:105
 msgid "Merge"
 msgstr ""
 
 #. translators: %1$s: Total number of topics
-#: includes/topics/template.php:3174
+#: includes/topics/template.php:3179
 #, php-format
 msgid "Viewing %1$s topic"
 msgid_plural "Viewing %1$s topics"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/topics/template.php:3178
+#: includes/topics/template.php:3183
 #, php-format
 msgid "Viewing topic %2$s (of %4$s total)"
 msgid_plural "Viewing %1$s topics - %2$s through %3$s (of %4$s total)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/topics/template.php:3235
+#: includes/topics/template.php:3240
 msgid "This topic is marked as spam."
 msgstr ""
 
-#: includes/topics/template.php:3240
+#: includes/topics/template.php:3245
 msgid "This topic is in the trash."
 msgstr ""
 
-#: includes/topics/template.php:3245
-#: includes/topics/template.php:3552
+#: includes/topics/template.php:3250
+#: includes/topics/template.php:3557
 msgid "This topic is pending moderation."
 msgstr ""
 
 #. translators: %s: Number of voices/participants
-#: includes/topics/template.php:3510
+#: includes/topics/template.php:3515
 #, php-format
 msgid "%s voice"
 msgid_plural "%s voices"
@@ -6048,7 +6079,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by reply count. 1: Reply count, 2: Voice count, 3: Last updated time, 4: Last updated by
-#: includes/topics/template.php:3522
+#: includes/topics/template.php:3527
 #, php-format
 msgid "This topic has %1$s, %2$s, and was last updated %3$s by %4$s."
 msgid_plural "This topic has %1$s, %2$s, and was last updated %3$s by %4$s."
@@ -6056,103 +6087,103 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: Plural form is selected by reply count. 1: Voice count, 2: Reply count
-#: includes/topics/template.php:3539
+#: includes/topics/template.php:3544
 #, php-format
 msgid "This topic has %1$s and %2$s."
 msgid_plural "This topic has %1$s and %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/topics/template.php:3548
+#: includes/topics/template.php:3553
 msgid "This topic has no replies."
 msgstr ""
 
-#: includes/topics/template.php:3556
+#: includes/topics/template.php:3561
 msgid "This topic is empty."
 msgstr ""
 
-#: includes/topics/template.php:3608
+#: includes/topics/template.php:3613
 msgid "Search Tags"
 msgstr ""
 
-#: includes/topics/template.php:3609
+#: includes/topics/template.php:3614
 msgid "Popular Tags"
 msgstr ""
 
-#: includes/topics/template.php:3610
+#: includes/topics/template.php:3615
 msgid "All Tags"
 msgstr ""
 
-#: includes/topics/template.php:3611
+#: includes/topics/template.php:3616
 msgid "Parent Tag"
 msgstr ""
 
-#: includes/topics/template.php:3612
+#: includes/topics/template.php:3617
 msgid "Parent Tag:"
 msgstr ""
 
-#: includes/topics/template.php:3613
+#: includes/topics/template.php:3618
 msgid "Edit Tag"
 msgstr ""
 
-#: includes/topics/template.php:3614
+#: includes/topics/template.php:3619
 msgid "View Topic Tag"
 msgstr ""
 
-#: includes/topics/template.php:3615
+#: includes/topics/template.php:3620
 msgid "Update Tag"
 msgstr ""
 
-#: includes/topics/template.php:3616
+#: includes/topics/template.php:3621
 msgid "Add New Tag"
 msgstr ""
 
-#: includes/topics/template.php:3617
+#: includes/topics/template.php:3622
 msgid "New Tag Name"
 msgstr ""
 
-#: includes/topics/template.php:3618
+#: includes/topics/template.php:3623
 msgid "Separate topic tags with commas"
 msgstr ""
 
-#: includes/topics/template.php:3619
+#: includes/topics/template.php:3624
 msgid "Add or remove tags"
 msgstr ""
 
-#: includes/topics/template.php:3620
+#: includes/topics/template.php:3625
 msgid "Choose from the most used tags"
 msgstr ""
 
-#: includes/topics/template.php:3621
+#: includes/topics/template.php:3626
 msgid "No topic tags found."
 msgstr ""
 
-#: includes/topics/template.php:3622
+#: includes/topics/template.php:3627
 msgid "No topic tags"
 msgstr ""
 
-#: includes/topics/template.php:3623
+#: includes/topics/template.php:3628
 msgid "Topic tags list navigation"
 msgstr ""
 
-#: includes/topics/template.php:3624
+#: includes/topics/template.php:3629
 msgid "Topic tags list"
 msgstr ""
 
-#: includes/topics/template.php:3625
+#: includes/topics/template.php:3630
 msgid "Most used topic tags"
 msgstr ""
 
-#: includes/topics/template.php:3626
+#: includes/topics/template.php:3631
 msgid "&larr; Back to Tags"
 msgstr ""
 
-#: includes/topics/template.php:4257
+#: includes/topics/template.php:4262
 msgid "Nobody"
 msgstr ""
 
 #. translators: %1$s: Person who is editing (user profile link or "Nobody")
-#: includes/topics/template.php:4262
+#: includes/topics/template.php:4267
 #, php-format
 msgid "%1$s is currently editing this topic."
 msgstr ""
@@ -6300,7 +6331,7 @@ msgstr ""
 msgid "Registration complete. Please check your e-mail."
 msgstr ""
 
-#: includes/users/template.php:2583
+#: includes/users/template.php:2587
 msgid "Moderators:"
 msgstr ""
 

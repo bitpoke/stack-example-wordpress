@@ -202,39 +202,35 @@ function bbp_new_topic_handler( $action = '' ) {
 
 	/** Topic Forum ***********************************************************/
 
-	// Error check the POST'ed topic id
-	if ( isset( $_POST['bbp_forum_id'] ) ) {
+	// Forum id was not passed
+	if ( empty( $_POST['bbp_forum_id'] ) ) {
+		bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID is missing.', 'bbpress' ) );
 
-		// Empty Forum id was passed
-		if ( empty( $_POST['bbp_forum_id'] ) ) {
+	// Forum id is not a number
+	} elseif ( ! is_numeric( $_POST['bbp_forum_id'] ) ) {
+		bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID must be a number.', 'bbpress' ) );
+
+	// Forum id might be valid
+	} else {
+
+		// Get the forum id
+		$posted_forum_id = intval( $_POST['bbp_forum_id'] );
+
+		// Forum id is 0
+		if ( 0 === $posted_forum_id ) {
 			bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID is missing.', 'bbpress' ) );
 
-		// Forum id is not a number
-		} elseif ( ! is_numeric( $_POST['bbp_forum_id'] ) ) {
-			bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID must be a number.', 'bbpress' ) );
+		// Forum id is a negative number
+		} elseif ( 0 > $posted_forum_id ) {
+			bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID cannot be a negative number.', 'bbpress' ) );
 
-		// Forum id might be valid
+		// Forum does not exist
+		} elseif ( ! bbp_get_forum( $posted_forum_id ) ) {
+			bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum does not exist.', 'bbpress' ) );
+
+		// Use the POST'ed forum id
 		} else {
-
-			// Get the forum id
-			$posted_forum_id = intval( $_POST['bbp_forum_id'] );
-
-			// Forum id is empty
-			if ( 0 === $posted_forum_id ) {
-				bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID is missing.', 'bbpress' ) );
-
-			// Forum id is a negative number
-			} elseif ( 0 > $posted_forum_id ) {
-				bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID cannot be a negative number.', 'bbpress' ) );
-
-			// Forum does not exist
-			} elseif ( ! bbp_get_forum( $posted_forum_id ) ) {
-				bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum does not exist.', 'bbpress' ) );
-
-			// Use the POST'ed forum id
-			} else {
-				$forum_id = $posted_forum_id;
-			}
+			$forum_id = $posted_forum_id;
 		}
 	}
 
@@ -269,7 +265,7 @@ function bbp_new_topic_handler( $action = '' ) {
 		}
 	}
 
-	// Apply the site-wide policy even when this topic has no forum.
+	// Apply the site-wide policy.
 	if ( ! bbp_current_user_can_post_in_forums() ) {
 		bbp_add_error( 'bbp_new_topic_forums_closed', __( '<strong>Error</strong>: The forums are not accepting new topics.', 'bbpress' ) );
 	}
@@ -543,13 +539,49 @@ function bbp_edit_topic_handler( $action = '' ) {
 	if ( empty( $_POST['bbp_forum_id'] ) ) {
 		bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID is missing.', 'bbpress' ) );
 
-	// Forum id was passed
-	} elseif ( is_numeric( $_POST['bbp_forum_id'] ) ) {
-		$forum_id = (int) $_POST['bbp_forum_id'];
+	// Forum id is not a number
+	} elseif ( ! is_numeric( $_POST['bbp_forum_id'] ) ) {
+		bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID must be a number.', 'bbpress' ) );
+
+	// Forum id might be valid
+	} else {
+
+		// Get the forum id
+		$posted_forum_id = intval( $_POST['bbp_forum_id'] );
+
+		// Forum id is 0
+		if ( 0 === $posted_forum_id ) {
+			bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID is missing.', 'bbpress' ) );
+
+		// Forum id is a negative number
+		} elseif ( 0 > $posted_forum_id ) {
+			bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum ID cannot be a negative number.', 'bbpress' ) );
+
+		// Forum does not exist
+		} elseif ( ! bbp_get_forum( $posted_forum_id ) ) {
+			bbp_add_error( 'bbp_topic_forum_id', __( '<strong>Error</strong>: Forum does not exist.', 'bbpress' ) );
+
+		// Use the POST'ed forum id
+		} else {
+			$forum_id = $posted_forum_id;
+		}
 	}
 
 	// Current forum this topic is in
 	$current_forum_id = bbp_get_topic_forum_id( $topic_id );
+
+	// Forum change
+	if ( $forum_id !== $current_forum_id ) {
+
+		// User cannot edit current forum
+		if ( ! current_user_can( 'edit_forum', $current_forum_id ) ) {
+			bbp_add_error( 'bbp_edit_topic_forum_move_old', __( '<strong>Error</strong>: You do not have the capability to move topics out of this forum.', 'bbpress' ) );
+
+		// User cannot edit or read new forum
+		} elseif ( ! current_user_can( 'edit_forum', $forum_id ) || ! current_user_can( 'read_forum', $forum_id ) ) {
+			bbp_add_error( 'bbp_edit_topic_forum_move_new', __( '<strong>Error</strong>: You do not have the capability to move topics into this forum.', 'bbpress' ) );
+		}
+	}
 
 	// Forum exists
 	if ( ! empty( $forum_id ) && ( $forum_id !== $current_forum_id ) ) {
@@ -672,6 +704,12 @@ function bbp_edit_topic_handler( $action = '' ) {
 		)
 	);
 
+	// Preserve the original topic when its first logged edit is submitted.
+	$log_topic_edit = ! empty( $_POST['bbp_log_topic_edit'] ) && ( '1' === $_POST['bbp_log_topic_edit'] );
+	if ( $log_topic_edit ) {
+		bbp_save_initial_post_revision( $topic_id );
+	}
+
 	// Toggle revisions to avoid duplicates
 	if ( post_type_supports( bbp_get_topic_post_type(), 'revisions' ) ) {
 		$revisions_removed = true;
@@ -706,7 +744,7 @@ function bbp_edit_topic_handler( $action = '' ) {
 		}
 
 		// Update revision log
-		if ( ! empty( $_POST['bbp_log_topic_edit'] ) && ( '1' === $_POST['bbp_log_topic_edit'] ) ) {
+		if ( $log_topic_edit ) {
 			$revision_id = wp_save_post_revision( $topic_id );
 			if ( ! empty( $revision_id ) ) {
 				bbp_update_topic_revision_log(
@@ -1250,6 +1288,12 @@ function bbp_merge_topic_handler( $action = '' ) {
 
 	/** Source Topic **********************************************************/
 
+	// Get the source topic's current and old slugs
+	$source_topic_slugs = array_merge(
+		array( $source_topic->post_name ),
+		get_post_meta( $source_topic->ID, '_wp_old_slug', false )
+	);
+
 	// Status
 	bbp_open_topic( $source_topic->ID );
 
@@ -1312,6 +1356,22 @@ function bbp_merge_topic_handler( $action = '' ) {
 			// Do additional actions per merged reply
 			do_action( 'bbp_merged_topic_reply', $reply->ID, $destination_topic->ID );
 		}
+	}
+
+	/** Redirects *************************************************************/
+
+	// Move the source topic's old slugs to the destination topic
+	if ( ! empty( $source_topic_slugs ) ) {
+		$destination_topic_slugs = get_post_meta( $destination_topic->ID, '_wp_old_slug', false );
+
+		foreach ( $source_topic_slugs as $source_topic_slug ) {
+			if ( ! empty( $source_topic_slug ) && ! in_array( $source_topic_slug, $destination_topic_slugs, true ) ) {
+				add_post_meta( $destination_topic->ID, '_wp_old_slug', $source_topic_slug );
+				$destination_topic_slugs[] = $source_topic_slug;
+			}
+		}
+
+		delete_post_meta( $source_topic->ID, '_wp_old_slug' );
 	}
 
 	/** Successful Merge ******************************************************/

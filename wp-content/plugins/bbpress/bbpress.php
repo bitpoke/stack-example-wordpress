@@ -5,7 +5,7 @@
  *
  * bbPress is forum software with a twist from the creators of WordPress.
  *
- * $Id: bbpress.php 8028 2026-10-15 16:02:45Z johnjamesjacoby $
+ * $Id: bbpress.php 8158 2026-10-27 08:22:00Z johnjamesjacoby $
  *
  * @package bbPress
  * @subpackage Main
@@ -24,7 +24,7 @@
  * Requires PHP:      7.2
  * Requires at least: 6.0
  * Tested up to:      7.1
- * Version:           2.6.20
+ * Version:           2.6.21
  */
 
 // Exit if accessed directly
@@ -224,7 +224,7 @@ final class bbPress {
 
 		/** Versions **********************************************************/
 
-		$this->version    = '2.6.20';
+		$this->version    = '2.6.21';
 		$this->db_version = '264';
 
 		/** Paths *************************************************************/
@@ -400,6 +400,7 @@ final class bbPress {
 
 		// Quick admin check and load if needed
 		if ( is_admin() ) {
+			require $this->includes_dir . 'admin/icons.php';
 			require $this->includes_dir . 'admin/actions.php';
 		}
 	}
@@ -526,6 +527,8 @@ final class bbPress {
 	 * @since 2.0.0 bbPress (r2597)
 	 */
 	public static function register_post_types() {
+		// Keep Dashicons on WordPress versions without SVG admin menu support.
+		$menu_icon_prefix = is_admin() && bbp_use_svg_admin_icons() ? 'bbpress/' : '';
 
 		/** Forums ************************************************************/
 
@@ -551,7 +554,7 @@ final class bbPress {
 					'can_export'            => true,
 					'hierarchical'          => true,
 					'query_var'             => true,
-					'menu_icon'             => '',
+					'menu_icon'             => $menu_icon_prefix ? $menu_icon_prefix . 'forum' : '',
 					'source'                => 'bbpress',
 				)
 			)
@@ -581,7 +584,7 @@ final class bbPress {
 					'can_export'            => true,
 					'hierarchical'          => false,
 					'query_var'             => true,
-					'menu_icon'             => '',
+					'menu_icon'             => $menu_icon_prefix ? $menu_icon_prefix . 'topic' : '',
 					'source'                => 'bbpress',
 				)
 			)
@@ -611,7 +614,7 @@ final class bbPress {
 					'can_export'            => true,
 					'hierarchical'          => false,
 					'query_var'             => true,
-					'menu_icon'             => '',
+					'menu_icon'             => $menu_icon_prefix ? $menu_icon_prefix . 'reply' : '',
 					'source'                => 'bbpress',
 				)
 			)
@@ -836,13 +839,12 @@ final class bbPress {
 
 		/** Post **************************************************************/
 
-			// Counts
+		// Forum
+		$count['object_subtype'] = bbp_get_forum_post_type();
 		register_meta( 'post', '_bbp_topic_count',              $count );
 		register_meta( 'post', '_bbp_reply_count',              $count );
 		register_meta( 'post', '_bbp_total_topic_count',        $count );
 		register_meta( 'post', '_bbp_total_reply_count',        $count );
-		register_meta( 'post', '_bbp_voice_count',              $count );
-		register_meta( 'post', '_bbp_anonymous_reply_count',    $count );
 		// Hidden counts must stay private if custom fields are exposed in REST.
 		$hidden_count = $count;
 		$hidden_count['show_in_rest'] = false;
@@ -852,9 +854,18 @@ final class bbPress {
 		register_meta( 'post', '_bbp_total_reply_count_hidden', $hidden_count );
 		register_meta( 'post', '_bbp_forum_subforum_count',     $count );
 
-		/** User **************************************************************/
+		// Topic
+		$count['object_subtype'] = bbp_get_topic_post_type();
+		$hidden_count['object_subtype'] = bbp_get_topic_post_type();
+		register_meta( 'post', '_bbp_reply_count',           $count );
+		register_meta( 'post', '_bbp_voice_count',           $count );
+		register_meta( 'post', '_bbp_anonymous_reply_count', $count );
+		register_meta( 'post', '_bbp_reply_count_hidden',    $hidden_count );
 
-			// Counts
+		/* User ***************************************************************/
+
+		// Counts
+		$count['object_subtype'] = '';
 		register_meta( 'user', '_bbp_topic_count', $count );
 		register_meta( 'user', '_bbp_reply_count', $count );
 

@@ -591,6 +591,37 @@ function bbp_mail( $args = array() ) {
 }
 
 /**
+ * Prevent old-slug redirects from exposing unreadable topics and replies.
+ *
+ * @since 2.6.21 bbPress (r8067)
+ *
+ * @param int $post_id Old-slug redirect post ID.
+ * @return int Redirect post ID, or zero when access is denied.
+ */
+function bbp_filter_old_slug_redirect_post_id( $post_id = 0 ) {
+	$post = get_post( $post_id );
+
+	if ( $post && ( bbp_is_topic( $post ) || bbp_is_reply( $post ) ) ) {
+		$topic_id       = bbp_is_reply( $post ) ? bbp_get_reply_topic_id( $post->ID ) : $post->ID;
+		$forum_id       = bbp_get_topic_forum_id( $topic_id );
+		$can_read_forum = bbp_is_forum_visibility_valid( $forum_id )
+			&& ! bbp_is_forum_restricted_for_user( $forum_id, bbp_get_current_user_id() );
+		$can_read_topic = ! empty( $topic_id )
+			&& bbp_is_topic( $topic_id )
+			&& ( bbp_is_topic_public( $topic_id ) || current_user_can( 'read_topic', $topic_id ) );
+		$can_read_reply = ! bbp_is_reply( $post )
+			|| bbp_is_reply_public( $post->ID )
+			|| current_user_can( 'read_reply', $post->ID );
+
+		if ( ! $can_read_forum || ! $can_read_topic || ! $can_read_reply ) {
+			$post_id = 0;
+		}
+	}
+
+	return $post_id;
+}
+
+/**
  * Check whether bbPress metadata can be exposed in an oEmbed response.
  *
  * @since 2.6.19 bbPress (r7636)
@@ -642,6 +673,45 @@ function bbp_filter_oembed_request_post_id( $post_id = 0 ) {
 }
 
 /**
+ * Return the post ID WordPress uses for an ID-based canonical redirect.
+ *
+ * @since 2.6.21 bbPress (r8086)
+ *
+ * @param string $requested_url Requested URL.
+ * @return int Canonical redirect post ID, or zero when none was requested.
+ */
+function bbp_get_canonical_redirect_post_id( $requested_url = '' ) {
+	$query = wp_parse_url( $requested_url, PHP_URL_QUERY );
+	if ( empty( $query ) ) {
+		return 0;
+	}
+
+	wp_parse_str( $query, $args );
+	$p             = isset( $args['p'] ) && is_scalar( $args['p'] ) && ( (int) $args['p'] >= 0 )
+		? (int) $args['p']
+		: 0;
+	$page_id       = isset( $args['page_id'] ) && is_scalar( $args['page_id'] )
+		? absint( $args['page_id'] )
+		: 0;
+	$attachment_id = isset( $args['attachment_id'] ) && is_scalar( $args['attachment_id'] )
+		? absint( $args['attachment_id'] )
+		: 0;
+
+	// Match WP_Query normalization before redirect_canonical() chooses an ID.
+	if ( isset( $args['subpost_id'] ) && is_scalar( $args['subpost_id'] ) && ( '' !== $args['subpost_id'] ) ) {
+		$attachment_id = absint( $args['subpost_id'] );
+	}
+	if ( $attachment_id ) {
+		$p = $attachment_id;
+	}
+	if ( $page_id ) {
+		$p = $page_id;
+	}
+
+	return max( $p, $page_id, $attachment_id );
+}
+
+/**
  * Prevent canonical redirects from exposing restricted bbPress permalinks.
  *
  * @since 2.6.19 bbPress (r7636)
@@ -651,14 +721,8 @@ function bbp_filter_oembed_request_post_id( $post_id = 0 ) {
  * @return string|false Redirect URL, or false when access is denied.
  */
 function bbp_do_not_redirect_restricted_posts( $redirect_url = '', $requested_url = '' ) {
-	$query = wp_parse_url( $requested_url, PHP_URL_QUERY );
-	if ( empty( $query ) ) {
-		return $redirect_url;
-	}
-
-	wp_parse_str( $query, $args );
-	$post_id = ! empty( $args['p'] ) ? absint( $args['p'] ) : 0;
-	$post = get_post( $post_id );
+	$post_id = bbp_get_canonical_redirect_post_id( $requested_url );
+	$post    = get_post( $post_id );
 	if ( $post && bbp_is_custom_post_type( $post ) && ! bbp_user_can_embed_post( $post_id ) ) {
 		return false;
 	}

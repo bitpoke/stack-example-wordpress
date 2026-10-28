@@ -58,8 +58,9 @@ add_filter( 'rest_user_query',               'bbp_exclude_forum_posts_from_user_
 add_filter( 'wp_sitemaps_users_query_args',  'bbp_exclude_forum_posts_from_user_query'  );
 add_filter( 'rest_request_before_callbacks', 'bbp_filter_rest_user_discovery',          10, 3 );
 
-// Filter WordPress post data for forums and anonymous posts
+// Filter WordPress post data for forums, pending dates, and anonymous posts
 add_filter( 'wp_insert_post_data', 'bbp_filter_admin_forum_post_data', 20, 2 );
+add_filter( 'wp_insert_post_data', 'bbp_set_pending_post_date_gmt',     25    );
 add_filter( 'wp_insert_post_data', 'bbp_fix_post_author',              30, 2 );
 
 // Fix untrash post status after a topic or reply is re-instated
@@ -77,11 +78,15 @@ add_filter( 'show_password_fields', 'bbp_filter_user_edit_password_fields', 10, 
 // Reply title fallback
 add_filter( 'the_title', 'bbp_get_reply_title_fallback', 2, 2 );
 
+// Inherited post passwords
+add_filter( 'post_password_required', 'bbp_filter_post_password_required', 10, 2 );
+
 // Avoid queries & 404s
 add_filter( 'do_redirect_guess_404_permalink', 'bbp_do_not_guess_404_permalink' );
 add_filter( 'pre_handle_404',                  'bbp_pre_handle_404',              10, 2 );
 add_action( 'posts_pre_query',                 'bbp_posts_pre_query',             10, 2 );
 add_filter( 'posts_where',                     'bbp_public_topic_replies_where',  11, 2 );
+add_filter( 'posts_where',                     'bbp_password_protected_search_where', 12, 2 );
 
 // User Creation
 add_filter( 'signup_user_meta', 'bbp_user_add_role_to_signup_meta', 10 );
@@ -95,6 +100,14 @@ add_filter( 'signup_user_meta', 'bbp_user_add_role_to_signup_meta', 10 );
  * bbp_get_email_header() to narrow the results to only bbPress emails.
  */
 add_filter( 'bbp_mail', 'bbp_chunk_emails' );
+
+/**
+ * Requests
+ *
+ * Empty bbPress route values cannot identify content and need to be removed
+ * before feed handling and WordPress query parsing.
+ */
+add_filter( 'bbp_request', 'bbp_request_remove_empty_query_vars', 5 );
 
 /**
  * Feeds
@@ -114,9 +127,11 @@ add_filter( 'bbp_request', 'bbp_request_feed_trap' );
  */
 add_filter( 'bbp_template_include', 'bbp_template_include_theme_supports', 2, 1 );
 add_filter( 'bbp_template_include', 'bbp_template_include_theme_compat',   4, 2 );
+add_filter( 'get_the_excerpt',     'bbp_get_theme_compat_excerpt',        9, 2 );
 
 add_filter( 'redirect_canonical', 'bbp_do_not_redirect_restricted_posts', 11, 2 );
 add_filter( 'redirect_canonical', 'bbp_do_not_redirect_restricted_attachments', 11, 2 );
+add_filter( 'old_slug_redirect_post_id', 'bbp_filter_old_slug_redirect_post_id' );
 add_filter( 'oembed_request_post_id', 'bbp_filter_oembed_request_post_id' );
 add_filter( 'oembed_request_post_id', 'bbp_filter_oembed_request_attachment_id' );
 
@@ -189,9 +204,11 @@ add_filter( 'bbp_get_reply_content', 'convert_chars',      8  );
 add_filter( 'bbp_get_reply_content', 'capital_P_dangit',   10 );
 add_filter( 'bbp_get_reply_content', 'convert_smilies',    20 );
 add_filter( 'bbp_get_reply_content', 'force_balance_tags', 30 );
+add_filter( 'bbp_get_reply_content', 'bbp_wrap_orphan_list_items', 35, 2 );
 add_filter( 'bbp_get_reply_content', 'bbp_make_clickable', 40 );
 add_filter( 'bbp_get_reply_content', 'wpautop',            50 );
 add_filter( 'bbp_get_reply_content', 'bbp_rel_nofollow',   60 );
+add_filter( 'bbp_get_reply_content', 'bbp_rel_ugc',        70 );
 
 // Run filters on topic content
 add_filter( 'bbp_get_topic_content', 'wptexturize',        6  );
@@ -199,9 +216,11 @@ add_filter( 'bbp_get_topic_content', 'convert_chars',      8  );
 add_filter( 'bbp_get_topic_content', 'capital_P_dangit',   10 );
 add_filter( 'bbp_get_topic_content', 'convert_smilies',    20 );
 add_filter( 'bbp_get_topic_content', 'force_balance_tags', 30 );
+add_filter( 'bbp_get_topic_content', 'bbp_wrap_orphan_list_items', 35, 2 );
 add_filter( 'bbp_get_topic_content', 'bbp_make_clickable', 40 );
 add_filter( 'bbp_get_topic_content', 'wpautop',            50 );
 add_filter( 'bbp_get_topic_content', 'bbp_rel_nofollow',   60 );
+add_filter( 'bbp_get_topic_content', 'bbp_rel_ugc',        70 );
 
 // Admin-only
 if ( is_admin() ) {

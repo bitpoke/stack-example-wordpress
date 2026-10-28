@@ -20,6 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * sub-filter for this case without affecting shortcodes in other post types.
  *
  * @since 2.6.20 bbPress (r7848)
+ * @since 2.6.21 bbPress (r8046) Remove shortcodes from WordPress feed content.
  *
  * @param false|string $output  Short-circuit value from an earlier filter.
  * @param string       $tag     Shortcode name.
@@ -54,6 +55,10 @@ function bbp_pre_do_shortcode_tag( $output, $tag, $attr, $matches ) {
  * @return false|string Short-circuit value or the literal shortcode.
  */
 function bbp_prevent_content_shortcodes( $output, $tag, $attr, $matches ) {
+	if ( is_feed() ) {
+		return '';
+	}
+
 	/**
 	 * Filter shortcode tags allowed to run in bbPress post content.
 	 *
@@ -164,6 +169,118 @@ function bbp_kses_data( $data = '' ) {
 }
 
 /** Formatting ****************************************************************/
+
+/**
+ * Wrap runs of list items that have no list container in displayed content.
+ *
+ * Runs after force_balance_tags(), which closes items but does not supply
+ * missing parent lists. Requires the HTML API available in WordPress 6.9.
+ * Public HTML APIs validate explicit tag structure before wrappers are added.
+ * All original source bytes are retained. Implicit closures, foreign content,
+ * and ambiguous literal list-item tags are left unchanged.
+ * Code examples and block content are excluded from repair. Fragments without
+ * orphan list items and sites using other character encodings are unchanged.
+ * Character references retain their spelling for later formatting filters.
+ * Nested malformed list containers are not reconstructed.
+ *
+ * @since 2.6.21 bbPress (r8135)
+ *
+ * @param string $content Balanced topic or reply content.
+ * @param int    $post_id Optional. Topic or reply ID.
+ * @return string Content with missing unordered list containers supplied.
+ */
+function bbp_wrap_orphan_list_items( $content = '', $post_id = 0 ) {
+	if ( ! class_exists( 'WP_HTML_Processor' ) || false === stripos( $content, '<li' ) || ! preg_match( '/<li(?=[\t\n\f\r \/>])/i', $content ) || has_blocks( $content ) ) {
+		return $content;
+	}
+	if ( ! empty( $post_id ) && has_blocks( get_post_field( 'post_content', $post_id, 'raw' ) ) ) {
+		return $content;
+	}
+	$processor = WP_HTML_Processor::create_fragment( $content );
+	if ( ! is_callable( array( $processor, 'serialize_token' ) ) || ! is_utf8_charset() ) {
+		return $content;
+	}
+	$excluded = array( 'UL', 'OL', 'MENU', 'DIR', 'PRE', 'CODE', 'LISTING' );
+	$orphan = false;
+	// Valid lists need only this initial semantic scan.
+	while ( $processor->next_tag( 'LI' ) ) {
+		if ( ! array_intersect( $excluded, $processor->get_breadcrumbs() ) ) {
+			$orphan = true;
+			break;
+		}
+	}
+	if ( ! $orphan ) {
+		return $content;
+	}
+
+	// Match source boundaries only when lexical and semantic tags agree exactly.
+	$item_pattern = '/<\/?li(?=[\t\n\f\r \/>])/i';
+	$processor = WP_HTML_Processor::create_fragment( $content );
+	$tags = new WP_HTML_Tag_Processor( $content );
+	$query = array( 'tag_closers' => 'visit' );
+	$insertions = array();
+	$search = 0;
+	$depth = 0;
+	$end = 0;
+	while ( $tags->next_tag( $query ) ) {
+		if ( ! $processor->next_tag( $query ) || $tags->get_tag() !== $processor->get_tag() || $tags->is_tag_closer() !== $processor->is_tag_closer() || 'html' !== $processor->get_namespace() ) {
+			return $content;
+		}
+		if ( 'LI' !== $tags->get_tag() ) {
+			continue;
+		}
+		if ( ! preg_match( $item_pattern, $content, $item, PREG_OFFSET_CAPTURE, $search ) || $tags->is_tag_closer() !== ( '/' === $item[0][0][1] ) ) {
+			return $content;
+		}
+		$offset = $item[0][1];
+		$search = $offset + strlen( $item[0][0] );
+		if ( $tags->is_tag_closer() ) {
+			if ( ! preg_match( '/\G<\/li[\t\n\f\r ]*>/i', $content, $closer, 0, $offset ) ) {
+				return $content;
+			}
+			if ( $depth && $processor->get_current_depth() === $depth - 1 ) {
+				$end = $offset + strlen( $closer[0] );
+				$insertions[ $end ] = '</ul>';
+				$depth = 0;
+			}
+		} elseif ( ! array_intersect( $excluded, $processor->get_breadcrumbs() ) ) {
+			if ( $depth ) {
+				return $content;
+			}
+			$gap = $end ? substr( $content, $end, $offset - $end ) : '';
+			$adjacent = '' === trim( $gap, " \t\n\r\f" );
+			// Only whitespace and comments join consecutive items.
+			if ( ! $adjacent && ( false !== strpos( $gap, '<!--' ) || false !== strpos( $gap, '&' ) ) ) {
+				$spacing = new WP_HTML_Tag_Processor( $gap );
+				$adjacent = true;
+				while ( $spacing->next_token() ) {
+					if ( '#comment' !== $spacing->get_token_type() && ( '#text' !== $spacing->get_token_type() || '' !== trim( $spacing->get_modifiable_text(), " \t\n\r\f" ) ) ) {
+						$adjacent = false;
+						break;
+					}
+				}
+			}
+			if ( $end && $adjacent ) {
+				unset( $insertions[ $end ] );
+			} else {
+				$insertions[ $offset ] = '<ul>';
+			}
+			$depth = $processor->get_current_depth();
+		}
+	}
+	if ( $depth || preg_match( $item_pattern, $content, $item, 0, $search ) || $processor->next_tag( $query ) || null !== $processor->get_last_error() || $processor->paused_at_incomplete_token() || $tags->paused_at_incomplete_token() ) {
+		return $content;
+	}
+	// Apply insertions only after the whole fragment passes validation.
+	$output = '';
+	$copied = 0;
+	foreach ( $insertions as $offset => $wrapper ) {
+		$output .= substr( $content, $copied, $offset - $copied );
+		$output .= $wrapper;
+		$copied = $offset;
+	}
+	return $output . substr( $content, $copied );
+}
 
 /**
  * Filter the topic or reply content and output code and pre tags
@@ -372,6 +489,30 @@ function bbp_rel_nofollow( $text = '' ) {
  */
 function bbp_rel_nofollow_callback( $matches = array() ) {
 	return wp_rel_callback( $matches, 'nofollow' );
+}
+
+/**
+ * Add the ugc link relationship on output, not save.
+ *
+ * @since 2.6.21 bbPress (r8110)
+ *
+ * @param string $text Post text.
+ * @return string Text with the ugc link relationship.
+ */
+function bbp_rel_ugc( $text = '' ) {
+	return preg_replace_callback( '|<a (.+?)>|i', 'bbp_rel_ugc_callback', $text );
+}
+
+/**
+ * Add the ugc relationship to a user-generated link.
+ *
+ * @since 2.6.21 bbPress (r8112)
+ *
+ * @param array $matches
+ * @return string Link with the ugc relationship.
+ */
+function bbp_rel_ugc_callback( $matches = array() ) {
+	return wp_rel_callback( $matches, 'ugc' );
 }
 
 /** Make Clickable ************************************************************/
