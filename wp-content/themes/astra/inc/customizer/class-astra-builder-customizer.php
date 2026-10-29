@@ -205,20 +205,22 @@ final class Astra_Builder_Customizer {
 			return;
 		}
 
-		// Enqueue Builder CSS.
+		$asset_dir  = SCRIPT_DEBUG ? '' : 'minified/';
+		$min_suffix = SCRIPT_DEBUG ? '' : '.min';
+		$rtl_suffix = is_rtl() ? '-rtl' : '';
+
+		// Enqueue Builder CSS ('customizer-preview.css' / 'customizer-preview-rtl.css', or their '.min' copies).
 		wp_enqueue_style(
 			'ahfb-customizer-preview-style',
-			ASTRA_THEME_URI . 'inc/assets/css/customizer-preview.css',
+			ASTRA_THEME_URI . 'inc/assets/css/' . $asset_dir . 'customizer-preview' . $min_suffix . $rtl_suffix . '.css',
 			null,
 			ASTRA_THEME_VERSION
 		);
 
 		// Advanced Dynamic CSS.
-		$js_prefix = SCRIPT_DEBUG ? '' : 'minified/';
-		$js_suffix = SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script(
 			'ahfb-customizer-preview',
-			ASTRA_THEME_URI . 'inc/assets/js/' . $js_prefix . 'customizer-preview' . $js_suffix . '.js',
+			ASTRA_THEME_URI . 'inc/assets/js/' . $asset_dir . 'customizer-preview' . $min_suffix . '.js',
 			array( 'customize-preview', 'wp-i18n' ),
 			ASTRA_THEME_VERSION,
 			true

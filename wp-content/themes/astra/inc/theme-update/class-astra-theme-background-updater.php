@@ -194,7 +194,9 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 
 			$result = wp_remote_post( $cron_request['url'], $cron_request['args'] );
 
-			if ( wp_remote_retrieve_response_code( $result ) >= 300 ) {
+			// A failed loopback (timeout, refused connection, etc.) returns a WP_Error with an empty response code.
+			// Treat it as "cron unavailable" so the caller uses the synchronous fallback; only a healthy loopback is cached below.
+			if ( is_wp_error( $result ) || wp_remote_retrieve_response_code( $result ) >= 300 ) {
 				return true;
 			}
 
@@ -216,14 +218,14 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 				return;
 			}
 
-			$fallback    = $this->test_cron();
 			$db_migrated = $this->check_if_data_migrated();
 			/** @psalm-suppress InvalidArgument */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			$is_queue_running = astra_get_option( 'is_theme_queue_running', false );
 
-			$fallback = $db_migrated ? $db_migrated : $fallback;
-
 			if ( $this->needs_db_update() && ! $is_queue_running ) {
+				// Only run the blocking wp-cron loopback test when a migration is actually pending.
+				// It just decides background vs synchronous fallback, so running it on every admin or frontend load is wasted work.
+				$fallback = $db_migrated ? $db_migrated : $this->test_cron();
 				$this->update( $fallback );
 			} else {
 				if ( ! $is_queue_running ) {
@@ -286,7 +288,7 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 		 *
 		 * @since 2.3.1
 		 *
-		 * @return true If the database migration should not be run through CRON.
+		 * @return bool True if the database migration should not be run through CRON.
 		 */
 		public function check_if_data_migrated() {
 
@@ -320,7 +322,7 @@ if ( ! class_exists( 'Astra_Theme_Background_Updater' ) ) {
 		 *
 		 * @since 2.3.1
 		 *
-		 * @return true if astra addon version is updated.
+		 * @return bool True if astra addon version is updated.
 		 */
 		public function is_db_version_updated() {
 			// Get auto saved version number.

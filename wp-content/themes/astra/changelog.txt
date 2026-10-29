@@ -1,5 +1,12 @@
 *** Astra Changelog ***
 
+2026-10-29 - version 4.14.2
+* Improvement: Performance - The theme no longer makes a blocking WP-Cron loopback request on every admin and frontend page load, avoiding a delay when the site can't reach its own URL.
+* Fix: Customizer - Resetting a header or footer border or separator color no longer saves it as empty, so the border stays visible after publishing.
+* Fix: Accessibility - The header cart link label is now translatable and reads "1 item" instead of "1 items" for screen readers when the cart holds a single product.
+* Fix: Customizer - Live preview edit icons and section outlines were misaligned on RTL sites.
+* Security: Abilities - The post meta abilities no longer let a Contributor read the titles or Astra layout settings of other users' drafts and private posts.
+
 2026-10-15 - version 4.14.1
 * Fix: WooCommerce - The Slide In Cart now opens after adding a product from shop, archive and other product listings when the header Cart Click Action is set to Cart Page.
 * Fix: WPML - Custom banner titles and descriptions for Blog/Post archive, WooCommerce catalog, EDD and SureCart archives are now translatable via String Translation.

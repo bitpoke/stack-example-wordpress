@@ -116,6 +116,15 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		private $detached_option_filters = array();
 
 		/**
+		 * AstraBuilderCustomizerData payload, built in enqueue_customizer_scripts() and printed as a
+		 * JSON data block in the controls footer.
+		 *
+		 * @since 4.14.2
+		 * @var array
+		 */
+		private $customizer_js_data = array();
+
+		/**
 		 * Initiator
 		 */
 		public static function get_instance() {
@@ -220,6 +229,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			add_action( 'customize_controls_enqueue_scripts', array( $this, 'controls_scripts' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_customizer_scripts' ), 999 );
 
+			add_action( 'customize_controls_print_footer_scripts', array( $this, 'print_customizer_data_json' ), 5 );
 			add_action( 'customize_controls_print_footer_scripts', array( $this, 'print_footer_scripts' ) );
 
 			add_action( 'customize_register', array( $this, 'customize_register' ) );
@@ -461,6 +471,38 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 					array_push( self::$tabbed_sections, $section_id );
 				}
 			}
+		}
+
+		/**
+		 * Print the AstraBuilderCustomizerData payload as a JSON data block.
+		 *
+		 * Hooked at priority 5 on customize_controls_print_footer_scripts so the block precedes the
+		 * footer scripts (core prints those at priority 10), where astra-custom-control-script reads it.
+		 * Top-level scalars are cast to string and entity-decoded exactly as wp_localize_script() did,
+		 * so the JS sees the same values as before.
+		 *
+		 * @since 4.14.2
+		 * @return void
+		 */
+		public function print_customizer_data_json() {
+			if ( empty( $this->customizer_js_data ) ) {
+				return;
+			}
+
+			$data = $this->customizer_js_data;
+			foreach ( $data as $key => $value ) {
+				if ( is_scalar( $value ) ) {
+					$data[ $key ] = html_entity_decode( (string) $value, ENT_QUOTES, 'UTF-8' );
+				}
+			}
+
+			// JSON_HEX_TAG stops a literal </script> closing the block; JSON_UNESCAPED_SLASHES matches core's wp_localize_script() transport and avoids escaping every slash.
+			$json = wp_json_encode( $data, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES );
+			if ( false === $json ) {
+				return;
+			}
+
+			echo '<script type="application/json" id="astra-builder-customizer-data">' . $json . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON built with wp_json_encode() and JSON_HEX_TAG; an application/json block is not executed.
 		}
 
 		/**
@@ -1194,72 +1236,79 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		 * @since 3.0.0
 		 */
 		public function enqueue_customizer_scripts() {
-			// Localize variables for Dev mode > Customizer JS.
-			wp_localize_script(
-				'astra-custom-control-script',
-				'AstraBuilderCustomizerData',
-				array(
-					'contexts'                => self::get_contexts(),
-					'dynamic_setting_options' => self::$dynamic_options['settings'],
-					'choices'                 => self::get_choices(),
-					'js_configs'              => self::get_js_configs(),
-					'tabbed_sections'         => self::get_tabbed_sections(),
-					'component_limit'         => Astra_Builder_Helper::$component_limit,
-					'is_site_rtl'             => is_rtl(),
-					'defaults'                => $this->get_control_defaults(),
-					'isWP_5_9'                => astra_wp_version_compare( '5.8.99', '>=' ),
-					'googleFonts'             => array(),
-					'variantLabels'           => Astra_Font_Families::font_variant_labels(),
-					'upgradeUrl'              => array(
-						'default'        => astra_get_upgrade_url( 'customizer' ),
-						'global'         => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'global' ),
-						'header-builder' => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'header-builder' ),
-						'footer-builder' => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'footer-builder' ),
-						'sidebar'        => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'sidebar' ),
-						'menus'          => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'menus' ),
-						'woocommerce'    => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'woocommerce' ),
-						'blog-single'    => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'blog-single' ),
-						'blog-archive'   => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'blog-archive' ),
-						'hfb-pro-widget' => astra_get_pro_url( '/pricing/', 'free-theme', 'astra-header-footer', 'unlock-pro-widget' ),
-						'lifterlms'      => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'lifterlms' ),
-					),
-					/** @psalm-suppress RedundantCondition */
-					'is_woo_market_zip'       => ! ASTRA_THEME_ORG_VERSION,
-					'pro_active'              => defined( 'ASTRA_EXT_VER' ),
-					'pricingBar'              => ! defined( 'ASTRA_EXT_VER' ) ? array(
-						'text'       => __( "You\xe2\x80\x99re one step away \xe2\x80\x94 activate your license to access premium features.", 'astra' ),
-						'cta'        => __( 'Get your license now', 'astra' ),
-						'licenseUrl' => 'https://store.brainstormforce.com/account/?utm_source=free-theme&utm_medium=top-bar&utm_campaign=upgrade',
-					) : null,
+			// AstraBuilderCustomizerData is several MB; it is printed as a JSON data block by
+			// print_customizer_data_json() and parsed with JSON.parse(), which the JS engine handles
+			// faster than the equivalent object literal wp_localize_script() would inline.
+			$this->customizer_js_data = array(
+				'contexts'                => self::get_contexts(),
+				'dynamic_setting_options' => self::$dynamic_options['settings'],
+				'choices'                 => self::get_choices(),
+				'js_configs'              => self::get_js_configs(),
+				'tabbed_sections'         => self::get_tabbed_sections(),
+				'component_limit'         => Astra_Builder_Helper::$component_limit,
+				'is_site_rtl'             => is_rtl(),
+				'defaults'                => $this->get_control_defaults(),
+				'isWP_5_9'                => astra_wp_version_compare( '5.8.99', '>=' ),
+				'googleFonts'             => array(),
+				'variantLabels'           => Astra_Font_Families::font_variant_labels(),
+				'upgradeUrl'              => array(
+					'default'        => astra_get_upgrade_url( 'customizer' ),
+					'global'         => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'global' ),
+					'header-builder' => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'header-builder' ),
+					'footer-builder' => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'footer-builder' ),
+					'sidebar'        => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'sidebar' ),
+					'menus'          => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'menus' ),
+					'woocommerce'    => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'woocommerce' ),
+					'blog-single'    => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'blog-single' ),
+					'blog-archive'   => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'blog-archive' ),
+					'hfb-pro-widget' => astra_get_pro_url( '/pricing/', 'free-theme', 'astra-header-footer', 'unlock-pro-widget' ),
+					'lifterlms'      => astra_get_pro_url( '/pricing/', 'free-theme', 'customizer', 'lifterlms' ),
+				),
 				/** @psalm-suppress RedundantCondition */
-				)
+				'is_woo_market_zip'       => ! ASTRA_THEME_ORG_VERSION,
+				'pro_active'              => defined( 'ASTRA_EXT_VER' ),
+				'pricingBar'              => ! defined( 'ASTRA_EXT_VER' ) ? array(
+					'text'       => __( "You\xe2\x80\x99re one step away \xe2\x80\x94 activate your license to access premium features.", 'astra' ),
+					'cta'        => __( 'Get your license now', 'astra' ),
+					'licenseUrl' => 'https://store.brainstormforce.com/account/?utm_source=free-theme&utm_medium=top-bar&utm_campaign=upgrade',
+				) : null,
+			/** @psalm-suppress RedundantCondition */
 			);
 
-			if ( is_rtl() ) {
-				$builder_customizer_css_file = 'ast-builder-customizer-rtl';
-				$font_icon_picker_css_file   = 'font-icon-picker-rtl';
-			} else {
-				$builder_customizer_css_file = 'ast-builder-customizer';
-				$font_icon_picker_css_file   = 'font-icon-picker';
-			}
+			$customizer_data_script = <<<'JS'
+			var astraBuilderDataEl = document.getElementById( "astra-builder-customizer-data" );
+			var AstraBuilderCustomizerData = JSON.parse( astraBuilderDataEl?.textContent ?? "null" );
+			astraBuilderDataEl?.remove();
+			JS;
+
+			wp_add_inline_script(
+				'astra-custom-control-script',
+				$customizer_data_script,
+				'before'
+			);
+
+			$dir_name    = SCRIPT_DEBUG ? 'unminified' : 'minified';
+			$file_prefix = SCRIPT_DEBUG ? '' : '.min';
+			$rtl_suffix  = is_rtl() ? '-rtl' : '';
+
+			// Minified copies live in 'inc/assets/css/minified/' as '{name}.min.css' / '{name}.min-rtl.css'.
+			$inc_css_uri = ASTRA_THEME_URI . 'inc/assets/css/' . ( SCRIPT_DEBUG ? '' : 'minified/' );
 
 			// Enqueue Builder CSS.
 			wp_enqueue_style(
 				'ahfb-customizer-style',
-				ASTRA_THEME_URI . 'inc/assets/css/' . $builder_customizer_css_file . '.css',
+				$inc_css_uri . 'ast-builder-customizer' . $file_prefix . $rtl_suffix . '.css',
 				array( 'wp-components' ),
 				ASTRA_THEME_VERSION
 			);
 
 			wp_enqueue_style(
 				'ahfb-customizer-color-picker-style',
-				ASTRA_THEME_URI . 'inc/assets/css/' . $font_icon_picker_css_file . '.css',
+				$inc_css_uri . 'font-icon-picker' . $file_prefix . $rtl_suffix . '.css',
 				array( 'wp-components' ),
 				ASTRA_THEME_VERSION
 			);
 
-			$dir_name    = SCRIPT_DEBUG ? 'unminified' : 'minified';
-			$file_prefix = SCRIPT_DEBUG ? '' : '.min';
 			wp_enqueue_script(
 				'astra-google-fonts-loader',
 				ASTRA_THEME_URI . 'assets/js/' . $dir_name . '/customizer-google-fonts' . $file_prefix . '.js',
@@ -1438,6 +1487,14 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				)
 			);
 
+			// Color controls render in React, so there is no PHP control class to register. The registry entry only supplies the sanitizer; other types stay off until their sanitizers are audited.
+			Astra_Customizer_Control_Base::add_control(
+				'ast-color',
+				array(
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+				)
+			);
+
 			Astra_Customizer_Control_Base::add_control(
 				'ast-font',
 				array(
@@ -1465,8 +1522,8 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 			Astra_Customizer_Control_Base::add_control(
 				'ast-customizer-link',
 				array(
-					'callback'         => 'Astra_Control_Customizer_Link',
-					'santize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_customizer_links' ),
+					'callback'          => 'Astra_Control_Customizer_Link',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_customizer_links' ),
 				)
 			);
 

@@ -43,6 +43,7 @@ if ( ! class_exists( 'BSF_UTM_Analytics' ) ) {
 			'latepoint',
 			'modern-cart',
 			'power-coupons',
+			'presto-capture',
 			'presto-player',
 			'sigmize',
 			'spectra-blocks',

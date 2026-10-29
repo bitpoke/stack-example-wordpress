@@ -606,17 +606,25 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		/**
 		 * Sanitize HEX color
 		 *
-		 * @param  string $color setting input.
-		 * @return string        setting input value.
+		 * @since 4.14.2 Also keeps CSS-wide keywords and 4/8-digit hex.
+		 * @param  mixed $color setting input.
+		 * @return string       setting input value.
 		 */
 		public static function sanitize_hex_color( $color ) {
 
-			if ( '' === $color ) {
+			if ( ! is_string( $color ) || '' === $color ) {
 				return '';
 			}
 
-			// 3 or 6 hex digits, or the empty string.
-			if ( preg_match( '|^#([A-Fa-f0-9]{3}){1,2}$|', $color ) ) {
+			$color = trim( $color );
+
+			// Keywords such as transparent/inherit must round-trip.
+			if ( self::is_css_color_keyword( $color ) ) {
+				return $color;
+			}
+
+			// 3, 4, 6 or 8 hex digits.
+			if ( preg_match( '/^#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/D', $color ) ) {
 				return $color;
 			}
 
@@ -626,19 +634,35 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		/**
 		 * Sanitize Alpha color
 		 *
-		 * @param  string $color setting input.
-		 * @return string        setting input value.
+		 * @since 4.14.2 Also keeps CSS-wide keywords, 4/8-digit hex, spaced var() with balanced parentheses, and anchored rgb()/rgba()/hsl()/hsla().
+		 * @param  mixed $color setting input.
+		 * @return string       setting input value.
 		 */
 		public static function sanitize_alpha_color( $color ) {
 
-			if ( '' === $color ) {
+			if ( ! is_string( $color ) || '' === $color ) {
 				return '';
 			}
 
-			// CSS variable value sanitize.
-			if ( 0 === strpos( $color, 'var(--' ) ) {
-				 // phpcs:ignore Generic.PHP.ForbiddenFunctions.FoundWithAlternative -- Safe usage: no /e modifier, sanitizes SVG by removing PHP tags
-				return preg_replace( '/[^A-Za-z0-9_)(\-,.]/', '', $color );
+			$color = trim( $color );
+
+			// Keywords such as transparent/inherit must round-trip.
+			if ( self::is_css_color_keyword( $color ) ) {
+				return $color;
+			}
+
+			// CSS variable value sanitize, including the spaced "var( --x )" form.
+			if ( 0 === stripos( $color, 'var(' ) ) {
+				// phpcs:ignore Generic.PHP.ForbiddenFunctions.FoundWithAlternative -- Safe usage: no /e modifier, strips anything outside the CSS var() grammar.
+				$color = preg_replace( '/[^A-Za-z0-9_)(#\-,. ]/', '', $color );
+
+				// An unclosed "(" would swallow every rule after it.
+				return preg_match( '/^var\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)$/iD', $color ) ? $color : '';
+			}
+
+			// Accept a single well-formed rgb()/rgba()/hsl()/hsla() value as-is.
+			if ( preg_match( '/^(?:rgba?|hsla?)\( *[0-9.\-][0-9a-z,. %\/\-]*\)$/iD', $color ) ) {
+				return $color;
 			}
 
 			if ( false === strpos( $color, 'rgba' ) ) {
@@ -648,8 +672,23 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 
 			/* rgba sanitize */
 			$color = str_replace( ' ', '', $color );
-			sscanf( $color, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+			if ( 4 !== sscanf( $color, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha ) || ! is_finite( (float) $alpha ) ) {
+				return '';
+			}
 			return 'rgba(' . $red . ',' . $green . ',' . $blue . ',' . $alpha . ')';
+		}
+
+		/**
+		 * Whether a value is a CSS-wide or color keyword that must be preserved.
+		 *
+		 * @since 4.14.2
+		 * @param string $value Color value.
+		 * @return bool
+		 */
+		private static function is_css_color_keyword( $value ) {
+			$keywords = array( 'transparent', 'inherit', 'initial', 'unset', 'revert', 'currentcolor' );
+
+			return in_array( strtolower( $value ), $keywords, true );
 		}
 
 		/**
@@ -872,7 +911,7 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		/**
 		 * Sanitize Customizer Link param.
 		 *
-		 * @param Array $val array(
+		 * @param mixed $val array(
 		 *      linked : Linked Customizer Section,
 		 *      link_text : Link Text.
 		 * ).
@@ -882,9 +921,13 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 		 * @return Array
 		 */
 		public static function sanitize_customizer_links( $val ) {
-			$val['linked']         = sanitize_text_field( $val['linked'] );
-			$val['link_text']      = esc_html( $val['link_text'] );
-			$val['link_type']      = esc_html( $val['link_type'] );
+			if ( ! is_array( $val ) ) {
+				return array();
+			}
+
+			$val['linked']         = sanitize_text_field( isset( $val['linked'] ) ? $val['linked'] : '' );
+			$val['link_text']      = esc_html( isset( $val['link_text'] ) ? $val['link_text'] : '' );
+			$val['link_type']      = esc_html( isset( $val['link_type'] ) ? $val['link_type'] : '' );
 			$val['is_button_link'] = esc_html( isset( $val['is_button_link'] ) ? $val['is_button_link'] : '#' );
 			return $val;
 		}

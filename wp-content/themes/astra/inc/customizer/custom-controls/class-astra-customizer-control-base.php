@@ -148,9 +148,10 @@ if ( ! class_exists( 'Astra_Customizer_Control_Base' ) ) {
 			);
 			wp_localize_script( 'astra-custom-control-script', 'astraTypo', $astra_typo_localize );
 
-			$css_uri = ASTRA_THEME_URI . 'inc/customizer/custom-controls/typography/';
+			$css_uri    = ASTRA_THEME_URI . 'inc/customizer/custom-controls/typography/';
+			$css_suffix = SCRIPT_DEBUG ? '' : '.min';
 
-			wp_enqueue_style( 'astra-select-woo-style', $css_uri . 'selectWoo.css', null, ASTRA_THEME_VERSION );
+			wp_enqueue_style( 'astra-select-woo-style', $css_uri . 'selectWoo' . $css_suffix . '.css', null, ASTRA_THEME_VERSION );
 		}
 
 		/**
