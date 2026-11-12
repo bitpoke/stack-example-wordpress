@@ -1266,7 +1266,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						),
 					),
 					'',
-					number_format( absint( astra_get_tablet_breakpoint() ) + 0.99, 2, '.', '' )
+					number_format( absint( astra_get_tablet_breakpoint() ) + 0.98, 2, '.', '' )
 				);
 
 				$parse_css .= astra_parse_css(

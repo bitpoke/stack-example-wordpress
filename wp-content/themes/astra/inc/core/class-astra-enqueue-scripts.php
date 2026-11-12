@@ -81,7 +81,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			$break_point = astra_header_break_point();
 			?>
 			<script <?php echo astra_attr( 'header-breakpoint-script', array( 'class' => '', 'data-cfasync' => 'false' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound -- astra_attr() escapes attribute output. ?>>
-			(function(){var mq=window.matchMedia('(max-width:<?php echo number_format( absint( $break_point ) + 0.99, 2, '.', '' ); ?>px)');function apply(isMobile){var b=document.body.classList;if(isMobile){b.add('ast-header-break-point');b.remove('ast-desktop');}else{b.remove('ast-header-break-point');b.add('ast-desktop');}}apply(mq.matches);if(mq.addEventListener){mq.addEventListener('change',function(e){apply(e.matches);});}else if(mq.addListener){mq.addListener(function(e){apply(e.matches);});}})();
+			(function(){var mq=window.matchMedia('(max-width:<?php echo number_format( absint( $break_point ) + 0.98, 2, '.', '' ); ?>px)');function apply(isMobile){var b=document.body.classList;if(isMobile){b.add('ast-header-break-point');b.remove('ast-desktop');}else{b.remove('ast-header-break-point');b.add('ast-desktop');}}apply(mq.matches);if(mq.addEventListener){mq.addEventListener('change',function(e){apply(e.matches);});}else if(mq.addListener){mq.addListener(function(e){apply(e.matches);});}})();
 			</script>
 			<?php
 		}

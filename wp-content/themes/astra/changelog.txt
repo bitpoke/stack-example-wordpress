@@ -1,5 +1,13 @@
 *** Astra Changelog ***
 
+2026-11-12 - version 4.14.3
+* Fix: WooCommerce - The Pay and Cancel buttons on the My Account order details page no longer touch each other, and the Actions label now lines up with them.
+* Fix: Header - The mobile header appeared while titles and content kept their desktop styles at a browser width of exactly 922px; the header and tablet styles now switch at the same breakpoint.
+* Fix: Customizer - Plugins that save Customizer settings through the REST API, such as Additional CSS from AI connectors, no longer fail with a server error.
+* Fix: WooCommerce - Imports that skip the default WooCommerce page creation, such as Starter Templates, no longer leave two blank, untitled pages behind.
+* Fix: Accessibility - Clicking the submenu arrow now opens the submenu instead of following the parent link, for screen reader, touch and mouse users.
+* Fix: Accessibility - Opening a second-level submenu from its arrow no longer collapses the parent submenu and hides the whole dropdown.
+
 2026-10-29 - version 4.14.2
 * Improvement: Performance - The theme no longer makes a blocking WP-Cron loopback request on every admin and frontend page load, avoiding a delay when the site can't reach its own URL.
 * Fix: Customizer - Resetting a header or footer border or separator color no longer saves it as empty, so the border stays visible after publishing.

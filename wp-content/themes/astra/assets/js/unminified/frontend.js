@@ -633,13 +633,16 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 		 * header should be visible, eliminating any sub-pixel or scrollbar-width
 		 * mismatch between window.innerWidth and the actual CSS viewport width.
 		 *
-		 * The 0.99 offset mirrors the max-width: (break_point + 0.99)px rule used
+		 * The 0.98 offset mirrors the max-width: (break_point + 0.98)px rule used
 		 * in the PHP dynamic CSS, so the transition point is identical in both.
+		 * The offset must stay below 0.99: Chrome rounds a 921.99px threshold up
+		 * to 922px, so (max-width: 921.99px) matches a 922px viewport where
+		 * desktop styles apply, showing the mobile header with desktop styles.
 		 *
 		 * The 0 === ww guard handles a Chrome edge case where innerWidth returns 0
 		 * when opening a URL via "Open in New Tab" — force desktop mode in that case.
 		 */
-		var isMobile = window.matchMedia( '(max-width: ' + ( parseFloat( break_point ) + 0.99 ) + 'px)' ).matches;
+		var isMobile = window.matchMedia( '(max-width: ' + ( parseFloat( break_point ) + 0.98 ) + 'px)' ).matches;
 
 		if ( ! isMobile || 0 === ww ) {
 			//remove menu toggled class.
@@ -1033,25 +1036,9 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					}
 				});
 
-				/**
-				 * Click cannot reliably report the input type - Firefox omits
-				 * pointerType - so record it per arrow here.
-				 */
-				element.addEventListener('pointerdown', function (e) {
-					e.currentTarget.dataset.astPointerType = e.pointerType || 'mouse';
-				}, false);
-
-				/**
-				 * The arrow sits inside the parent <a>, so on touch the tap followed
-				 * the link and the submenu never opened. Touch reports no hover.
-				 */
+				// The arrow sits inside the parent <a>; touch and screen reader clicks looked like mouse clicks and followed the link.
 				element.addEventListener('click', function (e) {
 					const arrow = e.currentTarget;
-
-					// Mouse and pen report hover, which already opens the submenu.
-					if ('touch' !== arrow.dataset.astPointerType) {
-						return;
-					}
 
 					// Below the breakpoint the mobile menu has its own toggle.
 					if (!body.classList.contains('ast-desktop')) {
@@ -1061,7 +1048,8 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					const closestLi = arrow.closest('li');
 					const subMenu = closestLi && closestLi.querySelector('.sub-menu');
 
-					if (!subMenu) {
+					// Click-trigger mega menus are opened by Astra Pro from the link click.
+					if (!subMenu || 'click' === closestLi.dataset.megamenuTrigger) {
 						return;
 					}
 
@@ -1073,12 +1061,33 @@ astScrollToTopHandler = function ( masthead, astScrollTop ) {
 					// Read before closing, which resets aria-expanded on every arrow.
 					const wasOpen = 'true' === arrow.getAttribute('aria-expanded');
 
-					// Mouse and keyboard only ever leave one submenu open, so collapse
-					// the others here too.
-					closeNavigationMenu(siteNavigationSubMenu, dropdownToggleLinks, menuLi, megaMenuFullWidth);
+					// A nested arrow may only collapse its own level. Closing the whole
+					// menu strips toggled-on from the ancestor submenu that is displaying
+					// it, which takes the open dropdown offscreen with it.
+					const parentSubMenu = closestLi.parentNode.closest('.sub-menu');
+
+					if (parentSubMenu) {
+						closeNavigationMenu(
+							parentSubMenu.querySelectorAll('.sub-menu'),
+							parentSubMenu.querySelectorAll('.ast-header-navigation-arrow'),
+							parentSubMenu.querySelectorAll('.menu-item-has-children'),
+							parentSubMenu.querySelectorAll('.astra-full-megamenu-wrapper')
+						);
+					} else {
+						// Mouse and keyboard only ever leave one submenu open, so collapse
+						// the others here too.
+						closeNavigationMenu(siteNavigationSubMenu, dropdownToggleLinks, menuLi, megaMenuFullWidth);
+					}
 
 					if (!wasOpen) {
-						subMenu.classList.add('toggled-on');
+						if (subMenu.classList.contains('astra-megamenu')) {
+							subMenu.classList.add('astra-megamenu-focus');
+							closestLi.querySelector('.astra-full-megamenu-wrapper')?.classList.add('astra-megamenu-wrapper-focus');
+							// Hover removes this on mouseenter; without it the mega menu stays display none.
+							closestLi.querySelectorAll('.ast-hidden').forEach(el => el.classList.remove('ast-hidden'));
+						} else {
+							subMenu.classList.add('toggled-on');
+						}
 						closestLi.classList.add('ast-menu-hover');
 						arrow.setAttribute('aria-expanded', 'true');
 					}

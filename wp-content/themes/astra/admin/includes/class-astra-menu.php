@@ -430,6 +430,7 @@ class Astra_Menu {
 			),
 			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			'astra_cta_btn_url'         => astra_get_pro_url( '/pricing/', 'free-theme', 'dashboard', 'unlock-pro-features-CTA' ),
+			'sale'                      => astra_get_bfcm_sale_data(),
 			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			'is_woo_market_zip'         => ! ASTRA_THEME_ORG_VERSION,
 			/** @psalm-suppress TypeDoesNotContainType */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort

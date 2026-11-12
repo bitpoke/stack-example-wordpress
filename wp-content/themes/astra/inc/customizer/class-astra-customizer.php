@@ -184,7 +184,25 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 		 * @return bool
 		 */
 		public static function is_customizer_context() {
-			return is_admin() || is_customize_preview() || wp_doing_cron() || ( defined( 'WP_CLI' ) && WP_CLI );
+			return is_admin() || is_customize_preview() || wp_doing_cron() || ( defined( 'WP_CLI' ) && WP_CLI ) || doing_action( 'customize_register' );
+		}
+
+		/**
+		 * Boot the Customizer for a manager built outside the usual contexts (e.g. by a plugin during a REST request).
+		 *
+		 * Runs first on customize_register so the config base, configurations and section types are registered
+		 * before any other callback needs them. Such a manager is not stored in the global, which Astra's
+		 * controls read, so it is set here when empty.
+		 *
+		 * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+		 * @since 4.14.3
+		 * @return void
+		 */
+		public static function boot_for_manual_manager( $wp_customize ) {
+			if ( empty( $GLOBALS['wp_customize'] ) ) {
+				$GLOBALS['wp_customize'] = $wp_customize; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Core leaves it unset for a manager created by hand.
+			}
+			self::get_instance();
 		}
 
 		/**
@@ -1247,6 +1265,7 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
 				'tabbed_sections'         => self::get_tabbed_sections(),
 				'component_limit'         => Astra_Builder_Helper::$component_limit,
 				'is_site_rtl'             => is_rtl(),
+				'sale'                    => astra_get_bfcm_sale_data(),
 				'defaults'                => $this->get_control_defaults(),
 				'isWP_5_9'                => astra_wp_version_compare( '5.8.99', '>=' ),
 				'googleFonts'             => array(),
@@ -2283,9 +2302,12 @@ if ( ! class_exists( 'Astra_Customizer' ) ) {
  * generate_logo_by_width(), is_astra_customizer(), logo_image_sizes()) remain
  * available because they don't require the instance. WP-Cron and WP-CLI are included
  * because customize_register also fires there, when core publishes a scheduled changeset.
+ * Elsewhere (e.g. REST), a plugin may build its own WP_Customize_Manager, so boot on its customize_register.
  */
 if ( Astra_Customizer::is_customizer_context() ) {
 	Astra_Customizer::get_instance();
+} else {
+	add_action( 'customize_register', array( 'Astra_Customizer', 'boot_for_manual_manager' ), PHP_INT_MIN );
 }
 
 /**

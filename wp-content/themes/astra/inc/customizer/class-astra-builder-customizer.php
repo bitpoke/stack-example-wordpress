@@ -62,7 +62,8 @@ final class Astra_Builder_Customizer {
 		add_action( 'customize_register', array( $this, 'builder_configs' ), 2 );
 		add_action( 'customize_register', array( $this, 'header_configs' ), 2 );
 		add_action( 'customize_register', array( $this, 'footer_configs' ), 2 );
-		add_action( 'customize_register', array( $this, 'update_default_wp_configs' ) );
+		// Priority 11: after core's register_controls (10), which is hooked after this when a manager is built late (e.g. REST).
+		add_action( 'customize_register', array( $this, 'update_default_wp_configs' ), 11 );
 		add_action( 'init', array( $this, 'deregister_menu_locations_widgets' ), 999 );
 		add_action( 'customize_controls_print_footer_scripts', array( $this, 'builder_customizer_preview_styles' ) );
 	}

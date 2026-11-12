@@ -434,8 +434,13 @@ if ( ! class_exists( 'Astra_After_Setup_Theme' ) ) {
 		 * @return array
 		 */
 		public function astra_enforce_woo_shortcode_pages( $pages_data ) {
-			$pages_data['cart']['content']     = '<!-- wp:shortcode -->[woocommerce_cart]<!-- /wp:shortcode -->';
-			$pages_data['checkout']['content'] = '<!-- wp:shortcode -->[woocommerce_checkout]<!-- /wp:shortcode -->';
+			if ( isset( $pages_data['cart'] ) ) {
+				$pages_data['cart']['content'] = '<!-- wp:shortcode -->[woocommerce_cart]<!-- /wp:shortcode -->';
+			}
+
+			if ( isset( $pages_data['checkout'] ) ) {
+				$pages_data['checkout']['content'] = '<!-- wp:shortcode -->[woocommerce_checkout]<!-- /wp:shortcode -->';
+			}
 
 			return $pages_data;
 		}

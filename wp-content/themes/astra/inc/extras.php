@@ -1158,6 +1158,55 @@ function astra_showcase_upgrade_notices() {
 }
 
 /**
+ * Unix timestamp (seconds, UTC) for the start of the BFCM sale window
+ * (16 Nov 2026, 12:00 PM IST → 6:30 AM UTC).
+ *
+ * @since 4.14.3
+ * @return int
+ */
+function astra_bfcm_sale_start_timestamp() {
+	return gmmktime( 6, 30, 0, 11, 16, 2026 );
+}
+
+/**
+ * Unix timestamp (seconds, UTC) for the end of the BFCM sale window
+ * (end of 6 Dec 2026 IST → 12:00 AM 7 Dec IST → 6:30 PM 6 Dec UTC).
+ *
+ * @since 4.14.3
+ * @return int
+ */
+function astra_bfcm_sale_end_timestamp() {
+	return gmmktime( 18, 30, 0, 12, 6, 2026 );
+}
+
+/**
+ * Whether the Black Friday / Cyber Monday promotional sale window is currently live.
+ *
+ * @since 4.14.3
+ * @return bool
+ */
+function astra_is_bfcm_sale_active() {
+	$now = time();
+	return $now >= astra_bfcm_sale_start_timestamp() && $now < astra_bfcm_sale_end_timestamp();
+}
+
+/**
+ * BFCM sale schedule + active flag, localized to the dashboard, customizer and
+ * metabox apps so the sale window is defined once (here) for every surface.
+ * Timestamps are in milliseconds for the JS Date() constructor.
+ *
+ * @since 4.14.3
+ * @return array<string, mixed>
+ */
+function astra_get_bfcm_sale_data() {
+	return array(
+		'start'  => astra_bfcm_sale_start_timestamp() * 1000,
+		'end'    => astra_bfcm_sale_end_timestamp() * 1000,
+		'active' => astra_is_bfcm_sale_active(),
+	);
+}
+
+/**
  * Function which will return CSS for font-extras control.
  * It includes - line-height, letter-spacing, text-decoration, font-style.
  *

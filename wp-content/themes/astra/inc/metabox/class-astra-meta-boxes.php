@@ -731,6 +731,7 @@ if ( ! class_exists( 'Astra_Meta_Boxes' ) ) {
 					'is_hide_content_layout_sidebar' => $ast_content_layout_sidebar,
 					'upgrade_pro_link'               => esc_url_raw( astra_get_pro_url( '/pricing/', 'free-theme', 'post-metabox', 'upgrade' ) ),
 					'show_upgrade_notice'            => astra_showcase_upgrade_notices(),
+					'sale'                           => astra_get_bfcm_sale_data(),
 					'logo_url'                       => esc_url( ASTRA_THEME_URI . 'inc/assets/images/astra-logo.svg' ),
 					// Flag needed to check whether user is old or new, true for old user, false for new.
 					'v4_1_6_migration'               => ! Astra_Dynamic_CSS::astra_fullwidth_sidebar_support(),
