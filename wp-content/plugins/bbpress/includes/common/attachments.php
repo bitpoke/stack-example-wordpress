@@ -53,7 +53,25 @@ function bbp_get_attachment_parent( $attachment = 0 ) {
 function bbp_user_can_view_attachment( $attachment = 0 ) {
 	$parent = bbp_get_attachment_parent( $attachment );
 
-	if ( empty( $parent ) || bbp_get_password_required_id( $parent->ID ) ) {
+	return ! empty( $parent ) && bbp_user_can_view_attachment_parent( $parent );
+}
+
+/**
+ * Check whether the current user can view a bbPress attachment parent.
+ *
+ * @since 2.6.22 bbPress (r8283)
+ *
+ * @param int|WP_Post $attachment_parent Parent post ID or object.
+ * @return bool Whether the parent can be viewed.
+ */
+function bbp_user_can_view_attachment_parent( $attachment_parent = 0 ) {
+	if ( empty( $attachment_parent ) ) {
+		return false;
+	}
+
+	$parent = get_post( $attachment_parent );
+
+	if ( empty( $parent ) || ! bbp_is_custom_post_type( $parent ) || bbp_get_password_required_id( $parent->ID ) ) {
 		return false;
 	}
 
@@ -196,15 +214,204 @@ function bbp_do_not_redirect_restricted_attachments( $redirect_url = '', $reques
 }
 
 /**
- * Use the bbPress controller for attachments when Core's is unchanged.
+ * Reject comments on attachments whose bbPress parent is not visible.
+ *
+ * Leave comments_open() unchanged while preventing comment submission from
+ * revealing the attachment URL in Core's redirect.
+ *
+ * @since 2.6.22 bbPress (r8314)
+ *
+ * @param int|string|WP_Error $approved    Comment approval status.
+ * @param array               $commentdata Comment data.
+ * @return int|string|WP_Error Comment approval status or error.
+ */
+function bbp_reject_restricted_attachment_comments( $approved, $commentdata ) {
+	if ( is_wp_error( $approved ) ) {
+		return $approved;
+	}
+
+	$post_id = isset( $commentdata['comment_post_ID'] ) ? $commentdata['comment_post_ID'] : 0;
+	$parent  = bbp_get_attachment_parent( $post_id );
+
+	if ( $parent && ! bbp_user_can_view_attachment_parent( $parent ) ) {
+		return new WP_Error(
+			'bbp_attachment_comment_forbidden',
+			__( 'Sorry, you are not allowed to comment on this item.', 'bbpress' ),
+			403
+		);
+	}
+
+	return $approved;
+}
+
+/**
+ * Check whether a query is the requested comment-feed shape.
+ *
+ * @since 2.6.22 bbPress (r8325)
+ *
+ * @param mixed $query       Possible WordPress query object.
+ * @param bool  $is_singular Whether the query must be singular.
+ * @return bool Whether this is the requested comment-feed shape.
+ */
+function bbp_is_attachment_comment_feed_query( $query, $is_singular ) {
+	return ( $query instanceof WP_Query )
+		&& $query->is_comment_feed()
+		&& ( (bool) $is_singular === $query->is_singular() );
+}
+
+/**
+ * Remove unreadable bbPress attachment comments from a comment-feed query.
+ *
+ * WordPress queries comment feeds separately from post visibility checks. Work
+ * only on the comments Core already selected so authorization cost stays
+ * bounded by the configured feed size, regardless of site history. Do not scan
+ * older comments to backfill restricted entries: affected feeds intentionally
+ * render fewer than the configured number of items.
+ *
+ * @since 2.6.22 bbPress (r8325)
+ *
+ * @param WP_Query $query WordPress query object.
+ * @return int[] Unreadable attachment post IDs.
+ */
+function bbp_filter_attachment_comment_feed_query( $query ) {
+	if ( empty( $query->comments ) ) {
+		return array();
+	}
+
+	$comments        = array();
+	$denied_post_ids = array();
+
+	foreach ( $query->comments as $comment ) {
+		$post = get_post( $comment->comment_post_ID );
+
+		// Core joined this post already. Fail closed if it disappeared or errored.
+		if ( empty( $post ) ) {
+			continue;
+		}
+
+		if ( ( 'attachment' !== $post->post_type ) || empty( $post->post_parent ) ) {
+			$comments[] = $comment;
+			continue;
+		}
+
+		$parent = get_post( $post->post_parent );
+
+		if ( empty( $parent ) || ! bbp_is_custom_post_type( $parent ) || bbp_user_can_view_attachment_parent( $parent ) ) {
+			$comments[] = $comment;
+		} else {
+			$denied_post_ids[ $post->ID ] = true;
+		}
+	}
+
+	$query->comments      = array_values( $comments );
+	$query->comment_count = count( $query->comments );
+
+	return wp_parse_id_list( array_keys( $denied_post_ids ) );
+}
+
+/**
+ * Exclude unreadable attachment posts from non-singular comment feeds.
+ *
+ * @since 2.6.22 bbPress (r8325)
+ *
+ * @param string[] $clauses Posts query clauses.
+ * @param WP_Query $query   WordPress query object.
+ * @return string[] Filtered posts query clauses.
+ */
+function bbp_filter_attachment_comment_feed_clauses( $clauses, $query ) {
+	if ( ! bbp_is_attachment_comment_feed_query( $query, false ) ) {
+		return $clauses;
+	}
+
+	$post_ids = bbp_filter_attachment_comment_feed_query( $query );
+
+	if ( ! empty( $post_ids ) ) {
+		$ids               = implode( ',', $post_ids );
+		$clauses['where'] .= ' AND ' . bbp_db()->posts . ".ID NOT IN ({$ids})";
+	}
+
+	return $clauses;
+}
+
+/**
+ * Exclude unreadable attachment posts from singular comment feeds.
+ *
+ * @since 2.6.22 bbPress (r8325)
+ *
+ * @param WP_Post[] $posts Queried posts.
+ * @param WP_Query  $query WordPress query object.
+ * @return WP_Post[] Filtered posts.
+ */
+function bbp_filter_attachment_comment_feed_posts( $posts, $query ) {
+	if ( ! bbp_is_attachment_comment_feed_query( $query, true ) ) {
+		return $posts;
+	}
+
+	$denied_post_ids = array_fill_keys( bbp_filter_attachment_comment_feed_query( $query ), true );
+	$is_attachment_query = $query->is_attachment() || in_array( 'attachment', (array) $query->get( 'post_type' ), true );
+
+	if ( empty( $denied_post_ids ) ) {
+		// Normalize nonexistent attachment feeds for compatibility with old Core.
+		if ( empty( $posts ) && $is_attachment_query ) {
+			$query->is_attachment = false;
+			$query->is_single     = false;
+			$query->is_singular   = false;
+		}
+
+		return $posts;
+	}
+
+	$filtered_posts = array();
+
+	foreach ( $posts as $post ) {
+		if ( ! isset( $denied_post_ids[ $post->ID ] ) ) {
+			$filtered_posts[] = $post;
+		}
+	}
+
+	// Match a nonexistent attachment and avoid null singular checks in old Core.
+	if ( empty( $filtered_posts ) ) {
+		$query->is_attachment = false;
+		$query->is_single     = false;
+		$query->is_singular   = false;
+	}
+
+	return array_values( $filtered_posts );
+}
+
+/**
+ * Use bbPress permissions with Core and Gutenberg attachment controllers.
  *
  * @since 2.6.17 bbPress (r7482)
  */
 function bbp_register_rest_attachment_controller() {
 	$post_type = get_post_type_object( 'attachment' );
 
-	if ( ! empty( $post_type ) && ( 'WP_REST_Attachments_Controller' === $post_type->rest_controller_class ) ) {
+	if ( empty( $post_type ) ) {
+		return;
+	}
+
+	if ( 'WP_REST_Attachments_Controller' === $post_type->rest_controller_class ) {
 		$post_type->rest_controller_class = 'BBP_REST_Attachments_Controller';
+		return;
+	}
+
+	$gutenberg_controllers = array(
+		'Gutenberg_REST_Attachments_Controller'     => 'BBP_REST_Gutenberg_Attachments_Controller',
+		'Gutenberg_REST_Attachments_Controller_7_1' => 'BBP_REST_Gutenberg_Attachments_Controller_7_1',
+	);
+	$controller_class = $post_type->rest_controller_class;
+
+	if ( isset( $gutenberg_controllers[ $controller_class ] ) && class_exists( $controller_class ) ) {
+		$bridge_class = $gutenberg_controllers[ $controller_class ];
+
+		if ( ! class_exists( $bridge_class, false ) ) {
+			bbp_load_gutenberg_rest_attachment_controller( $controller_class );
+		}
+
+		if ( class_exists( $bridge_class, false ) ) {
+			$post_type->rest_controller_class = $bridge_class;
+		}
 	}
 }
 
@@ -242,11 +449,110 @@ class BBP_REST_Attachment_Parent_Controller extends BBP_REST_Posts_Controller {
 }
 
 /**
- * REST API controller for attachments to bbPress post types.
+ * bbPress permission checks shared by Core and Gutenberg media controllers.
  *
- * @since 2.6.17 bbPress (r7482)
+ * @since 2.6.22 bbPress (r8302)
  */
-class BBP_REST_Attachments_Controller extends WP_REST_Attachments_Controller {
+trait BBP_REST_Attachment_Permissions {
+
+	/**
+	 * Check the requested bbPress parent before creating or moving media.
+	 *
+	 * @since 2.6.22 bbPress (r8283)
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @param int             $current_parent_id Current attachment parent ID, if any.
+	 * @return true|WP_Error Whether the requested parent is accessible.
+	 */
+	private function check_requested_parent_permission( $request, $current_parent_id = 0 ) {
+		$parent = ! empty( $request['post'] ) ? get_post( (int) $request['post'] ) : null;
+
+		if ( empty( $parent ) || ! bbp_is_custom_post_type( $parent ) ) {
+			return true;
+		}
+
+		if ( ( (int) $current_parent_id !== $parent->ID && ! current_user_can( 'edit_post', $parent->ID ) ) || ! bbp_user_can_view_attachment_parent( $parent ) ) {
+			return new WP_Error(
+				'bbp_rest_cannot_edit_attachment_parent',
+				esc_html__( 'You are not allowed to attach media to this forum content.', 'bbpress' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check the requested parent when creating media.
+	 *
+	 * @since 2.6.22 bbPress (r8283)
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return true|WP_Error Whether the media may be created.
+	 */
+	public function create_item_permissions_check( $request ) {
+		$retval = parent::create_item_permissions_check( $request );
+
+		return ( true === $retval )
+			? $this->check_requested_parent_permission( $request )
+			: $retval;
+	}
+
+	/**
+	 * Check both the current and requested parents when updating media.
+	 *
+	 * @since 2.6.22 bbPress (r8283)
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return true|WP_Error Whether the media may be updated.
+	 */
+	public function update_item_permissions_check( $request ) {
+		$retval = parent::update_item_permissions_check( $request );
+
+		if ( true !== $retval ) {
+			return $retval;
+		}
+
+		$attachment = get_post( (int) $request['id'] );
+
+		return $this->check_requested_parent_permission( $request, $attachment ? $attachment->post_parent : 0 );
+	}
+
+	/**
+	 * Require current bbPress parent access as well as attachment edit capability.
+	 *
+	 * @since 2.6.22 bbPress (r8283)
+	 *
+	 * @param WP_Post $post Attachment post object.
+	 * @return bool Whether the attachment can be updated.
+	 */
+	protected function check_update_permission( $post ) {
+		if ( ! parent::check_update_permission( $post ) ) {
+			return false;
+		}
+
+		$parent = bbp_get_attachment_parent( $post );
+
+		return empty( $parent ) || bbp_user_can_view_attachment_parent( $parent );
+	}
+
+	/**
+	 * Require current bbPress parent access as well as attachment delete capability.
+	 *
+	 * @since 2.6.22 bbPress (r8283)
+	 *
+	 * @param WP_Post $post Attachment post object.
+	 * @return bool Whether the attachment can be deleted.
+	 */
+	protected function check_delete_permission( $post ) {
+		if ( ! parent::check_delete_permission( $post ) ) {
+			return false;
+		}
+
+		$parent = bbp_get_attachment_parent( $post );
+
+		return empty( $parent ) || bbp_user_can_view_attachment_parent( $parent );
+	}
 
 	/**
 	 * Checks if an attachment can be read.
@@ -272,5 +578,45 @@ class BBP_REST_Attachments_Controller extends WP_REST_Attachments_Controller {
 		}
 
 		return parent::check_read_permission( $post );
+	}
+}
+
+/**
+ * REST API controller for attachments to bbPress post types.
+ *
+ * @since 2.6.17 bbPress (r7482)
+ */
+class BBP_REST_Attachments_Controller extends WP_REST_Attachments_Controller {
+	use BBP_REST_Attachment_Permissions;
+}
+
+/**
+ * Declare the selected Gutenberg bridge after its parent controller loads.
+ *
+ * @since 2.6.22 bbPress (r8302)
+ *
+ * @param string $controller_class Gutenberg controller class name.
+ */
+function bbp_load_gutenberg_rest_attachment_controller( $controller_class ) {
+	if ( 'Gutenberg_REST_Attachments_Controller' === $controller_class && class_exists( $controller_class, false ) && ! class_exists( 'BBP_REST_Gutenberg_Attachments_Controller', false ) ) {
+		/**
+		 * Apply bbPress permissions to Gutenberg's media-processing controller.
+		 *
+		 * @since 2.6.22 bbPress (r8302)
+		 */
+		class BBP_REST_Gutenberg_Attachments_Controller extends Gutenberg_REST_Attachments_Controller {
+			use BBP_REST_Attachment_Permissions;
+		}
+	}
+
+	if ( 'Gutenberg_REST_Attachments_Controller_7_1' === $controller_class && class_exists( $controller_class, false ) && ! class_exists( 'BBP_REST_Gutenberg_Attachments_Controller_7_1', false ) ) {
+		/**
+		 * Apply bbPress permissions to Gutenberg's WordPress 7.1 media controller.
+		 *
+		 * @since 2.6.22 bbPress (r8302)
+		 */
+		class BBP_REST_Gutenberg_Attachments_Controller_7_1 extends Gutenberg_REST_Attachments_Controller_7_1 {
+			use BBP_REST_Attachment_Permissions;
+		}
 	}
 }

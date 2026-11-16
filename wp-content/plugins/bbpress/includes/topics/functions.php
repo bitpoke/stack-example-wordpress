@@ -138,7 +138,7 @@ function bbp_new_topic_handler( $action = '' ) {
 	}
 
 	// Define local variable(s)
-	$view_all = false;
+	$force_view_all = false;
 	$forum_id = $topic_author = 0;
 	$topic_title = $topic_content = '';
 	$anonymous_data = array();
@@ -249,13 +249,19 @@ function bbp_new_topic_handler( $action = '' ) {
 				bbp_add_error( 'bbp_new_topic_forum_closed', __( '<strong>Error</strong>: This forum has been closed to new topics.', 'bbpress' ) );
 			}
 
+			$can_read_forum = current_user_can( 'read_forum', $forum_id );
+
 			// Forum is private and user cannot access
-			if ( bbp_is_forum_private( $forum_id ) && ! current_user_can( 'read_forum', $forum_id ) ) {
+			if ( bbp_is_forum_private( $forum_id ) && ! $can_read_forum ) {
 				bbp_add_error( 'bbp_new_topic_forum_private', __( '<strong>Error</strong>: This forum is private and you do not have the capability to read or create new topics in it.', 'bbpress' ) );
 
 			// Forum is hidden and user cannot access
-			} elseif ( bbp_is_forum_hidden( $forum_id ) && ! current_user_can( 'read_forum', $forum_id ) ) {
+			} elseif ( bbp_is_forum_hidden( $forum_id ) && ! $can_read_forum ) {
 				bbp_add_error( 'bbp_new_topic_forum_hidden', __( '<strong>Error</strong>: This forum is hidden and you do not have the capability to read or create new topics in it.', 'bbpress' ) );
+
+			// Forum is otherwise unreadable by the user
+			} elseif ( ! $can_read_forum ) {
+				bbp_add_error( 'bbp_new_topic_forum_read', __( '<strong>Error</strong>: You do not have the capability to read or create new topics in this forum.', 'bbpress' ) );
 			}
 
 			// The forum or one of its ancestors still requires a password
@@ -390,7 +396,7 @@ function bbp_new_topic_handler( $action = '' ) {
 			wp_trash_post( $topic_id );
 
 			// Force view=all
-			$view_all = true;
+			$force_view_all = true;
 		}
 
 		/** Spam Check ********************************************************/
@@ -400,7 +406,7 @@ function bbp_new_topic_handler( $action = '' ) {
 			add_post_meta( $topic_id, '_bbp_spam_meta_status', bbp_get_public_status_id() );
 
 			// Force view=all
-			$view_all = true;
+			$force_view_all = true;
 		}
 
 		/** Update counts, etc... *********************************************/
@@ -427,11 +433,11 @@ function bbp_new_topic_handler( $action = '' ) {
 			$redirect_url = bbp_get_topic_permalink( $topic_id, $redirect_to );
 
 			// Add view all?
-			if ( bbp_get_view_all() || ! empty( $view_all ) ) {
+			if ( bbp_get_view_all_for_object( 'moderate', $topic_id ) || $force_view_all ) {
 
 				// User can moderate, so redirect to topic with view all set
 				if ( current_user_can( 'moderate', $topic_id ) ) {
-					$redirect_url = bbp_add_view_all( $redirect_url );
+					$redirect_url = bbp_add_view_all( $redirect_url, true );
 
 				// User cannot moderate, so redirect to forum
 				} else {
@@ -681,6 +687,11 @@ function bbp_edit_topic_handler( $action = '' ) {
 
 	do_action( 'bbp_edit_topic_pre_extras', $topic_id );
 
+	// A previously issued edit nonce does not satisfy a new password requirement.
+	if ( ! current_user_can( 'moderate', $topic_id ) && bbp_get_password_required_id( $topic_id ) ) {
+		bbp_add_error( 'bbp_edit_topic_permission', __( '<strong>Error</strong>: You do not have permission to edit that topic.', 'bbpress' ) );
+	}
+
 	// Bail if errors
 	if ( bbp_has_errors() ) {
 		return;
@@ -777,14 +788,14 @@ function bbp_edit_topic_handler( $action = '' ) {
 		$redirect_to = bbp_get_redirect_to();
 
 		// View all?
-		$view_all = bbp_get_view_all( 'edit_others_replies' );
+		$view_all = bbp_get_view_all_for_object( 'edit_others_replies', $topic_id );
 
 		// Get the topic URL
 		$topic_url = bbp_get_topic_permalink( $topic_id, $redirect_to );
 
 		// Add view all?
 		if ( ! empty( $view_all ) ) {
-			$topic_url = bbp_add_view_all( $topic_url );
+			$topic_url = bbp_add_view_all( $topic_url, true );
 		}
 
 		// Allow to be filtered
@@ -914,6 +925,35 @@ function bbp_update_topic( $topic_id = 0, $forum_id = 0, $anonymous_data = array
 }
 
 /**
+ * Suspend the core deleted-topic walker for one forum.
+ *
+ * The enclosing forum deletion refreshes the forum after its topics are
+ * removed. Other deleted-topic callbacks continue to run.
+ *
+ * @since 2.6.22 bbPress (r8369)
+ *
+ * @param int       $forum_id Forum ID.
+ * @param bool|null $suspend Whether to suspend, or null to read the current state.
+ * @return bool Whether the deleted-topic walker is suspended for this forum.
+ */
+function bbp_suspend_deleted_topic_walker( $forum_id = 0, $suspend = null ) {
+	static $suspended = array();
+
+	$forum_id = (int) $forum_id;
+	if ( $forum_id < 1 ) {
+		return false;
+	}
+
+	if ( true === $suspend ) {
+		$suspended[ $forum_id ] = true;
+	} elseif ( false === $suspend ) {
+		unset( $suspended[ $forum_id ] );
+	}
+
+	return isset( $suspended[ $forum_id ] );
+}
+
+/**
  * Walks up the post_parent tree from the current topic_id, and updates the
  * meta data of forums above it. This calls several functions that all run
  * manual queries against the database to get their results. As such, this
@@ -945,6 +985,11 @@ function bbp_update_topic_walker( $topic_id, $last_active_time = '', $forum_id =
 
 		// Set the active_id based on topic_id/reply_id
 		$active_id = empty( $reply_id ) ? $topic_id : $reply_id;
+	}
+
+	// The enclosing forum deletion refreshes the forum after its topics are removed.
+	if ( ( 'bbp_deleted_topic' === current_filter() ) && bbp_suspend_deleted_topic_walker( $forum_id ) ) {
+		return;
 	}
 
 	// Topic status
@@ -3200,20 +3245,31 @@ function bbp_spam_topic_replies( $topic_id = 0 ) {
 	);
 
 	if ( ! empty( $reply_ids ) ) {
+		// Save the restore list before trashing so an interrupted run can retry.
+		$pre_spammed_replies = wp_parse_id_list( get_post_meta( $topic_id, '_bbp_pre_spammed_replies', true ) );
+		$pre_spammed_replies = wp_parse_id_list( array_merge( $pre_spammed_replies, $reply_ids ) );
+		update_post_meta( $topic_id, '_bbp_pre_spammed_replies', $pre_spammed_replies );
 
-		// Prevent debug notices
-		$pre_spammed_replies = array();
-
-		// Loop through replies, trash them, and add them to array
-		foreach ( $reply_ids as $reply_id ) {
-			wp_trash_post( $reply_id );
-			$pre_spammed_replies[] = $reply_id;
+		$defer    = doing_action( 'bbp_spam_topic' )
+			&& ( false !== has_action( 'bbp_spammed_topic', 'bbp_update_topic_walker' ) )
+			&& ( false !== has_action( 'bbp_trashed_reply', 'bbp_update_reply_walker' ) );
+		$previous = bbp_suspend_reply_walker( $topic_id );
+		if ( $defer ) {
+			bbp_suspend_reply_walker( $topic_id, true );
 		}
 
-		// Set a post_meta entry of the replies that were trashed by this action.
-		// This is so we can possibly untrash them, without untrashing replies
-		// that were purposefully trashed before.
-		update_post_meta( $topic_id, '_bbp_pre_spammed_replies', $pre_spammed_replies );
+		try {
+			foreach ( $reply_ids as $reply_id ) {
+				wp_trash_post( $reply_id );
+			}
+		} finally {
+			if ( $defer ) {
+				bbp_suspend_reply_walker( $topic_id, $previous );
+				if ( ! $previous ) {
+					bbp_update_reply_walker( 0, '', bbp_get_topic_forum_id( $topic_id ), $topic_id );
+				}
+			}
+		}
 	}
 }
 
@@ -3326,22 +3382,46 @@ function bbp_unspam_topic_replies( $topic_id = 0 ) {
 	// Get the replies that were not previously trashed
 	$pre_spammed_replies = get_post_meta( $topic_id, '_bbp_pre_spammed_replies', true );
 
+	$failed = false;
+
 	// There are replies to untrash
 	if ( ! empty( $pre_spammed_replies ) ) {
-
-		// Maybe reverse the trashed replies array
-		if ( is_array( $pre_spammed_replies ) ) {
-			$pre_spammed_replies = array_reverse( $pre_spammed_replies );
+		$defer    = doing_action( 'bbp_unspam_topic' )
+			&& ( false !== has_action( 'bbp_unspammed_topic', 'bbp_update_topic_walker' ) )
+			&& ( false !== has_action( 'bbp_untrashed_reply', 'bbp_update_reply_walker' ) );
+		$previous = bbp_suspend_reply_walker( $topic_id );
+		if ( $defer ) {
+			bbp_suspend_reply_walker( $topic_id, true );
 		}
 
-		// Loop through replies
-		foreach ( (array) $pre_spammed_replies as $reply ) {
-			wp_untrash_post( $reply );
+		try {
+			// Maybe reverse the trashed replies array
+			if ( is_array( $pre_spammed_replies ) ) {
+				$pre_spammed_replies = array_reverse( $pre_spammed_replies );
+			}
+
+			foreach ( (array) $pre_spammed_replies as $reply ) {
+				if ( bbp_get_trash_status_id() === get_post_status( $reply ) ) {
+					wp_untrash_post( $reply );
+					if ( bbp_get_trash_status_id() === get_post_status( $reply ) ) {
+						$failed = true;
+					}
+				}
+			}
+		} finally {
+			if ( $defer ) {
+				bbp_suspend_reply_walker( $topic_id, $previous );
+				if ( ! $previous ) {
+					bbp_update_reply_walker( 0, '', bbp_get_topic_forum_id( $topic_id ), $topic_id );
+				}
+			}
 		}
 	}
 
-	// Clear the trasheed reply meta for the topic
-	delete_post_meta( $topic_id, '_bbp_pre_spammed_replies' );
+	// Keep the restore list when a reply remains trashed.
+	if ( ! $failed ) {
+		delete_post_meta( $topic_id, '_bbp_pre_spammed_replies' );
+	}
 }
 
 /**
@@ -3454,8 +3534,10 @@ function bbp_approve_topic( $topic_id = 0 ) {
 	// Set publish status
 	$topic->post_status = $status;
 
-	// Set post date GMT - prevents post_date override in wp_update_post()
-	$topic->post_date_gmt = get_gmt_from_date( $topic->post_date );
+	// Set a missing post date GMT - prevents post_date override in wp_update_post()
+	if ( '0000-00-00 00:00:00' === $topic->post_date_gmt ) {
+		$topic->post_date_gmt = get_gmt_from_date( $topic->post_date );
+	}
 
 	// No revisions
 	remove_action( 'pre_post_update', 'wp_save_post_revision' );
@@ -3591,6 +3673,7 @@ function bbp_delete_topic( $topic_id = 0 ) {
  * Usually you'll want to do this before the topic itself is deleted.
  *
  * @since 2.6.0 bbPress (r5406)
+ * @since 2.6.22 bbPress (r8369) Defer redundant reply refreshes during deletion.
  *
  * @param int $topic_id
  */
@@ -3606,11 +3689,62 @@ function bbp_delete_topic_replies( $topic_id = 0 ) {
 		bbp_get_reply_post_type(),
 		array_keys( get_post_stati() )
 	);
+	if ( empty( $reply_ids ) ) {
+		return;
+	}
 
-	// Loop through and delete child replies
-	if ( ! empty( $reply_ids ) ) {
+	// Defer reply walks until the final reply or enclosing forum refresh.
+	// Direct callers still update the topic and forum after each reply.
+	$suspend_walker = doing_action( 'before_delete_post' )
+		&& doing_action( 'bbp_delete_topic' )
+		&& ( false !== has_action( 'deleted_post', 'bbp_deleted_topic' ) )
+		&& ( false !== has_action( 'bbp_deleted_topic', 'bbp_update_topic_walker' ) )
+		&& ( false !== has_action( 'bbp_deleted_reply', 'bbp_update_reply_walker' ) );
+	$previous = bbp_suspend_reply_walker( $topic_id );
+	if ( $suspend_walker ) {
+		bbp_suspend_reply_walker( $topic_id, true );
+	}
+
+	// A standalone topic may survive a failed post delete, so let its last
+	// reply refresh topic and forum metadata before the topic itself goes.
+	$forum_id     = bbp_get_topic_forum_id( $topic_id );
+	$refresh_last = $suspend_walker && ! $previous && ! bbp_suspend_deleted_topic_walker( $forum_id );
+	$last_reply   = end( $reply_ids );
+	$completed    = false;
+	$failed       = false;
+	try {
 		foreach ( $reply_ids as $reply_id ) {
-			wp_delete_post( $reply_id, true );
+			if ( $refresh_last && ( $last_reply === $reply_id ) ) {
+				bbp_suspend_reply_walker( $topic_id, false );
+			}
+
+			if ( ! wp_delete_post( $reply_id, true ) ) {
+				$failed = true;
+			}
+		}
+		$completed = ! $failed;
+	} finally {
+		if ( $suspend_walker ) {
+			bbp_suspend_reply_walker( $topic_id, $previous );
+
+			// An interrupted deletion leaves the topic in place with fewer replies.
+			if ( ! $previous && ! $completed ) {
+				bbp_update_reply_walker( 0, '', $forum_id, $topic_id );
+				bbp_update_topic_reply_count( $topic_id );
+				bbp_update_topic_reply_count_hidden( $topic_id );
+				bbp_update_topic_voice_count( $topic_id );
+
+				$forum = bbp_get_forum( $forum_id );
+				if ( ! empty( $forum ) ) {
+					bbp_update_forum(
+						array(
+							'forum_id'    => $forum->ID,
+							'post_parent' => $forum->post_parent,
+							'recount'     => true
+						)
+					);
+				}
+			}
 		}
 	}
 }
@@ -3657,19 +3791,31 @@ function bbp_trash_topic_replies( $topic_id = 0 ) {
 
 	if ( ! empty( $reply_ids ) ) {
 
-		// Prevent debug notices
-		$pre_trashed_replies = array();
-
-		// Loop through replies, trash them, and add them to array
-		foreach ( $reply_ids as $reply_id ) {
-			wp_trash_post( $reply_id );
-			$pre_trashed_replies[] = $reply_id;
+		// Save the restore list before trashing, so an interrupted request can retry.
+		$pre_trashed_replies = wp_parse_id_list( get_post_meta( $topic_id, '_bbp_pre_trashed_replies', true ) );
+		$pre_trashed_replies = wp_parse_id_list( array_merge( $pre_trashed_replies, $reply_ids ) );
+		update_post_meta( $topic_id, '_bbp_pre_trashed_replies', $pre_trashed_replies );
+		$defer               = doing_action( 'wp_trash_post' )
+			&& doing_action( 'bbp_trash_topic' )
+			&& ( false !== has_action( 'bbp_trashed_reply', 'bbp_update_reply_walker' ) );
+		$previous            = bbp_suspend_reply_walker( $topic_id );
+		if ( $defer ) {
+			bbp_suspend_reply_walker( $topic_id, true );
 		}
 
-		// Set a post_meta entry of the replies that were trashed by this action.
-		// This is so we can possibly untrash them, without untrashing replies
-		// that were purposefully trashed before.
-		update_post_meta( $topic_id, '_bbp_pre_trashed_replies', $pre_trashed_replies );
+		try {
+			// Loop through replies and trash them.
+			foreach ( $reply_ids as $reply_id ) {
+				wp_trash_post( $reply_id );
+			}
+		} finally {
+			if ( $defer ) {
+				bbp_suspend_reply_walker( $topic_id, $previous );
+				if ( ! $previous ) {
+					bbp_update_reply_walker( 0, '', bbp_get_topic_forum_id( $topic_id ), $topic_id );
+				}
+			}
+		}
 	}
 }
 
@@ -3703,22 +3849,47 @@ function bbp_untrash_topic_replies( $topic_id = 0 ) {
 	// Get the replies that were not previously trashed
 	$pre_trashed_replies = get_post_meta( $topic_id, '_bbp_pre_trashed_replies', true );
 
+	$failed = false;
+
 	// There are replies to untrash
 	if ( ! empty( $pre_trashed_replies ) ) {
-
-		// Maybe reverse the trashed replies array
-		if ( is_array( $pre_trashed_replies ) ) {
-			$pre_trashed_replies = array_reverse( $pre_trashed_replies );
+		$defer    = doing_action( 'untrash_post' )
+			&& doing_action( 'bbp_untrash_topic' )
+			&& ( false !== has_action( 'bbp_untrashed_reply', 'bbp_update_reply_walker' ) );
+		$previous = bbp_suspend_reply_walker( $topic_id );
+		if ( $defer ) {
+			bbp_suspend_reply_walker( $topic_id, true );
 		}
 
-		// Loop through replies
-		foreach ( (array) $pre_trashed_replies as $reply ) {
-			wp_untrash_post( $reply );
+		try {
+			// Maybe reverse the trashed replies array
+			if ( is_array( $pre_trashed_replies ) ) {
+				$pre_trashed_replies = array_reverse( $pre_trashed_replies );
+			}
+
+			// Loop through replies
+			foreach ( (array) $pre_trashed_replies as $reply ) {
+				if ( bbp_get_trash_status_id() === get_post_status( $reply ) ) {
+					wp_untrash_post( $reply );
+					if ( bbp_get_trash_status_id() === get_post_status( $reply ) ) {
+						$failed = true;
+					}
+				}
+			}
+		} finally {
+			if ( $defer ) {
+				bbp_suspend_reply_walker( $topic_id, $previous );
+				if ( ! $previous ) {
+					bbp_update_reply_walker( 0, '', bbp_get_topic_forum_id( $topic_id ), $topic_id );
+				}
+			}
 		}
 	}
 
-	// Clear the trashed reply meta for the topic
-	delete_post_meta( $topic_id, '_bbp_pre_trashed_replies' );
+	// Keep the restore list when a reply remains trashed.
+	if ( ! $failed ) {
+		delete_post_meta( $topic_id, '_bbp_pre_trashed_replies' );
+	}
 }
 
 /** After Delete/Trash/Untrash ************************************************/
@@ -3969,7 +4140,7 @@ function bbp_update_topic_tag_count( $terms, $taxonomy ) {
 function bbp_topic_content_autoembed() {
 	global $wp_embed;
 
-	if ( bbp_use_autoembed() && is_a( $wp_embed, 'WP_Embed' ) ) {
+	if ( bbp_use_autoembed() && ( $wp_embed instanceof WP_Embed ) ) {
 		add_filter( 'bbp_get_topic_content', array( $wp_embed, 'autoembed' ), 2 );
 	}
 }

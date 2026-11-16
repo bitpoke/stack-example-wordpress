@@ -57,10 +57,15 @@ add_filter( 'bbp_pre_do_shortcode_tag', 'bbp_prevent_content_shortcodes', 10, 4 
 add_filter( 'rest_user_query',               'bbp_exclude_forum_posts_from_user_query', 10, 2 );
 add_filter( 'wp_sitemaps_users_query_args',  'bbp_exclude_forum_posts_from_user_query'  );
 add_filter( 'rest_request_before_callbacks', 'bbp_filter_rest_user_discovery',          10, 3 );
+add_filter( 'rest_request_before_callbacks', 'bbp_filter_rest_password_required_revisions', 10, 3 );
+add_filter( 'rest_post_search_query',        'bbp_exclude_replies_from_non_public_topics'        );
+add_filter( 'wp_sitemaps_posts_query_args',  'bbp_exclude_replies_from_non_public_topics'        );
+add_filter( 'wp_sitemaps_posts_query_args',  'bbp_exclude_password_protected_sitemap_posts', 10, 2 );
 
 // Filter WordPress post data for forums, pending dates, and anonymous posts
 add_filter( 'wp_insert_post_data', 'bbp_filter_admin_forum_post_data', 20, 2 );
-add_filter( 'wp_insert_post_data', 'bbp_set_pending_post_date_gmt',     25    );
+add_filter( 'wp_insert_post_data', 'bbp_fix_new_post_date_pairs',      10, 4 );
+add_filter( 'wp_insert_post_data', 'bbp_set_pending_post_date_gmt',    25    );
 add_filter( 'wp_insert_post_data', 'bbp_fix_post_author',              30, 2 );
 
 // Fix untrash post status after a topic or reply is re-instated
@@ -68,6 +73,13 @@ add_filter( 'wp_untrash_post_status', 'bbp_fix_untrash_post_status', 10, 3 );
 
 // Force comments_status on bbPress post types
 add_filter( 'comments_open', 'bbp_force_comment_status' );
+
+// Reject comments on attachments to restricted bbPress content after approval filters
+add_filter( 'pre_comment_approved', 'bbp_reject_restricted_attachment_comments', PHP_INT_MAX, 2 );
+
+// Apply attachment parent visibility to comment-feed queries
+add_filter( 'posts_clauses', 'bbp_filter_attachment_comment_feed_clauses', 10, 2 );
+add_filter( 'the_posts',     'bbp_filter_attachment_comment_feed_posts',   10, 2 );
 
 // Remove forums roles from list of all roles
 add_filter( 'editable_roles', 'bbp_filter_blog_editable_roles' );

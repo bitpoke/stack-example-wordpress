@@ -224,21 +224,23 @@ function bbp_xmlrpc_post_date_changed( $post_data, $post ) {
 		return false;
 	}
 
-	if ( ! empty( $post_data['post_date_gmt'] ) && ( $post_data['post_date_gmt'] instanceof IXR_Date ) ) {
-		$iso_date = rtrim( $post_data['post_date_gmt']->getIso(), 'Z' ) . 'Z';
-	} elseif ( ! empty( $post_data['post_date'] ) && ( $post_data['post_date'] instanceof IXR_Date ) ) {
-		$iso_date = $post_data['post_date']->getIso();
-	} else {
-		return true;
-	}
-
-	$local = ! empty( $iso_date ) ? iso8601_to_datetime( $iso_date ) : false;
-	$gmt   = ! empty( $iso_date ) ? iso8601_to_datetime( $iso_date, 'gmt' ) : false;
 	$post_date_gmt = ( '0000-00-00 00:00:00' === $post->post_date_gmt )
 		? get_gmt_from_date( $post->post_date )
 		: $post->post_date_gmt;
 
-	return empty( $local ) || empty( $gmt ) || ( $post->post_date !== $local ) || ( $post_date_gmt !== $gmt );
+	if ( ! empty( $post_data['post_date_gmt'] ) && ( $post_data['post_date_gmt'] instanceof IXR_Date ) ) {
+		$iso_date = rtrim( $post_data['post_date_gmt']->getIso(), 'Z' ) . 'Z';
+		$gmt      = iso8601_to_datetime( $iso_date, 'gmt' );
+
+		return empty( $gmt ) || ( $post_date_gmt !== $gmt );
+	} elseif ( ! empty( $post_data['post_date'] ) && ( $post_data['post_date'] instanceof IXR_Date ) ) {
+		$iso_date = $post_data['post_date']->getIso();
+		$local    = iso8601_to_datetime( $iso_date );
+
+		return empty( $local ) || ( $post->post_date !== $local );
+	} else {
+		return true;
+	}
 }
 
 /**
@@ -256,6 +258,20 @@ function bbp_map_xmlrpc_meta_caps( $caps = array(), $cap = '', $user_id = 0, $ar
 	global $bbp_xmlrpc_error_post_id, $bbp_xmlrpc_error_post_type;
 
 	$edit_caps = array( 'edit_post', 'edit_forum', 'edit_topic', 'edit_reply' );
+
+	// XML-RPC uses edit_post to authorize raw post and revision reads as well as edits.
+	if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST && in_array( $cap, array( 'edit_post', 'edit_topic', 'edit_reply' ), true ) && ! empty( $args[0] ) ) {
+		$post = get_post( $args[0] );
+
+		if (
+			! empty( $post )
+			&& in_array( $post->post_type, array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true )
+			&& ! user_can( $user_id, 'moderate', $post->ID )
+			&& bbp_get_password_required_id( $post->ID )
+		) {
+			$caps[] = 'do_not_allow';
+		}
+	}
 
 	if ( ! empty( $bbp_xmlrpc_error_post_id ) && in_array( $cap, $edit_caps, true ) && ! empty( $args[0] ) && ( (int) $args[0] === $bbp_xmlrpc_error_post_id ) ) {
 		$caps[] = 'do_not_allow';
@@ -281,6 +297,17 @@ function bbp_xmlrpc_wp_insert_post_data( $post_data = array() ) {
 
 	if ( empty( $post_id ) || ! in_array( $post_type, array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true ) ) {
 		return $post_data;
+	}
+
+	// Participants cannot move their edit window, including through ambiguous
+	// local dates during a repeated daylight-saving hour.
+	if ( ! current_user_can( 'moderate', $post_id ) ) {
+		$post = get_post( $post_id );
+
+		if ( ! empty( $post ) ) {
+			$post_data['post_date']     = $post->post_date;
+			$post_data['post_date_gmt'] = $post->post_date_gmt;
+		}
 	}
 
 	$title     = isset( $post_data['post_title'] ) ? wp_unslash( $post_data['post_title'] ) : '';

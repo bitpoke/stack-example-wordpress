@@ -736,7 +736,7 @@ if ($bbcode->url_targetable !== false && isset($params['target']))
 $target = " target=\"" . htmlspecialchars($params['target']) . "\"";
 else $target = "";
 if ($bbcode->url_target !== false)
-if (!($bbcode->url_targetable == 'override' && isset($params['target'])))
+if (!($bbcode->url_targetable === 'override' && isset($params['target'])))
 $target = " target=\"" . htmlspecialchars($bbcode->url_target) . "\"";
 return '<a href="' . htmlspecialchars($url) . '" class="bbcode_url"' . $target . '>' . $content . '</a>';
 }
@@ -1156,7 +1156,7 @@ function GetDefaultSmileyURL() { return "smileys"; }
 function SetEnableSmileys($enable = true) { $this->enable_smileys = $enable; }
 function GetEnableSmileys() { return $this->enable_smileys; }
 function nl2br($string) {
-return preg_replace("/\\x0A|\\x0D|\\x0A\\x0D|\\x0D\\x0A/", "<br />\n", $string);
+return preg_replace("/\\x0A\\x0D|\\x0D\\x0A|\\x0A|\\x0D/", "<br />\n", $string);
 }
 function UnHTMLEncode($string) {
 if (function_exists("html_entity_decode"))
@@ -1171,7 +1171,7 @@ function _UnHTMLEncode_chr_callback($match) {
 return chr(hexdec($match[1]));
 }
 function _UnHTMLEncode_chr_hexdec_callback($match) {
-return chr(hexdec($match[1]));
+return chr((int) $match[1]);
 }
 function Wikify($string) {
 return rawurlencode(str_replace(" ", "_",
@@ -1351,7 +1351,7 @@ $output = preg_split("/( (?:
 [^\\(\\)\\[\\]\\{\\}<>\\'\\\"\\x00-\\x20\\x7F-\\xFF]+
 )?
 ) | (?:
-[a-zA-Z0-9._-]{2,} @
+[a-zA-Z0-9._-]{1,} @
 (?:
 (?: (?: [a-zA-Z0-9-]{2,} \\. )+
 (?: arpa | com | org | net | edu | gov | mil | int | [a-z]{2}
@@ -1364,7 +1364,7 @@ if (count($output) > 1) {
 $is_a_url = false;
 foreach ($output as $index => $token) {
 if ($is_a_url) {
-if (preg_match("/^[a-zA-Z0-9._-]{2,}@/", $token)) {
+if (preg_match("/^[a-zA-Z0-9._-]{1,}@/", $token)) {
 $url = "mailto:" . $token;
 }
 else if (preg_match("/^(https?:|ftp:)\\/*([^\\/&?#]+)\\/*(.*)\$/", $token, $matches)) {
@@ -1422,7 +1422,7 @@ case 'double': $value = (string)$value; break;
 case 'string': break;
 default: $value = ""; break;
 }
-if (strlen(@$matches[3]))
+if (isset($matches[3]) && strlen($matches[3]))
 $flags = array_flip(str_split($matches[3]));
 else $flags = Array();
 if (!isset($flags['v'])) {
@@ -1781,7 +1781,7 @@ return false;
 }
 function Internal_DoEnhancedTag($tag_rule, $params, $contents) {
 $params['_content'] = $contents;
-$params['_defaultcontent'] = strlen(@$params['_default']) ? $params['_default'] : $contents;
+$params['_defaultcontent'] = isset($params['_default']) && strlen($params['_default']) ? $params['_default'] : $contents;
 return $this->FillTemplate(@$tag_rule['template'], $params, @$tag_rule['default']);
 }
 function Internal_UpdateParamsForMissingEndTag($params) {

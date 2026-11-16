@@ -161,7 +161,7 @@ function bbp_new_forum_handler( $action = '' ) {
 	}
 
 	// Define local variable(s)
-	$view_all = false;
+	$force_view_all = false;
 	$forum_parent_id = $forum_author = 0;
 	$forum_title = $forum_content = '';
 	$anonymous_data = array();
@@ -331,7 +331,7 @@ function bbp_new_forum_handler( $action = '' ) {
 			wp_trash_post( $forum_id );
 
 			// Force view=all
-			$view_all = true;
+			$force_view_all = true;
 		}
 
 		/** Spam Check ********************************************************/
@@ -341,7 +341,7 @@ function bbp_new_forum_handler( $action = '' ) {
 			add_post_meta( $forum_id, '_bbp_spam_meta_status', bbp_get_public_status_id() );
 
 			// Force view=all
-			$view_all = true;
+			$force_view_all = true;
 		}
 
 		/** Update counts, etc... *********************************************/
@@ -373,11 +373,11 @@ function bbp_new_forum_handler( $action = '' ) {
 		$redirect_url = bbp_get_forum_permalink( $forum_id, $redirect_to );
 
 		// Add view all?
-		if ( bbp_get_view_all() || ! empty( $view_all ) ) {
+		if ( bbp_get_view_all_for_object( 'moderate', $forum_id ) || $force_view_all ) {
 
 			// User can moderate, so redirect to forum with view all set
 			if ( current_user_can( 'moderate', $forum_id ) ) {
-				$redirect_url = bbp_add_view_all( $redirect_url );
+				$redirect_url = bbp_add_view_all( $redirect_url, true );
 
 			// User cannot moderate, so redirect to forum
 			} else {
@@ -631,14 +631,14 @@ function bbp_edit_forum_handler( $action = '' ) {
 		$redirect_to = bbp_get_redirect_to();
 
 		// View all?
-		$view_all = bbp_get_view_all();
+		$view_all = bbp_get_view_all_for_object( 'moderate', $forum_id );
 
 		// Get the forum URL
 		$forum_url = bbp_get_forum_permalink( $forum_id, $redirect_to );
 
 		// Add view all?
 		if ( ! empty( $view_all ) ) {
-			$forum_url = bbp_add_view_all( $forum_url );
+			$forum_url = bbp_add_view_all( $forum_url, true );
 		}
 
 		// Allow to be filtered
@@ -745,7 +745,7 @@ function bbp_save_forum_extras( $forum_id = 0 ) {
 
 	/** Forum Visibility ******************************************************/
 
-	if ( current_user_can( 'manage_forum_attributes', $forum_id ) && ! empty( $_POST['bbp_forum_visibility'] ) && in_array( $_POST['bbp_forum_visibility'], array_keys( bbp_get_forum_visibilities() ), true ) ) {
+	if ( current_user_can( 'manage_forum_attributes', $forum_id ) && ! empty( $_POST['bbp_forum_visibility'] ) && in_array( $_POST['bbp_forum_visibility'], bbp_get_forum_visibility_ids(), true ) ) {
 
 		// Get forums current visibility
 		$old_visibility = bbp_get_forum_visibility( $forum_id );
@@ -2423,6 +2423,7 @@ function bbp_update_forum_reply_count_hidden( $forum_id = 0, $update_ancestors =
  * but is necessary to keep everything accurate.
  *
  * @since 2.0.0 bbPress (r2907)
+ * @since 2.6.22 bbPress (r8369) Added the explicit recount argument.
  *
  * @param array $args Supports these arguments:
  *  - forum_id: Forum id
@@ -2430,6 +2431,7 @@ function bbp_update_forum_reply_count_hidden( $forum_id = 0, $update_ancestors =
  *  - last_reply_id: Last reply id
  *  - last_active_id: Last active post id
  *  - last_active_time: last active time
+ *  - recount: Recalculate counts for this forum and its ancestors
  */
 function bbp_update_forum( $args = array() ) {
 
@@ -2443,7 +2445,8 @@ function bbp_update_forum( $args = array() ) {
 			'last_reply_id'      => 0,
 			'last_active_id'     => 0,
 			'last_active_time'   => 0,
-			'last_active_status' => bbp_get_public_status_id()
+			'last_active_status' => bbp_get_public_status_id(),
+			'recount'            => false
 		),
 		'update_forum'
 	);
@@ -2470,8 +2473,8 @@ function bbp_update_forum( $args = array() ) {
 	// Subforum counts are updated on bbp_transition_post_status,
 	// bbp_post_updated, and bbp_deleted_forum.
 
-	// Only update topic count if we've deleted a topic
-	if ( in_array( current_filter(), array( 'bbp_deleted_topic', 'save_post' ), true ) ) {
+	// Recount after topic deletion or when a bulk caller requests one final refresh
+	if ( ( true === $r['recount'] ) || in_array( current_filter(), array( 'bbp_deleted_topic', 'save_post' ), true ) ) {
 		bbp_update_forum_reply_count(        $r['forum_id'] );
 		bbp_update_forum_topic_count(        $r['forum_id'] );
 		bbp_update_forum_topic_count_hidden( $r['forum_id'] );
@@ -2586,6 +2589,21 @@ function bbp_get_forum_visibilities( $forum_id = 0 ) {
 		),
 		$forum_id
 	);
+}
+
+/**
+ * Return the forum visibility IDs.
+ *
+ * Forum visibilities are stored as post status strings. This helper returns
+ * the keys from bbp_get_forum_visibilities() without their labels.
+ *
+ * @since 2.6.22 bbPress (r8269)
+ *
+ * @param int $forum_id Optional. Forum id.
+ * @return string[] Forum visibility IDs.
+ */
+function bbp_get_forum_visibility_ids( $forum_id = 0 ) {
+	return bbp_get_string_array_values( array_keys( bbp_get_forum_visibilities( $forum_id ) ) );
 }
 
 /**
@@ -2705,6 +2723,61 @@ function bbp_get_password_protected_forum_ids() {
 }
 
 /**
+ * Return forum IDs whose statuses have no explicit visibility handling.
+ *
+ * WordPress queries only recognize registered post statuses, but forum status
+ * values can contain arbitrary strings. Statuses that are not explicitly
+ * public, private, or hidden are treated like hidden forums.
+ *
+ * @since 2.6.22 bbPress (r8269)
+ *
+ * @return int[] Forum IDs.
+ */
+function bbp_get_unclassified_forum_ids() {
+	/*
+	 * Countable statuses are a separate extension point. Only visibilities with
+	 * explicit handling belong in this access-control list.
+	 */
+	$statuses = bbp_get_string_array_values(
+		array_merge(
+			bbp_get_public_forum_statuses(),
+			array(
+				bbp_get_private_status_id(),
+				bbp_get_hidden_status_id()
+			)
+		)
+	);
+	$last_changed = wp_cache_get_last_changed( 'bbpress_posts' );
+	$cache_key    = 'bbp_unclassified_forum_ids:' . md5( serialize( $statuses ) ) . ':' . $last_changed;
+	$forum_ids    = wp_cache_get( $cache_key, 'bbpress_posts' );
+
+	if ( false === $forum_ids ) {
+		$bbp_db = bbp_db();
+
+		if ( empty( $statuses ) ) {
+			$query = $bbp_db->prepare(
+				"SELECT ID FROM {$bbp_db->posts} WHERE post_type = %s",
+				bbp_get_forum_post_type()
+			);
+		} else {
+			$placeholders = implode( ', ', array_fill( 0, count( $statuses ), 'CAST( %s AS BINARY )' ) );
+			$query        = $bbp_db->prepare(
+				"SELECT ID FROM {$bbp_db->posts} WHERE post_type = %s AND CAST( post_status AS BINARY ) NOT IN ({$placeholders})",
+				array_merge( array( bbp_get_forum_post_type() ), $statuses )
+			);
+		}
+
+		$forum_ids = wp_parse_id_list( $bbp_db->get_col( $query ) );
+
+		if ( empty( $bbp_db->last_error ) ) {
+			wp_cache_set( $cache_key, $forum_ids, 'bbpress_posts' );
+		}
+	}
+
+	return (array) apply_filters( 'bbp_get_unclassified_forum_ids', $forum_ids );
+}
+
+/**
  * Returns the forum IDs that should be excluded from various views & queries,
  * based on the current user's capabilities.
  *
@@ -2716,6 +2789,7 @@ function bbp_get_password_protected_forum_ids() {
  * engagements API usages, please see: bbp_allow_forums_of_user()
  *
  * @since 2.6.0 bbPress (r6426)
+ * @since 2.6.22 bbPress (r8269) Treat unclassified forum statuses like hidden forums.
  *
  * @return array Forum IDs to exclude, or an empty array
  */
@@ -2731,35 +2805,26 @@ function bbp_get_excluded_forum_ids() {
 		? bbp_get_hidden_forum_ids()
 		: array();
 
-	// Merge private & hidden forums together, and remove any empties
-	$forum_ids = ( ! empty( $private ) || ! empty( $hidden ) )
-		? array_filter( wp_parse_id_list( array_merge( $private, $hidden ) ) )
+	// Unclassified forum visibilities use the hidden-forum capability.
+	$unclassified = ! current_user_can( 'read_hidden_forums' )
+		? bbp_get_unclassified_forum_ids()
+		: array();
+
+	// Merge excluded forums together, and remove any empties.
+	$forum_ids = ( ! empty( $private ) || ! empty( $hidden ) || ! empty( $unclassified ) )
+		? array_filter( wp_parse_id_list( array_merge( $private, $hidden, $unclassified ) ) )
 		: array();
 
 	// Include every descendant, even below a forum with a non-countable status.
-	// Large exclusion lists need batched child lookups instead of one query per
-	// forum on a cold cache.
-	if ( count( $forum_ids ) > 20 ) {
+	if ( ! empty( $forum_ids ) ) {
 		$forum_ids = bbp_forum_query_all_descendant_ids( $forum_ids );
-	} else {
-		$parents = $forum_ids;
-		while ( ! empty( $parents ) ) {
-			$parent_id = array_shift( $parents );
-
-			foreach ( bbp_forum_query_all_subforum_ids( $parent_id ) as $forum_id ) {
-				if ( ! in_array( $forum_id, $forum_ids, true ) ) {
-					$forum_ids[] = $forum_id;
-					$parents[]   = $forum_id;
-				}
-			}
-		}
 	}
 
 	// Normalize forum IDs after adding descendants
 	$forum_ids = wp_parse_id_list( $forum_ids );
 
 	// Filter & return
-	return (array) apply_filters( 'bbp_get_excluded_forum_ids', $forum_ids, $private, $hidden );
+	return (array) apply_filters( 'bbp_get_excluded_forum_ids', $forum_ids, $private, $hidden, $unclassified );
 }
 
 /**
@@ -2912,6 +2977,7 @@ function bbp_exclude_forum_ids( $type = 'string' ) {
  * @since 2.3.0 bbPress (r4808)
  * @since 2.6.19 bbPress (r7692) Exclude restricted forum IDs from post__in queries.
  * @since 2.6.21 bbPress (r8133) Exclude password-restricted content from searches.
+ * @since 2.6.22 bbPress (r8317) Apply password restrictions to sitemaps.
  *
  * @param WP_Query $posts_query
  *
@@ -2925,7 +2991,7 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 	}
 
 	// Bail if $posts_query is not an object or of incorrect class
-	if ( ! is_object( $posts_query ) || ! is_a( $posts_query, 'WP_Query' ) ) {
+	if ( ! ( $posts_query instanceof WP_Query ) ) {
 		return;
 	}
 
@@ -2967,11 +3033,15 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 
 	// Singular requests can still contain a search term that WordPress uses in SQL.
 	$password_search = $posts_query->is_search() || ( '' !== (string) $posts_query->get( 's' ) );
+	$is_moderator_ajax_query = wp_doing_ajax()
+		&& $posts_query->get( 'suppress_filters' )
+		&& current_user_can( 'moderate' );
 
 	// Preserve admin lists and suggestions without skipping forum restrictions.
-	if ( $is_admin_list || ( $posts_query->get( 'suppress_filters' ) && wp_doing_ajax() && current_user_can( 'moderate' ) ) ) {
+	if ( $is_admin_list || $is_moderator_ajax_query ) {
 		$password_search = false;
 	}
+	$password_search = $password_search || (bool) $posts_query->get( '_bbp_password_protected_search' );
 
 	// Separate non-bbPress post types from supported bbPress post types.
 	$non_bbp_post_types = array_diff( $post_types, $bbp_post_types );
@@ -2979,6 +3049,42 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 		$bbp_post_types,
 		array( bbp_get_topic_post_type(), bbp_get_reply_post_type() )
 	);
+	$password_listing = ! empty( $content_post_types ) && ! $posts_query->is_singular();
+	if ( ( is_admin() && ! wp_doing_ajax() ) || $is_moderator_ajax_query ) {
+		$password_listing = false;
+	}
+
+	// bbPress REST collections check each item's inherited password.
+	if ( $posts_query->get( '_bbp_rest_collection' ) ) {
+		$password_listing = false;
+	}
+
+	$password_forum_ids = array();
+	if ( $password_search || $password_listing ) {
+		$password_forum_ids = bbp_get_password_protected_forum_ids();
+	}
+
+	// An unlocked forum or topic still needs its own child loop.
+	$parent_id = absint( $posts_query->get( 'post_parent' ) );
+	if ( $password_listing && $parent_id && ! empty( $password_forum_ids ) ) {
+		$parent_type     = get_post_type( $parent_id );
+		$parent_forum_id = 0;
+		if ( bbp_get_forum_post_type() === $parent_type ) {
+			$parent_forum_id = $parent_id;
+		} elseif ( bbp_get_topic_post_type() === $parent_type ) {
+			$parent_forum_id = (int) get_post_field( 'post_parent', $parent_id );
+		}
+
+		if ( in_array( $parent_forum_id, $password_forum_ids, true ) && ! bbp_get_password_required_id( $parent_id ) ) {
+			$password_listing   = false;
+			$password_forum_ids = array();
+		}
+	}
+
+	// get_posts() suppresses SQL filters by default, including the ancestry check.
+	if ( $password_listing && ! empty( $password_forum_ids ) && $posts_query->get( 'suppress_filters' ) && ! $password_search ) {
+		$posts_query->set( 'suppress_filters', false );
+	}
 
 	/**
 	 * Clause filters do not run when a query suppresses filters. Remove bbPress
@@ -2991,7 +3097,7 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 			return;
 		}
 
-		// Password inheritance requires a posts_where clause during searches.
+		// Password inheritance requires a posts_where clause during searches and sitemaps.
 		if ( $password_search ) {
 			// Explicit IDs take precedence over post__in in WordPress.
 			$posts_query->set( 'p', 0 );
@@ -3003,18 +3109,19 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 	}
 
 	// Get forums to exclude.
-	$forum_ids          = bbp_exclude_forum_ids( 'array' );
-	$password_forum_ids = array();
+	$forum_ids = bbp_exclude_forum_ids( 'array' );
 
 	/**
-	 * Search matches must not reveal whether password-protected content contains
-	 * a term. Add password-protected forum trees to the normal visibility rules
-	 * and exclude protected topics through the password-search clause.
+	 * Search matches and sitemap URLs must not reveal password-protected content.
+	 * Add protected forum trees to the normal visibility rules and exclude
+	 * protected topics through the password-search clause.
 	 */
 	if ( $password_search ) {
-		$password_forum_ids  = bbp_get_password_protected_forum_ids();
 		$forum_ids           = wp_parse_id_list( array_merge( $forum_ids, $password_forum_ids ) );
 		$posts_query->set( '_bbp_password_protected_search', true );
+		$posts_query->set( '_bbp_password_protected_forum_ids', $password_forum_ids );
+	} elseif ( $password_listing && ! empty( $password_forum_ids ) ) {
+		$posts_query->set( '_bbp_password_protected_listing', true );
 		$posts_query->set( '_bbp_password_protected_forum_ids', $password_forum_ids );
 	}
 
@@ -3047,7 +3154,7 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 				'post_status',
 				array_unique(
 					array_merge(
-						array_keys( bbp_get_forum_visibilities() ),
+						bbp_get_forum_visibility_ids(),
 						$content_post_statuses
 					)
 				)
@@ -3087,7 +3194,7 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 	}
 
 	// Bail if there are no forums to exclude.
-	if ( empty( $forum_ids ) ) {
+	if ( empty( $forum_ids ) && empty( $password_forum_ids ) ) {
 		return;
 	}
 
@@ -3096,9 +3203,9 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 	 * Searches also use it to reject every excluded forum metadata value, rather
 	 * than allowing a duplicate public value to satisfy a NOT IN meta query.
 	 */
-	if ( ! empty( $non_bbp_post_types ) || $password_search ) {
+	if ( ! empty( $non_bbp_post_types ) || $password_search || ! empty( $password_forum_ids ) ) {
 		$posts_query->set( '_bbp_forum_visibility_post_types', $content_post_types );
-		$posts_query->set( '_bbp_forum_visibility_forum_ids',  $forum_ids          );
+		$posts_query->set( '_bbp_forum_visibility_forum_ids', wp_parse_id_list( array_merge( $forum_ids, $password_forum_ids ) ) );
 
 		// Mixed queries cannot use a meta join without losing unrelated posts.
 		if ( ! empty( $non_bbp_post_types ) ) {
@@ -3154,7 +3261,7 @@ function bbp_pre_get_posts_normalize_forum_visibility( $posts_query = null ) {
 function _bbp_forum_visibility_where( $where = '', $posts_query = null ) {
 
 	// Bail if $posts_query is not an object or of incorrect class
-	if ( ! is_object( $posts_query ) || ! is_a( $posts_query, 'WP_Query' ) ) {
+	if ( ! ( $posts_query instanceof WP_Query ) ) {
 		return $where;
 	}
 
@@ -3552,6 +3659,7 @@ function bbp_check_forum_edit() {
  * Delete all topics (and their replies) for a specific forum ID
  *
  * @since 2.1.0 bbPress (r3669)
+ * @since 2.6.22 bbPress (r8369) Defer forum refresh during permanent deletion.
  *
  * @param int $forum_id
  * @return If forum is not valid
@@ -3572,11 +3680,40 @@ function bbp_delete_forum_topics( $forum_id = 0 ) {
 		array_keys( get_post_stati() )
 	);
 
-	// Loop through and delete child topics. Topic replies will get deleted by
-	// the bbp_delete_topic() action.
-	if ( ! empty( $topic_ids ) ) {
+	if ( empty( $topic_ids ) ) {
+		return;
+	}
+
+	// The enclosing forum deletion needs one final refresh after all topics go.
+	// Standalone calls still refresh the forum after each topic.
+	$suspend_walker = doing_action( 'before_delete_post' )
+		&& doing_action( 'bbp_delete_forum' )
+		&& ( false !== has_action( 'bbp_deleted_topic', 'bbp_update_topic_walker' ) );
+	$previous = bbp_suspend_deleted_topic_walker( $forum_id );
+	if ( $suspend_walker ) {
+		bbp_suspend_deleted_topic_walker( $forum_id, true );
+	}
+
+	try {
+		// Topic replies are deleted by the bbp_delete_topic() action.
 		foreach ( $topic_ids as $topic_id ) {
 			wp_delete_post( $topic_id, true );
+		}
+	} finally {
+		if ( $suspend_walker ) {
+			bbp_suspend_deleted_topic_walker( $forum_id, $previous );
+			if ( ! $previous ) {
+				// Ensure the custom query cache is fresh before the final recount.
+				wp_cache_set( 'last_changed', microtime(), 'bbpress_posts' );
+
+				bbp_update_forum(
+					array(
+						'forum_id'    => $forum_id,
+						'post_parent' => wp_get_post_parent_id( $forum_id ),
+						'recount'     => true
+					)
+				);
+			}
 		}
 	}
 }
@@ -3615,19 +3752,15 @@ function bbp_trash_forum_topics( $forum_id = 0 ) {
 	// the bbp_trash_topic() action.
 	if ( ! empty( $topic_ids ) ) {
 
-		// Prevent debug notices
-		$pre_trashed_topics = array();
+		// Save the restore list before trashing, so an interrupted request can retry.
+		$pre_trashed_topics = wp_parse_id_list( get_post_meta( $forum_id, '_bbp_pre_trashed_topics', true ) );
+		$pre_trashed_topics = wp_parse_id_list( array_merge( $pre_trashed_topics, $topic_ids ) );
+		update_post_meta( $forum_id, '_bbp_pre_trashed_topics', $pre_trashed_topics );
 
-		// Loop through topics, trash them, and add them to array
+		// Loop through topics and trash them.
 		foreach ( $topic_ids as $topic_id ) {
 			wp_trash_post( $topic_id, true );
-			$pre_trashed_topics[] = $topic_id;
 		}
-
-		// Set a post_meta entry of the topics that were trashed by this action.
-		// This is so we can possibly untrash them, without untrashing topics
-		// that were purposefully trashed before.
-		update_post_meta( $forum_id, '_bbp_pre_trashed_topics', $pre_trashed_topics );
 	}
 }
 
@@ -3651,6 +3784,8 @@ function bbp_untrash_forum_topics( $forum_id = 0 ) {
 	// Get the topics that were not previously trashed
 	$pre_trashed_topics = get_post_meta( $forum_id, '_bbp_pre_trashed_topics', true );
 
+	$failed = false;
+
 	// There are topics to untrash
 	if ( ! empty( $pre_trashed_topics ) ) {
 
@@ -3661,8 +3796,18 @@ function bbp_untrash_forum_topics( $forum_id = 0 ) {
 
 		// Loop through topics
 		foreach ( (array) $pre_trashed_topics as $topic ) {
-			wp_untrash_post( $topic );
+			if ( bbp_get_trash_status_id() === get_post_status( $topic ) ) {
+				wp_untrash_post( $topic );
+				if ( bbp_get_trash_status_id() === get_post_status( $topic ) ) {
+					$failed = true;
+				}
+			}
 		}
+	}
+
+	// Keep the restore list when a topic remains trashed.
+	if ( ! $failed ) {
+		delete_post_meta( $forum_id, '_bbp_pre_trashed_topics' );
 	}
 }
 

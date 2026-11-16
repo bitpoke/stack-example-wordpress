@@ -718,7 +718,7 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 			case 'view_trash'          :
 			case 'edit_others_replies' :
 			case 'edit_others_topics'  :
-				if ( bbp_group_is_mod() || bbp_group_is_admin() ) {
+				if ( ! empty( $args[0] ) && ( bbp_group_is_mod() || bbp_group_is_admin() ) ) {
 					$caps = array( 'participate' );
 				}
 				break;
@@ -726,7 +726,7 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 			// If user is a group admin, allow them to delete topics and replies.
 			case 'delete_topic' :
 			case 'delete_reply' :
-				if ( bbp_group_is_admin() ) {
+				if ( ! empty( $args[0] ) && bbp_group_is_admin() ) {
 					$caps = array( 'participate' );
 				}
 				break;
@@ -1824,8 +1824,8 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 			}
 
 			// Add topic view query arg back to end if it is set
-			if ( bbp_get_view_all() ) {
-				$redirect_url = bbp_add_view_all( $redirect_url );
+			if ( bbp_get_view_all_for_object( 'moderate', $topic_id ) ) {
+				$redirect_url = bbp_add_view_all( $redirect_url, true );
 			}
 		}
 
@@ -1984,13 +1984,13 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 		// Default return value
 		$retval = '';
 
-		// BuddyPress < 12.0 (deprecated code is intentionally included)
-		if ( function_exists( 'bp_get_group_permalink' ) ) {
-			$retval = bp_get_group_permalink( $group_id );
-
-		// BuddyPress > 12.0 (rewrite rules)
-		} elseif ( function_exists( 'bp_get_group_url' ) ) {
+		// BuddyPress 12.0 and newer (rewrite rules)
+		if ( function_exists( 'bp_get_group_url' ) ) {
 			$retval = bp_get_group_url( $group_id );
+
+		// BuddyPress before 12.0 (deprecated code is intentionally included)
+		} elseif ( function_exists( 'bp_get_group_permalink' ) ) {
+			$retval = bp_get_group_permalink( $group_id );
 		}
 
 		// Return
@@ -2220,7 +2220,7 @@ class BBP_Forums_Group_Extension extends BP_Group_Extension {
 			return $url;
 		}
 
-		return trailingslashit( $new ) . bbpress()->edit_id  . '/';
+		return trailingslashit( $new ) . bbp_get_edit_slug() . '/';
 	}
 
 	/**

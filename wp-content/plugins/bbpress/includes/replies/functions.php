@@ -732,6 +732,11 @@ function bbp_edit_reply_handler( $action = '' ) {
 
 	do_action( 'bbp_edit_reply_pre_extras', $reply_id );
 
+	// A previously issued edit nonce does not satisfy a new password requirement.
+	if ( ! current_user_can( 'moderate', $reply_id ) && bbp_get_password_required_id( $reply_id ) ) {
+		bbp_add_error( 'bbp_edit_reply_permission', __( '<strong>Error</strong>: You do not have permission to edit that reply.', 'bbpress' ) );
+	}
+
 	// Bail if errors
 	if ( bbp_has_errors() ) {
 		return;
@@ -937,7 +942,35 @@ function bbp_update_reply( $reply_id = 0, $topic_id = 0, $forum_id = 0, $anonymo
 }
 
 /**
- * Walk up the ancestor tree from the current reply, and update all the counts
+ * Suspend the core reply walker for one topic during a parent operation.
+ *
+ * Other reply callbacks continue to run while this walker is suspended.
+ *
+ * @since 2.6.22 bbPress (r8372)
+ *
+ * @param int       $topic_id Topic ID.
+ * @param bool|null $suspend Whether to suspend, or null to read the current state.
+ * @return bool Whether the reply walker is suspended for this topic.
+ */
+function bbp_suspend_reply_walker( $topic_id = 0, $suspend = null ) {
+	static $suspended = array();
+
+	$topic_id = (int) $topic_id;
+	if ( $topic_id < 1 ) {
+		return false;
+	}
+
+	if ( true === $suspend ) {
+		$suspended[ $topic_id ] = true;
+	} elseif ( false === $suspend ) {
+		unset( $suspended[ $topic_id ] );
+	}
+
+	return isset( $suspended[ $topic_id ] );
+}
+
+/**
+ * Walk up the ancestor tree and update reply counts and last activity.
  *
  * @since 2.0.0 bbPress (r2895)
  *
@@ -965,6 +998,11 @@ function bbp_update_reply_walker( $reply_id, $last_active_time = '', $forum_id =
 		if ( empty( $forum_id ) ) {
 			$forum_id = bbp_get_reply_forum_id( $reply_id );
 		}
+	}
+
+	// Enclosing topic changes refresh the topic and forum after their replies.
+	if ( in_array( current_filter(), array( 'bbp_deleted_reply', 'bbp_trashed_reply', 'bbp_untrashed_reply' ), true ) && bbp_suspend_reply_walker( $topic_id ) ) {
+		return;
 	}
 
 	// Set the active_id based on topic_id/reply_id
@@ -1963,8 +2001,10 @@ function bbp_approve_reply( $reply_id = 0 ) {
 	// Set publish status
 	$reply->post_status = $status;
 
-	// Set post date GMT - prevents post_date override in wp_update_post()
-	$reply->post_date_gmt = get_gmt_from_date( $reply->post_date );
+	// Set a missing post date GMT - prevents post_date override in wp_update_post()
+	if ( '0000-00-00 00:00:00' === $reply->post_date_gmt ) {
+		$reply->post_date_gmt = get_gmt_from_date( $reply->post_date );
+	}
 
 	// No revisions
 	remove_action( 'pre_post_update', 'wp_save_post_revision' );
@@ -2168,7 +2208,7 @@ function bbp_get_replies_per_rss_page( $default = 25 ) {
 function bbp_reply_content_autoembed() {
 	global $wp_embed;
 
-	if ( bbp_use_autoembed() && is_a( $wp_embed, 'WP_Embed' ) ) {
+	if ( bbp_use_autoembed() && ( $wp_embed instanceof WP_Embed ) ) {
 		add_filter( 'bbp_get_reply_content', array( $wp_embed, 'autoembed' ), 2 );
 	}
 }
@@ -2280,8 +2320,16 @@ function bbp_reply_enforce_visibility() {
 
 		bbp_set_404( $query );
 
-		// Stop WordPress from rendering a feed body after visibility failed.
-		$query->is_feed = false;
+		// Prevent later templates from using the denied object.
+		$query->is_feed           = false;
+		$query->is_embed          = false;
+		$query->posts             = array();
+		$query->post              = null;
+		$query->post_count        = 0;
+		$query->found_posts       = 0;
+		$query->max_num_pages     = 0;
+		$query->queried_object    = null;
+		$query->queried_object_id = 0;
 	}
 }
 

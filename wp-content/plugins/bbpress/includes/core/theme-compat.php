@@ -336,7 +336,7 @@ function bbp_register_theme_package( $theme = array(), $override = true ) {
 	}
 
 	// Bail if $theme isn't a proper object
-	if ( ! is_a( $theme, 'BBP_Theme_Compat' ) ) {
+	if ( ! ( $theme instanceof BBP_Theme_Compat ) ) {
 		return;
 	}
 
@@ -485,10 +485,10 @@ function bbp_theme_compat_reset_post( $args = array() ) {
  * @since 2.6.21 bbPress (r8130)
  *
  * @param string  $excerpt Post excerpt.
- * @param WP_Post $post    Post object.
+ * @param WP_Post|null $post Optional post object.
  * @return string
  */
-function bbp_get_theme_compat_excerpt( $excerpt, $post ) {
+function bbp_get_theme_compat_excerpt( $excerpt, $post = null ) {
 	if ( ( '' !== $excerpt ) || ! bbp_is_theme_compat_active() || ! ( $post instanceof WP_Post ) ) {
 		return $excerpt;
 	}
@@ -577,7 +577,7 @@ function bbp_template_include_theme_compat( $template = '' ) {
 	$bbp_shortcodes = bbpress()->shortcodes;
 
 	// Bail if shortcodes are unset somehow
-	if ( ! is_a( $bbp_shortcodes, 'BBP_Shortcodes' ) ) {
+	if ( ! ( $bbp_shortcodes instanceof BBP_Shortcodes ) ) {
 		return $template;
 	}
 
@@ -937,6 +937,13 @@ function bbp_template_include_theme_compat( $template = '' ) {
 
 		// Block themes
 		if ( wp_is_block_theme() ) {
+			$wp_query = bbp_get_wp_query();
+
+			// Set up Loop globals for the Post Content block
+			if ( ( $wp_query instanceof WP_Query ) && ( $wp_query->post instanceof WP_Post ) ) {
+				$wp_query->setup_postdata( $wp_query->post );
+			}
+
 			$template = bbp_get_theme_canvas_template();
 
 		// Non-block themes
@@ -1084,7 +1091,7 @@ function bbp_restore_all_filters( $tag, $priority = false ) {
 
 			// Restore through WP_Hook to preserve priority order
 			if ( class_exists( 'WP_Hook' ) ) {
-				if ( empty( $wp_filter[ $tag ] ) || ! is_a( $wp_filter[ $tag ], 'WP_Hook' ) ) {
+				if ( empty( $wp_filter[ $tag ] ) || ! ( $wp_filter[ $tag ] instanceof WP_Hook ) ) {
 					$wp_filter[ $tag ] = new WP_Hook();
 				}
 
@@ -1156,15 +1163,14 @@ function bbp_force_comment_status( $open = false, $post_id = 0 ) {
 }
 
 /**
- * Remove "prev" and "next" relational links from <head> on bbPress pages.
+ * Remove WordPress adjacent-post links from bbPress pages.
  *
- * WordPress automatically generates these relational links to the current
- * page, but bbPress does not use these links, nor would they work the same.
- *
- * In this function, we remove these links when on a bbPress page. This also
- * prevents additional, unnecessary queries from running.
+ * WordPress automatically generates relational links in <head>, and themes or
+ * blocks may render adjacent-post navigation. bbPress does not support this
+ * navigation model.
  *
  * @since 2.6.5 bbPress (r7073)
+ * @since 2.6.22 bbPress (r8320) Disable adjacent-post navigation.
  */
 function bbp_remove_adjacent_posts() {
 
@@ -1175,4 +1181,23 @@ function bbp_remove_adjacent_posts() {
 
 	// Remove the WordPress core action for adjacent posts
 	remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10 );
+
+	// Disable adjacent-post navigation
+	add_filter( 'get_next_post_where',     'bbp_filter_adjacent_post_where', 10, 0 );
+	add_filter( 'get_previous_post_where', 'bbp_filter_adjacent_post_where', 10, 0 );
+	add_filter( 'next_post_link',         '__return_empty_string', 10 );
+	add_filter( 'previous_post_link',     '__return_empty_string', 10 );
+	add_filter( 'next_post_rel_link',     '__return_empty_string', 10 );
+	add_filter( 'previous_post_rel_link', '__return_empty_string', 10 );
+}
+
+/**
+ * Prevent WordPress adjacent-post queries from resolving posts.
+ *
+ * @since 2.6.22 bbPress (r8320)
+ *
+ * @return string An impossible adjacent-post query WHERE clause.
+ */
+function bbp_filter_adjacent_post_where() {
+	return 'WHERE 1 = 0';
 }

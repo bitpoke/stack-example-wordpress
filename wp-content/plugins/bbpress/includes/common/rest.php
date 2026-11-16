@@ -54,11 +54,94 @@ function bbp_filter_rest_user_discovery( $response, $handler, $request ) {
 }
 
 /**
+ * Prevent revision access after a forum password changes.
+ *
+ * Revision and autosave controllers use edit_post for reads, which does not
+ * check inherited passwords.
+ *
+ * @since 2.6.22 bbPress (r8279)
+ *
+ * @param mixed           $response Current REST response.
+ * @param array           $handler  Matched route handler.
+ * @param WP_REST_Request $request  REST request.
+ * @return mixed REST response or error.
+ */
+function bbp_filter_rest_password_required_revisions( $response, $handler, $request ) {
+	$callback = isset( $handler['callback'] ) ? $handler['callback'] : null;
+
+	if ( null !== $response || ! is_array( $callback ) || ! isset( $callback[0] ) ) {
+		return $response;
+	}
+
+	if ( ! ( $callback[0] instanceof WP_REST_Revisions_Controller ) && ! ( $callback[0] instanceof WP_REST_Autosaves_Controller ) ) {
+		return $response;
+	}
+
+	$parent_id = ! empty( $request['parent'] ) ? (int) $request['parent'] : (int) $request['id'];
+	$parent    = get_post( $parent_id );
+
+	if (
+		! empty( $parent )
+		&& in_array( $parent->post_type, array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true )
+		&& ! current_user_can( 'moderate', $parent_id )
+		&& bbp_get_password_required_id( $parent_id )
+	) {
+		return new WP_Error(
+			'bbp_rest_cannot_edit_forum_content',
+			esc_html__( 'You are not allowed to edit this forum content.', 'bbpress' ),
+			array( 'status' => rest_authorization_required_code() )
+		);
+	}
+
+	return $response;
+}
+
+/**
  * REST API controller for bbPress post types.
  *
  * @since 2.6.17 bbPress (r7482)
  */
 class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
+
+	/**
+	 * Check edit access against current passwords.
+	 *
+	 * @since 2.6.22 bbPress (r8279)
+	 *
+	 * @param WP_Post $post Post object.
+	 * @return bool Whether the post can be edited.
+	 */
+	protected function check_update_permission( $post ) {
+		if ( ! parent::check_update_permission( $post ) ) {
+			return false;
+		}
+
+		return ! (
+			$this->is_forum_content( $post )
+			&& ! current_user_can( 'moderate', $post->ID )
+			&& bbp_get_password_required_id( $post->ID )
+		);
+	}
+
+	/**
+	 * Require public parent topics in REST reply collections.
+	 *
+	 * @since 2.6.22 bbPress (r8276)
+	 *
+	 * @param array                $prepared_args Optional. Prepared WP_Query arguments.
+	 * @param WP_REST_Request|null $request       Optional. Full details about the request.
+	 * @return array Query arguments.
+	 */
+	protected function prepare_items_query( $prepared_args = array(), $request = null ) {
+		$query_args = parent::prepare_items_query( $prepared_args, $request );
+		$query_args['_bbp_rest_collection'] = true;
+
+		if ( ( bbp_get_reply_post_type() === $this->post_type ) && ! current_user_can( 'edit_others_replies' ) ) {
+			$query_args['_bbp_public_topic_replies'] = true;
+		}
+
+		return $query_args;
+	}
 
 	/**
 	 * Apply bbPress's strict block list before creating a topic or reply.
@@ -257,17 +340,18 @@ class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
 			? get_gmt_from_date( $post->post_date )
 			: $post->post_date_gmt;
 
-		foreach ( array(
-			'date'     => false,
-			'date_gmt' => true,
-		) as $field => $is_gmt ) {
-			if ( ! $request->has_param( $field ) ) {
-				continue;
+		if ( $request->has_param( 'date' ) ) {
+			$dates = is_string( $request['date'] ) ? rest_get_date_with_gmt( $request['date'], false ) : false;
+
+			if ( empty( $dates ) || ( $post->post_date !== $dates[0] ) ) {
+				return true;
 			}
+		}
 
-			$dates = is_string( $request[ $field ] ) ? rest_get_date_with_gmt( $request[ $field ], $is_gmt ) : false;
+		if ( $request->has_param( 'date_gmt' ) ) {
+			$dates = is_string( $request['date_gmt'] ) ? rest_get_date_with_gmt( $request['date_gmt'], true ) : false;
 
-			if ( empty( $dates ) || ( $post->post_date !== $dates[0] ) || ( $post_date_gmt !== $dates[1] ) ) {
+			if ( empty( $dates ) || ( $post_date_gmt !== $dates[1] ) ) {
 				return true;
 			}
 		}
@@ -368,9 +452,7 @@ class BBP_REST_Posts_Controller extends WP_REST_Posts_Controller {
 		}
 
 		foreach ( $visibility_forum_ids as $visibility_forum_id ) {
-			$forum_visibilities = array_keys( bbp_get_forum_visibilities( $visibility_forum_id ) );
-
-			if ( ! in_array( bbp_get_forum_visibility( $visibility_forum_id ), $forum_visibilities, true ) ) {
+			if ( ! bbp_is_forum_visibility_valid( $visibility_forum_id ) ) {
 				return false;
 			}
 		}

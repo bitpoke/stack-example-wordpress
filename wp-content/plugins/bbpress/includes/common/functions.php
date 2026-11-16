@@ -69,6 +69,47 @@ function bbp_exclude_forum_posts_from_user_query( $args, $request = null ) {
 }
 
 /**
+ * Exclude replies from non-public topics in WordPress discovery queries.
+ *
+ * @since 2.6.22 bbPress (r8276)
+ *
+ * @param array $query_args Query arguments.
+ * @return array Query arguments.
+ */
+function bbp_exclude_replies_from_non_public_topics( $query_args = array() ) {
+	$post_types = bbp_get_string_array_values( isset( $query_args['post_type'] ) ? $query_args['post_type'] : array() );
+
+	if ( in_array( bbp_get_reply_post_type(), $post_types, true ) ) {
+		$query_args['_bbp_public_topic_replies'] = true;
+	}
+
+	return $query_args;
+}
+
+/**
+ * Exclude password-protected bbPress posts from WordPress sitemaps.
+ *
+ * Sitemaps are public listings even when a moderator or keymaster requests
+ * them. Use the same password and forum-ancestry checks as bbPress search.
+ *
+ * @since 2.6.22 bbPress (r8317)
+ *
+ * @param array  $query_args Query arguments.
+ * @param string $post_type  Sitemap post type.
+ * @return array Query arguments.
+ */
+function bbp_exclude_password_protected_sitemap_posts( $query_args = array(), $post_type = '' ) {
+	if ( ! in_array( $post_type, array( bbp_get_forum_post_type(), bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true ) ) {
+		return $query_args;
+	}
+
+	$query_args['_bbp_password_protected_search']    = true;
+	$query_args['_bbp_password_protected_forum_ids'] = bbp_get_password_protected_forum_ids();
+
+	return $query_args;
+}
+
+/**
  * Exclude replies in non-public topics from public bbPress queries.
  *
  * Existing bbPress loops use a query flag to opt in. Generic public WordPress
@@ -126,47 +167,62 @@ function bbp_public_topic_replies_where( $where = '', $posts_query = null ) {
 }
 
 /**
- * Exclude password-protected bbPress matches from search queries.
+ * Exclude password-protected bbPress content from aggregate queries.
  *
- * Password-protected content stays out of public search results even after its
- * password has been entered. Direct requests continue to use WordPress's post
- * password cookie normally.
+ * Searches and sitemaps exclude post passwords and protected forum ancestry.
+ * Other public listings exclude protected forum ancestry while leaving forum
+ * records available for their password forms.
  *
  * @since 2.6.21 bbPress (r8133)
+ * @since 2.6.22 bbPress (r8317) Apply the same checks to WordPress sitemaps.
  *
  * @param string   $where       SQL WHERE clause.
  * @param WP_Query $posts_query Posts query.
  * @return string SQL WHERE clause.
  */
 function bbp_password_protected_search_where( $where = '', $posts_query = null ) {
-	if ( ! $posts_query instanceof WP_Query || ! $posts_query->get( '_bbp_password_protected_search' ) ) {
+	if ( ! $posts_query instanceof WP_Query ) {
+		return $where;
+	}
+
+	$search    = (bool) $posts_query->get( '_bbp_password_protected_search' );
+	$listing   = (bool) $posts_query->get( '_bbp_password_protected_listing' );
+	$forum_ids = wp_parse_id_list( $posts_query->get( '_bbp_password_protected_forum_ids' ) );
+	if ( ! $search && ! $listing ) {
 		return $where;
 	}
 
 	$bbp_db = bbp_db();
-	$where .= $bbp_db->prepare(
-		" AND ( {$bbp_db->posts}.post_type NOT IN ( %s, %s, %s ) OR CHAR_LENGTH( {$bbp_db->posts}.post_password ) = 0 )",
-		bbp_get_forum_post_type(),
-		bbp_get_topic_post_type(),
-		bbp_get_reply_post_type()
-	);
+	if ( $search ) {
+		$where .= $bbp_db->prepare(
+			" AND ( {$bbp_db->posts}.post_type NOT IN ( %s, %s, %s ) OR CHAR_LENGTH( {$bbp_db->posts}.post_password ) = 0 )",
+			bbp_get_forum_post_type(),
+			bbp_get_topic_post_type(),
+			bbp_get_reply_post_type()
+		);
+	}
 
 	// Metadata is a fallback, not a replacement for canonical forum ancestry.
-	$forum_ids       = wp_parse_id_list( $posts_query->get( '_bbp_password_protected_forum_ids' ) );
 	$topic_forum_sql = '';
 	if ( ! empty( $forum_ids ) ) {
 		$placeholders = implode( ', ', array_fill( 0, count( $forum_ids ), '%d' ) );
-		$where       .= $bbp_db->prepare(
-			" AND ( {$bbp_db->posts}.post_type <> %s OR {$bbp_db->posts}.ID NOT IN ({$placeholders}) )
-			AND ( {$bbp_db->posts}.post_type <> %s OR {$bbp_db->posts}.post_parent NOT IN ({$placeholders}) )",
-			array_merge( array( bbp_get_forum_post_type() ), $forum_ids, array( bbp_get_topic_post_type() ), $forum_ids )
+		if ( $search ) {
+			$where .= $bbp_db->prepare(
+				" AND ( {$bbp_db->posts}.post_type <> %s OR {$bbp_db->posts}.ID NOT IN ({$placeholders}) )",
+				array_merge( array( bbp_get_forum_post_type() ), $forum_ids )
+			);
+		}
+		$where .= $bbp_db->prepare(
+			" AND ( {$bbp_db->posts}.post_type <> %s OR {$bbp_db->posts}.post_parent NOT IN ({$placeholders}) )",
+			array_merge( array( bbp_get_topic_post_type() ), $forum_ids )
 		);
 		$topic_forum_sql = $bbp_db->prepare( " AND bbp_password_topic.post_parent NOT IN ({$placeholders})", $forum_ids );
 	}
 
 	// Follow reply ancestry without changing existing parent-topic status rules.
+	$topic_password_sql = $search ? ' AND CHAR_LENGTH( bbp_password_topic.post_password ) = 0' : '';
 	$where .= $bbp_db->prepare(
-		" AND ( {$bbp_db->posts}.post_type <> %s OR EXISTS ( SELECT 1 FROM {$bbp_db->posts} AS bbp_password_topic WHERE bbp_password_topic.ID = {$bbp_db->posts}.post_parent AND bbp_password_topic.post_type = %s AND CHAR_LENGTH( bbp_password_topic.post_password ) = 0{$topic_forum_sql} ) )",
+		" AND ( {$bbp_db->posts}.post_type <> %s OR EXISTS ( SELECT 1 FROM {$bbp_db->posts} AS bbp_password_topic WHERE bbp_password_topic.ID = {$bbp_db->posts}.post_parent AND bbp_password_topic.post_type = %s{$topic_password_sql}{$topic_forum_sql} ) )",
 		bbp_get_reply_post_type(),
 		bbp_get_topic_post_type()
 	);
@@ -248,6 +304,30 @@ function bbp_get_view_all( $cap = 'moderate' ) {
 }
 
 /**
+ * If current user can view all topics/replies for a specific forum or topic.
+ *
+ * A global capability or moderation of the object permits the view. The object
+ * check must use `moderate`, since editing capabilities can use forum request
+ * context instead of the supplied object ID.
+ *
+ * @since 2.6.22 bbPress (r8308)
+ *
+ * @param string $cap       Global capability used to ensure user can view all.
+ * @param int    $object_id Forum or topic ID. Zero checks the global capability.
+ * @return bool Whether current user can and is viewing all for the object.
+ */
+function bbp_get_view_all_for_object( $cap, $object_id ) {
+	$object_id = absint( $object_id );
+	if ( empty( $object_id ) ) {
+		return bbp_get_view_all( $cap );
+	}
+
+	$retval = ! empty( $_GET['view'] ) && ( 'all' === $_GET['view'] ) && ( current_user_can( $cap ) || current_user_can( 'moderate', $object_id ) );
+
+	return (bool) apply_filters( 'bbp_get_view_all', (bool) $retval, $cap );
+}
+
+/**
  * Assist pagination by returning correct page number
  *
  * @since 2.0.0 bbPress (r2634)
@@ -278,9 +358,10 @@ function bbp_get_paged() {
 /** Misc **********************************************************************/
 
 /**
- * Return the unique non-empty values of an array.
+ * Return the unique non-empty values of an array as a list.
  *
  * @since 2.6.0 bbPress (r6481)
+ * @since 2.6.22 bbPress (r8341) Return values with consecutive numeric keys.
  *
  * @param array $array Array to get values of
  *
@@ -288,7 +369,7 @@ function bbp_get_paged() {
  */
 // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.arrayFound -- Preserve the public parameter name for PHP 8 named arguments.
 function bbp_get_unique_array_values( $array = array() ) {
-	return array_unique( array_filter( array_values( $array ) ) );
+	return array_values( array_unique( array_filter( $array ) ) );
 }
 
 /**
@@ -310,6 +391,54 @@ function bbp_get_string_array_values( $arr = array() ) {
 	}
 
 	return $retval;
+}
+
+/**
+ * Fix date pairs for new topics and replies.
+ *
+ * WordPress derives the GMT date from the local date, which cannot distinguish
+ * between occurrences of a repeated daylight-saving hour. Start with the
+ * current GMT date instead, and derive its unambiguous local date.
+ *
+ * This compatibility shim may become unnecessary if WordPress Core resolves
+ * default post dates from GMT instead of local time.
+ *
+ * @since 2.6.22 bbPress (r8261)
+ *
+ * @see https://core.trac.wordpress.org/ticket/34435
+ *
+ * @param array $data                Processed post data.
+ * @param array $postarr             Sanitized post data.
+ * @param array $unsanitized_postarr Original post data.
+ * @param bool  $update              Whether this is an existing post.
+ * @return array Filtered post data.
+ */
+function bbp_fix_new_post_date_pairs( $data = array(), $postarr = array(), $unsanitized_postarr = array(), $update = true ) {
+	$zero_date = '0000-00-00 00:00:00';
+
+	if (
+		! empty( $update )
+		|| ! isset( $data['post_type'], $data['post_status'] )
+		|| ! in_array( $data['post_type'], array( bbp_get_topic_post_type(), bbp_get_reply_post_type() ), true )
+		|| ( ! empty( $unsanitized_postarr['post_date'] ) && ( $zero_date !== $unsanitized_postarr['post_date'] ) )
+		|| ( ! empty( $unsanitized_postarr['post_date_gmt'] ) && ( $zero_date !== $unsanitized_postarr['post_date_gmt'] ) )
+	) {
+		return $data;
+	}
+
+	$date_floating_statuses = get_post_stati( array( 'date_floating' => true ) );
+
+	if ( ( bbp_get_pending_status_id() !== $data['post_status'] ) && in_array( $data['post_status'], $date_floating_statuses, true ) ) {
+		return $data;
+	}
+
+	$post_date_gmt = current_time( 'mysql', true );
+	$post_date     = get_date_from_gmt( $post_date_gmt );
+
+	$data['post_date']         = $data['post_modified']     = $post_date;
+	$data['post_date_gmt']     = $data['post_modified_gmt'] = $post_date_gmt;
+
+	return $data;
 }
 
 /**
@@ -1522,7 +1651,7 @@ function bbp_defer_subscription_notification( $post_id = 0 ) {
  * @return bool True when the deferred publication action ran, false otherwise.
  */
 function bbp_notify_forum_subscribers_on_topic_publication( $new_status = '', $old_status = '', $post = false ) {
-	if ( ! is_a( $post, 'WP_Post' ) || ( bbp_get_topic_post_type() !== $post->post_type ) || ( $new_status === $old_status ) ) {
+	if ( ! ( $post instanceof WP_Post ) || ( bbp_get_topic_post_type() !== $post->post_type ) || ( $new_status === $old_status ) ) {
 		return false;
 	}
 
@@ -1583,7 +1712,7 @@ function bbp_notify_forum_subscribers_on_topic_publication( $new_status = '', $o
  * @return bool True when the deferred publication action ran, false otherwise.
  */
 function bbp_notify_topic_subscribers_on_reply_publication( $new_status = '', $old_status = '', $post = false ) {
-	if ( ! is_a( $post, 'WP_Post' ) || ( bbp_get_reply_post_type() !== $post->post_type ) || ( $new_status === $old_status ) ) {
+	if ( ! ( $post instanceof WP_Post ) || ( bbp_get_reply_post_type() !== $post->post_type ) || ( $new_status === $old_status ) ) {
 		return false;
 	}
 
