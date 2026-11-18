@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-23T13:38:25+00:00\n"
+"POT-Creation-Date: 2026-11-17T20:00:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: buddypress\n"
@@ -596,15 +596,15 @@ msgstr ""
 msgid "&hellip;"
 msgstr ""
 
-#: bp-activity/bp-activity-filters.php:656
+#: bp-activity/bp-activity-filters.php:661
 msgid "Load Newest"
 msgstr ""
 
-#: bp-activity/bp-activity-filters.php:840
+#: bp-activity/bp-activity-filters.php:845
 msgid "BuddyPress Activity Data"
 msgstr ""
 
-#: bp-activity/bp-activity-filters.php:842
+#: bp-activity/bp-activity-filters.php:847
 msgctxt "BuddyPress Activity data exporter friendly name"
 msgid "Activity Data"
 msgstr ""
@@ -1701,7 +1701,7 @@ msgstr ""
 #: bp-blogs/bp-blogs-template.php:1526
 #: bp-blogs/classes/class-bp-blogs-component.php:334
 #: bp-blogs/classes/class-bp-blogs-theme-compat.php:175
-#: bp-core/bp-core-template.php:3124
+#: bp-core/bp-core-template.php:3127
 #: bp-templates/bp-nouveau/includes/blogs/functions.php:57
 msgid "Create a Site"
 msgstr ""
@@ -3299,7 +3299,7 @@ msgid "Customize the appearance of emails sent by BuddyPress."
 msgstr ""
 
 #: bp-core/bp-core-customizer-email.php:29
-#: bp-core/bp-core-filters.php:1351
+#: bp-core/bp-core-filters.php:1353
 msgctxt "screen heading"
 msgid "BuddyPress Emails"
 msgstr ""
@@ -3360,27 +3360,27 @@ msgstr ""
 msgid "Footer text"
 msgstr ""
 
-#: bp-core/bp-core-filters.php:469
-#: bp-core/bp-core-filters.php:503
+#: bp-core/bp-core-filters.php:471
+#: bp-core/bp-core-filters.php:505
 msgid "[User Set]"
 msgstr ""
 
 #. translators: %s: the page number.
-#: bp-core/bp-core-filters.php:726
+#: bp-core/bp-core-filters.php:728
 msgid "Page %s"
 msgstr ""
 
-#: bp-core/bp-core-filters.php:932
+#: bp-core/bp-core-filters.php:934
 msgctxt "customizer menu type label"
 msgid "Custom Link"
 msgstr ""
 
-#: bp-core/bp-core-filters.php:955
+#: bp-core/bp-core-filters.php:957
 msgctxt "customizer menu section title"
 msgid "BuddyPress (logged-in)"
 msgstr ""
 
-#: bp-core/bp-core-filters.php:960
+#: bp-core/bp-core-filters.php:962
 msgctxt "customizer menu section title"
 msgid "BuddyPress (logged-out)"
 msgstr ""
@@ -4579,20 +4579,20 @@ msgstr ""
 msgid "Search anything..."
 msgstr ""
 
-#: bp-core/bp-core-template.php:1106
+#: bp-core/bp-core-template.php:1109
 msgid "Community"
 msgstr ""
 
-#: bp-core/bp-core-template.php:2015
+#: bp-core/bp-core-template.php:2018
 msgid "The cover image is a Members component feature, please use bp_is_active( 'members', 'cover_image' ) instead."
 msgstr ""
 
-#: bp-core/bp-core-template.php:3100
+#: bp-core/bp-core-template.php:3103
 msgctxt "component directory title"
 msgid "Directory"
 msgstr ""
 
-#: bp-core/bp-core-template.php:3109
+#: bp-core/bp-core-template.php:3112
 #: bp-groups/bp-groups-template.php:3648
 #: bp-groups/bp-groups-template.php:3649
 #: bp-members/bp-members-membership-requests.php:401
@@ -4601,33 +4601,33 @@ msgstr ""
 #: bp-members/bp-members-membership-requests.php:444
 #: bp-members/bp-members-membership-requests.php:463
 #: bp-members/classes/class-bp-registration-theme-compat.php:101
-#: bp-templates/bp-legacy/buddypress-functions.php:1719
+#: bp-templates/bp-legacy/buddypress-functions.php:1720
 msgid "Request Membership"
 msgstr ""
 
-#: bp-core/bp-core-template.php:3111
+#: bp-core/bp-core-template.php:3114
 #: bp-members/classes/class-bp-registration-theme-compat.php:103
 msgid "Create an Account"
 msgstr ""
 
-#: bp-core/bp-core-template.php:3116
+#: bp-core/bp-core-template.php:3119
 #: bp-members/classes/class-bp-registration-theme-compat.php:116
 msgid "Activate Your Account"
 msgstr ""
 
-#: bp-core/bp-core-template.php:3120
+#: bp-core/bp-core-template.php:3123
 #: bp-groups/bp-groups-template.php:3726
 #: bp-templates/bp-nouveau/includes/groups/functions.php:590
 msgid "Create a Group"
 msgstr ""
 
-#: bp-core/bp-core-template.php:3759
+#: bp-core/bp-core-template.php:3762
 msgctxt "Unnamed recipient salutation"
 msgid "Hi,"
 msgstr ""
 
 #. translators: %s: the email token for the recipient name
-#: bp-core/bp-core-template.php:3782
+#: bp-core/bp-core-template.php:3785
 msgctxt "Named recipient salutation"
 msgid "Hi %s,"
 msgstr ""
@@ -5161,59 +5161,59 @@ msgctxt "avatar types separator"
 msgid ","
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:430
+#: bp-core/classes/class-bp-attachment-avatar.php:445
 #: bp-members/screens/change-avatar.php:68
 msgid "There was a problem cropping your profile photo."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:431
+#: bp-core/classes/class-bp-attachment-avatar.php:446
 #: bp-members/screens/change-avatar.php:87
 msgid "Your new profile photo was uploaded successfully."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:432
+#: bp-core/classes/class-bp-attachment-avatar.php:447
 #: bp-members/actions/delete-avatar.php:34
 msgid "There was a problem deleting your profile photo. Please try again."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:433
+#: bp-core/classes/class-bp-attachment-avatar.php:448
 #: bp-members/actions/delete-avatar.php:32
 msgid "Your profile photo was deleted successfully!"
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:434
+#: bp-core/classes/class-bp-attachment-avatar.php:449
 msgid "Your profile photo was recycled successfully!"
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:435
+#: bp-core/classes/class-bp-attachment-avatar.php:450
 msgid "The profile photo was permanently deleted successfully!"
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:450
+#: bp-core/classes/class-bp-attachment-avatar.php:465
 #: bp-groups/screens/single/admin/group-avatar.php:82
 msgid "There was a problem cropping the group profile photo."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:451
+#: bp-core/classes/class-bp-attachment-avatar.php:466
 #: bp-groups/actions/create.php:294
 msgid "The group profile photo was uploaded successfully."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:452
+#: bp-core/classes/class-bp-attachment-avatar.php:467
 #: bp-groups/screens/single/admin/group-avatar.php:37
 msgid "There was a problem deleting the group profile photo. Please try again."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:453
+#: bp-core/classes/class-bp-attachment-avatar.php:468
 #: bp-groups/screens/single/admin/group-avatar.php:35
 msgid "The group profile photo was deleted successfully!"
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:454
+#: bp-core/classes/class-bp-attachment-avatar.php:469
 msgid "The group profile photo was recycled successfully!"
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment-avatar.php:455
+#: bp-core/classes/class-bp-attachment-avatar.php:470
 msgid "The group profile photo was permanently deleted successfully!"
 msgstr ""
 
@@ -5293,46 +5293,46 @@ msgstr ""
 msgid "File upload stopped by extension."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:485
+#: bp-core/classes/class-bp-attachment.php:494
 msgid "Cropping the file failed: missing source file."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:490
+#: bp-core/classes/class-bp-attachment.php:499
 msgid "Cropping the file failed: the file path is not allowed."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:512
+#: bp-core/classes/class-bp-attachment.php:521
 msgctxt "Attachment source file"
 msgid "source file"
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:518
+#: bp-core/classes/class-bp-attachment.php:527
 msgctxt "Attachment destination file"
 msgid "destination file"
 msgstr ""
 
 #. translators: %s: image file extension
-#: bp-core/classes/class-bp-attachment.php:534
+#: bp-core/classes/class-bp-attachment.php:543
 msgid "Cropping the file failed: %s is not a supported image file."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:571
+#: bp-core/classes/class-bp-attachment.php:580
 msgid "Sorry, uploading the file failed."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:572
+#: bp-core/classes/class-bp-attachment.php:581
 msgid "File successfully uploaded."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:602
+#: bp-core/classes/class-bp-attachment.php:611
 msgid "The absolute path to your file is missing."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:606
+#: bp-core/classes/class-bp-attachment.php:615
 msgid "The absolute path to your file is not allowed."
 msgstr ""
 
-#: bp-core/classes/class-bp-attachment.php:639
+#: bp-core/classes/class-bp-attachment.php:648
 msgid "An unexpected error occured while adding the revision."
 msgstr ""
 
@@ -7460,8 +7460,8 @@ msgstr ""
 
 #: bp-groups/bp-groups-template.php:3535
 #: bp-groups/bp-groups-template.php:3536
-#: bp-templates/bp-legacy/buddypress-functions.php:1666
-#: bp-templates/bp-legacy/buddypress-functions.php:1683
+#: bp-templates/bp-legacy/buddypress-functions.php:1667
+#: bp-templates/bp-legacy/buddypress-functions.php:1684
 msgid "Leave Group"
 msgstr ""
 
@@ -7474,13 +7474,13 @@ msgstr ""
 
 #: bp-groups/bp-groups-template.php:3587
 #: bp-groups/bp-groups-template.php:3588
-#: bp-templates/bp-legacy/buddypress-functions.php:1710
+#: bp-templates/bp-legacy/buddypress-functions.php:1711
 msgid "Join Group"
 msgstr ""
 
 #: bp-groups/bp-groups-template.php:3624
 #: bp-groups/bp-groups-template.php:3625
-#: bp-templates/bp-legacy/buddypress-functions.php:1693
+#: bp-templates/bp-legacy/buddypress-functions.php:1694
 msgid "Request Sent"
 msgstr ""
 
@@ -8563,18 +8563,19 @@ msgid "Please update your server or deactivate BuddyPress."
 msgstr ""
 
 #: bp-members/actions/invitations-bulk-manage.php:36
+#: bp-members/actions/invitations-bulk-manage.php:53
 msgid "There was a problem managing your invitations."
 msgstr ""
 
 #. translators: %d: the number of invitations that were canceled.
-#: bp-members/actions/invitations-bulk-manage.php:54
+#: bp-members/actions/invitations-bulk-manage.php:69
 msgid "%d invitation was canceled."
 msgid_plural "%d invitations were canceled."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: the number of invitations that were resent.
-#: bp-members/actions/invitations-bulk-manage.php:71
+#: bp-members/actions/invitations-bulk-manage.php:86
 msgid "%d invitation was resent."
 msgid_plural "%d invitations were resent."
 msgstr[0] ""
@@ -10430,11 +10431,11 @@ msgstr ""
 msgid "Your password is not strong enough to be allowed on this site. Please use a stronger password."
 msgstr ""
 
-#: bp-members/screens/register.php:129
+#: bp-members/screens/register.php:136
 msgid "You must indicate that you have read and agreed to the Privacy Policy."
 msgstr ""
 
-#: bp-members/screens/register.php:162
+#: bp-members/screens/register.php:170
 msgid "This is a required field"
 msgstr ""
 
@@ -11823,26 +11824,26 @@ msgid "There was a problem rejecting that request. Please try again."
 msgstr ""
 
 #: bp-templates/bp-legacy/buddypress-functions.php:1642
-#: bp-templates/bp-legacy/buddypress-functions.php:1650
-#: bp-templates/bp-legacy/buddypress-functions.php:1657
+#: bp-templates/bp-legacy/buddypress-functions.php:1651
+#: bp-templates/bp-legacy/buddypress-functions.php:1658
 msgid "Error joining group"
 msgstr ""
 
-#: bp-templates/bp-legacy/buddypress-functions.php:1674
-#: bp-templates/bp-legacy/buddypress-functions.php:1691
+#: bp-templates/bp-legacy/buddypress-functions.php:1675
+#: bp-templates/bp-legacy/buddypress-functions.php:1692
 msgid "Error requesting membership"
 msgstr ""
 
-#: bp-templates/bp-legacy/buddypress-functions.php:1701
+#: bp-templates/bp-legacy/buddypress-functions.php:1702
 msgid "Error leaving group"
 msgstr ""
 
-#: bp-templates/bp-legacy/buddypress-functions.php:1740
+#: bp-templates/bp-legacy/buddypress-functions.php:1741
 msgid "There was a problem closing the notice."
 msgstr ""
 
-#: bp-templates/bp-legacy/buddypress-functions.php:1767
-#: bp-templates/bp-legacy/buddypress-functions.php:1807
+#: bp-templates/bp-legacy/buddypress-functions.php:1768
+#: bp-templates/bp-legacy/buddypress-functions.php:1808
 msgid "There was a problem sending that reply. Please try again."
 msgstr ""
 
